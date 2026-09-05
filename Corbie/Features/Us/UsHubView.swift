@@ -30,7 +30,7 @@ struct UsHubView: View {
                     title: String(localized: "us.hub.people"),
                     line: String(localized: "us.tile.people.line"),
                     countText: String(localized: "us.tile.people.count \(model.peopleCount)"),
-                    destination: PeopleEntryView(count: model.peopleCount)
+                    destination: PeopleView()
                 )
                 settings
             }

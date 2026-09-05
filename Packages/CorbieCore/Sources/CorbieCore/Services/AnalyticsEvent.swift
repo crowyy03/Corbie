@@ -92,22 +92,9 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .readonlyHit(action):
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-             .taskHandedBack, .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated,
-=======
-             .wishFulfilled, .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated,
->>>>>>> worktree-wf_c12cea66-3d5-4
-             .voteRevealed, .trialStarted, .restore:
-=======
-             .expenseAdded, .listItemChecked, .listMapOpened, .capsuleCreated, .capsuleOpened,
-             .voteCreated, .voteRevealed,
-=======
-             .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered, .voteRevealed,
->>>>>>> worktree-wf_c12cea66-3d5-6
+             .taskHandedBack, .wishFulfilled, .expenseAdded, .listItemChecked, .listMapOpened,
+             .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered, .voteRevealed,
              .trialStarted, .restore:
->>>>>>> worktree-wf_c12cea66-3d5-5
             return [:]
         }
     }
@@ -115,9 +102,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
     public static let allowedNames: Set<String> = [
         "app_open", "onboarding_step", "space_created", "invite_created", "invite_redeemed",
         "task_created", "task_taken", "task_done", "event_created", "wish_created", "wish_fulfilled",
-        "plan_created", "expense_added", "list_created", "capsule_created", "capsule_opened",
-        "vote_created", "vote_revealed", "widget_added", "paywall_shown", "trial_started",
-        "purchase", "restore", "readonly_hit"
+        "plan_created", "expense_added", "list_created", "list_item_checked", "list_map_opened",
+        "capsule_created", "capsule_opened", "vote_created", "vote_answered", "vote_revealed",
+        "widget_added", "paywall_shown", "trial_started", "purchase", "restore", "readonly_hit",
+        "task_handed_back"
     ]
 
     public static let droppedPropKeys: Set<String> = [

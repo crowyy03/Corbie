@@ -25,7 +25,7 @@ public final class CloudKitSharing {
             let result = try await container.share([space], to: nil)
             let share = result.1
             share[CKShare.SystemFieldKey.title] = CloudKitSharing.shareTitle
-            share.publicPermission = .none
+            share.publicPermission = .readWrite
             return try await container.persistUpdatedShare(share, in: store)
         } catch let error as CorbieError {
             throw error

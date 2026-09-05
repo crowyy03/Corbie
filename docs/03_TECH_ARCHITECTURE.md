@@ -171,7 +171,7 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 
 ## 13. Аналитика (своя)
 
-- События: `app_open`, `onboarding_step`, `space_created`, `invite_created`, `invite_redeemed`, `task_created`, `task_taken`, `task_done`, `event_created`, `wish_created(source)`, `plan_created`, `expense_added`, `list_created(template)`, `capsule_created`, `capsule_opened`, `vote_created`, `vote_revealed`, `widget_added(kind)`, `paywall_shown(reason)`, `trial_started`, `purchase(product)`, `restore`, `readonly_hit`.
+- События: `app_open`, `onboarding_step`, `space_created`, `invite_created`, `invite_redeemed`, `task_created`, `task_taken`, `task_done`, `task_handed_back`, `event_created`, `wish_created(source)`, `wish_fulfilled`, `plan_created`, `expense_added`, `list_created(template)`, `list_item_checked`, `list_map_opened`, `capsule_created`, `capsule_opened`, `vote_created`, `vote_answered`, `vote_revealed`, `widget_added(kind)`, `paywall_shown(reason)`, `trial_started`, `purchase(product)`, `restore`, `readonly_hit`.
 - `anonId` — UUID на устройстве, не связан с Apple ID. Никаких PII.
 - Батч раз в 60 с или 20 событий; офлайн-очередь.
 - Дашборд — SQL-вьюхи в Supabase: воронка онбординга, доля пар, D1/D7/D30, trial→paid.
