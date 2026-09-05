@@ -1,6 +1,11 @@
 import CorbieCore
 import Foundation
 
+enum PreviewNames {
+    static let member = "Alex"
+    static let partner = "Sofia"
+}
+
 final class InMemorySecretStore: SecretStore, @unchecked Sendable {
     private var values: [String: Data] = [:]
     private let lock = NSLock()

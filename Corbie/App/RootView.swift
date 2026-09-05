@@ -1,14 +1,43 @@
+import CorbieCore
 import SwiftUI
 
 struct RootView: View {
     @Environment(AppState.self) private var appState
     @Environment(AppEnvironment.self) private var environment
+    @Environment(\.scenePhase) private var scenePhase
+
+    @State private var pendingJoinCode: String?
+    @State private var joinRequest: JoinRequest?
+
+    private let credentials = AppleCredentialMonitor()
+    private let partnerWatcher = PartnerJoinWatcher()
 
     var body: some View {
+        content
+            .task {
+                await credentials.verifyStoredCredential(environment)
+                await credentials.observeRevocation(environment)
+            }
+            .task(id: appState.route) { consumeJoinRoute() }
+            .task(id: environment.session) { consumeJoinRoute() }
+    }
+
+    @ViewBuilder private var content: some View {
+        switch environment.session {
+        case .loading:
+            LaunchPlaceholderView()
+        case .signedOut:
+            OnboardingView(environment: environment, appState: appState, joinCode: pendingJoinCode)
+        case .signedIn:
+            signedIn
+        }
+    }
+
+    private var signedIn: some View {
         @Bindable var state = appState
         @Bindable var gate = environment.premiumGate
 
-        TabView(selection: $state.selectedTab) {
+        return TabView(selection: $state.selectedTab) {
             NavigationStack {
                 TasksView()
             }
@@ -55,7 +84,33 @@ struct RootView: View {
         .sheet(item: $gate.pendingPaywall) { request in
             PaywallView(request: request)
         }
+        .sheet(item: $joinRequest) { request in
+            JoinSheet(code: request.code)
+        }
+        .task { await partnerWatcher.observe(environment) }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            Task { await partnerWatcher.check(environment) }
+        }
     }
+
+    private func consumeJoinRoute() {
+        guard case let .join(code) = appState.route else { return }
+        switch environment.session {
+        case .loading:
+            return
+        case .signedOut:
+            pendingJoinCode = code
+        case .signedIn:
+            joinRequest = JoinRequest(code: code)
+        }
+        appState.route = nil
+    }
+}
+
+struct JoinRequest: Identifiable, Equatable {
+    let id = UUID()
+    let code: String
 }
 
 private struct UsHubSheet: View {
@@ -77,8 +132,14 @@ private struct UsHubSheet: View {
     }
 }
 
-#Preview {
+#Preview("Signed in") {
     RootView()
         .environment(AppState())
-        .environment(AppEnvironment.preview())
+        .environment(AppEnvironment.previewSignedIn())
+}
+
+#Preview("Signed out") {
+    RootView()
+        .environment(AppState())
+        .environment(AppEnvironment.previewSignedOut())
 }
