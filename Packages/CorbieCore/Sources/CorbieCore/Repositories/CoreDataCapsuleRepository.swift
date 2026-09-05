@@ -29,7 +29,6 @@ public struct CoreDataCapsuleRepository: CapsuleRepository {
             capsule.title = title
             capsule.body = draft.body
             capsule.opensAt = draft.opensAt
-            capsule.openedByMemberIds = []
             return CapsuleDTO(capsule)
         }
     }
@@ -57,13 +56,12 @@ public struct CoreDataCapsuleRepository: CapsuleRepository {
             guard let opensAt = capsule.opensAt, opensAt <= date else {
                 throw CorbieError.invalidInput("capsule is still sealed")
             }
-            if capsule.openedAt == nil {
-                capsule.openedAt = date
-            }
-            var opened = capsule.openedByMemberIds
-            if opened.contains(memberId) == false {
-                opened.append(memberId)
-                capsule.openedByMemberIds = opened
+            if capsule.opens.contains(where: { $0.memberId == memberId }) == false {
+                let record = CapsuleOpen(context: context)
+                context.assign(record, toStoreOf: capsule)
+                record.capsule = capsule
+                record.memberId = memberId
+                record.openedAt = date
             }
             return CapsuleDTO(capsule)
         }

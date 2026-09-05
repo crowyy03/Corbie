@@ -23,6 +23,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case capsuleCreated
     case capsuleOpened
     case voteCreated
+    case voteAnswered
     case voteRevealed
     case widgetAdded(kind: String)
     case paywallShown(reason: PaywallReason)
@@ -49,6 +50,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .capsuleCreated: return "capsule_created"
         case .capsuleOpened: return "capsule_opened"
         case .voteCreated: return "vote_created"
+        case .voteAnswered: return "vote_answered"
         case .voteRevealed: return "vote_revealed"
         case .widgetAdded: return "widget_added"
         case .paywallShown: return "paywall_shown"
@@ -82,7 +84,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .readonlyHit(action):
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
-             .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated, .voteRevealed,
+             .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered, .voteRevealed,
              .trialStarted, .restore:
             return [:]
         }

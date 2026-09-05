@@ -31,3 +31,14 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - The app is iPhone only: `TARGETED_DEVICE_FAMILY = 1` on the app, widget and share targets. The design is portrait-only and single column, and the Info.plist already declares portrait alone.
 - `CKSharingSupported` is in the app Info.plist and `AppDelegate.application(_:userDidAcceptCloudKitShareWith:)` calls `CloudKitSharing.acceptShare(metadata:)`, so an invitation link actually joins the space.
 - Each tab is a bare `NavigationStack` around its feature root; the feature view owns its title and toolbar and adds the pill with `.toolbar { UsPillToolbarItem() }`. The pill is the `CorbieCore` `UsPill` component, which already meets the 44pt tap target.
+
+## 2026-09-05 (module 08)
+
+- `Capsule.openedByMemberIdsData` is gone. Every open is now a `CapsuleOpen` row (id, memberId, openedAt) under a cascade relationship with a nullify inverse, the same shape as `VoteResponse`, so two partners who open offline no longer overwrite each other. `Capsule.openedAt` is derived from the earliest child instead of being stored, which removes the second copy of the same fact. `CapsuleDTO.openedByMemberIds`, `openedAt` and `isReadByBoth` are unchanged; duplicate rows for one member are collapsed when the DTO is built, so one device opening twice cannot fake "read by both".
+- The Us tab shows the hub inline and carries no Us pill: the pill exists to open the hub, and that tab already is the hub. Its "+" offers a new capsule or a new vote, the only two things the hub creates.
+- `UsHubView` closes the Us sheet when the premium gate raises a paywall request. `RootView` presents the hub and the paywall as two sheets on the same `TabView`, and SwiftUI presents only one of them at a time.
+- The counters card takes the second number from `ImportantDates.nextImportantDate`. "Custom pinned event" is read as a calendar entry of kind `anniversary`, because `Event` has no pinned flag.
+- Capsules and votes are gated with `PremiumAction.capsules` and `.votes` instead of `.create`, so the paywall can name the reason. Opening a capsule and answering a vote stay ungated: both are reading, not creating.
+- A capsule's open-day notification is scheduled by the author when saving and by anyone who opens the capsule list, because only the author's device runs the editor. A launch-time reschedule of everything belongs to the notifications module.
+- `AnalyticsEvent.voteAnswered` was added because module 08 names `vote_answered`. `AnalyticsEvent.allowedNames`, `NetAnalyticsTests` and the server allowlist still do not carry it; syncing them is outside this module's scope.
+- People opens `PeopleEntryView`, a placeholder inside `Features/Us` that only shows the count. The People module replaces it.

@@ -132,9 +132,11 @@ public enum CorbieModel {
         capsule.attribute("title", .stringAttributeType)
         capsule.attribute("body", .stringAttributeType)
         capsule.attribute("opensAt", .dateAttributeType)
-        capsule.attribute("openedAt", .dateAttributeType)
-        capsule.attribute("openedByMemberIdsData", .binaryDataAttributeType)
         capsule.attribute("createdAt", .dateAttributeType)
+
+        let capsuleOpen = ModelEntity(CapsuleOpen.entityName, CapsuleOpen.self)
+        capsuleOpen.attribute("memberId", .UUIDAttributeType)
+        capsuleOpen.attribute("openedAt", .dateAttributeType)
 
         let vote = ModelEntity(Vote.entityName, Vote.self)
         vote.attribute("question", .stringAttributeType)
@@ -178,6 +180,7 @@ public enum CorbieModel {
         space.owns(vote, many: "votes", inverse: "space")
         space.owns(person, many: "people", inverse: "space")
         event.owns(comment, many: "comments", inverse: "event")
+        capsule.owns(capsuleOpen, many: "opens", inverse: "capsule")
         vote.owns(voteResponse, many: "responses", inverse: "vote")
         plan.owns(expense, many: "expenses", inverse: "plan")
         list.owns(listItem, many: "items", inverse: "list")
@@ -185,7 +188,7 @@ public enum CorbieModel {
 
         let builders = [
             space, member, task, event, comment, wish, plan, expense,
-            list, listItem, capsule, vote, voteResponse, person, giftIdea
+            list, listItem, capsule, capsuleOpen, vote, voteResponse, person, giftIdea
         ]
         let model = NSManagedObjectModel()
         model.entities = builders.map { $0.finish() }

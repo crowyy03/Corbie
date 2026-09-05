@@ -45,6 +45,32 @@ import Testing
         #expect(both.openedAt == opensAt)
     }
 
+    @Test func eachReaderGetsItsOwnRecord() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.capsules
+        let opensAt = now.addingTimeInterval(3600)
+        let capsule = try await repository.create(
+            CapsuleDraft(
+                spaceId: world.space.id,
+                authorMemberId: world.me.id,
+                recipientMemberId: world.partner.id,
+                title: "Two readers",
+                body: "Body",
+                opensAt: opensAt
+            ),
+            now: now
+        )
+        _ = try await repository.markOpened(capsuleId: capsule.id, memberId: world.partner.id, at: opensAt)
+        _ = try await repository.markOpened(capsuleId: capsule.id, memberId: world.me.id, at: opensAt)
+        #expect(try world.count(CapsuleOpen.entityName) == 2)
+
+        let stored = try #require(try await repository.capsule(id: capsule.id))
+        #expect(Set(stored.openedByMemberIds) == [world.me.id, world.partner.id])
+
+        try await repository.delete(id: capsule.id)
+        #expect(try world.count(CapsuleOpen.entityName) == 0)
+    }
+
     @Test func openingTwiceDoesNotDuplicateTheReader() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.capsules

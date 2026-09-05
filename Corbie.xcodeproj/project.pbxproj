@@ -7,37 +7,59 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		003F1190C0E1BACC4B8A07B1 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BB2145F66B815CA0F988EF /* VoteView.swift */; };
+		0193A7A738B8E4E9BAE5159E /* UsCounters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1429A312F98A8B56A95C8AD7 /* UsCounters.swift */; };
+		05AAAFEEE7B12F1C642656D9 /* CapsuleEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2715BD652B50907EAB041641 /* CapsuleEditorViewModel.swift */; };
+		0A30EAF8C59E43CE180FBE4E /* MemberPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */; };
 		119BE71835686FAFB0F9885B /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */; };
 		11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D439758E7E6D75110C77131A /* CorbieApp.swift */; };
+		1242532D0A2A8220761D6749 /* VoteOutcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45DAC35304FFFC5AE7561FD /* VoteOutcome.swift */; };
+		146D3FDF3A87222B48B778B3 /* UsHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3310A390D9FFD7E738C5CFF /* UsHubViewModel.swift */; };
 		1A3BB94EFB5F1AE56AC2B48D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */; };
 		1C5C206503457A593AF48958 /* PlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */; };
 		223BC84E1DB2B99845AEFB2B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
+		23351D35BCA2BB7EF9A75D2A /* CapsuleOpenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D95AA96ABA38AC940470E6D /* CapsuleOpenViewModel.swift */; };
 		2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */; };
 		24C9999E7AF39592DFC9850B /* UsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F3366F97984A781DC3953 /* UsView.swift */; };
 		348435E9BB1F704E88F9B5B8 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9FDF78C8AFE2EB5AA5274C43 /* CorbieCore */; };
 		35CFA4A8EB05DEFD286CECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4EAF790494EF27B38A13 /* TasksView.swift */; };
+		3CFA06639AC7CB620183CE09 /* CapsuleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C79D73B22AA0D41D5FA2F4 /* CapsuleEditorView.swift */; };
 		46A1998D55C4137CB0C56BA7 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 053C7B83569FB8EA59BC28EF /* CorbieCore */; };
 		4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */; };
+		520DDDC5055C292630F7FFA9 /* UsCountersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3F3588DADB072F39C78141 /* UsCountersTests.swift */; };
+		5623C748E01979AABB93DCF9 /* CapsuleRowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F3D8A46202A453F18201F /* CapsuleRowState.swift */; };
 		5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADECE3D6ABD0A50F325ECA /* RootView.swift */; };
 		6B4C7D23BA1928AB78E937AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */; };
 		6BEAC7E8D5C3D23B2E83641F /* UsPillToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */; };
+		700604132579DE21152879A5 /* CapsulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5591E8B5A048FBB1A76EAED /* CapsulesView.swift */; };
 		735797CD81CBFC9E1A6B8874 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE157E918D961E9899DE32D /* LaunchUITests.swift */; };
 		738EE314D5EFC041C2EDF6E2 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAF52F19A383AEDFE0ECB2BC /* CorbieCore */; };
 		792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */; };
 		7D41F6D039348679B73D158E /* WishesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398541694197694D6538882 /* WishesView.swift */; };
+		86FE2BE0CDA9CAB13B3FD429 /* VoteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF76C86257807AAD69B72CB2 /* VoteEditorView.swift */; };
+		8E7B44176C71BA64AF1D036E /* VotesOutcomeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D066B9308671413149F5F2F5 /* VotesOutcomeTests.swift */; };
 		9A0FFEAD954472C768DE8497 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */; };
 		9E7891F0830411940526CDB1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53715C4B0BEE41A246CA135 /* AppState.swift */; };
+		A3D3C02D63C9D9AC75218159 /* CapsulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815989F852AADFD5B458253D /* CapsulesViewModel.swift */; };
+		BD48997F0DFD1A5E3AC328B6 /* PeopleEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A33D359704493FE97CF34C /* PeopleEntryView.swift */; };
 		BE9E2253E46F0C5D2650B635 /* CorbieWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */; };
+		C1C3710D9A7CCD510147BA4F /* VoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A42CBD2AC1CE681806A7BA2 /* VoteViewModel.swift */; };
+		C59F6DDCD4B16344C672F04C /* CapsulesStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5759A0DB836C724CCDD7F406 /* CapsulesStateTests.swift */; };
+		CAFC2BD1594FFF013A51D795 /* VoteTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25890C139778DE0DE0DEFFC1 /* VoteTemplate.swift */; };
 		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
 		DC2FFED1B16BABC452427F5E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BC345B3464E4B2B019D6B1 /* PaywallView.swift */; };
 		E32AF678642BF3322E2DDD5A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36368046A5FAB01754781EFA /* Router.swift */; };
 		E802BA38F4C6F2C5E0A66A0A /* CorbieShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ED19D80A7495A443C9374642 /* VotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCFA0F6937648268B4472D3 /* VotesViewModel.swift */; };
 		ED6F2FFEA5598A686F220983 /* AddToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8965137EA487DC01422332 /* AddToolbarItem.swift */; };
+		EE34A2475C01E01F51FCF82C /* VoteEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90ADE6250AAF49C178458519 /* VoteEditorViewModel.swift */; };
+		EF4BE0101EB95B3D32B66BB4 /* VotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F522DFD0393BF9DC95BA41EB /* VotesView.swift */; };
 		F3788058226B31D375C21949 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4516E0BF27017473DA4A6841 /* CalendarView.swift */; };
 		F6F4386491A47704FD8B745E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */; };
+		FB92D9C170CD6863DBCDE75C /* CapsuleOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EF6AD9BE26E09713B98D27 /* CapsuleOpenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,8 +109,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1429A312F98A8B56A95C8AD7 /* UsCounters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsCounters.swift; sourceTree = "<group>"; };
 		1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		21BB2145F66B815CA0F988EF /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
+		25890C139778DE0DE0DEFFC1 /* VoteTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteTemplate.swift; sourceTree = "<group>"; };
+		2715BD652B50907EAB041641 /* CapsuleEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleEditorViewModel.swift; sourceTree = "<group>"; };
 		27FA4EAF790494EF27B38A13 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
+		2A42CBD2AC1CE681806A7BA2 /* VoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteViewModel.swift; sourceTree = "<group>"; };
+		2D95AA96ABA38AC940470E6D /* CapsuleOpenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleOpenViewModel.swift; sourceTree = "<group>"; };
 		2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
 		36368046A5FAB01754781EFA /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -97,26 +125,42 @@
 		4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieWidgetsBundle.swift; sourceTree = "<group>"; };
 		4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5759A0DB836C724CCDD7F406 /* CapsulesStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsulesStateTests.swift; sourceTree = "<group>"; };
 		5BD088A33E2CAFF8EEB22704 /* CorbieTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CorbieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		64EF6AD9BE26E09713B98D27 /* CapsuleOpenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleOpenView.swift; sourceTree = "<group>"; };
 		6BEF587FBFA4C383CF2615FA /* Corbie.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Corbie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7398541694197694D6538882 /* WishesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishesView.swift; sourceTree = "<group>"; };
 		73C687DE0F2DB876101A9EA7 /* CorbieUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CorbieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		73C79D73B22AA0D41D5FA2F4 /* CapsuleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleEditorView.swift; sourceTree = "<group>"; };
 		764D28944098863C4197B098 /* CorbieCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CorbieCore; path = Packages/CorbieCore; sourceTree = SOURCE_ROOT; };
 		76B17794417FDD3F3E7B2AA1 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
 		7AD1279BBDD45CD8EF636282 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
+		7CCFA0F6937648268B4472D3 /* VotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesViewModel.swift; sourceTree = "<group>"; };
+		815989F852AADFD5B458253D /* CapsulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsulesViewModel.swift; sourceTree = "<group>"; };
 		83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberPresentation.swift; sourceTree = "<group>"; };
 		88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
 		8F8965137EA487DC01422332 /* AddToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToolbarItem.swift; sourceTree = "<group>"; };
+		90ADE6250AAF49C178458519 /* VoteEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteEditorViewModel.swift; sourceTree = "<group>"; };
 		A53715C4B0BEE41A246CA135 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		AD3F3588DADB072F39C78141 /* UsCountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsCountersTests.swift; sourceTree = "<group>"; };
 		ADE157E918D961E9899DE32D /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
 		AEADECE3D6ABD0A50F325ECA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B4A33D359704493FE97CF34C /* PeopleEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleEntryView.swift; sourceTree = "<group>"; };
 		B8BC345B3464E4B2B019D6B1 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		C45DAC35304FFFC5AE7561FD /* VoteOutcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteOutcome.swift; sourceTree = "<group>"; };
 		C5958CC8757BF6F56C4338EC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansView.swift; sourceTree = "<group>"; };
+		D066B9308671413149F5F2F5 /* VotesOutcomeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesOutcomeTests.swift; sourceTree = "<group>"; };
 		D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsPillToolbarItem.swift; sourceTree = "<group>"; };
 		D439758E7E6D75110C77131A /* CorbieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieApp.swift; sourceTree = "<group>"; };
+		D5591E8B5A048FBB1A76EAED /* CapsulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsulesView.swift; sourceTree = "<group>"; };
+		D58F3D8A46202A453F18201F /* CapsuleRowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleRowState.swift; sourceTree = "<group>"; };
 		D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSupport.swift; sourceTree = "<group>"; };
+		EF76C86257807AAD69B72CB2 /* VoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteEditorView.swift; sourceTree = "<group>"; };
+		F3310A390D9FFD7E738C5CFF /* UsHubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubViewModel.swift; sourceTree = "<group>"; };
+		F522DFD0393BF9DC95BA41EB /* VotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesView.swift; sourceTree = "<group>"; };
 		F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubView.swift; sourceTree = "<group>"; };
 		FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FC4F3366F97984A781DC3953 /* UsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsView.swift; sourceTree = "<group>"; };
@@ -172,11 +216,13 @@
 			isa = PBXGroup;
 			children = (
 				FB229C8C8DFA85FFFB1E9AC2 /* Calendar */,
+				B074E8B448C61904191D8873 /* Capsules */,
 				F537BA9BF7213C5F6397E78A /* Paywall */,
 				0900B2BD9B49CC81C3780556 /* Plans */,
 				884872A6CF2E0E683C0B2E3D /* Shared */,
 				CEDDF271B888211861AE0B30 /* Tasks */,
 				9DACF5222ACE2D4DFCC6EC85 /* Us */,
+				C24498758A2A53948C9E701C /* Votes */,
 				EE37F02626653CC6C37A7CF8 /* Wishes */,
 			);
 			path = Features;
@@ -228,7 +274,10 @@
 		80EBF8A26B578EFBF35FA92A /* CorbieTests */ = {
 			isa = PBXGroup;
 			children = (
+				5759A0DB836C724CCDD7F406 /* CapsulesStateTests.swift */,
 				2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */,
+				AD3F3588DADB072F39C78141 /* UsCountersTests.swift */,
+				D066B9308671413149F5F2F5 /* VotesOutcomeTests.swift */,
 			);
 			path = CorbieTests;
 			sourceTree = "<group>";
@@ -237,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				8F8965137EA487DC01422332 /* AddToolbarItem.swift */,
+				87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */,
 				88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */,
 				D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */,
 			);
@@ -268,7 +318,10 @@
 		9DACF5222ACE2D4DFCC6EC85 /* Us */ = {
 			isa = PBXGroup;
 			children = (
+				B4A33D359704493FE97CF34C /* PeopleEntryView.swift */,
+				1429A312F98A8B56A95C8AD7 /* UsCounters.swift */,
 				F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */,
+				F3310A390D9FFD7E738C5CFF /* UsHubViewModel.swift */,
 				FC4F3366F97984A781DC3953 /* UsView.swift */,
 			);
 			path = Us;
@@ -283,6 +336,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B074E8B448C61904191D8873 /* Capsules */ = {
+			isa = PBXGroup;
+			children = (
+				73C79D73B22AA0D41D5FA2F4 /* CapsuleEditorView.swift */,
+				2715BD652B50907EAB041641 /* CapsuleEditorViewModel.swift */,
+				64EF6AD9BE26E09713B98D27 /* CapsuleOpenView.swift */,
+				2D95AA96ABA38AC940470E6D /* CapsuleOpenViewModel.swift */,
+				D58F3D8A46202A453F18201F /* CapsuleRowState.swift */,
+				D5591E8B5A048FBB1A76EAED /* CapsulesView.swift */,
+				815989F852AADFD5B458253D /* CapsulesViewModel.swift */,
+			);
+			path = Capsules;
+			sourceTree = "<group>";
+		};
 		BEF8862425EF08C0524194B2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +360,21 @@
 				D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C24498758A2A53948C9E701C /* Votes */ = {
+			isa = PBXGroup;
+			children = (
+				EF76C86257807AAD69B72CB2 /* VoteEditorView.swift */,
+				90ADE6250AAF49C178458519 /* VoteEditorViewModel.swift */,
+				C45DAC35304FFFC5AE7561FD /* VoteOutcome.swift */,
+				F522DFD0393BF9DC95BA41EB /* VotesView.swift */,
+				7CCFA0F6937648268B4472D3 /* VotesViewModel.swift */,
+				25890C139778DE0DE0DEFFC1 /* VoteTemplate.swift */,
+				21BB2145F66B815CA0F988EF /* VoteView.swift */,
+				2A42CBD2AC1CE681806A7BA2 /* VoteViewModel.swift */,
+			);
+			path = Votes;
 			sourceTree = "<group>";
 		};
 		CEDDF271B888211861AE0B30 /* Tasks */ = {
@@ -532,7 +614,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C59F6DDCD4B16344C672F04C /* CapsulesStateTests.swift in Sources */,
 				4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */,
+				520DDDC5055C292630F7FFA9 /* UsCountersTests.swift in Sources */,
+				8E7B44176C71BA64AF1D036E /* VotesOutcomeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,17 +629,36 @@
 				9A0FFEAD954472C768DE8497 /* AppEnvironment.swift in Sources */,
 				9E7891F0830411940526CDB1 /* AppState.swift in Sources */,
 				F3788058226B31D375C21949 /* CalendarView.swift in Sources */,
+				3CFA06639AC7CB620183CE09 /* CapsuleEditorView.swift in Sources */,
+				05AAAFEEE7B12F1C642656D9 /* CapsuleEditorViewModel.swift in Sources */,
+				FB92D9C170CD6863DBCDE75C /* CapsuleOpenView.swift in Sources */,
+				23351D35BCA2BB7EF9A75D2A /* CapsuleOpenViewModel.swift in Sources */,
+				5623C748E01979AABB93DCF9 /* CapsuleRowState.swift in Sources */,
+				700604132579DE21152879A5 /* CapsulesView.swift in Sources */,
+				A3D3C02D63C9D9AC75218159 /* CapsulesViewModel.swift in Sources */,
 				11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */,
+				0A30EAF8C59E43CE180FBE4E /* MemberPresentation.swift in Sources */,
 				DC2FFED1B16BABC452427F5E /* PaywallView.swift in Sources */,
+				BD48997F0DFD1A5E3AC328B6 /* PeopleEntryView.swift in Sources */,
 				F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */,
 				1C5C206503457A593AF48958 /* PlansView.swift in Sources */,
 				2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */,
 				5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */,
 				E32AF678642BF3322E2DDD5A /* Router.swift in Sources */,
 				3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */,
+				0193A7A738B8E4E9BAE5159E /* UsCounters.swift in Sources */,
 				BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */,
+				146D3FDF3A87222B48B778B3 /* UsHubViewModel.swift in Sources */,
 				6BEAC7E8D5C3D23B2E83641F /* UsPillToolbarItem.swift in Sources */,
 				24C9999E7AF39592DFC9850B /* UsView.swift in Sources */,
+				86FE2BE0CDA9CAB13B3FD429 /* VoteEditorView.swift in Sources */,
+				EE34A2475C01E01F51FCF82C /* VoteEditorViewModel.swift in Sources */,
+				1242532D0A2A8220761D6749 /* VoteOutcome.swift in Sources */,
+				CAFC2BD1594FFF013A51D795 /* VoteTemplate.swift in Sources */,
+				003F1190C0E1BACC4B8A07B1 /* VoteView.swift in Sources */,
+				C1C3710D9A7CCD510147BA4F /* VoteViewModel.swift in Sources */,
+				EF4BE0101EB95B3D32B66BB4 /* VotesView.swift in Sources */,
+				ED19D80A7495A443C9374642 /* VotesViewModel.swift in Sources */,
 				7D41F6D039348679B73D158E /* WishesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

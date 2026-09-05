@@ -9,8 +9,8 @@ import Testing
     @Test func modelHasEveryEntityFromTheSpec() {
         let expected: Set<String> = [
             "Space", "Member", "TaskItem", "Event", "EventComment", "Wish", "Plan",
-            "PlanExpense", "ChecklistList", "ListItem", "Capsule", "Vote", "VoteResponse",
-            "Person", "GiftIdea"
+            "PlanExpense", "ChecklistList", "ListItem", "Capsule", "CapsuleOpen", "Vote",
+            "VoteResponse", "Person", "GiftIdea"
         ]
         #expect(Set(model.entities.compactMap(\.name)) == expected)
     }
@@ -89,7 +89,8 @@ import Testing
             ("Plan", "expenses"),
             ("ChecklistList", "items"),
             ("Person", "giftIdeas"),
-            ("Vote", "responses")
+            ("Vote", "responses"),
+            ("Capsule", "opens")
         ]
         for (entityName, relationshipName) in owners {
             let entity = try #require(model.entitiesByName[entityName])
@@ -121,6 +122,16 @@ import Testing
         let response = try #require(model.entitiesByName["VoteResponse"])
         #expect(response.attributesByName["memberId"]?.attributeType == .UUIDAttributeType)
         #expect(vote.relationshipsByName["responses"]?.destinationEntity?.name == "VoteResponse")
+    }
+
+    @Test func capsuleReadersAreOneRecordPerMember() throws {
+        let capsule = try #require(model.entitiesByName["Capsule"])
+        #expect(capsule.attributesByName["openedByMemberIdsData"] == nil)
+        #expect(capsule.attributesByName["openedAt"] == nil)
+        let open = try #require(model.entitiesByName["CapsuleOpen"])
+        #expect(open.attributesByName["memberId"]?.attributeType == .UUIDAttributeType)
+        #expect(open.attributesByName["openedAt"]?.attributeType == .dateAttributeType)
+        #expect(capsule.relationshipsByName["opens"]?.destinationEntity?.name == "CapsuleOpen")
     }
 
     @Test func memberKeepsOnlyTheHashOfTheAppleIdentifier() throws {
