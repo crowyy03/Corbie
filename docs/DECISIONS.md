@@ -31,3 +31,13 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - The app is iPhone only: `TARGETED_DEVICE_FAMILY = 1` on the app, widget and share targets. The design is portrait-only and single column, and the Info.plist already declares portrait alone.
 - `CKSharingSupported` is in the app Info.plist and `AppDelegate.application(_:userDidAcceptCloudKitShareWith:)` calls `CloudKitSharing.acceptShare(metadata:)`, so an invitation link actually joins the space.
 - Each tab is a bare `NavigationStack` around its feature root; the feature view owns its title and toolbar and adds the pill with `.toolbar { UsPillToolbarItem() }`. The pill is the `CorbieCore` `UsPill` component, which already meets the 44pt tap target.
+
+## 2026-09-05 (module 07)
+
+- Big lists active and completed plans; archiving takes a plan out of the tab. There is no archive screen in v1, so archive is the way to put a finished plan away, and `corbie://plans/<id>` still opens it.
+- Plan money is shown in the plan currency, not in the space display currency. `targetAmount` and `savedAmount` are stored in the plan currency, so showing them in another currency would mean converting numbers the user typed at a rate that changes under them. A new plan defaults to the space currency, which is what makes the two agree in practice; only an expense in another currency is converted, once, at add time, with the rate kept on the expense.
+- The pinned Shopping list is created the first time the Plans tab loads and is not premium gated: it is the container the Shopping widget and its App Intent expect, not user content. It cannot be deleted from the list menu, only edited.
+- Ticking an item, reordering, clearing done and adding an expense all go through `PremiumGate`, as create or edit. Reading stays open, so a read only pair still sees every plan, list, item and place.
+- List and Map is one screen with two modes behind a toolbar button, not a second navigation destination. Reordering uses the system `EditButton` because a plain SwiftUI `List` only starts a drag in edit mode.
+- `AnalyticsEvent` gained `listItemChecked` and `listMapOpened` (`list_item_checked`, `list_map_opened`). They are deliberately absent from `AnalyticsEvent.allowedNames`, the server allowlist and architecture section 13; the server drops unknown names one by one, so the events are recorded and discarded until all four places are updated together.
+- Deleting a plan or a list is not in the module prompt but is the only way out of a mistyped one, so both sit behind a confirmation in the screen menu.

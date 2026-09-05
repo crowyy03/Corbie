@@ -7,37 +7,62 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		002D38956110375D58C69731 /* ListItemEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB28849699429E60C52770E /* ListItemEditorViewModel.swift */; };
+		07DF6E164AD735669B28264D /* ListItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CA0ACDB7026FA734A6FD29 /* ListItemRow.swift */; };
+		0A30EAF8C59E43CE180FBE4E /* MemberPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */; };
 		119BE71835686FAFB0F9885B /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */; };
 		11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D439758E7E6D75110C77131A /* CorbieApp.swift */; };
+		1703CEFCE12E9CFBEAE6FA3F /* PlanDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC98FC8D1418B7367CF3385B /* PlanDetailViewModel.swift */; };
+		1954D6770E8FA9D1BC0C3F2F /* ExpenseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64696C8CF2795812D6DAA940 /* ExpenseEditorView.swift */; };
 		1A3BB94EFB5F1AE56AC2B48D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */; };
 		1C5C206503457A593AF48958 /* PlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */; };
 		223BC84E1DB2B99845AEFB2B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */; };
 		24C9999E7AF39592DFC9850B /* UsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F3366F97984A781DC3953 /* UsView.swift */; };
+		2640467FBA1CFB54A2614900 /* ListItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CB0933D87B2E5A4777535 /* ListItemEditorView.swift */; };
 		348435E9BB1F704E88F9B5B8 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9FDF78C8AFE2EB5AA5274C43 /* CorbieCore */; };
 		35CFA4A8EB05DEFD286CECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4EAF790494EF27B38A13 /* TasksView.swift */; };
+		3EDDBB6697B796AA408F6B59 /* PlansFormControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09013D496480F18D7830B2F /* PlansFormControls.swift */; };
+		432ACDD5E01AB268CBF18C90 /* PlanExpenseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E6DC7785460F0A58A97FA7 /* PlanExpenseRow.swift */; };
+		4640571DAB0A58DE3AB04723 /* PlanCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3863ACFA199900BD05B72D19 /* PlanCard.swift */; };
 		46A1998D55C4137CB0C56BA7 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 053C7B83569FB8EA59BC28EF /* CorbieCore */; };
 		4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */; };
+		4EB1C83269BF18FC7AFB17AD /* ListDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F105E60B8F926F7834BD12 /* ListDetailViewModel.swift */; };
 		5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADECE3D6ABD0A50F325ECA /* RootView.swift */; };
 		6B4C7D23BA1928AB78E937AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */; };
 		6BEAC7E8D5C3D23B2E83641F /* UsPillToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */; };
 		735797CD81CBFC9E1A6B8874 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE157E918D961E9899DE32D /* LaunchUITests.swift */; };
 		738EE314D5EFC041C2EDF6E2 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAF52F19A383AEDFE0ECB2BC /* CorbieCore */; };
+		773BBF0A1A02F74540CE823F /* ListEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27D346F65F0C54156E33A9D /* ListEditorViewModel.swift */; };
 		792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */; };
 		7D41F6D039348679B73D158E /* WishesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398541694197694D6538882 /* WishesView.swift */; };
+		8664B320CF318C2BF33F2246 /* ListEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED0B9794D56DFCB896B1858 /* ListEditorView.swift */; };
+		87B611230BA1487DC4648104 /* PlansPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA38F2722989029C28F75E3B /* PlansPresentation.swift */; };
+		90379F44A96C671A4913DD2D /* ListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A2E5EDAD4EDC91BA498D3E /* ListDetailView.swift */; };
+		92E4F42DAA0F369AFC333119 /* PlaceSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8BB7B8CBC1A8AF3BA5C42C /* PlaceSearchViewModel.swift */; };
 		9A0FFEAD954472C768DE8497 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */; };
 		9E7891F0830411940526CDB1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53715C4B0BEE41A246CA135 /* AppState.swift */; };
+		9F154E6E1C36EA96076AC1F3 /* PlanSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1D6A0D0765F5689804FF9B /* PlanSummaryCard.swift */; };
+		B4B7513B620D0E5E0A33FAAE /* PlansPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B310FDE0142B17C029F56392 /* PlansPresentationTests.swift */; };
+		B660D036BEE72A1DD5240366 /* ChecklistCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2904ABEA4475A26774945E1E /* ChecklistCard.swift */; };
+		BD30F170F3497B0F0CF53A2D /* PlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB008C35C03BDE5D6FE088E /* PlaceSearchView.swift */; };
 		BE9E2253E46F0C5D2650B635 /* CorbieWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */; };
+		C2C842904C0B16A161661339 /* PlanEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F47BAD105D166E629CF0F /* PlanEditorViewModel.swift */; };
 		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
 		DC2FFED1B16BABC452427F5E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BC345B3464E4B2B019D6B1 /* PaywallView.swift */; };
 		E32AF678642BF3322E2DDD5A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36368046A5FAB01754781EFA /* Router.swift */; };
+		E57440C9A06757548B8CB3F1 /* ListMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6763F106517FD86B72D462BE /* ListMapView.swift */; };
+		E7FCACA4C27DBF8F77CFE218 /* ExpenseEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C9CE3648CACAEF49793FA /* ExpenseEditorViewModel.swift */; };
 		E802BA38F4C6F2C5E0A66A0A /* CorbieShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		ED6F2FFEA5598A686F220983 /* AddToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8965137EA487DC01422332 /* AddToolbarItem.swift */; };
+		F03C8C4851A2B6E4BFC3D595 /* PlanEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F79F6BE474A059239E29520 /* PlanEditorView.swift */; };
 		F3788058226B31D375C21949 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4516E0BF27017473DA4A6841 /* CalendarView.swift */; };
 		F6F4386491A47704FD8B745E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */; };
+		FF4FE31BC71C3AA3672F4DB6 /* PlanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8246A4A5E4B91B382124968D /* PlanDetailView.swift */; };
+		FF8FA0BEFECDC3CDF42E032D /* PlansViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A2ADF817AB32422E33C86 /* PlansViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,35 +114,60 @@
 /* Begin PBXFileReference section */
 		1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		27FA4EAF790494EF27B38A13 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
+		2904ABEA4475A26774945E1E /* ChecklistCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistCard.swift; sourceTree = "<group>"; };
+		2BB008C35C03BDE5D6FE088E /* PlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchView.swift; sourceTree = "<group>"; };
 		2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
 		36368046A5FAB01754781EFA /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		3863ACFA199900BD05B72D19 /* PlanCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCard.swift; sourceTree = "<group>"; };
+		3A8BB7B8CBC1A8AF3BA5C42C /* PlaceSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchViewModel.swift; sourceTree = "<group>"; };
 		3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4516E0BF27017473DA4A6841 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		490CB0933D87B2E5A4777535 /* ListItemEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemEditorView.swift; sourceTree = "<group>"; };
 		4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieWidgetsBundle.swift; sourceTree = "<group>"; };
 		4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		55A2E5EDAD4EDC91BA498D3E /* ListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailView.swift; sourceTree = "<group>"; };
 		5BD088A33E2CAFF8EEB22704 /* CorbieTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CorbieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		64696C8CF2795812D6DAA940 /* ExpenseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditorView.swift; sourceTree = "<group>"; };
+		6763F106517FD86B72D462BE /* ListMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMapView.swift; sourceTree = "<group>"; };
+		6AB28849699429E60C52770E /* ListItemEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemEditorViewModel.swift; sourceTree = "<group>"; };
 		6BEF587FBFA4C383CF2615FA /* Corbie.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Corbie.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6ED0B9794D56DFCB896B1858 /* ListEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEditorView.swift; sourceTree = "<group>"; };
 		7398541694197694D6538882 /* WishesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishesView.swift; sourceTree = "<group>"; };
 		73C687DE0F2DB876101A9EA7 /* CorbieUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CorbieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		74E6DC7785460F0A58A97FA7 /* PlanExpenseRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanExpenseRow.swift; sourceTree = "<group>"; };
 		764D28944098863C4197B098 /* CorbieCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CorbieCore; path = Packages/CorbieCore; sourceTree = SOURCE_ROOT; };
 		76B17794417FDD3F3E7B2AA1 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
+		7A4A2ADF817AB32422E33C86 /* PlansViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansViewModel.swift; sourceTree = "<group>"; };
 		7AD1279BBDD45CD8EF636282 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
+		7F79F6BE474A059239E29520 /* PlanEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanEditorView.swift; sourceTree = "<group>"; };
+		8246A4A5E4B91B382124968D /* PlanDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailView.swift; sourceTree = "<group>"; };
 		83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberPresentation.swift; sourceTree = "<group>"; };
 		88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
 		8F8965137EA487DC01422332 /* AddToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToolbarItem.swift; sourceTree = "<group>"; };
+		9F1D6A0D0765F5689804FF9B /* PlanSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSummaryCard.swift; sourceTree = "<group>"; };
+		A17C9CE3648CACAEF49793FA /* ExpenseEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditorViewModel.swift; sourceTree = "<group>"; };
 		A53715C4B0BEE41A246CA135 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		ADE157E918D961E9899DE32D /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
 		AEADECE3D6ABD0A50F325ECA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B310FDE0142B17C029F56392 /* PlansPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansPresentationTests.swift; sourceTree = "<group>"; };
 		B8BC345B3464E4B2B019D6B1 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		C5958CC8757BF6F56C4338EC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansView.swift; sourceTree = "<group>"; };
+		C9F105E60B8F926F7834BD12 /* ListDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailViewModel.swift; sourceTree = "<group>"; };
+		CC98FC8D1418B7367CF3385B /* PlanDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewModel.swift; sourceTree = "<group>"; };
+		D09013D496480F18D7830B2F /* PlansFormControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansFormControls.swift; sourceTree = "<group>"; };
+		D27D346F65F0C54156E33A9D /* ListEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEditorViewModel.swift; sourceTree = "<group>"; };
 		D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsPillToolbarItem.swift; sourceTree = "<group>"; };
 		D439758E7E6D75110C77131A /* CorbieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieApp.swift; sourceTree = "<group>"; };
 		D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D86F47BAD105D166E629CF0F /* PlanEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanEditorViewModel.swift; sourceTree = "<group>"; };
 		DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSupport.swift; sourceTree = "<group>"; };
 		F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubView.swift; sourceTree = "<group>"; };
+		F7CA0ACDB7026FA734A6FD29 /* ListItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemRow.swift; sourceTree = "<group>"; };
+		FA38F2722989029C28F75E3B /* PlansPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansPresentation.swift; sourceTree = "<group>"; };
 		FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FC4F3366F97984A781DC3953 /* UsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,7 +205,20 @@
 		0900B2BD9B49CC81C3780556 /* Plans */ = {
 			isa = PBXGroup;
 			children = (
+				4ECE8EF653380DBF4BF95EE0 /* Lists */,
+				64696C8CF2795812D6DAA940 /* ExpenseEditorView.swift */,
+				A17C9CE3648CACAEF49793FA /* ExpenseEditorViewModel.swift */,
+				3863ACFA199900BD05B72D19 /* PlanCard.swift */,
+				8246A4A5E4B91B382124968D /* PlanDetailView.swift */,
+				CC98FC8D1418B7367CF3385B /* PlanDetailViewModel.swift */,
+				7F79F6BE474A059239E29520 /* PlanEditorView.swift */,
+				D86F47BAD105D166E629CF0F /* PlanEditorViewModel.swift */,
+				74E6DC7785460F0A58A97FA7 /* PlanExpenseRow.swift */,
+				D09013D496480F18D7830B2F /* PlansFormControls.swift */,
+				FA38F2722989029C28F75E3B /* PlansPresentation.swift */,
+				9F1D6A0D0765F5689804FF9B /* PlanSummaryCard.swift */,
 				C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */,
+				7A4A2ADF817AB32422E33C86 /* PlansViewModel.swift */,
 			);
 			path = Plans;
 			sourceTree = "<group>";
@@ -180,6 +243,24 @@
 				EE37F02626653CC6C37A7CF8 /* Wishes */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		4ECE8EF653380DBF4BF95EE0 /* Lists */ = {
+			isa = PBXGroup;
+			children = (
+				2904ABEA4475A26774945E1E /* ChecklistCard.swift */,
+				55A2E5EDAD4EDC91BA498D3E /* ListDetailView.swift */,
+				C9F105E60B8F926F7834BD12 /* ListDetailViewModel.swift */,
+				6ED0B9794D56DFCB896B1858 /* ListEditorView.swift */,
+				D27D346F65F0C54156E33A9D /* ListEditorViewModel.swift */,
+				490CB0933D87B2E5A4777535 /* ListItemEditorView.swift */,
+				6AB28849699429E60C52770E /* ListItemEditorViewModel.swift */,
+				F7CA0ACDB7026FA734A6FD29 /* ListItemRow.swift */,
+				6763F106517FD86B72D462BE /* ListMapView.swift */,
+				2BB008C35C03BDE5D6FE088E /* PlaceSearchView.swift */,
+				3A8BB7B8CBC1A8AF3BA5C42C /* PlaceSearchViewModel.swift */,
+			);
+			path = Lists;
 			sourceTree = "<group>";
 		};
 		4FF8A4B61CD8905061F6C15D /* CorbieUITests */ = {
@@ -228,6 +309,7 @@
 		80EBF8A26B578EFBF35FA92A /* CorbieTests */ = {
 			isa = PBXGroup;
 			children = (
+				B310FDE0142B17C029F56392 /* PlansPresentationTests.swift */,
 				2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */,
 			);
 			path = CorbieTests;
@@ -237,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				8F8965137EA487DC01422332 /* AddToolbarItem.swift */,
+				87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */,
 				88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */,
 				D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */,
 			);
@@ -532,6 +615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4B7513B620D0E5E0A33FAAE /* PlansPresentationTests.swift in Sources */,
 				4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -544,10 +628,34 @@
 				9A0FFEAD954472C768DE8497 /* AppEnvironment.swift in Sources */,
 				9E7891F0830411940526CDB1 /* AppState.swift in Sources */,
 				F3788058226B31D375C21949 /* CalendarView.swift in Sources */,
+				B660D036BEE72A1DD5240366 /* ChecklistCard.swift in Sources */,
 				11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */,
+				1954D6770E8FA9D1BC0C3F2F /* ExpenseEditorView.swift in Sources */,
+				E7FCACA4C27DBF8F77CFE218 /* ExpenseEditorViewModel.swift in Sources */,
+				90379F44A96C671A4913DD2D /* ListDetailView.swift in Sources */,
+				4EB1C83269BF18FC7AFB17AD /* ListDetailViewModel.swift in Sources */,
+				8664B320CF318C2BF33F2246 /* ListEditorView.swift in Sources */,
+				773BBF0A1A02F74540CE823F /* ListEditorViewModel.swift in Sources */,
+				2640467FBA1CFB54A2614900 /* ListItemEditorView.swift in Sources */,
+				002D38956110375D58C69731 /* ListItemEditorViewModel.swift in Sources */,
+				07DF6E164AD735669B28264D /* ListItemRow.swift in Sources */,
+				E57440C9A06757548B8CB3F1 /* ListMapView.swift in Sources */,
+				0A30EAF8C59E43CE180FBE4E /* MemberPresentation.swift in Sources */,
 				DC2FFED1B16BABC452427F5E /* PaywallView.swift in Sources */,
+				BD30F170F3497B0F0CF53A2D /* PlaceSearchView.swift in Sources */,
+				92E4F42DAA0F369AFC333119 /* PlaceSearchViewModel.swift in Sources */,
 				F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */,
+				4640571DAB0A58DE3AB04723 /* PlanCard.swift in Sources */,
+				FF4FE31BC71C3AA3672F4DB6 /* PlanDetailView.swift in Sources */,
+				1703CEFCE12E9CFBEAE6FA3F /* PlanDetailViewModel.swift in Sources */,
+				F03C8C4851A2B6E4BFC3D595 /* PlanEditorView.swift in Sources */,
+				C2C842904C0B16A161661339 /* PlanEditorViewModel.swift in Sources */,
+				432ACDD5E01AB268CBF18C90 /* PlanExpenseRow.swift in Sources */,
+				9F154E6E1C36EA96076AC1F3 /* PlanSummaryCard.swift in Sources */,
+				3EDDBB6697B796AA408F6B59 /* PlansFormControls.swift in Sources */,
+				87B611230BA1487DC4648104 /* PlansPresentation.swift in Sources */,
 				1C5C206503457A593AF48958 /* PlansView.swift in Sources */,
+				FF8FA0BEFECDC3CDF42E032D /* PlansViewModel.swift in Sources */,
 				2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */,
 				5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */,
 				E32AF678642BF3322E2DDD5A /* Router.swift in Sources */,
