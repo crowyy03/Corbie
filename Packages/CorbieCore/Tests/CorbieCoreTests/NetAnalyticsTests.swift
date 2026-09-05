@@ -14,6 +14,7 @@ import Testing
         .taskDone,
         .eventCreated(kind: .birthday),
         .wishCreated(source: .amazon),
+        .wishFulfilled,
         .planCreated(type: .trip),
         .expenseAdded,
         .listCreated(template: .shopping),

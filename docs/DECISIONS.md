@@ -31,3 +31,13 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - The app is iPhone only: `TARGETED_DEVICE_FAMILY = 1` on the app, widget and share targets. The design is portrait-only and single column, and the Info.plist already declares portrait alone.
 - `CKSharingSupported` is in the app Info.plist and `AppDelegate.application(_:userDidAcceptCloudKitShareWith:)` calls `CloudKitSharing.acceptShare(metadata:)`, so an invitation link actually joins the space.
 - Each tab is a bare `NavigationStack` around its feature root; the feature view owns its title and toolbar and adds the pill with `.toolbar { UsPillToolbarItem() }`. The pill is the `CorbieCore` `UsPill` component, which already meets the 44pt tap target.
+
+## 2026-09-05 (module 06, wishes and share extension)
+
+- The wishes list is a plain `List` with card rows instead of a `ScrollView` of cards: "Mark as gifted" and "Delete" are swipe actions, and iOS 17 has no swipe API outside a list. Rows keep the card look through `listRowBackground(.clear)` and hidden separators.
+- Deleting a wish sits next to "Mark as gifted". The spec names only gifting, but a wrong link has to be removable and gifting would park it in "Fulfilled" forever. Both partners can delete, like every other object in the space.
+- The "≈" figure renders from the FX table already cached in the App Group (`FXService.cachedRates`), one table per source currency, and only then refreshes in the background. The list never waits for the network and never shows a spinner for a price.
+- `needsParse` is stored for every wish saved with a link that has not parsed yet: the offline share, a parse timeout, or manual entry with a link. `WishesView` retries at most five of them per appearance while the network path is satisfied and never retries the same wish twice in one session.
+- The share extension cannot show a paywall, so it reads the entitlement the app cached (`EntitlementService.cachedState`: keychain entitlement plus `Space.trialEndsAt`) and, when the trial is over, shows one line asking to open Corbie instead of a save button.
+- `AnalyticsEvent.wishFulfilled` ("wish_fulfilled") was added to CorbieCore because the module prompt names the event. The server allowlist (`server/supabase/functions/_shared/events.ts`) and its test still reject the name and need the same addition.
+- Source tags on cards are brand names (Amazon, Etsy, TikTok) and stay untranslated. `store` falls back to the link host, `manual` shows nothing.
