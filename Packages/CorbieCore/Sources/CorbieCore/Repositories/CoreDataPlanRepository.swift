@@ -19,6 +19,7 @@ public struct CoreDataPlanRepository: PlanRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let plan = Plan(context: context)
+            context.assign(plan, toStoreOf: space)
             plan.space = space
             plan.title = title
             plan.type = draft.type
@@ -95,6 +96,7 @@ public struct CoreDataPlanRepository: PlanRepository {
         return try await access.write { context in
             let plan: Plan = try ManagedFetch.require(Plan.entityName, id: planId, in: context)
             let expense = PlanExpense(context: context)
+            context.assign(expense, toStoreOf: plan)
             expense.plan = plan
             expense.amount = draft.amount
             expense.currency = draft.currency

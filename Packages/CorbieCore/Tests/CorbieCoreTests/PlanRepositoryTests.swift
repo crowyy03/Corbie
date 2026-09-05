@@ -38,7 +38,7 @@ import Testing
         let stored = try #require(try await repository.plan(id: plan.id))
         #expect(stored.savedAmount == 2400)
         #expect(stored.spentAmount == 1750)
-        #expect(stored.leftAmount == 3250)
+        #expect(stored.leftAmount == 2600)
         #expect(stored.isOverspent == false)
         #expect(stored.expenseCount == 2)
     }

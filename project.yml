@@ -45,6 +45,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.corbie
         PRODUCT_NAME: Corbie
+        TARGETED_DEVICE_FAMILY: "1"
         CODE_SIGN_ENTITLEMENTS: Configs/Corbie.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
@@ -55,6 +56,7 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         ITSAppUsesNonExemptEncryption: false
+        CKSharingSupported: true
         UILaunchScreen: {}
         UIBackgroundModes:
           - remote-notification
@@ -87,6 +89,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.corbie.widgets
         PRODUCT_NAME: CorbieWidgets
+        TARGETED_DEVICE_FAMILY: "1"
         CODE_SIGN_ENTITLEMENTS: Configs/CorbieWidgets.entitlements
     info:
       path: Configs/CorbieWidgets-Info.plist
@@ -110,6 +113,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.corbie.share
         PRODUCT_NAME: CorbieShare
+        TARGETED_DEVICE_FAMILY: "1"
         CODE_SIGN_ENTITLEMENTS: Configs/CorbieShare.entitlements
     info:
       path: Configs/CorbieShare-Info.plist

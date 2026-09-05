@@ -9,7 +9,8 @@ import Testing
     @Test func modelHasEveryEntityFromTheSpec() {
         let expected: Set<String> = [
             "Space", "Member", "TaskItem", "Event", "EventComment", "Wish", "Plan",
-            "PlanExpense", "ChecklistList", "ListItem", "Capsule", "Vote", "Person", "GiftIdea"
+            "PlanExpense", "ChecklistList", "ListItem", "Capsule", "Vote", "VoteResponse",
+            "Person", "GiftIdea"
         ]
         #expect(Set(model.entities.compactMap(\.name)) == expected)
     }
@@ -87,7 +88,8 @@ import Testing
             ("Event", "comments"),
             ("Plan", "expenses"),
             ("ChecklistList", "items"),
-            ("Person", "giftIdeas")
+            ("Person", "giftIdeas"),
+            ("Vote", "responses")
         ]
         for (entityName, relationshipName) in owners {
             let entity = try #require(model.entitiesByName[entityName])
@@ -105,12 +107,26 @@ import Testing
     }
 
     @Test func jsonBackedAttributesAreBinary() throws {
-        let pairs = [("Vote", "responsesData"), ("Member", "notificationPrefsData")]
+        let pairs = [("VoteResponse", "optionIndexesData"), ("Member", "notificationPrefsData")]
         for (entityName, attributeName) in pairs {
             let entity = try #require(model.entitiesByName[entityName])
             let attribute = try #require(entity.attributesByName[attributeName])
             #expect(attribute.attributeType == .binaryDataAttributeType)
         }
+    }
+
+    @Test func voteAnswersAreOneRecordPerMember() throws {
+        let vote = try #require(model.entitiesByName["Vote"])
+        #expect(vote.attributesByName["responsesData"] == nil)
+        let response = try #require(model.entitiesByName["VoteResponse"])
+        #expect(response.attributesByName["memberId"]?.attributeType == .UUIDAttributeType)
+        #expect(vote.relationshipsByName["responses"]?.destinationEntity?.name == "VoteResponse")
+    }
+
+    @Test func memberKeepsOnlyTheHashOfTheAppleIdentifier() throws {
+        let member = try #require(model.entitiesByName["Member"])
+        #expect(member.attributesByName["appleUserId"] == nil)
+        #expect(member.attributesByName["appleUserHash"]?.attributeType == .stringAttributeType)
     }
 
     @Test func recurrenceIsStoredAsString() throws {

@@ -16,6 +16,7 @@ public struct CoreDataTaskRepository: TaskRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let task = TaskItem(context: context)
+            context.assign(task, toStoreOf: space)
             task.space = space
             task.title = title
             task.note = draft.note
@@ -64,9 +65,11 @@ public struct CoreDataTaskRepository: TaskRepository {
             task.isDone = true
             task.doneByMemberId = memberId
             task.doneAt = date
-            let base = task.dueAt ?? date
-            let next = task.recurrence.repeats ? task.recurrence.nextDate(after: base) : nil
-            return TaskCompletion(task: TaskDTO(task), nextOccurrenceDueAt: next)
+            let dto = TaskDTO(task)
+            return TaskCompletion(
+                task: dto,
+                nextOccurrenceDueAt: RecurrenceEngine.nextOccurrence(for: dto, completedAt: date)
+            )
         }
     }
 
@@ -74,6 +77,7 @@ public struct CoreDataTaskRepository: TaskRepository {
         try await access.write { context in
             let source: TaskItem = try ManagedFetch.require(TaskItem.entityName, id: taskId, in: context)
             let next = TaskItem(context: context)
+            context.assign(next, toStoreOf: source)
             next.space = source.space
             next.title = source.title
             next.note = source.note
@@ -98,25 +102,20 @@ public struct CoreDataTaskRepository: TaskRepository {
             let tasks: [TaskItem] = try ManagedFetch.all(
                 TaskItem.entityName,
                 predicate: CoreDataTaskRepository.predicate(for: query),
-                sort: [
-                    NSSortDescriptor(key: "dueAt", ascending: true),
-                    NSSortDescriptor(key: "createdAt", ascending: true)
-                ],
+                sort: [NSSortDescriptor(key: "createdAt", ascending: true)],
                 in: context
             )
-            return tasks.map(TaskDTO.init)
+            return tasks.map(TaskDTO.init).sorted(by: CoreDataTaskRepository.dueDateOrder)
         }
     }
 
-    public func counts(spaceId: UUID, memberId: UUID?) async throws -> TaskCounts {
+    public func counts(spaceId: UUID, memberId: UUID?, partnerId: UUID?) async throws -> TaskCounts {
         let open = try await tasks(TaskQuery(spaceId: spaceId))
-        let mine = memberId.map { id in open.filter { $0.assigneeMemberId == id }.count } ?? 0
-        let free = open.filter(\.isFree).count
         return TaskCounts(
             all: open.count,
-            mine: mine,
-            partner: open.count - mine - free,
-            free: free
+            mine: memberId.map { id in open.filter { $0.assigneeMemberId == id }.count } ?? 0,
+            partner: partnerId.map { id in open.filter { $0.assigneeMemberId == id }.count } ?? 0,
+            free: open.filter(\.isFree).count
         )
     }
 
@@ -125,6 +124,13 @@ public struct CoreDataTaskRepository: TaskRepository {
             guard let task: TaskItem = try ManagedFetch.first(TaskItem.entityName, id: id, in: context) else { return }
             context.delete(task)
         }
+    }
+
+    private static func dueDateOrder(_ lhs: TaskDTO, _ rhs: TaskDTO) -> Bool {
+        let left = lhs.dueAt ?? .distantFuture
+        let right = rhs.dueAt ?? .distantFuture
+        if left != right { return left < right }
+        return (lhs.createdAt ?? .distantPast) < (rhs.createdAt ?? .distantPast)
     }
 
     private static func predicate(for query: TaskQuery) -> NSPredicate {

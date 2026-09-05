@@ -62,7 +62,7 @@ public protocol ListRepository: Sendable {
     func list(id: UUID) async throws -> ChecklistListDTO?
     func lists(spaceId: UUID) async throws -> [ChecklistListDTO]
     func delete(id: UUID) async throws
-    func pinnedShoppingList(spaceId: UUID, createdByMemberId: UUID?) async throws -> ChecklistListDTO
+    func pinnedShoppingList(spaceId: UUID, title: String, createdByMemberId: UUID?) async throws -> ChecklistListDTO
     func addItem(listId: UUID, draft: ListItemDraft) async throws -> ListItemDTO
     func updateItem(_ item: ListItemDTO) async throws -> ListItemDTO
     func toggleItem(itemId: UUID, memberId: UUID?, at date: Date) async throws -> ListItemDTO
@@ -77,7 +77,7 @@ extension ListRepository {
         try await toggleItem(itemId: itemId, memberId: memberId, at: Date())
     }
 
-    public func pinnedShoppingList(spaceId: UUID) async throws -> ChecklistListDTO {
-        try await pinnedShoppingList(spaceId: spaceId, createdByMemberId: nil)
+    public func pinnedShoppingList(spaceId: UUID, title: String) async throws -> ChecklistListDTO {
+        try await pinnedShoppingList(spaceId: spaceId, title: title, createdByMemberId: nil)
     }
 }

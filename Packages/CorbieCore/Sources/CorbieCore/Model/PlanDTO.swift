@@ -72,7 +72,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
         )
     }
 
-    public var leftAmount: Double { targetAmount - spentAmount }
+    public var leftAmount: Double { max(0, targetAmount - savedAmount) }
 
     public var isOverspent: Bool { spentAmount > targetAmount }
 

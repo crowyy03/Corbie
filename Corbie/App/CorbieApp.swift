@@ -1,4 +1,6 @@
 import CloudKit
+import CorbieCore
+import os
 import SwiftUI
 import UIKit
 
@@ -25,6 +27,8 @@ struct CorbieApp: App {
 
 @MainActor
 final class AppDelegate: NSObject, UIApplicationDelegate {
+    private let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "sharing")
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
@@ -44,5 +48,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata
     ) {
+        let sharing = CloudKitSharing(stack: PersistenceController.shared.stack)
+        Task {
+            do {
+                try await sharing.acceptShare(metadata: cloudKitShareMetadata)
+                WidgetReloadRequest.post()
+            } catch {
+                log.error("accepting the share failed: \(error.localizedDescription, privacy: .public)")
+            }
+        }
     }
 }

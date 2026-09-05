@@ -398,7 +398,8 @@ public struct WidgetDataProvider: Sendable {
     private func resolveViewerId(members: [MemberDTO]) -> UUID? {
         if let viewerMemberIdOverride { return viewerMemberIdOverride }
         guard let appleUserId = identity.currentAppleUserID else { return members.first?.id }
-        return members.first { $0.appleUserId == appleUserId }?.id ?? members.first?.id
+        let hash = AppleUserHash.value(appleUserId)
+        return members.first { $0.appleUserHash == hash }?.id ?? members.first?.id
     }
 
     private func openTasks(spaceId: UUID) async throws -> [TaskDTO] {

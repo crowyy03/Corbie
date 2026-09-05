@@ -6,9 +6,18 @@ struct PlansView: View {
             title: String(localized: "plans.placeholder.title"),
             note: String(localized: "plans.placeholder.note")
         )
+        .navigationTitle(String(localized: "tab.plans.title"))
+        .toolbar {
+            AddToolbarItem {
+            }
+            UsPillToolbarItem()
+        }
     }
 }
 
 #Preview {
-    PlansView()
+    NavigationStack {
+        PlansView()
+    }
+    .environment(AppState())
 }

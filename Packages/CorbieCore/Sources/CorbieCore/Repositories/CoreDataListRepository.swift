@@ -16,6 +16,7 @@ public struct CoreDataListRepository: ListRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let list = ChecklistList(context: context)
+            context.assign(list, toStoreOf: space)
             list.space = space
             list.title = title
             list.subtitle = draft.subtitle
@@ -68,8 +69,16 @@ public struct CoreDataListRepository: ListRepository {
         }
     }
 
-    public func pinnedShoppingList(spaceId: UUID, createdByMemberId: UUID?) async throws -> ChecklistListDTO {
-        try await access.write { context in
+    public func pinnedShoppingList(
+        spaceId: UUID,
+        title: String,
+        createdByMemberId: UUID?
+    ) async throws -> ChecklistListDTO {
+        let name = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard name.isEmpty == false else {
+            throw CorbieError.invalidInput("list title is empty")
+        }
+        return try await access.write { context in
             let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 ManagedFetch.spaceRelation(spaceId),
                 NSPredicate(format: "isPinnedShopping == YES")
@@ -85,8 +94,9 @@ public struct CoreDataListRepository: ListRepository {
             }
             let space: Space = try ManagedFetch.require(Space.entityName, id: spaceId, in: context)
             let list = ChecklistList(context: context)
+            context.assign(list, toStoreOf: space)
             list.space = space
-            list.title = String(localized: "lists.shopping.title")
+            list.title = name
             list.template = .shopping
             list.isPinnedShopping = true
             list.anyoneCanCheck = true
@@ -104,6 +114,7 @@ public struct CoreDataListRepository: ListRepository {
             let list: ChecklistList = try ManagedFetch.require(ChecklistList.entityName, id: listId, in: context)
             let nextIndex = (list.items.map(\.sortIndex).max() ?? -1) + 1
             let item = ListItem(context: context)
+            context.assign(item, toStoreOf: list)
             item.list = list
             item.title = title
             item.note = draft.note
@@ -134,11 +145,11 @@ public struct CoreDataListRepository: ListRepository {
     public func toggleItem(itemId: UUID, memberId: UUID?, at date: Date) async throws -> ListItemDTO {
         try await access.write { context in
             let item: ListItem = try ManagedFetch.require(ListItem.entityName, id: itemId, in: context)
-            if item.list?.anyoneCanCheck == false,
-               let addedBy = item.addedByMemberId,
-               let memberId,
-               addedBy != memberId {
-                throw CorbieError.invalidInput("only the author can tick items in this list")
+            if item.list?.anyoneCanCheck == false {
+                let author = item.addedByMemberId ?? item.list?.createdByMemberId
+                guard let memberId, let author, memberId == author else {
+                    throw CorbieError.invalidInput("only the author can tick items in this list")
+                }
             }
             item.isChecked.toggle()
             item.checkedByMemberId = item.isChecked ? memberId : nil

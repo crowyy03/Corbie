@@ -349,7 +349,7 @@ public enum PreviewSeed {
         me: MemberDTO,
         partner: MemberDTO
     ) async throws -> ChecklistListDTO {
-        let list = try await repositories.lists.pinnedShoppingList(spaceId: spaceId, createdByMemberId: me.id)
+        let list = try await repositories.lists.pinnedShoppingList(spaceId: spaceId, title: "Shopping", createdByMemberId: me.id)
         for title in ["Milk", "Coffee", "Sourdough"] {
             _ = try await repositories.lists.addItem(
                 listId: list.id,

@@ -1,3 +1,4 @@
+import CoreData
 import Foundation
 import Testing
 @testable import CorbieCore
@@ -31,7 +32,7 @@ import Testing
         #expect(afterPartner.matchingOptions == [0])
     }
 
-    @Test func withoutTheGateTheAnswerRevealsImmediately() async throws {
+    @Test func withoutTheGateAnsweringUnlocksResultsOnlyForTheAnswerer() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.votes
         let vote = try await repository.create(
@@ -43,8 +44,63 @@ import Testing
             )
         )
         let answered = try await repository.respond(voteId: vote.id, memberId: world.me.id, optionIndexes: [1])
-        #expect(answered.isRevealed)
+        #expect(answered.isRevealed == false)
         #expect(answered.canSeeResults(as: world.me.id))
+        #expect(answered.canSeeResults(as: world.partner.id) == false)
+    }
+
+    @Test func aRevealedVoteStillHidesResultsFromWhoeverHasNotAnswered() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.votes
+        let vote = try await repository.create(
+            VoteDraft(spaceId: world.space.id, question: "Film", options: ["Dune", "Arrival"])
+        )
+        _ = try await repository.respond(voteId: vote.id, memberId: world.me.id, optionIndexes: [0])
+        let revealed = try await repository.reveal(voteId: vote.id)
+        #expect(revealed.isRevealed)
+        #expect(revealed.canSeeResults(as: world.me.id))
+        #expect(revealed.canSeeResults(as: world.partner.id) == false)
+    }
+
+    @Test func twoContextsEachRecordTheirOwnAnswer() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.votes
+        let vote = try await repository.create(
+            VoteDraft(spaceId: world.space.id, question: "Where to eat", options: ["Ramen", "Pasta"])
+        )
+        let mine = isolatedContext(in: world)
+        let theirs = isolatedContext(in: world)
+        try load(voteId: vote.id, in: mine)
+        try load(voteId: vote.id, in: theirs)
+        try answer(voteId: vote.id, memberId: world.me.id, choice: 0, in: mine)
+        try answer(voteId: vote.id, memberId: world.partner.id, choice: 1, in: theirs)
+
+        let stored = try #require(try await repository.vote(id: vote.id))
+        #expect(stored.responses[world.me.id] == [0])
+        #expect(stored.responses[world.partner.id] == [1])
+    }
+
+    private func isolatedContext(in world: TestWorld) -> NSManagedObjectContext {
+        let context = world.controller.stack.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = false
+        return context
+    }
+
+    private func load(voteId: UUID, in context: NSManagedObjectContext) throws {
+        try context.performAndWait {
+            _ = try ManagedFetch.require(Vote.entityName, id: voteId, in: context) as Vote
+        }
+    }
+
+    private func answer(voteId: UUID, memberId: UUID, choice: Int, in context: NSManagedObjectContext) throws {
+        try context.performAndWait {
+            let vote: Vote = try ManagedFetch.require(Vote.entityName, id: voteId, in: context)
+            let answer = VoteResponse(context: context)
+            answer.vote = vote
+            answer.memberId = memberId
+            answer.optionIndexes = [choice]
+            try context.save()
+        }
     }
 
     @Test func multiModeKeepsOnlyTheIntersection() async throws {

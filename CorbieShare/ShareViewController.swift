@@ -39,17 +39,22 @@ final class ShareViewController: UIViewController {
     }
 
     private func loadAttachment() {
-        guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
-              let provider = extensionItem.attachments?.first else { return }
+        let providers = (extensionContext?.inputItems as? [NSExtensionItem] ?? [])
+            .flatMap { $0.attachments ?? [] }
 
-        if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
+        if let provider = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.url.identifier) }) {
             provider.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { item, _ in
                 let url = item as? URL
                 Task { @MainActor [weak self] in
                     self?.payload.url = url
                 }
             }
-        } else if provider.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) {
+            return
+        }
+
+        if let provider = providers.first(where: {
+            $0.hasItemConformingToTypeIdentifier(UTType.plainText.identifier)
+        }) {
             provider.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { item, _ in
                 let text = item as? String
                 Task { @MainActor [weak self] in

@@ -22,6 +22,7 @@ public struct CoreDataCapsuleRepository: CapsuleRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let capsule = CapsuleItem(context: context)
+            context.assign(capsule, toStoreOf: space)
             capsule.space = space
             capsule.authorMemberId = draft.authorMemberId
             capsule.recipientMemberId = draft.recipientMemberId

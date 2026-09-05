@@ -16,6 +16,7 @@ public struct CoreDataWishRepository: WishRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let wish = Wish(context: context)
+            context.assign(wish, toStoreOf: space)
             wish.space = space
             wish.ownerMemberId = draft.ownerMemberId
             wish.addedByMemberId = draft.addedByMemberId

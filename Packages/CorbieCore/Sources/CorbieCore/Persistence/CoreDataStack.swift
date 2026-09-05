@@ -10,6 +10,8 @@ public final class CoreDataStack: @unchecked Sendable {
 
     private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "persistence")
 
+    private let history: PersistentHistoryObserver?
+
     public var viewContext: NSManagedObjectContext { container.viewContext }
 
     public var cloudKitContainer: NSPersistentCloudKitContainer? {
@@ -20,10 +22,29 @@ public final class CoreDataStack: @unchecked Sendable {
         self.author = author
         isCloudKitEnabled = cloudKitEnabled
         let container = NSPersistentCloudKitContainer(name: CorbieModel.name, managedObjectModel: CorbieModel.shared)
-        container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(cloudKitEnabled: cloudKitEnabled)
+        container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(
+            in: CoreDataStack.storesDirectory(),
+            cloudKitEnabled: cloudKitEnabled
+        )
+        self.container = container
+        loadFailure = CoreDataStack.load(container) ?? CoreDataStack.appGroupFailure()
+        CoreDataStack.configure(container.viewContext, author: author)
+        history = PersistentHistoryObserver(container: container, author: author)
+        history?.start()
+    }
+
+    public init(storesIn directory: URL, author: TransactionAuthor = .tests) {
+        self.author = author
+        isCloudKitEnabled = false
+        let container = NSPersistentContainer(name: CorbieModel.name, managedObjectModel: CorbieModel.shared)
+        container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(
+            in: directory,
+            cloudKitEnabled: false
+        )
         self.container = container
         loadFailure = CoreDataStack.load(container)
         CoreDataStack.configure(container.viewContext, author: author)
+        history = nil
     }
 
     public init(inMemoryAuthor author: TransactionAuthor = .tests) {
@@ -37,6 +58,11 @@ public final class CoreDataStack: @unchecked Sendable {
         self.container = container
         loadFailure = CoreDataStack.load(container)
         CoreDataStack.configure(container.viewContext, author: author)
+        history = nil
+    }
+
+    deinit {
+        history?.stop()
     }
 
     public func newBackgroundContext() -> NSManagedObjectContext {
@@ -50,12 +76,15 @@ public final class CoreDataStack: @unchecked Sendable {
         if let named = stores.first(where: { $0.url?.lastPathComponent == scope.fileName }) {
             return named
         }
-        return stores.count == 1 ? stores.first : nil
+        guard stores.count == 1, let only = stores.first, only.type == NSInMemoryStoreType else { return nil }
+        return only
     }
 
-    public func initializeCloudKitSchemaIfRequested() throws {
+    public func initializeCloudKitSchemaIfRequested(
+        isRequested: Bool = ProcessInfo.processInfo.environment["CORBIE_INIT_SCHEMA"] == "1"
+    ) throws {
         #if DEBUG
-        guard ProcessInfo.processInfo.environment["CORBIE_INIT_SCHEMA"] == "1" else { return }
+        guard isRequested else { return }
         guard let cloudKitContainer else {
             throw CorbieError.cloudKit("CloudKit container is not configured")
         }
@@ -69,8 +98,7 @@ public final class CoreDataStack: @unchecked Sendable {
 
     public static func storesDirectory() -> URL {
         let manager = FileManager.default
-        if let group = manager.containerURL(forSecurityApplicationGroupIdentifier: CorbieIdentifiers.appGroup),
-           makeDirectory(group, manager: manager) {
+        if let group = appGroupDirectory(manager) {
             return group
         }
         let base = manager
@@ -79,6 +107,30 @@ public final class CoreDataStack: @unchecked Sendable {
         let directory = base.appendingPathComponent(CorbieModel.name, isDirectory: true)
         _ = makeDirectory(directory, manager: manager)
         return directory
+    }
+
+    public static var isAppGroupAvailable: Bool {
+        appGroupDirectory(FileManager.default) != nil
+    }
+
+    private static func appGroupDirectory(_ manager: FileManager) -> URL? {
+        guard let group = manager.containerURL(forSecurityApplicationGroupIdentifier: CorbieIdentifiers.appGroup),
+              makeDirectory(group, manager: manager) else {
+            return nil
+        }
+        return group
+    }
+
+    private static func appGroupFailure() -> (any Error)? {
+        #if os(iOS)
+        guard isAppGroupAvailable == false else { return nil }
+        let message = "app group \(CorbieIdentifiers.appGroup) is unavailable, "
+            + "the app and its extensions read different stores"
+        log.error("\(message, privacy: .public)")
+        return CorbieError.persistence(message)
+        #else
+        return nil
+        #endif
     }
 
     private static func makeDirectory(_ url: URL, manager: FileManager) -> Bool {
@@ -95,9 +147,8 @@ public final class CoreDataStack: @unchecked Sendable {
         }
     }
 
-    private static func storeDescriptions(cloudKitEnabled: Bool) -> [NSPersistentStoreDescription] {
-        let directory = storesDirectory()
-        return [StoreScope.privateStore, StoreScope.sharedStore].map { scope in
+    private static func storeDescriptions(in directory: URL, cloudKitEnabled: Bool) -> [NSPersistentStoreDescription] {
+        [StoreScope.privateStore, StoreScope.sharedStore].map { scope in
             let description = NSPersistentStoreDescription(url: directory.appendingPathComponent(scope.fileName))
             description.shouldAddStoreAsynchronously = false
             description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)

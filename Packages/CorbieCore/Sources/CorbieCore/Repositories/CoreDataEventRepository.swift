@@ -19,6 +19,7 @@ public struct CoreDataEventRepository: EventRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let event = Event(context: context)
+            context.assign(event, toStoreOf: space)
             event.space = space
             event.title = title
             event.startAt = draft.startAt
@@ -106,6 +107,7 @@ public struct CoreDataEventRepository: EventRepository {
         return try await access.write { context in
             let event: Event = try ManagedFetch.require(Event.entityName, id: eventId, in: context)
             let comment = EventComment(context: context)
+            context.assign(comment, toStoreOf: event)
             comment.event = event
             comment.memberId = memberId
             comment.text = trimmed

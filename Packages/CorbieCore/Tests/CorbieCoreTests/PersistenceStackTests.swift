@@ -40,8 +40,14 @@ import Testing
         #expect(PersistenceController.preview.stack.isCloudKitEnabled == false)
     }
 
-    @Test func schemaInitialisationIsSkippedWithoutTheFlag() throws {
+    @Test func schemaInitialisationOnlyRunsWhenItIsRequested() throws {
         let stack = CoreDataStack(inMemoryAuthor: .tests)
-        try stack.initializeCloudKitSchemaIfRequested()
+        try stack.initializeCloudKitSchemaIfRequested(isRequested: false)
+        #expect(stack.cloudKitContainer == nil)
+        #if DEBUG
+        #expect(throws: CorbieError.cloudKit("CloudKit container is not configured")) {
+            try stack.initializeCloudKitSchemaIfRequested(isRequested: true)
+        }
+        #endif
     }
 }

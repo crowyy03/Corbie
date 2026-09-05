@@ -61,7 +61,7 @@ import Testing
             EventDraft(spaceId: spaceId, title: "Dinner", startAt: Date())
         )
         _ = try await repositories.events.addComment(eventId: event.id, memberId: world.me.id, text: "Table for two")
-        _ = try await repositories.wishes.create(WishDraft(spaceId: spaceId, title: "Lamp"))
+        _ = try await repositories.wishes.create(WishDraft(spaceId: spaceId, ownerMemberId: world.me.id, title: "Lamp"))
         let plan = try await repositories.plans.create(
             PlanDraft(spaceId: spaceId, title: "Lisbon", targetAmount: 1000, currency: "USD")
         )

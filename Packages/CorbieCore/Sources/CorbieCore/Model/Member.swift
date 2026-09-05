@@ -5,7 +5,7 @@ public final class Member: NSManagedObject {
     public static let entityName = "Member"
 
     @NSManaged public var id: UUID?
-    @NSManaged public var appleUserId: String?
+    @NSManaged public var appleUserHash: String?
     @NSManaged public var displayName: String?
     @NSManaged public var colorKey: String?
     @NSManaged public var birthdayMonth: NSNumber?

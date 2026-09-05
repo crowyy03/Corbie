@@ -106,4 +106,31 @@ import Testing
         try await repository.delete(id: person.id)
         #expect(try world.count("GiftIdea") == 0)
     }
+
+    @Test func deletingAPersonLetsGoOfTheirBirthdayEvent() async throws {
+        let world = try await TestWorld.make()
+        let person = try await world.repositories.people.create(
+            PersonDraft(spaceId: world.space.id, name: "Anna", birthdayMonth: 4, birthdayDay: 12)
+        )
+        let event = try await world.repositories.events.create(
+            EventDraft(
+                spaceId: world.space.id,
+                title: "Anna",
+                startAt: Date(),
+                kind: .birthday,
+                personId: person.id
+            )
+        )
+        try await world.repositories.people.delete(id: person.id)
+        let stored = try #require(try await world.repositories.events.event(id: event.id))
+        #expect(stored.personId == nil)
+    }
+
+    @Test func onlyTheHashOfTheAppleIdentifierIsStored() async throws {
+        let world = try await TestWorld.make()
+        let member = try #require(try await world.repositories.members.member(appleUserId: "apple-me"))
+        #expect(member.appleUserHash == AppleUserHash.value("apple-me"))
+        #expect(member.appleUserHash != "apple-me")
+        #expect(member.id == world.me.id)
+    }
 }
