@@ -31,3 +31,14 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - The app is iPhone only: `TARGETED_DEVICE_FAMILY = 1` on the app, widget and share targets. The design is portrait-only and single column, and the Info.plist already declares portrait alone.
 - `CKSharingSupported` is in the app Info.plist and `AppDelegate.application(_:userDidAcceptCloudKitShareWith:)` calls `CloudKitSharing.acceptShare(metadata:)`, so an invitation link actually joins the space.
 - Each tab is a bare `NavigationStack` around its feature root; the feature view owns its title and toolbar and adds the pill with `.toolbar { UsPillToolbarItem() }`. The pill is the `CorbieCore` `UsPill` component, which already meets the 44pt tap target.
+
+## Module 09 (People, gift ideas, date radar)
+
+- People gates on opening an editor (`premiumGate.require(.create)` for a new person or gift idea, `.edit` for changing, toggling or deleting one), not on saving. Gating at save would present the paywall on top of an open sheet, and RootView presents the paywall from the root. Viewing people and their gift ideas stays free.
+- A radar refresh cancels every pending `dateRadar` notification and reschedules from the current input, so a deleted person, a cleared birthday or a picked gift cannot leave a stale reminder behind. It runs when the People list or a person opens, after every edit and after a delete.
+- Radar scheduling failures are logged, not shown as a toast: scheduling is housekeeping, and a denied notification permission would otherwise toast on every visit to the screen. Repository failures the user asked for (save, delete, toggle) still toast through `environment.report(_:)`.
+- `PeopleRadarSummary` (Features/People) turns a `RadarLine` into the mono sub-line "14 days to go / 3 ideas saved". It holds no view or environment types so the calendar can reuse it as is; the widget extension does not compile app sources, so a widget needs it moved into `CorbieCore` first. Widgets already receive `RadarStatus` through `WidgetDataProvider`.
+- Birthdays are month and day only. They are formatted with `Date.FormatStyle` on a fixed leap reference year (2024) with the month and day fields alone, so the year never shows and 29 February stays a valid birthday.
+- A gift idea's currency follows the space display currency, is picked from `FXService.supportedCurrencies()`, and is dropped when the price is cleared.
+- The person editor hides the owner picker while the space is solo and files the person under the current member.
+- Radar notifications carry the route `corbie://people/<id>`, which `CorbieRoute` understands but the app-side `Route` and `AppState` do not have a case for yet, so tapping one opens the app without landing on the person.

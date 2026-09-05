@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A30EAF8C59E43CE180FBE4E /* MemberPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */; };
 		119BE71835686FAFB0F9885B /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */; };
 		11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D439758E7E6D75110C77131A /* CorbieApp.swift */; };
 		1A3BB94EFB5F1AE56AC2B48D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */; };
@@ -14,27 +15,42 @@
 		223BC84E1DB2B99845AEFB2B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */; };
 		24C9999E7AF39592DFC9850B /* UsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F3366F97984A781DC3953 /* UsView.swift */; };
+		26553793EB7DF938DFB5FE15 /* PeopleBirthdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07305BB72ED77B1C14B3B5B /* PeopleBirthdayTests.swift */; };
+		32379CC93B091A54D77E977A /* PeopleRelationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACECF1088DB58F38F21410 /* PeopleRelationTests.swift */; };
 		348435E9BB1F704E88F9B5B8 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9FDF78C8AFE2EB5AA5274C43 /* CorbieCore */; };
 		35CFA4A8EB05DEFD286CECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4EAF790494EF27B38A13 /* TasksView.swift */; };
+		40F21A50793C270E0D1196AB /* PersonDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14A8CDDD4C0930D79582592 /* PersonDetailViewModel.swift */; };
 		46A1998D55C4137CB0C56BA7 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 053C7B83569FB8EA59BC28EF /* CorbieCore */; };
 		4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */; };
 		5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADECE3D6ABD0A50F325ECA /* RootView.swift */; };
+		5CB2916C3889BD55793FE0B6 /* PersonEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D088E4591D519921C44447 /* PersonEditorView.swift */; };
+		5D1E24775D7A8C3EC2977AAB /* PeopleRadarSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2689C2ACA198C796A03138E7 /* PeopleRadarSummary.swift */; };
 		6B4C7D23BA1928AB78E937AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */; };
 		6BEAC7E8D5C3D23B2E83641F /* UsPillToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */; };
 		735797CD81CBFC9E1A6B8874 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE157E918D961E9899DE32D /* LaunchUITests.swift */; };
 		738EE314D5EFC041C2EDF6E2 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAF52F19A383AEDFE0ECB2BC /* CorbieCore */; };
 		792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */; };
 		7D41F6D039348679B73D158E /* WishesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398541694197694D6538882 /* WishesView.swift */; };
+		878B48E00BEB514317B1C7FF /* PersonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56FFC0DEEE210F7B56AC33C /* PersonDetailView.swift */; };
 		9A0FFEAD954472C768DE8497 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */; };
 		9E7891F0830411940526CDB1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53715C4B0BEE41A246CA135 /* AppState.swift */; };
+		ACD5979F0B89E6CA633684FE /* PersonEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC017C6EE0E531483C55C862 /* PersonEditorViewModel.swift */; };
+		AFD3D709CD0D834E52B7ABC6 /* PersonBirthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1014F53AB71BB71FA3BEA7A /* PersonBirthday.swift */; };
+		B1EE512764B5E74F9CD123B9 /* PeopleRadarSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06D24E69364151FE6F40BBC /* PeopleRadarSummaryTests.swift */; };
+		B6732203331EC2E0404F0549 /* PeopleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9114E5B63C0D4C2E0478DF75 /* PeopleViewModel.swift */; };
 		BE9E2253E46F0C5D2650B635 /* CorbieWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */; };
+		C39A5EDD95EF272FA70F1584 /* GiftIdeaEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62FE938A6229D79811997DC /* GiftIdeaEditorViewModel.swift */; };
+		C53B1453563E379043E04D6F /* GiftIdeaEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4173B5382D96E8CABA633602 /* GiftIdeaEditorView.swift */; };
+		C840B900431DE85951A27461 /* RelationSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CD0CEBCFAEC7F23AD3CA81 /* RelationSuggestion.swift */; };
+		CB491474696FC589DEF42EC9 /* PeopleRadar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8648E82FBB81AC50FDAB304 /* PeopleRadar.swift */; };
 		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
 		DC2FFED1B16BABC452427F5E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BC345B3464E4B2B019D6B1 /* PaywallView.swift */; };
 		E32AF678642BF3322E2DDD5A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36368046A5FAB01754781EFA /* Router.swift */; };
 		E802BA38F4C6F2C5E0A66A0A /* CorbieShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		ED6F2FFEA5598A686F220983 /* AddToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8965137EA487DC01422332 /* AddToolbarItem.swift */; };
+		F2C7635C5AD039F5ADFC7A56 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09DDBBE3477B68D7D245C33A /* PeopleView.swift */; };
 		F3788058226B31D375C21949 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4516E0BF27017473DA4A6841 /* CalendarView.swift */; };
 		F6F4386491A47704FD8B745E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */; };
@@ -87,11 +103,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		09DDBBE3477B68D7D245C33A /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
 		1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		2689C2ACA198C796A03138E7 /* PeopleRadarSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRadarSummary.swift; sourceTree = "<group>"; };
 		27FA4EAF790494EF27B38A13 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
+		32D088E4591D519921C44447 /* PersonEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonEditorView.swift; sourceTree = "<group>"; };
 		36368046A5FAB01754781EFA /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		4173B5382D96E8CABA633602 /* GiftIdeaEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdeaEditorView.swift; sourceTree = "<group>"; };
 		44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4516E0BF27017473DA4A6841 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieWidgetsBundle.swift; sourceTree = "<group>"; };
@@ -105,18 +125,30 @@
 		76B17794417FDD3F3E7B2AA1 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
 		7AD1279BBDD45CD8EF636282 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberPresentation.swift; sourceTree = "<group>"; };
 		88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		89CD0CEBCFAEC7F23AD3CA81 /* RelationSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationSuggestion.swift; sourceTree = "<group>"; };
 		8F8965137EA487DC01422332 /* AddToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToolbarItem.swift; sourceTree = "<group>"; };
+		9114E5B63C0D4C2E0478DF75 /* PeopleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleViewModel.swift; sourceTree = "<group>"; };
+		99ACECF1088DB58F38F21410 /* PeopleRelationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRelationTests.swift; sourceTree = "<group>"; };
 		A53715C4B0BEE41A246CA135 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		A8648E82FBB81AC50FDAB304 /* PeopleRadar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRadar.swift; sourceTree = "<group>"; };
 		ADE157E918D961E9899DE32D /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
 		AEADECE3D6ABD0A50F325ECA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B8BC345B3464E4B2B019D6B1 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		BC017C6EE0E531483C55C862 /* PersonEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonEditorViewModel.swift; sourceTree = "<group>"; };
 		C5958CC8757BF6F56C4338EC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansView.swift; sourceTree = "<group>"; };
+		D14A8CDDD4C0930D79582592 /* PersonDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailViewModel.swift; sourceTree = "<group>"; };
 		D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsPillToolbarItem.swift; sourceTree = "<group>"; };
 		D439758E7E6D75110C77131A /* CorbieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieApp.swift; sourceTree = "<group>"; };
 		D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSupport.swift; sourceTree = "<group>"; };
+		E06D24E69364151FE6F40BBC /* PeopleRadarSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRadarSummaryTests.swift; sourceTree = "<group>"; };
+		E07305BB72ED77B1C14B3B5B /* PeopleBirthdayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleBirthdayTests.swift; sourceTree = "<group>"; };
+		E1014F53AB71BB71FA3BEA7A /* PersonBirthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonBirthday.swift; sourceTree = "<group>"; };
+		E62FE938A6229D79811997DC /* GiftIdeaEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdeaEditorViewModel.swift; sourceTree = "<group>"; };
+		F56FFC0DEEE210F7B56AC33C /* PersonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailView.swift; sourceTree = "<group>"; };
 		F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubView.swift; sourceTree = "<group>"; };
 		FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FC4F3366F97984A781DC3953 /* UsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsView.swift; sourceTree = "<group>"; };
@@ -173,6 +205,7 @@
 			children = (
 				FB229C8C8DFA85FFFB1E9AC2 /* Calendar */,
 				F537BA9BF7213C5F6397E78A /* Paywall */,
+				3596D23541AA4D71D4BBB8B4 /* People */,
 				0900B2BD9B49CC81C3780556 /* Plans */,
 				884872A6CF2E0E683C0B2E3D /* Shared */,
 				CEDDF271B888211861AE0B30 /* Tasks */,
@@ -180,6 +213,25 @@
 				EE37F02626653CC6C37A7CF8 /* Wishes */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		3596D23541AA4D71D4BBB8B4 /* People */ = {
+			isa = PBXGroup;
+			children = (
+				4173B5382D96E8CABA633602 /* GiftIdeaEditorView.swift */,
+				E62FE938A6229D79811997DC /* GiftIdeaEditorViewModel.swift */,
+				A8648E82FBB81AC50FDAB304 /* PeopleRadar.swift */,
+				2689C2ACA198C796A03138E7 /* PeopleRadarSummary.swift */,
+				09DDBBE3477B68D7D245C33A /* PeopleView.swift */,
+				9114E5B63C0D4C2E0478DF75 /* PeopleViewModel.swift */,
+				E1014F53AB71BB71FA3BEA7A /* PersonBirthday.swift */,
+				F56FFC0DEEE210F7B56AC33C /* PersonDetailView.swift */,
+				D14A8CDDD4C0930D79582592 /* PersonDetailViewModel.swift */,
+				32D088E4591D519921C44447 /* PersonEditorView.swift */,
+				BC017C6EE0E531483C55C862 /* PersonEditorViewModel.swift */,
+				89CD0CEBCFAEC7F23AD3CA81 /* RelationSuggestion.swift */,
+			);
+			path = People;
 			sourceTree = "<group>";
 		};
 		4FF8A4B61CD8905061F6C15D /* CorbieUITests */ = {
@@ -228,6 +280,9 @@
 		80EBF8A26B578EFBF35FA92A /* CorbieTests */ = {
 			isa = PBXGroup;
 			children = (
+				E07305BB72ED77B1C14B3B5B /* PeopleBirthdayTests.swift */,
+				E06D24E69364151FE6F40BBC /* PeopleRadarSummaryTests.swift */,
+				99ACECF1088DB58F38F21410 /* PeopleRelationTests.swift */,
 				2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */,
 			);
 			path = CorbieTests;
@@ -237,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				8F8965137EA487DC01422332 /* AddToolbarItem.swift */,
+				87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */,
 				88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */,
 				D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */,
 			);
@@ -532,6 +588,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26553793EB7DF938DFB5FE15 /* PeopleBirthdayTests.swift in Sources */,
+				B1EE512764B5E74F9CD123B9 /* PeopleRadarSummaryTests.swift in Sources */,
+				32379CC93B091A54D77E977A /* PeopleRelationTests.swift in Sources */,
 				4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,10 +604,23 @@
 				9E7891F0830411940526CDB1 /* AppState.swift in Sources */,
 				F3788058226B31D375C21949 /* CalendarView.swift in Sources */,
 				11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */,
+				C53B1453563E379043E04D6F /* GiftIdeaEditorView.swift in Sources */,
+				C39A5EDD95EF272FA70F1584 /* GiftIdeaEditorViewModel.swift in Sources */,
+				0A30EAF8C59E43CE180FBE4E /* MemberPresentation.swift in Sources */,
 				DC2FFED1B16BABC452427F5E /* PaywallView.swift in Sources */,
+				CB491474696FC589DEF42EC9 /* PeopleRadar.swift in Sources */,
+				5D1E24775D7A8C3EC2977AAB /* PeopleRadarSummary.swift in Sources */,
+				F2C7635C5AD039F5ADFC7A56 /* PeopleView.swift in Sources */,
+				B6732203331EC2E0404F0549 /* PeopleViewModel.swift in Sources */,
+				AFD3D709CD0D834E52B7ABC6 /* PersonBirthday.swift in Sources */,
+				878B48E00BEB514317B1C7FF /* PersonDetailView.swift in Sources */,
+				40F21A50793C270E0D1196AB /* PersonDetailViewModel.swift in Sources */,
+				5CB2916C3889BD55793FE0B6 /* PersonEditorView.swift in Sources */,
+				ACD5979F0B89E6CA633684FE /* PersonEditorViewModel.swift in Sources */,
 				F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */,
 				1C5C206503457A593AF48958 /* PlansView.swift in Sources */,
 				2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */,
+				C840B900431DE85951A27461 /* RelationSuggestion.swift in Sources */,
 				5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */,
 				E32AF678642BF3322E2DDD5A /* Router.swift in Sources */,
 				3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */,
