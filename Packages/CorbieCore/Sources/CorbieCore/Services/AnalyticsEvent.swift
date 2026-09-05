@@ -18,6 +18,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case taskHandedBack
     case eventCreated(kind: EventKind)
     case wishCreated(source: WishSource)
+    case wishFulfilled
     case planCreated(type: PlanType)
     case expenseAdded
     case listCreated(template: ListTemplate)
@@ -45,6 +46,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .taskHandedBack: return "task_handed_back"
         case .eventCreated: return "event_created"
         case .wishCreated: return "wish_created"
+        case .wishFulfilled: return "wish_fulfilled"
         case .planCreated: return "plan_created"
         case .expenseAdded: return "expense_added"
         case .listCreated: return "list_created"
@@ -84,7 +86,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .readonlyHit(action):
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
+<<<<<<< HEAD
              .taskHandedBack, .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated,
+=======
+             .wishFulfilled, .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated,
+>>>>>>> worktree-wf_c12cea66-3d5-4
              .voteRevealed, .trialStarted, .restore:
             return [:]
         }
@@ -92,7 +98,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
 
     public static let allowedNames: Set<String> = [
         "app_open", "onboarding_step", "space_created", "invite_created", "invite_redeemed",
-        "task_created", "task_taken", "task_done", "event_created", "wish_created",
+        "task_created", "task_taken", "task_done", "event_created", "wish_created", "wish_fulfilled",
         "plan_created", "expense_added", "list_created", "capsule_created", "capsule_opened",
         "vote_created", "vote_revealed", "widget_added", "paywall_shown", "trial_started",
         "purchase", "restore", "readonly_hit"

@@ -1,31 +1,19 @@
-import Observation
 import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
 @MainActor
-@Observable
-final class SharePayload {
-    var url: URL?
-    var text: String?
-}
-
-@MainActor
 final class ShareViewController: UIViewController {
-    private let payload = SharePayload()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        embedShareView()
-        loadAttachment()
+        let items = (extensionContext?.inputItems as? [NSExtensionItem]) ?? []
+        embed(ShareWishView(items: items) { [weak self] in
+            self?.completeRequest()
+        })
     }
 
-    private func embedShareView() {
-        let hosting = UIHostingController(
-            rootView: ShareRootView(payload: payload) { [weak self] in
-                self?.completeRequest()
-            }
-        )
+    private func embed(_ root: some View) {
+        let hosting = UIHostingController(rootView: root)
         addChild(hosting)
         hosting.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(hosting.view)
@@ -38,78 +26,43 @@ final class ShareViewController: UIViewController {
         hosting.didMove(toParent: self)
     }
 
-    private func loadAttachment() {
-        let providers = (extensionContext?.inputItems as? [NSExtensionItem] ?? [])
-            .flatMap { $0.attachments ?? [] }
-
-        if let provider = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.url.identifier) }) {
-            provider.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { item, _ in
-                let url = item as? URL
-                Task { @MainActor [weak self] in
-                    self?.payload.url = url
-                }
-            }
-            return
-        }
-
-        if let provider = providers.first(where: {
-            $0.hasItemConformingToTypeIdentifier(UTType.plainText.identifier)
-        }) {
-            provider.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { item, _ in
-                let text = item as? String
-                Task { @MainActor [weak self] in
-                    self?.payload.text = text
-                }
-            }
-        }
-    }
-
     private func completeRequest() {
         extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
     }
 }
 
-struct ShareRootView: View {
-    let payload: SharePayload
-    let onCancel: () -> Void
-
-    var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: 12) {
-                sharedContent
-                Spacer(minLength: 0)
+@MainActor
+enum ShareAttachments {
+    static func read(_ items: [NSExtensionItem]) async -> ShareInput {
+        let providers = items.flatMap { $0.attachments ?? [] }
+        var url: URL?
+        var text: String?
+        for provider in providers {
+            if url == nil, provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
+                url = await loadURL(provider)
             }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .navigationTitle(String(localized: "share.screen.title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(String(localized: "share.action.cancel"), action: onCancel)
-                }
+            if text == nil, provider.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) {
+                let loaded = await loadText(provider)
+                text = loaded?.isEmpty == false ? loaded : nil
+            }
+            if url != nil, text != nil { break }
+        }
+        return ShareInput(url: url, text: text)
+    }
+
+    private static func loadURL(_ provider: NSItemProvider) async -> URL? {
+        await withCheckedContinuation { continuation in
+            provider.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { item, _ in
+                continuation.resume(returning: item as? URL)
             }
         }
     }
 
-    @ViewBuilder
-    private var sharedContent: some View {
-        if let url = payload.url {
-            Text(url.absoluteString)
-                .font(.footnote)
-                .fontDesign(.monospaced)
-                .lineLimit(4)
-        } else if let text = payload.text, !text.isEmpty {
-            Text(text)
-                .font(.body)
-                .lineLimit(8)
-        } else {
-            Text("share.preview.empty")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+    private static func loadText(_ provider: NSItemProvider) async -> String? {
+        await withCheckedContinuation { continuation in
+            provider.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { item, _ in
+                continuation.resume(returning: item as? String)
+            }
         }
     }
-}
-
-#Preview {
-    ShareRootView(payload: SharePayload(), onCancel: {})
 }
