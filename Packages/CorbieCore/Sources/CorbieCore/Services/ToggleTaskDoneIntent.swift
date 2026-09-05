@@ -1,10 +1,23 @@
 import Foundation
 
+public enum IntentNotifications {
+    // UNUserNotificationCenter.current() raises when the process has no bundle identity
+    public static func client() -> (any NotificationCenterClient)? {
+        guard Bundle.main.bundleIdentifier != nil else { return nil }
+        #if canImport(UserNotifications)
+        return SystemNotificationCenterClient()
+        #else
+        return nil
+        #endif
+    }
+}
+
 public enum TaskIntentRunner {
     @discardableResult
     public static func markDone(
         taskId: UUID,
         persistence: IntentPersistence = .shared,
+        notifications: (any NotificationCenterClient)? = nil,
         calendar: Calendar = .current,
         now: Date = Date()
     ) async throws -> TaskCompletion {
@@ -21,6 +34,7 @@ public enum TaskIntentRunner {
             memberId: memberId ?? task.assigneeMemberId,
             at: now
         )
+        await notifications?.removePending(identifiers: [NotificationIdentifier.taskDueToday(taskId: taskId)])
         guard let nextDueAt = RecurrenceEngine.nextOccurrence(
             for: completion.task,
             completedAt: now,
@@ -90,7 +104,10 @@ public struct ToggleTaskDoneIntent: AppIntent {
     }
 
     public func perform() async throws -> some IntentResult {
-        try await TaskIntentRunner.markDone(taskId: TaskIntentRunner.identifier(taskID))
+        try await TaskIntentRunner.markDone(
+            taskId: TaskIntentRunner.identifier(taskID),
+            notifications: IntentNotifications.client()
+        )
         return .result()
     }
 }

@@ -1,0 +1,15 @@
+enum WidgetKinds {
+    static let daysTogether = "DaysTogether"
+    static let countdown = "Countdown"
+    static let tasks = "Tasks"
+    static let freeTasks = "FreeTasks"
+    static let partnerWishes = "PartnerWishes"
+    static let planProgress = "PlanProgress"
+    static let upcomingDates = "UpcomingDates"
+    static let shopping = "Shopping"
+    static let capsule = "Capsule"
+    static let ourDay = "OurDay"
+    static let lockCircular = "LockCircular"
+    static let lockRectangular = "LockRectangular"
+    static let lockInline = "LockInline"
+}

@@ -2131,6 +2131,266 @@
         }
       }
     },
+    "intent.countdown.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the date the countdown runs to."
+          }
+        }
+      }
+    },
+    "intent.countdown.parameter.event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event"
+          }
+        }
+      }
+    },
+    "intent.countdown.parameter.source": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        }
+      }
+    },
+    "intent.countdown.source.anniversary": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anniversary"
+          }
+        }
+      }
+    },
+    "intent.countdown.source.birthday": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partner birthday"
+          }
+        }
+      }
+    },
+    "intent.countdown.source.event": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event"
+          }
+        }
+      }
+    },
+    "intent.countdown.source.type": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown date"
+          }
+        }
+      }
+    },
+    "intent.countdown.source.wedding": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wedding anniversary"
+          }
+        }
+      }
+    },
+    "intent.countdown.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown"
+          }
+        }
+      }
+    },
+    "intent.entity.event.type": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event"
+          }
+        }
+      }
+    },
+    "intent.entity.plan.type": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan"
+          }
+        }
+      }
+    },
+    "intent.lock.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose what the circle shows."
+          }
+        }
+      }
+    },
+    "intent.lock.mode.countdown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown"
+          }
+        }
+      }
+    },
+    "intent.lock.mode.days": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days together"
+          }
+        }
+      }
+    },
+    "intent.lock.mode.plan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan ring"
+          }
+        }
+      }
+    },
+    "intent.lock.mode.type": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Circle mode"
+          }
+        }
+      }
+    },
+    "intent.lock.parameter.mode": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows"
+          }
+        }
+      }
+    },
+    "intent.lock.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Circle"
+          }
+        }
+      }
+    },
+    "intent.plan.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the plan the widget shows."
+          }
+        }
+      }
+    },
+    "intent.plan.parameter.plan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan"
+          }
+        }
+      }
+    },
+    "intent.plan.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan"
+          }
+        }
+      }
+    },
+    "intent.shopping.parameter.id": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Item"
+          }
+        }
+      }
+    },
+    "intent.shopping.toggle.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tick a shopping item"
+          }
+        }
+      }
+    },
+    "intent.task.done.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark a task done"
+          }
+        }
+      }
+    },
+    "intent.task.parameter.id": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Task"
+          }
+        }
+      }
+    },
+    "intent.task.take.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a task"
+          }
+        }
+      }
+    },
     "lists.card.progress": {
       "localizations": {
         "de": {
@@ -13643,6 +13903,278 @@
         }
       }
     },
+    "widget.capsule.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days to the next sealed letter."
+          }
+        }
+      }
+    },
+    "widget.capsule.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No sealed letter."
+          }
+        }
+      }
+    },
+    "widget.capsule.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "write one, set the day"
+          }
+        }
+      }
+    },
+    "widget.capsule.from": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "to a letter from %@"
+          }
+        }
+      }
+    },
+    "widget.capsule.from.plain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "to a letter"
+          }
+        }
+      }
+    },
+    "widget.capsule.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capsule"
+          }
+        }
+      }
+    },
+    "widget.capsule.yours": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "to the letter you sealed"
+          }
+        }
+      }
+    },
+    "widget.countdown.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days to a date you pick."
+          }
+        }
+      }
+    },
+    "widget.countdown.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a date to count to."
+          }
+        }
+      }
+    },
+    "widget.countdown.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hold the widget, then edit"
+          }
+        }
+      }
+    },
+    "widget.countdown.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown"
+          }
+        }
+      }
+    },
+    "widget.date.anniversary": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ anniversary"
+          }
+        }
+      }
+    },
+    "widget.date.anniversary.plain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "anniversary"
+          }
+        }
+      }
+    },
+    "widget.date.birthday": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@'s birthday"
+          }
+        }
+      }
+    },
+    "widget.date.birthday.plain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "birthday"
+          }
+        }
+      }
+    },
+    "widget.date.event.plain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a date"
+          }
+        }
+      }
+    },
+    "widget.date.in": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "in %lld day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "in %lld days"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "widget.date.past": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "past"
+          }
+        }
+      }
+    },
+    "widget.date.today": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "today"
+          }
+        }
+      }
+    },
+    "widget.date.tomorrow": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tomorrow"
+          }
+        }
+      }
+    },
+    "widget.date.wedding": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "wedding anniversary"
+          }
+        }
+      }
+    },
+    "widget.dates.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The next three dates."
+          }
+        }
+      }
+    },
+    "widget.dates.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing coming up."
+          }
+        }
+      }
+    },
+    "widget.dates.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "birthdays, anniversaries, events"
+          }
+        }
+      }
+    },
+    "widget.dates.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upcoming"
+          }
+        }
+      }
+    },
+    "widget.dates.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upcoming dates"
+          }
+        }
+      }
+    },
     "widget.daystogether.caption": {
       "localizations": {
         "de": {
@@ -13711,6 +14243,26 @@
         }
       }
     },
+    "widget.daystogether.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set the day you two started."
+          }
+        }
+      }
+    },
+    "widget.daystogether.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "settings, our dates"
+          }
+        }
+      }
+    },
     "widget.daystogether.title": {
       "localizations": {
         "de": {
@@ -13741,6 +14293,490 @@
           "stringUnit": {
             "state": "new",
             "value": ""
+          }
+        }
+      }
+    },
+    "widget.freetasks.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasks nobody took yet."
+          }
+        }
+      }
+    },
+    "widget.freetasks.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing free right now."
+          }
+        }
+      }
+    },
+    "widget.freetasks.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a free task is one nobody took"
+          }
+        }
+      }
+    },
+    "widget.freetasks.take": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take"
+          }
+        }
+      }
+    },
+    "widget.freetasks.take.accessibility": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take %@"
+          }
+        }
+      }
+    },
+    "widget.freetasks.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free tasks"
+          }
+        }
+      }
+    },
+    "widget.lock.circular.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days together, a plan ring or a countdown."
+          }
+        }
+      }
+    },
+    "widget.lock.circular.plan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan"
+          }
+        }
+      }
+    },
+    "widget.lock.circular.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Circle"
+          }
+        }
+      }
+    },
+    "widget.lock.inline.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One line above the clock."
+          }
+        }
+      }
+    },
+    "widget.lock.inline.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No dates coming up"
+          }
+        }
+      }
+    },
+    "widget.lock.inline.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown line"
+          }
+        }
+      }
+    },
+    "widget.lock.rectangular.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The next task, or the next date."
+          }
+        }
+      }
+    },
+    "widget.lock.rectangular.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing open"
+          }
+        }
+      }
+    },
+    "widget.lock.rectangular.free": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "+%lld free"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "+%lld free"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "widget.lock.rectangular.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next"
+          }
+        }
+      }
+    },
+    "widget.lock.rectangular.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next up"
+          }
+        }
+      }
+    },
+    "widget.locked.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "widgets come with the subscription"
+          }
+        }
+      }
+    },
+    "widget.locked.short": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock in Corbie"
+          }
+        }
+      }
+    },
+    "widget.locked.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock in Corbie"
+          }
+        }
+      }
+    },
+    "widget.more": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "+%lld more"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "+%lld more"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "widget.ourday.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days, the next date, a plan and three tasks."
+          }
+        }
+      }
+    },
+    "widget.ourday.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing here yet."
+          }
+        }
+      }
+    },
+    "widget.ourday.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "add a task, a date or a plan"
+          }
+        }
+      }
+    },
+    "widget.ourday.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Our day"
+          }
+        }
+      }
+    },
+    "widget.plan.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One plan and how far you two got."
+          }
+        }
+      }
+    },
+    "widget.plan.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No active plan."
+          }
+        }
+      }
+    },
+    "widget.plan.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hold the widget to pick one"
+          }
+        }
+      }
+    },
+    "widget.plan.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saving for"
+          }
+        }
+      }
+    },
+    "widget.plan.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan"
+          }
+        }
+      }
+    },
+    "widget.shopping.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The shopping list, ticked from here."
+          }
+        }
+      }
+    },
+    "widget.shopping.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The list is clear."
+          }
+        }
+      }
+    },
+    "widget.shopping.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "add items in Corbie"
+          }
+        }
+      }
+    },
+    "widget.shopping.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shopping"
+          }
+        }
+      }
+    },
+    "widget.shopping.toggle.accessibility": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tick %@"
+          }
+        }
+      }
+    },
+    "widget.tasks.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Three open tasks, ticked from here."
+          }
+        }
+      }
+    },
+    "widget.tasks.done.accessibility": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark %@ done"
+          }
+        }
+      }
+    },
+    "widget.tasks.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing open."
+          }
+        }
+      }
+    },
+    "widget.tasks.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "add one in Corbie"
+          }
+        }
+      }
+    },
+    "widget.tasks.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasks"
+          }
+        }
+      }
+    },
+    "widget.wishes.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What your partner saved."
+          }
+        }
+      }
+    },
+    "widget.wishes.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No wishes saved yet."
+          }
+        }
+      }
+    },
+    "widget.wishes.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "drop a link in Corbie"
+          }
+        }
+      }
+    },
+    "widget.wishes.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@'s wishes"
+          }
+        }
+      }
+    },
+    "widget.wishes.heading.plain": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Their wishes"
+          }
+        }
+      }
+    },
+    "widget.wishes.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partner wishes"
           }
         }
       }
