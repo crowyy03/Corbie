@@ -22,6 +22,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case planCreated(type: PlanType)
     case expenseAdded
     case listCreated(template: ListTemplate)
+    case listItemChecked
+    case listMapOpened
     case capsuleCreated
     case capsuleOpened
     case voteCreated
@@ -50,6 +52,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .planCreated: return "plan_created"
         case .expenseAdded: return "expense_added"
         case .listCreated: return "list_created"
+        case .listItemChecked: return "list_item_checked"
+        case .listMapOpened: return "list_map_opened"
         case .capsuleCreated: return "capsule_created"
         case .capsuleOpened: return "capsule_opened"
         case .voteCreated: return "vote_created"
@@ -87,11 +91,17 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
 <<<<<<< HEAD
+<<<<<<< HEAD
              .taskHandedBack, .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated,
 =======
              .wishFulfilled, .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated,
 >>>>>>> worktree-wf_c12cea66-3d5-4
              .voteRevealed, .trialStarted, .restore:
+=======
+             .expenseAdded, .listItemChecked, .listMapOpened, .capsuleCreated, .capsuleOpened,
+             .voteCreated, .voteRevealed,
+             .trialStarted, .restore:
+>>>>>>> worktree-wf_c12cea66-3d5-5
             return [:]
         }
     }
