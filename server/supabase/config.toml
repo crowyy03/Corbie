@@ -50,6 +50,10 @@ policy = "per_worker"
 inspector_port = 8083
 deno_version = 2
 
+[functions.session]
+enabled = true
+verify_jwt = false
+
 [functions.invite]
 enabled = true
 verify_jwt = false

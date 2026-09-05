@@ -1,5 +1,6 @@
-import { appleClientId, requireAppleUser } from "../_shared/appleAuth.ts";
+import { appleClientId } from "../_shared/appleAuth.ts";
 import { buildAppleClientSecret } from "../_shared/appleClientSecret.ts";
+import { requireUser } from "../_shared/auth.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
 import { ApiError, empty, errorResponse, readJson, requireMethod } from "../_shared/respond.ts";
 
@@ -74,7 +75,7 @@ function readToken(value: unknown, field: string): string | null {
 async function handle(req: Request): Promise<Response> {
   requireMethod(req, "POST");
   await enforceRateLimit(req, "apple-revoke", buckets.appleRevoke);
-  await requireAppleUser(req);
+  await requireUser(req);
 
   const body = await readJson<RevokeRequest>(req);
   const authorizationCode = readToken(body.authorizationCode, "authorizationCode");

@@ -7,6 +7,7 @@ export interface Bucket {
 }
 
 export const buckets = {
+  session: { capacity: 30, refillPerHour: 30 },
   invite: { capacity: 30, refillPerHour: 30 },
   inviteRedeem: { capacity: 60, refillPerHour: 60 },
   parse: { capacity: 60, refillPerHour: 60 },

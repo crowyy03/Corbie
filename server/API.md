@@ -6,12 +6,12 @@ The server never sees couple data. It stores invite codes (15 min TTL), entitlem
 
 ## Headers
 
-| Header          | Where                                                 | Value                                                                                                                     |
-| --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `Authorization` | `invite`, `entitlement`, `apple-revoke`               | `Bearer <Apple identity token>` (JWT from Sign in with Apple; verified against Apple JWKS, `aud` must equal `app.corbie`) |
-| `X-Anon-Id`     | `events` (required), `parse`, `fx` (accepted, unused) | device-local UUID, not linked to Apple ID                                                                                 |
-| `X-App-Version` | all                                                   | `MARKETING_VERSION (BUILD)`                                                                                               |
-| `Content-Type`  | POST                                                  | `application/json`                                                                                                        |
+| Header          | Where                                                 | Value                                                                                                                                                                                                                                                                                                                                                                                                              |
+| --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Authorization` | `session`, `invite`, `entitlement`, `apple-revoke`    | `Bearer <token>`. Either an Apple identity token (RS256 JWT from Sign in with Apple, verified against Apple JWKS, `iss` `https://appleid.apple.com`, `aud` `app.corbie`) or a Corbie session token issued by `POST /session` (HS256 JWT, `iss` `corbie`). Apple identity tokens live about ten minutes, so the client exchanges one for a session token right after sign-in and uses the session token afterwards. |
+| `X-Anon-Id`     | `events` (required), `parse`, `fx` (accepted, unused) | device-local UUID, not linked to Apple ID                                                                                                                                                                                                                                                                                                                                                                          |
+| `X-App-Version` | all                                                   | `MARKETING_VERSION (BUILD)`                                                                                                                                                                                                                                                                                                                                                                                        |
+| `Content-Type`  | POST                                                  | `application/json`                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 No CORS headers are sent: the client is a native app and no browser origin is allowed. `OPTIONS` is answered with `405`.
 
@@ -29,6 +29,7 @@ A token bucket per IP and route lives in the `rate_limits` table; a full bucket 
 
 | Endpoint        | Requests per hour per IP |
 | --------------- | ------------------------ |
+| `session`       | 30                       |
 | `invite`        | 30                       |
 | `invite-redeem` | 60                       |
 | `parse`         | 60                       |
@@ -44,6 +45,16 @@ The bucket key is the address the gateway itself sets: `CF-Connecting-IP`, then 
 If the bucket cannot be read (database error) the request is allowed through, so a limiter outage never takes the API down.
 
 ## Endpoints
+
+### POST `/session`
+
+Auth required with an Apple identity token only (a session token is rejected here). Exchanges the short-lived Apple token for a Corbie session token.
+
+Request: `{}`
+
+Response `200`: `{"token": "<jwt>", "expiresAt": "2027-03-04T10:00:00Z"}`
+
+The session token is an HS256 JWT signed with the `SESSION_SECRET` secret: claims `iss` = `corbie`, `sub` = SHA-256 hex of the Apple `sub`, `iat`, `exp` = 180 days. Every endpoint that requires auth accepts it in place of the Apple token; the server never stores it. The client keeps it in the Keychain under `server.session.token` and re-runs Sign in with Apple when it gets `401` back.
 
 ### POST `/invite`
 
@@ -140,6 +151,12 @@ The function exchanges the code for a refresh token with `client_secret` (ES256 
 ## Implementation notes
 
 These are details the contract above leaves open, fixed by `server/supabase/functions`.
+
+**Session.** Which kind of token a request carries is decided before anything is verified, from the header `alg` and the `iss` claim as they are written: `HS256`, or `iss` `corbie`, takes the session path, everything else goes to Apple JWKS. A token that calls itself a Corbie token is therefore never checked against Apple's keys, and `POST /session` refuses it outright with `401 unauthorized` instead of minting a session token from a session token.
+
+Both paths hand the endpoint the same subject, the SHA-256 hex of the Apple `sub`, so an endpoint cannot tell the two apart and never sees the raw Apple identifier. `exp` and `iat` allow sixty seconds of clock skew, the same as identity tokens.
+
+Nothing about a session token is written down, so an individual token cannot be revoked before its 180 days run out; rotating `SESSION_SECRET` invalidates every issued token at once. Without `SESSION_SECRET` set, `POST /session` answers `500 internal` and a session token is refused with `401 unauthorized`, which sends the client back to Sign in with Apple rather than letting an unverifiable token through.
 
 **Invite.** `shareURL` must be `https` on `icloud.com` or a subdomain; anything else is `invalid_request`. Creating a code first expires every unredeemed code for that space, then inserts, retrying up to five times on a code collision. `invite-redeem` claims the row with a conditional update, so two devices racing the same code get one `200` and one `410 redeemed`. A code that is not six characters of the alphabet is `404 not_found`, same as an unknown code, so the endpoint does not tell a guesser which codes are well formed.
 

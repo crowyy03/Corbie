@@ -18,7 +18,7 @@ supabase/functions/<name>       one Deno.serve entry point per endpoint
 tests/                          deno tests and fixture HTML
 ```
 
-Every function is deployed with `verify_jwt = false`. The Supabase gateway checks nothing; each function does its own check, because `invite`, `entitlement` and `apple-revoke` authenticate with an Apple identity token rather than a Supabase JWT, and `appstore-notifications` authenticates with Apple's signature over the payload.
+Every function is deployed with `verify_jwt = false`. The Supabase gateway checks nothing; each function does its own check, because `session`, `invite`, `entitlement` and `apple-revoke` authenticate with an Apple identity token or with the Corbie session token that `session` issues, rather than with a Supabase JWT, and `appstore-notifications` authenticates with Apple's signature over the payload.
 
 ## Local
 
@@ -30,7 +30,7 @@ supabase start
 supabase functions serve
 ```
 
-`supabase start` applies both migrations into the local database and prints the local URLs. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are injected into the local runtime, so only the Apple secrets need a `supabase/functions/.env` file locally (copy `.env.example`).
+`supabase start` applies both migrations into the local database and prints the local URLs. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are injected into the local runtime, so only `SESSION_SECRET` and the Apple secrets need a `supabase/functions/.env` file locally (copy `.env.example`).
 
 Endpoints that need no Apple token can be exercised straight away:
 
@@ -69,23 +69,24 @@ deno fmt --check
 deno lint
 ```
 
-The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, the parse address guard, the App Store status mapping, event validation with PII dropping, and the error envelope.
+The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the session token round trip together with the expiry, tamper and missing secret cases, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, the parse address guard, the App Store status mapping, event validation with PII dropping, and the error envelope.
 
 ## Secrets
 
 Set in the Supabase dashboard, or `supabase secrets set --env-file .env`.
 
-| Name                        | Used by                                 | Notes                                                              |
-| --------------------------- | --------------------------------------- | ------------------------------------------------------------------ |
-| `SUPABASE_URL`              | every function                          | injected by the platform                                           |
-| `SUPABASE_SERVICE_ROLE_KEY` | every function                          | injected by the platform; the only key that can touch the tables   |
-| `APPLE_CLIENT_ID`           | `invite`, `entitlement`, `apple-revoke` | defaults to `app.corbie`; the `aud` an identity token must carry   |
-| `APPLE_TEAM_ID`             | `apple-revoke`                          | ten character team id                                              |
-| `APPLE_KEY_ID`              | `apple-revoke`                          | key id of the Sign in with Apple key                               |
-| `APPLE_PRIVATE_KEY`         | `apple-revoke`                          | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted         |
-| `APPLE_ENV`                 | `appstore-notifications`                | `Sandbox` or `Production`; a payload from the other one is refused |
-| `APPLE_BUNDLE_ID`           | `appstore-notifications`                | defaults to `app.corbie`; a payload for another app is dropped     |
-| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                 | optional; without it Instagram links return only url and source    |
+| Name                        | Used by                                            | Notes                                                              |
+| --------------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
+| `SUPABASE_URL`              | every function                                     | injected by the platform                                           |
+| `SUPABASE_SERVICE_ROLE_KEY` | every function                                     | injected by the platform; the only key that can touch the tables   |
+| `SESSION_SECRET`            | every endpoint that requires auth                  | signs and checks the session token; rotating it signs everyone out |
+| `APPLE_CLIENT_ID`           | `session`, `invite`, `entitlement`, `apple-revoke` | defaults to `app.corbie`; the `aud` an identity token must carry   |
+| `APPLE_TEAM_ID`             | `apple-revoke`                                     | ten character team id                                              |
+| `APPLE_KEY_ID`              | `apple-revoke`                                     | key id of the Sign in with Apple key                               |
+| `APPLE_PRIVATE_KEY`         | `apple-revoke`                                     | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted         |
+| `APPLE_ENV`                 | `appstore-notifications`                           | `Sandbox` or `Production`; a payload from the other one is refused |
+| `APPLE_BUNDLE_ID`           | `appstore-notifications`                           | defaults to `app.corbie`; a payload for another app is dropped     |
+| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                            | optional; without it Instagram links return only url and source    |
 
 `APPLE_PRIVATE_KEY` never leaves the Supabase secret store, and nothing here belongs in the app binary.
 

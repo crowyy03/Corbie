@@ -1,4 +1,4 @@
-import { requireAppleUser } from "../_shared/appleAuth.ts";
+import { requireUser } from "../_shared/auth.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
 import {
   ApiError,
@@ -21,7 +21,7 @@ interface EntitlementRow {
 async function handle(req: Request): Promise<Response> {
   requireMethod(req, "GET");
   await enforceRateLimit(req, "entitlement", buckets.entitlement);
-  await requireAppleUser(req);
+  await requireUser(req);
 
   const segments = pathSegments(req, "entitlement");
   const spaceId = requireUuid(segments[0], "spaceId");

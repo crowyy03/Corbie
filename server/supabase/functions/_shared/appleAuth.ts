@@ -1,5 +1,6 @@
-import { decodeBase64Url } from "@std/encoding/base64url";
-import { ApiError } from "./respond.ts";
+import { parseJwt } from "./jwt.ts";
+import { ApiError, bearerToken } from "./respond.ts";
+import { isSessionToken } from "./sessionToken.ts";
 
 const jwksUrl = "https://appleid.apple.com/auth/keys";
 const issuer = "https://appleid.apple.com";
@@ -52,14 +53,6 @@ async function loadKeys(fetchImpl: typeof fetch, force: boolean): Promise<AppleJ
   return keys;
 }
 
-function decodeSegment(segment: string): Record<string, unknown> {
-  try {
-    return JSON.parse(new TextDecoder().decode(decodeBase64Url(segment)));
-  } catch {
-    throw new ApiError("unauthorized", "Identity token is malformed");
-  }
-}
-
 async function verifySignature(
   key: AppleJwk,
   signingInput: string,
@@ -84,22 +77,11 @@ export async function verifyAppleIdentityToken(
   token: string,
   fetchImpl: typeof fetch = fetch,
 ): Promise<string> {
-  const parts = token.split(".");
-  if (parts.length !== 3) throw new ApiError("unauthorized", "Identity token is malformed");
-
-  const header = decodeSegment(parts[0]);
+  const { header, claims, signingInput, signature } = parseJwt(token, "Identity token");
   if (header.alg !== "RS256") throw new ApiError("unauthorized", "Unsupported token algorithm");
   const kid = typeof header.kid === "string" ? header.kid : null;
   if (!kid) throw new ApiError("unauthorized", "Identity token is malformed");
 
-  let signature: Uint8Array;
-  try {
-    signature = decodeBase64Url(parts[2]);
-  } catch {
-    throw new ApiError("unauthorized", "Identity token is malformed");
-  }
-
-  const signingInput = `${parts[0]}.${parts[1]}`;
   let keys = await loadKeys(fetchImpl, false);
   let key = keys.find((candidate) => candidate.kid === kid);
   if (!key) {
@@ -111,7 +93,6 @@ export async function verifyAppleIdentityToken(
   const valid = await verifySignature(key, signingInput, signature);
   if (!valid) throw new ApiError("unauthorized", "Identity token signature is invalid");
 
-  const claims = decodeSegment(parts[1]);
   if (claims.iss !== issuer) throw new ApiError("unauthorized", "Identity token issuer is wrong");
 
   const expected = appleClientId();
@@ -139,8 +120,9 @@ export async function requireAppleUser(
   req: Request,
   fetchImpl: typeof fetch = fetch,
 ): Promise<string> {
-  const header = req.headers.get("authorization") ?? "";
-  const match = header.match(/^Bearer\s+(.+)$/i);
-  if (!match) throw new ApiError("unauthorized", "Authorization header is missing");
-  return await verifyAppleIdentityToken(match[1].trim(), fetchImpl);
+  const token = bearerToken(req);
+  if (isSessionToken(token)) {
+    throw new ApiError("unauthorized", "This endpoint needs an Apple identity token");
+  }
+  return await verifyAppleIdentityToken(token, fetchImpl);
 }

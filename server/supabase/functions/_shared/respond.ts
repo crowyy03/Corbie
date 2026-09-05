@@ -75,6 +75,13 @@ export async function readJson<T>(req: Request): Promise<T> {
   }
 }
 
+export function bearerToken(req: Request): string {
+  const header = req.headers.get("authorization") ?? "";
+  const match = header.match(/^Bearer\s+(.+)$/i);
+  if (!match) throw new ApiError("unauthorized", "Authorization header is missing");
+  return match[1].trim();
+}
+
 export function pathSegments(req: Request, functionName: string): string[] {
   const parts = new URL(req.url).pathname.split("/").filter((part) => part.length > 0);
   const index = parts.lastIndexOf(functionName);

@@ -1,4 +1,4 @@
-import { requireAppleUser } from "../_shared/appleAuth.ts";
+import { requireUser } from "../_shared/auth.ts";
 import { generateInviteCode } from "../_shared/inviteCode.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
 import {
@@ -42,7 +42,7 @@ function requireShareUrl(value: unknown): string {
 async function handle(req: Request): Promise<Response> {
   requireMethod(req, "POST");
   await enforceRateLimit(req, "invite", buckets.invite);
-  await requireAppleUser(req);
+  await requireUser(req);
 
   const body = await readJson<InviteRequest>(req);
   const spaceId = requireUuid(body.spaceId, "spaceId");
