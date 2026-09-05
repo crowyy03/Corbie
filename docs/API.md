@@ -62,7 +62,7 @@ Response `200`: `{"base": "USD", "date": "2026-09-05", "rates": {"EUR": 0.91, "G
 ### POST `/appstore-notifications`
 Called by Apple (App Store Server Notifications V2). Body is `{"signedPayload": "<JWS>"}`. The function verifies the JWS chain against Apple root certificates, decodes `signedTransactionInfo` and `signedRenewalInfo`, maps `appAccountToken` to `space_id` and upserts `entitlements`. Two deployments: `appstore-notifications` (production) and `appstore-notifications-sandbox` (sandbox), selected by `APPLE_ENV` secret. Responds `200` with empty body; Apple retries on non-2xx.
 
-Status mapping: `SUBSCRIBED`, `DID_RENEW`, `DID_CHANGE_RENEWAL_STATUS`, `OFFER_REDEEMED` with `expiresDate` in the future -> `active`; `DID_FAIL_TO_RENEW` with grace period -> `grace`; `EXPIRED`, `GRACE_PERIOD_EXPIRED` -> `expired`; `REFUND`, `REVOKE` -> `revoked`.
+Status mapping: `SUBSCRIBED`, `DID_RENEW`, `DID_CHANGE_RENEWAL_STATUS`, `OFFER_REDEEMED` with `expiresDate` in the future become `active`; `DID_FAIL_TO_RENEW` with grace period become `grace`; `EXPIRED`, `GRACE_PERIOD_EXPIRED` become `expired`; `REFUND`, `REVOKE` become `revoked`.
 
 ### GET `/entitlement/{spaceId}`
 Auth required.
