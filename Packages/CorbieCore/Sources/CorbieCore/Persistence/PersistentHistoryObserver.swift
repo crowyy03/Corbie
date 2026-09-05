@@ -12,6 +12,7 @@ final class PersistentHistoryObserver: @unchecked Sendable {
     private let defaults: UserDefaults
     private let lock = NSLock()
     private var observer: (any NSObjectProtocol)?
+    private var handler: (@Sendable ([RemoteChangeRecord]) -> Void)?
 
     init(container: NSPersistentContainer, author: TransactionAuthor, defaults: UserDefaults? = nil) {
         self.container = container
@@ -55,49 +56,85 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         observer = nil
     }
 
+    func setHandler(_ handler: (@Sendable ([RemoteChangeRecord]) -> Void)?) {
+        lock.lock()
+        defer { lock.unlock() }
+        self.handler = handler
+    }
+
     @discardableResult
     func process() throws -> Int {
         lock.lock()
+        let currentHandler = handler
         defer { lock.unlock() }
         let context = container.newBackgroundContext()
         context.transactionAuthor = author.rawValue
-        let token: NSPersistentHistoryToken?
-        let changes: [[AnyHashable: Any]]
+        let harvest: Harvest
         do {
-            (token, changes) = try context.performAndWait {
+            harvest = try context.performAndWait {
                 try readHistory(in: context)
             }
         } catch {
             throw CorbieError.persistence(error.localizedDescription)
         }
-        for change in changes {
+        for change in harvest.merges {
             NSManagedObjectContext.mergeChanges(fromRemoteContextSave: change, into: [container.viewContext])
         }
-        if let token {
+        if let token = harvest.token {
             store(token)
         }
-        if changes.isEmpty == false {
+        if harvest.merges.isEmpty == false {
             WidgetReloadRequest.post()
         }
-        return changes.count
+        if harvest.records.isEmpty == false {
+            currentHandler?(harvest.records)
+        }
+        return harvest.merges.count
     }
 
-    private func readHistory(
-        in context: NSManagedObjectContext
-    ) throws -> (NSPersistentHistoryToken?, [[AnyHashable: Any]]) {
+    private struct Harvest {
+        var token: NSPersistentHistoryToken?
+        var merges: [[AnyHashable: Any]] = []
+        var records: [RemoteChangeRecord] = []
+    }
+
+    private func readHistory(in context: NSManagedObjectContext) throws -> Harvest {
         let request = NSPersistentHistoryChangeRequest.fetchHistory(after: storedToken)
         let result = try context.execute(request) as? NSPersistentHistoryResult
         let transactions = result?.result as? [NSPersistentHistoryTransaction] ?? []
-        var token: NSPersistentHistoryToken?
-        var changes: [[AnyHashable: Any]] = []
+        var harvest = Harvest()
         for transaction in transactions {
-            token = transaction.token
+            harvest.token = transaction.token
             guard transaction.author != author.rawValue else { continue }
-            changes.append(transaction.objectIDNotification().userInfo ?? [:])
+            harvest.merges.append(transaction.objectIDNotification().userInfo ?? [:])
+            harvest.records.append(contentsOf: PersistentHistoryObserver.records(in: transaction))
         }
         let cutoff = Date().addingTimeInterval(-PersistentHistoryObserver.retention)
         _ = try context.execute(NSPersistentHistoryChangeRequest.deleteHistory(before: cutoff))
-        return (token, changes)
+        return harvest
+    }
+
+    private static func records(in transaction: NSPersistentHistoryTransaction) -> [RemoteChangeRecord] {
+        (transaction.changes ?? []).compactMap { change in
+            guard let entityName = change.changedObjectID.entity.name else { return nil }
+            return RemoteChangeRecord(
+                entityName: entityName,
+                objectURI: change.changedObjectID.uriRepresentation(),
+                type: changeType(change.changeType),
+                properties: Set((change.updatedProperties ?? []).map(\.name)),
+                author: transaction.author,
+                contextName: transaction.contextName
+            )
+        }
+    }
+
+    private static func changeType(_ raw: NSPersistentHistoryChangeType) -> RemoteChangeType {
+        switch raw {
+        case .insert: return .insert
+        case .update: return .update
+        case .delete: return .delete
+        @unknown default: return .update
+        }
     }
 
     private func store(_ token: NSPersistentHistoryToken) {

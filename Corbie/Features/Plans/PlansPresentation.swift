@@ -86,7 +86,7 @@ enum PlansRoute {
         switch route {
         case .plans: .big
         case let .plan(identifier): .plan(identifier)
-        case .tasks, .calendar, .wishes, .capsules, .votes, .join, .none: nil
+        case .tasks, .task, .calendar, .wishes, .capsules, .votes, .people, .person, .join, .none: nil
         }
     }
 }

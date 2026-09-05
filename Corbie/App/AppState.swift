@@ -1,5 +1,4 @@
 import Observation
-import SwiftUI
 
 @MainActor
 @Observable
@@ -12,23 +11,8 @@ final class AppState {
         case us
     }
 
-    enum ColorSchemePreference: String {
-        case system
-        case light
-        case dark
-
-        var colorScheme: ColorScheme? {
-            switch self {
-            case .system: nil
-            case .light: .light
-            case .dark: .dark
-            }
-        }
-    }
-
     var selectedTab: Tab = .tasks
     var isUsHubPresented = false
-    var colorSchemePreference: ColorSchemePreference = .system
     var route: Route?
 
     func open(_ route: Route?) {
@@ -40,11 +24,11 @@ final class AppState {
 
     private static func tab(for route: Route) -> Tab {
         switch route {
-        case .tasks: .tasks
+        case .tasks, .task: .tasks
         case .calendar: .calendar
         case .wishes: .wishes
         case .plans, .plan: .plans
-        case .capsules, .votes, .join: .us
+        case .capsules, .votes, .people, .person, .join: .us
         }
     }
 }

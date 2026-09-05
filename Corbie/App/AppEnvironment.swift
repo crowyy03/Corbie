@@ -20,10 +20,13 @@ final class AppEnvironment {
 
     nonisolated static let sessionTokenKey = "server.session.token"
     nonisolated static let appleIdentityTokenKey = "apple.identity.token"
+    nonisolated static let appleAuthorizationCodeKey = "apple.authorization.code"
+    nonisolated static let appleRefreshTokenKey = "apple.refresh.token"
 
     @ObservationIgnored let persistence: PersistenceController
     @ObservationIgnored let repositories: Repositories
     @ObservationIgnored let identity: MemberIdentity
+    @ObservationIgnored let anonymousIdentity: AnonymousIdentity
     @ObservationIgnored let secrets: any SecretStore
     @ObservationIgnored let sharing: CloudKitSharing
     @ObservationIgnored let apiClient: APIClient
@@ -33,6 +36,7 @@ final class AppEnvironment {
     @ObservationIgnored let fx: FXService
     @ObservationIgnored let linkParser: LinkParser
     @ObservationIgnored let notifications: NotificationScheduler
+    @ObservationIgnored let remoteChanges: RemoteChangeNotifier
     @ObservationIgnored let sessionService: SessionService
 
     let premiumGate: PremiumGate
@@ -40,6 +44,8 @@ final class AppEnvironment {
     let theme: ThemeStore
 
     private(set) var session: Session = .loading
+
+    @ObservationIgnored private var hasResyncedNotifications = false
 
     init(
         persistence: PersistenceController = .shared,
@@ -52,6 +58,7 @@ final class AppEnvironment {
         repositories = persistence.repositories
         self.secrets = secrets
         identity = MemberIdentity(store: secrets)
+        self.anonymousIdentity = anonymousIdentity
         sharing = CloudKitSharing(stack: persistence.stack)
         let tokenProvider: AppleTokenProvider = { [secrets] in
             if let token = try secrets.string(for: AppEnvironment.sessionTokenKey) { return token }
@@ -72,7 +79,9 @@ final class AppEnvironment {
         premiumGate = PremiumGate(analytics: analytics, entitlements: entitlementService)
         fx = FXService(client: client)
         linkParser = LinkParser(client: client)
-        notifications = NotificationScheduler(client: notificationClient)
+        let scheduler = NotificationScheduler(client: notificationClient)
+        notifications = scheduler
+        remoteChanges = RemoteChangeNotifier(stack: persistence.stack, scheduler: scheduler)
         toasts = ToastCenter()
         theme = ThemeStore()
     }
@@ -100,9 +109,11 @@ final class AppEnvironment {
     var isPaired: Bool { partner != nil }
 
     func bootstrap() async {
+        IntentPersistence.shared.use(controller: persistence, identity: identity)
         WidgetReloader.shared.start()
         await analytics.start()
         await notifications.registerCategories()
+        await remoteChanges.start()
         await reloadSession()
     }
 
@@ -122,6 +133,8 @@ final class AppEnvironment {
             }
             let partner = try await repositories.members.partner(of: member.id, spaceId: space.id)
             session = .signedIn(SessionContext(space: space, member: member, partner: partner))
+            await updateNotificationAudience()
+            await resyncNotificationBacklog()
             premiumGate.update(await entitlements.cachedState(spaceId: space.id, trialEndsAt: space.trialEndsAt))
             try? await repositories.members.touchLastSeen(memberId: member.id)
             Task { await premiumGate.refresh(spaceId: space.id) }
@@ -136,8 +149,13 @@ final class AppEnvironment {
         await premiumGate.refresh(spaceId: space.id)
     }
 
-    func storeAppleCredential(userIdentifier: String, identityToken: String?) throws {
+    func storeAppleCredential(
+        userIdentifier: String,
+        identityToken: String?,
+        authorizationCode: String? = nil
+    ) throws {
         try identity.setAppleUserID(userIdentifier)
+        storeAppleRevocationSecret(authorizationCode: authorizationCode)
         guard let identityToken, identityToken.isEmpty == false else { return }
         try secrets.setString(identityToken, for: Self.appleIdentityTokenKey)
     }
@@ -158,8 +176,87 @@ final class AppEnvironment {
         try? identity.clear()
         try? secrets.removeValue(for: Self.sessionTokenKey)
         try? secrets.removeValue(for: Self.appleIdentityTokenKey)
+        try? secrets.removeValue(for: Self.appleAuthorizationCodeKey)
+        try? secrets.removeValue(for: Self.appleRefreshTokenKey)
         session = .signedOut
         premiumGate.update(.readOnly)
+        Task { await remoteChanges.update(audience: nil) }
+    }
+
+    func apply(member: MemberDTO) {
+        guard case let .signedIn(context) = session else { return }
+        if context.member.id == member.id {
+            session = .signedIn(SessionContext(space: context.space, member: member, partner: context.partner))
+        } else if context.partner?.id == member.id {
+            session = .signedIn(SessionContext(space: context.space, member: context.member, partner: member))
+        }
+        Task { await updateNotificationAudience() }
+    }
+
+    func apply(space: SpaceDTO) {
+        guard case let .signedIn(context) = session, context.space.id == space.id else { return }
+        session = .signedIn(SessionContext(space: space, member: context.member, partner: context.partner))
+    }
+
+    func resyncNotificationBacklog() async {
+        guard hasResyncedNotifications == false else { return }
+        guard await notifications.authorizationStatus() == .authorized else { return }
+        hasResyncedNotifications = true
+        await NotificationBacklog.resync(self)
+    }
+
+    func updateNotificationAudience() async {
+        guard case let .signedIn(context) = session else {
+            await remoteChanges.update(audience: nil)
+            return
+        }
+        await remoteChanges.update(
+            audience: RemoteChangeNotifier.Audience(
+                spaceId: context.space.id,
+                memberId: context.member.id,
+                partnerId: context.partner?.id,
+                partnerName: partnerName,
+                prefs: context.member.notificationPrefs
+            )
+        )
+    }
+
+    func storeAppleRevocationSecret(authorizationCode: String?, refreshToken: String? = nil) {
+        if let authorizationCode, authorizationCode.isEmpty == false {
+            try? secrets.setString(authorizationCode, for: Self.appleAuthorizationCodeKey)
+        }
+        if let refreshToken, refreshToken.isEmpty == false {
+            try? secrets.setString(refreshToken, for: Self.appleRefreshTokenKey)
+        }
+    }
+
+    func appleRevocationSecret() -> (authorizationCode: String?, refreshToken: String?) {
+        (
+            try? secrets.string(for: Self.appleAuthorizationCodeKey),
+            try? secrets.string(for: Self.appleRefreshTokenKey)
+        )
+    }
+
+    func wipeLocalState() async {
+        await notifications.cancelEverything()
+        await remoteChanges.stop()
+        await remoteChanges.update(audience: nil)
+        await remoteChanges.forgetJointAction()
+        if let space { await entitlements.clearCache(spaceId: space.id) }
+        try? identity.clear()
+        try? secrets.removeValue(for: Self.sessionTokenKey)
+        try? secrets.removeValue(for: Self.appleIdentityTokenKey)
+        try? secrets.removeValue(for: Self.appleAuthorizationCodeKey)
+        try? secrets.removeValue(for: Self.appleRefreshTokenKey)
+        anonymousIdentity.reset()
+        do {
+            try StoreReset(stack: persistence.stack).wipe()
+        } catch {
+            report(error)
+        }
+        session = .signedOut
+        premiumGate.update(.readOnly)
+        await remoteChanges.start()
     }
 
     func report(_ error: any Error) {
