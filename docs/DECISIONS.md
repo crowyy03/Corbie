@@ -31,3 +31,13 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - The app is iPhone only: `TARGETED_DEVICE_FAMILY = 1` on the app, widget and share targets. The design is portrait-only and single column, and the Info.plist already declares portrait alone.
 - `CKSharingSupported` is in the app Info.plist and `AppDelegate.application(_:userDidAcceptCloudKitShareWith:)` calls `CloudKitSharing.acceptShare(metadata:)`, so an invitation link actually joins the space.
 - Each tab is a bare `NavigationStack` around its feature root; the feature view owns its title and toolbar and adds the pill with `.toolbar { UsPillToolbarItem() }`. The pill is the `CorbieCore` `UsPill` component, which already meets the 44pt tap target.
+
+## 2026-09-05 (module 05, calendar)
+
+- The calendar range fetch floors its start to `Calendar.startOfDay`. `CoreDataEventRepository.events(spaceId:from:to:)` matches `endAt >= from OR (endAt == nil AND startAt >= from)`, so an event earlier today with no end would drop out of a range that starts at "now".
+- All-day events written by the editor store `endAt` at 23:59:59 of the last day. EventKit hands imported all-day events an exclusive midnight end, so `CalendarEntry.inclusiveEndDay` reads an end that lands exactly on midnight as exclusive and keeps our own 23:59:59 ends inclusive. Both conventions then draw the same number of days.
+- Auto dates are merged into the grid and Upcoming, never stored. A stored event hides the virtual one when it falls on the same day and means the same thing: a birthday for the same person, a birthday without a person for a member birthday, an anniversary for either the together-since or the wedding date.
+- Auto dates are generated twice, anchored on today and on the first day of the visible month, so a future month shows that year's occurrence. The calendar entry id carries the day, so two occurrences of the same auto date can coexist.
+- Multi-day events are ice bars with lanes; a week row grows with its lane count instead of hiding a bar behind a "+N" marker. Single-day entries are dots under the day number, at most two.
+- The calendar reloads on `WidgetReloadRequest`, debounced by 250 ms. That covers edits made on the pushed detail screen, a bulk import and events merged from the partner by `PersistentHistoryObserver`.
+- "Add to iPhone Calendar" asks for write-only access (`EKEventStore.requestWriteOnlyAccessToEvents`), which needs `NSCalendarsWriteOnlyAccessUsageDescription` in the app Info.plist. `project.yml` does not declare that key yet, so the button reports "no access" instead of asking: requesting without the key terminates the app.
