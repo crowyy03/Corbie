@@ -12,6 +12,7 @@ The request and response contract is `API.md`. Architecture sections 5, 6, 9, 13
 supabase/config.toml            local stack and per function verify_jwt
 supabase/migrations/0001_init   tables, RLS, rate limiter, nightly purge
 supabase/migrations/0002_views  analytics schema and its four views
+supabase/migrations/0003_*      entitlement ordering columns and their write function
 supabase/functions/_shared      auth, rate limit, responses, parsing, Apple crypto
 supabase/functions/<name>       one Deno.serve entry point per endpoint
 tests/                          deno tests and fixture HTML
@@ -68,7 +69,7 @@ deno fmt --check
 deno lint
 ```
 
-The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the Apple certificate chain machinery against the embedded root, the App Store status mapping, event validation with PII dropping, and the error envelope.
+The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, the parse address guard, the App Store status mapping, event validation with PII dropping, and the error envelope.
 
 ## Secrets
 
@@ -83,6 +84,7 @@ Set in the Supabase dashboard, or `supabase secrets set --env-file .env`.
 | `APPLE_KEY_ID`              | `apple-revoke`                          | key id of the Sign in with Apple key                               |
 | `APPLE_PRIVATE_KEY`         | `apple-revoke`                          | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted         |
 | `APPLE_ENV`                 | `appstore-notifications`                | `Sandbox` or `Production`; a payload from the other one is refused |
+| `APPLE_BUNDLE_ID`           | `appstore-notifications`                | defaults to `app.corbie`; a payload for another app is dropped     |
 | `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                 | optional; without it Instagram links return only url and source    |
 
 `APPLE_PRIVATE_KEY` never leaves the Supabase secret store, and nothing here belongs in the app binary.
@@ -90,12 +92,12 @@ Set in the Supabase dashboard, or `supabase secrets set --env-file .env`.
 ## Deploy
 
 ```
-supabase link --project-ref <project-ref>
+supabase link --project-ref <project-ref> -p <database-password>
 supabase db push
 supabase functions deploy
 ```
 
-`.github/workflows/supabase.yml` does both on a push to `main` that touches `server/**`, using the `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_REF` repository secrets, and runs the tests on pull requests.
+`.github/workflows/supabase.yml` does both on a push to `main` that touches `server/**`, using the `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF` and `SUPABASE_DB_PASSWORD` repository secrets (`db push` opens a direct Postgres connection and cannot prompt for the password in CI), and runs the tests on pull requests.
 
 Sandbox and production App Store notifications need different `APPLE_ENV` values, so they need two projects. Point the sandbox URL in App Store Connect at the project whose `APPLE_ENV` is `Sandbox`.
 

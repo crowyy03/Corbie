@@ -39,6 +39,8 @@ A token bucket per IP and route lives in the `rate_limits` table; a full bucket 
 
 `appstore-notifications` is not rate limited: Apple calls it and retries on any non-2xx.
 
+The bucket key is the address the gateway itself sets: `CF-Connecting-IP`, then `X-Real-IP`, and only then the last entry of `X-Forwarded-For`, which is the hop the gateway appended. Entries a caller puts in front of that are ignored, because a caller can send any `X-Forwarded-For` it likes. With none of those headers the key falls back to a hash of `X-Anon-Id`.
+
 If the bucket cannot be read (database error) the request is allowed through, so a limiter outage never takes the API down.
 
 ## Endpoints
@@ -81,7 +83,7 @@ Response `200`:
 }
 ```
 
-`source` is one of `amazon`, `target`, `etsy`, `sephora`, `nordstrom`, `zara`, `ikea`, `instagram`, `tiktok`, `generic`. Any field except `canonicalURL` and `source` may be `null`. For `instagram` and `tiktok` the function uses oEmbed: `imageURL` and `author` are filled, `title` and `price` are `null`. Cached 24 h by SHA-256 of the normalized URL. Upstream timeout 8 s; on failure returns `200` with only `canonicalURL` and `source` so the client falls back to manual entry.
+`source` is one of `amazon`, `target`, `etsy`, `sephora`, `nordstrom`, `zara`, `ikea`, `instagram`, `tiktok`, `generic`. Any field except `canonicalURL` and `source` may be `null`. For `instagram` and `tiktok` the function uses oEmbed: `imageURL` and `author` are filled, `title` and `price` are `null`. Cached 24 h by SHA-256 of the normalized URL. Upstream timeout 8 s; on failure returns `200` with only `canonicalURL` and `source` so the client falls back to manual entry. A URL that points inside a network rather than at a shop is treated as such a failure and is never fetched.
 
 ### GET `/fx?base=USD`
 
@@ -91,7 +93,7 @@ Response `200`: `{"base": "USD", "date": "2026-09-05", "rates": {"EUR": 0.91, "G
 
 ### POST `/appstore-notifications`
 
-Called by Apple (App Store Server Notifications V2). Body is `{"signedPayload": "<JWS>"}`. The function verifies the JWS chain against Apple root certificates, decodes `signedTransactionInfo` and `signedRenewalInfo`, maps `appAccountToken` to `space_id` and upserts `entitlements`. Two deployments: `appstore-notifications` (production) and `appstore-notifications-sandbox` (sandbox), selected by `APPLE_ENV` secret. Responds `200` with empty body; Apple retries on non-2xx.
+Called by Apple (App Store Server Notifications V2). Body is `{"signedPayload": "<JWS>"}`. The function verifies the JWS chain against Apple root certificates, decodes `signedTransactionInfo` and `signedRenewalInfo`, maps `appAccountToken` to `space_id` and upserts `entitlements`. The same function is deployed to a sandbox and a production project, told apart by the `APPLE_ENV` secret. Responds `200` with empty body; Apple retries on non-2xx.
 
 Status mapping: `SUBSCRIBED`, `DID_RENEW`, `DID_CHANGE_RENEWAL_STATUS`, `OFFER_REDEEMED` with `expiresDate` in the future become `active`; `DID_FAIL_TO_RENEW` with a grace period becomes `grace`; `EXPIRED` and `GRACE_PERIOD_EXPIRED` become `expired`; `REFUND` and `REVOKE` become `revoked`.
 
@@ -141,7 +143,9 @@ These are details the contract above leaves open, fixed by `server/supabase/func
 
 **Invite.** `shareURL` must be `https` on `icloud.com` or a subdomain; anything else is `invalid_request`. Creating a code first expires every unredeemed code for that space, then inserts, retrying up to five times on a code collision. `invite-redeem` claims the row with a conditional update, so two devices racing the same code get one `200` and one `410 redeemed`. A code that is not six characters of the alphabet is `404 not_found`, same as an unknown code, so the endpoint does not tell a guesser which codes are well formed.
 
-**Parse.** The cache key is the SHA-256 of the canonical URL, so `/gp/product/ASIN?utm_source=x` and `/dp/ASIN` share one entry. Normalization strips `utm_*`, `fbclid`, `gclid`, `msclkid`, `igshid`, `ref`, `referrer` and friends everywhere, plus `tag`, `ascsubtag`, `linkCode`, `psc`, `th`, `qid` and the `pd_rd_*` / `pf_rd_*` family on Amazon, and rewrites Amazon product paths to `/dp/<ASIN>`. `a.co`, `amzn.to`, `amzn.eu` and `amzn.asia` are followed (max five hops) before normalizing. Responses are only cached when a title or an image was found, so a blocked page is retried next time rather than pinned for 24 h. A response body larger than 3 MB is truncated before parsing, and a non-HTML content type is dropped.
+**Parse.** Before any fetch, and again on every redirect hop, the target is checked: only `http` and `https`, no explicit port other than 443, no bare IP address, no `localhost`, `.local`, `.internal`, `.home.arpa` or `.onion` host, and no host that resolves to a loopback, private, link local, carrier grade NAT, multicast or reserved address in either family, IPv4 mapped addresses included. Redirects are followed by hand, at most five hops, so an allowed public host cannot bounce the fetch into the internal network. Where the runtime exposes no DNS resolver the name based checks still apply. A blocked URL degrades exactly like an unreachable one: `200` with only `canonicalURL` and `source`.
+
+The response body is read as a stream and abandoned once 3 MB have arrived, so an endless body cannot fill the worker's memory. The cache key is the SHA-256 of the canonical URL, so `/gp/product/ASIN?utm_source=x` and `/dp/ASIN` share one entry. Normalization strips `utm_*`, `fbclid`, `gclid`, `msclkid`, `igshid`, `ref`, `referrer` and friends everywhere, plus `tag`, `ascsubtag`, `linkCode`, `psc`, `th`, `qid` and the `pd_rd_*` / `pf_rd_*` family on Amazon, and rewrites Amazon product paths to `/dp/<ASIN>`. `a.co`, `amzn.to`, `amzn.eu` and `amzn.asia` are followed (max five hops) before normalizing. Responses are only cached when a title or an image was found, so a blocked page is retried next time rather than pinned for 24 h. A non-HTML content type is dropped.
 
 `currency` is `null` whenever `price` is `null`. The currency is read from `product:price:currency`, JSON-LD `priceCurrency`, a three letter code in the price text (`EUR23.89` included) or a symbol; when none of those is present the price is still returned with a `null` currency and the client must ask.
 
@@ -149,9 +153,13 @@ These are details the contract above leaves open, fixed by `server/supabase/func
 
 **FX.** Cached 12 h per base in `fx_rates`. If Frankfurter fails and a stale row exists, the stale row is served rather than an error; only a cold cache plus a failing upstream returns `502 upstream_failed`.
 
-**App Store notifications.** The JWS `x5c` chain is verified in full: every certificate must be inside its validity window, each must be signed by the next, issuer and subject DER must match along the chain, and the last certificate must be byte-for-byte the Apple Root CA G3 embedded in `_shared/appleRootCA.ts` (SHA-256 `63343abf…3e9179`). `signedTransactionInfo` and `signedRenewalInfo` are verified the same way, not merely decoded. A payload whose `environment` differs from `APPLE_ENV` is rejected with `invalid_request`, so sandbox traffic cannot write production entitlements. A notification with no `appAccountToken`, or one that is not a UUID, is answered `200` and dropped, because Apple would otherwise retry it forever. `payer_hash` is the SHA-256 of a salted `originalTransactionId`, never a user identifier.
+**App Store notifications.** The JWS `x5c` chain is verified in full: every certificate must be inside its validity window, each must be signed by the next, issuer and subject DER must match along the chain, and the last certificate must be byte-for-byte the Apple Root CA G3 embedded in `_shared/appleRootCA.ts` (SHA-256 `63343abf…3e9179`). Every certificate above the leaf must also be a certificate authority: basic constraints `cA=TRUE`, the `keyCertSign` key usage bit, and a path length constraint that still covers the certificates below it. The leaf must carry Apple's App Store signing extension `1.2.840.113635.100.6.11.1`, so an ordinary end entity certificate issued by Apple to some other developer cannot sign a notification. `signedTransactionInfo` and `signedRenewalInfo` are verified the same way, not merely decoded.
 
-Sandbox and production need two separate deployments with different `APPLE_ENV` values, which means two Supabase projects: a single project has one secret set.
+A payload whose `environment` differs from `APPLE_ENV` is rejected with `invalid_request`, so sandbox traffic cannot write production entitlements. A payload whose `bundleId` is not `APPLE_BUNDLE_ID` (default `app.corbie`), in the notification or in the decoded transaction or renewal info, is answered `200` and dropped: Apple signs every developer's notifications with the same leaf, so the bundle id is what ties a valid signature to this app. A notification with no `appAccountToken`, or one that is not a UUID, is answered `200` and dropped, because Apple would otherwise retry it forever. `payer_hash` is the SHA-256 of a salted `originalTransactionId`, never a user identifier.
+
+The write goes through `entitlement_apply()`, not a plain upsert. The row keeps `signed_date` and `notification_uuid`, and the update is skipped when the incoming notification repeats the stored `notificationUUID` or was signed before the stored one. Apple retries a non-2xx five times over three days and states that notifications can arrive out of order, so without that guard a replayed `DID_RENEW` would overwrite a later `REFUND`. A skipped write is still answered `200`.
+
+Sandbox and production need different `APPLE_ENV` values, which means two Supabase projects: a single project has one secret set. The function is named `appstore-notifications` in both.
 
 **Events.** Names outside the allowlist in architecture section 13 are dropped silently rather than failing the batch, so an older or newer client never loses a whole upload. Props are capped at 10 keys, string values at 200 characters, and only strings, finite numbers, booleans and `null` survive. Keys named `email`, `name`, `phone`, `title`, `body`, `text`, `url` are dropped case-insensitively. Timestamps more than an hour in the future or more than 30 days in the past are replaced with the receive time.
 

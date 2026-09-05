@@ -2,10 +2,12 @@ import { verifyAppleJws } from "../_shared/appleJws.ts";
 import {
   expiresAtOf,
   mapNotificationToStatus,
+  matchesBundle,
   normalizeEnvironment,
   type NotificationPayload,
   payerHash,
   type RenewalInfo,
+  signedDateOf,
   type TransactionInfo,
 } from "../_shared/appstore.ts";
 import {
@@ -20,6 +22,11 @@ import { serviceClient } from "../_shared/supabase.ts";
 
 function configuredEnvironment(): "Sandbox" | "Production" {
   return normalizeEnvironment(Deno.env.get("APPLE_ENV")) ?? "Production";
+}
+
+function configuredBundleId(): string {
+  const value = Deno.env.get("APPLE_BUNDLE_ID");
+  return value && value.length > 0 ? value : "app.corbie";
 }
 
 async function handle(req: Request): Promise<Response> {
@@ -37,6 +44,12 @@ async function handle(req: Request): Promise<Response> {
     throw new ApiError("invalid_request", `This endpoint only accepts ${expected} notifications`);
   }
 
+  const bundleId = configuredBundleId();
+  if (payload.data?.bundleId !== bundleId) {
+    console.error("notification for another app", payload.notificationUUID);
+    return empty(200);
+  }
+
   const signedTransaction = payload.data?.signedTransactionInfo;
   if (!signedTransaction) return empty(200);
 
@@ -47,6 +60,13 @@ async function handle(req: Request): Promise<Response> {
 
   if (normalizeEnvironment(transaction.environment) !== expected) {
     throw new ApiError("invalid_request", `This endpoint only accepts ${expected} notifications`);
+  }
+
+  if (
+    !matchesBundle(transaction.bundleId, bundleId) || !matchesBundle(renewal.bundleId, bundleId)
+  ) {
+    console.error("notification for another app", payload.notificationUUID);
+    return empty(200);
   }
 
   const spaceId = transaction.appAccountToken;
@@ -62,20 +82,25 @@ async function handle(req: Request): Promise<Response> {
     renewal,
   );
 
-  const { error } = await serviceClient().from("entitlements").upsert({
-    space_id: spaceId.toLowerCase(),
-    original_transaction_id: transaction.originalTransactionId ?? null,
-    product_id: transaction.productId ?? null,
-    status,
-    expires_at: expiresAtOf(status, transaction, renewal),
-    payer_hash: await payerHash(transaction.originalTransactionId),
-    environment: expected,
-    updated_at: new Date().toISOString(),
-  }, { onConflict: "space_id" });
+  const { data, error } = await serviceClient().rpc("entitlement_apply", {
+    p_space_id: spaceId.toLowerCase(),
+    p_original_transaction_id: transaction.originalTransactionId ?? null,
+    p_product_id: transaction.productId ?? null,
+    p_status: status,
+    p_expires_at: expiresAtOf(status, transaction, renewal),
+    p_payer_hash: await payerHash(transaction.originalTransactionId),
+    p_environment: expected,
+    p_signed_date: signedDateOf(payload, transaction),
+    p_notification_uuid: payload.notificationUUID ?? null,
+  });
 
   if (error) {
-    console.error("entitlement upsert failed", error);
+    console.error("entitlement write failed", error);
     throw new ApiError("internal", "Could not store the subscription");
+  }
+
+  if (data === false) {
+    console.error("notification is stale or already applied", payload.notificationUUID);
   }
 
   return empty(200);

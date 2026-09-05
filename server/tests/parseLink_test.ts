@@ -61,6 +61,36 @@ Deno.test("a non-html response degrades instead of returning bytes", async () =>
   assertEquals(result.imageURL, null);
 });
 
+Deno.test("an endless body is cut off at the cap instead of being buffered whole", async () => {
+  const chunk = new TextEncoder().encode("x".repeat(256 * 1024));
+  let produced = 0;
+  const endless: typeof fetch = () =>
+    Promise.resolve(
+      new Response(
+        new ReadableStream<Uint8Array>({
+          start(controller) {
+            controller.enqueue(
+              new TextEncoder().encode("<html><head><title>Big page</title></head><body>"),
+            );
+          },
+          pull(controller) {
+            produced += 1;
+            if (produced > 64) {
+              controller.close();
+              return;
+            }
+            controller.enqueue(chunk);
+          },
+        }),
+        { headers: { "content-type": "text/html" } },
+      ),
+    );
+
+  const result = await parseLink("https://example.com/big", endless);
+  assertEquals(result.title, "Big page");
+  assertEquals(produced <= 13, true, `produced ${produced} chunks`);
+});
+
 Deno.test("a 404 degrades instead of parsing the error page", async () => {
   const missing = htmlFetch("<html><head><title>Not found</title></head></html>", { status: 404 });
   const result = await parseLink("https://example.com/gone", missing);

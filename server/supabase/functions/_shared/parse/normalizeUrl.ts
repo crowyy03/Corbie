@@ -1,3 +1,5 @@
+import { safeFetch } from "./guard.ts";
+
 const trackingParams = new Set([
   "fbclid",
   "gclid",
@@ -112,7 +114,7 @@ export function normalizeUrl(raw: string): string {
 
 export async function resolveShortLink(
   raw: string,
-  fetchImpl: typeof fetch = fetch,
+  fetchImpl: typeof fetch = safeFetch,
 ): Promise<string> {
   if (!isAmazonShortLink(raw)) return raw;
   let current = raw;

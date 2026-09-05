@@ -121,6 +121,57 @@ export async function verifySignedBy(
   );
 }
 
+const basicConstraintsOid = "2.5.29.19";
+const keyUsageOid = "2.5.29.15";
+
+export function isCertificateAuthority(der: Uint8Array): boolean {
+  const value = extensionValue(der, basicConstraintsOid);
+  if (!value) return false;
+  try {
+    const flag = children(value, readNode(value, 0)).find((part) => part.tag === 0x01);
+    if (!flag) return false;
+    const bytes = content(value, flag);
+    return bytes.length > 0 && bytes[0] !== 0x00;
+  } catch {
+    return false;
+  }
+}
+
+export function pathLengthConstraint(der: Uint8Array): number | null {
+  const value = extensionValue(der, basicConstraintsOid);
+  if (!value) return null;
+  try {
+    const limit = children(value, readNode(value, 0)).find((part) => part.tag === 0x02);
+    if (!limit) return null;
+    let result = 0;
+    for (const byte of integer(value, limit)) result = result * 256 + byte;
+    return result;
+  } catch {
+    return null;
+  }
+}
+
+export function allowsCertificateSigning(der: Uint8Array): boolean {
+  const value = extensionValue(der, keyUsageOid);
+  if (!value) return false;
+  try {
+    const node = readNode(value, 0);
+    if (node.tag !== 0x03) return false;
+    const bits = content(value, node);
+    return bits.length > 1 && (bits[1] & 0x04) !== 0;
+  } catch {
+    return false;
+  }
+}
+
+export function hasExtension(der: Uint8Array, oid: string): boolean {
+  try {
+    return extensionValue(der, oid) !== null;
+  } catch {
+    return false;
+  }
+}
+
 export function extensionValue(der: Uint8Array, oid: string): Uint8Array | null {
   const root = readNode(der, 0);
   const tbsNode = children(der, root)[0];

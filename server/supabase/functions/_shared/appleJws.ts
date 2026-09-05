@@ -2,8 +2,20 @@ import { decodeBase64 } from "@std/encoding/base64";
 import { decodeBase64Url } from "@std/encoding/base64url";
 import { appleRootCaG3Pem } from "./appleRootCA.ts";
 import { ApiError } from "./respond.ts";
-import { parseCertificate, parsePem, publicKeyOf, sameBytes, verifySignedBy } from "./x509.ts";
+import {
+  allowsCertificateSigning,
+  hasExtension,
+  isCertificateAuthority,
+  parseCertificate,
+  parsePem,
+  pathLengthConstraint,
+  publicKeyOf,
+  sameBytes,
+  verifySignedBy,
+} from "./x509.ts";
 import type { Certificate } from "./x509.ts";
+
+export const appStoreSigningOid = "1.2.840.113635.100.6.11.1";
 
 let trustedRoot: Certificate | null = null;
 
@@ -44,6 +56,24 @@ async function verifyChain(x5c: string[], at: Date): Promise<Certificate> {
         "Signed payload certificate is out of its validity window",
       );
     }
+  }
+
+  for (let i = 1; i < chain.length; i++) {
+    const authority = chain[i];
+    if (!isCertificateAuthority(authority.der) || !allowsCertificateSigning(authority.der)) {
+      throw new ApiError(
+        "unauthorized",
+        "Signed payload chain contains a certificate that may not sign certificates",
+      );
+    }
+    const pathLength = pathLengthConstraint(authority.der);
+    if (pathLength !== null && pathLength < i - 1) {
+      throw new ApiError("unauthorized", "Signed payload chain is longer than its constraint");
+    }
+  }
+
+  if (!hasExtension(chain[0].der, appStoreSigningOid)) {
+    throw new ApiError("unauthorized", "Signed payload leaf is not an App Store signing key");
   }
 
   for (let i = 0; i < chain.length - 1; i++) {

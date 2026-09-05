@@ -16,17 +16,33 @@ export const buckets = {
   appleRevoke: { capacity: 10, refillPerHour: 10 },
 } as const satisfies Record<string, Bucket>;
 
-export function clientIp(req: Request): string {
-  const forwarded = req.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const first = forwarded.split(",")[0].trim();
-    if (first.length > 0) return first;
-  }
-  return req.headers.get("cf-connecting-ip") ?? req.headers.get("x-real-ip") ?? "unknown";
+function trimmed(value: string | null): string | null {
+  const result = value?.trim() ?? "";
+  return result.length > 0 ? result : null;
+}
+
+async function digest(value: string): Promise<string> {
+  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(bytes)].map((byte) => byte.toString(16).padStart(2, "0")).join("")
+    .slice(0, 32);
+}
+
+export async function clientKey(req: Request): Promise<string> {
+  const direct = trimmed(req.headers.get("cf-connecting-ip")) ??
+    trimmed(req.headers.get("x-real-ip"));
+  if (direct) return direct;
+
+  const forwarded = trimmed(req.headers.get("x-forwarded-for"));
+  const hops = forwarded?.split(",").map((hop) => hop.trim()).filter((hop) => hop.length > 0) ?? [];
+  if (hops.length > 0) return hops[hops.length - 1];
+
+  const anon = trimmed(req.headers.get("x-anon-id"));
+  if (anon) return `anon:${await digest(anon)}`;
+  return "unknown";
 }
 
 export async function enforceRateLimit(req: Request, route: string, bucket: Bucket): Promise<void> {
-  const key = `${route}:${clientIp(req)}`;
+  const key = `${route}:${await clientKey(req)}`;
   const { data, error } = await serviceClient().rpc("rate_limit_take", {
     p_key: key,
     p_capacity: bucket.capacity,

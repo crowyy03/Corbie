@@ -4,6 +4,7 @@ export interface NotificationPayload {
   notificationType?: string;
   subtype?: string;
   notificationUUID?: string;
+  signedDate?: number;
   data?: {
     environment?: string;
     bundleId?: string;
@@ -21,6 +22,7 @@ export interface TransactionInfo {
   environment?: string;
   bundleId?: string;
   transactionReason?: string;
+  signedDate?: number;
 }
 
 export interface RenewalInfo {
@@ -29,6 +31,7 @@ export interface RenewalInfo {
   expirationIntent?: number;
   isInBillingRetryPeriod?: boolean;
   environment?: string;
+  bundleId?: string;
 }
 
 const activeTypes = new Set([
@@ -84,6 +87,19 @@ export function expiresAtOf(
     : transaction.expiresDate;
   if (millis === undefined) return null;
   return new Date(millis).toISOString();
+}
+
+export function signedDateOf(
+  payload: NotificationPayload,
+  transaction: TransactionInfo,
+): string | null {
+  const millis = payload.signedDate ?? transaction.signedDate;
+  if (millis === undefined || !Number.isFinite(millis)) return null;
+  return new Date(millis).toISOString();
+}
+
+export function matchesBundle(value: string | undefined, bundleId: string): boolean {
+  return value === undefined || value === bundleId;
 }
 
 export function normalizeEnvironment(raw: string | undefined): "Sandbox" | "Production" | null {

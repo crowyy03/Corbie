@@ -1,5 +1,6 @@
 import { parseHtml } from "../html.ts";
 import { adapterForHost } from "./adapters/index.ts";
+import { safeFetch } from "./guard.ts";
 import { extractJsonLd } from "./jsonld.ts";
 import { browserUserAgent, hostOf, normalizeUrl, resolveShortLink } from "./normalizeUrl.ts";
 import { fetchOEmbed } from "./oembed.ts";
@@ -14,6 +15,7 @@ import {
 
 export * from "./types.ts";
 export { hostOf, normalizeUrl, resolveShortLink } from "./normalizeUrl.ts";
+export { safeFetch } from "./guard.ts";
 
 const upstreamTimeoutMs = 8000;
 const maxHtmlBytes = 3 * 1024 * 1024;
@@ -54,28 +56,50 @@ function tidy(fields: ProductFields, canonicalURL: string): ProductFields {
   };
 }
 
+async function readCapped(body: ReadableStream<Uint8Array>): Promise<Uint8Array> {
+  const reader = body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  while (total < maxHtmlBytes) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    total += value.length;
+  }
+  await reader.cancel().catch(() => {});
+
+  const capped = new Uint8Array(Math.min(total, maxHtmlBytes));
+  let offset = 0;
+  for (const chunk of chunks) {
+    if (offset >= capped.length) break;
+    const room = capped.length - offset;
+    capped.set(chunk.length > room ? chunk.subarray(0, room) : chunk, offset);
+    offset += Math.min(chunk.length, room);
+  }
+  return capped;
+}
+
 async function readHtml(response: Response): Promise<string | null> {
   const type = response.headers.get("content-type") ?? "";
   if (type.length > 0 && !type.toLowerCase().includes("html")) {
     await response.body?.cancel();
     return null;
   }
-  const buffer = await response.arrayBuffer();
-  const bytes = new Uint8Array(buffer);
-  const capped = bytes.length > maxHtmlBytes ? bytes.subarray(0, maxHtmlBytes) : bytes;
+  if (!response.body) return null;
+  const capped = await readCapped(response.body);
   return new TextDecoder("utf-8", { fatal: false }).decode(capped);
 }
 
 export async function canonicalizeUrl(
   rawUrl: string,
-  fetchImpl: typeof fetch = fetch,
+  fetchImpl: typeof fetch = safeFetch,
 ): Promise<string> {
   return normalizeUrl(await resolveShortLink(rawUrl.trim(), fetchImpl));
 }
 
 export async function parseLink(
   rawUrl: string,
-  fetchImpl: typeof fetch = fetch,
+  fetchImpl: typeof fetch = safeFetch,
 ): Promise<ParseResult> {
   const canonicalURL = await canonicalizeUrl(rawUrl, fetchImpl);
   const host = hostOf(new URL(canonicalURL));

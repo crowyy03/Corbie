@@ -2,8 +2,10 @@ import { assertEquals } from "@std/assert";
 import {
   expiresAtOf,
   mapNotificationToStatus,
+  matchesBundle,
   normalizeEnvironment,
   payerHash,
+  signedDateOf,
 } from "../supabase/functions/_shared/appstore.ts";
 
 const now = Date.UTC(2026, 8, 5, 10, 0, 0);
@@ -112,6 +114,21 @@ Deno.test("environment is accepted only in the two spellings Apple uses", () => 
   assertEquals(normalizeEnvironment("Production"), "Production");
   assertEquals(normalizeEnvironment("production"), null);
   assertEquals(normalizeEnvironment(undefined), null);
+});
+
+Deno.test("the notification signing time orders writes, the transaction time is the fallback", () => {
+  assertEquals(
+    signedDateOf({ signedDate: now }, { signedDate: past }),
+    new Date(now).toISOString(),
+  );
+  assertEquals(signedDateOf({}, { signedDate: past }), new Date(past).toISOString());
+  assertEquals(signedDateOf({}, {}), null);
+});
+
+Deno.test("a bundle id is accepted only when it is missing or ours", () => {
+  assertEquals(matchesBundle("app.corbie", "app.corbie"), true);
+  assertEquals(matchesBundle(undefined, "app.corbie"), true);
+  assertEquals(matchesBundle("com.attacker.app", "app.corbie"), false);
 });
 
 Deno.test("payer hash is stable and does not contain the transaction id", async () => {
