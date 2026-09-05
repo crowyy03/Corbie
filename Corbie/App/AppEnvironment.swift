@@ -33,6 +33,7 @@ final class AppEnvironment {
     @ObservationIgnored let fx: FXService
     @ObservationIgnored let linkParser: LinkParser
     @ObservationIgnored let notifications: NotificationScheduler
+    @ObservationIgnored let sessionService: SessionService
 
     let premiumGate: PremiumGate
     let toasts: ToastCenter
@@ -58,6 +59,7 @@ final class AppEnvironment {
         }
         let client = APIClient(identity: anonymousIdentity, appleToken: tokenProvider)
         apiClient = client
+        sessionService = SessionService(configuration: client.configuration)
         analytics = Analytics(client: client, identity: anonymousIdentity)
         self.store = store
         let entitlementService = EntitlementService(
@@ -133,6 +135,24 @@ final class AppEnvironment {
         await premiumGate.refresh(spaceId: space.id)
     }
 
+    func storeAppleCredential(userIdentifier: String, identityToken: String?) throws {
+        try identity.setAppleUserID(userIdentifier)
+        guard let identityToken, identityToken.isEmpty == false else { return }
+        try secrets.setString(identityToken, for: Self.appleIdentityTokenKey)
+    }
+
+    func exchangeSessionToken() async throws {
+        guard let identityToken = try secrets.string(for: Self.appleIdentityTokenKey) else {
+            throw CorbieError.auth("no apple identity token to exchange")
+        }
+        let token = try await sessionService.exchange(appleIdentityToken: identityToken)
+        try secrets.setString(token.token, for: Self.sessionTokenKey)
+    }
+
+    func existingSpace() throws -> SpaceDTO? {
+        try sharing.currentSpace(in: persistence.viewContext).map(SpaceDTO.init)
+    }
+
     func signOut() {
         try? identity.clear()
         try? secrets.removeValue(for: Self.sessionTokenKey)
@@ -161,5 +181,38 @@ extension AppEnvironment {
             anonymousIdentity: .inMemory(),
             notificationClient: PreviewNotificationClient()
         )
+    }
+
+    static func previewSignedOut() -> AppEnvironment {
+        let environment = AppEnvironment.preview()
+        environment.session = .signedOut
+        return environment
+    }
+
+    static func previewSignedIn(paired: Bool = true) -> AppEnvironment {
+        let environment = AppEnvironment.preview()
+        let member = MemberDTO(
+            id: UUID(),
+            displayName: PreviewNames.member,
+            colorKey: MemberColorKey.defaultA.rawValue,
+            joinedAt: Date()
+        )
+        let partner = MemberDTO(
+            id: UUID(),
+            displayName: PreviewNames.partner,
+            colorKey: MemberColorKey.defaultB.rawValue,
+            joinedAt: Date()
+        )
+        let space = SpaceDTO(
+            id: UUID(),
+            createdAt: Date(),
+            creatorMemberId: member.id,
+            trialEndsAt: Date().addingTimeInterval(7 * 24 * 3600),
+            memberCount: paired ? 2 : 1
+        )
+        environment.session = .signedIn(
+            SessionContext(space: space, member: member, partner: paired ? partner : nil)
+        )
+        return environment
     }
 }
