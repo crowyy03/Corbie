@@ -1,0 +1,973 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		119BE71835686FAFB0F9885B /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */; };
+		11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D439758E7E6D75110C77131A /* CorbieApp.swift */; };
+		1A3BB94EFB5F1AE56AC2B48D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */; };
+		1C5C206503457A593AF48958 /* PlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */; };
+		223BC84E1DB2B99845AEFB2B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
+		24C9999E7AF39592DFC9850B /* UsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F3366F97984A781DC3953 /* UsView.swift */; };
+		348435E9BB1F704E88F9B5B8 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9FDF78C8AFE2EB5AA5274C43 /* CorbieCore */; };
+		35CFA4A8EB05DEFD286CECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
+		3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4EAF790494EF27B38A13 /* TasksView.swift */; };
+		46A1998D55C4137CB0C56BA7 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 053C7B83569FB8EA59BC28EF /* CorbieCore */; };
+		4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */; };
+		5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADECE3D6ABD0A50F325ECA /* RootView.swift */; };
+		6B4C7D23BA1928AB78E937AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */; };
+		735797CD81CBFC9E1A6B8874 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE157E918D961E9899DE32D /* LaunchUITests.swift */; };
+		738EE314D5EFC041C2EDF6E2 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAF52F19A383AEDFE0ECB2BC /* CorbieCore */; };
+		792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */; };
+		7D41F6D039348679B73D158E /* WishesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398541694197694D6538882 /* WishesView.swift */; };
+		9E7891F0830411940526CDB1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53715C4B0BEE41A246CA135 /* AppState.swift */; };
+		BE9E2253E46F0C5D2650B635 /* CorbieWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */; };
+		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
+		E32AF678642BF3322E2DDD5A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36368046A5FAB01754781EFA /* Router.swift */; };
+		E802BA38F4C6F2C5E0A66A0A /* CorbieShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F3788058226B31D375C21949 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4516E0BF27017473DA4A6841 /* CalendarView.swift */; };
+		F6F4386491A47704FD8B745E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
+		F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2483FC2597FA0F9405766017 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 910A080C673D03E3E0F1A553 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1137EF0D5A55C67BEDD3516F;
+			remoteInfo = Corbie;
+		};
+		79ED882616EA234D6A138DA0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 910A080C673D03E3E0F1A553 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 819E3C5C7CA0623A6BF9F9F4;
+			remoteInfo = CorbieWidgets;
+		};
+		A75E96E4471ED2A828750BD2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 910A080C673D03E3E0F1A553 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20A8A205FE1174B05D918A23;
+			remoteInfo = CorbieShare;
+		};
+		C6A667017042B1C45011EAE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 910A080C673D03E3E0F1A553 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1137EF0D5A55C67BEDD3516F;
+			remoteInfo = Corbie;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		33542D83FCB36ED59530F935 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BE9E2253E46F0C5D2650B635 /* CorbieWidgets.appex in Embed Foundation Extensions */,
+				E802BA38F4C6F2C5E0A66A0A /* CorbieShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		27FA4EAF790494EF27B38A13 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
+		2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
+		36368046A5FAB01754781EFA /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4516E0BF27017473DA4A6841 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieWidgetsBundle.swift; sourceTree = "<group>"; };
+		4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BD088A33E2CAFF8EEB22704 /* CorbieTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CorbieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BEF587FBFA4C383CF2615FA /* Corbie.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Corbie.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7398541694197694D6538882 /* WishesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishesView.swift; sourceTree = "<group>"; };
+		73C687DE0F2DB876101A9EA7 /* CorbieUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CorbieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		764D28944098863C4197B098 /* CorbieCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CorbieCore; path = Packages/CorbieCore; sourceTree = SOURCE_ROOT; };
+		76B17794417FDD3F3E7B2AA1 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
+		7AD1279BBDD45CD8EF636282 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
+		88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		A53715C4B0BEE41A246CA135 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		ADE157E918D961E9899DE32D /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
+		AEADECE3D6ABD0A50F325ECA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		C5958CC8757BF6F56C4338EC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansView.swift; sourceTree = "<group>"; };
+		D439758E7E6D75110C77131A /* CorbieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieApp.swift; sourceTree = "<group>"; };
+		D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubView.swift; sourceTree = "<group>"; };
+		FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		FC4F3366F97984A781DC3953 /* UsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		171E704118D94D95399450DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				738EE314D5EFC041C2EDF6E2 /* CorbieCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C841AF02BFBF6010AD41906A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				348435E9BB1F704E88F9B5B8 /* CorbieCore in Frameworks */,
+				1A3BB94EFB5F1AE56AC2B48D /* WidgetKit.framework in Frameworks */,
+				D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D660C6E7A89F9F6A3C715A02 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46A1998D55C4137CB0C56BA7 /* CorbieCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0900B2BD9B49CC81C3780556 /* Plans */ = {
+			isa = PBXGroup;
+			children = (
+				C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */,
+			);
+			path = Plans;
+			sourceTree = "<group>";
+		};
+		0B67C875901C9AD8228962AC /* CorbieShare */ = {
+			isa = PBXGroup;
+			children = (
+				1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */,
+			);
+			path = CorbieShare;
+			sourceTree = "<group>";
+		};
+		30CD7EFE04EAADAB8793CB60 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				FB229C8C8DFA85FFFB1E9AC2 /* Calendar */,
+				0900B2BD9B49CC81C3780556 /* Plans */,
+				884872A6CF2E0E683C0B2E3D /* Shared */,
+				CEDDF271B888211861AE0B30 /* Tasks */,
+				9DACF5222ACE2D4DFCC6EC85 /* Us */,
+				EE37F02626653CC6C37A7CF8 /* Wishes */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		4FF8A4B61CD8905061F6C15D /* CorbieUITests */ = {
+			isa = PBXGroup;
+			children = (
+				ADE157E918D961E9899DE32D /* LaunchUITests.swift */,
+			);
+			path = CorbieUITests;
+			sourceTree = "<group>";
+		};
+		5EF57998F7B01A80364D7D23 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				764D28944098863C4197B098 /* CorbieCore */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		6D34894568C122CC06472CFC /* Corbie */ = {
+			isa = PBXGroup;
+			children = (
+				901A85F623C6326CF70E9A17 /* App */,
+				30CD7EFE04EAADAB8793CB60 /* Features */,
+				98210A81AD8D3A753CA62324 /* Resources */,
+			);
+			path = Corbie;
+			sourceTree = "<group>";
+		};
+		7D77012DD6886E087F0558FA = {
+			isa = PBXGroup;
+			children = (
+				6D34894568C122CC06472CFC /* Corbie */,
+				0B67C875901C9AD8228962AC /* CorbieShare */,
+				80EBF8A26B578EFBF35FA92A /* CorbieTests */,
+				4FF8A4B61CD8905061F6C15D /* CorbieUITests */,
+				D30016B8E5ACC19E46CF870B /* CorbieWidgets */,
+				5EF57998F7B01A80364D7D23 /* Packages */,
+				7AD1279BBDD45CD8EF636282 /* Products.storekit */,
+				76B17794417FDD3F3E7B2AA1 /* project.yml */,
+				C5958CC8757BF6F56C4338EC /* README.md */,
+				A3EBAEE38FF1307B94FB764A /* Frameworks */,
+				BEF8862425EF08C0524194B2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		80EBF8A26B578EFBF35FA92A /* CorbieTests */ = {
+			isa = PBXGroup;
+			children = (
+				2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */,
+			);
+			path = CorbieTests;
+			sourceTree = "<group>";
+		};
+		884872A6CF2E0E683C0B2E3D /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		901A85F623C6326CF70E9A17 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A53715C4B0BEE41A246CA135 /* AppState.swift */,
+				D439758E7E6D75110C77131A /* CorbieApp.swift */,
+				AEADECE3D6ABD0A50F325ECA /* RootView.swift */,
+				36368046A5FAB01754781EFA /* Router.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		98210A81AD8D3A753CA62324 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */,
+				3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9DACF5222ACE2D4DFCC6EC85 /* Us */ = {
+			isa = PBXGroup;
+			children = (
+				F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */,
+				FC4F3366F97984A781DC3953 /* UsView.swift */,
+			);
+			path = Us;
+			sourceTree = "<group>";
+		};
+		A3EBAEE38FF1307B94FB764A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */,
+				4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BEF8862425EF08C0524194B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6BEF587FBFA4C383CF2615FA /* Corbie.app */,
+				4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */,
+				5BD088A33E2CAFF8EEB22704 /* CorbieTests.xctest */,
+				73C687DE0F2DB876101A9EA7 /* CorbieUITests.xctest */,
+				D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEDDF271B888211861AE0B30 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				27FA4EAF790494EF27B38A13 /* TasksView.swift */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		D30016B8E5ACC19E46CF870B /* CorbieWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */,
+			);
+			path = CorbieWidgets;
+			sourceTree = "<group>";
+		};
+		EE37F02626653CC6C37A7CF8 /* Wishes */ = {
+			isa = PBXGroup;
+			children = (
+				7398541694197694D6538882 /* WishesView.swift */,
+			);
+			path = Wishes;
+			sourceTree = "<group>";
+		};
+		FB229C8C8DFA85FFFB1E9AC2 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				4516E0BF27017473DA4A6841 /* CalendarView.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1137EF0D5A55C67BEDD3516F /* Corbie */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6210839FAD2CD5D9EE23FB8A /* Build configuration list for PBXNativeTarget "Corbie" */;
+			buildPhases = (
+				A0F92323FC5DB1501A57B2C2 /* Sources */,
+				B795DEAD577A22D8C2D3B719 /* Resources */,
+				D660C6E7A89F9F6A3C715A02 /* Frameworks */,
+				33542D83FCB36ED59530F935 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				99A8FD1438023D63291A2608 /* PBXTargetDependency */,
+				7CBC487F15100DFE947D06F9 /* PBXTargetDependency */,
+			);
+			name = Corbie;
+			packageProductDependencies = (
+				053C7B83569FB8EA59BC28EF /* CorbieCore */,
+			);
+			productName = Corbie;
+			productReference = 6BEF587FBFA4C383CF2615FA /* Corbie.app */;
+			productType = "com.apple.product-type.application";
+		};
+		20A8A205FE1174B05D918A23 /* CorbieShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42BBA9E78633C1AE07465E85 /* Build configuration list for PBXNativeTarget "CorbieShare" */;
+			buildPhases = (
+				A64BB48D19DD220015CAC9A1 /* Sources */,
+				420928BFA1D660EAC6974849 /* Resources */,
+				171E704118D94D95399450DA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CorbieShare;
+			packageProductDependencies = (
+				FAF52F19A383AEDFE0ECB2BC /* CorbieCore */,
+			);
+			productName = CorbieShare;
+			productReference = 4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		2868F42C7595A7236FEE09BE /* CorbieTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB78418F08D0457828AB1946 /* Build configuration list for PBXNativeTarget "CorbieTests" */;
+			buildPhases = (
+				74EC5AD79E625CC3B483CC03 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				926A5A54B98B1760A09DE8A9 /* PBXTargetDependency */,
+			);
+			name = CorbieTests;
+			packageProductDependencies = (
+			);
+			productName = CorbieTests;
+			productReference = 5BD088A33E2CAFF8EEB22704 /* CorbieTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3A2A6A330CC5C180CD1AC1FB /* CorbieUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A1FF2429275F87CC66A45A9 /* Build configuration list for PBXNativeTarget "CorbieUITests" */;
+			buildPhases = (
+				F1792FA3D8BDE3CC82BD7A4C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03AF120EE0AD63674A59C227 /* PBXTargetDependency */,
+			);
+			name = CorbieUITests;
+			packageProductDependencies = (
+			);
+			productName = CorbieUITests;
+			productReference = 73C687DE0F2DB876101A9EA7 /* CorbieUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		819E3C5C7CA0623A6BF9F9F4 /* CorbieWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4D1C26AB752980F2ACF0433 /* Build configuration list for PBXNativeTarget "CorbieWidgets" */;
+			buildPhases = (
+				D3DE0BFF5AAA2FE9E006F8BF /* Sources */,
+				29B1FFF60836238ECC2F51C9 /* Resources */,
+				C841AF02BFBF6010AD41906A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CorbieWidgets;
+			packageProductDependencies = (
+				9FDF78C8AFE2EB5AA5274C43 /* CorbieCore */,
+			);
+			productName = CorbieWidgets;
+			productReference = D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		910A080C673D03E3E0F1A553 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					1137EF0D5A55C67BEDD3516F = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					20A8A205FE1174B05D918A23 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					2868F42C7595A7236FEE09BE = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					3A2A6A330CC5C180CD1AC1FB = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 1137EF0D5A55C67BEDD3516F;
+					};
+					819E3C5C7CA0623A6BF9F9F4 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 7E650C10E27B6CAC71D95727 /* Build configuration list for PBXProject "Corbie" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				de,
+				en,
+				es,
+				fr,
+				it,
+			);
+			mainGroup = 7D77012DD6886E087F0558FA;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7A1417E18484216578EEFA89 /* XCLocalSwiftPackageReference "Packages/CorbieCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BEF8862425EF08C0524194B2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1137EF0D5A55C67BEDD3516F /* Corbie */,
+				819E3C5C7CA0623A6BF9F9F4 /* CorbieWidgets */,
+				20A8A205FE1174B05D918A23 /* CorbieShare */,
+				2868F42C7595A7236FEE09BE /* CorbieTests */,
+				3A2A6A330CC5C180CD1AC1FB /* CorbieUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		29B1FFF60836238ECC2F51C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35CFA4A8EB05DEFD286CECE2 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		420928BFA1D660EAC6974849 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				223BC84E1DB2B99845AEFB2B /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B795DEAD577A22D8C2D3B719 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B4C7D23BA1928AB78E937AF /* Assets.xcassets in Resources */,
+				F6F4386491A47704FD8B745E /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		74EC5AD79E625CC3B483CC03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0F92323FC5DB1501A57B2C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E7891F0830411940526CDB1 /* AppState.swift in Sources */,
+				F3788058226B31D375C21949 /* CalendarView.swift in Sources */,
+				11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */,
+				F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */,
+				1C5C206503457A593AF48958 /* PlansView.swift in Sources */,
+				5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */,
+				E32AF678642BF3322E2DDD5A /* Router.swift in Sources */,
+				3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */,
+				BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */,
+				24C9999E7AF39592DFC9850B /* UsView.swift in Sources */,
+				7D41F6D039348679B73D158E /* WishesView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A64BB48D19DD220015CAC9A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				119BE71835686FAFB0F9885B /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3DE0BFF5AAA2FE9E006F8BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F1792FA3D8BDE3CC82BD7A4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				735797CD81CBFC9E1A6B8874 /* LaunchUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		03AF120EE0AD63674A59C227 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1137EF0D5A55C67BEDD3516F /* Corbie */;
+			targetProxy = C6A667017042B1C45011EAE8 /* PBXContainerItemProxy */;
+		};
+		7CBC487F15100DFE947D06F9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20A8A205FE1174B05D918A23 /* CorbieShare */;
+			targetProxy = A75E96E4471ED2A828750BD2 /* PBXContainerItemProxy */;
+		};
+		926A5A54B98B1760A09DE8A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1137EF0D5A55C67BEDD3516F /* Corbie */;
+			targetProxy = 2483FC2597FA0F9405766017 /* PBXContainerItemProxy */;
+		};
+		99A8FD1438023D63291A2608 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 819E3C5C7CA0623A6BF9F9F4 /* CorbieWidgets */;
+			targetProxy = 79ED882616EA234D6A138DA0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1405457A19EBB40A71D05253 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		22206E393B893AC503B6323C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Corbie.app/Corbie";
+			};
+			name = Release;
+		};
+		4066AB05A0B89D1E6FB8AE8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		42BE85E16321AF9FE5DA757C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Configs/CorbieWidgets.entitlements;
+				INFOPLIST_FILE = "Configs/CorbieWidgets-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.widgets;
+				PRODUCT_NAME = CorbieWidgets;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		551BB1DAD0B0CD835BABBDF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Corbie.app/Corbie";
+			};
+			name = Debug;
+		};
+		57762FD23805E84B23C27AB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Configs/CorbieShare.entitlements;
+				INFOPLIST_FILE = "Configs/CorbieShare-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.share;
+				PRODUCT_NAME = CorbieShare;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		929DDF4E165CD5E10F8CD8CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Configs/CorbieShare.entitlements;
+				INFOPLIST_FILE = "Configs/CorbieShare-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.share;
+				PRODUCT_NAME = CorbieShare;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B4C0371A3CCC02042DD4A8F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Configs/Corbie.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Configs/Corbie-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie;
+				PRODUCT_NAME = Corbie;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BD80CF2B39A42B02A21F88E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Configs/CorbieWidgets.entitlements;
+				INFOPLIST_FILE = "Configs/CorbieWidgets-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.widgets;
+				PRODUCT_NAME = CorbieWidgets;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DB7C39C14E0EFB04B3E6FBA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Corbie;
+			};
+			name = Debug;
+		};
+		F19615315453BFE899D56798 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Configs/Corbie.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Configs/Corbie-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie;
+				PRODUCT_NAME = Corbie;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F37BAC425112B7380BB8EBC7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Corbie;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A1FF2429275F87CC66A45A9 /* Build configuration list for PBXNativeTarget "CorbieUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB7C39C14E0EFB04B3E6FBA3 /* Debug */,
+				F37BAC425112B7380BB8EBC7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		42BBA9E78633C1AE07465E85 /* Build configuration list for PBXNativeTarget "CorbieShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				929DDF4E165CD5E10F8CD8CF /* Debug */,
+				57762FD23805E84B23C27AB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6210839FAD2CD5D9EE23FB8A /* Build configuration list for PBXNativeTarget "Corbie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F19615315453BFE899D56798 /* Debug */,
+				B4C0371A3CCC02042DD4A8F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7E650C10E27B6CAC71D95727 /* Build configuration list for PBXProject "Corbie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4066AB05A0B89D1E6FB8AE8C /* Debug */,
+				1405457A19EBB40A71D05253 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BB78418F08D0457828AB1946 /* Build configuration list for PBXNativeTarget "CorbieTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				551BB1DAD0B0CD835BABBDF8 /* Debug */,
+				22206E393B893AC503B6323C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D4D1C26AB752980F2ACF0433 /* Build configuration list for PBXNativeTarget "CorbieWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD80CF2B39A42B02A21F88E7 /* Debug */,
+				42BE85E16321AF9FE5DA757C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7A1417E18484216578EEFA89 /* XCLocalSwiftPackageReference "Packages/CorbieCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/CorbieCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		053C7B83569FB8EA59BC28EF /* CorbieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CorbieCore;
+		};
+		9FDF78C8AFE2EB5AA5274C43 /* CorbieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CorbieCore;
+		};
+		FAF52F19A383AEDFE0ECB2BC /* CorbieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CorbieCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 910A080C673D03E3E0F1A553 /* Project object */;
+}

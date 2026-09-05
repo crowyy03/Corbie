@@ -1,0 +1,48 @@
+import CloudKit
+import SwiftUI
+import UIKit
+
+@main
+struct CorbieApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @State private var appState = AppState()
+
+    var body: some Scene {
+        WindowGroup {
+            RootView()
+                .environment(appState)
+                .preferredColorScheme(appState.colorSchemePreference.colorScheme)
+                .onOpenURL { url in
+                    appState.open(Router.route(for: url))
+                }
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
+                    guard let url = activity.webpageURL else { return }
+                    appState.open(Router.route(for: url))
+                }
+        }
+    }
+}
+
+@MainActor
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        true
+    }
+
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        completionHandler(.noData)
+    }
+
+    func application(
+        _ application: UIApplication,
+        userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata
+    ) {
+    }
+}

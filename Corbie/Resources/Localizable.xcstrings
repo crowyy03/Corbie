@@ -1,0 +1,992 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "calendar.placeholder.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "one calendar, two people"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "calendar.placeholder.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The dates you both keep. Birthdays, trips, the dentist."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "common.action.add": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "common.action.done": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "plans.placeholder.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "one pot, no \"who owes whom\""
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "plans.placeholder.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What are you two up to? A trip, a kitchen, a wedding, a car. Set the amount, see what is left."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "share.action.cancel": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "share.preview.empty": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing to read from this share."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "share.screen.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add to Corbie"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "tab.calendar.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "tab.plans.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "tab.tasks.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "tab.us.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Us"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "tab.wishes.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wishes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "tasks.placeholder.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nobody's the boss here - tasks can be handed back"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "tasks.placeholder.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A to-do list for two. Anyone can take a task - or hand it over."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.hub.capsules": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capsules"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.hub.days": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days together"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.hub.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "everything that belongs to the two of you"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.hub.people": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "People"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.hub.settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couple settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.hub.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Us"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.hub.votes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vote"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "us.pill.label": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Us hub"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "widget.daystogether.caption": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "days together"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "widget.daystogether.description": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How long you two have been counting."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "widget.daystogether.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days together"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "wishes.placeholder.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "share a link from any app - it lands here"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "wishes.placeholder.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drop a link. Name, price and photo show up on their own."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
