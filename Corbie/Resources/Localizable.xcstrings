@@ -137,6 +137,36 @@
         }
       }
     },
+    "member.name.partner": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "partner"
+          }
+        }
+      }
+    },
+    "member.name.unknown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "someone"
+          }
+        }
+      }
+    },
+    "member.name.you": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "you"
+          }
+        }
+      }
+    },
     "paywall.headline": {
       "localizations": {
         "en": {

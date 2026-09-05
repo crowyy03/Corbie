@@ -8,7 +8,7 @@ The server never sees couple data. It stores invite codes (15 min TTL), entitlem
 
 | Header | Where | Value |
 |---|---|---|
-| `Authorization` | `invite`, `entitlement`, `apple-revoke` | `Bearer <Apple identity token>` (JWT from Sign in with Apple; verified against Apple JWKS, `aud` must equal `app.corbie`) |
+| `Authorization` | `session`, `invite`, `entitlement`, `apple-revoke` | `Bearer <token>`. Either an Apple identity token (RS256 JWT from Sign in with Apple, verified against Apple JWKS, `iss` `https://appleid.apple.com`, `aud` `app.corbie`) or a Corbie session token issued by `POST /session` (HS256 JWT, `iss` `corbie`). Apple identity tokens live about ten minutes, so the client exchanges one for a session token right after sign-in and uses the session token afterwards. |
 | `X-Anon-Id` | `events`, `parse`, `fx` | device-local UUID, not linked to Apple ID |
 | `X-App-Version` | all | `MARKETING_VERSION (BUILD)` |
 | `Content-Type` | POST | `application/json` |
@@ -18,6 +18,15 @@ The server never sees couple data. It stores invite codes (15 min TTL), entitlem
 Every non-2xx response is `{"error": "<code>", "message": "<human text>"}`. Codes: `unauthorized`, `invalid_request`, `not_found`, `expired`, `redeemed`, `rate_limited`, `upstream_failed`, `internal`.
 
 ## Endpoints
+
+### POST `/session`
+Auth required with an Apple identity token only (a session token is rejected here). Exchanges the short-lived Apple token for a Corbie session token.
+
+Request: `{}`
+
+Response `200`: `{"token": "<jwt>", "expiresAt": "2027-03-04T10:00:00Z"}`
+
+The session token is an HS256 JWT signed with the `SESSION_SECRET` secret: claims `iss` = `corbie`, `sub` = SHA-256 hex of the Apple `sub`, `iat`, `exp` = 180 days. Every endpoint that requires auth accepts it in place of the Apple token; the server never stores it. The client keeps it in the Keychain under `server.session.token` and re-runs Sign in with Apple when it gets `401` back.
 
 ### POST `/invite`
 Auth required. Creates a new invite code for a space and invalidates any previous active code for the same space.
