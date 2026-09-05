@@ -2,9 +2,11 @@ import SwiftUI
 
 struct RootView: View {
     @Environment(AppState.self) private var appState
+    @Environment(AppEnvironment.self) private var environment
 
     var body: some View {
         @Bindable var state = appState
+        @Bindable var gate = environment.premiumGate
 
         TabView(selection: $state.selectedTab) {
             NavigationStack {
@@ -50,6 +52,9 @@ struct RootView: View {
         .sheet(isPresented: $state.isUsHubPresented) {
             UsHubSheet()
         }
+        .sheet(item: $gate.pendingPaywall) { request in
+            PaywallView(request: request)
+        }
     }
 }
 
@@ -75,4 +80,5 @@ private struct UsHubSheet: View {
 #Preview {
     RootView()
         .environment(AppState())
+        .environment(AppEnvironment.preview())
 }

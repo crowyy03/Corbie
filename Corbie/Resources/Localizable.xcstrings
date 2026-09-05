@@ -137,6 +137,26 @@
         }
       }
     },
+    "paywall.headline": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One subscription. Both of you."
+          }
+        }
+      }
+    },
+    "paywall.placeholder.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the paywall arrives with the subscription module"
+          }
+        }
+      }
+    },
     "plans.placeholder.note": {
       "localizations": {
         "de": {
