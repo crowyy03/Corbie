@@ -2019,6 +2019,16 @@
         }
       }
     },
+    "common.action.close": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
     "common.action.delete": {
       "localizations": {
         "en": {
@@ -6071,6 +6081,98 @@
         }
       }
     },
+    "paywall.action.close": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
+    "paywall.action.continue": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        }
+      }
+    },
+    "paywall.action.restore": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore purchases"
+          }
+        }
+      }
+    },
+    "paywall.action.retry": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        }
+      }
+    },
+    "paywall.banner.action": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See plans"
+          }
+        }
+      }
+    },
+    "paywall.banner.readonly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trial over. The calendar still works."
+          }
+        }
+      }
+    },
+    "paywall.banner.trial": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trial ends soon."
+          }
+        }
+      }
+    },
+    "paywall.banner.trial.spoken": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld day left in your trial"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld days left in your trial"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "paywall.headline": {
       "localizations": {
         "en": {
@@ -6081,12 +6183,322 @@
         }
       }
     },
+    "paywall.legal.generic": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie Premium renews itself until you turn auto-renew off in App Store settings, at least 24 hours before the period ends."
+          }
+        }
+      }
+    },
+    "paywall.legal.monthly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie Premium is %@ a month. Your Apple ID is charged when you confirm, and again every month unless you turn auto-renew off at least 24 hours before the month ends. Manage it in App Store settings."
+          }
+        }
+      }
+    },
+    "paywall.legal.yearly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie Premium is %@ a year. Your Apple ID is charged when you confirm, and again every year unless you turn auto-renew off at least 24 hours before the year ends. Manage it in App Store settings."
+          }
+        }
+      }
+    },
+    "paywall.link.privacy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
+          }
+        }
+      }
+    },
+    "paywall.link.terms": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of Use"
+          }
+        }
+      }
+    },
+    "paywall.offer.badge": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save %lld%%"
+          }
+        }
+      }
+    },
+    "paywall.offer.monthly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monthly"
+          }
+        }
+      }
+    },
+    "paywall.offer.permonth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ a month"
+          }
+        }
+      }
+    },
+    "paywall.offer.yearly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yearly"
+          }
+        }
+      }
+    },
     "paywall.placeholder.note": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "the paywall arrives with the subscription module"
+          }
+        }
+      }
+    },
+    "paywall.reason.capsules": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capsules come with the subscription."
+          }
+        }
+      }
+    },
+    "paywall.reason.create": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adding things comes with the subscription."
+          }
+        }
+      }
+    },
+    "paywall.reason.edit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changing things comes with the subscription."
+          }
+        }
+      }
+    },
+    "paywall.reason.people": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "People comes with the subscription."
+          }
+        }
+      }
+    },
+    "paywall.reason.settings": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One plan covers you two."
+          }
+        }
+      }
+    },
+    "paywall.reason.trialended": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The trial is over. The calendar still works."
+          }
+        }
+      }
+    },
+    "paywall.reason.trialending": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your week is almost up."
+          }
+        }
+      }
+    },
+    "paywall.reason.votes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votes come with the subscription."
+          }
+        }
+      }
+    },
+    "paywall.reason.widgets": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widgets come with the subscription."
+          }
+        }
+      }
+    },
+    "paywall.state.loading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading plans"
+          }
+        }
+      }
+    },
+    "paywall.state.nospace": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No shared space yet, so there is nothing to unlock."
+          }
+        }
+      }
+    },
+    "paywall.state.pending": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This purchase is waiting for approval. Corbie unlocks as soon as it goes through."
+          }
+        }
+      }
+    },
+    "paywall.state.purchased": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie is unlocked for you two."
+          }
+        }
+      }
+    },
+    "paywall.state.restore.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing to restore on this Apple ID."
+          }
+        }
+      }
+    },
+    "paywall.state.restored": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription restored."
+          }
+        }
+      }
+    },
+    "paywall.state.unavailable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The App Store did not answer. Try again in a moment."
+          }
+        }
+      }
+    },
+    "paywall.value.capsules.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letters that open later. Questions asked in secret."
+          }
+        }
+      }
+    },
+    "paywall.value.capsules.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capsules and votes"
+          }
+        }
+      }
+    },
+    "paywall.value.plans.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One pot, one wish list, both of you."
+          }
+        }
+      }
+    },
+    "paywall.value.plans.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans and wishes"
+          }
+        }
+      }
+    },
+    "paywall.value.widgets.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your tasks, dates and lists on the home screen."
+          }
+        }
+      }
+    },
+    "paywall.value.widgets.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widgets"
           }
         }
       }
