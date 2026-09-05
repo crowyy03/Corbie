@@ -31,3 +31,15 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - The app is iPhone only: `TARGETED_DEVICE_FAMILY = 1` on the app, widget and share targets. The design is portrait-only and single column, and the Info.plist already declares portrait alone.
 - `CKSharingSupported` is in the app Info.plist and `AppDelegate.application(_:userDidAcceptCloudKitShareWith:)` calls `CloudKitSharing.acceptShare(metadata:)`, so an invitation link actually joins the space.
 - Each tab is a bare `NavigationStack` around its feature root; the feature view owns its title and toolbar and adds the pill with `.toolbar { UsPillToolbarItem() }`. The pill is the `CorbieCore` `UsPill` component, which already meets the 44pt tap target.
+
+## 2026-09-05 (module 04, tasks)
+
+- The Tasks list shows open tasks only. Marking one done takes it off the screen; there is no "Done" section in v1, the weekly count is a v2 line in the spec.
+- `TasksViewModel` loads DTOs from `TaskRepository` and reloads on `WidgetReloadRequest` and on `scenePhase == .active` instead of wrapping an `NSFetchedResultsController`. Every repository write already posts that notification, so the list follows local edits, the widget intents and the share extension through one path, and the same view model runs in tests against an in-memory store.
+- Chip counts come from `repositories.tasks.counts`; the sections filter the loaded list in memory. Counts and grouping therefore agree without a second round trip per chip.
+- Read-only mode gates changes, not only creation: take, hand back, done and delete run through `premiumGate.require(.edit)`, "+" and the editor through `.create` / `.edit`. Spec 6.12 puts "создать/изменить" behind the paywall, and the calendar stays untouched.
+- Delete is offered to the author, and to anyone when the task carries no author id (tasks created before `createdByMemberId` was written, or seeded ones).
+- The "Who" control drops the Partner segment until somebody joins the space, because there is no member id to assign to.
+- Due-today notifications are scheduled by every device that sees the task, not only by the assignee's. `NotificationScheduler.scheduleTaskDueToday` cancels before it schedules, so saving an edit re-points the reminder and clearing the date removes it.
+- Notification authorization is requested the first time a task with a due date is saved, not at launch (architecture 18.12).
+- `AnalyticsEvent.taskHandedBack` ("task_handed_back") is emitted by the client, but it is not in `AnalyticsEvent.allowedNames`, in `docs/03_TECH_ARCHITECTURE.md` section 13, or in `server/supabase/functions/_shared/events.ts`. The server drops unknown names per event, so the batch still lands; the event starts counting once those three lists get it.

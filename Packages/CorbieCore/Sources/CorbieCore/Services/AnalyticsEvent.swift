@@ -15,6 +15,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case taskCreated(assignee: AnalyticsAssignee)
     case taskTaken
     case taskDone
+    case taskHandedBack
     case eventCreated(kind: EventKind)
     case wishCreated(source: WishSource)
     case planCreated(type: PlanType)
@@ -41,6 +42,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .taskCreated: return "task_created"
         case .taskTaken: return "task_taken"
         case .taskDone: return "task_done"
+        case .taskHandedBack: return "task_handed_back"
         case .eventCreated: return "event_created"
         case .wishCreated: return "wish_created"
         case .planCreated: return "plan_created"
@@ -82,8 +84,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .readonlyHit(action):
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
-             .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated, .voteRevealed,
-             .trialStarted, .restore:
+             .taskHandedBack, .expenseAdded, .capsuleCreated, .capsuleOpened, .voteCreated,
+             .voteRevealed, .trialStarted, .restore:
             return [:]
         }
     }
