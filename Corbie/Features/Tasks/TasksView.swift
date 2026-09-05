@@ -6,9 +6,18 @@ struct TasksView: View {
             title: String(localized: "tasks.placeholder.title"),
             note: String(localized: "tasks.placeholder.note")
         )
+        .navigationTitle(String(localized: "tab.tasks.title"))
+        .toolbar {
+            AddToolbarItem {
+            }
+            UsPillToolbarItem()
+        }
     }
 }
 
 #Preview {
-    TasksView()
+    NavigationStack {
+        TasksView()
+    }
+    .environment(AppState())
 }

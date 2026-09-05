@@ -42,6 +42,42 @@ import Testing
         #expect(mine.isChecked)
     }
 
+    @Test func authorOnlyListsRefuseWhenTheAuthorIsUnknown() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.lists
+        let list = try await repository.create(
+            ChecklistDraft(spaceId: world.space.id, title: "My picks", anyoneCanCheck: false)
+        )
+        let orphan = try await repository.addItem(listId: list.id, draft: ListItemDraft(title: "Dune"))
+        await #expect(throws: CorbieError.invalidInput("only the author can tick items in this list")) {
+            _ = try await repository.toggleItem(itemId: orphan.id, memberId: world.partner.id)
+        }
+
+        let mine = try await repository.addItem(
+            listId: list.id,
+            draft: ListItemDraft(title: "Arrival", addedByMemberId: world.me.id)
+        )
+        await #expect(throws: CorbieError.invalidInput("only the author can tick items in this list")) {
+            _ = try await repository.toggleItem(itemId: mine.id, memberId: nil)
+        }
+    }
+
+    @Test func anAuthorOnlyItemFallsBackToTheListCreator() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.lists
+        let list = try await repository.create(
+            ChecklistDraft(
+                spaceId: world.space.id,
+                title: "My picks",
+                anyoneCanCheck: false,
+                createdByMemberId: world.me.id
+            )
+        )
+        let item = try await repository.addItem(listId: list.id, draft: ListItemDraft(title: "Dune"))
+        let checked = try await repository.toggleItem(itemId: item.id, memberId: world.me.id)
+        #expect(checked.isChecked)
+    }
+
     @Test func reorderRewritesSortIndexes() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.lists
@@ -74,11 +110,21 @@ import Testing
     @Test func pinnedShoppingListIsCreatedOnce() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.lists
-        let first = try await repository.pinnedShoppingList(spaceId: world.space.id, createdByMemberId: world.me.id)
-        let second = try await repository.pinnedShoppingList(spaceId: world.space.id, createdByMemberId: world.partner.id)
+        let first = try await repository.pinnedShoppingList(
+            spaceId: world.space.id,
+            title: "Shopping",
+            createdByMemberId: world.me.id
+        )
+        let second = try await repository.pinnedShoppingList(
+            spaceId: world.space.id,
+            title: "Einkaufen",
+            createdByMemberId: world.partner.id
+        )
         #expect(first.id == second.id)
+        #expect(first.title == "Shopping")
+        #expect(second.title == "Shopping")
         #expect(first.isPinnedShopping)
-        #expect(first.template == .shopping)
+        #expect(first.template == ListTemplate.shopping)
         #expect(try await repository.lists(spaceId: world.space.id).count == 1)
     }
 

@@ -9,15 +9,22 @@ public struct CoreDataMemberRepository: MemberRepository {
     }
 
     public func upsertCurrentMember(appleUserId: String, spaceId: UUID, draft: MemberDraft) async throws -> MemberDTO {
-        try await access.write { context in
+        let hash = AppleUserHash.value(appleUserId)
+        return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: spaceId, in: context)
             let existing: [Member] = try ManagedFetch.all(
                 Member.entityName,
-                predicate: NSPredicate(format: "appleUserId == %@", appleUserId),
+                predicate: NSPredicate(format: "appleUserHash == %@", hash),
                 in: context
             )
-            let member = existing.first ?? Member(context: context)
-            member.appleUserId = appleUserId
+            let member: Member
+            if let found = existing.first {
+                member = found
+            } else {
+                member = Member(context: context)
+                context.assign(member, toStoreOf: space)
+            }
+            member.appleUserHash = hash
             member.space = space
             if let displayName = draft.displayName { member.displayName = displayName }
             if let colorKey = draft.colorKey { member.colorKey = colorKey }
@@ -36,10 +43,11 @@ public struct CoreDataMemberRepository: MemberRepository {
     }
 
     public func member(appleUserId: String) async throws -> MemberDTO? {
-        try await access.read { context in
+        let hash = AppleUserHash.value(appleUserId)
+        return try await access.read { context in
             let members: [Member] = try ManagedFetch.all(
                 Member.entityName,
-                predicate: NSPredicate(format: "appleUserId == %@", appleUserId),
+                predicate: NSPredicate(format: "appleUserHash == %@", hash),
                 in: context
             )
             return members.first.map(MemberDTO.init)

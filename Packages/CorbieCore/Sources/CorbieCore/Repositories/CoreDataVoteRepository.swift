@@ -22,13 +22,13 @@ public struct CoreDataVoteRepository: VoteRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let vote = Vote(context: context)
+            context.assign(vote, toStoreOf: space)
             vote.space = space
             vote.question = question
             vote.options = options
             vote.mode = draft.mode
             vote.revealWhenBothAnswered = draft.revealWhenBothAnswered
             vote.createdByMemberId = draft.createdByMemberId
-            vote.responses = VoteResponses()
             return VoteDTO(vote)
         }
     }
@@ -44,18 +44,22 @@ public struct CoreDataVoteRepository: VoteRepository {
             if vote.mode == .single, choices.count > 1 {
                 throw CorbieError.invalidInput("this vote takes one option")
             }
-            var responses = vote.responses
-            responses[memberId] = choices
-            vote.responses = responses
+            let answer: VoteResponse
+            if let existing = vote.responses.first(where: { $0.memberId == memberId }) {
+                answer = existing
+            } else {
+                answer = VoteResponse(context: context)
+                context.assign(answer, toStoreOf: vote)
+                answer.vote = vote
+                answer.memberId = memberId
+            }
+            answer.optionIndexes = choices
+            answer.answeredAt = date
 
             let memberCount = vote.space?.members.count ?? 0
-            let everyoneAnswered = memberCount > 0 && responses.memberCount >= memberCount
-            if vote.revealedAt == nil {
-                if vote.revealWhenBothAnswered {
-                    if everyoneAnswered { vote.revealedAt = date }
-                } else {
-                    vote.revealedAt = date
-                }
+            let answered = VoteResponses(vote.responses).memberCount
+            if vote.revealedAt == nil, memberCount > 0, answered >= memberCount {
+                vote.revealedAt = date
             }
             return VoteDTO(vote)
         }

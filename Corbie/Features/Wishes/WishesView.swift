@@ -6,9 +6,18 @@ struct WishesView: View {
             title: String(localized: "wishes.placeholder.title"),
             note: String(localized: "wishes.placeholder.note")
         )
+        .navigationTitle(String(localized: "tab.wishes.title"))
+        .toolbar {
+            AddToolbarItem {
+            }
+            UsPillToolbarItem()
+        }
     }
 }
 
 #Preview {
-    WishesView()
+    NavigationStack {
+        WishesView()
+    }
+    .environment(AppState())
 }

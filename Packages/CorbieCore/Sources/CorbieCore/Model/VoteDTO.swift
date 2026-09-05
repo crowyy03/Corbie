@@ -47,7 +47,7 @@ public struct VoteDTO: Sendable, Codable, Identifiable, Equatable {
             options: vote.options,
             mode: vote.mode,
             createdByMemberId: vote.createdByMemberId,
-            responses: vote.responses,
+            responses: VoteResponses(vote.responses),
             revealWhenBothAnswered: vote.revealWhenBothAnswered,
             revealedAt: vote.revealedAt,
             createdAt: vote.createdAt
@@ -62,9 +62,8 @@ public struct VoteDTO: Sendable, Codable, Identifiable, Equatable {
     }
 
     public func canSeeResults(as memberId: UUID) -> Bool {
-        if isRevealed { return true }
-        guard revealWhenBothAnswered == false else { return false }
-        return responses.hasAnswered(memberId)
+        guard responses.hasAnswered(memberId) else { return false }
+        return isRevealed || revealWhenBothAnswered == false
     }
 
     public var matchingOptions: [Int] { responses.matches(optionCount: options.count) }

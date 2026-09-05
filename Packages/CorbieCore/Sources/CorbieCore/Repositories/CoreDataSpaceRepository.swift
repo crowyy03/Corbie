@@ -11,6 +11,9 @@ public struct CoreDataSpaceRepository: SpaceRepository {
     public func create(displayCurrency: String, creatorMemberId: UUID?, now: Date) async throws -> SpaceDTO {
         try await access.write { context in
             let space = Space(context: context)
+            if let store = access.stack.store(for: .privateStore) {
+                context.assign(space, to: store)
+            }
             space.createdAt = now
             space.displayCurrency = displayCurrency
             space.creatorMemberId = creatorMemberId

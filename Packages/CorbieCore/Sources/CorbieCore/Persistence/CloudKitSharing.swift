@@ -46,7 +46,7 @@ public final class CloudKitSharing {
 
     public func acceptShare(metadata: CKShare.Metadata) async throws {
         let container = try cloudKitContainer()
-        guard let store = stack.store(for: .sharedStore) else {
+        guard let store = sharedStore() else {
             throw CorbieError.cloudKit("shared store is not loaded")
         }
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
@@ -90,7 +90,8 @@ public final class CloudKitSharing {
         in context: NSManagedObjectContext,
         currentMemberId: UUID? = nil
     ) throws -> Space? {
-        try context.performAndWait {
+        let sharedIdentifier = sharedStore()?.identifier
+        return try context.performAndWait {
             let request = NSFetchRequest<Space>(entityName: Space.entityName)
             request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
             let spaces: [Space]
@@ -99,6 +100,17 @@ public final class CloudKitSharing {
             } catch {
                 throw CorbieError.persistence(error.localizedDescription)
             }
+            let joined = spaces.filter { space in
+                guard let sharedIdentifier else { return false }
+                return space.objectID.persistentStore?.identifier == sharedIdentifier
+            }
+            if let currentMemberId,
+               let mine = joined.first(where: { space in
+                   space.members.contains { $0.id == currentMemberId }
+               }) {
+                return mine
+            }
+            if let first = joined.first { return first }
             if let paired = spaces.first(where: { $0.members.count >= 2 }) { return paired }
             if let currentMemberId,
                let owned = spaces.first(where: { $0.creatorMemberId == currentMemberId }) {
@@ -109,9 +121,37 @@ public final class CloudKitSharing {
     }
 
     public func leave(space spaceId: UUID) async throws {
-        let share = try? existingShare(for: spaceId)
-        if let share {
-            let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).sharedCloudDatabase
+        let container = try cloudKitContainer()
+        guard let shared = sharedStore() else {
+            throw CorbieError.cloudKit("shared store is not loaded")
+        }
+        guard let space = try space(with: spaceId, in: stack.viewContext) else {
+            throw CorbieError.notFound("space \(spaceId)")
+        }
+        guard space.objectID.persistentStore === shared else {
+            throw CorbieError.cloudKit("space \(spaceId) is owned here, delete it instead of leaving it")
+        }
+        guard let share = try existingShare(for: spaceId) else {
+            throw CorbieError.cloudKit("space \(spaceId) has no share to leave")
+        }
+        let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).sharedCloudDatabase
+        do {
+            _ = try await database.deleteRecord(withID: share.recordID)
+        } catch {
+            throw CorbieError.cloudKit(error.localizedDescription)
+        }
+        try await purgeZone(share.recordID.zoneID, in: shared, container: container)
+    }
+
+    public func deleteSpace(space spaceId: UUID) async throws {
+        guard let space = try space(with: spaceId, in: stack.viewContext) else {
+            throw CorbieError.notFound("space \(spaceId)")
+        }
+        if let shared = sharedStore(), space.objectID.persistentStore === shared {
+            throw CorbieError.cloudKit("space \(spaceId) belongs to your partner, leave it instead of deleting it")
+        }
+        if let share = try existingShare(for: spaceId) {
+            let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).privateCloudDatabase
             do {
                 _ = try await database.deleteRecord(withID: share.recordID)
             } catch {
@@ -121,17 +161,28 @@ public final class CloudKitSharing {
         try deleteLocalSpace(spaceId)
     }
 
-    public func deleteSpace(space spaceId: UUID) async throws {
-        let share = try? existingShare(for: spaceId)
-        if let share {
-            let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).privateCloudDatabase
-            do {
-                _ = try await database.deleteRecord(withID: share.recordID)
-            } catch {
-                throw CorbieError.cloudKit(error.localizedDescription)
+    private func purgeZone(
+        _ zoneID: CKRecordZone.ID,
+        in store: NSPersistentStore,
+        container: NSPersistentCloudKitContainer
+    ) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+            container.purgeObjectsAndRecordsInZone(with: zoneID, in: store) { _, error in
+                if let error {
+                    continuation.resume(throwing: CorbieError.cloudKit(error.localizedDescription))
+                } else {
+                    continuation.resume()
+                }
             }
         }
-        try deleteLocalSpace(spaceId)
+    }
+
+    private nonisolated func sharedStore() -> NSPersistentStore? {
+        guard let shared = stack.store(for: .sharedStore),
+              shared !== stack.store(for: .privateStore) else {
+            return nil
+        }
+        return shared
     }
 
     private func deleteLocalSpace(_ spaceId: UUID) throws {

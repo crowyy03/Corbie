@@ -56,7 +56,7 @@ import Testing
         let doneOnly = try await repository.tasks(TaskQuery(spaceId: spaceId, done: .done))
         #expect(doneOnly.map(\.title) == ["Done"])
 
-        let counts = try await repository.counts(spaceId: spaceId, memberId: world.me.id)
+        let counts = try await repository.counts(spaceId: spaceId, memberId: world.me.id, partnerId: world.partner.id)
         #expect(counts == TaskCounts(all: 3, mine: 1, partner: 1, free: 1))
     }
 
@@ -87,7 +87,7 @@ import Testing
             )
         )
         let completion = try await repository.markDone(taskId: task.id, memberId: world.me.id, at: due)
-        let expected = Calendar.utc.date(byAdding: .weekOfYear, value: 1, to: due)
+        let expected = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: due)
         #expect(completion.isNextOccurrenceDue)
         #expect(completion.nextOccurrenceDueAt == expected)
 
@@ -100,6 +100,45 @@ import Testing
 
         let open = try await repository.tasks(TaskQuery(spaceId: world.space.id))
         #expect(open.count == 1)
+    }
+
+    @Test func aLateRecurringTaskCatchesUpToTheFuture() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.tasks
+        let due = Date(timeIntervalSince1970: 1_757_000_000)
+        let task = try await repository.create(
+            TaskDraft(spaceId: world.space.id, title: "Water the plants", dueAt: due, recurrence: .daily)
+        )
+        let late = due.addingTimeInterval(30 * 86_400)
+        let completion = try await repository.markDone(taskId: task.id, memberId: world.me.id, at: late)
+        let next = try #require(completion.nextOccurrenceDueAt)
+        #expect(next > late)
+    }
+
+    @Test func datelessTasksSortBelowTheOnesWithADueDate() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.tasks
+        let spaceId = world.space.id
+        let soon = Date(timeIntervalSince1970: 1_757_000_000)
+        _ = try await repository.create(
+            TaskDraft(spaceId: spaceId, title: "Later", dueAt: soon.addingTimeInterval(86_400))
+        )
+        _ = try await repository.create(TaskDraft(spaceId: spaceId, title: "No date"))
+        _ = try await repository.create(TaskDraft(spaceId: spaceId, title: "Today", dueAt: soon))
+
+        let open = try await repository.tasks(TaskQuery(spaceId: spaceId))
+        #expect(open.map(\.title) == ["Today", "Later", "No date"])
+    }
+
+    @Test func countsLeaveTheChipsEmptyWithoutMemberIds() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.tasks
+        let spaceId = world.space.id
+        _ = try await repository.create(TaskDraft(spaceId: spaceId, title: "Mine", assigneeMemberId: world.me.id))
+        _ = try await repository.create(TaskDraft(spaceId: spaceId, title: "Free"))
+
+        let counts = try await repository.counts(spaceId: spaceId, memberId: nil, partnerId: nil)
+        #expect(counts == TaskCounts(all: 2, mine: 0, partner: 0, free: 1))
     }
 
     @Test func deleteRemovesTheTask() async throws {

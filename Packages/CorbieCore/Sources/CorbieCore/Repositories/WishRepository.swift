@@ -2,7 +2,7 @@ import Foundation
 
 public struct WishDraft: Sendable, Equatable {
     public var spaceId: UUID
-    public var ownerMemberId: UUID?
+    public var ownerMemberId: UUID
     public var addedByMemberId: UUID?
     public var title: String
     public var url: String?
@@ -17,7 +17,7 @@ public struct WishDraft: Sendable, Equatable {
 
     public init(
         spaceId: UUID,
-        ownerMemberId: UUID? = nil,
+        ownerMemberId: UUID,
         addedByMemberId: UUID? = nil,
         title: String,
         url: String? = nil,

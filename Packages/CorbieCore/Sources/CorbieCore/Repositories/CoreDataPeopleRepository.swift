@@ -17,6 +17,7 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let person = Person(context: context)
+            context.assign(person, toStoreOf: space)
             person.space = space
             person.name = name
             person.relation = draft.relation
@@ -64,6 +65,14 @@ public struct CoreDataPeopleRepository: PeopleRepository {
     public func delete(id: UUID) async throws {
         try await access.write { context in
             guard let person: Person = try ManagedFetch.first(Person.entityName, id: id, in: context) else { return }
+            let events: [Event] = try ManagedFetch.all(
+                Event.entityName,
+                predicate: NSPredicate(format: "personId == %@", id as NSUUID),
+                in: context
+            )
+            for event in events {
+                event.personId = nil
+            }
             context.delete(person)
         }
     }
@@ -76,6 +85,7 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         return try await access.write { context in
             let person: Person = try ManagedFetch.require(Person.entityName, id: personId, in: context)
             let idea = GiftIdea(context: context)
+            context.assign(idea, toStoreOf: person)
             idea.person = person
             idea.title = title
             idea.url = draft.url

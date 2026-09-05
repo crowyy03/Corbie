@@ -19,7 +19,7 @@ public enum CorbieModel {
         space.attribute("subscriptionPayerMemberId", .UUIDAttributeType)
 
         let member = ModelEntity(Member.entityName, Member.self)
-        member.attribute("appleUserId", .stringAttributeType)
+        member.attribute("appleUserHash", .stringAttributeType)
         member.attribute("displayName", .stringAttributeType)
         member.attribute("colorKey", .stringAttributeType)
         member.attribute("birthdayMonth", .integer16AttributeType)
@@ -141,10 +141,14 @@ public enum CorbieModel {
         vote.attribute("optionsData", .binaryDataAttributeType)
         vote.attribute("modeRaw", .stringAttributeType, defaultValue: VoteMode.single.rawValue)
         vote.attribute("createdByMemberId", .UUIDAttributeType)
-        vote.attribute("responsesData", .binaryDataAttributeType)
         vote.attribute("revealWhenBothAnswered", .booleanAttributeType, optional: false, defaultValue: true)
         vote.attribute("revealedAt", .dateAttributeType)
         vote.attribute("createdAt", .dateAttributeType)
+
+        let voteResponse = ModelEntity(VoteResponse.entityName, VoteResponse.self)
+        voteResponse.attribute("memberId", .UUIDAttributeType)
+        voteResponse.attribute("optionIndexesData", .binaryDataAttributeType)
+        voteResponse.attribute("answeredAt", .dateAttributeType)
 
         let person = ModelEntity(Person.entityName, Person.self)
         person.attribute("name", .stringAttributeType)
@@ -174,13 +178,14 @@ public enum CorbieModel {
         space.owns(vote, many: "votes", inverse: "space")
         space.owns(person, many: "people", inverse: "space")
         event.owns(comment, many: "comments", inverse: "event")
+        vote.owns(voteResponse, many: "responses", inverse: "vote")
         plan.owns(expense, many: "expenses", inverse: "plan")
         list.owns(listItem, many: "items", inverse: "list")
         person.owns(giftIdea, many: "giftIdeas", inverse: "person")
 
         let builders = [
             space, member, task, event, comment, wish, plan, expense,
-            list, listItem, capsule, vote, person, giftIdea
+            list, listItem, capsule, vote, voteResponse, person, giftIdea
         ]
         let model = NSManagedObjectModel()
         model.entities = builders.map { $0.finish() }

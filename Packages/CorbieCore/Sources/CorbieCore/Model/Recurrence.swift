@@ -77,7 +77,7 @@ extension Recurrence {
         }
     }
 
-    public func nextDate(after date: Date, calendar: Calendar = .utc) -> Date? {
+    public func nextDate(after date: Date, calendar: Calendar = .current) -> Date? {
         switch self {
         case .none:
             return nil

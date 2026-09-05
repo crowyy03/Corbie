@@ -6,9 +6,18 @@ struct CalendarView: View {
             title: String(localized: "calendar.placeholder.title"),
             note: String(localized: "calendar.placeholder.note")
         )
+        .navigationTitle(String(localized: "tab.calendar.title"))
+        .toolbar {
+            AddToolbarItem {
+            }
+            UsPillToolbarItem()
+        }
     }
 }
 
 #Preview {
-    CalendarView()
+    NavigationStack {
+        CalendarView()
+    }
+    .environment(AppState())
 }

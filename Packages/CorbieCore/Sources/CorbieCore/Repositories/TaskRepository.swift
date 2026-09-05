@@ -80,7 +80,7 @@ public protocol TaskRepository: Sendable {
     func createNextOccurrence(of taskId: UUID, dueAt: Date?) async throws -> TaskDTO
     func task(id: UUID) async throws -> TaskDTO?
     func tasks(_ query: TaskQuery) async throws -> [TaskDTO]
-    func counts(spaceId: UUID, memberId: UUID?) async throws -> TaskCounts
+    func counts(spaceId: UUID, memberId: UUID?, partnerId: UUID?) async throws -> TaskCounts
     func delete(id: UUID) async throws
 }
 

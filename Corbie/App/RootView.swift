@@ -7,7 +7,7 @@ struct RootView: View {
         @Bindable var state = appState
 
         TabView(selection: $state.selectedTab) {
-            TabScaffold(title: String(localized: "tab.tasks.title")) {
+            NavigationStack {
                 TasksView()
             }
             .tabItem {
@@ -15,7 +15,7 @@ struct RootView: View {
             }
             .tag(AppState.Tab.tasks)
 
-            TabScaffold(title: String(localized: "tab.calendar.title")) {
+            NavigationStack {
                 CalendarView()
             }
             .tabItem {
@@ -23,7 +23,7 @@ struct RootView: View {
             }
             .tag(AppState.Tab.calendar)
 
-            TabScaffold(title: String(localized: "tab.wishes.title")) {
+            NavigationStack {
                 WishesView()
             }
             .tabItem {
@@ -31,7 +31,7 @@ struct RootView: View {
             }
             .tag(AppState.Tab.wishes)
 
-            TabScaffold(title: String(localized: "tab.plans.title")) {
+            NavigationStack {
                 PlansView()
             }
             .tabItem {
@@ -39,7 +39,7 @@ struct RootView: View {
             }
             .tag(AppState.Tab.plans)
 
-            TabScaffold(title: String(localized: "tab.us.title")) {
+            NavigationStack {
                 UsView()
             }
             .tabItem {
@@ -50,61 +50,6 @@ struct RootView: View {
         .sheet(isPresented: $state.isUsHubPresented) {
             UsHubSheet()
         }
-    }
-}
-
-private struct TabScaffold<Content: View>: View {
-    @Environment(AppState.self) private var appState
-
-    private let title: String
-    private let content: Content
-
-    init(title: String, @ViewBuilder content: () -> Content) {
-        self.title = title
-        self.content = content()
-    }
-
-    var body: some View {
-        NavigationStack {
-            content
-                .navigationTitle(title)
-                .toolbar {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button {
-                        } label: {
-                            Image(systemName: "plus")
-                        }
-                        .accessibilityLabel(Text("common.action.add"))
-
-                        UsPillButton {
-                            appState.isUsHubPresented = true
-                        }
-                    }
-                }
-        }
-    }
-}
-
-private struct UsPillButton: View {
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: -6) {
-                Circle()
-                    .fill(.tint)
-                    .frame(width: 16, height: 16)
-                Circle()
-                    .fill(.secondary)
-                    .frame(width: 16, height: 16)
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 7)
-            .overlay {
-                Capsule().stroke(.quaternary)
-            }
-        }
-        .accessibilityLabel(Text("us.pill.label"))
     }
 }
 

@@ -3,7 +3,7 @@ import Foundation
 public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
     public let id: UUID
     public var spaceId: UUID?
-    public var appleUserId: String?
+    public var appleUserHash: String?
     public var displayName: String?
     public var colorKey: String?
     public var birthdayMonth: Int?
@@ -15,7 +15,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
     public init(
         id: UUID,
         spaceId: UUID? = nil,
-        appleUserId: String? = nil,
+        appleUserHash: String? = nil,
         displayName: String? = nil,
         colorKey: String? = nil,
         birthdayMonth: Int? = nil,
@@ -26,7 +26,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
     ) {
         self.id = id
         self.spaceId = spaceId
-        self.appleUserId = appleUserId
+        self.appleUserHash = appleUserHash
         self.displayName = displayName
         self.colorKey = colorKey
         self.birthdayMonth = birthdayMonth
@@ -40,7 +40,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
         self.init(
             id: member.id ?? UUID(),
             spaceId: member.space?.id,
-            appleUserId: member.appleUserId,
+            appleUserHash: member.appleUserHash,
             displayName: member.displayName,
             colorKey: member.colorKey,
             birthdayMonth: member.birthdayMonth?.intValue,

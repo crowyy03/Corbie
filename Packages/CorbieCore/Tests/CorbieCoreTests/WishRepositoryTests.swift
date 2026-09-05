@@ -62,11 +62,14 @@ import Testing
     @Test func wishNeedsATitleOrALink() async throws {
         let world = try await TestWorld.make()
         await #expect(throws: CorbieError.invalidInput("wish needs a title or a link")) {
-            _ = try await world.repositories.wishes.create(WishDraft(spaceId: world.space.id, title: " "))
+            _ = try await world.repositories.wishes.create(
+                WishDraft(spaceId: world.space.id, ownerMemberId: world.me.id, title: " ")
+            )
         }
         let fromShareSheet = try await world.repositories.wishes.create(
             WishDraft(
                 spaceId: world.space.id,
+                ownerMemberId: world.partner.id,
                 title: "",
                 url: "https://example.com/item",
                 source: .store,
@@ -82,7 +85,7 @@ import Testing
         let repository = world.repositories.wishes
         let bytes = Data((0..<512).map { UInt8($0 % 251) })
         let wish = try await repository.create(
-            WishDraft(spaceId: world.space.id, title: "Poster", localImage: bytes)
+            WishDraft(spaceId: world.space.id, ownerMemberId: world.me.id, title: "Poster", localImage: bytes)
         )
         let stored = try #require(try await repository.wish(id: wish.id))
         #expect(stored.localImage == bytes)

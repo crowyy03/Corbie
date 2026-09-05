@@ -20,6 +20,7 @@
 		4EAFBCF48314A666963019CB /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F68F56C5D9763BCE2D73D0A /* RouterTests.swift */; };
 		5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADECE3D6ABD0A50F325ECA /* RootView.swift */; };
 		6B4C7D23BA1928AB78E937AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44A1CB115FE41055CAC3A4A2 /* Assets.xcassets */; };
+		6BEAC7E8D5C3D23B2E83641F /* UsPillToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */; };
 		735797CD81CBFC9E1A6B8874 /* LaunchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE157E918D961E9899DE32D /* LaunchUITests.swift */; };
 		738EE314D5EFC041C2EDF6E2 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAF52F19A383AEDFE0ECB2BC /* CorbieCore */; };
 		792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */; };
@@ -30,6 +31,7 @@
 		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
 		E32AF678642BF3322E2DDD5A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36368046A5FAB01754781EFA /* Router.swift */; };
 		E802BA38F4C6F2C5E0A66A0A /* CorbieShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ED6F2FFEA5598A686F220983 /* AddToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8965137EA487DC01422332 /* AddToolbarItem.swift */; };
 		F3788058226B31D375C21949 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4516E0BF27017473DA4A6841 /* CalendarView.swift */; };
 		F6F4386491A47704FD8B745E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		F71C2894E012A57F8DCBF8DF /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */; };
@@ -100,11 +102,13 @@
 		76B17794417FDD3F3E7B2AA1 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
 		7AD1279BBDD45CD8EF636282 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		8F8965137EA487DC01422332 /* AddToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToolbarItem.swift; sourceTree = "<group>"; };
 		A53715C4B0BEE41A246CA135 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		ADE157E918D961E9899DE32D /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
 		AEADECE3D6ABD0A50F325ECA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		C5958CC8757BF6F56C4338EC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C9A3AF7168E4CB0A04D0EF08 /* PlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlansView.swift; sourceTree = "<group>"; };
+		D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsPillToolbarItem.swift; sourceTree = "<group>"; };
 		D439758E7E6D75110C77131A /* CorbieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieApp.swift; sourceTree = "<group>"; };
 		D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubView.swift; sourceTree = "<group>"; };
@@ -225,7 +229,9 @@
 		884872A6CF2E0E683C0B2E3D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				8F8965137EA487DC01422332 /* AddToolbarItem.swift */,
 				88A8CF73404ECF1A2103CBA9 /* PlaceholderView.swift */,
+				D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -517,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED6F2FFEA5598A686F220983 /* AddToolbarItem.swift in Sources */,
 				9E7891F0830411940526CDB1 /* AppState.swift in Sources */,
 				F3788058226B31D375C21949 /* CalendarView.swift in Sources */,
 				11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */,
@@ -526,6 +533,7 @@
 				E32AF678642BF3322E2DDD5A /* Router.swift in Sources */,
 				3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */,
 				BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */,
+				6BEAC7E8D5C3D23B2E83641F /* UsPillToolbarItem.swift in Sources */,
 				24C9999E7AF39592DFC9850B /* UsView.swift in Sources */,
 				7D41F6D039348679B73D158E /* WishesView.swift in Sources */,
 			);
@@ -744,7 +752,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.widgets;
 				PRODUCT_NAME = CorbieWidgets;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -778,7 +786,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.share;
 				PRODUCT_NAME = CorbieShare;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -795,7 +803,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.share;
 				PRODUCT_NAME = CorbieShare;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -814,7 +822,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.corbie;
 				PRODUCT_NAME = Corbie;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -831,7 +839,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.corbie.widgets;
 				PRODUCT_NAME = CorbieWidgets;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -867,7 +875,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.corbie;
 				PRODUCT_NAME = Corbie;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
