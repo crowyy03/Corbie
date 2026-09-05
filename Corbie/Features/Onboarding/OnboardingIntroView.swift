@@ -136,7 +136,27 @@ struct OnboardingIntroView: View {
         .clipShape(RoundedRectangle(cornerRadius: CorbieRadius.pill, style: .continuous))
         .disabled(model.isWorking)
         .opacity(model.isWorking ? 0.4 : 1)
+        #if DEBUG
+        .overlay(alignment: .top) {
+            debugSignInButton
+                .offset(y: -CorbieMetrics.controlHeight)
+        }
+        #endif
     }
+
+    #if DEBUG
+    private var debugSignInButton: some View {
+        Button {
+            Task { await model.debugSignIn() }
+        } label: {
+            Text("onboarding.debug.signin")
+                .corbieMono()
+                .foregroundStyle(CorbieColorPalette.text2)
+                .frame(maxWidth: .infinity, minHeight: CorbieMetrics.minimumTapTarget)
+        }
+        .disabled(model.isWorking)
+    }
+    #endif
 
     private func handle(_ result: Result<ASAuthorization, any Error>) {
         switch result {

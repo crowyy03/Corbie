@@ -3997,6 +3997,16 @@
         }
       }
     },
+    "onboarding.debug.signin": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "continue without Apple ID (debug build)"
+          }
+        }
+      }
+    },
     "onboarding.intro.page1.note": {
       "localizations": {
         "de": {

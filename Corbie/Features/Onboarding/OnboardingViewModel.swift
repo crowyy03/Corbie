@@ -79,6 +79,26 @@ final class OnboardingViewModel {
         step = .profile
     }
 
+    #if DEBUG
+    func debugSignIn() async {
+        guard isWorking == false else { return }
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            try environment.storeAppleCredential(userIdentifier: "debug.simulator.user", identityToken: nil)
+            try await loadProfile(appleName: "Debug")
+            if joinCode == nil {
+                try await ensureSpaceAndMember()
+            }
+        } catch {
+            environment.report(error)
+            return
+        }
+        recordStep(OnboardingStepIndex.profile)
+        step = .profile
+    }
+    #endif
+
     func signInFailed(_ error: any Error) {
         guard AppleSignInCredential.isCancellation(error) == false else { return }
         environment.report(error)
