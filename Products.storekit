@@ -1,0 +1,86 @@
+{
+  "identifier" : "C0RB1E00",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 0,
+    "_locale" : "en_US",
+    "_storefront" : "USA"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "20250905",
+      "localizations" : [
+        {
+          "description" : "One subscription. Both of you.",
+          "displayName" : "Corbie Premium",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "Corbie Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "2025090501",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Everything in Corbie for two people.",
+              "displayName" : "Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "app.corbie.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Corbie Monthly",
+          "subscriptionGroupID" : "20250905",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "29.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "2025090502",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Everything in Corbie for two people, billed once a year.",
+              "displayName" : "Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "app.corbie.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Corbie Yearly",
+          "subscriptionGroupID" : "20250905",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
