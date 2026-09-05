@@ -100,6 +100,7 @@ final class AppEnvironment {
     var isPaired: Bool { partner != nil }
 
     func bootstrap() async {
+        WidgetReloader.shared.start()
         await analytics.start()
         await notifications.registerCategories()
         await reloadSession()
