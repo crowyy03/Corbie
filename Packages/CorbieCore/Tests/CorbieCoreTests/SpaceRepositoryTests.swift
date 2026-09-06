@@ -62,12 +62,23 @@ import Testing
         )
         _ = try await repositories.events.addComment(eventId: event.id, memberId: world.me.id, text: "Table for two")
         _ = try await repositories.wishes.create(WishDraft(spaceId: spaceId, ownerMemberId: world.me.id, title: "Lamp"))
-        let plan = try await repositories.plans.create(
-            PlanDraft(spaceId: spaceId, title: "Lisbon", targetAmount: 1000, currency: "USD")
+        let goal = try await repositories.goals.create(
+            GoalDraft(spaceId: spaceId, title: "Lisbon", targetAmount: 1000, currency: "USD")
         )
-        _ = try await repositories.plans.addExpense(planId: plan.id, draft: ExpenseDraft(amount: 10, currency: "USD"))
-        let list = try await repositories.lists.create(ChecklistDraft(spaceId: spaceId, title: "Places"))
-        _ = try await repositories.lists.addItem(listId: list.id, draft: ListItemDraft(title: "Belem"))
+        _ = try await repositories.goals.addExpense(goalId: goal.id, draft: GoalExpenseDraft(amount: 10, currency: "USD"))
+        _ = try await repositories.goals.addStep(goalId: goal.id, draft: GoalStepDraft(title: "Pack"))
+        let folder = try await repositories.tasks.createFolder(
+            TaskFolderDraft(spaceId: spaceId, title: "Places", template: .places)
+        )
+        _ = try await repositories.tasks.create(
+            TaskDraft(spaceId: spaceId, title: "Belem", folderId: folder.id)
+        )
+        _ = try await repositories.busyIntervals.replace(
+            spaceId: spaceId,
+            memberId: world.me.id,
+            source: .device,
+            intervals: [BusyIntervalDraft(startAt: Date(), endAt: Date().addingTimeInterval(3600))]
+        )
         _ = try await repositories.capsules.create(
             CapsuleDraft(
                 spaceId: spaceId,
@@ -85,8 +96,8 @@ import Testing
         try await repositories.spaces.delete(id: spaceId)
 
         let entities = [
-            "Space", "Member", "TaskItem", "Event", "EventComment", "Wish", "Plan",
-            "PlanExpense", "ChecklistList", "ListItem", "Capsule", "Vote", "Person", "GiftIdea"
+            "Space", "Member", "TaskItem", "TaskFolder", "Event", "EventComment", "Wish", "Goal",
+            "GoalExpense", "GoalStep", "BusyInterval", "Capsule", "Vote", "Person", "GiftIdea"
         ]
         for entity in entities {
             #expect(try world.count(entity) == 0, "\(entity) survived the space deletion")

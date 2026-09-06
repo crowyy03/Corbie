@@ -135,9 +135,9 @@ final class SettingsViewModel {
         guard let environment, let space = environment.space else { return }
         isDeleting = true
         defer { isDeleting = false }
-        let plan = SettingsAccountPlan.decide(space: space, memberId: environment.currentMember?.id)
+        let accountPlan = SettingsAccountPlan.decide(space: space, memberId: environment.currentMember?.id)
         do {
-            switch plan {
+            switch accountPlan {
             case .deleteSpace:
                 try await environment.sharing.deleteSpace(space: space.id)
             case .leaveSpace:

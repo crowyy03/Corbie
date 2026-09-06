@@ -15,10 +15,10 @@ struct PaywallValueRow: Identifiable, Equatable {
             noteKey: "paywall.value.widgets.note"
         ),
         PaywallValueRow(
-            id: "plans",
+            id: "goals",
             systemImage: "flag",
-            titleKey: "paywall.value.plans.title",
-            noteKey: "paywall.value.plans.note"
+            titleKey: "paywall.value.goals.title",
+            noteKey: "paywall.value.goals.note"
         ),
         PaywallValueRow(
             id: "capsules",

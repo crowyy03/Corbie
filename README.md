@@ -1,6 +1,6 @@
 # Corbie
 
-Corbie is an iOS app for two people: one shared space for tasks, calendar, wishes, plans with savings, lists, time capsules and votes.
+Corbie is an iOS app for two people: one shared space for tasks and task folders, calendar, wishes, goals with savings and prep steps, time capsules and votes.
 One subscription covers both partners, and the everyday parts live in home screen and lock screen widgets.
 
 ## Requirements

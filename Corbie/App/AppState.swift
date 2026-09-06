@@ -7,7 +7,7 @@ final class AppState {
         case tasks
         case calendar
         case wishes
-        case plans
+        case goals
         case us
     }
 
@@ -27,7 +27,7 @@ final class AppState {
         case .tasks, .task: .tasks
         case .calendar: .calendar
         case .wishes: .wishes
-        case .plans, .plan: .plans
+        case .goals, .goal: .goals
         case .capsules, .votes, .people, .person, .join: .us
         }
     }

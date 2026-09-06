@@ -31,11 +31,24 @@ public protocol MemberRepository: Sendable {
     func update(_ member: MemberDTO) async throws -> MemberDTO
     func updatePrefs(memberId: UUID, prefs: NotificationPrefs) async throws -> MemberDTO
     func touchLastSeen(memberId: UUID, at date: Date) async throws
+    func setSharesBusyTimes(memberId: UUID, shares: Bool) async throws -> MemberDTO
+    func markUsVisited(memberId: UUID, at date: Date) async throws -> MemberDTO
+    func markRecapSeen(memberId: UUID, at date: Date) async throws -> MemberDTO
     func delete(id: UUID) async throws
 }
 
 extension MemberRepository {
     public func touchLastSeen(memberId: UUID) async throws {
         try await touchLastSeen(memberId: memberId, at: Date())
+    }
+
+    @discardableResult
+    public func markUsVisited(memberId: UUID) async throws -> MemberDTO {
+        try await markUsVisited(memberId: memberId, at: Date())
+    }
+
+    @discardableResult
+    public func markRecapSeen(memberId: UUID) async throws -> MemberDTO {
+        try await markRecapSeen(memberId: memberId, at: Date())
     }
 }

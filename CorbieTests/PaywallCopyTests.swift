@@ -33,7 +33,7 @@ final class PaywallCopyTests: XCTestCase {
     }
 
     func testEveryValueRowResolves() {
-        XCTAssertEqual(PaywallValueRow.all.map(\.id), ["widgets", "plans", "capsules"])
+        XCTAssertEqual(PaywallValueRow.all.map(\.id), ["widgets", "goals", "capsules"])
         for row in PaywallValueRow.all {
             for key in [row.titleKey, row.noteKey] {
                 XCTAssertNotEqual(PaywallCopy.text(key), key, "missing catalog value for \(key)")

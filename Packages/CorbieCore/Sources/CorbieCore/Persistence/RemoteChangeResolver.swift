@@ -32,12 +32,12 @@ public struct RemoteChangeResolver: Sendable {
         case let wish as Wish:
             guard wish.space?.id == spaceId else { return nil }
             return .wish(WishDTO(wish))
-        case let plan as Plan:
-            guard plan.space?.id == spaceId else { return nil }
-            return .plan(PlanDTO(plan))
-        case let expense as PlanExpense:
-            guard let plan = expense.plan, plan.space?.id == spaceId else { return nil }
-            return .expense(PlanExpenseDTO(expense), plan: PlanDTO(plan))
+        case let goal as Goal:
+            guard goal.space?.id == spaceId else { return nil }
+            return .goal(GoalDTO(goal))
+        case let expense as GoalExpense:
+            guard let goal = expense.goal, goal.space?.id == spaceId else { return nil }
+            return .expense(GoalExpenseDTO(expense), goal: GoalDTO(goal))
         case let open as CapsuleOpen:
             guard let capsule = open.capsule, capsule.space?.id == spaceId else { return nil }
             return .capsuleOpen(capsule: CapsuleDTO(capsule), memberId: open.memberId)

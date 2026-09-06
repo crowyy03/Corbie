@@ -36,21 +36,21 @@ public struct CountdownConfigurationIntent: WidgetConfigurationIntent {
 }
 
 @available(iOS 17.0, macOS 14.0, *)
-public struct PlanProgressConfigurationIntent: WidgetConfigurationIntent {
-    public static let title: LocalizedStringResource = "intent.plan.title"
-    public static let description = IntentDescription("intent.plan.description")
+public struct GoalProgressConfigurationIntent: WidgetConfigurationIntent {
+    public static let title: LocalizedStringResource = "intent.goal.title"
+    public static let description = IntentDescription("intent.goal.description")
     public static let isDiscoverable = false
 
-    @Parameter(title: "intent.plan.parameter.plan")
-    public var plan: CorbiePlanEntity?
+    @Parameter(title: "intent.goal.parameter.goal")
+    public var goal: CorbieGoalEntity?
 
     public init() { }
 
-    public init(plan: CorbiePlanEntity?) {
-        self.plan = plan
+    public init(goal: CorbieGoalEntity?) {
+        self.goal = goal
     }
 
-    public var planId: UUID? { plan?.id }
+    public var goalId: UUID? { goal?.id }
 }
 
 @available(iOS 17.0, macOS 14.0, *)

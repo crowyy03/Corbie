@@ -6,8 +6,8 @@ enum Route: Equatable {
     case task(UUID)
     case calendar
     case wishes
-    case plans
-    case plan(UUID)
+    case goals
+    case goal(UUID)
     case capsules
     case votes
     case people
@@ -41,8 +41,8 @@ enum Router {
         case .calendar: return .calendar
         case .event: return .calendar
         case .wishes, .wish: return .wishes
-        case .plans, .lists, .list: return .plans
-        case let .plan(id): return .plan(id)
+        case .goals: return .goals
+        case let .goal(id): return .goal(id)
         case .capsules, .capsule: return .capsules
         case .votes, .vote: return .votes
         case .people: return .people
@@ -68,10 +68,10 @@ enum Router {
             return .calendar
         case "wishes":
             return .wishes
-        case "plans":
-            guard let identifier = rest.first else { return .plans }
-            guard let planID = UUID(uuidString: identifier) else { return nil }
-            return .plan(planID)
+        case CorbieRoute.Segment.goals, CorbieRoute.Segment.legacyGoals:
+            guard let identifier = rest.first else { return .goals }
+            guard let goalID = UUID(uuidString: identifier) else { return nil }
+            return .goal(goalID)
         case "capsules":
             return .capsules
         case "votes":

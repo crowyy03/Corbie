@@ -19,11 +19,13 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case eventCreated(kind: EventKind)
     case wishCreated(source: WishSource)
     case wishFulfilled
-    case planCreated(type: PlanType)
+    case goalCreated(type: GoalType)
+    case goalCompleted
+    case goalStepCreated(hasDue: Bool)
+    case goalStepDone
     case expenseAdded
-    case listCreated(template: ListTemplate)
-    case listItemChecked
-    case listMapOpened
+    case folderCreated(template: FolderTemplate)
+    case folderMapOpened
     case capsuleCreated
     case capsuleOpened
     case voteCreated
@@ -50,11 +52,13 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .eventCreated: return "event_created"
         case .wishCreated: return "wish_created"
         case .wishFulfilled: return "wish_fulfilled"
-        case .planCreated: return "plan_created"
+        case .goalCreated: return "goal_created"
+        case .goalCompleted: return "goal_completed"
+        case .goalStepCreated: return "goal_step_created"
+        case .goalStepDone: return "goal_step_done"
         case .expenseAdded: return "expense_added"
-        case .listCreated: return "list_created"
-        case .listItemChecked: return "list_item_checked"
-        case .listMapOpened: return "list_map_opened"
+        case .folderCreated: return "folder_created"
+        case .folderMapOpened: return "folder_map_opened"
         case .capsuleCreated: return "capsule_created"
         case .capsuleOpened: return "capsule_opened"
         case .voteCreated: return "vote_created"
@@ -79,9 +83,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["kind": .string(kind.rawValue)]
         case let .wishCreated(source):
             return ["source": .string(source.rawValue)]
-        case let .planCreated(type):
+        case let .goalCreated(type):
             return ["type": .string(type.rawValue)]
-        case let .listCreated(template):
+        case let .goalStepCreated(hasDue):
+            return ["has_due": .flag(hasDue)]
+        case let .folderCreated(template):
             return ["template": .string(template.rawValue)]
         case let .widgetAdded(kind):
             return ["kind": .string(AnalyticsEvent.slug(kind))]
@@ -92,9 +98,9 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .readonlyHit(action):
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
-             .taskHandedBack, .wishFulfilled, .expenseAdded, .listItemChecked, .listMapOpened,
-             .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered, .voteRevealed,
-             .trialStarted, .restore:
+             .taskHandedBack, .wishFulfilled, .expenseAdded, .goalCompleted, .goalStepDone,
+             .folderMapOpened, .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered,
+             .voteRevealed, .trialStarted, .restore:
             return [:]
         }
     }
@@ -102,10 +108,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
     public static let allowedNames: Set<String> = [
         "app_open", "onboarding_step", "space_created", "invite_created", "invite_redeemed",
         "task_created", "task_taken", "task_done", "event_created", "wish_created", "wish_fulfilled",
-        "plan_created", "expense_added", "list_created", "list_item_checked", "list_map_opened",
-        "capsule_created", "capsule_opened", "vote_created", "vote_answered", "vote_revealed",
-        "widget_added", "paywall_shown", "trial_started", "purchase", "restore", "readonly_hit",
-        "task_handed_back"
+        "goal_created", "goal_completed", "goal_step_created", "goal_step_done", "expense_added",
+        "folder_created", "folder_map_opened", "capsule_created", "capsule_opened", "vote_created",
+        "vote_answered", "vote_revealed", "widget_added", "paywall_shown", "trial_started",
+        "purchase", "restore", "readonly_hit", "task_handed_back"
     ]
 
     public static let droppedPropKeys: Set<String> = [

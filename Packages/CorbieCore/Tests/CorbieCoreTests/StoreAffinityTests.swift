@@ -31,10 +31,12 @@ import Testing
         let wish = try await repositories.wishes.create(
             WishDraft(spaceId: spaceId, ownerMemberId: member.id, title: "Lamp")
         )
-        let plan = try await repositories.plans.create(
-            PlanDraft(spaceId: spaceId, title: "Lisbon", targetAmount: 1000, currency: "USD")
+        let goal = try await repositories.goals.create(
+            GoalDraft(spaceId: spaceId, title: "Lisbon", targetAmount: 1000, currency: "USD")
         )
-        let list = try await repositories.lists.create(ChecklistDraft(spaceId: spaceId, title: "Cities"))
+        let folder = try await repositories.tasks.createFolder(
+            TaskFolderDraft(spaceId: spaceId, title: "Cities", template: .cities)
+        )
         let person = try await repositories.people.create(PersonDraft(spaceId: spaceId, name: "Anna"))
 
         let comment = try await repositories.events.addComment(
@@ -42,11 +44,17 @@ import Testing
             memberId: member.id,
             text: "Table for two"
         )
-        let expense = try await repositories.plans.addExpense(
-            planId: plan.id,
-            draft: ExpenseDraft(amount: 120, currency: "USD")
+        let expense = try await repositories.goals.addExpense(
+            goalId: goal.id,
+            draft: GoalExpenseDraft(amount: 120, currency: "USD")
         )
-        let item = try await repositories.lists.addItem(listId: list.id, draft: ListItemDraft(title: "Porto"))
+        let step = try await repositories.goals.addStep(goalId: goal.id, draft: GoalStepDraft(title: "Pack"))
+        let busy = try await repositories.busyIntervals.replace(
+            spaceId: spaceId,
+            memberId: member.id,
+            source: .device,
+            intervals: [BusyIntervalDraft(startAt: Date(), endAt: Date().addingTimeInterval(3600))]
+        )
         let idea = try await repositories.people.addGiftIdea(personId: person.id, draft: GiftIdeaDraft(title: "Book"))
 
         let expected: [(String, UUID)] = [
@@ -55,12 +63,13 @@ import Testing
             (TaskItem.entityName, task.id),
             (Event.entityName, event.id),
             (Wish.entityName, wish.id),
-            (Plan.entityName, plan.id),
-            (ChecklistList.entityName, list.id),
+            (Goal.entityName, goal.id),
+            (TaskFolder.entityName, folder.id),
             (Person.entityName, person.id),
             (EventComment.entityName, comment.id),
-            (PlanExpense.entityName, expense.id),
-            (ListItem.entityName, item.id),
+            (GoalExpense.entityName, expense.id),
+            (GoalStep.entityName, step.id),
+            (BusyInterval.entityName, try #require(busy.first).id),
             (GiftIdea.entityName, idea.id)
         ]
         for (entityName, id) in expected {

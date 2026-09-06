@@ -26,7 +26,20 @@ public enum CorbieModel {
         member.attribute("birthdayDay", .integer16AttributeType)
         member.attribute("joinedAt", .dateAttributeType)
         member.attribute("lastSeenAt", .dateAttributeType)
+        member.attribute("sharesBusyTimes", .booleanAttributeType, optional: false, defaultValue: false)
+        member.attribute("lastRecapSeenAt", .dateAttributeType)
+        member.attribute("lastUsVisitAt", .dateAttributeType)
         member.attribute("notificationPrefsData", .binaryDataAttributeType)
+
+        let folder = ModelEntity(TaskFolder.entityName, TaskFolder.self)
+        folder.attribute("title", .stringAttributeType)
+        folder.attribute("subtitle", .stringAttributeType)
+        folder.attribute("templateRaw", .stringAttributeType, defaultValue: FolderTemplate.empty.rawValue)
+        folder.attribute("anyoneCanCheck", .booleanAttributeType, optional: false, defaultValue: true)
+        folder.attribute("isPinnedShopping", .booleanAttributeType, optional: false, defaultValue: false)
+        folder.attribute("sortIndex", .integer32AttributeType, optional: false, defaultValue: 0)
+        folder.attribute("createdByMemberId", .UUIDAttributeType)
+        folder.attribute("createdAt", .dateAttributeType)
 
         let task = ModelEntity(TaskItem.entityName, TaskItem.self)
         task.attribute("title", .stringAttributeType)
@@ -39,6 +52,12 @@ public enum CorbieModel {
         task.attribute("createdByMemberId", .UUIDAttributeType)
         task.attribute("takenAt", .dateAttributeType)
         task.attribute("recurrenceRaw", .stringAttributeType, defaultValue: Recurrence.none.rawValue)
+        task.attribute("placeName", .stringAttributeType)
+        task.attribute("address", .stringAttributeType)
+        task.attribute("lat", .doubleAttributeType)
+        task.attribute("lon", .doubleAttributeType)
+        task.attribute("sortIndex", .integer32AttributeType, optional: false, defaultValue: 0)
+        task.attribute("sourceGoalId", .UUIDAttributeType)
         task.attribute("archivedAt", .dateAttributeType)
         task.attribute("createdAt", .dateAttributeType)
 
@@ -80,51 +99,46 @@ public enum CorbieModel {
         wish.attribute("needsParse", .booleanAttributeType, optional: false, defaultValue: false)
         wish.attribute("createdAt", .dateAttributeType)
 
-        let plan = ModelEntity(Plan.entityName, Plan.self)
-        plan.attribute("title", .stringAttributeType)
-        plan.attribute("typeRaw", .stringAttributeType, defaultValue: PlanType.other.rawValue)
-        plan.attribute("targetAmount", .doubleAttributeType, optional: false, defaultValue: 0.0)
-        plan.attribute("currency", .stringAttributeType, defaultValue: "USD")
-        plan.attribute("savedAmount", .doubleAttributeType, optional: false, defaultValue: 0.0)
-        plan.attribute("startAt", .dateAttributeType)
-        plan.attribute("endAt", .dateAttributeType)
-        plan.attribute("statusRaw", .stringAttributeType, defaultValue: PlanStatus.active.rawValue)
-        plan.attribute("createdByMemberId", .UUIDAttributeType)
-        plan.attribute("note", .stringAttributeType)
-        plan.attribute("createdAt", .dateAttributeType)
+        let goal = ModelEntity(Goal.entityName, Goal.self)
+        goal.attribute("title", .stringAttributeType)
+        goal.attribute("typeRaw", .stringAttributeType, defaultValue: GoalType.other.rawValue)
+        goal.attribute("targetAmount", .doubleAttributeType, optional: false, defaultValue: 0.0)
+        goal.attribute("currency", .stringAttributeType, defaultValue: "USD")
+        goal.attribute("savedAmount", .doubleAttributeType, optional: false, defaultValue: 0.0)
+        goal.attribute("startAt", .dateAttributeType)
+        goal.attribute("endAt", .dateAttributeType)
+        goal.attribute("statusRaw", .stringAttributeType, defaultValue: GoalStatus.active.rawValue)
+        goal.attribute("createdByMemberId", .UUIDAttributeType)
+        goal.attribute("note", .stringAttributeType)
+        goal.attribute("createdAt", .dateAttributeType)
 
-        let expense = ModelEntity(PlanExpense.entityName, PlanExpense.self)
+        let expense = ModelEntity(GoalExpense.entityName, GoalExpense.self)
         expense.attribute("amount", .doubleAttributeType, optional: false, defaultValue: 0.0)
         expense.attribute("currency", .stringAttributeType)
-        expense.attribute("fxRateToPlanCurrency", .doubleAttributeType, optional: false, defaultValue: 1.0)
-        expense.attribute("amountInPlanCurrency", .doubleAttributeType, optional: false, defaultValue: 0.0)
+        expense.attribute("fxRateToGoalCurrency", .doubleAttributeType, optional: false, defaultValue: 1.0)
+        expense.attribute("amountInGoalCurrency", .doubleAttributeType, optional: false, defaultValue: 0.0)
         expense.attribute("note", .stringAttributeType)
         expense.attribute("date", .dateAttributeType)
         expense.attribute("addedByMemberId", .UUIDAttributeType)
         expense.attribute("createdAt", .dateAttributeType)
 
-        let list = ModelEntity(ChecklistList.entityName, ChecklistList.self)
-        list.attribute("title", .stringAttributeType)
-        list.attribute("subtitle", .stringAttributeType)
-        list.attribute("templateRaw", .stringAttributeType, defaultValue: ListTemplate.empty.rawValue)
-        list.attribute("anyoneCanCheck", .booleanAttributeType, optional: false, defaultValue: true)
-        list.attribute("isPinnedShopping", .booleanAttributeType, optional: false, defaultValue: false)
-        list.attribute("createdByMemberId", .UUIDAttributeType)
-        list.attribute("createdAt", .dateAttributeType)
+        let step = ModelEntity(GoalStep.entityName, GoalStep.self)
+        step.attribute("title", .stringAttributeType)
+        step.attribute("note", .stringAttributeType)
+        step.attribute("isDone", .booleanAttributeType, optional: false, defaultValue: false)
+        step.attribute("doneByMemberId", .UUIDAttributeType)
+        step.attribute("doneAt", .dateAttributeType)
+        step.attribute("assigneeMemberId", .UUIDAttributeType)
+        step.attribute("dueAt", .dateAttributeType)
+        step.attribute("sortIndex", .integer32AttributeType, optional: false, defaultValue: 0)
+        step.attribute("createdAt", .dateAttributeType)
 
-        let listItem = ModelEntity(ListItem.entityName, ListItem.self)
-        listItem.attribute("title", .stringAttributeType)
-        listItem.attribute("isChecked", .booleanAttributeType, optional: false, defaultValue: false)
-        listItem.attribute("checkedByMemberId", .UUIDAttributeType)
-        listItem.attribute("checkedAt", .dateAttributeType)
-        listItem.attribute("addedByMemberId", .UUIDAttributeType)
-        listItem.attribute("note", .stringAttributeType)
-        listItem.attribute("placeName", .stringAttributeType)
-        listItem.attribute("address", .stringAttributeType)
-        listItem.attribute("latitude", .doubleAttributeType)
-        listItem.attribute("longitude", .doubleAttributeType)
-        listItem.attribute("sortIndex", .integer32AttributeType, optional: false, defaultValue: 0)
-        listItem.attribute("createdAt", .dateAttributeType)
+        let busy = ModelEntity(BusyInterval.entityName, BusyInterval.self)
+        busy.attribute("memberId", .UUIDAttributeType)
+        busy.attribute("startAt", .dateAttributeType)
+        busy.attribute("endAt", .dateAttributeType)
+        busy.attribute("sourceRaw", .stringAttributeType, defaultValue: BusyIntervalSource.device.rawValue)
+        busy.attribute("updatedAt", .dateAttributeType)
 
         let capsule = ModelEntity(CapsuleItem.entityName, CapsuleItem.self)
         capsule.attribute("authorMemberId", .UUIDAttributeType)
@@ -181,24 +195,26 @@ public enum CorbieModel {
 
         space.owns(member, many: "members", inverse: "space")
         space.owns(task, many: "tasks", inverse: "space")
+        space.owns(folder, many: "folders", inverse: "space")
         space.owns(event, many: "events", inverse: "space")
         space.owns(wish, many: "wishes", inverse: "space")
-        space.owns(plan, many: "plans", inverse: "space")
-        space.owns(list, many: "lists", inverse: "space")
+        space.owns(goal, many: "goals", inverse: "space")
+        space.owns(busy, many: "busyIntervals", inverse: "space")
         space.owns(capsule, many: "capsules", inverse: "space")
         space.owns(vote, many: "votes", inverse: "space")
         space.owns(person, many: "people", inverse: "space")
+        folder.keeps(task, many: "tasks", inverse: "folder")
         event.owns(comment, many: "comments", inverse: "event")
         capsule.owns(capsuleOpen, many: "opens", inverse: "capsule")
         vote.owns(voteResponse, many: "responses", inverse: "vote")
-        plan.owns(expense, many: "expenses", inverse: "plan")
-        list.owns(listItem, many: "items", inverse: "list")
+        goal.owns(expense, many: "expenses", inverse: "goal")
+        goal.owns(step, many: "steps", inverse: "goal")
         person.owns(giftIdea, many: "giftIdeas", inverse: "person")
         person.owns(personDate, many: "dates", inverse: "person")
 
         let builders = [
-            space, member, task, event, comment, wish, plan, expense,
-            list, listItem, capsule, capsuleOpen, vote, voteResponse, person, giftIdea, personDate
+            space, member, folder, task, event, comment, wish, goal, expense, step, busy,
+            capsule, capsuleOpen, vote, voteResponse, person, giftIdea, personDate
         ]
         let model = NSManagedObjectModel()
         model.entities = builders.map { $0.finish() }
@@ -238,12 +254,25 @@ private final class ModelEntity {
     }
 
     func owns(_ child: ModelEntity, many name: String, inverse: String) {
+        relate(child, many: name, inverse: inverse, deleteRule: .cascadeDeleteRule)
+    }
+
+    func keeps(_ child: ModelEntity, many name: String, inverse: String) {
+        relate(child, many: name, inverse: inverse, deleteRule: .nullifyDeleteRule)
+    }
+
+    private func relate(
+        _ child: ModelEntity,
+        many name: String,
+        inverse: String,
+        deleteRule: NSDeleteRule
+    ) {
         let toMany = NSRelationshipDescription()
         toMany.name = name
         toMany.destinationEntity = child.entity
         toMany.minCount = 0
         toMany.maxCount = 0
-        toMany.deleteRule = .cascadeDeleteRule
+        toMany.deleteRule = deleteRule
         toMany.isOptional = true
         toMany.isOrdered = false
 

@@ -61,45 +61,45 @@ import Testing
         #expect(alert?.kind == .partnerWish)
     }
 
-    @Test func aPlanAlertsOnlyWhenTheGoalIsReached() {
-        var plan = PlanDTO(id: UUID(), title: "Lisbon", targetAmount: 5000, savedAmount: 2400)
-        let short = RemoteChange(type: .update, properties: [RemoteChangeProperty.planSaved], subject: .plan(plan))
+    @Test func aGoalAlertsOnlyWhenItIsReached() {
+        var goal = GoalDTO(id: UUID(), title: "Lisbon", targetAmount: 5000, savedAmount: 2400)
+        let short = RemoteChange(type: .update, properties: [RemoteChangeProperty.goalSaved], subject: .goal(goal))
         #expect(RemoteChangeClassifier.alert(for: short, viewer: viewer) == nil)
-        plan.savedAmount = 5000
-        let reached = RemoteChange(type: .update, properties: [RemoteChangeProperty.planSaved], subject: .plan(plan))
+        goal.savedAmount = 5000
+        let reached = RemoteChange(type: .update, properties: [RemoteChangeProperty.goalSaved], subject: .goal(goal))
         let alert = RemoteChangeClassifier.alert(for: reached, viewer: viewer)
-        #expect(alert?.kind == .planUpdate)
-        #expect(alert?.content.titleKey == NotificationStrings.planGoalTitle)
+        #expect(alert?.kind == .goalUpdate)
+        #expect(alert?.content.titleKey == NotificationStrings.goalReachedTitle)
     }
 
     @Test func anExpenseOverTheTargetUsesTheOverBudgetCopy() {
-        var plan = PlanDTO(id: UUID(), title: "Kitchen", targetAmount: 1000, savedAmount: 1000)
-        plan.addedAmount = 340
-        let expense = PlanExpenseDTO(id: UUID(), planId: plan.id, amount: 340, addedByMemberId: partner)
+        var goal = GoalDTO(id: UUID(), title: "Kitchen", targetAmount: 1000, savedAmount: 1000)
+        goal.addedAmount = 340
+        let expense = GoalExpenseDTO(id: UUID(), goalId: goal.id, amount: 340, addedByMemberId: partner)
         let alert = RemoteChangeClassifier.alert(
-            for: RemoteChange(type: .insert, subject: .expense(expense, plan: plan)),
+            for: RemoteChange(type: .insert, subject: .expense(expense, goal: goal)),
             viewer: viewer
         )
-        #expect(alert?.content.titleKey == NotificationStrings.planOverTitle)
+        #expect(alert?.content.titleKey == NotificationStrings.goalOverTitle)
     }
 
     @Test func moneyThatReachesTheTargetUsesTheGoalCopy() {
-        var plan = PlanDTO(id: UUID(), title: "Kitchen", targetAmount: 1000, savedAmount: 800)
-        plan.addedAmount = 200
-        let expense = PlanExpenseDTO(id: UUID(), planId: plan.id, amount: 200, addedByMemberId: partner)
+        var goal = GoalDTO(id: UUID(), title: "Kitchen", targetAmount: 1000, savedAmount: 800)
+        goal.addedAmount = 200
+        let expense = GoalExpenseDTO(id: UUID(), goalId: goal.id, amount: 200, addedByMemberId: partner)
         let alert = RemoteChangeClassifier.alert(
-            for: RemoteChange(type: .insert, subject: .expense(expense, plan: plan)),
+            for: RemoteChange(type: .insert, subject: .expense(expense, goal: goal)),
             viewer: viewer
         )
-        #expect(alert?.content.titleKey == NotificationStrings.planGoalTitle)
+        #expect(alert?.content.titleKey == NotificationStrings.goalReachedTitle)
     }
 
     @Test func myOwnExpenseDoesNotAlertMe() {
-        let plan = PlanDTO(id: UUID(), title: "Kitchen", targetAmount: 1000)
-        let expense = PlanExpenseDTO(id: UUID(), planId: plan.id, amount: 40, addedByMemberId: me)
+        let goal = GoalDTO(id: UUID(), title: "Kitchen", targetAmount: 1000)
+        let expense = GoalExpenseDTO(id: UUID(), goalId: goal.id, amount: 40, addedByMemberId: me)
         #expect(
             RemoteChangeClassifier.alert(
-                for: RemoteChange(type: .insert, subject: .expense(expense, plan: plan)),
+                for: RemoteChange(type: .insert, subject: .expense(expense, goal: goal)),
                 viewer: viewer
             ) == nil
         )
@@ -147,7 +147,7 @@ import Testing
             case .taskAssigned: prefs.taskAssigned = false
             case .taskHandover: prefs.taskTakenOrHandedBack = false
             case .partnerWish: prefs.partnerAddedWish = false
-            case .planUpdate: prefs.planUpdates = false
+            case .goalUpdate: prefs.goalUpdates = false
             case .capsuleOpened: prefs.capsuleUpdates = false
             case .voteUpdate: prefs.voteUpdates = false
             }

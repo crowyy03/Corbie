@@ -17,10 +17,11 @@ public final class Space: NSManagedObject {
 
     @NSManaged public var members: Set<Member>
     @NSManaged public var tasks: Set<TaskItem>
+    @NSManaged public var folders: Set<TaskFolder>
     @NSManaged public var events: Set<Event>
     @NSManaged public var wishes: Set<Wish>
-    @NSManaged public var plans: Set<Plan>
-    @NSManaged public var lists: Set<ChecklistList>
+    @NSManaged public var goals: Set<Goal>
+    @NSManaged public var busyIntervals: Set<BusyInterval>
     @NSManaged public var capsules: Set<CapsuleItem>
     @NSManaged public var votes: Set<Vote>
     @NSManaged public var people: Set<Person>
