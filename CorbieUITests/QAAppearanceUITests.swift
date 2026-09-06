@@ -5,57 +5,75 @@ final class QAAppearanceUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testScreenshotTour() throws {
+    func testScreenshotTourOfEveryTab() throws {
         let app = launchSignedIn()
 
+        XCTAssertEqual(app.tabBarButtons.count, QAText.tabs.count, "the tab bar lost a tab")
         for (index, name) in QAText.tabs.enumerated() {
             selectTab(app, index)
             saveScreenshot(app, named: "tab\(index)_\(name.lowercased())")
         }
 
-        XCTAssertEqual(app.tabBarButtons.count, 5, "the tab bar lost a tab")
+        selectTab(app, QATab.today)
+        openUsHub(app)
+        saveScreenshot(app, named: "us_hub")
+        closeUsHub(app)
+    }
 
-        selectTab(app, QATab.us)
-        let settings = app.anyElement(labelContaining: QARun.isEnglish ? "Couple settings" : "gearshape")
-        if settings.waitForExistence(timeout: 15), settings.isHittable {
-            settings.tap()
-            saveScreenshot(app, named: "settings_top")
-            app.swipeUp()
-            app.swipeUp()
-            saveScreenshot(app, named: "settings_bottom")
-        }
+    func testScreenshotTourOfSettings() throws {
+        let app = launchSignedIn()
+        openSharedSettings(app)
+        saveScreenshot(app, named: "settings_top")
+        app.swipeUp()
+        app.swipeUp()
+        saveScreenshot(app, named: "settings_middle")
+        app.swipeUp()
+        app.swipeUp()
+        saveScreenshot(app, named: "settings_bottom")
+    }
+
+    func testScreenshotTourOfFreeTime() throws {
+        let app = launchSignedIn(extraArguments: ["-corbie.freetime.privacynotice.seen", "NO"])
+        selectTab(app, QATab.calendar)
+
+        let entry = app.buttons[QALabels.current.freeTime]
+        XCTAssertTrue(entry.waitForExistence(timeout: 25), "the calendar toolbar has no free time button")
+        entry.tap()
+
+        let privacy = app.staticTexts[QALabels.current.freeTimePrivacy]
+        XCTAssertTrue(privacy.waitForExistence(timeout: 25), "the first visit did not explain the privacy rule")
+        saveScreenshot(app, named: "freetime_privacy_sheet")
+
+        let notNow = app.buttons[QALabels.current.notNow]
+        XCTAssertTrue(notNow.waitForExistence(timeout: 15), "the privacy sheet cannot be dismissed")
+        notNow.tap()
+
+        XCTAssertTrue(
+            app.navigationBars[QALabels.current.freeTime].waitForExistence(timeout: 25),
+            "the free time screen did not open behind the privacy sheet"
+        )
+        saveScreenshot(app, named: "freetime_screen")
     }
 
     func testPaywallTour() throws {
+        try XCTSkipUnless(QARun.isEnglish, "the paywall tour reads English labels")
         let app = launchSignedIn()
-        selectTab(app, QATab.us)
+        openSharedSettings(app)
 
-        let settings = app.anyElement(labelContaining: QARun.isEnglish ? "Couple settings" : "gearshape")
-        guard settings.waitForExistence(timeout: 15) else {
-            saveScreenshot(app, named: "us_hub_no_settings")
-            throw XCTSkip("the Us hub does not expose couple settings in this language")
-        }
-        settings.tap()
-
-        guard QARun.isEnglish else {
-            saveScreenshot(app, named: "settings_localised")
-            return
-        }
-
-        let offers = app.buttons["See plans"]
+        let offers = app.buttons[QALabels.current.seePlans]
         XCTAssertTrue(scrollTo(offers, in: app), "the subscription section has no way into the paywall")
         offers.tap()
 
         XCTAssertTrue(
-            app.staticTexts["One subscription. Both of you."].waitForExistence(timeout: 20),
+            app.staticTexts[QAText.paywallHeadline].waitForExistence(timeout: 25),
             "the paywall did not open"
         )
         saveScreenshot(app, named: "paywall_top")
         app.swipeUp()
         saveScreenshot(app, named: "paywall_bottom")
 
-        XCTAssertTrue(app.buttons["Restore purchases"].exists, "the paywall has no Restore control")
-        XCTAssertTrue(app.buttons["Privacy Policy"].exists, "the paywall has no privacy link")
-        XCTAssertTrue(app.buttons["Terms of Use"].exists, "the paywall has no terms link")
+        XCTAssertTrue(app.buttons[QALabels.current.restore].exists, "the paywall has no Restore control")
+        XCTAssertTrue(app.buttons[QALabels.current.privacy].exists, "the paywall has no privacy link")
+        XCTAssertTrue(app.buttons[QALabels.current.terms].exists, "the paywall has no terms link")
     }
 }
