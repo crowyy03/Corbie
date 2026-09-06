@@ -117,6 +117,9 @@ final class AppEnvironment {
     var isPaired: Bool { partner != nil }
 
     func bootstrap() async {
+        #if DEBUG
+        eraseEverythingIfLaunchedForATest()
+        #endif
         do {
             try persistence.stack.initializeCloudKitSchemaIfRequested()
         } catch {
@@ -354,6 +357,27 @@ final class AppEnvironment {
 
 #if DEBUG
 extension AppEnvironment {
+    static let eraseLaunchArgument = "-corbie-erase-everything"
+
+    func eraseEverythingIfLaunchedForATest() {
+        guard ProcessInfo.processInfo.arguments.contains(Self.eraseLaunchArgument) else { return }
+        try? identity.clear()
+        for key in [
+            Self.sessionTokenKey,
+            Self.appleIdentityTokenKey,
+            Self.appleAuthorizationCodeKey,
+            Self.appleRefreshTokenKey,
+        ] {
+            try? secrets.removeValue(for: key)
+        }
+        anonymousIdentity.reset()
+        do {
+            try StoreReset(stack: persistence.stack).wipe()
+        } catch {
+            report(error)
+        }
+    }
+
     static func preview() -> AppEnvironment {
         AppEnvironment(
             persistence: .preview,

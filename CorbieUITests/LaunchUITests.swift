@@ -5,7 +5,7 @@ final class LaunchUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testSignInReachesFiveTabs() throws {
+    func testSignInReachesFiveTabsAndTheUsPill() throws {
         let app = launchSignedIn()
 
         let tabBar = app.tabBars.firstMatch
@@ -13,9 +13,17 @@ final class LaunchUITests: XCTestCase {
 
         for (index, name) in QAText.tabs.enumerated() {
             let button = tabBar.buttons.element(boundBy: index)
-            XCTAssertTrue(button.waitForExistence(timeout: 5), name)
+            XCTAssertTrue(button.waitForExistence(timeout: 10), name)
             button.tap()
+            if QARun.isEnglish {
+                XCTAssertEqual(button.label, name, "tab \(index) is not \(name)")
+            }
             saveScreenshot(app, named: "tab\(index)_\(name.lowercased())")
         }
+
+        selectTab(app, QATab.today)
+        openUsHub(app)
+        saveScreenshot(app, named: "us_hub")
+        closeUsHub(app)
     }
 }

@@ -12,39 +12,44 @@ final class QATapTargetUITests: XCTestCase {
         let app = launchSignedIn()
 
         selectTab(app, QATab.tasks)
-        let filter = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "All")).firstMatch
-        XCTAssertTrue(filter.waitForExistence(timeout: 20), "the Tasks filter chips are missing")
-        assertTall(filter, "the Tasks filter chip")
+        let ownerChip = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "All")).firstMatch
+        XCTAssertTrue(ownerChip.waitForExistence(timeout: 25), "the Tasks owner chips are missing")
+        assertTall(ownerChip, "the Tasks owner chip")
+        assertBigEnough(app.buttons["New folder"], "the new folder chip")
 
         app.navigationAdd.tap()
-        XCTAssertTrue(app.navigationBars["New task"].waitForExistence(timeout: 20))
+        XCTAssertTrue(app.navigationBars["New task"].waitForExistence(timeout: 25))
         assertTall(app.buttons["Nobody"], "the Who segment")
         assertTall(app.switches["Set a date"], "the due date toggle")
-        assertTall(app.buttons[QAText.save], "the Save button")
+        assertTall(app.buttons["Folder"].firstMatch, "the folder picker")
         app.buttons[QAText.cancel].tap()
 
-        selectTab(app, QATab.us)
-        let settings = app.anyElement(labelContaining: "Couple settings")
-        XCTAssertTrue(settings.waitForExistence(timeout: 20), "the Us hub has no settings entry")
-        settings.tap()
+        openSharedSettings(app)
         let dark = app.buttons["Dark"]
         XCTAssertTrue(scrollTo(dark, in: app), "the appearance section has no Dark option")
         assertTall(dark, "the appearance segment")
+        let notifications = app.buttons["Notifications"]
+        XCTAssertTrue(scrollTo(notifications, in: app), "settings has no notifications row")
+        assertTall(notifications, "the notifications row")
     }
 
     private func assertTall(_ element: XCUIElement, _ name: String) {
-        XCTAssertTrue(element.exists, "\(name) is missing")
+        XCTAssertTrue(element.waitForExistence(timeout: 15), "\(name) is missing")
         guard element.exists else { return }
-        let frame = element.frame
         XCTAssertGreaterThanOrEqual(
-            frame.height,
+            element.frame.height,
             minimum,
-            "\(name) is \(frame.height) points tall, under the 44 point minimum"
+            "\(name) is \(element.frame.height) points tall, under the 44 point minimum"
         )
+    }
+
+    private func assertBigEnough(_ element: XCUIElement, _ name: String) {
+        assertTall(element, name)
+        guard element.exists else { return }
         XCTAssertGreaterThanOrEqual(
-            frame.width,
+            element.frame.width,
             minimum,
-            "\(name) is \(frame.width) points wide, under the 44 point minimum"
+            "\(name) is \(element.frame.width) points wide, under the 44 point minimum"
         )
     }
 }

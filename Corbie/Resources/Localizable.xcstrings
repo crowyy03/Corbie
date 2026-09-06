@@ -4783,34 +4783,10 @@
     },
     "goals.detail.action.addexpense": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add money"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
           }
         }
       }
@@ -4997,102 +4973,30 @@
     },
     "goals.detail.expenses": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Money added"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
           }
         }
       }
     },
     "goals.detail.expenses.empty": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Nothing added to this goal yet."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
           }
         }
       }
     },
     "goals.detail.expenses.note": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "every entry keeps the rate of the day it was added"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
           }
         }
       }
@@ -5557,34 +5461,10 @@
     },
     "goals.editor.field.saved.hint": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "what you two already have before adding more"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
           }
         }
       }
@@ -6101,102 +5981,30 @@
     },
     "goals.expense.field.note.placeholder": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "where it came from"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
           }
         }
       }
     },
     "goals.expense.info": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Converted to the goal currency at today's rate. The rate is kept with the entry."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": ""
           }
         }
       }
     },
     "goals.expense.title": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add money"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
           }
         }
       }
