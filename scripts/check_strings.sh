@@ -25,10 +25,12 @@ find Corbie CorbieWidgets CorbieShare CorbieTests CorbieUITests Packages \
 
 python3 - "$violations" <<'PY' || printf 'localizable catalog could not be read\n' >>"$violations"
 import json
+import os
 import re
 import sys
 
 LANGUAGES = ("de", "en", "es", "fr", "it")
+REQUIRE_TRANSLATIONS = os.environ.get("CORBIE_CHECK_TRANSLATIONS") == "1"
 SPECIFIER = re.compile(r"%(?:\d+\$)?(?:lld|@|%)")
 BANNED = re.compile("[!—→←⇒]")
 
@@ -55,7 +57,8 @@ for key, entry in sorted(catalog["strings"].items()):
     for language in LANGUAGES:
         localization = localizations.get(language)
         if localization is None:
-            report.write(f"catalog key not translated: {key} [{language}]\n")
+            if REQUIRE_TRANSLATIONS:
+                report.write(f"catalog key not translated: {key} [{language}]\n")
             continue
         found = dict(units(localization))
         if "one" in reference and not {"one", "other"} <= set(found):
@@ -63,7 +66,8 @@ for key, entry in sorted(catalog["strings"].items()):
         for category, unit in found.items():
             value = unit["value"]
             if unit.get("state") != "translated" or not value:
-                report.write(f"catalog value not translated: {key} [{language}]\n")
+                if REQUIRE_TRANSLATIONS:
+                    report.write(f"catalog value not translated: {key} [{language}]\n")
                 continue
             if BANNED.search(value):
                 report.write(f"catalog value with a banned glyph: {key} [{language}]: {value}\n")

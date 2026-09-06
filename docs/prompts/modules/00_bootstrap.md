@@ -10,14 +10,14 @@ Create the Xcode workspace skeleton exactly as described in `03_TECH_ARCHITECTUR
 2. Create local SPM package `Packages/CorbieCore` with library target `CorbieCore` and test target. Link it to all three product targets.
 3. Capabilities on app + widgets + share: iCloud (CloudKit, container `iCloud.app.corbie`), App Groups (`group.app.corbie`), Push Notifications (app only), Sign in with Apple (app only), Background Modes: remote-notification (app only).
 4. Add `Info.plist` usage strings (placeholders, localized later): NSCalendarsFullAccessUsageDescription, NSPhotoLibraryUsageDescription, NSCameraUsageDescription, NSLocationWhenInUseUsageDescription, NSFaceIDUsageDescription.
-5. App entry `CorbieApp.swift` with `AppState` (@Observable) and `RootView` showing a `TabView` with five tabs: Tasks, Calendar, Wishes, Plans, Us — each a placeholder view with the tab title. Add a top-trailing "Us" pill button (two circles) on each tab that opens an empty sheet.
+5. App entry `CorbieApp.swift` with `AppState` (@Observable) and `RootView` showing a `TabView` with five tabs in this order: **Today, Tasks, Calendar, Wishes, Goals** (see `docs/01a_SPEC_AMENDMENT_01.md`) — each a placeholder view with the tab title. Today is the default selection. Add a top-trailing "Us" pill button (two circles) to every tab that opens an empty sheet.
 6. Create `docs/DECISIONS.md` with a header and today's date.
 7. Add `.gitignore` for Xcode, `README.md` with build instructions.
 8. Set up `server/` with `supabase init` structure (functions folder empty, migrations folder empty).
 
 ## Verify
 - `xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 15' build` succeeds with zero warnings.
-- App launches, five tabs visible, Us pill opens a sheet.
+- App launches on Today, five tabs visible (Today · Tasks · Calendar · Wishes · Goals), Us pill opens a sheet from each tab.
 - Widget and Share targets build (can be empty).
 
 ## Report
