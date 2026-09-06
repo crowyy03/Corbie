@@ -1,11 +1,11 @@
-import { parseJwt } from "./jwt.ts";
+import { assertClaims, parseJwt } from "./jwt.ts";
 import { ApiError, bearerToken } from "./respond.ts";
 import { isSessionToken } from "./sessionToken.ts";
 
 const jwksUrl = "https://appleid.apple.com/auth/keys";
 const issuer = "https://appleid.apple.com";
 const jwksTtlMs = 60 * 60 * 1000;
-const clockSkewSeconds = 60;
+const label = "Identity token";
 
 interface AppleJwk {
   kty: string;
@@ -77,10 +77,10 @@ export async function verifyAppleIdentityToken(
   token: string,
   fetchImpl: typeof fetch = fetch,
 ): Promise<string> {
-  const { header, claims, signingInput, signature } = parseJwt(token, "Identity token");
+  const { header, claims, signingInput, signature } = parseJwt(token, label);
   if (header.alg !== "RS256") throw new ApiError("unauthorized", "Unsupported token algorithm");
   const kid = typeof header.kid === "string" ? header.kid : null;
-  if (!kid) throw new ApiError("unauthorized", "Identity token is malformed");
+  if (!kid) throw new ApiError("unauthorized", `${label} is malformed`);
 
   let keys = await loadKeys(fetchImpl, false);
   let key = keys.find((candidate) => candidate.kid === kid);
@@ -88,12 +88,10 @@ export async function verifyAppleIdentityToken(
     keys = await loadKeys(fetchImpl, true);
     key = keys.find((candidate) => candidate.kid === kid);
   }
-  if (!key) throw new ApiError("unauthorized", "Identity token key is unknown");
+  if (!key) throw new ApiError("unauthorized", `${label} key is unknown`);
 
   const valid = await verifySignature(key, signingInput, signature);
-  if (!valid) throw new ApiError("unauthorized", "Identity token signature is invalid");
-
-  if (claims.iss !== issuer) throw new ApiError("unauthorized", "Identity token issuer is wrong");
+  if (!valid) throw new ApiError("unauthorized", `${label} signature is invalid`);
 
   const expected = appleClientId();
   const audience = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
@@ -101,19 +99,7 @@ export async function verifyAppleIdentityToken(
     throw new ApiError("unauthorized", "Identity token audience is wrong");
   }
 
-  const now = Math.floor(Date.now() / 1000);
-  if (typeof claims.exp !== "number" || claims.exp + clockSkewSeconds < now) {
-    throw new ApiError("unauthorized", "Identity token has expired");
-  }
-  if (typeof claims.iat === "number" && claims.iat - clockSkewSeconds > now) {
-    throw new ApiError("unauthorized", "Identity token is not valid yet");
-  }
-
-  const subject = claims.sub;
-  if (typeof subject !== "string" || subject.length === 0) {
-    throw new ApiError("unauthorized", "Identity token has no subject");
-  }
-  return subject;
+  return assertClaims(claims, { issuer, label });
 }
 
 export async function requireAppleUser(

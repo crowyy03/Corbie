@@ -7,7 +7,6 @@ public struct TaskDraft: Sendable, Equatable {
     public var assigneeMemberId: UUID?
     public var dueAt: Date?
     public var recurrence: Recurrence
-    public var sourcePlanId: UUID?
     public var createdByMemberId: UUID?
 
     public init(
@@ -17,7 +16,6 @@ public struct TaskDraft: Sendable, Equatable {
         assigneeMemberId: UUID? = nil,
         dueAt: Date? = nil,
         recurrence: Recurrence = .none,
-        sourcePlanId: UUID? = nil,
         createdByMemberId: UUID? = nil
     ) {
         self.spaceId = spaceId
@@ -26,7 +24,6 @@ public struct TaskDraft: Sendable, Equatable {
         self.assigneeMemberId = assigneeMemberId
         self.dueAt = dueAt
         self.recurrence = recurrence
-        self.sourcePlanId = sourcePlanId
         self.createdByMemberId = createdByMemberId
     }
 }
@@ -79,7 +76,7 @@ public protocol TaskRepository: Sendable {
     func update(_ task: TaskDTO) async throws -> TaskDTO
     func take(taskId: UUID, memberId: UUID, at date: Date) async throws -> TaskDTO
     func handBack(taskId: UUID) async throws -> TaskDTO
-    func markDone(taskId: UUID, memberId: UUID?, at date: Date) async throws -> TaskCompletion
+    func markDone(taskId: UUID, memberId: UUID?, at date: Date, calendar: Calendar) async throws -> TaskCompletion
     func setDone(taskId: UUID, isDone: Bool, memberId: UUID?, at date: Date) async throws -> TaskDTO
     func createNextOccurrence(of taskId: UUID, dueAt: Date?) async throws -> TaskDTO
     func task(id: UUID) async throws -> TaskDTO?
@@ -107,8 +104,12 @@ extension TaskRepository {
         try await take(taskId: taskId, memberId: memberId, at: Date())
     }
 
-    public func markDone(taskId: UUID, memberId: UUID?) async throws -> TaskCompletion {
-        try await markDone(taskId: taskId, memberId: memberId, at: Date())
+    public func markDone(
+        taskId: UUID,
+        memberId: UUID?,
+        at date: Date = Date()
+    ) async throws -> TaskCompletion {
+        try await markDone(taskId: taskId, memberId: memberId, at: date, calendar: .current)
     }
 
     public func setDone(taskId: UUID, isDone: Bool, memberId: UUID?) async throws -> TaskDTO {

@@ -13,7 +13,6 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
     public var createdByMemberId: UUID?
     public var takenAt: Date?
     public var recurrence: Recurrence
-    public var sourcePlanId: UUID?
     public var archivedAt: Date?
     public var createdAt: Date?
 
@@ -30,7 +29,6 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
         createdByMemberId: UUID? = nil,
         takenAt: Date? = nil,
         recurrence: Recurrence = .none,
-        sourcePlanId: UUID? = nil,
         archivedAt: Date? = nil,
         createdAt: Date? = nil
     ) {
@@ -46,7 +44,6 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
         self.createdByMemberId = createdByMemberId
         self.takenAt = takenAt
         self.recurrence = recurrence
-        self.sourcePlanId = sourcePlanId
         self.archivedAt = archivedAt
         self.createdAt = createdAt
     }
@@ -65,7 +62,6 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
             createdByMemberId: task.createdByMemberId,
             takenAt: task.takenAt,
             recurrence: task.recurrence,
-            sourcePlanId: task.sourcePlanId,
             archivedAt: task.archivedAt,
             createdAt: task.createdAt
         )

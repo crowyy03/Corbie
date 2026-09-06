@@ -8,29 +8,29 @@ private struct BusyStoreWrite: Sendable, Equatable {
     let intervals: [BusyRange]
 }
 
-private struct BusyStoreDeletion: Sendable, Equatable {
-    let memberId: UUID
+private struct KeptBusyRange: Sendable, Equatable {
+    let range: BusyRange
     let source: BusyIntervalSource
 }
 
 private actor FakeBusyStore: BusyIntervalStore {
     private(set) var writes: [BusyStoreWrite] = []
-    private(set) var deletions: [BusyStoreDeletion] = []
-    private var kept: [BusyRange] = []
+    private(set) var deletions: [UUID] = []
+    private var kept: [KeptBusyRange] = []
 
     func replace(memberId: UUID, source: BusyIntervalSource, intervals: [BusyRange]) async throws {
         writes.append(BusyStoreWrite(memberId: memberId, source: source, intervals: intervals))
-        kept.removeAll { $0.memberId == memberId }
-        kept.append(contentsOf: intervals)
+        kept.removeAll { $0.range.memberId == memberId && $0.source == source }
+        kept.append(contentsOf: intervals.map { KeptBusyRange(range: $0, source: source) })
     }
 
     func intervals(spaceId: UUID, from: Date, to: Date) async throws -> [BusyRange] {
-        kept.filter { $0.end > from && $0.start < to }
+        kept.map(\.range).filter { $0.end > from && $0.start < to }
     }
 
-    func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws {
-        deletions.append(BusyStoreDeletion(memberId: memberId, source: source))
-        kept.removeAll { $0.memberId == memberId }
+    func deleteAll(memberId: UUID) async throws {
+        deletions.append(memberId)
+        kept.removeAll { $0.range.memberId == memberId }
     }
 
     var lastIntervals: [BusyRange] { writes.last?.intervals ?? [] }
@@ -143,7 +143,7 @@ private final class TestClock: @unchecked Sendable {
         #expect(await store.writes.isEmpty)
     }
 
-    @Test func disablingSharingDeletesTheDeviceRanges() async throws {
+    @Test func disablingSharingErasesTheCorbieRangesTogetherWithTheDeviceOnes() async throws {
         let clock = TestClock(date("2026-09-10 09:00"))
         let source = FakeDeviceCalendar(
             events: [DeviceCalendarEvent(start: date("2026-09-11 10:00"), end: date("2026-09-11 11:00"))],
@@ -152,12 +152,36 @@ private final class TestClock: @unchecked Sendable {
         let store = FakeBusyStore()
         let publisher = publisher(source, store, clock: clock)
 
+        try await store.replace(
+            memberId: memberId,
+            source: .corbie,
+            intervals: [BusyRange(memberId: memberId, start: date("2026-09-12 18:00"), end: date("2026-09-12 20:00"))]
+        )
         try await publisher.publish(memberId: memberId, sharesBusyTimes: true)
-        #expect(try await store.intervals(spaceId: UUID(), from: .distantPast, to: .distantFuture).count == 1)
+        #expect(try await store.intervals(spaceId: UUID(), from: .distantPast, to: .distantFuture).count == 2)
 
         try await publisher.disableSharing(memberId: memberId)
-        #expect(await store.deletions == [BusyStoreDeletion(memberId: memberId, source: .device)])
+        #expect(await store.deletions == [memberId])
         #expect(try await store.intervals(spaceId: UUID(), from: .distantPast, to: .distantFuture).isEmpty)
+    }
+
+    @Test func aPartnerWhoStillSharesKeepsTheirRangesWhenIDisableSharing() async throws {
+        let store = FakeBusyStore()
+        let partnerId = UUID()
+        let partnerRange = BusyRange(
+            memberId: partnerId,
+            start: date("2026-09-12 09:00"),
+            end: date("2026-09-12 10:00")
+        )
+        try await store.replace(memberId: partnerId, source: .device, intervals: [partnerRange])
+        try await store.replace(
+            memberId: memberId,
+            source: .device,
+            intervals: [BusyRange(memberId: memberId, start: date("2026-09-12 11:00"), end: date("2026-09-12 12:00"))]
+        )
+
+        try await store.deleteAll(memberId: memberId)
+        #expect(try await store.intervals(spaceId: UUID(), from: .distantPast, to: .distantFuture) == [partnerRange])
     }
 
     @Test func freeAndDeclinedEventsNeverBecomeBusyRanges() async throws {

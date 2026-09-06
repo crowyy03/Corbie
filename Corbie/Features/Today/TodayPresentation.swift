@@ -41,20 +41,20 @@ struct TodayPresentation {
         String(format: String(localized: "today.row.fromplan"), locale: locale, title)
     }
 
-    func dateTitle(_ date: TodayDate) -> String {
+    func dateTitle(_ date: UpcomingDate) -> String {
         WidgetDateLabel.upcoming(
-            kind: WidgetDateKind(date.kind),
+            kind: date.kind,
             title: date.name,
             ordinal: date.ordinal,
             locale: locale
         )
     }
 
-    func dateCaption(_ date: TodayDate) -> String {
+    func dateCaption(_ date: UpcomingDate) -> String {
         WidgetDateLabel.relativeDays(date.daysAway, locale: locale)
     }
 
-    func giftLine(_ date: TodayDate) -> String {
+    func giftLine(_ date: UpcomingDate) -> String {
         guard date.ideasCount > 0 else { return String(localized: "today.comingup.gift.none", locale: locale) }
         return String(localized: "today.comingup.gift \(date.ideasCount)", locale: locale)
     }

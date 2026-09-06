@@ -36,7 +36,7 @@ struct TodayEntryRow: View {
                 .accessibilityLabel(Text(entry.title))
                 .accessibilityValue(Text(caption))
                 if let take {
-                    TodayTakeButton(title: entry.title, action: take)
+                    TakeButton(title: entry.title, action: take)
                         .padding(.top, CorbieSpacing.xxs)
                 }
                 if let toggle {
@@ -84,30 +84,9 @@ struct TodayFreeTaskRow: View {
                 }
                 .buttonStyle(.plain)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
-                TodayTakeButton(title: title, action: take)
+                TakeButton(title: title, action: take)
             }
         }
-    }
-}
-
-struct TodayTakeButton: View {
-    let title: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text("tasks.action.take")
-                .corbieCaption()
-                .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.accentInk)
-                .padding(.horizontal, CorbieSpacing.s)
-                .frame(minHeight: CorbieMetrics.chipHeight)
-                .background(Capsule(style: .continuous).fill(CorbieColorPalette.ice))
-        }
-        .buttonStyle(.plain)
-        .frame(minWidth: CorbieMetrics.minimumTapTarget, minHeight: CorbieMetrics.minimumTapTarget)
-        .contentShape(Rectangle())
-        .accessibilityLabel(Text(String(format: String(localized: "tasks.action.take.accessibility"), title)))
     }
 }
 

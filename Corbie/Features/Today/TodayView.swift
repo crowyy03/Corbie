@@ -40,6 +40,7 @@ struct TodayView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                 header(model)
+                plansBlock(model)
                 if model.hasLoaded, model.feed.isEmpty {
                     emptyState(model)
                 } else {
@@ -77,7 +78,7 @@ struct TodayView: View {
         .accessibilityElement(children: .combine)
     }
 
-    @ViewBuilder private func blocks(_ model: TodayViewModel) -> some View {
+    private func plansBlock(_ model: TodayViewModel) -> some View {
         block(String(localized: "today.block.plans")) {
             TodayPlansCarousel(
                 plans: model.feed.plans,
@@ -85,6 +86,9 @@ struct TodayView: View {
                 add: { start(quickAction: .plan, model: model) }
             )
         }
+    }
+
+    @ViewBuilder private func blocks(_ model: TodayViewModel) -> some View {
         if model.feed.tasksToday.isEmpty == false {
             block(String(localized: "today.block.tasks")) {
                 ForEach(model.feed.tasksToday) { entry in
@@ -302,7 +306,7 @@ struct TodayView: View {
         }
     }
 
-    private func route(for date: TodayDate) -> Route {
+    private func route(for date: UpcomingDate) -> Route {
         if let personId = date.personId { return .person(personId) }
         if date.eventId != nil { return .calendar }
         return .people
@@ -324,7 +328,6 @@ struct TodayView: View {
         Task { await work() }
     }
 }
-
 
 #if DEBUG
 #Preview {

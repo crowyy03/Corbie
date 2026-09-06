@@ -56,7 +56,7 @@ final class TodayPresentationTests: XCTestCase {
     }
 
     func testTheGiftLineCountsIdeasAndFallsBackWhenThereAreNone() {
-        let withIdeas = TodayDate(
+        let withIdeas = UpcomingDate(
             id: "a",
             kind: .memberBirthday,
             name: "Sofia",
@@ -64,7 +64,7 @@ final class TodayPresentationTests: XCTestCase {
             daysAway: 4,
             radar: RadarStatus(ideasCount: 3, giftPicked: false)
         )
-        let without = TodayDate(
+        let without = UpcomingDate(
             id: "b",
             kind: .memberBirthday,
             name: "Sofia",
@@ -78,7 +78,7 @@ final class TodayPresentationTests: XCTestCase {
     }
 
     func testAPickedGiftClearsTheHighlight() {
-        let picked = TodayDate(
+        let picked = UpcomingDate(
             id: "a",
             kind: .memberBirthday,
             name: "Sofia",
@@ -90,7 +90,7 @@ final class TodayPresentationTests: XCTestCase {
     }
 
     func testACalendarEventNeverCarriesAGiftHighlight() {
-        let event = TodayDate(
+        let event = UpcomingDate(
             id: "event.1",
             kind: .event,
             name: "Dentist",

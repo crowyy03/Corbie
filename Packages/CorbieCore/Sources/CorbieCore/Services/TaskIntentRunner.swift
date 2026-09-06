@@ -32,20 +32,17 @@ public enum TaskIntentRunner {
         let completion = try await repositories.tasks.markDone(
             taskId: taskId,
             memberId: memberId ?? task.assigneeMemberId,
-            at: now
+            at: now,
+            calendar: calendar
         )
         await notifications?.removePending(identifiers: [NotificationIdentifier.taskDueToday(taskId: taskId)])
-        guard let nextDueAt = RecurrenceEngine.nextOccurrence(
-            for: completion.task,
-            completedAt: now,
-            calendar: calendar
-        ) else {
+        guard let nextDueAt = completion.nextOccurrenceDueAt else {
             WidgetReloader.reloadNow()
-            return TaskCompletion(task: completion.task)
+            return completion
         }
         _ = try await repositories.tasks.createNextOccurrence(of: taskId, dueAt: nextDueAt)
         WidgetReloader.reloadNow()
-        return TaskCompletion(task: completion.task, nextOccurrenceDueAt: nextDueAt)
+        return completion
     }
 
     @discardableResult

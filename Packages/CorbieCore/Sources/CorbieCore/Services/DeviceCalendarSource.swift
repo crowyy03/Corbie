@@ -24,23 +24,8 @@ public enum DeviceCalendarBusy {
                 guard event.end > event.start else { return nil }
                 return DateInterval(start: event.start, end: event.end)
             }
-            return wholeDays(from: event.start, to: event.end, calendar: calendar)
+            return BusyIntervals.wholeDays(from: event.start, through: event.end, calendar: calendar)
         }
-    }
-
-    private static func wholeDays(from start: Date, to end: Date, calendar: Calendar) -> DateInterval? {
-        let firstDay = calendar.startOfDay(for: start)
-        let lastDay = calendar.startOfDay(for: end)
-        let coveredEnd: Date
-        if lastDay == end {
-            coveredEnd = end
-        } else if let next = calendar.date(byAdding: .day, value: 1, to: lastDay) {
-            coveredEnd = next
-        } else {
-            return nil
-        }
-        guard coveredEnd > firstDay else { return nil }
-        return DateInterval(start: firstDay, end: coveredEnd)
     }
 }
 

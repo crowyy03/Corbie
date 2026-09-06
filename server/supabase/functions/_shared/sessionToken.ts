@@ -1,12 +1,11 @@
 import { encodeBase64Url } from "@std/encoding/base64url";
 import { sha256Hex } from "./hash.ts";
-import { parseJwt } from "./jwt.ts";
+import { assertClaims, jwtSegment, parseJwt } from "./jwt.ts";
 import { ApiError } from "./respond.ts";
 
 export const sessionIssuer = "corbie";
 export const sessionLifetimeSeconds = 180 * 24 * 60 * 60;
 
-const clockSkewSeconds = 60;
 const label = "Session token";
 
 export interface IssuedSession {
@@ -24,10 +23,6 @@ async function hmacKey(usage: KeyUsage): Promise<CryptoKey | null> {
     false,
     [usage],
   );
-}
-
-function encodeSegment(value: unknown): string {
-  return encodeBase64Url(new TextEncoder().encode(JSON.stringify(value)));
 }
 
 export function hashAppleSubject(subject: string): Promise<string> {
@@ -51,7 +46,7 @@ export async function issueSessionToken(appleSubject: string): Promise<IssuedSes
     iat: issuedAt,
     exp: expiresAt,
   };
-  const signingInput = `${encodeSegment({ alg: "HS256", typ: "JWT" })}.${encodeSegment(claims)}`;
+  const signingInput = `${jwtSegment({ alg: "HS256", typ: "JWT" })}.${jwtSegment(claims)}`;
   const signature = await crypto.subtle.sign(
     "HMAC",
     key,
@@ -79,19 +74,5 @@ export async function verifySessionToken(token: string): Promise<string> {
   );
   if (!valid) throw new ApiError("unauthorized", `${label} signature is invalid`);
 
-  if (claims.iss !== sessionIssuer) throw new ApiError("unauthorized", `${label} issuer is wrong`);
-
-  const now = Math.floor(Date.now() / 1000);
-  if (typeof claims.exp !== "number" || claims.exp + clockSkewSeconds < now) {
-    throw new ApiError("unauthorized", `${label} has expired`);
-  }
-  if (typeof claims.iat === "number" && claims.iat - clockSkewSeconds > now) {
-    throw new ApiError("unauthorized", `${label} is not valid yet`);
-  }
-
-  const subject = claims.sub;
-  if (typeof subject !== "string" || subject.length === 0) {
-    throw new ApiError("unauthorized", `${label} has no subject`);
-  }
-  return subject;
+  return assertClaims(claims, { issuer: sessionIssuer, label });
 }

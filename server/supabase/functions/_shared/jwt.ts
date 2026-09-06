@@ -1,5 +1,7 @@
-import { decodeBase64Url } from "@std/encoding/base64url";
+import { decodeBase64Url, encodeBase64Url } from "@std/encoding/base64url";
 import { ApiError } from "./respond.ts";
+
+const clockSkewSeconds = 60;
 
 export interface JwtParts {
   header: Record<string, unknown>;
@@ -38,4 +40,30 @@ export function parseJwt(token: string, label: string): JwtParts {
     signingInput: `${parts[0]}.${parts[1]}`,
     signature,
   };
+}
+
+export function jwtSegment(value: unknown): string {
+  return encodeBase64Url(new TextEncoder().encode(JSON.stringify(value)));
+}
+
+export function assertClaims(
+  claims: Record<string, unknown>,
+  options: { issuer: string; label: string },
+): string {
+  const { issuer, label } = options;
+  if (claims.iss !== issuer) throw new ApiError("unauthorized", `${label} issuer is wrong`);
+
+  const now = Math.floor(Date.now() / 1000);
+  if (typeof claims.exp !== "number" || claims.exp + clockSkewSeconds < now) {
+    throw new ApiError("unauthorized", `${label} has expired`);
+  }
+  if (typeof claims.iat === "number" && claims.iat - clockSkewSeconds > now) {
+    throw new ApiError("unauthorized", `${label} is not valid yet`);
+  }
+
+  const subject = claims.sub;
+  if (typeof subject !== "string" || subject.length === 0) {
+    throw new ApiError("unauthorized", `${label} has no subject`);
+  }
+  return subject;
 }

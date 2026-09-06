@@ -1,8 +1,6 @@
 import Foundation
 
 public struct TodayFeedProvider: Sendable {
-    public static let comingUpHorizonDays = 400
-
     private let repositories: Repositories
     private let unifiedTasks: UnifiedTaskProvider
     private let calendar: Calendar
@@ -23,29 +21,23 @@ public struct TodayFeedProvider: Sendable {
         let members = try await repositories.members.members(spaceId: space.id)
         let people = try await repositories.people.people(spaceId: space.id)
         let open = try await unifiedTasks.unifiedTasks(TaskQuery(spaceId: space.id))
-        let planOfStep = try await planIdByStep(spaceId: space.id)
-        let tasks = tasksToday(
-            open: open,
+        let day = try await daySummary(
+            space: space,
             viewerMemberId: viewerMemberId,
-            dayStart: dayStart,
-            dayEnd: dayEnd
-        )
-        let events = try await eventsToday(
-            spaceId: space.id,
             open: open,
-            planOfStep: planOfStep,
+            now: now,
             dayStart: dayStart,
             dayEnd: dayEnd
         )
-        let shown = Set(tasks.map(\.id)).union(events.map(\.id))
+        let shown = Set(day.tasksToday.map(\.id)).union(day.eventsToday.map(\.id))
         let free = open.filter { $0.isFree && $0.source == .task && shown.contains($0.id) == false }
         let viewer = members.first { $0.id == viewerMemberId }
         return TodayFeed(
-            day: dayStart,
-            daysTogether: ImportantDates.daysTogether(space: space, now: now, calendar: calendar),
-            plans: try await plans(spaceId: space.id),
-            tasksToday: tasks,
-            eventsToday: events,
+            day: day.day,
+            daysTogether: day.daysTogether,
+            plans: day.plans,
+            tasksToday: day.tasksToday,
+            eventsToday: day.eventsToday,
             freeTasks: Array(free.prefix(TodayFeed.freeTaskLimit)),
             freeTasksRemaining: max(0, free.count - TodayFeed.freeTaskLimit),
             comingUp: try await comingUp(
@@ -59,6 +51,50 @@ public struct TodayFeedProvider: Sendable {
             waiting: try await waiting(space: space, viewer: viewer, members: members, now: now),
             recap: try await recap(space: space, members: members, people: people, viewer: viewer, now: now),
             isPaired: members.count >= 2
+        )
+    }
+
+    public func daySummary(space: SpaceDTO, viewerMemberId: UUID?, now: Date = Date()) async throws -> TodayDaySummary {
+        let dayStart = calendar.startOfDay(for: now)
+        guard let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else {
+            return TodayDaySummary(day: dayStart)
+        }
+        return try await daySummary(
+            space: space,
+            viewerMemberId: viewerMemberId,
+            open: try await unifiedTasks.unifiedTasks(TaskQuery(spaceId: space.id)),
+            now: now,
+            dayStart: dayStart,
+            dayEnd: dayEnd
+        )
+    }
+
+    private func daySummary(
+        space: SpaceDTO,
+        viewerMemberId: UUID?,
+        open: [UnifiedTask],
+        now: Date,
+        dayStart: Date,
+        dayEnd: Date
+    ) async throws -> TodayDaySummary {
+        let planOfStep = try await planIdByStep(spaceId: space.id)
+        return TodayDaySummary(
+            day: dayStart,
+            daysTogether: ImportantDates.daysTogether(space: space, now: now, calendar: calendar),
+            plans: try await plans(spaceId: space.id),
+            tasksToday: tasksToday(
+                open: open,
+                viewerMemberId: viewerMemberId,
+                dayStart: dayStart,
+                dayEnd: dayEnd
+            ),
+            eventsToday: try await eventsToday(
+                spaceId: space.id,
+                open: open,
+                planOfStep: planOfStep,
+                dayStart: dayStart,
+                dayEnd: dayEnd
+            )
         )
     }
 
@@ -116,72 +152,16 @@ public struct TodayFeedProvider: Sendable {
         viewerMemberId: UUID?,
         now: Date,
         dayEnd: Date
-    ) async throws -> [TodayDate] {
-        let provider = AutoDatesProvider(calendar: calendar)
-        let radar = RadarService(calendar: calendar)
-        let partner = members.first { $0.id != viewerMemberId }
-        let partnerWishes: [WishDTO]
-        if let partner, members.count >= 2 {
-            partnerWishes = try await repositories.wishes.wishes(
-                WishQuery(spaceId: space.id, owner: .member(partner.id), fulfilled: nil)
-            )
-        } else {
-            partnerWishes = []
-        }
-        let input = RadarInput(
+    ) async throws -> [UpcomingDate] {
+        let dates = try await UpcomingDatesProvider(repositories: repositories, calendar: calendar).dates(
             space: space,
             members: members,
             people: people,
-            partnerWishes: partnerWishes,
-            viewerMemberId: viewerMemberId
+            viewerMemberId: viewerMemberId,
+            now: now,
+            eventsFrom: dayEnd
         )
-        var result: [TodayDate] = provider
-            .upcoming(
-                space: space,
-                members: members,
-                people: people,
-                now: now,
-                within: TodayFeedProvider.comingUpHorizonDays
-            )
-            .compactMap { autoDate in
-                guard let daysAway = calendar.daysAway(from: now, to: autoDate.date) else { return nil }
-                return TodayDate(
-                    id: autoDate.id,
-                    kind: autoDate.kind,
-                    name: autoDate.name,
-                    date: autoDate.date,
-                    daysAway: daysAway,
-                    ordinal: autoDate.years,
-                    memberId: autoDate.ownerMemberId,
-                    personId: autoDate.personId,
-                    radar: daysAway <= RadarService.horizonDays
-                        ? radar.radarLine(for: autoDate, input: input, now: now)?.status
-                        : nil
-                )
-            }
-        let horizon = calendar.date(byAdding: .day, value: TodayFeedProvider.comingUpHorizonDays, to: now)
-        let events = try await repositories.events.events(spaceId: space.id, from: dayEnd, to: horizon)
-        for event in events {
-            guard let startAt = event.startAt,
-                  startAt >= dayEnd,
-                  let daysAway = calendar.daysAway(from: now, to: startAt) else { continue }
-            result.append(
-                TodayDate(
-                    id: "event." + event.id.uuidString,
-                    kind: .event,
-                    name: event.title,
-                    date: startAt,
-                    daysAway: daysAway,
-                    memberId: event.createdByMemberId,
-                    eventId: event.id
-                )
-            )
-        }
-        return Array(
-            result
-                .sorted { $0.date == $1.date ? $0.id < $1.id : $0.date < $1.date }
-                .prefix(TodayFeed.comingUpLimit)
-        )
+        return Array(dates.prefix(TodayFeed.comingUpLimit))
     }
 
     private func plans(spaceId: UUID) async throws -> [TodayPlan] {
@@ -273,11 +253,21 @@ public struct TodayFeedProvider: Sendable {
             spaceId: space.id,
             statuses: [.active, .completed]
         )
+        let plansRepository = repositories.plans
         var steps: [PlanStepDTO] = []
         var expenses: [PlanExpenseDTO] = []
-        for plan in plans {
-            steps.append(contentsOf: try await repositories.plans.steps(planId: plan.id))
-            expenses.append(contentsOf: try await repositories.plans.expenses(planId: plan.id))
+        try await withThrowingTaskGroup(of: ([PlanStepDTO], [PlanExpenseDTO]).self) { group in
+            for plan in plans {
+                group.addTask {
+                    async let steps = plansRepository.steps(planId: plan.id)
+                    async let expenses = plansRepository.expenses(planId: plan.id)
+                    return (try await steps, try await expenses)
+                }
+            }
+            for try await (planSteps, planExpenses) in group {
+                steps.append(contentsOf: planSteps)
+                expenses.append(contentsOf: planExpenses)
+            }
         }
         let horizon = calendar.date(byAdding: .day, value: 7, to: week.end)
         let events = try await repositories.events.events(spaceId: space.id, from: week.end, to: horizon)

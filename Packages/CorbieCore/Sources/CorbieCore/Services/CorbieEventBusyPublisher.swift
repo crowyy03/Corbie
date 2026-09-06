@@ -3,12 +3,10 @@ import Foundation
 public enum CorbieEventPublishOutcome: Sendable, Equatable {
     case published(Int)
     case throttled
+    case sharingDisabled
 }
 
 public actor CorbieEventBusyPublisher {
-    public static let horizonDays = 14
-    public static let throttle: TimeInterval = 60 * 60
-
     private let events: any EventRepository
     private let store: any BusyIntervalStore
     private let calendar: Calendar
@@ -31,15 +29,17 @@ public actor CorbieEventBusyPublisher {
     public func publish(
         spaceId: UUID,
         memberId: UUID,
+        sharesBusyTimes: Bool,
         force: Bool = false
     ) async throws -> CorbieEventPublishOutcome {
+        guard sharesBusyTimes else { return .sharingDisabled }
         let moment = now()
         if force == false,
            let lastPublishedAt,
-           moment.timeIntervalSince(lastPublishedAt) < CorbieEventBusyPublisher.throttle {
+           moment.timeIntervalSince(lastPublishedAt) < BusyWindow.throttle {
             return .throttled
         }
-        guard let horizon = calendar.date(byAdding: .day, value: CorbieEventBusyPublisher.horizonDays, to: moment)
+        guard let horizon = calendar.date(byAdding: .day, value: BusyWindow.horizonDays, to: moment)
         else {
             throw CorbieError.invalidInput("corbie busy horizon")
         }

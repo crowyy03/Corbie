@@ -13,24 +13,6 @@ public enum LockCircularMode: String, Sendable, Codable, Equatable, CaseIterable
     case countdown
 }
 
-public enum WidgetDateKind: String, Sendable, Codable, Equatable, CaseIterable {
-    case anniversary
-    case wedding
-    case memberBirthday
-    case personBirthday
-    case event
-
-    public init(_ kind: AutoDateKind) {
-        switch kind {
-        case .anniversary: self = .anniversary
-        case .wedding: self = .wedding
-        case .memberBirthday: self = .memberBirthday
-        case .personBirthday: self = .personBirthday
-        case .event: self = .event
-        }
-    }
-}
-
 public struct WidgetTask: Sendable, Codable, Equatable, Identifiable {
     public let id: UUID
     public let title: String
@@ -107,7 +89,7 @@ public struct WidgetFreeSlot: Sendable, Codable, Equatable, Identifiable {
 
 public struct WidgetDate: Sendable, Codable, Equatable, Identifiable {
     public let id: String
-    public let kind: WidgetDateKind
+    public let kind: AutoDateKind
     public let title: String?
     public let date: Date
     public let daysAway: Int
@@ -118,7 +100,7 @@ public struct WidgetDate: Sendable, Codable, Equatable, Identifiable {
 
     public init(
         id: String,
-        kind: WidgetDateKind,
+        kind: AutoDateKind,
         title: String?,
         date: Date,
         daysAway: Int,
@@ -186,18 +168,6 @@ public struct TasksSnapshot: Sendable, Codable, Equatable {
     }
 }
 
-public struct FreeTasksSnapshot: Sendable, Codable, Equatable {
-    public let items: [WidgetTask]
-    public let remaining: Int
-    public let isPremium: Bool
-
-    public init(items: [WidgetTask], remaining: Int, isPremium: Bool) {
-        self.items = items
-        self.remaining = remaining
-        self.isPremium = isPremium
-    }
-}
-
 public struct PartnerWishesSnapshot: Sendable, Codable, Equatable {
     public let items: [WidgetWish]
     public let remaining: Int
@@ -220,6 +190,7 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
     public let targetText: String?
     public let isOverspent: Bool
     public let overspentText: String?
+    public let overspentFraction: Double
     public let doneStepCount: Int
     public let stepCount: Int
     public let isPremium: Bool
@@ -232,6 +203,7 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
         targetText: String?,
         isOverspent: Bool,
         overspentText: String?,
+        overspentFraction: Double = 0,
         doneStepCount: Int = 0,
         stepCount: Int = 0,
         isPremium: Bool
@@ -243,6 +215,7 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
         self.targetText = targetText
         self.isOverspent = isOverspent
         self.overspentText = overspentText
+        self.overspentFraction = overspentFraction
         self.doneStepCount = doneStepCount
         self.stepCount = stepCount
         self.isPremium = isPremium
@@ -373,12 +346,12 @@ public struct LockRectangularSnapshot: Sendable, Codable, Equatable {
 }
 
 public struct LockInlineSnapshot: Sendable, Codable, Equatable {
-    public let kind: WidgetDateKind?
+    public let kind: AutoDateKind?
     public let name: String?
     public let daysAway: Int?
     public let isPremium: Bool
 
-    public init(kind: WidgetDateKind?, name: String?, daysAway: Int?, isPremium: Bool) {
+    public init(kind: AutoDateKind?, name: String?, daysAway: Int?, isPremium: Bool) {
         self.kind = kind
         self.name = name
         self.daysAway = daysAway

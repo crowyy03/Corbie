@@ -9,12 +9,15 @@ enum Route: Equatable {
     case wishes
     case plans
     case plan(UUID)
+    case lists
+    case list(UUID)
     case capsules
     case votes
     case people
     case person(UUID)
     case us
     case join(String)
+    case paywall
 }
 
 enum Router {
@@ -36,7 +39,7 @@ enum Router {
         return nil
     }
 
-    static func route(for route: CorbieRoute) -> Route? {
+    static func route(for route: CorbieRoute) -> Route {
         switch route {
         case .today: return .today
         case .tasks: return .tasks
@@ -44,14 +47,16 @@ enum Router {
         case .calendar: return .calendar
         case .event: return .calendar
         case .wishes, .wish: return .wishes
-        case .plans, .lists, .list: return .plans
+        case .plans: return .plans
         case let .plan(id): return .plan(id)
+        case .lists: return .lists
+        case let .list(id): return .list(id)
         case .capsules, .capsule: return .capsules
         case .votes, .vote: return .votes
         case .people: return .people
         case let .person(id): return .person(id)
         case .us: return .us
-        case .paywall: return nil
+        case .paywall: return .paywall
         }
     }
 
@@ -74,12 +79,14 @@ enum Router {
             return .calendar
         case "wishes":
             return .wishes
-        case CorbieRoute.Segment.plans, CorbieRoute.Segment.legacyGoals:
+        case CorbieRoute.Segment.plans:
             guard let identifier = rest.first else { return .plans }
             guard let planID = UUID(uuidString: identifier) else { return nil }
             return .plan(planID)
         case CorbieRoute.Segment.lists:
-            return .plans
+            guard let identifier = rest.first else { return .lists }
+            guard let listID = UUID(uuidString: identifier) else { return nil }
+            return .list(listID)
         case "capsules":
             return .capsules
         case "votes":
@@ -88,6 +95,8 @@ enum Router {
             return identified(rest.first, make: Route.person) ?? .people
         case "us":
             return .us
+        case CorbieRoute.Segment.paywall:
+            return .paywall
         case "join":
             return joinRoute(code: rest.first)
         default:

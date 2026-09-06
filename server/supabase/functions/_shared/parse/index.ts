@@ -14,8 +14,6 @@ import {
 } from "./types.ts";
 
 export * from "./types.ts";
-export { hostOf, normalizeUrl, resolveShortLink } from "./normalizeUrl.ts";
-export { safeFetch } from "./guard.ts";
 
 const upstreamTimeoutMs = 8000;
 const maxHtmlBytes = 3 * 1024 * 1024;

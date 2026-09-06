@@ -94,7 +94,7 @@ import Testing
         }
     }
 
-    @Test func deleteAllClearsOneSourceAndPurgeDropsThePast() async throws {
+    @Test func deleteAllClearsEverySourceAndPurgeDropsThePast() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.busyIntervals
         _ = try await repository.replace(
@@ -109,13 +109,17 @@ import Testing
             source: .corbie,
             intervals: [hours(20, 21)]
         )
-        try await repository.deleteAll(memberId: world.me.id, source: .device)
-        let afterDelete = try world.count(BusyInterval.entityName)
-        #expect(afterDelete == 1)
+        try await repository.deleteAll(memberId: world.me.id)
+        #expect(try world.count(BusyInterval.entityName) == 0)
 
+        _ = try await repository.replace(
+            spaceId: world.space.id,
+            memberId: world.me.id,
+            source: .device,
+            intervals: [hours(0, 1)]
+        )
         try await repository.purge(before: start.addingTimeInterval(30 * 3600))
-        let afterPurge = try world.count(BusyInterval.entityName)
-        #expect(afterPurge == 0)
+        #expect(try world.count(BusyInterval.entityName) == 0)
     }
 
     @Test func deletingTheSpaceTakesItsBusyIntervals() async throws {

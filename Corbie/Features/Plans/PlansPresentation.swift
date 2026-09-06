@@ -19,7 +19,7 @@ struct PlanTotals: Equatable {
         left = plan.leftAmount
         overspend = plan.overspentAmount
         progress = plan.progress
-        overspendFraction = plan.targetAmount > 0 ? plan.overspentAmount / plan.targetAmount : 0
+        overspendFraction = plan.overspentFraction
     }
 
     var isOverspent: Bool { overspend > 0 }
@@ -79,6 +79,8 @@ extension ListTemplate {
 enum PlansDestination: Equatable {
     case big
     case plan(UUID)
+    case lists
+    case list(UUID)
 }
 
 enum PlansRoute {
@@ -86,7 +88,11 @@ enum PlansRoute {
         switch route {
         case .plans: .big
         case let .plan(identifier): .plan(identifier)
-        case .today, .tasks, .task, .calendar, .wishes, .capsules, .votes, .people, .person, .us, .join, .none: nil
+        case .lists: .lists
+        case let .list(identifier): .list(identifier)
+        case .today, .tasks, .task, .calendar, .wishes, .capsules, .votes, .people, .person, .us, .join, .paywall,
+             .none:
+            nil
         }
     }
 }

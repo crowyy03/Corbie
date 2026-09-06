@@ -89,6 +89,11 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
 
     public var overspentAmount: Double { max(0, totalSavedAmount - targetAmount) }
 
+    public var overspentFraction: Double {
+        guard targetAmount > 0 else { return 0 }
+        return overspentAmount / targetAmount
+    }
+
     public var progress: Double {
         guard targetAmount > 0 else { return 0 }
         return min(1, max(0, totalSavedAmount / targetAmount))

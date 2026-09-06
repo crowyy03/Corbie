@@ -90,7 +90,7 @@ struct ShoppingRow: View {
             .accessibilityLabel(
                 Text(String(format: String(localized: "widget.shopping.toggle.accessibility"), item.title))
             )
-            .accessibilityValue(Text(item.isChecked ? "lists.item.checked" : "lists.item.unchecked"))
+            .accessibilityValue(Text(item.isChecked ? "tasks.item.checked" : "tasks.item.unchecked"))
             Text(item.title)
                 .corbieBody()
                 .foregroundStyle(CorbieColorPalette.text)

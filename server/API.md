@@ -2,14 +2,14 @@
 
 Base URL: `https://<project-ref>.supabase.co/functions/v1`. All functions are deployed with `verify_jwt = false`; authentication is done inside the function.
 
-The server never sees couple data. It stores invite codes (15 min TTL), entitlement per `spaceId`, anonymous analytics events and an FX cache.
+The server never sees couple data. It stores invite codes (15 min TTL), entitlement per `spaceId`, anonymous analytics events, an FX cache and a parse cache of the product links it fetched.
 
 ## Headers
 
 | Header          | Where                                                 | Value                                                                                                                                                                                                                                                                                                                                                                                                              |
 | --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Authorization` | `session`, `invite`, `entitlement`, `apple-revoke`    | `Bearer <token>`. Either an Apple identity token (RS256 JWT from Sign in with Apple, verified against Apple JWKS, `iss` `https://appleid.apple.com`, `aud` `app.corbie`) or a Corbie session token issued by `POST /session` (HS256 JWT, `iss` `corbie`). Apple identity tokens live about ten minutes, so the client exchanges one for a session token right after sign-in and uses the session token afterwards. |
-| `X-Anon-Id`     | `events` (required), `parse`, `fx` (accepted, unused) | device-local UUID, not linked to Apple ID                                                                                                                                                                                                                                                                                                                                                                          |
+| `X-Anon-Id`     | `events` (required), `parse`, `fx` (rate limit key)   | device-local UUID, not linked to Apple ID                                                                                                                                                                                                                                                                                                                                                                          |
 | `X-App-Version` | all                                                   | `MARKETING_VERSION (BUILD)`                                                                                                                                                                                                                                                                                                                                                                                        |
 | `Content-Type`  | POST                                                  | `application/json`                                                                                                                                                                                                                                                                                                                                                                                                 |
 
@@ -54,7 +54,7 @@ Request: `{}`
 
 Response `200`: `{"token": "<jwt>", "expiresAt": "2027-03-04T10:00:00Z"}`
 
-The session token is an HS256 JWT signed with the `SESSION_SECRET` secret: claims `iss` = `corbie`, `sub` = SHA-256 hex of the Apple `sub`, `iat`, `exp` = 180 days. Every endpoint that requires auth accepts it in place of the Apple token; the server never stores it. The client keeps it in the Keychain under `server.session.token` and re-runs Sign in with Apple when it gets `401` back.
+The session token is an HS256 JWT signed with the `SESSION_SECRET` secret: claims `iss` = `corbie`, `sub` = SHA-256 hex of the Apple `sub`, `iat`, `exp` = 180 days. Every endpoint that requires auth accepts it in place of the Apple token; the server never stores it. The client keeps it in the Keychain under `server.session.token`. A `401` is surfaced as an error; nothing exchanges a new token on its own, so a token that outlives its 180 days is replaced only when the person signs in again.
 
 ### POST `/invite`
 
@@ -146,7 +146,7 @@ The function exchanges the code for a refresh token with `client_secret` (ES256 
 
 ## Swift client
 
-`APIClient` in `CorbieCore/Services` implements exactly these endpoints with typed request and response structs, `URLSession`, JSON with ISO 8601 dates, 3 retries with exponential backoff on 5xx and network errors, no retry on 4xx.
+`APIClient` in `CorbieCore/Services` covers every endpoint except `POST /session`, which lives in `Corbie/Features/Pairing/SessionService.swift`, with typed request and response structs, `URLSession`, JSON with ISO 8601 dates, 3 retries with exponential backoff on 5xx and network errors, and a retry on `429` when `Retry-After` is short enough. Every other 4xx is raised as it is.
 
 ## Implementation notes
 
@@ -182,6 +182,6 @@ Sandbox and production need different `APPLE_ENV` values, which means two Supaba
 
 **Retention.** `purge_expired_rows()` deletes events older than 30 days, invites older than a day, parse cache older than seven days and rate limit rows older than a day. It is scheduled nightly with `pg_cron` when the extension is available; where it is not, call it from any scheduler.
 
-**Analytics.** The four views live in the `analytics` schema, which is not in the API schema list, and are granted to `service_role` only.
+**Analytics.** The five views live in the `analytics` schema, which is not in the API schema list, and are granted to `service_role` only.
 
 **Row level security.** Every table has RLS enabled and forced with no policies at all, and `anon` and `authenticated` hold no grants. Only the service role key used inside the functions can read or write.

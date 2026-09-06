@@ -32,7 +32,7 @@ struct ListItemRow: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(item.title))
-        .accessibilityValue(Text(item.isChecked ? "lists.item.checked" : "lists.item.unchecked"))
+        .accessibilityValue(Text(item.isChecked ? "tasks.item.checked" : "tasks.item.unchecked"))
     }
 
     private var details: some View {

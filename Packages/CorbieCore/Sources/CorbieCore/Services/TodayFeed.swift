@@ -150,58 +150,6 @@ public struct TodayEntry: Sendable, Equatable, Identifiable {
     }
 }
 
-public struct TodayDate: Sendable, Equatable, Identifiable {
-    public static let radarHorizonDays = RadarService.horizonDays
-
-    public let id: String
-    public let kind: AutoDateKind
-    public let name: String?
-    public let date: Date
-    public let daysAway: Int
-    public let ordinal: Int?
-    public let memberId: UUID?
-    public let personId: UUID?
-    public let eventId: UUID?
-    public let radar: RadarStatus?
-
-    public init(
-        id: String,
-        kind: AutoDateKind,
-        name: String?,
-        date: Date,
-        daysAway: Int,
-        ordinal: Int? = nil,
-        memberId: UUID? = nil,
-        personId: UUID? = nil,
-        eventId: UUID? = nil,
-        radar: RadarStatus? = nil
-    ) {
-        self.id = id
-        self.kind = kind
-        self.name = name
-        self.date = date
-        self.daysAway = daysAway
-        self.ordinal = ordinal
-        self.memberId = memberId
-        self.personId = personId
-        self.eventId = eventId
-        self.radar = radar
-    }
-
-    public var isGiftMissing: Bool {
-        guard let radar, radar.giftPicked == false else { return false }
-        guard daysAway <= TodayDate.radarHorizonDays else { return false }
-        switch kind {
-        case .anniversary, .wedding, .memberBirthday, .personBirthday:
-            return true
-        case .event:
-            return false
-        }
-    }
-
-    public var ideasCount: Int { radar?.ideasCount ?? 0 }
-}
-
 public enum TodayWaitingItem: Sendable, Equatable, Identifiable {
     case capsule(CapsuleDTO)
     case vote(VoteDTO)
@@ -216,6 +164,28 @@ public enum TodayWaitingItem: Sendable, Equatable, Identifiable {
     }
 }
 
+public struct TodayDaySummary: Sendable, Equatable {
+    public let day: Date
+    public let daysTogether: Int?
+    public let plans: [TodayPlan]
+    public let tasksToday: [TodayEntry]
+    public let eventsToday: [TodayEntry]
+
+    public init(
+        day: Date,
+        daysTogether: Int? = nil,
+        plans: [TodayPlan] = [],
+        tasksToday: [TodayEntry] = [],
+        eventsToday: [TodayEntry] = []
+    ) {
+        self.day = day
+        self.daysTogether = daysTogether
+        self.plans = plans
+        self.tasksToday = tasksToday
+        self.eventsToday = eventsToday
+    }
+}
+
 public struct TodayFeed: Sendable, Equatable {
     public static let freeTaskLimit = 3
     public static let comingUpLimit = 3
@@ -227,7 +197,7 @@ public struct TodayFeed: Sendable, Equatable {
     public let eventsToday: [TodayEntry]
     public let freeTasks: [UnifiedTask]
     public let freeTasksRemaining: Int
-    public let comingUp: [TodayDate]
+    public let comingUp: [UpcomingDate]
     public let waiting: [TodayWaitingItem]
     public let recap: RecapSummary?
     public let isPaired: Bool
@@ -240,7 +210,7 @@ public struct TodayFeed: Sendable, Equatable {
         eventsToday: [TodayEntry] = [],
         freeTasks: [UnifiedTask] = [],
         freeTasksRemaining: Int = 0,
-        comingUp: [TodayDate] = [],
+        comingUp: [UpcomingDate] = [],
         waiting: [TodayWaitingItem] = [],
         recap: RecapSummary? = nil,
         isPaired: Bool = false

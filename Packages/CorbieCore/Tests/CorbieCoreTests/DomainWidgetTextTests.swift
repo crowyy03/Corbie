@@ -55,14 +55,6 @@ import Testing
         )
     }
 
-    @Test func everyWidgetDateKindMapsFromAnAutoDate() {
-        #expect(WidgetDateKind(.anniversary) == .anniversary)
-        #expect(WidgetDateKind(.wedding) == .wedding)
-        #expect(WidgetDateKind(.memberBirthday) == .memberBirthday)
-        #expect(WidgetDateKind(.personBirthday) == .personBirthday)
-        #expect(WidgetDateKind(.event) == .event)
-    }
-
     @Test func aPersonDateReadsAsTheNameAndTheTitle() {
         #expect(PersonDateText.label(person: "Anna", title: "wedding day", locale: locale) == "Anna: wedding day")
         #expect(PersonDateText.label(person: " Anna ", title: " wedding day ", locale: locale) == "Anna: wedding day")

@@ -8,8 +8,7 @@ final class FreeTimeUITests: XCTestCase {
     }
 
     func testTheCalendarOpensFreeTimeAndAsksAboutSharingFirst() throws {
-        let app = UITestFlows.launchFresh(extraArguments: ["-" + privacyNoticeSeenKey, "NO"])
-        UITestFlows.passOnboardingIfShown(app)
+        let app = launchSignedIn(extraArguments: ["-" + privacyNoticeSeenKey, "NO"])
 
         let calendarTab = app.tabBars.firstMatch.buttons["Calendar"]
         XCTAssertTrue(calendarTab.waitForExistence(timeout: 15))
@@ -17,12 +16,12 @@ final class FreeTimeUITests: XCTestCase {
 
         let entry = app.buttons["When you two are free"].firstMatch
         XCTAssertTrue(entry.waitForExistence(timeout: 15), "the calendar has no free time button")
-        UITestFlows.waitUntilHittable(entry)
+        waitUntilHittable(entry)
         entry.tap()
 
         let privacy = app.staticTexts["Your calendar stays yours"]
         if privacy.waitForExistence(timeout: 15) == false {
-            UITestFlows.saveFailureScreenshot(app, named: "freetime_no_privacy_sheet")
+            saveScreenshot(app, named: "freetime_no_privacy_sheet")
             XCTFail("the privacy sheet did not come up on the first entry")
         }
         XCTAssertTrue(app.buttons["Share my busy times"].exists)

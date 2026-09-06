@@ -115,10 +115,8 @@ final class PersistentHistoryObserver: @unchecked Sendable {
     }
 
     private static func records(in transaction: NSPersistentHistoryTransaction) -> [RemoteChangeRecord] {
-        (transaction.changes ?? []).compactMap { change in
-            guard let entityName = change.changedObjectID.entity.name else { return nil }
-            return RemoteChangeRecord(
-                entityName: entityName,
+        (transaction.changes ?? []).map { change in
+            RemoteChangeRecord(
                 objectURI: change.changedObjectID.uriRepresentation(),
                 type: changeType(change.changeType),
                 properties: Set((change.updatedProperties ?? []).map(\.name)),

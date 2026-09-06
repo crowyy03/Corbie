@@ -95,7 +95,7 @@ final class QAReadOnlyUITests: XCTestCase {
 
         let dueToggle = app.switches[QACatalog.text("tasks.editor.due.toggle")]
         XCTAssertTrue(dueToggle.waitForExistence(timeout: 20))
-        UITestFlows.waitUntilHittable(dueToggle)
+        waitUntilHittable(dueToggle)
         if (dueToggle.value as? String) != "1" {
             dueToggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         }

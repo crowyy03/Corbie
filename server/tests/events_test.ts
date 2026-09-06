@@ -18,11 +18,28 @@ Deno.test("anon id must be a uuid", () => {
   assertThrows(() => requireAnonId("not-a-uuid"), ApiError);
 });
 
+function architectureEventNames(): Set<string> {
+  const doc = Deno.readTextFileSync(new URL("../../docs/03_TECH_ARCHITECTURE.md", import.meta.url));
+  const bullet = doc.split("\n").find((line) => line.startsWith("- События:"));
+  if (!bullet) throw new Error("architecture section 13 has no event list");
+  return new Set(
+    [...bullet.matchAll(/`([a-z_]+)(?:\([a-z_]+\))?`/g)].map((match) => match[1]),
+  );
+}
+
 Deno.test("the allowlist matches the architecture event list", () => {
-  for (const name of ["app_open", "wish_created", "paywall_shown", "purchase", "readonly_hit"]) {
-    assert(allowedEventNames.has(name), name);
-  }
-  assertEquals(allowedEventNames.size, 42);
+  const documented = architectureEventNames();
+  assert(documented.size > 0);
+  assertEquals(
+    [...allowedEventNames].filter((name) => !documented.has(name)),
+    [],
+    "the allowlist carries events the architecture does not name",
+  );
+  assertEquals(
+    [...documented].filter((name) => !allowedEventNames.has(name)),
+    [],
+    "the architecture names events the allowlist drops",
+  );
 });
 
 Deno.test("events outside the allowlist are dropped, not rejected", () => {

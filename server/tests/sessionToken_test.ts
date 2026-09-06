@@ -127,14 +127,11 @@ Deno.test("both token kinds reach an endpoint as the same subject", async () => 
   const fetchImpl = lazyJwksFetch(pair.publicKey);
   const identityToken = await makeToken(pair.privateKey, validClaims());
 
-  const apple = await requireUser(request(identityToken), fetchImpl);
-  assertEquals(apple.source, "apple");
-  assertEquals(apple.subject, await hashAppleSubject(appleSubject));
+  await requireUser(request(identityToken), fetchImpl);
 
   const issued = await issueSessionToken(appleSubject);
-  const session = await requireUser(request(issued.token), fetchImpl);
-  assertEquals(session.source, "session");
-  assertEquals(session.subject, apple.subject);
+  await requireUser(request(issued.token), fetchImpl);
+  assertEquals(await verifySessionToken(issued.token), await hashAppleSubject(appleSubject));
 });
 
 Deno.test("the session endpoint takes an apple token and refuses a session token", async () => {

@@ -129,9 +129,9 @@ final class SmokeTabsUITests: XCTestCase {
 
         let row = app.buttons["Milk"].firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 30), "the new item is not on the list")
-        XCTAssertEqual(row.value as? String, QACatalog.text("lists.item.unchecked"))
+        XCTAssertEqual(row.value as? String, QACatalog.text("tasks.item.unchecked"))
         let ticked = expectation(
-            for: NSPredicate(format: "value == %@", QACatalog.text("lists.item.checked")),
+            for: NSPredicate(format: "value == %@", QACatalog.text("tasks.item.checked")),
             evaluatedWith: row
         )
         row.tap()

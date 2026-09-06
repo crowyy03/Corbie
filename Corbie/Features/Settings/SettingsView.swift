@@ -98,7 +98,7 @@ struct SettingsView: View {
         Section {
             if let partner = model.partner {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
-                    Text(verbatim: partner.displayName ?? model.partnerName)
+                    Text(verbatim: partner.displayName ?? environment.partnerName)
                         .corbieBody()
                         .foregroundStyle(CorbieColorPalette.text)
                     Text(partnerJoinLine(partner))

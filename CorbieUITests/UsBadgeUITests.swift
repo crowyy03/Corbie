@@ -6,8 +6,7 @@ final class UsBadgeUITests: XCTestCase {
     }
 
     func testAnUnansweredVoteDotsThePillUntilItIsAnswered() throws {
-        let app = UITestFlows.launchFresh()
-        UITestFlows.passOnboardingIfShown(app)
+        let app = launchSignedIn()
 
         let quiet = app.buttons["Open the Us hub"].firstMatch
         XCTAssertTrue(quiet.waitForExistence(timeout: 15), "the pill already carries a dot, erase the simulator first")

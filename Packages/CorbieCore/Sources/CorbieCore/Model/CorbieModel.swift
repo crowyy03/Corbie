@@ -42,7 +42,6 @@ public enum CorbieModel {
         task.attribute("createdByMemberId", .UUIDAttributeType)
         task.attribute("takenAt", .dateAttributeType)
         task.attribute("recurrenceRaw", .stringAttributeType, defaultValue: Recurrence.none.rawValue)
-        task.attribute("sourcePlanId", .UUIDAttributeType)
         task.attribute("archivedAt", .dateAttributeType)
         task.attribute("createdAt", .dateAttributeType)
 

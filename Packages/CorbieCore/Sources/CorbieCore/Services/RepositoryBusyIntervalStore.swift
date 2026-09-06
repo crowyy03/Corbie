@@ -25,7 +25,7 @@ public struct RepositoryBusyIntervalStore: BusyIntervalStore {
         }
     }
 
-    public func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws {
-        try await repository.deleteAll(memberId: memberId, source: source)
+    public func deleteAll(memberId: UUID) async throws {
+        try await repository.deleteAll(memberId: memberId)
     }
 }

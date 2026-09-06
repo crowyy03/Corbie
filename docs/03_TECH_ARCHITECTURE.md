@@ -106,10 +106,10 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 
 ### Edge Functions
 - `POST /invite` — создать код (auth: Apple identity token, проверяется через Apple JWKS)
-- `GET /invite/:code` — получить shareURL, пометить redeemed
+- `GET /invite-redeem/:code` — получить shareURL, пометить redeemed
 - `POST /parse` — {url} → {title, price, currency, imageURL, source}. OG + JSON-LD + адаптеры (amazon, target, etsy, sephora, nordstrom, zara, ikea) + oEmbed для instagram/tiktok. Таймаут 8 с, кэш 24 ч по URL.
 - `GET /fx?base=USD` — курсы с кэшем 12 ч (источник: Frankfurter/ECB)
-- `POST /appstore/notifications` — App Store Server Notifications V2: верифицируем JWS, обновляем `entitlements` по `appAccountToken` = spaceId
+- `POST /appstore-notifications` — App Store Server Notifications V2: верифицируем JWS, обновляем `entitlements` по `appAccountToken` = spaceId
 - `GET /entitlement/:spaceId` — статус для клиента
 - `POST /events` — батч анонимных событий
 

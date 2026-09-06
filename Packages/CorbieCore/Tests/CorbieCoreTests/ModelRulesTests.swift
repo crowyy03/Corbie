@@ -172,8 +172,7 @@ import Testing
 
     @Test func theTaskCarriesOnlyItsOwnFields() throws {
         let task = try #require(model.entitiesByName["TaskItem"])
-        #expect(task.attributesByName["sourcePlanId"]?.isOptional == true)
-        for name in ["placeName", "address", "lat", "lon", "sortIndex"] {
+        for name in ["placeName", "address", "lat", "lon", "sortIndex", "sourcePlanId"] {
             #expect(task.attributesByName[name] == nil, "TaskItem.\(name) came back")
         }
         #expect(task.relationshipsByName["folder"] == nil)

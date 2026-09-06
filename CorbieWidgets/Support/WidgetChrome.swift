@@ -92,20 +92,8 @@ struct WidgetEmptyState: View {
 
 struct LockedWidgetView: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
-            Text("widget.locked.title")
-                .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-            Text("widget.locked.note")
-                .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .widgetURL(CorbieRoute.paywall.url)
+        WidgetEmptyState(title: "widget.locked.title", note: "widget.locked.note")
+            .widgetURL(CorbieRoute.paywall.url)
     }
 }
 
@@ -316,7 +304,7 @@ struct WidgetFreeSlotRow: View {
 struct WidgetPlanLine: View {
     private let title: String
     private let progress: Double
-    private let isOverspent: Bool
+    private let overspentFraction: Double
     private let amountText: String?
     private let overspendText: String?
     private let stepsText: String?
@@ -325,7 +313,7 @@ struct WidgetPlanLine: View {
         self.init(
             title: plan.title ?? "",
             progress: plan.progress,
-            isOverspent: plan.isOverspent,
+            overspentFraction: plan.overspentFraction,
             saved: plan.savedText,
             target: plan.targetText,
             overspent: plan.overspentText,
@@ -338,7 +326,7 @@ struct WidgetPlanLine: View {
         self.init(
             title: plan.title,
             progress: plan.progress,
-            isOverspent: false,
+            overspentFraction: 0,
             saved: plan.savedText,
             target: plan.targetText,
             overspent: nil,
@@ -350,7 +338,7 @@ struct WidgetPlanLine: View {
     private init(
         title: String,
         progress: Double,
-        isOverspent: Bool,
+        overspentFraction: Double,
         saved: String?,
         target: String?,
         overspent: String?,
@@ -359,7 +347,7 @@ struct WidgetPlanLine: View {
     ) {
         self.title = title
         self.progress = progress
-        self.isOverspent = isOverspent
+        self.overspentFraction = overspentFraction
         if let saved, let target {
             amountText = String(format: String(localized: "plans.card.progress"), saved, target)
         } else {
@@ -392,7 +380,7 @@ struct WidgetPlanLine: View {
             }
             ProgressBar(
                 value: progress,
-                overspend: isOverspent ? 0.25 : 0,
+                overspend: overspentFraction,
                 accessibilityLabel: String(localized: "plans.card.progress.label"),
                 accessibilityValue: amountText ?? ""
             )

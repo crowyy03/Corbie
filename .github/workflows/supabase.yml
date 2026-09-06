@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - "server/**"
+      - "docs/03_TECH_ARCHITECTURE.md"
       - ".github/workflows/supabase.yml"
   pull_request:
     paths:
       - "server/**"
+      - "docs/03_TECH_ARCHITECTURE.md"
       - ".github/workflows/supabase.yml"
 
 concurrency:

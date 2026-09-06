@@ -26,10 +26,6 @@ const currencyBySymbol: Record<string, string> = {
   "HK$": "HKD",
   "S$": "SGD",
   "MX$": "MXN",
-  "CHF": "CHF",
-  "SEK": "SEK",
-  "NOK": "NOK",
-  "DKK": "DKK",
 };
 
 const knownCodes = new Set([
@@ -76,7 +72,6 @@ export function detectCurrency(raw: string): string | null {
     if (text.includes(symbol)) return currencyBySymbol[symbol];
   }
   for (const [symbol, currency] of Object.entries(currencyBySymbol)) {
-    if (symbol.length === 3 && /^[A-Z]+$/.test(symbol)) continue;
     if (text.includes(symbol)) return currency;
   }
   return null;

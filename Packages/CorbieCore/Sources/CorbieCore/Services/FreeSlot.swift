@@ -29,6 +29,17 @@ public enum BusyIntervals {
         }
         return merged
     }
+
+    public static func wholeDays(from start: Date, through end: Date, calendar: Calendar) -> DateInterval? {
+        let firstDay = calendar.startOfDay(for: start)
+        guard let dayAfterFirst = calendar.date(byAdding: .day, value: 1, to: firstDay) else { return nil }
+        guard end > dayAfterFirst else { return DateInterval(start: firstDay, end: dayAfterFirst) }
+        let lastDay = calendar.startOfDay(for: end)
+        guard let coveredEnd = lastDay == end ? end : calendar.date(byAdding: .day, value: 1, to: lastDay) else {
+            return nil
+        }
+        return DateInterval(start: firstDay, end: coveredEnd)
+    }
 }
 
 public struct WorkingHours: Sendable, Equatable {

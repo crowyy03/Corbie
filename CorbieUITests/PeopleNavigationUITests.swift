@@ -6,8 +6,7 @@ final class PeopleNavigationUITests: XCTestCase {
     }
 
     func testOpeningAPersonShowsTheirGiftIdeasOnceAndBackReturnsToTheList() throws {
-        let app = UITestFlows.launchFresh()
-        UITestFlows.passOnboardingIfShown(app)
+        let app = launchSignedIn()
 
         let pill = app.buttons["Open the Us hub"].firstMatch
         XCTAssertTrue(pill.waitForExistence(timeout: 10))

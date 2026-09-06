@@ -32,8 +32,8 @@ final class AppState {
         case .tasks, .task: .tasks
         case .calendar: .calendar
         case .wishes: .wishes
-        case .plans, .plan: .plans
-        case .capsules, .votes, .people, .person, .us, .join: nil
+        case .plans, .plan, .lists, .list: .plans
+        case .capsules, .votes, .people, .person, .us, .join, .paywall: nil
         }
     }
 

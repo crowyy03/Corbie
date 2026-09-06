@@ -162,11 +162,17 @@ final class AppEnvironment {
 
     func publishBusyTimes(force: Bool = false) async {
         guard case let .signedIn(context) = session else { return }
+        do {
+            try await repositories.busyIntervals.purge(before: Date())
+        } catch {
+            report(error)
+        }
         if let corbieEventBusyPublisher {
             do {
                 try await corbieEventBusyPublisher.publish(
                     spaceId: context.space.id,
                     memberId: context.member.id,
+                    sharesBusyTimes: context.member.sharesBusyTimes,
                     force: force
                 )
             } catch {

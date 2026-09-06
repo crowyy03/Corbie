@@ -23,7 +23,6 @@ public struct CoreDataTaskRepository: TaskRepository {
             task.assigneeMemberId = draft.assigneeMemberId
             task.dueAt = draft.dueAt
             task.recurrence = draft.recurrence
-            task.sourcePlanId = draft.sourcePlanId
             task.createdByMemberId = draft.createdByMemberId
             task.takenAt = draft.assigneeMemberId == nil ? nil : Date()
             return TaskDTO(task)
@@ -60,7 +59,12 @@ public struct CoreDataTaskRepository: TaskRepository {
         }
     }
 
-    public func markDone(taskId: UUID, memberId: UUID?, at date: Date) async throws -> TaskCompletion {
+    public func markDone(
+        taskId: UUID,
+        memberId: UUID?,
+        at date: Date,
+        calendar: Calendar
+    ) async throws -> TaskCompletion {
         try await access.write { context in
             let task: TaskItem = try ManagedFetch.require(TaskItem.entityName, id: taskId, in: context)
             task.isDone = true
@@ -69,7 +73,7 @@ public struct CoreDataTaskRepository: TaskRepository {
             let dto = TaskDTO(task)
             return TaskCompletion(
                 task: dto,
-                nextOccurrenceDueAt: RecurrenceEngine.nextOccurrence(for: dto, completedAt: date)
+                nextOccurrenceDueAt: RecurrenceEngine.nextOccurrence(for: dto, completedAt: date, calendar: calendar)
             )
         }
     }
@@ -95,7 +99,6 @@ public struct CoreDataTaskRepository: TaskRepository {
             next.assigneeMemberId = source.assigneeMemberId
             next.createdByMemberId = source.createdByMemberId
             next.recurrence = source.recurrence
-            next.sourcePlanId = source.sourcePlanId
             next.dueAt = dueAt
             next.takenAt = source.assigneeMemberId == nil ? nil : Date()
             return TaskDTO(next)

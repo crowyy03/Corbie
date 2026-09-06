@@ -32,8 +32,6 @@ public struct WidgetDataProvider: Sendable {
     public static let wishLimit = 3
     public static let dateLimit = 3
     public static let shoppingLimit = 3
-    public static let upcomingHorizonDays = 400
-    public static let freeSlotHorizonDays = 14
     public static let freeSlotLimit = 2
 
     private let controller: PersistenceController
@@ -138,27 +136,11 @@ public struct WidgetDataProvider: Sendable {
     }
 
     public func tasks(now: Date = Date()) async throws -> TasksSnapshot {
-        guard let context = try await context(now: now) else {
-            return TasksSnapshot(items: [], remaining: 0, isPremium: false)
-        }
-        let open = try await openTasks(spaceId: context.space.id)
-        return TasksSnapshot(
-            items: open.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
-            remaining: max(0, open.count - WidgetDataProvider.taskLimit),
-            isPremium: context.isPremium
-        )
+        try await tasksSnapshot(now: now) { _ in true }
     }
 
-    public func freeTasks(now: Date = Date()) async throws -> FreeTasksSnapshot {
-        guard let context = try await context(now: now) else {
-            return FreeTasksSnapshot(items: [], remaining: 0, isPremium: false)
-        }
-        let free = try await openTasks(spaceId: context.space.id).filter(\.isFree)
-        return FreeTasksSnapshot(
-            items: free.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
-            remaining: max(0, free.count - WidgetDataProvider.taskLimit),
-            isPremium: context.isPremium
-        )
+    public func freeTasks(now: Date = Date()) async throws -> TasksSnapshot {
+        try await tasksSnapshot(now: now) { $0.isFree }
     }
 
     public func partnerWishes(now: Date = Date()) async throws -> PartnerWishesSnapshot {
@@ -277,20 +259,20 @@ public struct WidgetDataProvider: Sendable {
         guard let context = try await context(now: now) else {
             return OurDaySnapshot(days: nil, tasks: [], events: [], plan: nil, isPremium: false)
         }
-        let feed = try await TodayFeedProvider(
+        let day = try await TodayFeedProvider(
             repositories: controller.repositories,
             calendar: calendar,
             locale: locale
-        ).feed(space: context.space, viewerMemberId: context.viewer?.id, now: now)
+        ).daySummary(space: context.space, viewerMemberId: context.viewer?.id, now: now)
         return OurDaySnapshot(
-            days: feed.daysTogether,
-            tasks: feed.tasksToday
+            days: day.daysTogether,
+            tasks: day.tasksToday
                 .prefix(WidgetDataProvider.ourDayLineLimit)
                 .compactMap { widgetTask($0, context: context) },
-            events: feed.eventsToday
+            events: day.eventsToday
                 .prefix(WidgetDataProvider.ourDayLineLimit)
                 .map { widgetEvent($0, context: context) },
-            plan: feed.plans.first,
+            plan: day.plans.first,
             isPremium: context.isPremium
         )
     }
@@ -302,11 +284,7 @@ public struct WidgetDataProvider: Sendable {
         guard let viewer = context.viewer, let partner = context.partner else {
             return FreeSlotsSnapshot(availability: .notPaired, isPremium: context.isPremium)
         }
-        guard let horizon = calendar.date(
-            byAdding: .day,
-            value: WidgetDataProvider.freeSlotHorizonDays,
-            to: now
-        ) else {
+        guard let horizon = calendar.date(byAdding: .day, value: BusyWindow.horizonDays, to: now) else {
             return FreeSlotsSnapshot(availability: .noSlots, isPremium: context.isPremium)
         }
         let store = RepositoryBusyIntervalStore(
@@ -413,6 +391,21 @@ public struct WidgetDataProvider: Sendable {
         return try await repositories.members.member(appleUserId: appleUserId)?.id
     }
 
+    private func tasksSnapshot(
+        now: Date,
+        matching isIncluded: (TaskDTO) -> Bool
+    ) async throws -> TasksSnapshot {
+        guard let context = try await context(now: now) else {
+            return TasksSnapshot(items: [], remaining: 0, isPremium: false)
+        }
+        let open = try await openTasks(spaceId: context.space.id).filter(isIncluded)
+        return TasksSnapshot(
+            items: open.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
+            remaining: max(0, open.count - WidgetDataProvider.taskLimit),
+            isPremium: context.isPremium
+        )
+    }
+
     private func openTasks(spaceId: UUID) async throws -> [TaskDTO] {
         let tasks = try await controller.repositories.tasks.tasks(TaskQuery(spaceId: spaceId))
         return tasks.sorted { lhs, rhs in
@@ -461,74 +454,30 @@ public struct WidgetDataProvider: Sendable {
     }
 
     private func widgetDates(context: WidgetContext, now: Date) async throws -> [WidgetDate] {
-        let provider = AutoDatesProvider(calendar: calendar)
         let people = try await controller.repositories.people.people(spaceId: context.space.id)
-        let autoDates = provider.upcoming(
+        let dates = try await UpcomingDatesProvider(
+            repositories: controller.repositories,
+            calendar: calendar
+        ).dates(
             space: context.space,
             members: context.members,
             people: people,
+            viewerMemberId: context.viewer?.id,
             now: now,
-            within: WidgetDataProvider.upcomingHorizonDays
+            eventsFrom: calendar.startOfDay(for: now)
         )
-        let radar = RadarService(calendar: calendar)
-        let partnerWishes: [WishDTO]
-        if let partner = context.partner {
-            partnerWishes = try await controller.repositories.wishes.wishes(
-                WishQuery(spaceId: context.space.id, owner: .member(partner.id), fulfilled: nil)
+        return dates.map { date in
+            WidgetDate(
+                id: date.id,
+                kind: date.kind,
+                title: date.name,
+                date: date.date,
+                daysAway: date.daysAway,
+                ordinal: date.ordinal,
+                colorKey: context.colorKey(for: date.memberId),
+                eventId: date.eventId,
+                radar: date.radar
             )
-        } else {
-            partnerWishes = []
-        }
-        let input = RadarInput(
-            space: context.space,
-            members: context.members,
-            people: people,
-            partnerWishes: partnerWishes,
-            viewerMemberId: context.viewer?.id
-        )
-        var items: [WidgetDate] = autoDates.compactMap { autoDate in
-            guard let daysAway = calendar.daysAway(from: now, to: autoDate.date) else { return nil }
-            return WidgetDate(
-                id: autoDate.id,
-                kind: WidgetDateKind(autoDate.kind),
-                title: autoDate.name,
-                date: autoDate.date,
-                daysAway: daysAway,
-                ordinal: autoDate.years,
-                colorKey: context.colorKey(for: autoDate.ownerMemberId),
-                radar: daysAway <= RadarService.horizonDays
-                    ? radar.radarLine(for: autoDate, input: input, now: now)?.status
-                    : nil
-            )
-        }
-        let horizon = calendar.date(
-            byAdding: .day,
-            value: WidgetDataProvider.upcomingHorizonDays,
-            to: now
-        )
-        let events = try await controller.repositories.events.events(
-            spaceId: context.space.id,
-            from: calendar.startOfDay(for: now),
-            to: horizon
-        )
-        for event in events {
-            guard let startAt = event.startAt,
-                  let daysAway = calendar.daysAway(from: now, to: startAt),
-                  daysAway >= 0 else { continue }
-            items.append(
-                WidgetDate(
-                    id: "event." + event.id.uuidString,
-                    kind: .event,
-                    title: event.title,
-                    date: startAt,
-                    daysAway: daysAway,
-                    colorKey: context.colorKey(for: event.createdByMemberId),
-                    eventId: event.id
-                )
-            )
-        }
-        return items.sorted { lhs, rhs in
-            lhs.date == rhs.date ? lhs.id < rhs.id : lhs.date < rhs.date
         }
     }
 
@@ -555,6 +504,7 @@ public struct WidgetDataProvider: Sendable {
             overspentText: plan.isOverspent
                 ? Money(amount: plan.overspentAmount, currency: plan.currency).formatted(locale: locale)
                 : nil,
+            overspentFraction: plan.overspentFraction,
             doneStepCount: plan.doneStepCount,
             stepCount: plan.stepCount,
             isPremium: isPremium
@@ -575,11 +525,7 @@ extension WidgetDataProvider {
 
     public func selectableEvents(now: Date = Date()) async throws -> [WidgetEventOption] {
         guard let context = try await context(now: now) else { return [] }
-        let horizon = calendar.date(
-            byAdding: .day,
-            value: WidgetDataProvider.upcomingHorizonDays,
-            to: now
-        )
+        let horizon = calendar.date(byAdding: .day, value: UpcomingDatesProvider.horizonDays, to: now)
         let events = try await controller.repositories.events.events(
             spaceId: context.space.id,
             from: calendar.startOfDay(for: now),

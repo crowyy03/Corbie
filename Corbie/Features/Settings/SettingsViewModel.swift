@@ -27,10 +27,6 @@ final class SettingsViewModel {
 
     var canSaveProfile: Bool { isProfileDirty && profile.isComplete && isWorking == false }
 
-    var partnerName: String {
-        partner?.displayName ?? String(localized: "member.name.partner")
-    }
-
     var subscriptionStatus: SettingsSubscriptionStatus {
         SettingsSubscriptionStatus(state: environment?.premiumGate.state ?? .readOnly)
     }

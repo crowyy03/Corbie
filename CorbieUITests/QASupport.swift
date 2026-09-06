@@ -187,7 +187,7 @@ extension XCTestCase {
     func passOnboardingIfShown(_ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
         let debugSignIn = app.buttons[QAText.debugSignIn]
         guard debugSignIn.waitForExistence(timeout: 30) else { return }
-        UITestFlows.waitUntilHittable(debugSignIn)
+        waitUntilHittable(debugSignIn)
         debugSignIn.tap()
 
         let nameField = app.textFields.firstMatch
@@ -214,7 +214,7 @@ extension XCTestCase {
     func openUsHub(_ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
         let pill = app.usPill
         XCTAssertTrue(pill.waitForExistence(timeout: 30), "the toolbar has no Us pill", file: file, line: line)
-        UITestFlows.waitUntilHittable(pill)
+        waitUntilHittable(pill)
         pill.tap()
         XCTAssertTrue(
             app.buttons[QAText.close].firstMatch.waitForExistence(timeout: 30),
@@ -310,7 +310,7 @@ extension XCTestCase {
 
     func type(_ text: String, into field: XCUIElement, file: StaticString = #filePath, line: UInt = #line) {
         XCTAssertTrue(field.waitForExistence(timeout: 30), "a field to type into is missing", file: file, line: line)
-        UITestFlows.waitUntilHittable(field)
+        waitUntilHittable(field)
         field.tap()
         field.typeText(text)
     }
@@ -324,6 +324,13 @@ extension XCTestCase {
         guard element.exists, element.isHittable else { return false }
         waitUntilStill(element)
         return true
+    }
+
+    func waitUntilHittable(_ element: XCUIElement, timeout: TimeInterval = 5) {
+        let deadline = Date().addingTimeInterval(timeout)
+        while element.isHittable == false, Date() < deadline {
+            RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+        }
     }
 
     func waitUntilStill(_ element: XCUIElement, timeout: TimeInterval = 4) {

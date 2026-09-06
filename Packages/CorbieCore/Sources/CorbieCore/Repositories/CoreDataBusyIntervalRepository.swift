@@ -60,11 +60,11 @@ public struct CoreDataBusyIntervalRepository: BusyIntervalRepository {
         }
     }
 
-    public func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws {
+    public func deleteAll(memberId: UUID) async throws {
         try await access.write { context in
             let intervals: [BusyInterval] = try ManagedFetch.all(
                 BusyInterval.entityName,
-                predicate: CoreDataBusyIntervalRepository.owned(by: memberId, source: source),
+                predicate: NSPredicate(format: "memberId == %@", memberId as NSUUID),
                 in: context
             )
             for interval in intervals {

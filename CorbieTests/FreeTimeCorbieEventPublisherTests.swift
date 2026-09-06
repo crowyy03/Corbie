@@ -29,7 +29,7 @@ private actor RecordingBusyStore: BusyIntervalStore {
 
     func intervals(spaceId: UUID, from: Date, to: Date) async throws -> [BusyRange] { [] }
 
-    func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws {}
+    func deleteAll(memberId: UUID) async throws {}
 }
 
 final class FreeTimeCorbieEventPublisherTests: XCTestCase {
@@ -63,7 +63,7 @@ final class FreeTimeCorbieEventPublisherTests: XCTestCase {
         let moment = noon
 
         let outcome = try await publisher(events: [event], store: store, now: { moment })
-            .publish(spaceId: spaceId, memberId: memberId)
+            .publish(spaceId: spaceId, memberId: memberId, sharesBusyTimes: true)
 
         XCTAssertEqual(outcome, .published(1))
         let written = await store.written
@@ -86,7 +86,7 @@ final class FreeTimeCorbieEventPublisherTests: XCTestCase {
         let moment = noon
 
         let outcome = try await publisher(events: [event], store: store, now: { moment })
-            .publish(spaceId: spaceId, memberId: memberId)
+            .publish(spaceId: spaceId, memberId: memberId, sharesBusyTimes: true)
 
         XCTAssertEqual(outcome, .published(0))
         let written = await store.written
@@ -104,13 +104,36 @@ final class FreeTimeCorbieEventPublisherTests: XCTestCase {
         let moment = noon
         let publisher = publisher(events: [event], store: store, now: { moment })
 
-        _ = try await publisher.publish(spaceId: spaceId, memberId: memberId)
-        let second = try await publisher.publish(spaceId: spaceId, memberId: memberId)
-        let forced = try await publisher.publish(spaceId: spaceId, memberId: memberId, force: true)
+        _ = try await publisher.publish(spaceId: spaceId, memberId: memberId, sharesBusyTimes: true)
+        let second = try await publisher.publish(spaceId: spaceId, memberId: memberId, sharesBusyTimes: true)
+        let forced = try await publisher.publish(
+            spaceId: spaceId,
+            memberId: memberId,
+            sharesBusyTimes: true,
+            force: true
+        )
 
         XCTAssertEqual(second, .throttled)
         XCTAssertEqual(forced, .published(1))
         let written = await store.written
         XCTAssertEqual(written.count, 2)
+    }
+
+    func testAMemberWhoDoesNotShareWritesNoCorbieEvents() async throws {
+        let event = CalendarTestSupport.event(
+            calendar,
+            title: "Workshop",
+            start: CalendarTestSupport.date(calendar, 2026, 9, 10, 13, 0),
+            end: CalendarTestSupport.date(calendar, 2026, 9, 10, 14, 0)
+        )
+        let store = RecordingBusyStore()
+        let moment = noon
+
+        let outcome = try await publisher(events: [event], store: store, now: { moment })
+            .publish(spaceId: spaceId, memberId: memberId, sharesBusyTimes: false)
+
+        XCTAssertEqual(outcome, .sharingDisabled)
+        let written = await store.written
+        XCTAssertTrue(written.isEmpty)
     }
 }

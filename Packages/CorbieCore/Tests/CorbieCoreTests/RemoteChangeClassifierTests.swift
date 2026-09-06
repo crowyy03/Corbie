@@ -187,14 +187,12 @@ import Testing
     @Test func aChangeWrittenByThisDeviceIsNotTreatedAsRemote() {
         let uri = URL(fileURLWithPath: "/dev/null")
         let local = RemoteChangeRecord(
-            entityName: TaskItem.entityName,
             objectURI: uri,
             type: .insert,
             author: TransactionAuthor.widgets.rawValue
         )
         #expect(local.isFromAnotherDevice == false)
         let remote = RemoteChangeRecord(
-            entityName: TaskItem.entityName,
             objectURI: uri,
             type: .insert,
             author: "NSCloudKitMirroringDelegate.import"

@@ -28,17 +28,12 @@ final class SettingsRouteTests: XCTestCase {
         XCTAssertEqual(Router.route(for: CorbieRoute.event(identifier)), .calendar)
         XCTAssertEqual(Router.route(for: CorbieRoute.wish(identifier)), .wishes)
         XCTAssertEqual(Router.route(for: CorbieRoute.us), .us)
-        XCTAssertNil(Router.route(for: CorbieRoute.paywall))
+        XCTAssertEqual(Router.route(for: CorbieRoute.paywall), .paywall)
     }
 
-    func testANotificationWithoutAScreenOfItsOwnOpensToday() {
+    func testANotificationWithoutARouteOpensToday() {
         let bare = NotificationResponse(actionIdentifier: UNNotificationDefaultActionIdentifier, userInfo: [:])
         XCTAssertEqual(NotificationRouting.outcome(for: bare), .open(.today))
-        let paywall = NotificationResponse(
-            actionIdentifier: UNNotificationDefaultActionIdentifier,
-            route: .paywall
-        )
-        XCTAssertEqual(NotificationRouting.outcome(for: paywall), .open(.today))
     }
 
     func testEveryCoreRouteStringSurvivesTheRoundTrip() throws {

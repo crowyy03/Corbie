@@ -35,7 +35,7 @@ struct RecapPresentation {
     }
 
     func upcomingTitle(_ item: RecapUpcoming) -> String {
-        WidgetDateLabel.upcoming(kind: WidgetDateKind(item.kind), title: item.name, locale: locale)
+        WidgetDateLabel.upcoming(kind: item.kind, title: item.name, locale: locale)
     }
 
     func upcomingCaption(_ item: RecapUpcoming, now: Date) -> String {

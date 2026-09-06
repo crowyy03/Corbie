@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 public protocol AnalyticsRecording: Sendable {
     func record(_ event: AnalyticsEvent)
@@ -9,6 +10,8 @@ public actor Analytics: AnalyticsRecording {
     public static let flushThreshold = 20
     public static let flushInterval: TimeInterval = 60
     public static let queueLimit = 500
+
+    private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "analytics")
 
     private let client: APIClient
     private let storage: any AnalyticsStorage
@@ -57,7 +60,9 @@ public actor Analytics: AnalyticsRecording {
             )
         )
         if queue.count > Analytics.queueLimit {
-            queue.removeFirst(queue.count - Analytics.queueLimit)
+            let dropped = queue.count - Analytics.queueLimit
+            queue.removeFirst(dropped)
+            Analytics.log.error("the analytics queue is full, dropped \(dropped, privacy: .public) oldest events")
         }
         storage.save(queue)
         if queue.count >= threshold {
@@ -74,6 +79,12 @@ public actor Analytics: AnalyticsRecording {
             } catch let failure as APIError where isPermanent(failure) {
                 queue.removeFirst(batch.count)
                 storage.save(queue)
+                Analytics.log.error(
+                    """
+                    the server refused \(batch.count, privacy: .public) events with status \
+                    \(failure.status ?? 0, privacy: .public), dropped them
+                    """
+                )
                 continue
             } catch {
                 return

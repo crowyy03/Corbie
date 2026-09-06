@@ -94,7 +94,8 @@ final class LocalizationUITests: XCTestCase {
     }
 
     private func run(_ localization: LocalizedRun) throws {
-        let app = UITestFlows.launchFresh(language: localization.language)
+        let app = XCUIApplication.corbie(language: localization.language)
+        app.launch()
 
         passOnboarding(app, localization)
 

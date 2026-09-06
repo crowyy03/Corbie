@@ -86,6 +86,12 @@ final class PlansViewModel {
             segment = .big
             openList = nil
             openPlan = PlanReference(id: identifier)
+        case .lists:
+            segment = .lists
+        case let .list(identifier):
+            segment = .lists
+            openPlan = nil
+            openList = ChecklistReference(id: identifier)
         }
         appState.route = nil
     }

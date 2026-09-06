@@ -13,12 +13,16 @@ final class RouterTests: XCTestCase {
         XCTAssertEqual(try route("corbie://us"), .us)
     }
 
-    func testTheGoalsAliasAndTheListsLinkBothLandOnPlans() throws {
+    func testTheListsLinkCarriesTheListItOpens() throws {
         let identifier = UUID()
-        XCTAssertEqual(try route("corbie://goals"), .plans)
-        XCTAssertEqual(try route("corbie://goals/\(identifier.uuidString)"), .plan(identifier))
-        XCTAssertEqual(try route("corbie://lists"), .plans)
-        XCTAssertEqual(try route("corbie://lists/\(identifier.uuidString)"), .plans)
+        XCTAssertEqual(try route("corbie://lists"), .lists)
+        XCTAssertEqual(try route("corbie://lists/\(identifier.uuidString)"), .list(identifier))
+        XCTAssertNil(try route("corbie://lists/not-a-uuid"))
+        XCTAssertNil(try route("corbie://goals"))
+    }
+
+    func testTheLockedWidgetLinkOpensThePaywall() throws {
+        XCTAssertEqual(try route("corbie://paywall"), .paywall)
     }
 
     func testPlanRouteCarriesIdentifier() throws {

@@ -166,10 +166,7 @@ struct CalendarView: View {
     }
 
     private func openFreeTime() {
-        guard environment.premiumGate.isPremium else {
-            environment.premiumGate.presentPaywall(reason: .settings)
-            return
-        }
+        guard environment.premiumGate.require(.freeTime) else { return }
         isFreeTimePresented = true
     }
 

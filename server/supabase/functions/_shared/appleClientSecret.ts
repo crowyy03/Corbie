@@ -1,6 +1,7 @@
 import { decodeBase64 } from "@std/encoding/base64";
 import { encodeBase64Url } from "@std/encoding/base64url";
 import { appleClientId } from "./appleAuth.ts";
+import { jwtSegment } from "./jwt.ts";
 import { ApiError, requiredEnv } from "./respond.ts";
 
 const audience = "https://appleid.apple.com";
@@ -14,10 +15,6 @@ function pkcs8FromPem(pem: string): Uint8Array {
     .replace(/\s+/g, "");
   if (body.length === 0) throw new ApiError("internal", "APPLE_PRIVATE_KEY is not a PKCS8 PEM");
   return decodeBase64(body);
-}
-
-function segment(value: unknown): string {
-  return encodeBase64Url(new TextEncoder().encode(JSON.stringify(value)));
 }
 
 export async function buildAppleClientSecret(now: Date = new Date()): Promise<string> {
@@ -39,8 +36,8 @@ export async function buildAppleClientSecret(now: Date = new Date()): Promise<st
   }
 
   const issuedAt = Math.floor(now.getTime() / 1000);
-  const header = segment({ alg: "ES256", kid: keyId, typ: "JWT" });
-  const claims = segment({
+  const header = jwtSegment({ alg: "ES256", kid: keyId, typ: "JWT" });
+  const claims = jwtSegment({
     iss: teamId,
     iat: issuedAt,
     exp: issuedAt + lifetimeSeconds,

@@ -2,7 +2,7 @@ import Foundation
 
 public enum WidgetDateLabel {
     public static func upcoming(
-        kind: WidgetDateKind,
+        kind: AutoDateKind,
         title: String?,
         ordinal: Int? = nil,
         locale: Locale = .current

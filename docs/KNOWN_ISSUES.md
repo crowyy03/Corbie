@@ -42,26 +42,6 @@ the same guard so the failure names the cause instead of a network error.
 
 ## Minor
 
-### A completely empty Today hides the plans carousel
-
-The revision says every block without data is hidden except the plans strip, which shows one
-"Add a plan" card. That holds while any other block has data
-(`CorbieUITests/TodayUITests` proves it), but when the whole feed is empty `TodayView` draws the
-module 16 empty state instead of the blocks (`Corbie/Features/Today/TodayView.swift:43`), and that
-state offers Add a task, Add a date and Invite your partner, with no way to start a plan.
-
-Reproduce: fresh install, add nothing, open Today, outside the weekly recap window. The recap card
-counts towards `TodayFeed.isEmpty`
-(`Packages/CorbieCore/Sources/CorbieCore/Services/TodayFeed.swift:261`), so between Sunday 19:00 and
-Monday 09:00 the blocks and the carousel appear and the bug hides. Seen on iPhone 17 Pro Max at 18:57
-on 2026-09-06: the empty state with its three buttons and no carousel. The same screen at 19:00, once
-the recap window had opened, drew the carousel next to the recap card, which is why none of the
-screenshots kept from the final matrix - all taken after 19:00 - show it.
-
-Fix, for the founder to decide: either keep the empty state and give it a fourth action, or keep the
-carousel above the empty state so the "Add a plan" card is always there. Both need a new catalog key
-if the empty state gains an action.
-
 ### The Us counters show a dash when there is nothing to count
 
 `UsHubView.counterColumn` renders `Text(value.map { $0.formatted() } ?? "-")` in the 56pt counter

@@ -79,11 +79,9 @@ export function normalizeUrl(raw: string): string {
     throw new TypeError("unsupported scheme");
   }
   url.protocol = "https:";
-  url.hostname = url.hostname.toLowerCase();
   url.hash = "";
   url.username = "";
   url.password = "";
-  if (url.port === "443" || url.port === "80") url.port = "";
 
   const host = hostOf(url);
   const amazon = isAmazonHost(host);

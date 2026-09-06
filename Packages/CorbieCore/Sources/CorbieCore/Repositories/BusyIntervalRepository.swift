@@ -19,7 +19,7 @@ public protocol BusyIntervalRepository: Sendable {
         at date: Date
     ) async throws -> [BusyIntervalDTO]
     func intervals(spaceId: UUID, from: Date, to: Date) async throws -> [BusyIntervalDTO]
-    func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws
+    func deleteAll(memberId: UUID) async throws
     func purge(before date: Date) async throws
 }
 

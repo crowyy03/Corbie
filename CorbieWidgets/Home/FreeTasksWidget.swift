@@ -4,16 +4,16 @@ import WidgetKit
 
 struct FreeTasksEntry: TimelineEntry {
     let date: Date
-    let snapshot: FreeTasksSnapshot
+    let snapshot: TasksSnapshot
 
     static let placeholder = FreeTasksEntry(
         date: Date(),
-        snapshot: FreeTasksSnapshot(items: [], remaining: 0, isPremium: true)
+        snapshot: TasksSnapshot(items: [], remaining: 0, isPremium: true)
     )
 
     static func load(now: Date, provider: WidgetDataProvider) async -> FreeTasksEntry {
         let snapshot = (try? await provider.freeTasks(now: now))
-            ?? FreeTasksSnapshot(items: [], remaining: 0, isPremium: true)
+            ?? TasksSnapshot(items: [], remaining: 0, isPremium: true)
         return FreeTasksEntry(date: now, snapshot: snapshot)
     }
 }
@@ -96,7 +96,7 @@ struct FreeTaskRow: View {
     FreeTasksWidget()
 } timeline: {
     await FreeTasksEntry.load(now: Date(), provider: WidgetPreviewData.provider())
-    FreeTasksEntry(date: Date(), snapshot: FreeTasksSnapshot(items: [], remaining: 0, isPremium: true))
-    FreeTasksEntry(date: Date(), snapshot: FreeTasksSnapshot(items: [], remaining: 0, isPremium: false))
+    FreeTasksEntry(date: Date(), snapshot: TasksSnapshot(items: [], remaining: 0, isPremium: true))
+    FreeTasksEntry(date: Date(), snapshot: TasksSnapshot(items: [], remaining: 0, isPremium: false))
 }
 #endif

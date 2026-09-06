@@ -6,8 +6,7 @@ final class TodayUITests: XCTestCase {
     }
 
     func testTodayCarriesTodaysWorkAndOpensAPlanFromTheCarousel() throws {
-        let app = UITestFlows.launchFresh()
-        UITestFlows.passOnboardingIfShown(app)
+        let app = launchSignedIn()
 
         let tabs = app.tabBars.firstMatch
         XCTAssertTrue(tabs.buttons["Tasks"].waitForExistence(timeout: 20))
@@ -42,7 +41,7 @@ final class TodayUITests: XCTestCase {
         addPlan(app, title: planTitle)
 
         let card = try XCTUnwrap(
-            hittableButton(app, labelContaining: planTitle),
+            hittableElement(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", planTitle))),
             "the new plan is not in the carousel"
         )
         saveScreenshot(app, named: "today")
@@ -59,6 +58,21 @@ final class TodayUITests: XCTestCase {
             "the carousel did not open the plan"
         )
         XCTAssertTrue(tabs.buttons["Plans"].isSelected, "the carousel did not switch to the Plans tab")
+    }
+
+    func testAnEmptyTodayStillCarriesTheAddAPlanCard() throws {
+        let app = launchSignedIn()
+        selectTab(app, .today)
+
+        let quickAction = app.buttons[QACatalog.text("today.action.task")]
+        guard quickAction.waitForExistence(timeout: 30) else {
+            throw XCTSkip("the weekly recap card fills Today between Sunday 19:00 and Monday 09:00")
+        }
+        let addPlanCard = app.button(labelContaining: QACatalog.text("plans.empty.action"))
+        if addPlanCard.exists == false {
+            saveScreenshot(app, named: "today_empty_without_the_carousel")
+            XCTFail("the empty state hides the plans carousel")
+        }
     }
 
     private func addTaskDueToday(_ app: XCUIApplication, tabs: XCUIElement, title: String) {
@@ -80,7 +94,7 @@ final class TodayUITests: XCTestCase {
 
         let dueToggle = app.switches["Set a date"]
         XCTAssertTrue(dueToggle.waitForExistence(timeout: 10))
-        UITestFlows.waitUntilHittable(dueToggle)
+        waitUntilHittable(dueToggle)
         if (dueToggle.value as? String) != "1" {
             dueToggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         }
@@ -101,18 +115,5 @@ final class TodayUITests: XCTestCase {
         type(title, into: app.textFields["Title"])
         type("5000", into: app.textFields["Target amount"])
         app.buttons["Save"].tap()
-    }
-
-    private func hittableButton(_ app: XCUIApplication, labelContaining text: String) -> XCUIElement? {
-        let matches = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", text))
-        let deadline = Date().addingTimeInterval(20)
-        repeat {
-            for index in 0 ..< matches.count {
-                let element = matches.element(boundBy: index)
-                if element.exists, element.isHittable { return element }
-            }
-            RunLoop.current.run(until: Date().addingTimeInterval(0.2))
-        } while Date() < deadline
-        return nil
     }
 }

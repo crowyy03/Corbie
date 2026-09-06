@@ -29,8 +29,8 @@ struct RootView: View {
                 await credentials.verifyStoredCredential(environment)
                 await credentials.observeRevocation(environment)
             }
-            .task(id: appState.route) { consumeJoinRoute() }
-            .task(id: environment.session) { consumeJoinRoute() }
+            .task(id: appState.route) { consumeRoute() }
+            .task(id: environment.session) { consumeRoute() }
     }
 
     @ViewBuilder private var content: some View {
@@ -122,17 +122,25 @@ struct RootView: View {
         )
     }
 
-    private func consumeJoinRoute() {
-        guard case let .join(code) = appState.route else { return }
-        switch environment.session {
-        case .loading:
+    private func consumeRoute() {
+        switch appState.route {
+        case let .join(code):
+            switch environment.session {
+            case .loading:
+                return
+            case .signedOut:
+                pendingJoinCode = code
+            case .signedIn:
+                joinRequest = JoinRequest(code: code)
+            }
+            appState.route = nil
+        case .paywall:
+            guard case .signedIn = environment.session else { return }
+            environment.premiumGate.require(.widgets)
+            appState.route = nil
+        default:
             return
-        case .signedOut:
-            pendingJoinCode = code
-        case .signedIn:
-            joinRequest = JoinRequest(code: code)
         }
-        appState.route = nil
     }
 }
 

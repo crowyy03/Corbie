@@ -3,7 +3,12 @@ import Foundation
 public protocol BusyIntervalStore: Sendable {
     func replace(memberId: UUID, source: BusyIntervalSource, intervals: [BusyRange]) async throws
     func intervals(spaceId: UUID, from: Date, to: Date) async throws -> [BusyRange]
-    func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws
+    func deleteAll(memberId: UUID) async throws
+}
+
+public enum BusyWindow {
+    public static let horizonDays = 14
+    public static let throttle: TimeInterval = 60 * 60
 }
 
 public enum BusyPublishOutcome: Sendable, Equatable {
@@ -14,8 +19,6 @@ public enum BusyPublishOutcome: Sendable, Equatable {
 }
 
 public actor BusyPublisher {
-    public static let horizonDays = 14
-    public static let throttle: TimeInterval = 60 * 60
     public static let changeDebounce = Duration.seconds(30)
 
     private let source: any DeviceCalendarSource
@@ -44,11 +47,11 @@ public actor BusyPublisher {
     public func publish(memberId: UUID, sharesBusyTimes: Bool, force: Bool = false) async throws -> BusyPublishOutcome {
         guard sharesBusyTimes else { return .sharingDisabled }
         let moment = now()
-        if force == false, let lastPublishedAt, moment.timeIntervalSince(lastPublishedAt) < BusyPublisher.throttle {
+        if force == false, let lastPublishedAt, moment.timeIntervalSince(lastPublishedAt) < BusyWindow.throttle {
             return .throttled
         }
         guard try await source.requestAccess() else { return .accessDenied }
-        guard let horizon = calendar.date(byAdding: .day, value: BusyPublisher.horizonDays, to: moment) else {
+        guard let horizon = calendar.date(byAdding: .day, value: BusyWindow.horizonDays, to: moment) else {
             throw CorbieError.invalidInput("busy horizon")
         }
         let found = try await source.busyRanges(from: moment, to: horizon)
@@ -70,7 +73,7 @@ public actor BusyPublisher {
         pendingChange?.cancel()
         pendingChange = nil
         lastPublishedAt = nil
-        try await store.deleteAll(memberId: memberId, source: .device)
+        try await store.deleteAll(memberId: memberId)
     }
 
     public func calendarStoreChanged(memberId: UUID, sharesBusyTimes: Bool) {
