@@ -41,9 +41,21 @@ struct UsHubView: View {
         .task {
             await model.load(environment)
         }
+        .task {
+            await markVisit()
+        }
         .onChange(of: environment.premiumGate.pendingPaywall?.id) { _, request in
             guard request != nil else { return }
             appState.isUsHubPresented = false
+        }
+    }
+
+    private func markVisit() async {
+        guard let member = environment.currentMember else { return }
+        do {
+            environment.apply(member: try await environment.usBadge.markVisited(memberId: member.id))
+        } catch {
+            environment.report(error)
         }
     }
 

@@ -51,7 +51,7 @@ enum NotificationRouting {
         case UNNotificationDismissActionIdentifier:
             return .ignored
         default:
-            guard let route = response.route, let destination = Router.route(for: route) else { return .ignored }
+            guard let route = response.route, let destination = Router.route(for: route) else { return .open(.today) }
             return .open(destination)
         }
     }

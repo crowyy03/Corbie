@@ -2,6 +2,7 @@ import CorbieCore
 import Foundation
 
 enum Route: Equatable {
+    case today
     case tasks
     case task(UUID)
     case calendar
@@ -12,6 +13,7 @@ enum Route: Equatable {
     case votes
     case people
     case person(UUID)
+    case us
     case join(String)
 }
 
@@ -47,7 +49,8 @@ enum Router {
         case .votes, .vote: return .votes
         case .people: return .people
         case let .person(id): return .person(id)
-        case .us, .paywall: return nil
+        case .us: return .us
+        case .paywall: return nil
         }
     }
 
@@ -62,6 +65,8 @@ enum Router {
         let rest = segments.dropFirst()
 
         switch first {
+        case "today":
+            return .today
         case "tasks":
             return identified(rest.first, make: Route.task) ?? .tasks
         case "calendar":
@@ -78,6 +83,8 @@ enum Router {
             return .votes
         case "people":
             return identified(rest.first, make: Route.person) ?? .people
+        case "us":
+            return .us
         case "join":
             return joinRoute(code: rest.first)
         default:

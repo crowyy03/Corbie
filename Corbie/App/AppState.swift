@@ -28,17 +28,18 @@ final class AppState {
 
     private static func tab(for route: Route) -> Tab? {
         switch route {
+        case .today: .today
         case .tasks, .task: .tasks
         case .calendar: .calendar
         case .wishes: .wishes
         case .goals, .goal: .goals
-        case .capsules, .votes, .people, .person, .join: nil
+        case .capsules, .votes, .people, .person, .us, .join: nil
         }
     }
 
     private static func opensUsHub(_ route: Route) -> Bool {
         switch route {
-        case .capsules, .votes, .people, .person: true
+        case .capsules, .votes, .people, .person, .us: true
         default: false
         }
     }

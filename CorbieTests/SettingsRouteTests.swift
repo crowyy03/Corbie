@@ -27,14 +27,25 @@ final class SettingsRouteTests: XCTestCase {
         XCTAssertEqual(Router.route(for: CorbieRoute.vote(identifier)), .votes)
         XCTAssertEqual(Router.route(for: CorbieRoute.event(identifier)), .calendar)
         XCTAssertEqual(Router.route(for: CorbieRoute.wish(identifier)), .wishes)
+        XCTAssertEqual(Router.route(for: CorbieRoute.us), .us)
         XCTAssertNil(Router.route(for: CorbieRoute.paywall))
+    }
+
+    func testANotificationWithoutAScreenOfItsOwnOpensToday() {
+        let bare = NotificationResponse(actionIdentifier: UNNotificationDefaultActionIdentifier, userInfo: [:])
+        XCTAssertEqual(NotificationRouting.outcome(for: bare), .open(.today))
+        let paywall = NotificationResponse(
+            actionIdentifier: UNNotificationDefaultActionIdentifier,
+            route: .paywall
+        )
+        XCTAssertEqual(NotificationRouting.outcome(for: paywall), .open(.today))
     }
 
     func testEveryCoreRouteStringSurvivesTheRoundTrip() throws {
         let identifier = UUID()
         let routes: [CorbieRoute] = [
             .tasks, .task(identifier), .calendar, .wishes, .goals, .goal(identifier),
-            .capsules, .capsule(identifier), .votes, .vote(identifier), .people, .person(identifier)
+            .capsules, .capsule(identifier), .votes, .vote(identifier), .people, .person(identifier), .us
         ]
         for route in routes {
             let parsed = try XCTUnwrap(CorbieRoute(urlString: route.urlString), route.urlString)

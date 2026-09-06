@@ -69,7 +69,7 @@ enum GoalsRoute {
         switch route {
         case .goals: .list
         case let .goal(identifier): .goal(identifier)
-        case .tasks, .task, .calendar, .wishes, .capsules, .votes, .people, .person, .join, .none: nil
+        case .today, .tasks, .task, .calendar, .wishes, .capsules, .votes, .people, .person, .us, .join, .none: nil
         }
     }
 }

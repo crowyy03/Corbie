@@ -50,6 +50,10 @@ struct UsView: View {
     private func consume(_ route: Route?) {
         let destination: UsDestination
         switch route {
+        case .us:
+            path = NavigationPath()
+            appState.route = nil
+            return
         case .capsules:
             destination = .capsules(startsWithEditor: false)
         case .votes:

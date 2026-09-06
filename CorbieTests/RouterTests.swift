@@ -3,12 +3,20 @@ import XCTest
 
 final class RouterTests: XCTestCase {
     func testSchemeTabRoutes() throws {
+        XCTAssertEqual(try route("corbie://today"), .today)
         XCTAssertEqual(try route("corbie://tasks"), .tasks)
         XCTAssertEqual(try route("corbie://calendar"), .calendar)
         XCTAssertEqual(try route("corbie://wishes"), .wishes)
         XCTAssertEqual(try route("corbie://goals"), .goals)
         XCTAssertEqual(try route("corbie://capsules"), .capsules)
         XCTAssertEqual(try route("corbie://votes"), .votes)
+        XCTAssertEqual(try route("corbie://us"), .us)
+    }
+
+    func testTheOldPlansLinksStillOpenGoals() throws {
+        let identifier = UUID()
+        XCTAssertEqual(try route("corbie://plans"), .goals)
+        XCTAssertEqual(try route("corbie://plans/\(identifier.uuidString)"), .goal(identifier))
     }
 
     func testGoalRouteCarriesIdentifier() throws {
@@ -43,6 +51,14 @@ final class RouterTests: XCTestCase {
         state.open(.wishes)
         XCTAssertFalse(state.isUsHubPresented)
         XCTAssertEqual(state.selectedTab, .wishes)
+
+        state.open(.us)
+        XCTAssertTrue(state.isUsHubPresented)
+        XCTAssertEqual(state.selectedTab, .wishes)
+
+        state.open(.today)
+        XCTAssertFalse(state.isUsHubPresented)
+        XCTAssertEqual(state.selectedTab, .today)
     }
 
     private func route(_ string: String) throws -> Route? {

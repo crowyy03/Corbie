@@ -41,6 +41,7 @@ final class AppEnvironment {
 
     private(set) var busyPublisher: BusyPublisher?
     let premiumGate: PremiumGate
+    let usBadge: UsBadgeProvider
     let toasts: ToastCenter
     let theme: ThemeStore
 
@@ -78,6 +79,7 @@ final class AppEnvironment {
         )
         entitlements = entitlementService
         premiumGate = PremiumGate(analytics: analytics, entitlements: entitlementService)
+        usBadge = UsBadgeProvider(repositories: repositories)
         fx = FXService(client: client)
         linkParser = LinkParser(client: client)
         let scheduler = NotificationScheduler(client: notificationClient)
@@ -117,6 +119,7 @@ final class AppEnvironment {
         }
         IntentPersistence.shared.use(controller: persistence, identity: identity)
         WidgetReloader.shared.start()
+        usBadge.observeReloads()
         await analytics.start()
         await notifications.registerCategories()
         await remoteChanges.start()

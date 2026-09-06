@@ -28,7 +28,7 @@ final class PaywallBannerTests: XCTestCase {
         XCTAssertEqual(PaywallBannerState.trialEnding(daysLeft: 2).message, "Trial ends soon.")
         XCTAssertEqual(PaywallBannerState.trialEnding(daysLeft: 2).spokenMessage, "2 days left in your trial")
         XCTAssertEqual(PaywallBannerState.trialEnding(daysLeft: 1).spokenMessage, "1 day left in your trial")
-        XCTAssertEqual(PaywallBannerState.readOnly.message, "Trial over. The calendar still works.")
+        XCTAssertEqual(PaywallBannerState.readOnly.message, "Trial over. The calendar and Today still work.")
         XCTAssertEqual(PaywallBannerState.readOnly.spokenMessage, PaywallBannerState.readOnly.message)
         XCTAssertNotEqual(String(localized: "paywall.banner.action"), "paywall.banner.action")
     }

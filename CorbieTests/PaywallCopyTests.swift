@@ -29,7 +29,7 @@ final class PaywallCopyTests: XCTestCase {
     func testTrialReasonsSayWhatHappened() {
         XCTAssertEqual(PaywallCopy.reasonKey(.trialEnding), "paywall.reason.trialending")
         XCTAssertEqual(PaywallCopy.reasonKey(.trialEnded), "paywall.reason.trialended")
-        XCTAssertEqual(PaywallCopy.reasonText(.trialEnded), "The trial is over. The calendar still works.")
+        XCTAssertEqual(PaywallCopy.reasonText(.trialEnded), "The trial is over. The calendar and Today still work.")
     }
 
     func testEveryValueRowResolves() {
@@ -39,6 +39,13 @@ final class PaywallCopyTests: XCTestCase {
                 XCTAssertNotEqual(PaywallCopy.text(key), key, "missing catalog value for \(key)")
             }
         }
+        XCTAssertEqual(PaywallCopy.text("paywall.value.goals.title"), "Goals and folders")
+        XCTAssertEqual(PaywallCopy.text("paywall.value.capsules.title"), "Capsules and votes")
+    }
+
+    func testTheFeaturesTheAmendmentMadePremiumHaveTheirOwnLine() {
+        XCTAssertEqual(PaywallCopy.reasonText(PremiumAction.folders.paywallReason), "Task folders come with the subscription.")
+        XCTAssertEqual(PaywallCopy.reasonText(PremiumAction.freeTime.paywallReason), "Free time comes with the subscription.")
     }
 
     func testTheSavingsBadgeCarriesTheRealPercent() {

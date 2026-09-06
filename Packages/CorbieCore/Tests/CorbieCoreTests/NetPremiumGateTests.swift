@@ -21,6 +21,22 @@ import Testing
         #expect(analytics.events.isEmpty)
     }
 
+    @Test func theFreeTierIsCalendarOnly() {
+        #expect(PremiumAction.allCases.filter { $0.isGated == false } == [.calendar])
+    }
+
+    @Test func theAmendedPremiumFeaturesAreGated() {
+        let analytics = RecordingAnalytics()
+        let readOnly = gate(.readOnly, analytics: analytics)
+        #expect(readOnly.require(.folders) == false)
+        #expect(readOnly.pendingPaywall?.reason == .folders)
+        readOnly.dismissPaywall()
+        #expect(readOnly.require(.freeTime) == false)
+        #expect(readOnly.pendingPaywall?.reason == .freeTime)
+        #expect(analytics.events.contains(.readonlyHit(action: .folders)))
+        #expect(analytics.events.contains(.readonlyHit(action: .freeTime)))
+    }
+
     @Test func aReadOnlySpaceAsksForThePaywallAndReportsIt() {
         let analytics = RecordingAnalytics()
         let readOnly = gate(.readOnly, analytics: analytics)

@@ -10737,31 +10737,31 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Test vorbei. Der Kalender läuft weiter."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Trial over. The calendar still works."
+            "value": "Trial over. The calendar and Today still work."
           }
         },
         "es": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Se acabó la prueba. El calendario sigue."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Essai terminé. Le calendrier continue."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Prova finita. Il calendario continua."
           }
         }
@@ -11337,6 +11337,26 @@
         }
       }
     },
+    "paywall.reason.folders": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Task folders come with the subscription."
+          }
+        }
+      }
+    },
+    "paywall.reason.freetime": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free time comes with the subscription."
+          }
+        }
+      }
+    },
     "paywall.reason.people": {
       "localizations": {
         "de": {
@@ -11409,31 +11429,31 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Der Test ist vorbei. Der Kalender läuft weiter."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The trial is over. The calendar still works."
+            "value": "The trial is over. The calendar and Today still work."
           }
         },
         "es": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Se acabó la prueba. El calendario sigue."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "L'essai est terminé. Le calendrier continue."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "La prova è finita. Il calendario continua."
           }
         }
@@ -11851,31 +11871,31 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Ein Topf, eine Wunschliste, ihr beide."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "One pot, one wish list, both of you."
+            "value": "One pot for the trip. One folder for the shopping."
           }
         },
         "es": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Un bote, una lista de deseos, los dos."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Une cagnotte, une liste de souhaits, vous deux."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Un salvadanaio, una lista dei desideri, tutti e due."
           }
         }
@@ -11892,7 +11912,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Goals and wishes"
+            "value": "Goals and folders"
           }
         },
         "es": {
@@ -11919,31 +11939,31 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Aufgaben, Termine und Listen auf dem Homescreen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your tasks, dates and lists on the home screen."
+            "value": "Your tasks, dates and goals on the home screen."
           }
         },
         "es": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Tus tareas, fechas y listas en la pantalla de inicio."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Vos tâches, dates et listes sur l'écran d'accueil."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Attività, date e liste nella schermata Home."
           }
         }
@@ -19937,6 +19957,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apri Noi"
+          }
+        }
+      }
+    },
+    "us.pill.label.new": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Us hub, something new"
           }
         }
       }

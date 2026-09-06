@@ -41,6 +41,8 @@ enum PaywallCopy {
         case .capsules: return "paywall.reason.capsules"
         case .votes: return "paywall.reason.votes"
         case .people: return "paywall.reason.people"
+        case .folders: return "paywall.reason.folders"
+        case .freeTime: return "paywall.reason.freetime"
         }
     }
 
