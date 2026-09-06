@@ -1,10 +1,5 @@
 import Foundation
 
-public enum BusyRangeSource: String, Sendable, Equatable, CaseIterable {
-    case device
-    case corbie
-}
-
 public struct BusyRange: Sendable, Equatable, Hashable {
     public let memberId: UUID
     public let start: Date

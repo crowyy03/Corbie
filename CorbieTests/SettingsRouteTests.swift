@@ -48,9 +48,10 @@ final class SettingsRouteTests: XCTestCase {
         state.open(.task(UUID()))
         XCTAssertEqual(state.selectedTab, .tasks)
         state.open(.person(UUID()))
-        XCTAssertEqual(state.selectedTab, .us)
+        XCTAssertTrue(state.isUsHubPresented)
+        XCTAssertEqual(state.selectedTab, .tasks)
         state.open(.people)
-        XCTAssertEqual(state.selectedTab, .us)
+        XCTAssertTrue(state.isUsHubPresented)
     }
 
     func testATaskActionRunsTheWriteInsteadOfOpeningAScreen() {

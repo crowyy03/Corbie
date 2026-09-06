@@ -96,7 +96,7 @@ final class JoinViewModel {
         try await adoptMember(appleUserID: appleUserID, in: joined)
         try await carryTogetherSince(into: joined)
         environment.analytics.record(.inviteRedeemed)
-        appState.selectedTab = .tasks
+        appState.selectedTab = .today
         await environment.reloadSession()
         environment.toasts.show(message: String(localized: "pairing.join.connected"))
     }

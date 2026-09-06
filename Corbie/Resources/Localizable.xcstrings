@@ -17735,36 +17735,12 @@
         }
       }
     },
-    "tab.us.title": {
+    "tab.today.title": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wir"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Us"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nosotros"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nous"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Noi"
+            "value": "Today"
           }
         }
       }
@@ -19397,6 +19373,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "In corso"
+          }
+        }
+      }
+    },
+    "today.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dates, tasks and goals show up here"
+          }
+        }
+      }
+    },
+    "today.empty.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing on today"
           }
         }
       }

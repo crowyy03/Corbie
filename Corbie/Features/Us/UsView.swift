@@ -3,6 +3,7 @@ import SwiftUI
 
 struct UsView: View {
     @Environment(AppState.self) private var appState
+    @Environment(\.dismiss) private var dismiss
     @State private var path = NavigationPath()
     @State private var isAddPresented = false
 
@@ -12,6 +13,16 @@ struct UsView: View {
                 .paywallBanner()
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
+                                .contentShape(Rectangle())
+                        }
+                        .accessibilityLabel(Text("common.action.close"))
+                    }
                     AddToolbarItem {
                         isAddPresented = true
                     }

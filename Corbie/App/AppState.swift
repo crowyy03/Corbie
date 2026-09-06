@@ -4,31 +4,42 @@ import Observation
 @Observable
 final class AppState {
     enum Tab: String {
+        case today
         case tasks
         case calendar
         case wishes
         case goals
-        case us
     }
 
-    var selectedTab: Tab = .tasks
+    var selectedTab: Tab = .today
     var isUsHubPresented = false
     var route: Route?
 
     func open(_ route: Route?) {
         guard let route else { return }
         self.route = route
-        isUsHubPresented = false
-        selectedTab = Self.tab(for: route)
+        if let tab = Self.tab(for: route) {
+            isUsHubPresented = false
+            selectedTab = tab
+        } else {
+            isUsHubPresented = Self.opensUsHub(route)
+        }
     }
 
-    private static func tab(for route: Route) -> Tab {
+    private static func tab(for route: Route) -> Tab? {
         switch route {
         case .tasks, .task: .tasks
         case .calendar: .calendar
         case .wishes: .wishes
         case .goals, .goal: .goals
-        case .capsules, .votes, .people, .person, .join: .us
+        case .capsules, .votes, .people, .person, .join: nil
+        }
+    }
+
+    private static func opensUsHub(_ route: Route) -> Bool {
+        switch route {
+        case .capsules, .votes, .people, .person: true
+        default: false
         }
     }
 }

@@ -33,13 +33,15 @@ final class RouterTests: XCTestCase {
     }
 
     @MainActor
-    func testDeepLinkSelectsTab() {
+    func testDeepLinkSelectsTabOrOpensTheHub() {
         let state = AppState()
         state.open(.capsules)
-        XCTAssertEqual(state.selectedTab, .us)
+        XCTAssertTrue(state.isUsHubPresented)
+        XCTAssertEqual(state.selectedTab, .today)
         XCTAssertEqual(state.route, .capsules)
 
         state.open(.wishes)
+        XCTAssertFalse(state.isUsHubPresented)
         XCTAssertEqual(state.selectedTab, .wishes)
     }
 

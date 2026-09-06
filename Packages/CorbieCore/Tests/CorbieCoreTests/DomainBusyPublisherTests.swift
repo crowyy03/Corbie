@@ -4,13 +4,13 @@ import Testing
 
 private struct BusyStoreWrite: Sendable, Equatable {
     let memberId: UUID
-    let source: BusyRangeSource
+    let source: BusyIntervalSource
     let intervals: [BusyRange]
 }
 
 private struct BusyStoreDeletion: Sendable, Equatable {
     let memberId: UUID
-    let source: BusyRangeSource
+    let source: BusyIntervalSource
 }
 
 private actor FakeBusyStore: BusyIntervalStore {
@@ -18,7 +18,7 @@ private actor FakeBusyStore: BusyIntervalStore {
     private(set) var deletions: [BusyStoreDeletion] = []
     private var kept: [BusyRange] = []
 
-    func replace(memberId: UUID, source: BusyRangeSource, intervals: [BusyRange]) async throws {
+    func replace(memberId: UUID, source: BusyIntervalSource, intervals: [BusyRange]) async throws {
         writes.append(BusyStoreWrite(memberId: memberId, source: source, intervals: intervals))
         kept.removeAll { $0.memberId == memberId }
         kept.append(contentsOf: intervals)
@@ -28,7 +28,7 @@ private actor FakeBusyStore: BusyIntervalStore {
         kept.filter { $0.end > from && $0.start < to }
     }
 
-    func deleteAll(memberId: UUID, source: BusyRangeSource) async throws {
+    func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws {
         deletions.append(BusyStoreDeletion(memberId: memberId, source: source))
         kept.removeAll { $0.memberId == memberId }
     }

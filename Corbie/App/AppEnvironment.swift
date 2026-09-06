@@ -39,6 +39,7 @@ final class AppEnvironment {
     @ObservationIgnored let remoteChanges: RemoteChangeNotifier
     @ObservationIgnored let sessionService: SessionService
 
+    private(set) var busyPublisher: BusyPublisher?
     let premiumGate: PremiumGate
     let toasts: ToastCenter
     let theme: ThemeStore
@@ -138,6 +139,10 @@ final class AppEnvironment {
             }
             let partner = try await repositories.members.partner(of: member.id, spaceId: space.id)
             session = .signedIn(SessionContext(space: space, member: member, partner: partner))
+            busyPublisher = BusyPublisher(
+                source: SystemDeviceCalendarSource(),
+                store: RepositoryBusyIntervalStore(repository: repositories.busyIntervals, spaceId: space.id)
+            )
             await updateNotificationAudience()
             await resyncNotificationBacklog()
             premiumGate.update(await entitlements.cachedState(spaceId: space.id, trialEndsAt: space.trialEndsAt))

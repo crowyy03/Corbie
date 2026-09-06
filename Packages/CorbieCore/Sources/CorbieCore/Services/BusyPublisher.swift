@@ -1,9 +1,9 @@
 import Foundation
 
 public protocol BusyIntervalStore: Sendable {
-    func replace(memberId: UUID, source: BusyRangeSource, intervals: [BusyRange]) async throws
+    func replace(memberId: UUID, source: BusyIntervalSource, intervals: [BusyRange]) async throws
     func intervals(spaceId: UUID, from: Date, to: Date) async throws -> [BusyRange]
-    func deleteAll(memberId: UUID, source: BusyRangeSource) async throws
+    func deleteAll(memberId: UUID, source: BusyIntervalSource) async throws
 }
 
 public enum BusyPublishOutcome: Sendable, Equatable {

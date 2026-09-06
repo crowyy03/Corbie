@@ -49,6 +49,15 @@ struct RootView: View {
 
         return TabView(selection: $state.selectedTab) {
             NavigationStack {
+                TodayView()
+                    .paywallBanner()
+            }
+            .tabItem {
+                Label(String(localized: "tab.today.title"), systemImage: "sun.max")
+            }
+            .tag(AppState.Tab.today)
+
+            NavigationStack {
                 TasksView()
                     .paywallBanner()
             }
@@ -84,14 +93,9 @@ struct RootView: View {
             }
             .tag(AppState.Tab.goals)
 
-            UsView()
-            .tabItem {
-                Label(String(localized: "tab.us.title"), systemImage: "person.2")
-            }
-            .tag(AppState.Tab.us)
         }
         .fullScreenCover(isPresented: $state.isUsHubPresented) {
-            UsHubSheet()
+            UsView()
                 .onAppear { isUsHubOnScreen = true }
                 .onDisappear { isUsHubOnScreen = false }
         }
@@ -135,30 +139,6 @@ struct RootView: View {
 struct JoinRequest: Identifiable, Equatable {
     let id = UUID()
     let code: String
-}
-
-private struct UsHubSheet: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            UsHubView()
-                .usDestinations()
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
-                                .contentShape(Rectangle())
-                        }
-                        .accessibilityLabel(Text("common.action.close"))
-                    }
-                }
-        }
-    }
 }
 
 #if DEBUG

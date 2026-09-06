@@ -151,7 +151,7 @@ final class OnboardingViewModel {
         } catch {
             environment.report(error)
         }
-        appState.selectedTab = .tasks
+        appState.selectedTab = .today
         await environment.reloadSession()
     }
 
