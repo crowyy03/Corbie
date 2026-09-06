@@ -10,7 +10,9 @@ final class PeopleNavigationUITests: XCTestCase {
         app.launch()
         UITestFlows.passOnboardingIfShown(app)
 
-        app.tabBars.buttons["Us"].tap()
+        let pill = app.buttons["Open the Us hub"].firstMatch
+        XCTAssertTrue(pill.waitForExistence(timeout: 10))
+        pill.tap()
         let peopleTile = app.buttons.containing(NSPredicate(format: "label CONTAINS 'People'")).firstMatch
         XCTAssertTrue(peopleTile.waitForExistence(timeout: 10))
         peopleTile.tap()
