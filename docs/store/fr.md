@@ -10,12 +10,15 @@ Projets et dates à deux
 couple,partenaire,calendrier,agenda,souhaits,anniversaire,rappels,courses,budget,widgets,voyage
 
 ## Promotional text
-Deux personnes, un espace. Des tâches sans propriétaire, des dates qui ne se perdent pas, une liste de souhaits, une cagnotte commune. L'essentiel tient dans un widget.
+Deux personnes, un espace. La journée sur un écran, des tâches sans chef, des dates qui restent, une liste de souhaits, une cagnotte. Le reste tient dans un widget.
 
 ## Description
-Corbie est un espace partagé à deux. Projets, dates, souhaits et listes, sans le bruit des messages.
+Corbie est un espace partagé à deux. Aujourd'hui, projets, dates, souhaits et listes, sans le bruit des messages.
 Un seul endroit que vous voyez tous les deux, pour que personne ne redemande une troisième fois.
 L'essentiel arrive sur l'écran d'accueil, dans un widget, sans ouvrir l'app.
+
+AUJOURD'HUI
+La journée sur un écran. Vos projets dans une rangée qui défile, ce qui est dû aujourd'hui, ce qui commence aujourd'hui, et les tâches que personne n'a prises. On coche sans quitter l'écran.
 
 TÂCHES
 Une liste à deux. Chacun peut prendre une tâche, ou la rendre. Personne n'est le chef ici. Avec échéance, répétition et de la place pour le numéro que vous perdez toujours.
@@ -23,11 +26,14 @@ Une liste à deux. Chacun peut prendre une tâche, ou la rendre. Personne n'est 
 CALENDRIER
 Les dates que vous tenez à deux. Anniversaires, voyages, le dentiste. Les dates anniversaires et les jours ensemble arrivent tout seuls. Importez une fois depuis le calendrier de l'iPhone, gardez le reste ici.
 
+QUAND VOUS ÊTES LIBRES TOUS LES DEUX
+Corbie lit les deux agendas et montre les créneaux que vous avez en commun. Il partage vos heures occupées, jamais ce que vous y faites. Les titres, les lieux et les invités restent sur votre téléphone.
+
 SOUHAITS
 Collez un lien. Le nom, le prix et la photo arrivent tout seuls. Partagez depuis n'importe quelle app directement vers Corbie. Votre partenaire ne voit jamais que vous avez regardé.
 
 PROJETS
-Un voyage, une cuisine, un mariage, une voiture. Fixez le montant, ajoutez les dépenses dans n'importe quelle devise, voyez ce qui reste. Une cagnotte, pas de « qui doit quoi ».
+Un voyage, une cuisine, un mariage, une voiture. Fixez le montant, ajoutez de l'argent dans n'importe quelle devise, voyez ce qui reste. Une cagnotte, pas de « qui doit quoi ». Chaque projet garde sa préparation, et une étape avec une date apparaît dans Aujourd'hui.
 
 LISTES
 Endroits où aller, choses à voir, quoi cuisiner. L'un ajoute, l'autre coche. Une liste avec des lieux a une carte. Les courses ont leur widget avec de vraies cases.
@@ -38,11 +44,14 @@ CAPSULES ET VOTES
 PERSONNES
 Les anniversaires qui comptent et les idées cadeau que vous avez notées. Deux semaines avant, Corbie le dit une fois, et dit aussi si quelque chose est choisi.
 
+BILAN DU DIMANCHE
+Le dimanche soir, Corbie compte la semaine : ce que chacun a terminé, comment les projets ont bougé, ce qui arrive ensuite. Cela ne coûte rien et reste gratuit après l'essai.
+
 WIDGETS
 Treize. Jours ensemble, la prochaine date, trois tâches à cocher depuis l'écran d'accueil, la liste de courses, un projet et où vous en êtes. Sur l'écran verrouillé aussi.
 
 UN ABONNEMENT
-Un abonnement couvre vous deux. Sept jours offerts, puis 5,99 par mois ou 39,99 par an. Inviter votre partenaire est toujours gratuit. À la fin de l'essai le calendrier continue de marcher.
+Un abonnement couvre vous deux. Sept jours offerts, puis 5,99 par mois ou 39,99 par an. Inviter votre partenaire est toujours gratuit. À la fin de l'essai, le calendrier, Aujourd'hui et le bilan de la semaine continuent.
 
 CONFIDENTIALITÉ
 Pas de pub. Aucun SDK tiers. Vos données restent dans votre iCloud, pas sur nos serveurs.
@@ -50,14 +59,14 @@ Pas de pub. Aucun SDK tiers. Vos données restent dans votre iCloud, pas sur nos
 ## What's new - 1.0
 Première version.
 
-Des tâches que chacun peut prendre ou rendre, un calendrier partagé avec des dates anniversaires qui se comptent toutes seules, des souhaits qui se remplissent depuis un lien, des cagnottes dans n'importe quelle devise, des listes avec une carte, des lettres qui s'ouvrent à la date de votre choix et des votes en secret.
+Un écran Aujourd'hui qui porte toute la journée, des tâches que chacun peut prendre ou rendre, un calendrier partagé avec des dates anniversaires qui se comptent toutes seules, les créneaux libres que vous avez en commun, des souhaits qui se remplissent depuis un lien, des cagnottes avec leur préparation, des listes avec une carte, des lettres qui s'ouvrent à la date de votre choix, des votes en secret et un bilan chaque dimanche.
 
 Treize widgets pour l'écran d'accueil et l'écran verrouillé. Un abonnement pour vous deux.
 
 ## Screenshot captions
 1. Vous deux, sur l'écran d'accueil
-2. Personne n'est le chef. Prenez une tâche, ou rendez-la
-3. Collez un lien. Le nom, le prix et la photo arrivent tout seuls
-4. Une cagnotte. Voyez ce qui reste
-5. Une lettre qui s'ouvre dans un an
+2. Votre journée sur un écran
+3. Personne n'est le chef. Prenez une tâche, ou rendez-la
+4. Collez un lien. Le nom, le prix et la photo arrivent tout seuls
+5. Une cagnotte, et les étapes pour y arriver
 6. Un abonnement. Pour vous deux

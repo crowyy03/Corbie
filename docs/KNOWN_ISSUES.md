@@ -116,3 +116,7 @@ silently. Worth a one-line hint next to the due date toggle once someone has den
 - minor: `SmokeTabsUITests.testCapsuleCreate` does not find the new capsule in the list right after saving; unclear whether the list refreshes late or the row label differs from the title. Reproduce during the Today and Us rework.
 - test debt: eight QA UI tests fail on "the Us hub has no settings entry" because they look for the settings row by a label that the localization pass changed; with the amendment the hub opens from the pill, so these tests are rewritten in the QA pass after the rework rather than patched now.
 - test debt: `QAPermissionsUITests.testThePhotoPickerIsReachableWithPhotosDenied` taps an ambiguous "Cancel" (two matches on screen).
+
+## Found by the localization screenshot run on 2026-09-06
+
+- cosmetic, debug builds only: on the onboarding intro the "continue without Apple ID (debug build)" button sits on top of the page dots (screenshots `onboarding_intro` in en, de and fr). The same overlap happens in English, so it is a layout issue in the intro, not a translation length. Release builds do not compile the button.
