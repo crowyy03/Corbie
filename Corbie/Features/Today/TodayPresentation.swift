@@ -55,8 +55,18 @@ struct TodayPresentation {
     }
 
     func giftLine(_ date: TodayDate) -> String {
-        guard date.ideasCount > 0 else { return String(localized: "today.comingup.gift.none") }
-        return String(format: String(localized: "today.comingup.gift"), locale: locale, date.ideasCount)
+        let nothing = String(localized: "people.radar.empty", locale: locale)
+        guard date.ideasCount > 0 else { return nothing }
+        let ideas = String(
+            localized: "people.radar.ideas",
+            defaultValue: "\(date.ideasCount) ideas saved",
+            locale: locale
+        )
+        return String(
+            localized: "people.radar.line",
+            defaultValue: "\(nothing) \u{00B7} \(ideas)",
+            locale: locale
+        )
     }
 
     func goalAmount(_ goal: GoalDTO) -> String {

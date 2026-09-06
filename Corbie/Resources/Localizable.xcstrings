@@ -4401,270 +4401,918 @@
     },
     "freetime.empty.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "oder einen Filter weg"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "or drop a filter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o quita un filtro"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ou enlevez un filtre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o togli un filtro"
           }
         }
       }
     },
     "freetime.empty.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei euch ist alles voll. Nimm einen längeren Zeitraum."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "You two are booked solid. Try a longer range."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo tenéis todo lleno. Prueba con más días."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous êtes pris tous les deux. Essayez une période plus longue."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avete tutto pieno. Prova con più giorni."
           }
         }
       }
     },
     "freetime.filter.evenings": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abends"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Evenings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noches"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soirées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sere"
           }
         }
       }
     },
     "freetime.filter.long": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2+ Stunden"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "2+ hours"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2+ horas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 h et plus"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2+ ore"
           }
         }
       }
     },
     "freetime.filter.weekends": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochenenden"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Weekends"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fines de semana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Week-ends"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekend"
           }
         }
       }
     },
     "freetime.list.caps": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freie Fenster"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Free windows"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Huecos libres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créneaux libres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finestre libere"
           }
         }
       }
     },
     "freetime.partner.ask": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachfragen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Ask them"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregúntale"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demandez-lui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiediglielo"
           }
         }
       }
     },
     "freetime.partner.ask.toast": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von hier aus kann Corbie nicht anklopfen. Bitte %@, „Meine belegten Zeiten teilen“ einzuschalten."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Corbie cannot ping them from here. Ask %@ to turn on Share my busy times."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie no puede avisar desde aquí. Pídele a %@ que active «Compartir mis horas ocupadas»."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie ne peut pas prévenir d'ici. Demandez à %@ d'activer « Partager mes heures occupées »."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Da qui Corbie non può avvisare. Chiedi a %@ di attivare «Condividi i miei orari occupati»."
           }
         }
       }
     },
     "freetime.partner.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "einschalten geht in den Einstellungen unter Datenschutz"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "they turn it on in Settings, under Privacy"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "se activa en Ajustes, en Privacidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cela s'active dans Réglages, sous Confidentialité"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "si attiva in Impostazioni, sotto Privacy"
           }
         }
       }
     },
     "freetime.partner.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ teilt die belegten Zeiten noch nicht"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%@ hasn't shared their busy times yet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ aún no comparte sus horas ocupadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ne partage pas encore ses heures occupées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ non condivide ancora i suoi orari occupati"
           }
         }
       }
     },
     "freetime.privacy.body": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie teilt nur, wann du belegt bist - nie, womit. Titel, Orte und Gäste bleiben auf deinem Telefon."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Corbie only shares when you're busy - never what you're doing. Titles, locations and guests stay on your phone."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie comparte solo a qué horas tienes algo, nunca qué. Los títulos, los sitios y los invitados se quedan en tu teléfono."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie partage seulement vos heures occupées, jamais ce que vous y faites. Les titres, les lieux et les invités restent sur votre téléphone."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie condivide solo i tuoi orari occupati, mai cosa ci fai. Titoli, luoghi e invitati restano sul tuo telefono."
           }
         }
       }
     },
     "freetime.privacy.notnow": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt nicht"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Not now"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora no"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas maintenant"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non ora"
           }
         }
       }
     },
     "freetime.privacy.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Kalender bleibt deiner"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Your calendar stays yours"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu calendario sigue siendo tuyo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre agenda reste le vôtre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo calendario resta tuo"
           }
         }
       }
     },
     "freetime.range.fortnight": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste 14 Tage"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Next 14 days"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Próximos 14 días"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14 prochains jours"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prossimi 14 giorni"
           }
         }
       }
     },
     "freetime.range.week": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste 7 Tage"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Next 7 days"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Próximos 7 días"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 prochains jours"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prossimi 7 giorni"
           }
         }
       }
     },
     "freetime.sharing.hint": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die Zeiten, nie die Titel. Aus heißt: deine Zeiten verschwinden wieder."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Only the times, never the titles. Turn it off and your times leave the space."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo las horas, nunca los títulos. Si lo apagas, tus horas desaparecen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seulement les heures, jamais les titres. Désactivez et vos heures disparaissent."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo gli orari, mai i titoli. Se lo spegni, i tuoi orari spariscono."
           }
         }
       }
     },
     "freetime.sharing.toggle": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meine belegten Zeiten teilen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Share my busy times"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir mis horas ocupadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager mes heures occupées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condividi i miei orari occupati"
           }
         }
       }
     },
     "freetime.slot.after": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ab %@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "after %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a partir de %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "à partir de %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dalle %@"
           }
         }
       }
     },
     "freetime.slot.allday": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ganzer Tag"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "all day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "todo el día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "toute la journée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tutto il giorno"
           }
         }
       }
     },
     "freetime.slot.partnertime": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ für %2$@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ for %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ para %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ pour %2$@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ per %2$@"
           }
         }
       }
     },
     "freetime.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wann ihr beide frei seid"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "When you two are free"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando estáis libres los dos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand vous êtes libres tous les deux"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando siete liberi tutti e due"
           }
         }
       }
     },
     "freetime.unpaired.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lad die andere Person über die Wir-Pille ein"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "invite your partner from the Us pill"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "invita a tu pareja desde la píldora Nosotros"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "invitez votre partenaire depuis la pastille Nous"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "invita il tuo partner dalla pillola Noi"
           }
         }
       }
     },
     "freetime.unpaired.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freie Zeit braucht zwei Kalender"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Free time needs two calendars"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El tiempo libre necesita dos calendarios"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le temps libre demande deux agendas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tempo libero vuole due calendari"
           }
         }
       }
     },
     "freetime.unreadable.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "zum Neuladen nach unten ziehen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "pull down to try again"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tira hacia abajo para reintentar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tirez vers le bas pour réessayer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tira giù per riprovare"
           }
         }
       }
     },
     "freetime.unreadable.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie konnte deine belegten Zeiten nicht lesen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Corbie could not read your busy times"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie no ha podido leer tus horas ocupadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie n'a pas pu lire vos heures occupées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie non è riuscita a leggere i tuoi orari occupati"
           }
         }
       }
     },
     "freetime.you.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nur die Zeiten verlassen dein Telefon, nie die Titel"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "only the times leave your phone, never the titles"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de tu teléfono salen las horas, nunca los títulos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "seules les heures quittent votre téléphone, jamais les titres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dal tuo telefono escono solo gli orari, mai i titoli"
           }
         }
       }
     },
     "freetime.you.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie braucht auch deine belegten Zeiten"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Corbie needs your busy times too"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie también necesita tus horas ocupadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie a besoin de vos heures occupées aussi"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie ha bisogno anche dei tuoi orari occupati"
           }
         }
       }
@@ -4773,10 +5421,34 @@
     },
     "goals.card.steps": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@/%2$@ Schritte"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@/%2$@ steps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@/%2$@ pasos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@/%2$@ étapes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@/%2$@ passi"
           }
         }
       }
@@ -4785,8 +5457,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Geld hinzufügen"
           }
         },
         "en": {
@@ -4797,20 +5469,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Añadir dinero"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Ajouter de l'argent"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Aggiungi soldi"
           }
         }
       }
@@ -4887,8 +5559,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan löschen"
+            "state": "translated",
+            "value": "Ziel löschen"
           }
         },
         "en": {
@@ -4899,20 +5571,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Eliminar el plan"
+            "state": "translated",
+            "value": "Eliminar el objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Supprimer le projet"
+            "state": "translated",
+            "value": "Supprimer l'objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Elimina il progetto"
+            "state": "translated",
+            "value": "Elimina l'obiettivo"
           }
         }
       }
@@ -4921,8 +5593,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan bearbeiten"
+            "state": "translated",
+            "value": "Ziel bearbeiten"
           }
         },
         "en": {
@@ -4933,30 +5605,54 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Editar el plan"
+            "state": "translated",
+            "value": "Editar el objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Modifier le projet"
+            "state": "translated",
+            "value": "Modifier l'objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Modifica il progetto"
+            "state": "translated",
+            "value": "Modifica l'obiettivo"
           }
         }
       }
     },
     "goals.detail.added": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dazu"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Added"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouté"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiunto"
           }
         }
       }
@@ -4965,8 +5661,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Diesen Plan mit allen Ausgaben löschen?"
+            "state": "translated",
+            "value": "Dieses Ziel mit allen Einträgen löschen?"
           }
         },
         "en": {
@@ -4977,20 +5673,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "¿Eliminar este plan y sus gastos?"
+            "state": "translated",
+            "value": "¿Eliminar este objetivo y sus gastos?"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Supprimer ce projet et ses dépenses ?"
+            "state": "translated",
+            "value": "Supprimer cet objectif et ses dépenses ?"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Eliminare questo progetto e le sue spese?"
+            "state": "translated",
+            "value": "Eliminare questo obiettivo e le sue spese?"
           }
         }
       }
@@ -4999,8 +5695,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Eingezahlt"
           }
         },
         "en": {
@@ -5011,20 +5707,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Dinero añadido"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Argent ajouté"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Soldi aggiunti"
           }
         }
       }
@@ -5033,8 +5729,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "Zu diesem Ziel ist noch nichts dazugekommen."
           }
         },
         "en": {
@@ -5045,20 +5741,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "Todavía no has añadido nada a este objetivo."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "Rien n'a encore été ajouté à cet objectif."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "A questo obiettivo non è ancora arrivato niente."
           }
         }
       }
@@ -5067,8 +5763,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "jeder Eintrag behält den Kurs vom Tag der Eingabe"
           }
         },
         "en": {
@@ -5079,20 +5775,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "cada entrada guarda el cambio del día en que se añadió"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "chaque entrée garde le taux du jour où elle a été ajoutée"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "ogni voce tiene il cambio del giorno in cui è stata aggiunta"
           }
         }
       }
@@ -5135,8 +5831,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Planaktionen"
+            "state": "translated",
+            "value": "Zielaktionen"
           }
         },
         "en": {
@@ -5147,54 +5843,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Acciones del plan"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "Actions du projet"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "Azioni del progetto"
-          }
-        }
-      }
-    },
-    "goals.detail.note": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
             "state": "translated",
-            "value": "Notiz"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Note"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nota"
+            "value": "Acciones del objetivo"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Note"
+            "value": "Actions de l'objectif"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nota"
+            "value": "Azioni dell'obiettivo"
           }
         }
       }
@@ -5235,10 +5897,34 @@
     },
     "goals.detail.progress": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortschritt"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Progress"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progreso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progression"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progresso"
           }
         }
       }
@@ -5277,76 +5963,138 @@
         }
       }
     },
-    "goals.detail.spent": {
+    "goals.detail.steps": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ausgegeben"
+            "value": "Vorbereitung"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Spent"
+            "value": "Preparation"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gastado"
+            "value": "Preparativos"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dépensé"
+            "value": "Préparatifs"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Speso"
-          }
-        }
-      }
-    },
-    "goals.detail.steps": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preparation"
+            "value": "Preparativi"
           }
         }
       }
     },
     "goals.detail.steps.add.action": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritt anlegen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add the step"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir el paso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter l'étape"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi il passo"
           }
         }
       }
     },
     "goals.detail.steps.add.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritt hinzufügen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add a step"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade un paso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez une étape"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi un passo"
           }
         }
       }
     },
     "goals.detail.steps.hint": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ein Schritt mit Datum taucht auch in Aufgaben und Heute auf"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "a step with a date also shows up in Tasks and Today"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un paso con fecha también sale en Tareas y en Hoy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "une étape avec une date apparaît aussi dans Tâches et Aujourd'hui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un passo con data compare anche in Attività e Oggi"
           }
         }
       }
@@ -5559,8 +6307,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "was ihr schon habt, bevor mehr dazukommt"
           }
         },
         "en": {
@@ -5571,20 +6319,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "lo que ya tenéis los dos antes de añadir más"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "ce que vous avez déjà à deux avant d'ajouter"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "quello che avete già prima di aggiungere altro"
           }
         }
       }
@@ -5763,8 +6511,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Gemeinsamer Plan: sofort bei euch beiden sichtbar, und beide dürfen Ausgaben ändern, auch die der anderen Seite."
+            "state": "translated",
+            "value": "Gemeinsames Ziel: sofort bei euch beiden sichtbar, und beide dürfen Einträge ändern, auch die der anderen Seite."
           }
         },
         "en": {
@@ -5775,20 +6523,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan compartido: tu pareja lo ve al momento y puede editar los gastos, también los tuyos."
+            "state": "translated",
+            "value": "Objetivo compartido: tu pareja lo ve al momento y puede editar los gastos, también los tuyos."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Projet partagé : votre partenaire le voit tout de suite et peut modifier les dépenses, y compris les vôtres."
+            "state": "translated",
+            "value": "Objectif partagé : votre partenaire le voit tout de suite et peut modifier les dépenses, y compris les vôtres."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Progetto condiviso: il tuo partner lo vede subito e può modificare le spese, anche le tue."
+            "state": "translated",
+            "value": "Obiettivo condiviso: il tuo partner lo vede subito e può modificare le spese, anche le tue."
           }
         }
       }
@@ -5797,8 +6545,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan bearbeiten"
+            "state": "translated",
+            "value": "Ziel bearbeiten"
           }
         },
         "en": {
@@ -5809,20 +6557,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Editar plan"
+            "state": "translated",
+            "value": "Editar objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Modifier le projet"
+            "state": "translated",
+            "value": "Modifier l'objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Modifica progetto"
+            "state": "translated",
+            "value": "Modifica obiettivo"
           }
         }
       }
@@ -5831,8 +6579,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Neuer Plan"
+            "state": "translated",
+            "value": "Neues Ziel"
           }
         },
         "en": {
@@ -5843,20 +6591,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Nuevo plan"
+            "state": "translated",
+            "value": "Nuevo objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Nouveau projet"
+            "state": "translated",
+            "value": "Nouvel objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Nuovo progetto"
+            "state": "translated",
+            "value": "Nuovo obiettivo"
           }
         }
       }
@@ -5865,8 +6613,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan anlegen"
+            "state": "translated",
+            "value": "Ziel anlegen"
           }
         },
         "en": {
@@ -5877,20 +6625,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Añadir un plan"
+            "state": "translated",
+            "value": "Añadir un objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Ajouter un projet"
+            "state": "translated",
+            "value": "Ajouter un objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Aggiungi un progetto"
+            "state": "translated",
+            "value": "Aggiungi un obiettivo"
           }
         }
       }
@@ -6103,8 +6851,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "woher es kam"
           }
         },
         "en": {
@@ -6115,20 +6863,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "de dónde salió"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "d'où ça vient"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "da dove arriva"
           }
         }
       }
@@ -6137,8 +6885,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "Wird zum heutigen Kurs in die Zielwährung umgerechnet. Der Kurs bleibt beim Eintrag."
           }
         },
         "en": {
@@ -6149,20 +6897,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "Se convierte a la moneda del objetivo al cambio de hoy. El cambio se guarda con la entrada."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "Converti dans la devise de l'objectif au taux du jour. Le taux reste avec l'entrée."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": ""
+            "state": "translated",
+            "value": "Convertito nella valuta dell'obiettivo al cambio di oggi. Il cambio resta con la voce."
           }
         }
       }
@@ -6171,8 +6919,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Geld hinzufügen"
           }
         },
         "en": {
@@ -6183,30 +6931,54 @@
         },
         "es": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Añadir dinero"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Ajouter de l'argent"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "new",
-            "value": ""
+            "state": "translated",
+            "value": "Aggiungi soldi"
           }
         }
       }
     },
     "goals.section.active": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Active"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En cours"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attivi"
           }
         }
       }
@@ -6349,150 +7121,510 @@
     },
     "goals.step.action.edit": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bearbeiten"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Edit %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica %@"
           }
         }
       }
     },
     "goals.step.action.note.hide": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz ausblenden"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Hide note"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar la nota"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masquer la note"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nascondi la nota"
           }
         }
       }
     },
     "goals.step.action.note.show": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz zeigen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Show note"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver la nota"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir la note"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra la nota"
           }
         }
       }
     },
     "goals.step.due": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fällig %@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "due %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "para %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pour %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "per %@"
           }
         }
       }
     },
     "goals.step.due.past": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "war fällig %@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "was due %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "era para %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "était pour %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "era per %@"
           }
         }
       }
     },
     "goals.step.due.toggle": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum setzen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Set a date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poner una fecha"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Définir une date"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imposta una data"
           }
         }
       }
     },
     "goals.step.editor.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritt"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Step"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Étape"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passo"
           }
         }
       }
     },
     "goals.step.field.due": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällig"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Due"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échéance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scadenza"
           }
         }
       }
     },
     "goals.step.field.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Note"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nota"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nota"
           }
         }
       }
     },
     "goals.step.field.note.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "was dazugehört"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "what it takes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "qué hace falta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ce qu'il faut"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cosa serve"
           }
         }
       }
     },
     "goals.step.field.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritt"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Step"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Étape"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passo"
           }
         }
       }
     },
     "goals.step.field.title.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterlagen sammeln"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Collect the documents"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reunir los papeles"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réunir les papiers"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raccogliere i documenti"
           }
         }
       }
     },
     "goals.step.field.who": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Who"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quién"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chi"
           }
         }
       }
     },
     "goals.step.who.me": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ich"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Me"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moi"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Io"
           }
         }
       }
     },
     "goals.step.who.nobody": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niemand"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Nobody"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nadie"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personne"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuno"
           }
         }
       }
@@ -7011,8 +8143,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Ziel"
           }
         },
         "en": {
@@ -7023,20 +8155,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Projet"
+            "state": "translated",
+            "value": "Objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Progetto"
+            "state": "translated",
+            "value": "Obiettivo"
           }
         }
       }
@@ -7045,8 +8177,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Wähl den Plan für das Widget."
+            "state": "translated",
+            "value": "Wähl das Ziel für das Widget."
           }
         },
         "en": {
@@ -7057,20 +8189,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Elige el plan que muestra el widget."
+            "state": "translated",
+            "value": "Elige el objetivo que muestra el widget."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Choisissez le projet affiché par le widget."
+            "state": "translated",
+            "value": "Choisissez l'objectif affiché par le widget."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Scegli il progetto che mostra il widget."
+            "state": "translated",
+            "value": "Scegli l'obiettivo che mostra il widget."
           }
         }
       }
@@ -7079,8 +8211,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Ziel"
           }
         },
         "en": {
@@ -7091,20 +8223,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Projet"
+            "state": "translated",
+            "value": "Objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Progetto"
+            "state": "translated",
+            "value": "Obiettivo"
           }
         }
       }
@@ -7113,8 +8245,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Ziel"
           }
         },
         "en": {
@@ -7125,20 +8257,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Projet"
+            "state": "translated",
+            "value": "Objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Progetto"
+            "state": "translated",
+            "value": "Obiettivo"
           }
         }
       }
@@ -7249,8 +8381,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan-Ring"
+            "state": "translated",
+            "value": "Ziel-Ring"
           }
         },
         "en": {
@@ -7261,20 +8393,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Anillo del plan"
+            "state": "translated",
+            "value": "Anillo del objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Anneau du projet"
+            "state": "translated",
+            "value": "Anneau de l'objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Anello del progetto"
+            "state": "translated",
+            "value": "Anello dell'obiettivo"
           }
         }
       }
@@ -8165,16 +9297,16 @@
     },
     "notification.goal.expense.body": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ added money to %2$@"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ hat eine Ausgabe zu %2$@ eingetragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ added money to %2$@"
           }
         },
         "es": {
@@ -8199,16 +9331,16 @@
     },
     "notification.goal.expense.title": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Money added"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Neue Ausgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Money added"
           }
         },
         "es": {
@@ -8471,30 +9603,102 @@
     },
     "notification.recap.body": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hat %2$@ erledigt, %3$@ hat %4$@ erledigt."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ closed %2$@, %3$@ closed %4$@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ha cerrado %2$@, %3$@ ha cerrado %4$@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ en a terminé %2$@, %3$@ en a terminé %4$@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ne ha chiuse %2$@, %3$@ ne ha chiuse %4$@."
           }
         }
       }
     },
     "notification.recap.body.dates": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ hat %2$@ erledigt, %3$@ hat %4$@ erledigt. Termine nächste Woche: %5$@."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ closed %2$@, %3$@ closed %4$@. Dates next week: %5$@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ha cerrado %2$@, %3$@ ha cerrado %4$@. Fechas la semana que viene: %5$@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ en a terminé %2$@, %3$@ en a terminé %4$@. Dates la semaine prochaine : %5$@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ne ha chiuse %2$@, %3$@ ne ha chiuse %4$@. Date la prossima settimana: %5$@."
           }
         }
       }
     },
     "notification.recap.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eure Woche"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Your week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuestra semana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre semaine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La vostra settimana"
           }
         }
       }
@@ -11257,8 +12461,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Test vorbei. Der Kalender läuft weiter."
+            "state": "translated",
+            "value": "Test vorbei. Kalender und Heute laufen weiter."
           }
         },
         "en": {
@@ -11269,20 +12473,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Se acabó la prueba. El calendario sigue."
+            "state": "translated",
+            "value": "Se acabó la prueba. El calendario y Hoy siguen."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Essai terminé. Le calendrier continue."
+            "state": "translated",
+            "value": "Essai terminé. Le calendrier et Aujourd'hui continuent."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Prova finita. Il calendario continua."
+            "state": "translated",
+            "value": "Prova finita. Il calendario e Oggi continuano."
           }
         }
       }
@@ -11859,20 +13063,68 @@
     },
     "paywall.reason.folders": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabenordner kommen mit dem Abo."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Task folders come with the subscription."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las carpetas de tareas vienen con la suscripción."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les dossiers de tâches viennent avec l'abonnement."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le cartelle delle attività vengono con l'abbonamento."
           }
         }
       }
     },
     "paywall.reason.freetime": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freie Zeit kommt mit dem Abo."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Free time comes with the subscription."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El tiempo libre viene con la suscripción."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le temps libre vient avec l'abonnement."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tempo libero viene con l'abbonamento."
           }
         }
       }
@@ -11949,8 +13201,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Der Test ist vorbei. Der Kalender läuft weiter."
+            "state": "translated",
+            "value": "Der Test ist vorbei. Kalender und Heute laufen weiter."
           }
         },
         "en": {
@@ -11961,20 +13213,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Se acabó la prueba. El calendario sigue."
+            "state": "translated",
+            "value": "La prueba se ha acabado. El calendario y Hoy siguen."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "L'essai est terminé. Le calendrier continue."
+            "state": "translated",
+            "value": "L'essai est terminé. Le calendrier et Aujourd'hui continuent."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "La prova è finita. Il calendario continua."
+            "state": "translated",
+            "value": "La prova è finita. Il calendario e Oggi continuano."
           }
         }
       }
@@ -12391,8 +13643,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Ein Topf, eine Wunschliste, ihr beide."
+            "state": "translated",
+            "value": "Ein Topf für die Reise. Ein Ordner für den Einkauf."
           }
         },
         "en": {
@@ -12403,20 +13655,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Un bote, una lista de deseos, los dos."
+            "state": "translated",
+            "value": "Un bote para el viaje. Una carpeta para la compra."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Une cagnotte, une liste de souhaits, vous deux."
+            "state": "translated",
+            "value": "Une cagnotte pour le voyage. Un dossier pour les courses."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Un salvadanaio, una lista dei desideri, tutti e due."
+            "state": "translated",
+            "value": "Un salvadanaio per il viaggio. Una cartella per la spesa."
           }
         }
       }
@@ -12425,8 +13677,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Pläne und Wünsche"
+            "state": "translated",
+            "value": "Ziele und Ordner"
           }
         },
         "en": {
@@ -12437,20 +13689,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Planes y deseos"
+            "state": "translated",
+            "value": "Objetivos y carpetas"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Projets et souhaits"
+            "state": "translated",
+            "value": "Objectifs et dossiers"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Progetti e desideri"
+            "state": "translated",
+            "value": "Obiettivi e cartelle"
           }
         }
       }
@@ -12459,8 +13711,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Aufgaben, Termine und Listen auf dem Homescreen."
+            "state": "translated",
+            "value": "Aufgaben, Termine und Ziele auf dem Homescreen."
           }
         },
         "en": {
@@ -12471,20 +13723,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Tus tareas, fechas y listas en la pantalla de inicio."
+            "state": "translated",
+            "value": "Tus tareas, fechas y objetivos en la pantalla de inicio."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Vos tâches, dates et listes sur l'écran d'accueil."
+            "state": "translated",
+            "value": "Vos tâches, dates et objectifs sur l'écran d'accueil."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Attività, date e liste nella schermata Home."
+            "state": "translated",
+            "value": "Attività, date e obiettivi nella schermata Home."
           }
         }
       }
@@ -12525,47 +13777,191 @@
     },
     "people.age.turns": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "wird %lld"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "turns %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cumple %lld"
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld an"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ans"
+                }
+              }
+            }
+          }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "compie %lld anno"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "compie %lld anni"
+                }
+              }
+            }
           }
         }
       }
     },
     "people.date.birthday.ordinal": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ Geburtstag von %1$@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@'s %2$@ birthday"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ cumpleaños de %1$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ anniversaire de %1$@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ compleanno di %1$@"
           }
         }
       }
     },
     "people.date.editor.title.edit": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin bearbeiten"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Edit date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar la fecha"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier la date"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica la data"
           }
         }
       }
     },
     "people.date.editor.title.new": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Termin"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "New date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva fecha"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle date"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova data"
           }
         }
       }
     },
     "people.date.label": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        },
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ : %2$@"
+          }
+        },
+        "it": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@: %2$@"
@@ -12575,60 +13971,204 @@
     },
     "people.date.reminders": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerungen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Reminders"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avisos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rappels"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promemoria"
           }
         }
       }
     },
     "people.date.reminders.hint": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ein Hinweis 14 Tage vorher"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "a nudge 14 days before"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un aviso 14 días antes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un rappel 14 jours avant"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un avviso 14 giorni prima"
           }
         }
       }
     },
     "people.date.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Title"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Título"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titolo"
           }
         }
       }
     },
     "people.date.title.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hochzeitstag"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Wedding day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Día de la boda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour du mariage"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giorno del matrimonio"
           }
         }
       }
     },
     "people.date.when": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fecha"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data"
           }
         }
       }
     },
     "people.date.year.hint": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "das Jahr ist optional - damit kommt das Alter"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "the year is optional - it gives you the age"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "el año es opcional - con él sale la edad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "l'année est facultative - elle donne l'âge"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "l'anno è facoltativo - con quello arriva l'età"
           }
         }
       }
@@ -12669,50 +14209,170 @@
     },
     "people.detail.dates": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termine"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Dates"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fechas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dates"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
           }
         }
       }
     },
     "people.detail.dates.add": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin hinzufügen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add a date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir una fecha"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une date"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi una data"
           }
         }
       }
     },
     "people.detail.dates.edit": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bearbeiten"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Edit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica"
           }
         }
       }
     },
     "people.detail.dates.empty": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch keine Termine"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "no dates yet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aún no hay fechas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pas encore de dates"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ancora nessuna data"
           }
         }
       }
     },
     "people.detail.dates.remove": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Remove"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovi"
           }
         }
       }
@@ -13195,16 +14855,16 @@
     },
     "people.editor.birthday.hint": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "day and month, the year is optional"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Tag und Monat, kein Jahr"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "day and month, the year is optional"
           }
         },
         "es": {
@@ -13297,20 +14957,68 @@
     },
     "people.editor.birthday.year": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jahr"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Year"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Año"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Année"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anno"
           }
         }
       }
     },
     "people.editor.birthday.year.none": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht gesetzt"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Not set"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin poner"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non défini"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non impostato"
           }
         }
       }
@@ -13621,40 +15329,6 @@
         }
       }
     },
-    "people.editor.relation.colleague": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kollege"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colleague"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Compañero de trabajo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Collègue"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Collega"
-          }
-        }
-      }
-    },
     "people.editor.relation.dad": {
       "localizations": {
         "de": {
@@ -13725,16 +15399,16 @@
     },
     "people.editor.relation.hint": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "any word works, the chips are shortcuts"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "eine auswählen oder selbst eintippen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "any word works, the chips are shortcuts"
           }
         },
         "es": {
@@ -13793,36 +15467,84 @@
     },
     "people.editor.relation.other": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Other"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otra"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altra"
           }
         }
       }
     },
     "people.editor.relation.other.hint": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "selbst eintippen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "type your own"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "escribe la tuya"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tapez le vôtre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "scrivi la tua"
           }
         }
       }
     },
     "people.editor.relation.placeholder": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mom, boss, anything"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Mutter, Freund, Chef"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mom, boss, anything"
           }
         },
         "es": {
@@ -15191,7 +16913,31 @@
     },
     "recap.goal.delta.down": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-%@"
+          }
+        },
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-%@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-%@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-%@"
+          }
+        },
+        "it": {
           "stringUnit": {
             "state": "translated",
             "value": "-%@"
@@ -15201,7 +16947,31 @@
     },
     "recap.goal.delta.up": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@"
+          }
+        },
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@"
+          }
+        },
+        "it": {
           "stringUnit": {
             "state": "translated",
             "value": "+%@"
@@ -15211,7 +16981,31 @@
     },
     "recap.goal.line": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ %2$@, %3$@"
+          }
+        },
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ %2$@, %3$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ %2$@, %3$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ %2$@, %3$@"
+          }
+        },
+        "it": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ %2$@, %3$@"
@@ -15221,40 +17015,136 @@
     },
     "recap.milestone": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nächste Woche %lld Tage zusammen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld days together next week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "la semana que viene, %lld días juntos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld jours ensemble la semaine prochaine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "la prossima settimana %lld giorni insieme"
           }
         }
       }
     },
     "recap.open": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als gelesen markieren"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Mark it read"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como leído"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer comme lu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segna come letto"
           }
         }
       }
     },
     "recap.tasks": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "erledigt"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "closed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cerradas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "terminées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "chiuse"
           }
         }
       }
     },
     "recap.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eure Woche"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Your week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuestra semana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre semaine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La vostra settimana"
           }
         }
       }
@@ -16045,8 +17935,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plangeld: Ausgabe, Ziel, über Budget"
+            "state": "translated",
+            "value": "Geld beim Ziel: Ausgabe, erreicht, drüber"
           }
         },
         "en": {
@@ -16057,20 +17947,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Dinero del plan: gasto, objetivo, pasado"
+            "state": "translated",
+            "value": "Dinero del objetivo: gasto, alcanzado, pasado"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Argent du projet : dépense, objectif, dépassement"
+            "state": "translated",
+            "value": "Argent de l'objectif : dépense, atteint, dépassé"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Soldi del progetto: spesa, obiettivo, sforamento"
+            "state": "translated",
+            "value": "Soldi dell'obiettivo: spesa, raggiunto, sforato"
           }
         }
       }
@@ -16553,10 +18443,34 @@
     },
     "settings.notifications.weeklyrecap": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochenrückblick"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Weekly recap"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resumen de la semana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilan de la semaine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riepilogo della settimana"
           }
         }
       }
@@ -18291,8 +20205,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Pläne"
+            "state": "translated",
+            "value": "Ziele"
           }
         },
         "en": {
@@ -18303,20 +20217,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Planes"
+            "state": "translated",
+            "value": "Objetivos"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Projets"
+            "state": "translated",
+            "value": "Objectifs"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Progetti"
+            "state": "translated",
+            "value": "Obiettivi"
           }
         }
       }
@@ -18357,10 +20271,34 @@
     },
     "tab.today.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Today"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aujourd'hui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oggi"
           }
         }
       }
@@ -18401,10 +20339,34 @@
     },
     "tasks.action.addplace": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort hinzufügen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add place"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir sitio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un lieu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi un posto"
           }
         }
       }
@@ -18547,30 +20509,102 @@
     },
     "tasks.action.list": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "List"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista"
           }
         }
       }
     },
     "tasks.action.map": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karte"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Map"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mapa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carte"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappa"
           }
         }
       }
     },
     "tasks.action.move": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Ordner verschieben"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Move to folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mover a una carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déplacer vers un dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sposta in una cartella"
           }
         }
       }
@@ -18645,10 +20679,34 @@
     },
     "tasks.action.undone": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht erledigt"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Not done"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin hacer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas faite"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non fatta"
           }
         }
       }
@@ -18791,10 +20849,34 @@
     },
     "tasks.editor.field.folder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartella"
           }
         }
       }
@@ -18835,10 +20917,34 @@
     },
     "tasks.editor.field.place": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Place"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posto"
           }
         }
       }
@@ -18981,20 +21087,68 @@
     },
     "tasks.editor.folder.new": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Ordner"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "New folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova cartella"
           }
         }
       }
     },
     "tasks.editor.folder.none": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keiner"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "None"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ninguna"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna"
           }
         }
       }
@@ -19069,30 +21223,102 @@
     },
     "tasks.editor.place.add": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort hinzufügen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add a place"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir un sitio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un lieu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi un posto"
           }
         }
       }
     },
     "tasks.editor.place.change": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort ändern"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Change place"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar el sitio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changer de lieu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambia posto"
           }
         }
       }
     },
     "tasks.editor.place.remove": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort entfernen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Remove place"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar el sitio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirer le lieu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovi il posto"
           }
         }
       }
@@ -19779,270 +22005,918 @@
     },
     "tasks.folder.action.cleardone": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erledigte weg"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Clear done"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar las hechas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer les faites"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Togli le fatte"
           }
         }
       }
     },
     "tasks.folder.action.delete": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner löschen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Delete folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar la carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer le dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina la cartella"
           }
         }
       }
     },
     "tasks.folder.action.edit": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner bearbeiten"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Edit folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar la carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier le dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica la cartella"
           }
         }
       }
     },
     "tasks.folder.add": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Ordner"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "New folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova cartella"
           }
         }
       }
     },
     "tasks.folder.all": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "All"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutte"
           }
         }
       }
     },
     "tasks.folder.delete.confirm": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Ordner löschen?"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Delete this folder?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar esta carpeta?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer ce dossier ?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminare questa cartella?"
           }
         }
       }
     },
     "tasks.folder.delete.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Aufgaben bleiben, nur ohne Ordner."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Its tasks stay, without a folder."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sus tareas se quedan, sin carpeta."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ses tâches restent, sans dossier."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le sue attività restano, senza cartella."
           }
         }
       }
     },
     "tasks.folder.editor.field.anyone": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder darf abhaken"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Anyone can tick"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquiera puede marcar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chacun peut cocher"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiunque può spuntare"
           }
         }
       }
     },
     "tasks.folder.editor.field.anyone.hint": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aus heißt: nur wer die Zeile angelegt hat, hakt sie ab"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "off means only the one who added a line ticks it"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "apagado significa que solo marca quien añadió la línea"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "désactivé, seul celui qui a ajouté la ligne peut la cocher"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "spento vuol dire che spunta solo chi ha aggiunto la riga"
           }
         }
       }
     },
     "tasks.folder.editor.field.subtitle": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untertitel"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Subtitle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subtítulo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sous-titre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sottotitolo"
           }
         }
       }
     },
     "tasks.folder.editor.field.subtitle.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lissabon, im Herbst"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Lisbon, this fall"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisboa, este otoño"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisbonne, cet automne"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisbona, quest'autunno"
           }
         }
       }
     },
     "tasks.folder.editor.field.template": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorlage"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Template"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plantilla"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modèle"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modello"
           }
         }
       }
     },
     "tasks.folder.editor.field.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Title"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Título"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titolo"
           }
         }
       }
     },
     "tasks.folder.editor.title.edit": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartella"
           }
         }
       }
     },
     "tasks.folder.editor.title.new": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Ordner"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "New folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova cartella"
           }
         }
       }
     },
     "tasks.folder.editor.title.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einkauf, Anschauen, Orte"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Shopping, To watch, Places"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compra, Para ver, Sitios"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Courses, À voir, Lieux"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spesa, Da vedere, Posti"
           }
         }
       }
     },
     "tasks.folder.empty.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In diesem Ordner ist noch nichts."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Nothing in this folder yet."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En esta carpeta aún no hay nada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien dans ce dossier pour l'instant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In questa cartella non c'è ancora niente."
           }
         }
       }
     },
     "tasks.folder.menu.label": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordneraktionen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Folder actions"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acciones de la carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actions du dossier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azioni della cartella"
           }
         }
       }
     },
     "tasks.folder.template.cities": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Städte"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Cities"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ciudades"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Villes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Città"
           }
         }
       }
     },
     "tasks.folder.template.cities.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lissabon, Porto, Faro"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Lisbon, Porto, Faro"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisboa, Oporto, Faro"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisbonne, Porto, Faro"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisbona, Porto, Faro"
           }
         }
       }
     },
     "tasks.folder.template.empty": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Empty"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vacía"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vide"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuota"
           }
         }
       }
     },
     "tasks.folder.template.places": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wohin wir wollen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Places to go"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitios a los que ir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieux où aller"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posti dove andare"
           }
         }
       }
     },
     "tasks.folder.template.places.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "eine Bar, ein Park, ein Museum"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "a bar, a park, a museum"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un bar, un parque, un museo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un bar, un parc, un musée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un bar, un parco, un museo"
           }
         }
       }
     },
     "tasks.folder.template.shopping": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einkauf"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Shopping"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compra"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Courses"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spesa"
           }
         }
       }
     },
     "tasks.folder.template.shopping.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milch, Brot, Batterien"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "milk, bread, batteries"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "leche, pan, pilas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lait, pain, piles"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "latte, pane, pile"
           }
         }
       }
     },
     "tasks.folder.template.watch": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Anschauen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Things to watch"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ver"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À regarder"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Da vedere"
           }
         }
       }
     },
     "tasks.folder.template.watch.placeholder": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ein Film, eine Serie, eine Show"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "a film, a series, a show"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "una peli, una serie, un programa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un film, une série, une émission"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un film, una serie, uno show"
           }
         }
       }
@@ -20117,20 +22991,68 @@
     },
     "tasks.map.addedby": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hinzugefügt von %@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "added by %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lo añadió %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ajouté par %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aggiunto da %@"
           }
         }
       }
     },
     "tasks.map.openinmaps": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Karten öffnen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Open in Maps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir en Mapas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir dans Plans"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri in Mappe"
           }
         }
       }
@@ -20273,10 +23195,34 @@
     },
     "tasks.row.subtitle.fromgoal": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aus dem Ziel: %@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "from goal: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "del objetivo: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de l'objectif : %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dall'obiettivo: %@"
           }
         }
       }
@@ -20419,230 +23365,714 @@
     },
     "today.action.date": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin anlegen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add a date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir una fecha"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une date"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi una data"
           }
         }
       }
     },
     "today.action.invite": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die andere Person einladen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Invite your partner"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitar a tu pareja"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviter votre partenaire"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invita il tuo partner"
           }
         }
       }
     },
     "today.action.task": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgabe anlegen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Add a task"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir una tarea"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une tâche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi un'attività"
           }
         }
       }
     },
     "today.block.comingup": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demnächst"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Coming up"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Próximas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À venir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In arrivo"
           }
         }
       }
     },
     "today.block.freetasks": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freie Aufgaben"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Free tasks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tareas libres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tâches libres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attività libere"
           }
         }
       }
     },
     "today.block.goal": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ziel"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Goal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objetivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectif"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obiettivo"
           }
         }
       }
     },
     "today.block.today": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Today"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aujourd'hui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oggi"
           }
         }
       }
     },
     "today.block.waiting": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf dich"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Waiting for you"
           }
-        }
-      }
-    },
-    "today.comingup.gift": {
-      "localizations": {
-        "en": {
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "no gift picked · %lld ideas saved"
+            "value": "Te espera"
           }
-        }
-      }
-    },
-    "today.comingup.gift.none": {
-      "localizations": {
-        "en": {
+        },
+        "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "no gift picked"
+            "value": "Vous attend"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ti aspetta"
           }
         }
       }
     },
     "today.empty.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hier tauchen Termine, Aufgaben und Ziele auf"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "dates, tasks and goals show up here"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aquí salen las fechas, las tareas y los objetivos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "les dates, les tâches et les objectifs arrivent ici"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "qui compaiono date, attività e obiettivi"
           }
         }
       }
     },
     "today.empty.title": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute steht nichts an"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Nothing on today"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoy no hay nada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien aujourd'hui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oggi niente"
           }
         }
       }
     },
     "today.freetasks.more": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %lld"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld more"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld más"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de plus"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld in più"
           }
         }
       }
     },
     "today.goal.amount": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ von %2$@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ of %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ de %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ sur %2$@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ su %2$@"
           }
         }
       }
     },
     "today.header.days": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tage zusammen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "days together"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "días juntos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jours ensemble"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "giorni insieme"
           }
         }
       }
     },
     "today.row.allday": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ganzer Tag"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "all day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "todo el día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "toute la journée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tutto il giorno"
           }
         }
       }
     },
     "today.row.check": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ abhaken"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Tick %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cocher %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spunta %@"
           }
         }
       }
     },
     "today.row.fromgoal": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aus dem Ziel: %@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "from goal: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "del objetivo: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de l'objectif : %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dall'obiettivo: %@"
           }
         }
       }
     },
     "today.row.uncheck": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haken bei %@ entfernen"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Untick %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desmarcar %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Décocher %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Togli la spunta a %@"
           }
         }
       }
     },
     "today.waiting.capsule": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kann geöffnet werden"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "ready to open"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lista para abrir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "prête à ouvrir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pronta da aprire"
           }
         }
       }
     },
     "today.waiting.vote": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "wartet auf deine Antwort"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "waiting for your answer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "espera tu respuesta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "attend votre réponse"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aspetta la tua risposta"
           }
         }
       }
     },
     "today.waiting.wishes": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wünsche von %@"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Wishes from %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deseos de %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Souhaits de %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desideri di %@"
           }
         }
       }
     },
     "today.waiting.wishes.count": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld neu"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld new"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sin ver"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld à voir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld da vedere"
           }
         }
       }
@@ -21193,10 +24623,34 @@
     },
     "us.pill.label.new": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wir öffnen, es gibt Neues"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Open the Us hub, something new"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Nosotros, hay algo nuevo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Nous, du nouveau"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri Noi, c'è qualcosa di nuovo"
           }
         }
       }
@@ -24709,8 +28163,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Ein Plan und wie weit ihr seid."
+            "state": "translated",
+            "value": "Ein Ziel und wie weit ihr seid."
           }
         },
         "en": {
@@ -24721,20 +28175,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Un plan y por dónde va."
+            "state": "translated",
+            "value": "Un objetivo y por dónde vais."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Un projet et où vous en êtes."
+            "state": "translated",
+            "value": "Un objectif et où vous en êtes."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Un progetto e a che punto siete."
+            "state": "translated",
+            "value": "Un obiettivo e a che punto siete."
           }
         }
       }
@@ -24743,8 +28197,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Kein aktiver Plan."
+            "state": "translated",
+            "value": "Kein aktives Ziel."
           }
         },
         "en": {
@@ -24755,20 +28209,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "No hay plan activo."
+            "state": "translated",
+            "value": "Ningún objetivo activo."
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Aucun projet en cours."
+            "state": "translated",
+            "value": "Aucun objectif en cours."
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Nessun progetto attivo."
+            "state": "translated",
+            "value": "Nessun obiettivo attivo."
           }
         }
       }
@@ -24845,8 +28299,8 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Ziel"
           }
         },
         "en": {
@@ -24857,20 +28311,20 @@
         },
         "es": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Plan"
+            "state": "translated",
+            "value": "Objetivo"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Projet"
+            "state": "translated",
+            "value": "Objectif"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "needs_review",
-            "value": "Progetto"
+            "state": "translated",
+            "value": "Obiettivo"
           }
         }
       }
@@ -24905,40 +28359,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Giorni insieme, anello del progetto o conto alla rovescia."
-          }
-        }
-      }
-    },
-    "widget.lock.circular.plan": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plan"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plan"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plan"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Projet"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Progetto"
           }
         }
       }

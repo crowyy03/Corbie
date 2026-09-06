@@ -6,31 +6,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Corbie liest und schreibt die Termine, die ihr beide gemeinsam führt."
+            "value": "Corbie liest deinen Kalender für die Zeiten, in denen ihr beide frei seid, und trägt eure gemeinsamen Termine ein."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Corbie reads and writes the events you two keep in a shared calendar."
+            "value": "Corbie reads your calendar for the times you two are free, and writes the dates you keep together."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Corbie lee y escribe las fechas del calendario compartido de los dos."
+            "value": "Corbie lee tu calendario para ver cuándo estáis libres los dos y escribe las fechas que lleváis juntos."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Corbie lit et écrit les dates que vous tenez à deux dans un calendrier partagé."
+            "value": "Corbie lit votre agenda pour trouver quand vous êtes libres tous les deux, et écrit les dates que vous tenez ensemble."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Corbie legge e scrive le date che tenete in due in un calendario condiviso."
+            "value": "Corbie legge il tuo calendario per trovare quando siete liberi tutti e due e scrive le date che tenete insieme."
           }
         }
       }
@@ -74,31 +74,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ein Foto für einen Wunsch, einen Plan oder eine Liste auswählen."
+            "value": "Ein Foto für einen Wunsch auswählen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pick a photo for a wish, a plan or a list."
+            "value": "Pick a photo for a wish."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elegir una foto para un deseo, un plan o una lista."
+            "value": "Elegir una foto para un deseo."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choisir une photo pour un souhait, un projet ou une liste."
+            "value": "Choisir une photo pour un souhait."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scegliere una foto per un desiderio, un progetto o una lista."
+            "value": "Scegliere una foto per un desiderio."
           }
         }
       }
