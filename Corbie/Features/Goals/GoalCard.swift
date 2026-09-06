@@ -17,6 +17,11 @@ struct GoalCard: View {
                     accessibilityValue: totals.savedOfTarget()
                 )
                 footer
+                if let steps = goalStepsBadge(done: goal.doneStepCount, total: goal.stepCount) {
+                    Text(steps)
+                        .corbieMono()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                }
             }
         }
     }
@@ -73,7 +78,9 @@ struct GoalCard: View {
                 savedAmount: 2400,
                 addedAmount: 1900,
                 startAt: Date(),
-                endAt: Date().addingTimeInterval(14 * 24 * 60 * 60)
+                endAt: Date().addingTimeInterval(14 * 24 * 60 * 60),
+                stepCount: 7,
+                doneStepCount: 3
             )
         )
         GoalCard(

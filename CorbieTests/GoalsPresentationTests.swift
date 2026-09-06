@@ -84,6 +84,90 @@ final class GoalsPresentationTests: XCTestCase {
         XCTAssertEqual(goalDateRange(start: start, end: start, locale: usd), single)
     }
 
+    private func step(
+        title: String,
+        isDone: Bool = false,
+        dueAt: Date? = nil,
+        sortIndex: Int = 0
+    ) -> GoalStepDTO {
+        GoalStepDTO(
+            id: UUID(),
+            goalId: UUID(),
+            title: title,
+            isDone: isDone,
+            dueAt: dueAt,
+            sortIndex: sortIndex
+        )
+    }
+
+    func testStepBadgeCountsDoneStepsAndDisappearsWithoutSteps() {
+        XCTAssertEqual(goalStepsBadge(done: 3, total: 7, locale: usd), "3/7 steps")
+        XCTAssertEqual(goalStepsBadge(done: 0, total: 1, locale: usd), "0/1 steps")
+        XCTAssertNil(goalStepsBadge(done: 0, total: 0, locale: usd))
+    }
+
+    func testAGoalCarriesItsStepCountsIntoTheCard() {
+        var goal = goal(target: 5000, saved: 0, added: 0)
+        goal.stepCount = 7
+        goal.doneStepCount = 3
+        XCTAssertEqual(goalStepsBadge(done: goal.doneStepCount, total: goal.stepCount, locale: usd), "3/7 steps")
+    }
+
+    func testOnlyAnUnfinishedStepPastItsDateReadsAsOverdue() {
+        let now = Date(timeIntervalSince1970: 1_760_000_000)
+        let calendar = Calendar(identifier: .gregorian)
+        let yesterday = now.addingTimeInterval(-24 * 60 * 60)
+        let tomorrow = now.addingTimeInterval(24 * 60 * 60)
+
+        let late = goalStepDue(
+            for: step(title: "Collect the documents", dueAt: yesterday),
+            now: now,
+            locale: usd,
+            calendar: calendar
+        )
+        let ahead = goalStepDue(
+            for: step(title: "Pick up the suit", dueAt: tomorrow),
+            now: now,
+            locale: usd,
+            calendar: calendar
+        )
+        let lateButDone = goalStepDue(
+            for: step(title: "Collect the documents", isDone: true, dueAt: yesterday),
+            now: now,
+            locale: usd,
+            calendar: calendar
+        )
+
+        XCTAssertEqual(late?.isOverdue, true)
+        XCTAssertEqual(ahead?.isOverdue, false)
+        XCTAssertEqual(lateButDone?.isOverdue, false)
+        XCTAssertEqual(late?.text.hasPrefix("was due"), true)
+        XCTAssertEqual(ahead?.text.hasPrefix("due"), true)
+        XCTAssertEqual(lateButDone?.text.hasPrefix("due"), true)
+        XCTAssertNil(goalStepDue(for: step(title: "Book the venue"), now: now, locale: usd, calendar: calendar))
+    }
+
+    func testReorderingStepsReturnsTheNewOrderOfIds() {
+        let steps = [
+            step(title: "Documents", sortIndex: 0),
+            step(title: "Suit", sortIndex: 1),
+            step(title: "Babysitter", sortIndex: 2),
+        ]
+
+        XCTAssertEqual(
+            goalStepOrder(steps, moving: IndexSet(integer: 2), to: 0),
+            [steps[2].id, steps[0].id, steps[1].id]
+        )
+        XCTAssertEqual(
+            goalStepOrder(steps, moving: IndexSet(integer: 0), to: 3),
+            [steps[1].id, steps[2].id, steps[0].id]
+        )
+        XCTAssertEqual(
+            goalStepOrder(steps, moving: IndexSet(integer: 1), to: 1),
+            steps.map(\.id)
+        )
+    }
+
     func testRoutesTheScreenAnswersFor() {
         let identifier = UUID()
         XCTAssertEqual(GoalsRoute.destination(for: .goals), .list)

@@ -11,11 +11,13 @@ struct GoalDetailView: View {
     }
 
     var body: some View {
-        List {
+        @Bindable var model = model
+
+        return List {
             if let goal = model.goal, let totals = model.totals {
-                summarySection(goal: goal, totals: totals)
-                noteSection(goal: goal)
+                progressSection(goal: goal, totals: totals)
                 expensesSection(goal: goal)
+                stepsSection
             }
         }
         .listStyle(.plain)
@@ -24,8 +26,10 @@ struct GoalDetailView: View {
         .navigationTitle(model.goal?.title ?? "")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
-            AddToolbarItem {
-                model.startAddingExpense()
+            if model.isReadOnly == false {
+                AddToolbarItem {
+                    model.startAddingExpense()
+                }
             }
             ToolbarItem(placement: .topBarTrailing) {
                 goalMenu
@@ -38,6 +42,9 @@ struct GoalDetailView: View {
         }
         .sheet(isPresented: $model.isEditingGoal, onDismiss: { Task { await model.load() } }) {
             GoalEditorView(goal: model.goal)
+        }
+        .sheet(item: $model.editedStep, onDismiss: { Task { await model.load() } }) { step in
+            GoalStepEditorView(step: step)
         }
         .confirmationDialog(
             String(localized: "goals.detail.delete.confirm"),
@@ -58,17 +65,19 @@ struct GoalDetailView: View {
 
     private var goalMenu: some View {
         Menu {
-            Button(String(localized: "goals.detail.action.edit")) {
-                model.startEditing()
-            }
-            if model.goal?.status == .active {
-                Button(String(localized: "goals.detail.action.complete")) {
-                    Task { await model.setStatus(.completed) }
+            if model.isReadOnly == false {
+                Button(String(localized: "goals.detail.action.edit")) {
+                    model.startEditing()
                 }
-            }
-            if model.goal?.status != .archived {
-                Button(String(localized: "goals.detail.action.archive")) {
-                    Task { await model.setStatus(.archived) }
+                if model.goal?.status == .active {
+                    Button(String(localized: "goals.detail.action.complete")) {
+                        Task { _ = await model.setStatus(.completed) }
+                    }
+                    Button(String(localized: "goals.detail.action.archive")) {
+                        Task {
+                            if await model.setStatus(.archived) { dismiss() }
+                        }
+                    }
                 }
             }
             Button(String(localized: "goals.detail.action.delete"), role: .destructive) {
@@ -80,17 +89,11 @@ struct GoalDetailView: View {
         .accessibilityLabel(Text("goals.detail.menu.label"))
     }
 
-    private func summarySection(goal: GoalDTO, totals: GoalTotals) -> some View {
+    private func progressSection(goal: GoalDTO, totals: GoalTotals) -> some View {
         Section {
             GoalSummaryCard(goal: goal, totals: totals)
                 .goalsListRow()
-        }
-    }
-
-    @ViewBuilder
-    private func noteSection(goal: GoalDTO) -> some View {
-        if let note = goal.note, note.isEmpty == false {
-            Section {
+            if let note = goal.note, note.isEmpty == false {
                 Card {
                     Text(note)
                         .corbieBody()
@@ -98,10 +101,9 @@ struct GoalDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .goalsListRow()
-            } header: {
-                SectionCaps(text: String(localized: "goals.detail.note"))
-                    .goalsListRow()
             }
+        } header: {
+            GoalsSectionHeader(text: String(localized: "goals.detail.progress"))
         }
     }
 
@@ -113,9 +115,11 @@ struct GoalDetailView: View {
                     systemImage: "creditcard",
                     title: String(localized: "goals.detail.expenses.empty"),
                     monoNote: String(localized: "goals.detail.expenses.note"),
-                    cta: EmptyStateAction(title: String(localized: "goals.detail.action.addexpense")) {
-                        model.startAddingExpense()
-                    }
+                    cta: model.isReadOnly
+                        ? nil
+                        : EmptyStateAction(title: String(localized: "goals.detail.action.addexpense")) {
+                            model.startAddingExpense()
+                        }
                 )
                 .padding(.vertical, CorbieSpacing.l)
                 .goalsListRow()
@@ -134,8 +138,46 @@ struct GoalDetailView: View {
                 }
             }
         } header: {
-            SectionCaps(text: String(localized: "goals.detail.expenses"))
+            GoalsSectionHeader(text: String(localized: "goals.detail.expenses"))
+        }
+    }
+
+    private var stepsSection: some View {
+        @Bindable var model = model
+
+        return Section {
+            ForEach(model.steps) { step in
+                GoalStepRow(
+                    step: step,
+                    due: goalStepDue(for: step, now: Date()),
+                    assigneeColor: step.assigneeMemberId.map { environment.memberColor(id: $0) },
+                    assigneeName: step.assigneeMemberId.map { environment.memberName(id: $0) },
+                    isReadOnly: model.isReadOnly,
+                    toggle: { Task { await model.toggleStep(step) } },
+                    openEditor: { model.startEditingStep(step) }
+                )
                 .goalsListRow()
+            }
+            .onDelete { offsets in
+                Task { await model.deleteSteps(at: offsets) }
+            }
+            .onMove { offsets, destination in
+                Task { await model.moveSteps(from: offsets, to: destination) }
+            }
+            if model.isReadOnly == false {
+                GoalStepComposer(title: $model.stepTitle, canAdd: model.canAddStep) {
+                    Task { await model.addStep() }
+                }
+                .goalsListRow()
+            }
+            if model.steps.isEmpty {
+                Text("goals.detail.steps.hint")
+                    .corbieMono()
+                    .foregroundStyle(CorbieColorPalette.text2)
+                    .goalsListRow()
+            }
+        } header: {
+            GoalsSectionHeader(text: String(localized: "goals.detail.steps"))
         }
     }
 }

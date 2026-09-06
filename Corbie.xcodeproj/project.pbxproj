@@ -79,6 +79,7 @@
 		57F6B518BF817DAEB9A3123A /* NotificationBacklog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB87B87CD250A06EBF291C88 /* NotificationBacklog.swift */; };
 		58237ACAF65E022531A29BA7 /* WishesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF01F964053D82217E75A089 /* WishesFilter.swift */; };
 		59B69066A3FF2DA605D1CEAD /* UsDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC0D46F35A085E5A41767B /* UsDestination.swift */; };
+		5A5AEC44CD88CE7DC5C8C470 /* GoalStepEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A6714F1F36B8B73DDE8DD /* GoalStepEditorViewModel.swift */; };
 		5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADECE3D6ABD0A50F325ECA /* RootView.swift */; };
 		5C625981CA321BD018F6A45A /* SettingsNotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CD4FE2DC9B6D290F37FDBC /* SettingsNotificationsViewModel.swift */; };
 		5CB2916C3889BD55793FE0B6 /* PersonEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D088E4591D519921C44447 /* PersonEditorView.swift */; };
@@ -121,6 +122,7 @@
 		8A24212F9BDE1708DF600672 /* AppleCredentialMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F34A975F7C63F52666B4A75 /* AppleCredentialMonitor.swift */; };
 		8B744B8AE7B2BB27788624EF /* PaywallRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AD04308291AD17BB2278E /* PaywallRuntime.swift */; };
 		8B8F57952AD449C0314BD058 /* PlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B1D94AC808F1F72F025CC /* PlaceSearchView.swift */; };
+		8BEB60D7751D8839E775D525 /* GoalsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90BD64DBE156561F9BA4110 /* GoalsUITests.swift */; };
 		8C52584368BF64BC846E3108 /* JoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7B1052BD7438B653C9D2B /* JoinViewModel.swift */; };
 		8C5C292B5F37F3B082851DC4 /* WishPricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BFF7F690EB495556EF1DB56 /* WishPricing.swift */; };
 		8E7B44176C71BA64AF1D036E /* VotesOutcomeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D066B9308671413149F5F2F5 /* VotesOutcomeTests.swift */; };
@@ -145,6 +147,7 @@
 		A3D3C02D63C9D9AC75218159 /* CapsulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815989F852AADFD5B458253D /* CapsulesViewModel.swift */; };
 		A9A82C6FDD9B9A1DE38F0B3A /* ShareWishViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EF99805F9035D7CE01C2CC /* ShareWishViewModel.swift */; };
 		A9B1A60370ECDE4B949D7FF8 /* FreeTasksWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585F84E7EC1022E7CF2528A /* FreeTasksWidget.swift */; };
+		AA18AC390D9A889E0F25FB61 /* GoalStepEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD98026ED391EA6F9F432F6 /* GoalStepEditorView.swift */; };
 		ABD60C7343C2E8DA7C63EE30 /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B467B418B6CA6F01D20083 /* EventDetailViewModel.swift */; };
 		AC09762541BB1038DF08198C /* OnboardingProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC1BF52E7D1EB8473DEB11A /* OnboardingProfileView.swift */; };
 		ACD5979F0B89E6CA633684FE /* PersonEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC017C6EE0E531483C55C862 /* PersonEditorViewModel.swift */; };
@@ -175,6 +178,7 @@
 		CC8BCAEE28506DD916092A1C /* CalendarGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6901197D8AC0483B883C2077 /* CalendarGridTests.swift */; };
 		CCC7D593242B10B3C9156366 /* NotificationRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB69CF285B37C709003C7A3 /* NotificationRouting.swift */; };
 		CD6A7A6A8A8018F46B9415FC /* WishCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2297C1D1A45A74F1A7A47D2 /* WishCardView.swift */; };
+		CFEC308184A200B82ED8449E /* GoalStepRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF902BACE9633B0B36F6F /* GoalStepRow.swift */; };
 		D0AC2D6C22E53159AC4A207C /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D672F15F7758D6F3D4F9AB8F /* CalendarViewModel.swift */; };
 		D4C3F1CF248245D1B494B406 /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DD3D9757471CF6CFFE5BD9 /* JoinView.swift */; };
 		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
@@ -202,6 +206,7 @@
 		ED19D80A7495A443C9374642 /* VotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCFA0F6937648268B4472D3 /* VotesViewModel.swift */; };
 		ED6F2FFEA5598A686F220983 /* AddToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8965137EA487DC01422332 /* AddToolbarItem.swift */; };
 		EE34A2475C01E01F51FCF82C /* VoteEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90ADE6250AAF49C178458519 /* VoteEditorViewModel.swift */; };
+		EF2AD07A9599C761C2D04DD9 /* GoalStepComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F390A02B76140293977C827 /* GoalStepComposer.swift */; };
 		EF4BE0101EB95B3D32B66BB4 /* VotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F522DFD0393BF9DC95BA41EB /* VotesView.swift */; };
 		EF8609AADE271C790551AB89 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6E036E0FE70910F417D525 /* OnboardingView.swift */; };
 		F0EF350F0551F4CF959D1FF7 /* SmokeTabsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E0E59CAC219D930E70B512 /* SmokeTabsUITests.swift */; };
@@ -342,6 +347,7 @@
 		65C85DC189940FBBDA9D72D1 /* WidgetChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetChrome.swift; sourceTree = "<group>"; };
 		6901197D8AC0483B883C2077 /* CalendarGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridTests.swift; sourceTree = "<group>"; };
 		6BEF587FBFA4C383CF2615FA /* Corbie.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Corbie.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F390A02B76140293977C827 /* GoalStepComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStepComposer.swift; sourceTree = "<group>"; };
 		6F6D70E5E00B1BCD453CB9D9 /* JoinFailure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinFailure.swift; sourceTree = "<group>"; };
 		6F789146CC7FE3022F9B7E8F /* LaunchRevealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRevealView.swift; sourceTree = "<group>"; };
 		71BA7E7E4FC26FE30D87C6D6 /* SettingsNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsView.swift; sourceTree = "<group>"; };
@@ -396,6 +402,7 @@
 		A8648E82FBB81AC50FDAB304 /* PeopleRadar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRadar.swift; sourceTree = "<group>"; };
 		A97133F6D09BF8E0714373FC /* GoalProgressWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProgressWidget.swift; sourceTree = "<group>"; };
 		AAAC0D46F35A085E5A41767B /* UsDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsDestination.swift; sourceTree = "<group>"; };
+		AAD98026ED391EA6F9F432F6 /* GoalStepEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStepEditorView.swift; sourceTree = "<group>"; };
 		AD3F3588DADB072F39C78141 /* UsCountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsCountersTests.swift; sourceTree = "<group>"; };
 		ADE157E918D961E9899DE32D /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
 		AEADECE3D6ABD0A50F325ECA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -435,6 +442,7 @@
 		D75C3C14F2E9CE771476BF5C /* PaywallBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallBanner.swift; sourceTree = "<group>"; };
 		D78AD7B0C62ECDB7D6673FB7 /* CorbieWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85AD04308291AD17BB2278E /* PaywallRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallRuntime.swift; sourceTree = "<group>"; };
+		D90BD64DBE156561F9BA4110 /* GoalsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsUITests.swift; sourceTree = "<group>"; };
 		D9147931895820699545701B /* MemberColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberColorPicker.swift; sourceTree = "<group>"; };
 		D91E5CA4C8AC59A50A8070CC /* SettingsNotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationTests.swift; sourceTree = "<group>"; };
 		DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSupport.swift; sourceTree = "<group>"; };
@@ -453,6 +461,7 @@
 		E62FE938A6229D79811997DC /* GiftIdeaEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdeaEditorViewModel.swift; sourceTree = "<group>"; };
 		E6E23661E5D8D7037DB76090 /* TasksWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksWidget.swift; sourceTree = "<group>"; };
 		E9818F574AFDFD4406B85F66 /* QAPermissionsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAPermissionsUITests.swift; sourceTree = "<group>"; };
+		EDDAF902BACE9633B0B36F6F /* GoalStepRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStepRow.swift; sourceTree = "<group>"; };
 		EF76C86257807AAD69B72CB2 /* VoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteEditorView.swift; sourceTree = "<group>"; };
 		F01825688B7A6B74AB8404E6 /* SystemCalendarEventEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemCalendarEventEditor.swift; sourceTree = "<group>"; };
 		F12C77054F80369939EF3D61 /* LegalPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalPage.swift; sourceTree = "<group>"; };
@@ -461,6 +470,7 @@
 		F56FFC0DEEE210F7B56AC33C /* PersonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailView.swift; sourceTree = "<group>"; };
 		F595788926E6A61402CC26C8 /* DebugMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuView.swift; sourceTree = "<group>"; };
 		F5D23991CDE098E0C2723CBC /* QAOfflineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAOfflineUITests.swift; sourceTree = "<group>"; };
+		F68A6714F1F36B8B73DDE8DD /* GoalStepEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStepEditorViewModel.swift; sourceTree = "<group>"; };
 		F6C8DC28B4D4106260152ED3 /* WidgetKinds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetKinds.swift; sourceTree = "<group>"; };
 		F7BA60FAE15EBBC235B82A69 /* UsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubView.swift; sourceTree = "<group>"; };
 		FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -607,6 +617,10 @@
 				C2C6385BEFB102BCC7FAA78E /* GoalExpenseRow.swift */,
 				E03E0CB083FD5A91C60E73AD /* GoalsFormControls.swift */,
 				E503CE6CEAC131F8F1C7A8E2 /* GoalsPresentation.swift */,
+				6F390A02B76140293977C827 /* GoalStepComposer.swift */,
+				AAD98026ED391EA6F9F432F6 /* GoalStepEditorView.swift */,
+				F68A6714F1F36B8B73DDE8DD /* GoalStepEditorViewModel.swift */,
+				EDDAF902BACE9633B0B36F6F /* GoalStepRow.swift */,
 				0BF65364344C9AA2A066F8D3 /* GoalSummaryCard.swift */,
 				870D1281FC7655ABD2CAB1C6 /* GoalsView.swift */,
 				28709F385CEAA67AF754D901 /* GoalsViewModel.swift */,
@@ -633,6 +647,7 @@
 		4FF8A4B61CD8905061F6C15D /* CorbieUITests */ = {
 			isa = PBXGroup;
 			children = (
+				D90BD64DBE156561F9BA4110 /* GoalsUITests.swift */,
 				ADE157E918D961E9899DE32D /* LaunchUITests.swift */,
 				924A0FD0A2EAD737BA53858D /* LocalizationUITests.swift */,
 				A2BB5955626E7EA2310767E8 /* PeopleNavigationUITests.swift */,
@@ -1208,6 +1223,10 @@
 				28C82CA730E0C40D6BC9BB78 /* GoalEditorView.swift in Sources */,
 				8622D29A377E101274BA1007 /* GoalEditorViewModel.swift in Sources */,
 				C6ED9B552D0402FE70F8893B /* GoalExpenseRow.swift in Sources */,
+				EF2AD07A9599C761C2D04DD9 /* GoalStepComposer.swift in Sources */,
+				AA18AC390D9A889E0F25FB61 /* GoalStepEditorView.swift in Sources */,
+				5A5AEC44CD88CE7DC5C8C470 /* GoalStepEditorViewModel.swift in Sources */,
+				CFEC308184A200B82ED8449E /* GoalStepRow.swift in Sources */,
 				0E3CA0DD03AF1FF899C1EBF9 /* GoalSummaryCard.swift in Sources */,
 				DEEBE859B807A5CC3E1478FE /* GoalsFormControls.swift in Sources */,
 				08E9211E69913DC1D238B476 /* GoalsPresentation.swift in Sources */,
@@ -1342,6 +1361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BEB60D7751D8839E775D525 /* GoalsUITests.swift in Sources */,
 				735797CD81CBFC9E1A6B8874 /* LaunchUITests.swift in Sources */,
 				E55B68CADE8854CA069D8B3E /* LocalizationUITests.swift in Sources */,
 				BE6FD52274527E69DA756857 /* PeopleNavigationUITests.swift in Sources */,

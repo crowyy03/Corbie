@@ -30,6 +30,21 @@ extension View {
     }
 }
 
+struct GoalsSectionHeader: View {
+    let text: String
+
+    var body: some View {
+        SectionCaps(text: text)
+            .padding(.horizontal, CorbieSpacing.l)
+            .padding(.vertical, CorbieSpacing.xs)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(CorbieColorPalette.bg)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+    }
+}
+
 struct GoalsAmountField: View {
     let label: String
     let hint: String?

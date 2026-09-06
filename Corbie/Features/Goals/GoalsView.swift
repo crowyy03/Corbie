@@ -59,8 +59,11 @@ struct GoalsView: View {
                 .padding(.top, CorbieSpacing.xxl)
             } else {
                 LazyVStack(alignment: .leading, spacing: CorbieSpacing.m) {
-                    ForEach(model.activeGoals) { goal in
-                        goalRow(goal)
+                    if model.activeGoals.isEmpty == false {
+                        SectionCaps(text: String(localized: "goals.section.active"))
+                        ForEach(model.activeGoals) { goal in
+                            goalRow(goal)
+                        }
                     }
                     if model.completedGoals.isEmpty == false {
                         SectionCaps(text: String(localized: "goals.section.completed"))
