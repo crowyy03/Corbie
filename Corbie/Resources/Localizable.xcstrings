@@ -7979,6 +7979,36 @@
         }
       }
     },
+    "notification.recap.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ closed %2$@, %3$@ closed %4$@."
+          }
+        }
+      }
+    },
+    "notification.recap.body.dates": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ closed %2$@, %3$@ closed %4$@. Dates next week: %5$@."
+          }
+        }
+      }
+    },
+    "notification.recap.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your week"
+          }
+        }
+      }
+    },
     "notification.task.assigned.body": {
       "localizations": {
         "de": {
@@ -14649,6 +14679,76 @@
         }
       }
     },
+    "recap.goal.delta.down": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-%@"
+          }
+        }
+      }
+    },
+    "recap.goal.delta.up": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%@"
+          }
+        }
+      }
+    },
+    "recap.goal.line": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ %2$@, %3$@"
+          }
+        }
+      }
+    },
+    "recap.milestone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld days together next week"
+          }
+        }
+      }
+    },
+    "recap.open": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark it read"
+          }
+        }
+      }
+    },
+    "recap.tasks": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "closed"
+          }
+        }
+      }
+    },
+    "recap.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your week"
+          }
+        }
+      }
+    },
     "settings.about.version": {
       "localizations": {
         "de": {
@@ -15937,6 +16037,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nuovo voto o risultato"
+          }
+        }
+      }
+    },
+    "settings.notifications.weeklyrecap": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly recap"
           }
         }
       }
@@ -19377,6 +19487,106 @@
         }
       }
     },
+    "today.action.date": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a date"
+          }
+        }
+      }
+    },
+    "today.action.invite": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invite your partner"
+          }
+        }
+      }
+    },
+    "today.action.task": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a task"
+          }
+        }
+      }
+    },
+    "today.block.comingup": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming up"
+          }
+        }
+      }
+    },
+    "today.block.freetasks": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free tasks"
+          }
+        }
+      }
+    },
+    "today.block.goal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goal"
+          }
+        }
+      }
+    },
+    "today.block.today": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today"
+          }
+        }
+      }
+    },
+    "today.block.waiting": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for you"
+          }
+        }
+      }
+    },
+    "today.comingup.gift": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no gift picked · %lld ideas saved"
+          }
+        }
+      }
+    },
+    "today.comingup.gift.none": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no gift picked"
+          }
+        }
+      }
+    },
     "today.empty.note": {
       "localizations": {
         "en": {
@@ -19393,6 +19603,116 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nothing on today"
+          }
+        }
+      }
+    },
+    "today.freetasks.more": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld more"
+          }
+        }
+      }
+    },
+    "today.goal.amount": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ of %2$@"
+          }
+        }
+      }
+    },
+    "today.header.days": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "days together"
+          }
+        }
+      }
+    },
+    "today.row.allday": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "all day"
+          }
+        }
+      }
+    },
+    "today.row.check": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tick %@"
+          }
+        }
+      }
+    },
+    "today.row.fromgoal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "from goal: %@"
+          }
+        }
+      }
+    },
+    "today.row.uncheck": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untick %@"
+          }
+        }
+      }
+    },
+    "today.waiting.capsule": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ready to open"
+          }
+        }
+      }
+    },
+    "today.waiting.vote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "waiting for your answer"
+          }
+        }
+      }
+    },
+    "today.waiting.wishes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wishes from %@"
+          }
+        }
+      }
+    },
+    "today.waiting.wishes.count": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld new"
           }
         }
       }

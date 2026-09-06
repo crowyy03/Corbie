@@ -31,6 +31,12 @@ export const allowedEventNames = new Set([
   "purchase",
   "restore",
   "readonly_hit",
+  "today_opened",
+  "today_block_tapped",
+  "today_quick_action",
+  "recap_shown",
+  "recap_notification_sent",
+  "recap_opened",
 ]);
 
 export const droppedPropKeys = new Set([

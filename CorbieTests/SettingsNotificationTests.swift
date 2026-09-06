@@ -4,7 +4,7 @@ import XCTest
 
 final class SettingsNotificationTests: XCTestCase {
     func testEveryPreferenceHasOneToggle() {
-        XCTAssertEqual(SettingsNotificationToggle.allCases.count, 9)
+        XCTAssertEqual(SettingsNotificationToggle.allCases.count, 10)
         var prefs = NotificationPrefs.allEnabled
         for toggle in SettingsNotificationToggle.allCases {
             XCTAssertTrue(toggle.isOn(in: prefs), toggle.rawValue)
@@ -19,7 +19,8 @@ final class SettingsNotificationTests: XCTestCase {
             partnerAddedWish: false,
             goalUpdates: false,
             capsuleUpdates: false,
-            voteUpdates: false
+            voteUpdates: false,
+            weeklyRecap: false
         ))
     }
 
