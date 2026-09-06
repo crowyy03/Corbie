@@ -7,6 +7,7 @@ enum WidgetKinds {
     static let planProgress = "PlanProgress"
     static let upcomingDates = "UpcomingDates"
     static let shopping = "Shopping"
+    static let freeSlots = "FreeSlots"
     static let capsule = "Capsule"
     static let ourDay = "OurDay"
     static let lockCircular = "LockCircular"

@@ -40,7 +40,7 @@ struct ShoppingWidgetView: View {
     let entry: ShoppingEntry
 
     private var route: CorbieRoute {
-        guard let listId = entry.snapshot.listId else { return .lists }
+        guard let listId = entry.snapshot.listId else { return .plans }
         return .list(listId)
     }
 

@@ -128,6 +128,20 @@ import Testing
         #expect(snapshot.isOverspent == false)
     }
 
+    @Test func planProgressCountsTheStepsOfThatPlan() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        let steps = try await repositories.plans.steps(planId: world.seed.plan.id)
+        _ = try await repositories.plans.toggleStep(
+            stepId: try #require(steps.first).id,
+            by: world.seed.me.id,
+            at: world.now
+        )
+        let snapshot = try await world.provider.planProgress(now: world.now)
+        #expect(snapshot.stepCount == 2)
+        #expect(snapshot.doneStepCount == 1)
+    }
+
     @Test func upcomingDatesMergeAutoDatesAndEvents() async throws {
         let world = try await makeWorld()
         let snapshot = try await world.provider.upcomingDates(now: world.now)
@@ -251,6 +265,58 @@ import Testing
         #expect(snapshot.isPremium)
     }
 
+    @Test func ourDayIsTheTodayFeedCutToTheWidget() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        let spaceId = world.seed.space.id
+        for hour in ["16:00", "17:00", "18:00"] {
+            _ = try await repositories.tasks.create(
+                TaskDraft(
+                    spaceId: spaceId,
+                    title: "Task at " + hour,
+                    assigneeMemberId: world.seed.me.id,
+                    dueAt: DomainClock.date("2026-09-05 " + hour, in: calendar),
+                    createdByMemberId: world.seed.me.id
+                )
+            )
+            _ = try await repositories.events.create(
+                EventDraft(
+                    spaceId: spaceId,
+                    title: "Event at " + hour,
+                    startAt: DomainClock.date("2026-09-05 " + hour, in: calendar),
+                    createdByMemberId: world.seed.partner.id
+                )
+            )
+        }
+        _ = try await repositories.plans.addStep(
+            planId: world.seed.plan.id,
+            draft: PlanStepDraft(title: "Print the tickets", dueAt: DomainClock.date("2026-09-05 19:00", in: calendar))
+        )
+        let feed = try await TodayFeedProvider(repositories: repositories, calendar: calendar, locale: locale)
+            .feed(space: world.seed.space, viewerMemberId: world.seed.me.id, now: world.now)
+        let snapshot = try await world.provider.ourDay(now: world.now)
+        let lines = WidgetDataProvider.ourDayLineLimit
+        #expect(feed.tasksToday.count > lines)
+        #expect(feed.eventsToday.count > lines)
+        #expect(snapshot.days == feed.daysTogether)
+        #expect(snapshot.tasks.map(\.id) == feed.tasksToday.prefix(lines).map(\.id))
+        #expect(snapshot.events.map(\.id) == feed.eventsToday.prefix(lines).map(\.id))
+        #expect(snapshot.plan == feed.plans.first)
+        #expect(feed.eventsToday.contains { $0.title == "Print the tickets" })
+    }
+
+    @Test func theTaskWidgetsLeavePlanStepsToToday() async throws {
+        let world = try await makeWorld()
+        _ = try await world.seed.controller.repositories.plans.addStep(
+            planId: world.seed.plan.id,
+            draft: PlanStepDraft(title: "Print the tickets", dueAt: DomainClock.date("2026-09-05 19:00", in: calendar))
+        )
+        let tasks = try await world.provider.tasks(now: world.now)
+        #expect(tasks.items.contains { $0.title == "Print the tickets" } == false)
+        let free = try await world.provider.freeTasks(now: world.now)
+        #expect(free.items.map(\.title) == ["Buy milk"])
+    }
+
     @Test func theLockScreenSnapshotsCoverEveryMode() async throws {
         let world = try await makeWorld()
         let days = try await world.provider.lockCircular(mode: .daysTogether, now: world.now)
@@ -284,6 +350,7 @@ import Testing
         #expect(try await provider.shopping(now: now).listId == nil)
         #expect(try await provider.capsule(now: now).capsuleId == nil)
         #expect(try await provider.ourDay(now: now).days == nil)
+        #expect(try await provider.freeSlots(now: now).availability == .notPaired)
         #expect(try await provider.lockCircular(mode: .planRing, now: now).value == nil)
         #expect(try await provider.lockRectangular(now: now).taskTitle == nil)
         #expect(try await provider.lockInline(now: now).kind == nil)
@@ -298,5 +365,134 @@ import Testing
         #expect(try await world.provider.tasks(now: world.now).isPremium == false)
         #expect(try await world.provider.daysTogether(now: world.now).isPremium == false)
         #expect(try await world.provider.ourDay(now: world.now).isPremium == false)
+    }
+}
+
+@Suite struct DomainWidgetFreeSlotsTests {
+    private let calendar = DomainClock.calendar(locale: "en_US", timeZone: "Europe/Berlin")
+    private let locale = Locale(identifier: "en_US")
+
+    private struct World {
+        let provider: WidgetDataProvider
+        let seed: PreviewSeedResult
+        let now: Date
+    }
+
+    private func makeWorld() async throws -> World {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let seed = try await PreviewSeed.make(now: now, calendar: calendar)
+        let provider = WidgetDataProvider(
+            controller: seed.controller,
+            calendar: calendar,
+            locale: locale,
+            viewerMemberId: seed.me.id
+        )
+        return World(provider: provider, seed: seed, now: now)
+    }
+
+    private func spaced(_ text: String?) -> String? {
+        text?
+            .replacingOccurrences(of: "\u{202F}", with: " ")
+            .replacingOccurrences(of: "\u{00A0}", with: " ")
+    }
+
+    private func share(_ world: World, viewer: Bool, partner: Bool) async throws {
+        let members = world.seed.controller.repositories.members
+        _ = try await members.setSharesBusyTimes(memberId: world.seed.me.id, shares: viewer)
+        _ = try await members.setSharesBusyTimes(memberId: world.seed.partner.id, shares: partner)
+    }
+
+    private func fill(_ world: World, memberId: UUID, days: Int, from startHour: Int, to endHour: Int) async throws {
+        let drafts: [BusyIntervalDraft] = (0 ..< days).compactMap { offset in
+            guard let day = calendar.date(byAdding: .day, value: offset, to: world.now),
+                  let start = calendar.date(bySettingHour: startHour, minute: 0, second: 0, of: day),
+                  let end = calendar.date(bySettingHour: endHour, minute: 0, second: 0, of: day)
+            else { return nil }
+            return BusyIntervalDraft(startAt: start, endAt: end)
+        }
+        _ = try await world.seed.controller.repositories.busyIntervals.replace(
+            spaceId: world.seed.space.id,
+            memberId: memberId,
+            source: .device,
+            intervals: drafts,
+            at: world.now
+        )
+    }
+
+    @Test func nobodySharesUntilTheViewerTurnsItOn() async throws {
+        let world = try await makeWorld()
+        let snapshot = try await world.provider.freeSlots(now: world.now)
+        #expect(snapshot.availability == .viewerNotSharing)
+        #expect(snapshot.slots.isEmpty)
+        #expect(snapshot.isPremium)
+    }
+
+    @Test func aPartnerWhoHasNotSharedGetsItsOwnState() async throws {
+        let world = try await makeWorld()
+        try await share(world, viewer: true, partner: false)
+        let snapshot = try await world.provider.freeSlots(now: world.now)
+        #expect(snapshot.availability == .partnerNotSharing)
+        #expect(snapshot.slots.isEmpty)
+    }
+
+    @Test func theWidgetShowsTheNextTwoSharedWindows() async throws {
+        let world = try await makeWorld()
+        try await share(world, viewer: true, partner: true)
+        try await fill(world, memberId: world.seed.me.id, days: 5, from: 8, to: 18)
+        try await fill(world, memberId: world.seed.partner.id, days: 5, from: 8, to: 17)
+        let snapshot = try await world.provider.freeSlots(now: world.now)
+        #expect(snapshot.availability == .slots)
+        #expect(snapshot.slots.count == WidgetDataProvider.freeSlotLimit)
+        #expect(
+            snapshot.slots.map(\.start) == [
+                DomainClock.date("2026-09-05 18:00", in: calendar),
+                DomainClock.date("2026-09-06 18:00", in: calendar)
+            ]
+        )
+        #expect(snapshot.slots.map(\.dayText) == ["Sat, Sep 5", "Sun, Sep 6"])
+        #expect(snapshot.slots.map { spaced($0.windowText) } == ["after 6:00 PM", "after 6:00 PM"])
+    }
+
+    @Test func aFullFortnightLeavesNoWindow() async throws {
+        let world = try await makeWorld()
+        try await share(world, viewer: true, partner: true)
+        try await fill(world, memberId: world.seed.me.id, days: 16, from: 0, to: 23)
+        let snapshot = try await world.provider.freeSlots(now: world.now)
+        #expect(snapshot.availability == .noSlots)
+        #expect(snapshot.slots.isEmpty)
+    }
+
+    @Test func aWindowThatEndsBeforeTheEveningKeepsBothEnds() async throws {
+        let world = try await makeWorld()
+        try await share(world, viewer: true, partner: true)
+        _ = try await world.seed.controller.repositories.busyIntervals.replace(
+            spaceId: world.seed.space.id,
+            memberId: world.seed.me.id,
+            source: .device,
+            intervals: [
+                BusyIntervalDraft(
+                    startAt: DomainClock.date("2026-09-05 00:00", in: calendar),
+                    endAt: DomainClock.date("2026-09-05 14:00", in: calendar)
+                ),
+                BusyIntervalDraft(
+                    startAt: DomainClock.date("2026-09-05 16:00", in: calendar),
+                    endAt: DomainClock.date("2026-09-09 23:00", in: calendar)
+                )
+            ],
+            at: world.now
+        )
+        let snapshot = try await world.provider.freeSlots(now: world.now)
+        #expect(spaced(snapshot.slots.first?.windowText) == "2:00 PM - 4:00 PM")
+    }
+
+    @Test func aLockedSpaceStillReportsTheState() async throws {
+        let world = try await makeWorld()
+        try await share(world, viewer: true, partner: true)
+        var space = world.seed.space
+        space.trialEndsAt = DomainClock.date("2026-08-01", in: calendar)
+        space.subscriptionStatus = .expired
+        _ = try await world.seed.controller.repositories.spaces.update(space)
+        let snapshot = try await world.provider.freeSlots(now: world.now)
+        #expect(snapshot.isPremium == false)
     }
 }

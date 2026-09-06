@@ -41,6 +41,7 @@ public enum NotificationCategories {
 }
 
 public enum CorbieRoute: Sendable, Equatable, Hashable {
+    case today
     case tasks
     case task(UUID)
     case calendar
@@ -61,6 +62,7 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
     case paywall
 
     public enum Segment {
+        public static let today = "today"
         public static let tasks = "tasks"
         public static let calendar = "calendar"
         public static let events = "events"
@@ -77,6 +79,7 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
 
     public var path: String {
         switch self {
+        case .today: return Segment.today
         case .tasks: return Segment.tasks
         case let .task(id): return Segment.tasks + "/" + id.uuidString
         case .calendar: return Segment.calendar
@@ -113,6 +116,8 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
         guard let head = parts.first else { return nil }
         let identifier = parts.count > 1 ? UUID(uuidString: parts[1]) : nil
         switch head {
+        case Segment.today:
+            self = .today
         case Segment.tasks:
             self = identifier.map(CorbieRoute.task) ?? .tasks
         case Segment.calendar:

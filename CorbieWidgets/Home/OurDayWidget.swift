@@ -52,7 +52,7 @@ struct OurDayWidgetView: View {
                 LockedWidgetView()
             } else if isEmpty {
                 WidgetEmptyState(title: "widget.ourday.empty", note: "widget.ourday.empty.note")
-                    .widgetURL(CorbieRoute.us.url)
+                    .widgetURL(CorbieRoute.today.url)
             } else {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                     if let days = entry.snapshot.days {
@@ -68,6 +68,11 @@ struct OurDayWidgetView: View {
                             .accessibilityElement(children: .combine)
                         }
                     }
+                    if let plan = entry.snapshot.plan {
+                        WidgetLink(route: .plan(plan.id)) {
+                            WidgetPlanLine(plan: plan)
+                        }
+                    }
                     ForEach(entry.snapshot.tasks) { task in
                         WidgetTaskRow(task: task, now: entry.date)
                     }
@@ -76,15 +81,10 @@ struct OurDayWidgetView: View {
                             WidgetEventRow(event: event)
                         }
                     }
-                    if let plan = entry.snapshot.plan {
-                        WidgetLink(route: .plan(plan.id)) {
-                            WidgetPlanLine(plan: plan)
-                        }
-                    }
                     Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .widgetURL(CorbieRoute.tasks.url)
+                .widgetURL(CorbieRoute.today.url)
             }
         }
     }

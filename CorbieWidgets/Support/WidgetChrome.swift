@@ -290,12 +290,36 @@ struct WidgetEventRow: View {
     }
 }
 
+struct WidgetFreeSlotRow: View {
+    let slot: WidgetFreeSlot
+
+    var body: some View {
+        HStack(spacing: CorbieSpacing.xs) {
+            Capsule(style: .continuous)
+                .fill(CorbieColorPalette.ice)
+                .frame(width: WidgetLayout.stripeWidth)
+            Text(slot.dayText)
+                .corbieBody()
+                .foregroundStyle(CorbieColorPalette.text)
+                .lineLimit(1)
+            Spacer(minLength: CorbieSpacing.xs)
+            Text(slot.windowText)
+                .corbieMono()
+                .foregroundStyle(CorbieColorPalette.text2)
+                .lineLimit(1)
+        }
+        .frame(height: WidgetLayout.dateRowHeight)
+        .accessibilityElement(children: .combine)
+    }
+}
+
 struct WidgetPlanLine: View {
     private let title: String
     private let progress: Double
     private let isOverspent: Bool
     private let amountText: String?
     private let overspendText: String?
+    private let stepsText: String?
 
     init(plan: PlanProgressSnapshot) {
         self.init(
@@ -304,7 +328,9 @@ struct WidgetPlanLine: View {
             isOverspent: plan.isOverspent,
             saved: plan.savedText,
             target: plan.targetText,
-            overspent: plan.overspentText
+            overspent: plan.overspentText,
+            doneStepCount: plan.doneStepCount,
+            stepCount: plan.stepCount
         )
     }
 
@@ -315,7 +341,9 @@ struct WidgetPlanLine: View {
             isOverspent: false,
             saved: plan.savedText,
             target: plan.targetText,
-            overspent: nil
+            overspent: nil,
+            doneStepCount: plan.doneStepCount,
+            stepCount: plan.stepCount
         )
     }
 
@@ -325,7 +353,9 @@ struct WidgetPlanLine: View {
         isOverspent: Bool,
         saved: String?,
         target: String?,
-        overspent: String?
+        overspent: String?,
+        doneStepCount: Int,
+        stepCount: Int
     ) {
         self.title = title
         self.progress = progress
@@ -336,6 +366,13 @@ struct WidgetPlanLine: View {
             amountText = nil
         }
         overspendText = overspent.map { String(format: String(localized: "plans.card.overspend"), $0) }
+        stepsText = stepCount > 0
+            ? String(
+                format: String(localized: "plans.card.steps"),
+                doneStepCount.formatted(.number),
+                stepCount.formatted(.number)
+            )
+            : nil
     }
 
     var body: some View {
@@ -359,11 +396,20 @@ struct WidgetPlanLine: View {
                 accessibilityLabel: String(localized: "plans.card.progress.label"),
                 accessibilityValue: amountText ?? ""
             )
-            if let amountText {
-                Text(amountText)
-                    .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
-                    .lineLimit(1)
+            HStack(spacing: CorbieSpacing.xs) {
+                if let amountText {
+                    Text(amountText)
+                        .corbieMono()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .lineLimit(1)
+                }
+                Spacer(minLength: CorbieSpacing.xs)
+                if let stepsText {
+                    Text(stepsText)
+                        .corbieMono()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .lineLimit(1)
+                }
             }
         }
     }
