@@ -44,6 +44,36 @@ import Testing
         #expect(stored?.doneAt == world.now)
     }
 
+    @Test func completingATaskDropsItsDueTodayAlert() async throws {
+        let world = try await makeWorld()
+        let center = FakeNotificationCenter()
+        let task = try #require(world.seed.tasks.first { $0.title == "Book the vet" })
+        _ = try await TaskIntentRunner.markDone(
+            taskId: task.id,
+            persistence: world.persistence,
+            notifications: center,
+            calendar: calendar,
+            now: world.now
+        )
+        let removed = await center.removedIdentifiers
+        #expect(removed == [NotificationIdentifier.taskDueToday(taskId: task.id)])
+    }
+
+    @Test func aTaskThatWasAlreadyDoneLeavesNotificationsAlone() async throws {
+        let world = try await makeWorld()
+        let center = FakeNotificationCenter()
+        let task = try #require(world.seed.tasks.first { $0.title == "Call the landlord" })
+        _ = try await TaskIntentRunner.markDone(
+            taskId: task.id,
+            persistence: world.persistence,
+            notifications: center,
+            calendar: calendar,
+            now: world.now
+        )
+        let removed = await center.removedIdentifiers
+        #expect(removed.isEmpty)
+    }
+
     @Test func aRecurringTaskGetsItsNextOccurrence() async throws {
         let world = try await makeWorld()
         let task = try #require(world.seed.tasks.first { $0.title == "Water the plants" })

@@ -85,6 +85,7 @@ targets:
         product: CorbieCore
       - sdk: WidgetKit.framework
       - sdk: SwiftUI.framework
+      - sdk: AppIntents.framework
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.corbie.widgets

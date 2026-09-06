@@ -356,3 +356,27 @@ public enum WidgetAmountText {
         return formatter.string(from: NSNumber(value: amount))
     }
 }
+
+public struct WidgetEventOption: Sendable, Codable, Equatable, Identifiable {
+    public let id: UUID
+    public let title: String
+    public let date: Date?
+
+    public init(id: UUID, title: String, date: Date?) {
+        self.id = id
+        self.title = title
+        self.date = date
+    }
+}
+
+public struct WidgetPlanOption: Sendable, Codable, Equatable, Identifiable {
+    public let id: UUID
+    public let title: String
+    public let progress: Double
+
+    public init(id: UUID, title: String, progress: Double) {
+        self.id = id
+        self.title = title
+        self.progress = progress
+    }
+}

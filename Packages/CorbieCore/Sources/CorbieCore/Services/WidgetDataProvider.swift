@@ -30,7 +30,7 @@ public struct WidgetDataProvider: Sendable {
     public static let taskLimit = 3
     public static let wishLimit = 3
     public static let dateLimit = 3
-    public static let shoppingLimit = 5
+    public static let shoppingLimit = 3
     public static let upcomingHorizonDays = 400
 
     private let controller: PersistenceController
@@ -519,5 +519,56 @@ public struct WidgetDataProvider: Sendable {
         case .want: return 1
         case .someday: return 2
         }
+    }
+}
+
+extension WidgetDataProvider {
+    public static let optionLimit = 50
+
+    public func selectableEvents(now: Date = Date()) async throws -> [WidgetEventOption] {
+        guard let context = try await context(now: now) else { return [] }
+        let horizon = calendar.date(
+            byAdding: .day,
+            value: WidgetDataProvider.upcomingHorizonDays,
+            to: now
+        )
+        let events = try await controller.repositories.events.events(
+            spaceId: context.space.id,
+            from: calendar.startOfDay(for: now),
+            to: horizon
+        )
+        return events
+            .sorted { ($0.startAt ?? .distantFuture) < ($1.startAt ?? .distantFuture) }
+            .prefix(WidgetDataProvider.optionLimit)
+            .map { WidgetEventOption(id: $0.id, title: $0.title, date: $0.startAt) }
+    }
+
+    public func eventOptions(ids: [UUID], now: Date = Date()) async throws -> [WidgetEventOption] {
+        var result: [WidgetEventOption] = []
+        for id in ids {
+            guard let event = try await controller.repositories.events.event(id: id) else { continue }
+            result.append(WidgetEventOption(id: event.id, title: event.title, date: event.startAt))
+        }
+        return result
+    }
+
+    public func selectablePlans(now: Date = Date()) async throws -> [WidgetPlanOption] {
+        guard let context = try await context(now: now) else { return [] }
+        let plans = try await controller.repositories.plans.plans(
+            spaceId: context.space.id,
+            statuses: [.active, .completed]
+        )
+        return plans
+            .prefix(WidgetDataProvider.optionLimit)
+            .map { WidgetPlanOption(id: $0.id, title: $0.title, progress: $0.progress) }
+    }
+
+    public func planOptions(ids: [UUID]) async throws -> [WidgetPlanOption] {
+        var result: [WidgetPlanOption] = []
+        for id in ids {
+            guard let plan = try await controller.repositories.plans.plan(id: id) else { continue }
+            result.append(WidgetPlanOption(id: plan.id, title: plan.title, progress: plan.progress))
+        }
+        return result
     }
 }
