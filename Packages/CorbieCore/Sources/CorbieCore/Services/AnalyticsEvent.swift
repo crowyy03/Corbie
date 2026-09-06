@@ -31,6 +31,12 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case voteCreated
     case voteAnswered
     case voteRevealed
+    case todayOpened
+    case todayBlockTapped(block: TodayBlock)
+    case todayQuickAction(kind: TodayQuickAction)
+    case recapShown
+    case recapNotificationSent
+    case recapOpened
     case widgetAdded(kind: String)
     case paywallShown(reason: PaywallReason)
     case trialStarted
@@ -64,6 +70,12 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .voteCreated: return "vote_created"
         case .voteAnswered: return "vote_answered"
         case .voteRevealed: return "vote_revealed"
+        case .todayOpened: return "today_opened"
+        case .todayBlockTapped: return "today_block_tapped"
+        case .todayQuickAction: return "today_quick_action"
+        case .recapShown: return "recap_shown"
+        case .recapNotificationSent: return "recap_notification_sent"
+        case .recapOpened: return "recap_opened"
         case .widgetAdded: return "widget_added"
         case .paywallShown: return "paywall_shown"
         case .trialStarted: return "trial_started"
@@ -89,6 +101,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["has_due": .flag(hasDue)]
         case let .folderCreated(template):
             return ["template": .string(template.rawValue)]
+        case let .todayBlockTapped(block):
+            return ["block": .string(block.rawValue)]
+        case let .todayQuickAction(kind):
+            return ["kind": .string(kind.rawValue)]
         case let .widgetAdded(kind):
             return ["kind": .string(AnalyticsEvent.slug(kind))]
         case let .paywallShown(reason):
@@ -100,7 +116,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
              .taskHandedBack, .wishFulfilled, .expenseAdded, .goalCompleted, .goalStepDone,
              .folderMapOpened, .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered,
-             .voteRevealed, .trialStarted, .restore:
+             .voteRevealed, .todayOpened, .recapShown, .recapNotificationSent, .recapOpened,
+             .trialStarted, .restore:
             return [:]
         }
     }
@@ -111,7 +128,9 @@ public enum AnalyticsEvent: Sendable, Equatable {
         "goal_created", "goal_completed", "goal_step_created", "goal_step_done", "expense_added",
         "folder_created", "folder_map_opened", "capsule_created", "capsule_opened", "vote_created",
         "vote_answered", "vote_revealed", "widget_added", "paywall_shown", "trial_started",
-        "purchase", "restore", "readonly_hit", "task_handed_back"
+        "purchase", "restore", "readonly_hit", "task_handed_back", "today_opened",
+        "today_block_tapped", "today_quick_action", "recap_shown", "recap_notification_sent",
+        "recap_opened"
     ]
 
     public static let droppedPropKeys: Set<String> = [

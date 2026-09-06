@@ -173,7 +173,7 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 
 ## 13. Аналитика (своя)
 
-- События: `app_open`, `onboarding_step`, `space_created`, `invite_created`, `invite_redeemed`, `task_created(has_folder, assignee)`, `task_taken`, `task_done`, `task_handed_back`, `event_created`, `wish_created(source)`, `wish_fulfilled`, `goal_created(type)`, `goal_completed`, `goal_step_created(has_due)`, `goal_step_done`, `expense_added`, `folder_created(template)`, `folder_map_opened`, `capsule_created`, `capsule_opened`, `vote_created`, `vote_answered`, `vote_revealed`, `widget_added(kind)`, `paywall_shown(reason)`, `trial_started`, `purchase(product)`, `restore`, `readonly_hit`.
+- События: `app_open`, `onboarding_step`, `space_created`, `invite_created`, `invite_redeemed`, `task_created(has_folder, assignee)`, `task_taken`, `task_done`, `task_handed_back`, `event_created`, `wish_created(source)`, `wish_fulfilled`, `goal_created(type)`, `goal_completed`, `goal_step_created(has_due)`, `goal_step_done`, `expense_added`, `folder_created(template)`, `folder_map_opened`, `capsule_created`, `capsule_opened`, `vote_created`, `vote_answered`, `vote_revealed`, `widget_added(kind)`, `paywall_shown(reason)`, `trial_started`, `purchase(product)`, `restore`, `readonly_hit`, `today_opened`, `today_block_tapped(block)`, `today_quick_action(kind)`, `recap_shown`, `recap_notification_sent`, `recap_opened`.
 - `anonId` — UUID на устройстве, не связан с Apple ID. Никаких PII.
 - Батч раз в 60 с или 20 событий; офлайн-очередь.
 - Дашборд — SQL-вьюхи в Supabase: воронка онбординга, доля пар, D1/D7/D30, trial→paid.

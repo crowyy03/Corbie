@@ -6,6 +6,7 @@ public enum NotificationKind: String, Sendable, Equatable, CaseIterable {
     case capsuleOpens
     case dateRadar
     case eventDigest
+    case weeklyRecap
 
     public var prefix: String { "corbie." + rawValue + "." }
 
@@ -19,6 +20,8 @@ public enum NotificationKind: String, Sendable, Equatable, CaseIterable {
             return prefs.capsuleUpdates
         case .dateRadar:
             return prefs.dateRadar
+        case .weeklyRecap:
+            return prefs.weeklyRecap
         }
     }
 }
@@ -48,6 +51,8 @@ public enum NotificationIdentifier {
     public static func eventDigest(eventId: UUID, slot: EventDigestSlot) -> String {
         NotificationKind.eventDigest.prefix + eventId.uuidString + "." + slot.rawValue
     }
+
+    public static let weeklyRecap = NotificationKind.weeklyRecap.prefix + "sunday"
 }
 
 public actor NotificationScheduler {
@@ -277,6 +282,53 @@ public actor NotificationScheduler {
 
     public func cancelEventDigest(eventId: UUID) async {
         await cancel(prefix: NotificationKind.eventDigest.prefix + eventId.uuidString)
+    }
+
+    @discardableResult
+    public func scheduleWeeklyRecap(
+        _ summary: RecapSummary,
+        prefs: NotificationPrefs,
+        now: Date
+    ) async throws -> CorbieNotificationRequest? {
+        await cancelWeeklyRecap()
+        guard NotificationKind.weeklyRecap.isEnabled(in: prefs),
+              summary.isPaired,
+              summary.hasActivity,
+              let fireDate = RecapSchedule.nextNotificationDate(after: now, calendar: calendar) else { return nil }
+        let first = summary.members[0]
+        let second = summary.members[1]
+        let request = CorbieNotificationRequest(
+            id: NotificationIdentifier.weeklyRecap,
+            fireDate: fireDate,
+            content: CorbieNotificationContent(
+                titleKey: NotificationStrings.recapTitle,
+                bodyKey: summary.comingUp.isEmpty
+                    ? NotificationStrings.recapBody
+                    : NotificationStrings.recapBodyDates,
+                arguments: [
+                    name(of: first),
+                    String(first.tasksDone),
+                    name(of: second),
+                    String(second.tasksDone),
+                    String(summary.comingUp.count)
+                ],
+                threadIdentifier: NotificationKind.weeklyRecap.rawValue,
+                userInfo: [NotificationPayload.kindKey: NotificationKind.weeklyRecap.rawValue]
+            )
+        )
+        try await client.add(request)
+        return request
+    }
+
+    public func cancelWeeklyRecap() async {
+        await cancel(identifiers: [NotificationIdentifier.weeklyRecap])
+    }
+
+    private func name(of tally: RecapMemberTally) -> String {
+        guard let name = tally.name, name.isEmpty == false else {
+            return NotificationText.resolve(NotificationStrings.memberFallback, arguments: [])
+        }
+        return name
     }
 
     @discardableResult

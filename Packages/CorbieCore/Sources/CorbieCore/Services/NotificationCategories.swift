@@ -220,6 +220,10 @@ public enum NotificationStrings {
     public static let voteNewBody = "notification.vote.new.body"
     public static let voteRevealedTitle = "notification.vote.revealed.title"
     public static let voteRevealedBody = "notification.vote.revealed.body"
+    public static let recapTitle = "notification.recap.title"
+    public static let recapBody = "notification.recap.body"
+    public static let recapBodyDates = "notification.recap.body.dates"
+    public static let memberFallback = "member.name.partner"
 
     public static let all: [String] = [
         eventReminderTitle,
@@ -257,6 +261,10 @@ public enum NotificationStrings {
         voteNewBody,
         voteRevealedTitle,
         voteRevealedBody,
+        recapTitle,
+        recapBody,
+        recapBodyDates,
+        memberFallback,
         "notification.action.task.take",
         "notification.action.task.done",
         "notification.action.vote.cast"
