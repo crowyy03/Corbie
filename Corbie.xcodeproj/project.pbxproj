@@ -160,6 +160,7 @@
 		9A0FFEAD954472C768DE8497 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */; };
 		9A482B15C4A9A59A47308566 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D019DE6755B396A6C1CC06F8 /* TodayView.swift */; };
 		9B91ECF25CC8483DF5BA9429 /* TodayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA4FC3EDEC869BE8B899C99 /* TodayViewModelTests.swift */; };
+		9BA3BC2C5C0BD0E4C817BFB5 /* FreeSlotsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43FC976B60DFE22D03931DD /* FreeSlotsWidget.swift */; };
 		9E0AB31D46F4F1F0B4E22263 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 95073597AB82A548EAAE7530 /* InfoPlist.xcstrings */; };
 		9E7891F0830411940526CDB1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53715C4B0BEE41A246CA135 /* AppState.swift */; };
 		9F154E6E1C36EA96076AC1F3 /* PlanSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1D6A0D0765F5689804FF9B /* PlanSummaryCard.swift */; };
@@ -515,6 +516,7 @@
 		E1014F53AB71BB71FA3BEA7A /* PersonBirthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonBirthday.swift; sourceTree = "<group>"; };
 		E1EF99805F9035D7CE01C2CC /* ShareWishViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareWishViewModel.swift; sourceTree = "<group>"; };
 		E2297C1D1A45A74F1A7A47D2 /* WishCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishCardView.swift; sourceTree = "<group>"; };
+		E43FC976B60DFE22D03931DD /* FreeSlotsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeSlotsWidget.swift; sourceTree = "<group>"; };
 		E608CE270F228EA4BE9A09F4 /* FreeTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeTimeViewModel.swift; sourceTree = "<group>"; };
 		E62FE938A6229D79811997DC /* GiftIdeaEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdeaEditorViewModel.swift; sourceTree = "<group>"; };
 		E6E23661E5D8D7037DB76090 /* TasksWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksWidget.swift; sourceTree = "<group>"; };
@@ -787,6 +789,7 @@
 				B89C8CB226C48144FAE480CF /* CapsuleWidget.swift */,
 				410DAD59C12E2B1AE1811FE0 /* CountdownWidget.swift */,
 				2C35828676F9F244E192F973 /* DaysTogetherWidget.swift */,
+				E43FC976B60DFE22D03931DD /* FreeSlotsWidget.swift */,
 				3585F84E7EC1022E7CF2528A /* FreeTasksWidget.swift */,
 				FF11BC15C5BDFBD7B186F414 /* OurDayWidget.swift */,
 				621508894135C64B1341F5D0 /* PartnerWishesWidget.swift */,
@@ -1486,6 +1489,7 @@
 				792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */,
 				47226A1203416566AE122AAD /* CountdownWidget.swift in Sources */,
 				17D6629C7C7FD642E380F0B5 /* DaysTogetherWidget.swift in Sources */,
+				9BA3BC2C5C0BD0E4C817BFB5 /* FreeSlotsWidget.swift in Sources */,
 				A9B1A60370ECDE4B949D7FF8 /* FreeTasksWidget.swift in Sources */,
 				97EF860ED0D9BAB4289C3642 /* LockCircularWidget.swift in Sources */,
 				CBC82CF76BCDD5CCDA615BC9 /* LockInlineWidget.swift in Sources */,
