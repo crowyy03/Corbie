@@ -95,7 +95,7 @@ struct UsHubView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             Text(value.map { $0.formatted() } ?? "-")
                 .corbieCounter()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(value == nil ? CorbieColorPalette.text2 : CorbieColorPalette.text)
                 .lineLimit(1)
                 .minimumScaleFactor(0.4)
             Text(caption)

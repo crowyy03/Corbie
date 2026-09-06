@@ -55,9 +55,10 @@ public struct RelativeDateText: Sendable {
         formatter.calendar = calendar
         formatter.unitsStyle = .full
         formatter.dateTimeStyle = .named
-        let from = calendar.startOfDay(for: now)
-        let to = calendar.startOfDay(for: date)
-        return formatter.localizedString(for: to, relativeTo: from)
+        guard let days = calendar.daysAway(from: now, to: date) else {
+            return formatter.localizedString(for: date, relativeTo: now)
+        }
+        return formatter.localizedString(from: DateComponents(day: days))
     }
 
     public func dueText(for date: Date, now: Date) -> String {
