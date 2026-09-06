@@ -1,14 +1,7 @@
 import { requireUser } from "../_shared/auth.ts";
 import { generateInviteCode } from "../_shared/inviteCode.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
-import {
-  ApiError,
-  json,
-  readJson,
-  requireMethod,
-  requireUuid,
-  serve,
-} from "../_shared/respond.ts";
+import { ApiError, json, readJson, requireMethod, requireUuid, serve } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
 const ttlMinutes = 15;

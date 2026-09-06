@@ -10,14 +10,7 @@ import {
   signedDateOf,
   type TransactionInfo,
 } from "../_shared/appstore.ts";
-import {
-  ApiError,
-  empty,
-  isUuid,
-  readJson,
-  requireMethod,
-  serve,
-} from "../_shared/respond.ts";
+import { ApiError, empty, isUuid, readJson, requireMethod, serve } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
 async function handle(req: Request): Promise<Response> {
