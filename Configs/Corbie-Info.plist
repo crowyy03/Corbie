@@ -39,16 +39,10 @@
 	<false/>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Corbie reads and writes the events you two keep in a shared calendar.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Take a photo for a wish, a plan or a list.</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Unlock capsules and votes with Face ID.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Show the places from your lists around you.</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>Add an event from Corbie to your iPhone calendar.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Pick a photo for a wish, a plan or a list.</string>
-	<key>NSUserNotificationsUsageDescription</key>
-	<string>Remind you two about dates, tasks and capsules.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

@@ -65,7 +65,7 @@ public final class PremiumGate {
 
     public init(
         state: EntitlementState = .readOnly,
-        analytics: any AnalyticsRecording = Analytics.shared,
+        analytics: any AnalyticsRecording,
         entitlements: EntitlementService? = nil,
         makeId: @escaping @Sendable () -> UUID = { UUID() },
         now: @escaping @Sendable () -> Date = { Date() }
@@ -80,7 +80,6 @@ public final class PremiumGate {
     public var isPremium: Bool { state.isPremium }
     public var isReadOnly: Bool { state.isReadOnly }
     public var trialDaysLeft: Int? { state.trialDaysLeft }
-    public var isTrialEndingSoon: Bool { (state.trialDaysLeft ?? .max) <= PremiumGate.trialNoticeDays }
 
     @discardableResult
     public func require(_ action: PremiumAction) -> Bool {

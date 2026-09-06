@@ -115,6 +115,24 @@ final class CalendarGridTests: XCTestCase {
         XCTAssertFalse(entry.spansDays)
     }
 
+    func testSpanningDaysIsDecidedInTheCalendarThatDrawsTheGrid() throws {
+        var auckland = Calendar(identifier: .gregorian)
+        auckland.timeZone = try XCTUnwrap(TimeZone(identifier: "Pacific/Auckland"))
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = try XCTUnwrap(TimeZone(identifier: "UTC"))
+        let formatter = ISO8601DateFormatter()
+        let lunchStart = try XCTUnwrap(formatter.date(from: "2026-03-10T10:00:00+13:00"))
+        let lunchEnd = try XCTUnwrap(formatter.date(from: "2026-03-10T14:00:00+13:00"))
+        let lunch = EventDTO(id: UUID(), title: "Lunch", startAt: lunchStart, endAt: lunchEnd)
+
+        XCTAssertFalse(try XCTUnwrap(CalendarEntry(event: lunch, calendar: auckland)).spansDays)
+        XCTAssertTrue(try XCTUnwrap(CalendarEntry(event: lunch, calendar: utc)).spansDays)
+
+        let tripEnd = try XCTUnwrap(formatter.date(from: "2026-03-14T14:00:00+13:00"))
+        let trip = EventDTO(id: UUID(), title: "Trip", startAt: lunchStart, endAt: tripEnd)
+        XCTAssertTrue(try XCTUnwrap(CalendarEntry(event: trip, calendar: auckland)).spansDays)
+    }
+
     func testWeekdaySymbolsAreRotatedToTheFirstWeekday() {
         let american = CalendarGrid.weekdaySymbols(
             calendar: CalendarTestSupport.calendar("en_US"),

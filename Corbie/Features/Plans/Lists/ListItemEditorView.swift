@@ -37,7 +37,10 @@ struct ListItemEditorView: View {
             }
         }
         .sheet(isPresented: $model.isSearchingPlace) {
-            PlaceSearchView { place in
+            PlaceSearchView(
+                title: String(localized: "lists.place.search.title"),
+                placeholder: String(localized: "lists.place.search.placeholder")
+            ) { place in
                 model.apply(place)
             }
         }
@@ -74,7 +77,9 @@ struct ListItemEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ListItemEditorView(item: ListItemDTO(id: UUID(), title: "Time Out Market"))
         .environment(AppEnvironment.preview())
 }
+#endif

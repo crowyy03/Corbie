@@ -4,11 +4,13 @@ import Foundation
 struct AppleSignInCredential: Equatable {
     let userIdentifier: String
     let identityToken: String?
+    let authorizationCode: String?
     let displayName: String?
 
-    init(userIdentifier: String, identityToken: String?, displayName: String?) {
+    init(userIdentifier: String, identityToken: String?, authorizationCode: String?, displayName: String?) {
         self.userIdentifier = userIdentifier
         self.identityToken = identityToken
+        self.authorizationCode = authorizationCode
         self.displayName = displayName
     }
 
@@ -16,6 +18,7 @@ struct AppleSignInCredential: Equatable {
         self.init(
             userIdentifier: credential.user,
             identityToken: credential.identityToken.flatMap { String(data: $0, encoding: .utf8) },
+            authorizationCode: credential.authorizationCode.flatMap { String(data: $0, encoding: .utf8) },
             displayName: AppleSignInCredential.displayName(from: credential.fullName)
         )
     }

@@ -21,7 +21,6 @@ final class ExpenseEditorViewModel {
         currency = plan.currency
     }
 
-    var planCurrency: String { plan.currency }
 
     var needsConversion: Bool { currency != plan.currency }
 

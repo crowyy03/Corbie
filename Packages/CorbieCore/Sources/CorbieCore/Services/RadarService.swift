@@ -74,7 +74,7 @@ public struct RadarService: Sendable {
     }
 
     public func radarLine(for autoDate: AutoDate, input: RadarInput, now: Date) -> RadarLine? {
-        guard let daysAway = provider.daysAway(from: now, to: autoDate.date) else { return nil }
+        guard let daysAway = calendar.daysAway(from: now, to: autoDate.date) else { return nil }
         return RadarLine(
             autoDate: autoDate,
             daysAway: daysAway,

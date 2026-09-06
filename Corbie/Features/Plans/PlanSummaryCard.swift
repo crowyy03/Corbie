@@ -77,6 +77,7 @@ struct PlanSummaryCard: View {
     }
 }
 
+#if DEBUG
 #Preview {
     let plan = PlanDTO(
         id: UUID(),
@@ -94,3 +95,4 @@ struct PlanSummaryCard: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(CorbieColorPalette.bg)
 }
+#endif

@@ -55,6 +55,4 @@ public struct ChecklistListDTO: Sendable, Codable, Identifiable, Equatable {
             checkedCount: items.filter(\.isChecked).count
         )
     }
-
-    public var hasPlaces: Bool { itemCount > 0 && template == .places }
 }

@@ -61,6 +61,15 @@ struct UsHubView: View {
         .padding(.top, CorbieSpacing.s)
     }
 
+    private var nextDateCaption: String {
+        guard let next = model.counters.next else { return String(localized: "us.counters.empty") }
+        return ImportantDateText.countdown(
+            kind: next.kind,
+            ordinal: next.ordinal,
+            title: next.personName
+        )
+    }
+
     private var counters: some View {
         Card(showsChromeGradient: true) {
             HStack(alignment: .top, spacing: CorbieSpacing.m) {
@@ -75,7 +84,7 @@ struct UsHubView: View {
                     .accessibilityHidden(true)
                 counterColumn(
                     value: model.counters.next?.daysAway,
-                    caption: model.counters.next?.label.text ?? String(localized: "us.counters.empty")
+                    caption: nextDateCaption
                 )
             }
             .frame(minHeight: CorbieMetrics.controlHeight)
@@ -172,6 +181,7 @@ private struct UsTile<Destination: View>: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         UsHubView()
@@ -179,3 +189,4 @@ private struct UsTile<Destination: View>: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif

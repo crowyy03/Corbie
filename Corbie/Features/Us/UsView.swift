@@ -5,6 +5,8 @@ struct UsView: View {
     enum Destination: Hashable {
         case capsules(startsWithEditor: Bool)
         case votes(startsWithEditor: Bool)
+        case people
+        case person(UUID)
     }
 
     @Environment(AppState.self) private var appState
@@ -38,6 +40,10 @@ struct UsView: View {
                     CapsulesView(startsWithEditor: startsWithEditor)
                 case let .votes(startsWithEditor):
                     VotesView(startsWithEditor: startsWithEditor)
+                case .people:
+                    PeopleView()
+                case let .person(id):
+                    PersonDetailView(personId: id)
                 }
             }
             .onChange(of: appState.route, initial: true) { _, route in
@@ -53,12 +59,19 @@ struct UsView: View {
         case .votes:
             destination = .votes(startsWithEditor: false)
             appState.route = nil
+        case .people:
+            destination = .people
+            appState.route = nil
+        case let .person(id):
+            destination = .person(id)
+            appState.route = nil
         default:
             break
         }
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         UsView()
@@ -66,3 +79,4 @@ struct UsView: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif

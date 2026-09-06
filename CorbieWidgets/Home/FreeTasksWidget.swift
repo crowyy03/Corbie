@@ -51,6 +51,9 @@ struct FreeTasksWidgetView: View {
                     ForEach(entry.snapshot.items) { task in
                         FreeTaskRow(task: task, now: entry.date)
                     }
+                    if entry.snapshot.remaining > 0 {
+                        WidgetOverflowLine(count: entry.snapshot.remaining)
+                    }
                     Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

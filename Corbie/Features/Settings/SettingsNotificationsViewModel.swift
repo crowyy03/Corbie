@@ -7,13 +7,11 @@ import Observation
 final class SettingsNotificationsViewModel {
     private(set) var prefs = NotificationPrefs.allEnabled
     private(set) var authorization: NotificationAuthorization = .notDetermined
-    private(set) var isWorking = false
 
     private var environment: AppEnvironment?
 
     var isDenied: Bool { authorization == .denied }
 
-    var isMuted: Bool { authorization == .denied || authorization == .notDetermined }
 
     func load(_ environment: AppEnvironment) async {
         self.environment = environment
@@ -34,8 +32,6 @@ final class SettingsNotificationsViewModel {
         guard let environment, let member = environment.currentMember else { return }
         let previous = prefs
         prefs = toggle.set(isOn, in: prefs)
-        isWorking = true
-        defer { isWorking = false }
         do {
             let updated = try await environment.repositories.members.updatePrefs(
                 memberId: member.id,

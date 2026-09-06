@@ -31,13 +31,20 @@ import Testing
     @Test func repeatedMonthlyClampingKeepsTheClampedDay() {
         let due = DomainClock.date("2027-01-31 08:00", in: utc)
         let completedAt = DomainClock.date("2027-01-31 20:00", in: utc)
-        let dates = RecurrenceEngine.occurrences(
-            recurrence: .monthly,
-            dueAt: due,
-            completedAt: completedAt,
-            count: 3,
-            calendar: utc
-        )
+        var dates: [Date] = []
+        var cursor = due
+        var completion = completedAt
+        for _ in 0 ..< 3 {
+            guard let next = RecurrenceEngine.nextOccurrence(
+                recurrence: .monthly,
+                dueAt: cursor,
+                completedAt: completion,
+                calendar: utc
+            ) else { break }
+            dates.append(next)
+            cursor = next
+            completion = next
+        }
         #expect(dates.count == 3)
         #expect(dates[0] == DomainClock.date("2027-02-28 08:00", in: utc))
         #expect(dates[1] == DomainClock.date("2027-03-28 08:00", in: utc))

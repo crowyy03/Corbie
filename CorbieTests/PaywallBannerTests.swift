@@ -18,7 +18,8 @@ final class PaywallBannerTests: XCTestCase {
 
     func testReadOnlyKeepsTheBannerUp() {
         XCTAssertEqual(PaywallBannerState.make(.readOnly), .readOnly)
-        XCTAssertEqual(PaywallBannerState.readOnly.daysLeft, 0)
+        XCTAssertNil(PaywallBannerState.readOnly.daysLeft)
+        XCTAssertEqual(PaywallBannerState.trialEnding(daysLeft: 2).daysLeft, 2)
         XCTAssertEqual(PaywallBannerState.readOnly.reason, .trialEnded)
         XCTAssertEqual(PaywallBannerState.trialEnding(daysLeft: 2).reason, .trialEnding)
     }

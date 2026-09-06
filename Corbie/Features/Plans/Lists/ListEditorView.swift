@@ -57,7 +57,9 @@ struct ListEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ListEditorView(list: nil)
         .environment(AppEnvironment.preview())
 }
+#endif

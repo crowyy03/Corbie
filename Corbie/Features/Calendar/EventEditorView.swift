@@ -78,7 +78,10 @@ struct EventEditorView: View {
                 }
             }
             .sheet(isPresented: $isSearchingLocation) {
-                LocationSearchView { place in
+                PlaceSearchView(
+                    title: String(localized: "calendar.location.title"),
+                    placeholder: String(localized: "calendar.location.placeholder")
+                ) { place in
                     model.place = place
                 }
             }
@@ -214,14 +217,7 @@ struct EventEditorView: View {
             .foregroundStyle(CorbieColorPalette.text)
             .lineLimit(3...6)
             .padding(CorbieSpacing.s)
-            .background(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-            )
+            .corbieFieldBox()
             .accessibilityLabel(Text("calendar.editor.note"))
         }
     }
@@ -257,7 +253,9 @@ struct EventEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     EventEditorView(target: .create(Date()), people: [], calendar: .current)
         .environment(AppEnvironment.preview())
 }
+#endif

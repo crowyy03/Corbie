@@ -11,6 +11,8 @@ struct LaunchPlaceholderView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     LaunchPlaceholderView()
 }
+#endif

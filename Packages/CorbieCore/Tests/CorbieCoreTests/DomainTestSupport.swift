@@ -42,10 +42,16 @@ actor FakeNotificationCenter: NotificationCenterClient {
     private(set) var removedIdentifiers: [String] = []
     private var status: NotificationAuthorization
     private var grants: Bool
+    private let addFailure: (any Error)?
 
-    init(status: NotificationAuthorization = .authorized, grants: Bool = true) {
+    init(
+        status: NotificationAuthorization = .authorized,
+        grants: Bool = true,
+        addFailure: (any Error)? = nil
+    ) {
         self.status = status
         self.grants = grants
+        self.addFailure = addFailure
     }
 
     func authorizationStatus() async -> NotificationAuthorization { status }
@@ -65,6 +71,7 @@ actor FakeNotificationCenter: NotificationCenterClient {
     }
 
     func add(_ request: CorbieNotificationRequest) async throws {
+        if let addFailure { throw addFailure }
         requests.removeAll { $0.id == request.id }
         requests.append(request)
     }

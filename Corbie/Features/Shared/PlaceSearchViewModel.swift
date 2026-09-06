@@ -1,30 +1,8 @@
-import CorbieCore
 import Foundation
 import MapKit
 import Observation
 
-struct CalendarPlace: Equatable {
-    var name: String
-    var address: String?
-    var latitude: Double
-    var longitude: Double
-
-    init(name: String, address: String? = nil, latitude: Double, longitude: Double) {
-        self.name = name
-        self.address = address
-        self.latitude = latitude
-        self.longitude = longitude
-    }
-
-    init?(event: EventDTO) {
-        guard let name = event.locationName, let latitude = event.latitude, let longitude = event.longitude else {
-            return nil
-        }
-        self.init(name: name, address: event.address, latitude: latitude, longitude: longitude)
-    }
-}
-
-final class LocationCompleterBridge: NSObject, MKLocalSearchCompleterDelegate {
+final class PlaceCompleterBridge: NSObject, MKLocalSearchCompleterDelegate {
     var onResults: (([MKLocalSearchCompletion]) -> Void)?
 
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
@@ -38,7 +16,7 @@ final class LocationCompleterBridge: NSObject, MKLocalSearchCompleterDelegate {
 
 @MainActor
 @Observable
-final class LocationSearchViewModel {
+final class PlaceSearchViewModel {
     var query = "" {
         didSet {
             guard query != oldValue else { return }
@@ -50,7 +28,7 @@ final class LocationSearchViewModel {
     private(set) var isResolving = false
 
     @ObservationIgnored private let completer = MKLocalSearchCompleter()
-    @ObservationIgnored private let bridge = LocationCompleterBridge()
+    @ObservationIgnored private let bridge = PlaceCompleterBridge()
 
     init() {
         completer.resultTypes = [.pointOfInterest, .address]
@@ -62,7 +40,9 @@ final class LocationSearchViewModel {
         completer.delegate = bridge
     }
 
-    func resolve(_ suggestion: MKLocalSearchCompletion) async -> CalendarPlace? {
+    var hasQuery: Bool { trimmedQuery.isEmpty == false }
+
+    func resolve(_ suggestion: MKLocalSearchCompletion) async -> MapPlace? {
         isResolving = true
         defer { isResolving = false }
         let request = MKLocalSearch.Request(completion: suggestion)
@@ -71,7 +51,7 @@ final class LocationSearchViewModel {
             return nil
         }
         let placemark = item.placemark
-        return CalendarPlace(
+        return MapPlace(
             name: item.name ?? suggestion.title,
             address: placemark.title ?? blankToNil(suggestion.subtitle),
             latitude: placemark.coordinate.latitude,
@@ -79,14 +59,17 @@ final class LocationSearchViewModel {
         )
     }
 
+    private var trimmedQuery: String {
+        query.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     private func updateCompleter() {
-        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard trimmed.isEmpty == false else {
+        guard trimmedQuery.isEmpty == false else {
             suggestions = []
             completer.cancel()
             return
         }
-        completer.queryFragment = trimmed
+        completer.queryFragment = trimmedQuery
     }
 
     private func blankToNil(_ value: String) -> String? {

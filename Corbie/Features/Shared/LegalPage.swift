@@ -2,23 +2,20 @@ import CorbieCore
 import SafariServices
 import SwiftUI
 
-enum PaywallLink: String, Identifiable, CaseIterable {
-    case privacy = "https://corbie.app/privacy"
-    case terms = "https://corbie.app/terms"
+enum LegalPage: String, Identifiable, CaseIterable {
+    case privacy
+    case terms
 
     var id: String { rawValue }
 
-    var url: URL? { URL(string: rawValue) }
+    var url: URL? { URL(string: "https://corbie.app/" + rawValue) }
 
-    var titleKey: String {
-        switch self {
-        case .privacy: return "paywall.link.privacy"
-        case .terms: return "paywall.link.terms"
-        }
-    }
+    var settingsTitleKey: String { "settings.legal." + rawValue }
+
+    var paywallTitleKey: String { "paywall.link." + rawValue }
 }
 
-struct SafariView: UIViewControllerRepresentable {
+struct LegalPageView: UIViewControllerRepresentable {
     let url: URL
 
     func makeUIViewController(context: Context) -> SFSafariViewController {

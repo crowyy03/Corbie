@@ -65,7 +65,7 @@ final class WishEditorViewModel {
             lastParsedLink = link.isEmpty ? nil : link
             title = wish.title
             if let price = wish.price { priceText = WishPricing.text(from: price) }
-            currency = WishPricing.currencyCode(wish.currency) ?? currency
+            currency = Money.currencyCode(wish.currency) ?? currency
             priority = wish.priority
             note = wish.note ?? ""
             localImage = wish.localImage
@@ -169,10 +169,10 @@ final class WishEditorViewModel {
     ) -> [String] {
         var codes: [String] = []
         for candidate in [spaceCurrency, wishCurrency] {
-            guard let code = WishPricing.currencyCode(candidate), codes.contains(code) == false else { continue }
+            guard let code = Money.currencyCode(candidate), codes.contains(code) == false else { continue }
             codes.append(code)
         }
-        for code in supported.compactMap(WishPricing.currencyCode) where codes.contains(code) == false {
+        for code in supported.compactMap(Money.currencyCode) where codes.contains(code) == false {
             codes.append(code)
         }
         return codes.isEmpty ? ["USD"] : codes
@@ -201,7 +201,7 @@ final class WishEditorViewModel {
         }
         if WishText.clean(priceText).isEmpty, let price = parsed.price {
             priceText = WishPricing.text(from: price)
-            if let code = WishPricing.currencyCode(parsed.currency) {
+            if let code = Money.currencyCode(parsed.currency) {
                 if currencies.contains(code) == false { currencies.append(code) }
                 currency = code
             }

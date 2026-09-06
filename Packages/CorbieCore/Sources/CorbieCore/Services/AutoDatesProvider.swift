@@ -119,17 +119,9 @@ public struct AutoDatesProvider: Sendable {
     ) -> [AutoDate] {
         let all = autoDates(space: space, members: members, people: people, now: now)
         return all.filter { autoDate in
-            guard let away = daysAway(from: now, to: autoDate.date) else { return false }
+            guard let away = calendar.daysAway(from: now, to: autoDate.date) else { return false }
             return away >= 0 && away <= days
         }
-    }
-
-    public func daysAway(from now: Date, to date: Date) -> Int? {
-        calendar.dateComponents(
-            [.day],
-            from: calendar.startOfDay(for: now),
-            to: calendar.startOfDay(for: date)
-        ).day
     }
 
     public func nextYearlyDate(month: Int, day: Int, after now: Date) -> Date? {

@@ -81,6 +81,7 @@ struct ListItemRow: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack(spacing: CorbieSpacing.m) {
         ListItemRow(
@@ -114,3 +115,4 @@ struct ListItemRow: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(CorbieColorPalette.bg)
 }
+#endif

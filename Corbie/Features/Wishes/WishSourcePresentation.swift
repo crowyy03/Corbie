@@ -1,22 +1,6 @@
 import CorbieCore
 import Foundation
 
-enum WishText {
-    static func clean(_ value: String) -> String {
-        value.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-}
-
-extension WishPriority {
-    var title: String {
-        switch self {
-        case .must: return String(localized: "wishes.priority.must")
-        case .want: return String(localized: "wishes.priority.want")
-        case .someday: return String(localized: "wishes.priority.someday")
-        }
-    }
-}
-
 extension WishSource {
     var brandName: String? {
         switch self {

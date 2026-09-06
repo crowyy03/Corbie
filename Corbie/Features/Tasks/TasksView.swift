@@ -272,8 +272,24 @@ struct TasksView: View {
     }
 
     private func consumeRoute() {
-        guard appState.route == .tasks else { return }
-        appState.route = nil
+        switch appState.route {
+        case .tasks:
+            appState.route = nil
+        case let .task(id):
+            appState.route = nil
+            Task { await openTask(id) }
+        default:
+            break
+        }
+    }
+
+    private func openTask(_ id: UUID) async {
+        do {
+            guard let task = try await environment.repositories.tasks.task(id: id) else { return }
+            startEditing(task)
+        } catch {
+            environment.report(error)
+        }
     }
 }
 

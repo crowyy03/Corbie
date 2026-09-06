@@ -13,6 +13,17 @@ public struct Money: Sendable, Equatable, Hashable, Codable {
         self.init(amount: FXMath.decimal(from: amount), currency: currency)
     }
 
+    public static func currencyCode(_ raw: String?) -> String? {
+        guard let raw else { return nil }
+        let cleaned = raw.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        return cleaned.count == 3 ? cleaned : nil
+    }
+
+    public static func make(amount: Double?, currency: String?) -> Money? {
+        guard let amount, let code = Money.currencyCode(currency) else { return nil }
+        return Money(amount: amount, currency: code)
+    }
+
     public var doubleAmount: Double { NSDecimalNumber(decimal: amount).doubleValue }
 
     public func formatted(locale: Locale = .current) -> String {
@@ -20,6 +31,11 @@ public struct Money: Sendable, Equatable, Hashable, Codable {
         formatter.numberStyle = .currency
         formatter.locale = locale
         formatter.currencyCode = currency
+        var whole = Decimal()
+        var value = amount
+        NSDecimalRound(&whole, &value, 0, .plain)
+        formatter.minimumFractionDigits = whole == amount ? 0 : 2
+        formatter.maximumFractionDigits = 2
         let number = NSDecimalNumber(decimal: amount)
         return formatter.string(from: number) ?? "\(number) \(currency)"
     }

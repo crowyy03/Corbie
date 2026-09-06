@@ -32,7 +32,7 @@ final class EventEditorViewModel {
     var personId: UUID?
     var note: String
     var reminders: Set<ReminderOffset>
-    var place: CalendarPlace?
+    var place: MapPlace?
     private(set) var isSaving = false
 
     @ObservationIgnored let existing: EventDTO?
@@ -80,7 +80,7 @@ final class EventEditorViewModel {
             personId = event.personId
             note = event.note ?? ""
             reminders = Set(event.reminderOffsets)
-            place = CalendarPlace(event: event)
+            place = MapPlace(event: event)
         }
     }
 
@@ -93,13 +93,6 @@ final class EventEditorViewModel {
     var canSave: Bool { trimmedTitle.isEmpty == false && isSaving == false }
 
     var showsPersonPicker: Bool { kind == .birthday }
-
-    var personName: String {
-        guard let personId, let person = people.first(where: { $0.id == personId }) else {
-            return String(localized: "calendar.person.none")
-        }
-        return person.name
-    }
 
     func toggle(_ offset: ReminderOffset) {
         if reminders.contains(offset) {
@@ -160,7 +153,7 @@ final class EventEditorViewModel {
                 saved = try await environment.repositories.events.create(draft)
                 environment.analytics.record(.eventCreated(kind: kind))
             }
-            await scheduleReminders(for: saved, environment: environment)
+            await scheduleNotifications(for: saved, environment: environment)
             return true
         } catch {
             environment.report(error)
@@ -192,13 +185,13 @@ final class EventEditorViewModel {
         return (first, closing ?? last)
     }
 
-    private func scheduleReminders(for event: EventDTO, environment: AppEnvironment) async {
-        if event.reminderOffsets.isEmpty == false {
-            _ = try? await environment.notifications.requestAuthorizationIfNeeded()
-        }
+    private func scheduleNotifications(for event: EventDTO, environment: AppEnvironment) async {
+        _ = try? await environment.notifications.requestAuthorizationIfNeeded()
         let prefs = environment.currentMember?.notificationPrefs ?? .allEnabled
+        let now = Date()
         do {
-            try await environment.notifications.scheduleEventReminders(for: event, prefs: prefs, now: Date())
+            try await environment.notifications.scheduleEventReminders(for: event, prefs: prefs, now: now)
+            try await environment.notifications.scheduleEventDigest(for: event, prefs: prefs, now: now)
         } catch {
             environment.report(error)
         }

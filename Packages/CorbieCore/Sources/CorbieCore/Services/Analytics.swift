@@ -10,8 +10,6 @@ public actor Analytics: AnalyticsRecording {
     public static let flushInterval: TimeInterval = 60
     public static let queueLimit = 500
 
-    public static let shared = Analytics()
-
     private let client: APIClient
     private let storage: any AnalyticsStorage
     private let appVersion: String

@@ -64,6 +64,8 @@ struct OnboardingView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     OnboardingView(environment: .preview(), appState: AppState(), joinCode: nil)
 }
+#endif

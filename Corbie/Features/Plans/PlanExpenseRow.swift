@@ -42,6 +42,7 @@ struct PlanExpenseRow: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack(spacing: CorbieSpacing.m) {
         PlanExpenseRow(
@@ -76,3 +77,4 @@ struct PlanExpenseRow: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(CorbieColorPalette.bg)
 }
+#endif

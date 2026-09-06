@@ -90,14 +90,7 @@ struct VoteEditorView: View {
                         .foregroundStyle(CorbieColorPalette.text)
                         .padding(.horizontal, CorbieSpacing.s)
                         .frame(minHeight: CorbieMetrics.minimumTapTarget)
-                        .background(
-                            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                                .fill(CorbieColorPalette.surface)
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                                .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-                        )
+                        .corbieFieldBox()
                         if model.canRemoveOption {
                             Button {
                                 model.removeOption(at: index)
@@ -162,7 +155,9 @@ struct VoteEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VoteEditorView {}
         .environment(AppEnvironment.preview())
 }
+#endif

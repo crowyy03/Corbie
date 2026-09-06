@@ -29,14 +29,6 @@ enum CapsuleRowState: Equatable, CaseIterable {
         self == .waiting || self == .ready
     }
 
-    var isEditable: Bool {
-        self == .sealed
-    }
-
-    var isReadable: Bool {
-        self == .ready || self == .opened
-    }
-
     var section: CapsuleSection {
         switch self {
         case .ready: return .toOpen

@@ -51,6 +51,9 @@ struct TasksWidgetView: View {
                     ForEach(entry.snapshot.items) { task in
                         WidgetTaskRow(task: task, now: entry.date)
                     }
+                    if entry.snapshot.remaining > 0 {
+                        WidgetOverflowLine(count: entry.snapshot.remaining)
+                    }
                     Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

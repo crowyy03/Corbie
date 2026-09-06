@@ -1,44 +1,9 @@
 import CorbieCore
 import Foundation
 
-enum UsCounterLabel: Equatable {
-    case anniversary(years: Int?)
-    case wedding
-    case birthday(name: String?)
-    case event(title: String?)
-
-    var text: String {
-        switch self {
-        case let .anniversary(years):
-            guard let years else { return String(localized: "us.counters.to.anniversary.plain") }
-            return String(
-                format: String(localized: "us.counters.to.anniversary"),
-                UsCounters.ordinal(years)
-            )
-        case .wedding:
-            return String(localized: "us.counters.to.wedding")
-        case let .birthday(name):
-            guard let name, name.isEmpty == false else {
-                return String(localized: "us.counters.to.birthday.plain")
-            }
-            return String(format: String(localized: "us.counters.to.birthday"), name)
-        case let .event(title):
-            guard let title, title.isEmpty == false else {
-                return String(localized: "us.counters.to.event.plain")
-            }
-            return String(format: String(localized: "us.counters.to.event"), title)
-        }
-    }
-}
-
 struct UsCounters: Equatable {
-    struct NextDate: Equatable {
-        let daysAway: Int
-        let label: UsCounterLabel
-    }
-
     let daysTogether: Int?
-    let next: NextDate?
+    let next: ImportantDate?
 
     static let empty = UsCounters(daysTogether: nil, next: nil)
 
@@ -62,33 +27,6 @@ struct UsCounters: Equatable {
             viewerMemberId: viewerMemberId,
             calendar: calendar
         )
-        guard let next else { return UsCounters(daysTogether: daysTogether, next: nil) }
-        return UsCounters(
-            daysTogether: daysTogether,
-            next: NextDate(daysAway: next.daysAway, label: label(for: next))
-        )
-    }
-
-    static func label(for date: ImportantDate) -> UsCounterLabel {
-        switch date.kind {
-        case .anniversary:
-            return .anniversary(years: date.ordinal)
-        case .wedding:
-            return .wedding
-        case .partnerBirthday:
-            return .birthday(name: date.personName)
-        case .customEvent:
-            return .event(title: date.personName)
-        }
-    }
-
-    static func ordinal(_ value: Int, locale: Locale = .current) -> String {
-        let formatter = NumberFormatter()
-        formatter.locale = locale
-        formatter.numberStyle = .ordinal
-        guard let text = formatter.string(from: NSNumber(value: value)) else {
-            return value.formatted(.number.locale(locale))
-        }
-        return text
+        return UsCounters(daysTogether: daysTogether, next: next)
     }
 }

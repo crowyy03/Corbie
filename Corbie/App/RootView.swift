@@ -154,6 +154,7 @@ private struct UsHubSheet: View {
     }
 }
 
+#if DEBUG
 #Preview("Signed in") {
     RootView()
         .environment(AppState())
@@ -165,3 +166,4 @@ private struct UsHubSheet: View {
         .environment(AppState())
         .environment(AppEnvironment.previewSignedOut())
 }
+#endif

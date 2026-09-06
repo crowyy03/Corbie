@@ -104,14 +104,7 @@ struct CapsuleEditorView: View {
                 .scrollContentBackground(.hidden)
                 .frame(minHeight: 180)
                 .padding(CorbieSpacing.xs)
-                .background(
-                    RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                        .fill(CorbieColorPalette.surface)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                        .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-                )
+                .corbieFieldBox()
                 .accessibilityLabel(Text("capsules.editor.body"))
         }
     }
@@ -140,7 +133,9 @@ struct CapsuleEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     CapsuleEditorView(target: .new) {}
         .environment(AppEnvironment.preview())
 }
+#endif

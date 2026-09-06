@@ -81,11 +81,11 @@ final class PaywallCopyTests: XCTestCase {
     }
 
     func testTheLegalLinksPointAtOurPages() {
-        XCTAssertEqual(PaywallLink.privacy.url?.absoluteString, "https://corbie.app/privacy")
-        XCTAssertEqual(PaywallLink.terms.url?.absoluteString, "https://corbie.app/terms")
-        for link in PaywallLink.allCases {
+        XCTAssertEqual(LegalPage.privacy.url?.absoluteString, "https://corbie.app/privacy")
+        XCTAssertEqual(LegalPage.terms.url?.absoluteString, "https://corbie.app/terms")
+        for link in LegalPage.allCases {
             XCTAssertEqual(link.url?.scheme, "https")
-            XCTAssertNotEqual(PaywallCopy.text(link.titleKey), link.titleKey)
+            XCTAssertNotEqual(PaywallCopy.text(link.paywallTitleKey), link.paywallTitleKey)
         }
     }
 

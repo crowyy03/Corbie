@@ -35,29 +35,4 @@ public enum RecurrenceEngine {
         }
         return nil
     }
-
-    public static func occurrences(
-        recurrence: Recurrence,
-        dueAt: Date?,
-        completedAt: Date,
-        count: Int,
-        calendar: Calendar = .current
-    ) -> [Date] {
-        guard count > 0 else { return [] }
-        var result: [Date] = []
-        var completion = completedAt
-        var due = dueAt
-        while result.count < count {
-            guard let next = nextOccurrence(
-                recurrence: recurrence,
-                dueAt: due,
-                completedAt: completion,
-                calendar: calendar
-            ) else { break }
-            result.append(next)
-            due = next
-            completion = next
-        }
-        return result
-    }
 }

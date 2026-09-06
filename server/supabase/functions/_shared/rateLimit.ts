@@ -1,3 +1,4 @@
+import { sha256Hex } from "./hash.ts";
 import { ApiError } from "./respond.ts";
 import { serviceClient } from "./supabase.ts";
 
@@ -23,9 +24,7 @@ function trimmed(value: string | null): string | null {
 }
 
 async function digest(value: string): Promise<string> {
-  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-  return [...new Uint8Array(bytes)].map((byte) => byte.toString(16).padStart(2, "0")).join("")
-    .slice(0, 32);
+  return (await sha256Hex(value)).slice(0, 32);
 }
 
 export async function clientKey(req: Request): Promise<string> {

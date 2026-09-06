@@ -11,9 +11,9 @@ final class CapsuleOpenViewModel {
 
     @ObservationIgnored private var environment: AppEnvironment?
 
-    init(capsule: CapsuleDTO, viewerMemberId: UUID? = nil) {
+    init(capsule: CapsuleDTO) {
         self.capsule = capsule
-        isBroken = viewerMemberId.map { capsule.openedByMemberIds.contains($0) } ?? false
+        isBroken = false
     }
 
     func attach(_ environment: AppEnvironment) {

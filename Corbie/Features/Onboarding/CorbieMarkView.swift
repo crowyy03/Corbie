@@ -17,6 +17,7 @@ struct CorbieMarkView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack(spacing: CorbieSpacing.xl) {
         CorbieMarkView()
@@ -25,3 +26,4 @@ struct CorbieMarkView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(CorbieColorPalette.bg)
 }
+#endif

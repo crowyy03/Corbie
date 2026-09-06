@@ -42,7 +42,7 @@ final class ListItemEditorViewModel {
         isSearchingPlace = true
     }
 
-    func apply(_ place: PlaceResult) {
+    func apply(_ place: MapPlace) {
         placeName = place.name
         address = place.address
         latitude = place.latitude

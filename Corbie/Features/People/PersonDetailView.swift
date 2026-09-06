@@ -74,7 +74,7 @@ struct PersonDetailView: View {
                 .foregroundStyle(CorbieColorPalette.text)
                 .accessibilityAddTraits(.isHeader)
             if let radar = model.radar {
-                Text(radar.line())
+                Text(radar.text.line())
                     .corbieMono()
                     .foregroundStyle(CorbieColorPalette.ice)
             }
@@ -247,9 +247,11 @@ private struct GiftIdeaRow: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         PersonDetailView(personId: UUID())
     }
     .environment(AppEnvironment.preview())
 }
+#endif

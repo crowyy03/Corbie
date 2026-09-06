@@ -109,6 +109,11 @@ final class AppEnvironment {
     var isPaired: Bool { partner != nil }
 
     func bootstrap() async {
+        do {
+            try persistence.stack.initializeCloudKitSchemaIfRequested()
+        } catch {
+            report(error)
+        }
         IntentPersistence.shared.use(controller: persistence, identity: identity)
         WidgetReloader.shared.start()
         await analytics.start()
@@ -125,7 +130,7 @@ final class AppEnvironment {
         }
         do {
             guard let member = try await repositories.members.member(appleUserId: appleUserID),
-                  let space = try resolveSpace(memberId: member.id)
+                  let space = try await repositories.spaces.currentSpace(memberId: member.id)
             else {
                 session = .signedOut
                 premiumGate.update(.readOnly)
@@ -166,10 +171,6 @@ final class AppEnvironment {
         }
         let token = try await sessionService.exchange(appleIdentityToken: identityToken)
         try secrets.setString(token.token, for: Self.sessionTokenKey)
-    }
-
-    func existingSpace() throws -> SpaceDTO? {
-        try sharing.currentSpace(in: persistence.viewContext).map(SpaceDTO.init)
     }
 
     func signOut() {
@@ -263,14 +264,9 @@ final class AppEnvironment {
         toasts.show(message: error.localizedDescription)
     }
 
-    private func resolveSpace(memberId: UUID) throws -> SpaceDTO? {
-        guard let space = try sharing.currentSpace(in: persistence.viewContext, currentMemberId: memberId) else {
-            return nil
-        }
-        return SpaceDTO(space)
-    }
 }
 
+#if DEBUG
 extension AppEnvironment {
     static func preview() -> AppEnvironment {
         AppEnvironment(
@@ -314,3 +310,4 @@ extension AppEnvironment {
         return environment
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if DEBUG
 import CorbieCore
 import Foundation
 
@@ -37,3 +38,4 @@ struct PreviewNotificationClient: NotificationCenterClient {
     func add(_ request: CorbieNotificationRequest) async throws {}
     func removePending(identifiers: [String]) async {}
 }
+#endif

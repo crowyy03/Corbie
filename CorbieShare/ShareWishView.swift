@@ -106,6 +106,8 @@ struct ShareWishView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ShareWishView(items: [], onFinish: {})
 }
+#endif

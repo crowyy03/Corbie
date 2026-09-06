@@ -6,8 +6,6 @@ import Observation
 @MainActor
 @Observable
 final class EventDetailViewModel {
-    static let writeOnlyUsageDescriptionKey = "NSCalendarsWriteOnlyAccessUsageDescription"
-
     private(set) var event: EventDTO?
     private(set) var comments: [EventCommentDTO] = []
     private(set) var person: PersonDTO?
@@ -76,6 +74,7 @@ final class EventDetailViewModel {
     func delete(_ environment: AppEnvironment) async {
         do {
             await environment.notifications.cancelEventReminders(eventId: eventId)
+            await environment.notifications.cancelEventDigest(eventId: eventId)
             try await environment.repositories.events.delete(id: eventId)
             isDeleted = true
         } catch {
@@ -83,16 +82,11 @@ final class EventDetailViewModel {
         }
     }
 
-    var canRequestSystemCalendarAccess: Bool {
-        Bundle.main.object(forInfoDictionaryKey: Self.writeOnlyUsageDescriptionKey) != nil
-    }
-
     func requestSystemCalendarAccess() async -> Bool {
         switch EKEventStore.authorizationStatus(for: .event) {
         case .fullAccess, .writeOnly:
             return true
         case .notDetermined:
-            guard canRequestSystemCalendarAccess else { return false }
             return (try? await systemStore.requestWriteOnlyAccessToEvents()) ?? false
         default:
             return false

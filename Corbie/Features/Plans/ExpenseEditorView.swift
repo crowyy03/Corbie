@@ -50,9 +50,11 @@ struct ExpenseEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ExpenseEditorView(
         plan: PlanDTO(id: UUID(), title: "Lisbon in October", type: .trip, targetAmount: 5000, currency: "USD")
     )
     .environment(AppEnvironment.preview())
 }
+#endif

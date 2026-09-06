@@ -30,15 +30,29 @@ public struct CoreDataSpaceRepository: SpaceRepository {
         }
     }
 
-    public func firstSpace() async throws -> SpaceDTO? {
-        try await access.read { context in
+    public func currentSpace(memberId: UUID?) async throws -> SpaceDTO? {
+        let shared = access.stack.store(for: .sharedStore)
+        let sharedIdentifier = shared === access.stack.store(for: .privateStore) ? nil : shared?.identifier
+        return try await access.read { context in
             let spaces: [Space] = try ManagedFetch.all(
                 Space.entityName,
                 sort: [NSSortDescriptor(key: "createdAt", ascending: true)],
                 in: context
             )
-            let paired = spaces.first { $0.members.count >= 2 }
-            return (paired ?? spaces.first).map(SpaceDTO.init)
+            let joined = spaces.filter { space in
+                guard let sharedIdentifier else { return false }
+                return space.objectID.persistentStore?.identifier == sharedIdentifier
+            }
+            if let memberId,
+               let mine = joined.first(where: { space in space.members.contains { $0.id == memberId } }) {
+                return SpaceDTO(mine)
+            }
+            if let first = joined.first { return SpaceDTO(first) }
+            if let paired = spaces.first(where: { $0.members.count >= 2 }) { return SpaceDTO(paired) }
+            if let memberId, let owned = spaces.first(where: { $0.creatorMemberId == memberId }) {
+                return SpaceDTO(owned)
+            }
+            return spaces.first.map(SpaceDTO.init)
         }
     }
 

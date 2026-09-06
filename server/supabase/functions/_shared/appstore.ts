@@ -1,3 +1,5 @@
+import { sha256Hex } from "./hash.ts";
+
 export type EntitlementStatus = "none" | "active" | "grace" | "expired" | "revoked";
 
 export interface NotificationPayload {
@@ -107,11 +109,7 @@ export function normalizeEnvironment(raw: string | undefined): "Sandbox" | "Prod
   return null;
 }
 
-export async function payerHash(originalTransactionId: string | undefined): Promise<string | null> {
-  if (!originalTransactionId) return null;
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(`corbie:${originalTransactionId}`),
-  );
-  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+export function payerHash(originalTransactionId: string | undefined): Promise<string | null> {
+  if (!originalTransactionId) return Promise.resolve(null);
+  return sha256Hex(`corbie:${originalTransactionId}`);
 }

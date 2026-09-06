@@ -1,5 +1,5 @@
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
-import { ApiError, errorResponse, json, requireMethod } from "../_shared/respond.ts";
+import { ApiError, json, requireMethod, serve } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
 const cacheTtlMs = 12 * 60 * 60 * 1000;
@@ -86,10 +86,4 @@ async function handle(req: Request): Promise<Response> {
   return json({ base, date, rates });
 }
 
-Deno.serve(async (req) => {
-  try {
-    return await handle(req);
-  } catch (cause) {
-    return errorResponse(cause);
-  }
-});
+serve(handle);

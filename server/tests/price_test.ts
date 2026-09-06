@@ -41,6 +41,8 @@ Deno.test("detects currency from symbol or code", () => {
   assertEquals(detectCurrency("1.299,00 EUR"), "EUR");
   assertEquals(detectCurrency("129,00 zł"), "PLN");
   assertEquals(detectCurrency("19.99"), null);
+  assertEquals(detectCurrency("299 kr"), null);
+  assertEquals(detectCurrency("299 SEK"), "SEK");
 });
 
 Deno.test("a currency code glued to the amount is still detected", () => {

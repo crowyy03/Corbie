@@ -14,13 +14,13 @@ final class PersistentHistoryObserver: @unchecked Sendable {
     private var observer: (any NSObjectProtocol)?
     private var handler: (@Sendable ([RemoteChangeRecord]) -> Void)?
 
-    init(container: NSPersistentContainer, author: TransactionAuthor, defaults: UserDefaults? = nil) {
+    init(container: NSPersistentContainer, author: TransactionAuthor, defaults: UserDefaults = .corbieShared) {
         self.container = container
         self.author = author
-        self.defaults = defaults ?? UserDefaults(suiteName: CorbieIdentifiers.appGroup) ?? .standard
+        self.defaults = defaults
     }
 
-    var tokenKey: String { "history.token." + author.rawValue }
+    var tokenKey: String { StoreReset.historyTokenKey(author: author) }
 
     var storedToken: NSPersistentHistoryToken? {
         guard let data = defaults.data(forKey: tokenKey) else { return nil }

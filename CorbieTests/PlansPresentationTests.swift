@@ -40,7 +40,7 @@ final class PlansPresentationTests: XCTestCase {
         XCTAssertEqual(totals.overspend, 340, accuracy: 0.0001)
         XCTAssertEqual(totals.overspendFraction, 0.068, accuracy: 0.0001)
         XCTAssertEqual(totals.left, 0)
-        XCTAssertEqual(totals.overspendBadge(locale: usd), "+$340.00")
+        XCTAssertEqual(totals.overspendBadge(locale: usd), "+$340")
     }
 
     func testLeftNeverGoesBelowZeroAndTargetlessPlanHasNoProgress() {
@@ -56,7 +56,7 @@ final class PlansPresentationTests: XCTestCase {
 
     func testSavedOfTargetReadsAsMoneyInThePlanCurrency() {
         let totals = PlanTotals(plan: plan(target: 5000, saved: 2400, spent: 0))
-        XCTAssertEqual(totals.savedOfTarget(locale: usd), "$2,400.00 of $5,000.00")
+        XCTAssertEqual(totals.savedOfTarget(locale: usd), "$2,400 of $5,000")
     }
 
     func testPlanTypesCarryTheirOwnIconAndKey() {

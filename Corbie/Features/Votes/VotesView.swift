@@ -107,6 +107,7 @@ struct VotesView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         VotesView()
@@ -114,3 +115,4 @@ struct VotesView: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif

@@ -175,7 +175,7 @@ import Testing
     @Test func moneyFormatsWithTheGivenLocale() {
         let dollars = Money(amount: Decimal(string: "2400") ?? 0, currency: "usd")
         #expect(dollars.currency == "USD")
-        #expect(dollars.formatted(locale: Locale(identifier: "en_US")) == "$2,400.00")
+        #expect(dollars.formatted(locale: Locale(identifier: "en_US")) == "$2,400")
         #expect(dollars.doubleAmount == 2400)
 
         let euros = Money(amount: 91.5, currency: "EUR")

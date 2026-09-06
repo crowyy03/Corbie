@@ -131,7 +131,9 @@ private struct PreviewEventStoreClient: EventStoreClient {
     func events(calendarIds: [String], from: Date, to: Date) async throws -> [ImportedEvent] { [] }
 }
 
+#if DEBUG
 #Preview {
     CalendarImportView(client: PreviewEventStoreClient())
         .environment(AppEnvironment.preview())
 }
+#endif

@@ -139,6 +139,7 @@ struct PlansView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         PlansView()
@@ -146,3 +147,4 @@ struct PlansView: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif

@@ -12,8 +12,4 @@ public enum WidgetTimelineDates {
         }
         return date.addingTimeInterval(dayInterval)
     }
-
-    public static func entryDates(now: Date, calendar: Calendar = .current) -> [Date] {
-        [now, nextMidnight(after: now, calendar: calendar)]
-    }
 }

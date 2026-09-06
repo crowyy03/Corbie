@@ -86,40 +86,6 @@ public final class CloudKitSharing {
         }
     }
 
-    public nonisolated func currentSpace(
-        in context: NSManagedObjectContext,
-        currentMemberId: UUID? = nil
-    ) throws -> Space? {
-        let sharedIdentifier = sharedStore()?.identifier
-        return try context.performAndWait {
-            let request = NSFetchRequest<Space>(entityName: Space.entityName)
-            request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-            let spaces: [Space]
-            do {
-                spaces = try context.fetch(request)
-            } catch {
-                throw CorbieError.persistence(error.localizedDescription)
-            }
-            let joined = spaces.filter { space in
-                guard let sharedIdentifier else { return false }
-                return space.objectID.persistentStore?.identifier == sharedIdentifier
-            }
-            if let currentMemberId,
-               let mine = joined.first(where: { space in
-                   space.members.contains { $0.id == currentMemberId }
-               }) {
-                return mine
-            }
-            if let first = joined.first { return first }
-            if let paired = spaces.first(where: { $0.members.count >= 2 }) { return paired }
-            if let currentMemberId,
-               let owned = spaces.first(where: { $0.creatorMemberId == currentMemberId }) {
-                return owned
-            }
-            return spaces.first
-        }
-    }
-
     public func leave(space spaceId: UUID) async throws {
         let container = try cloudKitContainer()
         guard let shared = sharedStore() else {

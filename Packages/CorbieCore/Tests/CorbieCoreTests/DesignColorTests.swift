@@ -62,12 +62,6 @@ import Testing
         }
     }
 
-    @Test func namespacedAccessResolvesToTheSameTokens() {
-        #expect(Color.corbie.bg == CorbieColorPalette.bg)
-        #expect(CorbieColor.ice == CorbieColorPalette.ice)
-        #expect(Color.corbie.partnerPalette == MemberColorKey.allCases)
-    }
-
     @Test func memberColorResolvesStoredKey() {
         #expect(MemberColor(key: "p4").key == .p4)
         #expect(MemberColor(key: "p9").key == MemberColorKey.defaultA)

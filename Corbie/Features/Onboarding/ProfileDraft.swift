@@ -49,23 +49,12 @@ struct ProfileDraft: Equatable {
         let today = calendar.dateComponents([.month, .day], from: Date())
         birthdayMonth = birthdayMonth ?? today.month ?? 1
         birthdayDay = birthdayDay ?? today.day ?? 1
-        clampBirthdayDay(calendar: calendar)
+        clampBirthdayDay()
     }
 
-    mutating func clampBirthdayDay(calendar: Calendar = .current) {
+    mutating func clampBirthdayDay() {
         guard let month = birthdayMonth, let day = birthdayDay else { return }
-        birthdayDay = min(day, ProfileDraft.dayCount(inMonth: month, calendar: calendar))
-    }
-
-    static func dayCount(inMonth month: Int, calendar: Calendar = .current) -> Int {
-        var components = DateComponents()
-        components.year = 2000
-        components.month = month
-        components.day = 1
-        guard let date = calendar.date(from: components),
-              let range = calendar.range(of: .day, in: .month, for: date)
-        else { return 31 }
-        return range.count
+        birthdayDay = PersonBirthday.clampDay(day, month: month)
     }
 
     static func from(member: MemberDTO?, space: SpaceDTO?, appleName: String?) -> ProfileDraft {

@@ -174,9 +174,11 @@ struct ListDetailView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         ListDetailView(listId: UUID())
     }
     .environment(AppEnvironment.preview())
 }
+#endif

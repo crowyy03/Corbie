@@ -119,7 +119,6 @@ public struct DaysTogetherSnapshot: Sendable, Codable, Equatable {
 }
 
 public struct CountdownSnapshot: Sendable, Codable, Equatable {
-    public let source: CountdownSource
     public let kind: ImportantDateKind?
     public let title: String?
     public let date: Date?
@@ -128,7 +127,6 @@ public struct CountdownSnapshot: Sendable, Codable, Equatable {
     public let isPremium: Bool
 
     public init(
-        source: CountdownSource,
         kind: ImportantDateKind?,
         title: String?,
         date: Date?,
@@ -136,7 +134,6 @@ public struct CountdownSnapshot: Sendable, Codable, Equatable {
         ordinal: Int?,
         isPremium: Bool
     ) {
-        self.source = source
         self.kind = kind
         self.title = title
         self.date = date
@@ -338,22 +335,6 @@ public enum WidgetPremiumRule {
         guard space.subscriptionStatus == .active else { return false }
         guard let expiresAt = space.subscriptionExpiresAt else { return true }
         return expiresAt > now
-    }
-}
-
-public enum WidgetAmountText {
-    public static func string(amount: Double?, currency: String?, locale: Locale = .current) -> String? {
-        guard let amount else { return nil }
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = locale
-        if let currency, currency.isEmpty == false {
-            formatter.currencyCode = currency
-        }
-        let hasCents = amount.rounded() != amount
-        formatter.minimumFractionDigits = hasCents ? 2 : 0
-        formatter.maximumFractionDigits = hasCents ? 2 : 0
-        return formatter.string(from: NSNumber(value: amount))
     }
 }
 

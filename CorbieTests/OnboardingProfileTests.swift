@@ -39,17 +39,11 @@ final class OnboardingProfileTests: XCTestCase {
         XCTAssertEqual(draft.trimmedName, "Sofia")
     }
 
-    func testBirthdayDayCountFollowsTheMonth() {
-        XCTAssertEqual(ProfileDraft.dayCount(inMonth: 1, calendar: .gregorian), 31)
-        XCTAssertEqual(ProfileDraft.dayCount(inMonth: 2, calendar: .gregorian), 29)
-        XCTAssertEqual(ProfileDraft.dayCount(inMonth: 4, calendar: .gregorian), 30)
-    }
-
     func testBirthdayDayIsClampedToTheMonth() {
         var draft = ProfileDraft()
         draft.birthdayMonth = 2
         draft.birthdayDay = 31
-        draft.clampBirthdayDay(calendar: .gregorian)
+        draft.clampBirthdayDay()
 
         XCTAssertEqual(draft.birthdayDay, 29)
     }

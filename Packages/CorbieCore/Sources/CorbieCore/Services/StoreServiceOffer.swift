@@ -4,8 +4,6 @@ public enum CorbieProduct: String, Sendable, Equatable, CaseIterable, Codable {
     case monthly = "app.corbie.monthly"
     case yearly = "app.corbie.yearly"
 
-    public static let subscriptionGroup = "Corbie Premium"
-
     public static let identifiers = CorbieProduct.allCases.map(\.rawValue)
 
     public init?(identifier: String) {

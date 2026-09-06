@@ -7,7 +7,6 @@ public struct ParsedLink: Sendable, Equatable {
     public let price: Double?
     public let currency: String?
     public let imageURL: URL?
-    public let author: String?
     public let imageData: Data?
 
     public init(
@@ -17,7 +16,6 @@ public struct ParsedLink: Sendable, Equatable {
         price: Double? = nil,
         currency: String? = nil,
         imageURL: URL? = nil,
-        author: String? = nil,
         imageData: Data? = nil
     ) {
         self.canonicalURL = canonicalURL
@@ -26,11 +24,8 @@ public struct ParsedLink: Sendable, Equatable {
         self.price = price
         self.currency = currency
         self.imageURL = imageURL
-        self.author = author
         self.imageData = imageData
     }
-
-    public var needsManualEntry: Bool { title == nil || price == nil }
 }
 
 public struct LinkParser: Sendable {
@@ -75,7 +70,6 @@ public struct LinkParser: Sendable {
                 price: payload.price,
                 currency: LinkParser.trimmed(payload.currency)?.uppercased(),
                 imageURL: imageURL,
-                author: LinkParser.trimmed(payload.author),
                 imageData: imageData
             )
         }

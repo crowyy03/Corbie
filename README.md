@@ -45,6 +45,8 @@ user-facing literal instead of a String Catalog key, or when a hex color appears
 cd server && supabase start
 ```
 
+`server/API.md` is the request and response contract for the Supabase functions.
+
 ## Targets
 
 | Target | Bundle id | Notes |

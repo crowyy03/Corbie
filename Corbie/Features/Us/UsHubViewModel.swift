@@ -9,13 +9,11 @@ final class UsHubViewModel {
     private(set) var peopleCount = 0
     private(set) var capsuleCount = 0
     private(set) var voteCount = 0
-    private(set) var isLoading = true
 
     @ObservationIgnored private var environment: AppEnvironment?
 
     func load(_ environment: AppEnvironment, now: Date = Date()) async {
         self.environment = environment
-        defer { isLoading = false }
         guard let space = environment.space else {
             counters = .empty
             return

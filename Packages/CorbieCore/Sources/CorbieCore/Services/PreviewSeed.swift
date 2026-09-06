@@ -1,3 +1,4 @@
+#if DEBUG
 import Foundation
 import os
 
@@ -420,3 +421,4 @@ extension PreviewSeed {
         log.error("preview seed failed: \(error.localizedDescription, privacy: .public)")
     }
 }
+#endif

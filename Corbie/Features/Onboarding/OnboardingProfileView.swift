@@ -4,8 +4,6 @@ import SwiftUI
 struct OnboardingProfileView: View {
     @Bindable var model: OnboardingViewModel
 
-    private let swatchSize: CGFloat = 28
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: CorbieSpacing.xl) {
@@ -41,36 +39,8 @@ struct OnboardingProfileView: View {
             label: String(localized: "onboarding.profile.color.label"),
             hint: String(localized: "onboarding.profile.color.hint")
         ) {
-            HStack(spacing: CorbieSpacing.xs) {
-                ForEach(CorbieColorPalette.partnerPalette) { key in
-                    swatch(key)
-                }
-            }
+            MemberColorPicker(selection: $model.profile.colorKey)
         }
-    }
-
-    private func swatch(_ key: MemberColorKey) -> some View {
-        let isSelected = model.profile.colorKey == key
-        return Button {
-            model.profile.colorKey = key
-        } label: {
-            Circle()
-                .fill(key.color)
-                .frame(width: swatchSize, height: swatchSize)
-                .overlay {
-                    Circle()
-                        .strokeBorder(
-                            isSelected ? CorbieColorPalette.ice : .clear,
-                            lineWidth: CorbieMetrics.hairline * 2
-                        )
-                        .padding(-CorbieSpacing.xxs)
-                }
-                .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
-                .contentShape(Circle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(colorName(key))
-        .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
     }
 
     private var togetherRow: some View {
@@ -108,43 +78,13 @@ struct OnboardingProfileView: View {
             label: String(localized: "onboarding.profile.birthday.label"),
             hint: String(localized: "onboarding.profile.birthday.hint")
         ) {
-            VStack(alignment: .leading, spacing: CorbieSpacing.s) {
-                Toggle(isOn: birthdayEnabled) {
-                    Text("onboarding.profile.birthday.toggle")
-                        .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
-                }
-                .tint(CorbieColorPalette.ice)
-
-                if model.profile.hasBirthday {
-                    HStack(spacing: CorbieSpacing.m) {
-                        Picker(selection: birthdayMonth) {
-                            ForEach(1 ... 12, id: \.self) { month in
-                                Text(verbatim: monthName(month)).tag(month)
-                            }
-                        } label: {
-                            Text("onboarding.profile.birthday.month")
-                        }
-                        .pickerStyle(.menu)
-                        .tint(CorbieColorPalette.ice)
-
-                        Picker(selection: birthdayDay) {
-                            ForEach(1 ... dayCount, id: \.self) { day in
-                                Text(verbatim: day.formatted()).tag(day)
-                            }
-                        } label: {
-                            Text("onboarding.profile.birthday.day")
-                        }
-                        .pickerStyle(.menu)
-                        .tint(CorbieColorPalette.ice)
-                    }
-                }
-            }
+            ProfileBirthdayPicker(
+                profile: $model.profile,
+                toggleTitle: String(localized: "onboarding.profile.birthday.toggle"),
+                monthLabel: String(localized: "onboarding.profile.birthday.month"),
+                dayLabel: String(localized: "onboarding.profile.birthday.day")
+            )
         }
-    }
-
-    private var dayCount: Int {
-        ProfileDraft.dayCount(inMonth: model.profile.birthdayMonth ?? 1)
     }
 
     private var togetherEnabled: Binding<Bool> {
@@ -162,50 +102,11 @@ struct OnboardingProfileView: View {
             set: { model.profile.togetherSince = $0 }
         )
     }
-
-    private var birthdayEnabled: Binding<Bool> {
-        Binding(
-            get: { model.profile.hasBirthday },
-            set: { isOn in model.profile.setBirthday(enabled: isOn) }
-        )
-    }
-
-    private var birthdayMonth: Binding<Int> {
-        Binding(
-            get: { model.profile.birthdayMonth ?? 1 },
-            set: { month in
-                model.profile.birthdayMonth = month
-                model.profile.clampBirthdayDay()
-            }
-        )
-    }
-
-    private var birthdayDay: Binding<Int> {
-        Binding(
-            get: { model.profile.birthdayDay ?? 1 },
-            set: { model.profile.birthdayDay = $0 }
-        )
-    }
-
-    private func monthName(_ month: Int) -> String {
-        let symbols = Calendar.current.standaloneMonthSymbols
-        guard symbols.indices.contains(month - 1) else { return month.formatted() }
-        return symbols[month - 1]
-    }
-
-    private func colorName(_ key: MemberColorKey) -> String {
-        switch key {
-        case .p1: return String(localized: "onboarding.profile.color.p1")
-        case .p2: return String(localized: "onboarding.profile.color.p2")
-        case .p3: return String(localized: "onboarding.profile.color.p3")
-        case .p4: return String(localized: "onboarding.profile.color.p4")
-        case .p5: return String(localized: "onboarding.profile.color.p5")
-        case .p6: return String(localized: "onboarding.profile.color.p6")
-        }
-    }
 }
 
+#if DEBUG
 #Preview {
     OnboardingProfileView(model: OnboardingViewModel(environment: .preview(), appState: AppState()))
         .background(CorbieColorPalette.bg)
 }
+#endif

@@ -54,7 +54,7 @@ import Testing
         let trial = gate(.trial(daysLeft: 2), analytics: analytics)
         #expect(trial.isPremium)
         #expect(trial.trialDaysLeft == 2)
-        #expect(trial.isTrialEndingSoon)
+        #expect(trial.state.isTrialEndingSoon)
         for action in PremiumAction.allCases {
             #expect(trial.require(action))
         }
@@ -66,7 +66,7 @@ import Testing
         let analytics = RecordingAnalytics()
         let active = gate(.active(source: .server, expiresAt: nil), analytics: analytics)
         #expect(active.isPremium)
-        #expect(active.isTrialEndingSoon == false)
+        #expect(active.state.isTrialEndingSoon == false)
         #expect(active.require(.capsules))
         #expect(analytics.events.isEmpty)
 

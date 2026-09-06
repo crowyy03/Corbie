@@ -39,10 +39,10 @@ import Testing
     }
 
     @Test func ordinalsFollowTheLocale() {
-        #expect(WidgetDateLabel.ordinalText(1, locale: locale) == "1st")
-        #expect(WidgetDateLabel.ordinalText(2, locale: locale) == "2nd")
-        #expect(WidgetDateLabel.ordinalText(3, locale: locale) == "3rd")
-        #expect(WidgetDateLabel.ordinalText(11, locale: locale) == "11th")
+        #expect(ImportantDateText.ordinalText(1, locale: locale) == "1st")
+        #expect(ImportantDateText.ordinalText(2, locale: locale) == "2nd")
+        #expect(ImportantDateText.ordinalText(3, locale: locale) == "3rd")
+        #expect(ImportantDateText.ordinalText(11, locale: locale) == "11th")
     }
 
     @Test func aShortDateDropsTheYearInsideThisYear() {
@@ -62,9 +62,11 @@ import Testing
         #expect(WidgetDateKind(.personBirthday) == .personBirthday)
     }
 
-    @Test func amountsFallBackToTheLocaleCurrencyWithoutACode() {
-        #expect(WidgetAmountText.string(amount: nil, currency: "USD", locale: locale) == nil)
-        #expect(WidgetAmountText.string(amount: 2400, currency: "USD", locale: locale) == "$2,400")
-        #expect(WidgetAmountText.string(amount: 12.5, currency: "USD", locale: locale) == "$12.50")
+    @Test func aPriceWithoutAUsableCurrencyCodeHasNoText() {
+        #expect(Money.make(amount: 48, currency: nil) == nil)
+        #expect(Money.make(amount: 48, currency: "") == nil)
+        #expect(Money.make(amount: 48, currency: "dollars") == nil)
+        #expect(Money.make(amount: nil, currency: "USD") == nil)
+        #expect(Money.make(amount: 48, currency: " usd ")?.formatted(locale: locale) == "$48")
     }
 }

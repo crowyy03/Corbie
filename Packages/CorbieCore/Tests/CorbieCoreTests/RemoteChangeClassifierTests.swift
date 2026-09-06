@@ -160,6 +160,19 @@ import Testing
         #expect(await center.requests.count == 1)
     }
 
+    @Test func aDeliveryTheNotificationCentreRefusesIsReportedAsAFailure() async throws {
+        let center = FakeNotificationCenter(addFailure: CorbieError.persistence("notification centre is busy"))
+        let scheduler = NotificationScheduler(client: center)
+        let task = TaskDTO(id: UUID(), title: "Book the table", assigneeMemberId: me, createdByMemberId: partner)
+        let alert = try #require(
+            RemoteChangeClassifier.alert(for: RemoteChange(type: .insert, subject: .task(task)), viewer: viewer)
+        )
+        await #expect(throws: CorbieError.persistence("notification centre is busy")) {
+            _ = try await scheduler.deliver(alert, prefs: .allEnabled)
+        }
+        #expect(await center.requests.isEmpty)
+    }
+
     @Test func aChangeWrittenByThisDeviceIsNotTreatedAsRemote() {
         let uri = URL(fileURLWithPath: "/dev/null")
         let local = RemoteChangeRecord(

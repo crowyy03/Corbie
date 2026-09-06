@@ -130,6 +130,7 @@ struct WishCardView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack(spacing: CorbieSpacing.m) {
         WishCardView(
@@ -157,3 +158,4 @@ struct WishCardView: View {
     .frame(maxHeight: .infinity)
     .background(CorbieColorPalette.bg)
 }
+#endif

@@ -80,9 +80,4 @@ public struct EventDTO: Sendable, Codable, Identifiable, Equatable {
     }
 
     public var hasLocation: Bool { latitude != nil && longitude != nil }
-
-    public func isMultiDay(calendar: Calendar = .current) -> Bool {
-        guard let startAt, let endAt else { return false }
-        return calendar.isDate(startAt, inSameDayAs: endAt) == false
-    }
 }

@@ -10,13 +10,6 @@ public enum CorbieFont {
 
     public static let screenTitleTracking: CGFloat = -0.4
     public static let sectionCapsTracking: CGFloat = 1.2
-
-    public static let screenTitle = Font.system(size: screenTitleSize, weight: .bold, design: .default)
-    public static let sectionCaps = Font.system(size: sectionCapsSize, weight: .semibold, design: .monospaced)
-    public static let body = Font.system(size: bodySize, weight: .regular, design: .default)
-    public static let caption = Font.system(size: captionSize, weight: .regular, design: .default)
-    public static let mono = Font.system(size: monoSize, weight: .regular, design: .monospaced)
-    public static let counter = Font.system(size: counterSize, weight: .heavy, design: .rounded).monospacedDigit()
 }
 
 struct CorbieScreenTitleStyle: ViewModifier {

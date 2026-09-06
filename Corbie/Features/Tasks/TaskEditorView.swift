@@ -87,14 +87,7 @@ struct TaskEditorView: View {
                         .foregroundStyle(CorbieColorPalette.text)
                         .padding(CorbieSpacing.s)
                         .frame(minHeight: CorbieMetrics.controlHeight, alignment: .top)
-                        .background(
-                            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                                .fill(CorbieColorPalette.surface)
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                                .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-                        )
+                        .corbieFieldBox()
                         .accessibilityLabel(Text("tasks.editor.field.note"))
                     }
 

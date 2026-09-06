@@ -117,6 +117,7 @@ struct JoinSheet: View {
     }
 }
 
+#if DEBUG
 #Preview {
     JoinView(
         environment: .preview(),
@@ -127,3 +128,4 @@ struct JoinSheet: View {
         onCancel: {}
     )
 }
+#endif

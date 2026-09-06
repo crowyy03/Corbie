@@ -21,7 +21,7 @@ public struct CountdownConfigurationIntent: WidgetConfigurationIntent {
         self.event = event
     }
 
-    public var countdownSource: CountdownSource {
+    public var countdownSource: CountdownSource? {
         switch source {
         case .anniversary:
             return .anniversary
@@ -30,8 +30,7 @@ public struct CountdownConfigurationIntent: WidgetConfigurationIntent {
         case .partnerBirthday:
             return .partnerBirthday
         case .customEvent:
-            guard let event else { return .anniversary }
-            return .customEvent(event.id)
+            return event.map { .customEvent($0.id) }
         }
     }
 }

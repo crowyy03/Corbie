@@ -5,12 +5,10 @@ enum PaywallBannerState: Equatable {
     case trialEnding(daysLeft: Int)
     case readOnly
 
-    static let noticeDays = PremiumGate.trialNoticeDays
-
     static func make(_ state: EntitlementState) -> PaywallBannerState? {
         switch state {
         case let .trial(daysLeft):
-            return daysLeft <= noticeDays ? .trialEnding(daysLeft: daysLeft) : nil
+            return state.isTrialEndingSoon ? .trialEnding(daysLeft: daysLeft) : nil
         case .readOnly:
             return .readOnly
         case .active, .grace:
@@ -18,10 +16,10 @@ enum PaywallBannerState: Equatable {
         }
     }
 
-    var daysLeft: Int {
+    var daysLeft: Int? {
         switch self {
         case let .trialEnding(daysLeft): return daysLeft
-        case .readOnly: return 0
+        case .readOnly: return nil
         }
     }
 

@@ -108,7 +108,6 @@ public struct APIError: Error, Sendable, Equatable {
     public var isNotFound: Bool { status == 404 || code == .notFound }
     public var isExpired: Bool { code == .expired }
     public var isRedeemed: Bool { code == .redeemed }
-    public var isMethodNotAllowed: Bool { status == 405 }
 
     public var corbieError: CorbieError {
         switch kind {
@@ -182,7 +181,6 @@ public struct ParsedLinkPayload: Sendable, Equatable, Codable {
     public let price: Double?
     public let currency: String?
     public let imageURL: String?
-    public let author: String?
 
     public init(
         canonicalURL: String,
@@ -190,8 +188,7 @@ public struct ParsedLinkPayload: Sendable, Equatable, Codable {
         title: String? = nil,
         price: Double? = nil,
         currency: String? = nil,
-        imageURL: String? = nil,
-        author: String? = nil
+        imageURL: String? = nil
     ) {
         self.canonicalURL = canonicalURL
         self.source = source
@@ -199,7 +196,6 @@ public struct ParsedLinkPayload: Sendable, Equatable, Codable {
         self.price = price
         self.currency = currency
         self.imageURL = imageURL
-        self.author = author
     }
 
     public var canonicalLink: URL? { URL(string: canonicalURL) }

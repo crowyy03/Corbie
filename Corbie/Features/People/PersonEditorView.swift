@@ -156,20 +156,15 @@ struct PersonEditorView: View {
             .padding(.horizontal, CorbieSpacing.s)
             .padding(.vertical, CorbieSpacing.xs)
             .frame(minHeight: CorbieMetrics.minimumTapTarget, alignment: .topLeading)
-            .background(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-            )
+            .corbieFieldBox()
             .accessibilityLabel(Text("people.editor.note"))
         }
     }
 }
 
+#if DEBUG
 #Preview {
     PersonEditorView(mode: .new)
         .environment(AppEnvironment.preview())
 }
+#endif

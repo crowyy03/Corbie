@@ -8,7 +8,6 @@ final class WishesViewModel {
     private(set) var active: [WishDTO] = []
     private(set) var fulfilled: [WishDTO] = []
     private(set) var rates: [String: FXRates] = [:]
-    private(set) var isLoading = false
     var filter: WishesFilter = .me
     var isFulfilledExpanded = false
 
@@ -67,8 +66,6 @@ final class WishesViewModel {
 
     func load() async {
         guard let environment, let space = environment.space else { return }
-        isLoading = true
-        defer { isLoading = false }
         do {
             let stored = try await environment.repositories.wishes.wishes(
                 WishQuery(spaceId: space.id, owner: .any, fulfilled: nil)

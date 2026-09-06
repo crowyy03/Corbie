@@ -40,7 +40,7 @@ find server/supabase server/tests -type f \( -name '*.ts' -o -name '*.sql' \) ! 
 SH
 )"
 report "em dash or arrow glyphs" sh -c "$(cat <<'SH'
-grep -rnE '—|→|←|⇒' Corbie CorbieWidgets CorbieShare CorbieTests CorbieUITests Packages/CorbieCore/Sources Packages/CorbieCore/Tests server/supabase server/tests docs/DECISIONS.md docs/API.md README.md project.yml --include='*.swift' --include='*.ts' --include='*.sql' --include='*.md' --include='*.yml' --include='*.xcstrings'
+grep -rnE '—|→|←|⇒' Corbie CorbieWidgets CorbieShare CorbieTests CorbieUITests Packages/CorbieCore/Sources Packages/CorbieCore/Tests server/supabase server/tests docs/DECISIONS.md README.md project.yml --include='*.swift' --include='*.ts' --include='*.sql' --include='*.md' --include='*.yml' --include='*.xcstrings'
 SH
 )"
 report "todo, fixme, mark, step markers" sh -c "$(cat <<'SH'

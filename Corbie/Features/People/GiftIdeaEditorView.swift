@@ -94,14 +94,7 @@ struct GiftIdeaEditorView: View {
             }
             .padding(.horizontal, CorbieSpacing.s)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
-            .background(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-            )
+            .corbieFieldBox()
             .onChange(of: isEditingLink) {
                 guard isEditingLink == false else { return }
                 Task { await model.parseLinkIfNeeded() }
@@ -121,14 +114,7 @@ struct GiftIdeaEditorView: View {
                     .keyboardType(.decimalPad)
                     .padding(.horizontal, CorbieSpacing.s)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)
-                    .background(
-                        RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                            .fill(CorbieColorPalette.surface)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                            .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-                    )
+                    .corbieFieldBox()
                     .accessibilityLabel(Text("people.gift.price"))
 
                 Picker(selection: $model.currency) {
@@ -148,7 +134,9 @@ struct GiftIdeaEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     GiftIdeaEditorView(personId: UUID(), mode: .new)
         .environment(AppEnvironment.preview())
 }
+#endif

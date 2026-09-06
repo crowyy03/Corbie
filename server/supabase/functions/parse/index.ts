@@ -1,14 +1,10 @@
 import { canonicalizeUrl, parseLink, type ParseResult } from "../_shared/parse/index.ts";
+import { sha256Hex } from "../_shared/hash.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
-import { ApiError, errorResponse, json, readJson, requireMethod } from "../_shared/respond.ts";
+import { ApiError, json, readJson, requireMethod, serve } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
 const cacheTtlMs = 24 * 60 * 60 * 1000;
-
-async function sha256Hex(value: string): Promise<string> {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-}
 
 function requireUrl(value: unknown): string {
   if (typeof value !== "string" || value.trim().length === 0 || value.length > 2048) {
@@ -70,10 +66,4 @@ async function handle(req: Request): Promise<Response> {
   return json(result);
 }
 
-Deno.serve(async (req) => {
-  try {
-    return await handle(req);
-  } catch (cause) {
-    return errorResponse(cause);
-  }
-});
+serve(handle);

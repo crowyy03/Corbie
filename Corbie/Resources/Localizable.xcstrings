@@ -621,26 +621,6 @@
         }
       }
     },
-    "calendar.location.field": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Place"
-          }
-        }
-      }
-    },
-    "calendar.location.hint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "type to search"
-          }
-        }
-      }
-    },
     "calendar.location.placeholder": {
       "localizations": {
         "en": {
@@ -3707,74 +3687,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Open in Maps"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "lists.place.search.empty": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nothing found."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "lists.place.search.hint": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "search by name or address"
           }
         },
         "es": {
@@ -6993,16 +6905,6 @@
         }
       }
     },
-    "paywall.placeholder.note": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "the paywall arrives with the subscription module"
-          }
-        }
-      }
-    },
     "paywall.reason.capsules": {
       "localizations": {
         "en": {
@@ -7623,40 +7525,6 @@
         }
       }
     },
-    "people.entry.note": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "names, birthdays and gift ideas live here"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
     "people.gift.caption": {
       "localizations": {
         "en": {
@@ -7927,6 +7795,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "People"
+          }
+        }
+      }
+    },
+    "place.search.empty": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing found."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        }
+      }
+    },
+    "place.search.hint": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "search by name or address"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "new",
+            "value": ""
           }
         }
       }
@@ -9371,74 +9307,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Add expense"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "plans.placeholder.note": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "one pot, no \"who owes whom\""
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "plans.placeholder.title": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What are you two up to? A trip, a kitchen, a wedding, a car. Set the amount, see what is left."
           }
         },
         "es": {
@@ -12375,74 +12243,6 @@
         }
       }
     },
-    "tasks.placeholder.note": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "nobody's the boss here - tasks can be handed back"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "tasks.placeholder.title": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A to-do list for two. Anyone can take a task - or hand it over."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
     "tasks.row.due": {
       "localizations": {
         "de": {
@@ -13089,40 +12889,6 @@
         }
       }
     },
-    "us.hub.days": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Days together"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
     "us.hub.header": {
       "localizations": {
         "de": {
@@ -13135,40 +12901,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "You two"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "us.hub.note": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "everything that belongs to the two of you"
           }
         },
         "es": {
@@ -13237,40 +12969,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Couple settings"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "us.hub.title": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Us"
           }
         },
         "es": {
@@ -16051,6 +15749,16 @@
         }
       }
     },
+    "widget.lock.inline.line": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        }
+      }
+    },
     "widget.lock.inline.title": {
       "localizations": {
         "en": {
@@ -17355,74 +17063,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nothing that looks like a link on the clipboard."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "wishes.placeholder.note": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "share a link from any app - it lands here"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "wishes.placeholder.title": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop a link. Name, price and photo show up on their own."
           }
         },
         "es": {

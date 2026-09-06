@@ -28,16 +28,6 @@ function decodeJson(segment: string): Record<string, unknown> {
   return JSON.parse(new TextDecoder().decode(decodeBase64Url(segment)));
 }
 
-export function decodeJwsPayload<T>(jws: string): T {
-  const parts = jws.split(".");
-  if (parts.length !== 3) throw new ApiError("invalid_request", "Signed payload is malformed");
-  try {
-    return decodeJson(parts[1]) as T;
-  } catch {
-    throw new ApiError("invalid_request", "Signed payload is malformed");
-  }
-}
-
 async function verifyChain(x5c: string[], at: Date): Promise<Certificate> {
   if (x5c.length < 2) throw new ApiError("unauthorized", "Signed payload has no certificate chain");
 

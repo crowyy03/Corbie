@@ -70,14 +70,6 @@ public struct RelativeDateText: Sendable {
         return formatter.string(from: date)
     }
 
-    public func daysAway(from now: Date, to date: Date) -> Int? {
-        calendar.dateComponents(
-            [.day],
-            from: calendar.startOfDay(for: now),
-            to: calendar.startOfDay(for: date)
-        ).day
-    }
-
     public func subtitle(
         for task: TaskDTO,
         viewerMemberId: UUID?,
@@ -100,7 +92,7 @@ public struct RelativeDateText: Sendable {
             action = .free
             stamp = task.createdAt
         }
-        let dueDaysAway = task.dueAt.flatMap { daysAway(from: now, to: $0) }
+        let dueDaysAway = task.dueAt.flatMap { calendar.daysAway(from: now, to: $0) }
         return TaskSubtitle(
             who: who,
             action: action,

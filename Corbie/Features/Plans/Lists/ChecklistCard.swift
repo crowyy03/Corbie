@@ -41,6 +41,7 @@ struct ChecklistCard: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack(spacing: CorbieSpacing.m) {
         ChecklistCard(
@@ -68,3 +69,4 @@ struct ChecklistCard: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(CorbieColorPalette.bg)
 }
+#endif

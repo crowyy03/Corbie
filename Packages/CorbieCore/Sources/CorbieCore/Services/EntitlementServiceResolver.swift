@@ -26,6 +26,8 @@ public enum EntitlementState: Sendable, Equatable {
         return daysLeft
     }
 
+    public var isTrialEndingSoon: Bool { (trialDaysLeft ?? .max) <= PremiumGate.trialNoticeDays }
+
     public var expiresAt: Date? {
         switch self {
         case let .active(_, expiresAt): return expiresAt

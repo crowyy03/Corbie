@@ -56,6 +56,9 @@ struct ShoppingWidgetView: View {
                     ForEach(entry.snapshot.items) { item in
                         ShoppingRow(item: item)
                     }
+                    if entry.snapshot.remaining > 0 {
+                        WidgetOverflowLine(count: entry.snapshot.remaining)
+                    }
                     Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

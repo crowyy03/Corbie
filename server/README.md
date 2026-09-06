@@ -13,6 +13,7 @@ supabase/config.toml            local stack and per function verify_jwt
 supabase/migrations/0001_init   tables, RLS, rate limiter, nightly purge
 supabase/migrations/0002_views  analytics schema and its four views
 supabase/migrations/0003_*      entitlement ordering columns and their write function
+supabase/migrations/0004_*      funnel and pairing views anchored on the first open
 supabase/functions/_shared      auth, rate limit, responses, parsing, Apple crypto
 supabase/functions/<name>       one Deno.serve entry point per endpoint
 tests/                          deno tests and fixture HTML
@@ -30,7 +31,7 @@ supabase start
 supabase functions serve
 ```
 
-`supabase start` applies both migrations into the local database and prints the local URLs. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are injected into the local runtime, so only `SESSION_SECRET` and the Apple secrets need a `supabase/functions/.env` file locally (copy `.env.example`).
+`supabase start` applies the migrations into the local database and prints the local URLs. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are injected into the local runtime, so a local `supabase/functions/.env` only needs the `SESSION_SECRET` and Apple lines from `.env.example`.
 
 Endpoints that need no Apple token can be exercised straight away:
 
@@ -104,10 +105,11 @@ Sandbox and production App Store notifications need different `APPLE_ENV` values
 
 ## Analytics
 
-The four views live in the `analytics` schema, which is not exposed over the API:
+The views live in the `analytics` schema, which is not exposed over the API:
 
-- `analytics.onboarding_funnel` - devices per onboarding step, by week
-- `analytics.paired_ratio` - redeemed invites against created spaces, by week
+- `analytics.first_open_cohort` - the week of each device's first `app_open`
+- `analytics.onboarding_funnel` - devices per onboarding step, by first-open week
+- `analytics.paired_ratio` - redeemed invites against created spaces, by first-open week
 - `analytics.retention_d1_d7_d30` - weekly cohort of first `app_open`, share back on day 1, 7 and 30
 - `analytics.trial_to_paid` - weekly cohort of `trial_started`, share that later purchased
 

@@ -85,7 +85,7 @@ struct LockRectangularWidgetView: View {
                         .font(.headline)
                         .widgetAccentable()
                         .lineLimit(1)
-                    Text(WidgetDateLabel.upcoming(nextDate))
+                    Text(WidgetDateLabel.upcoming(kind: nextDate.kind, title: nextDate.title, ordinal: nextDate.ordinal))
                         .lineLimit(2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

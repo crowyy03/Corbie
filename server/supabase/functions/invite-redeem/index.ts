@@ -1,6 +1,6 @@
 import { normalizeInviteCode } from "../_shared/inviteCode.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
-import { ApiError, errorResponse, json, pathSegments, requireMethod } from "../_shared/respond.ts";
+import { ApiError, json, pathSegments, requireMethod, serve } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
 interface InviteRow {
@@ -54,10 +54,4 @@ async function handle(req: Request): Promise<Response> {
   return json({ shareURL: claimed.data.share_url, spaceId: claimed.data.space_id });
 }
 
-Deno.serve(async (req) => {
-  try {
-    return await handle(req);
-  } catch (cause) {
-    return errorResponse(cause);
-  }
-});
+serve(handle);

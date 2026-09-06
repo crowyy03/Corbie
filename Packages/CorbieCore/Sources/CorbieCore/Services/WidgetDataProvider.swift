@@ -55,9 +55,10 @@ public struct WidgetDataProvider: Sendable {
 
     public func context(now: Date = Date()) async throws -> WidgetContext? {
         let repositories = controller.repositories
-        guard let space = try await repositories.spaces.firstSpace() else { return nil }
+        let identifiedId = try await resolveViewerId(repositories: repositories)
+        guard let space = try await repositories.spaces.currentSpace(memberId: identifiedId) else { return nil }
         let members = try await repositories.members.members(spaceId: space.id)
-        let viewerId = resolveViewerId(members: members)
+        let viewerId = members.contains { $0.id == identifiedId } ? identifiedId : members.first?.id
         let viewer = members.first { $0.id == viewerId }
         let partner = members.first { $0.id != viewerId }
         return WidgetContext(
@@ -82,7 +83,6 @@ public struct WidgetDataProvider: Sendable {
     public func countdown(source: CountdownSource, now: Date = Date()) async throws -> CountdownSnapshot {
         guard let context = try await context(now: now) else {
             return CountdownSnapshot(
-                source: source,
                 kind: nil,
                 title: nil,
                 date: nil,
@@ -125,11 +125,10 @@ public struct WidgetDataProvider: Sendable {
             title = event?.title
         }
         return CountdownSnapshot(
-            source: source,
             kind: kind,
             title: title,
             date: date,
-            daysAway: date.flatMap { provider.daysAway(from: now, to: $0) },
+            daysAway: date.flatMap { calendar.daysAway(from: now, to: $0) },
             ordinal: ordinal,
             isPremium: context.isPremium
         )
@@ -180,7 +179,7 @@ public struct WidgetDataProvider: Sendable {
                 WidgetWish(
                     id: wish.id,
                     title: wish.title,
-                    priceText: WidgetAmountText.string(amount: wish.price, currency: wish.currency, locale: locale),
+                    priceText: Money.make(amount: wish.price, currency: wish.currency)?.formatted(locale: locale),
                     imageURL: wish.imageURL
                 )
             },
@@ -192,23 +191,11 @@ public struct WidgetDataProvider: Sendable {
 
     public func planProgress(planId: UUID? = nil, now: Date = Date()) async throws -> PlanProgressSnapshot {
         guard let context = try await context(now: now) else {
-            return emptyPlan(isPremium: false)
+            return planSnapshot(nil, isPremium: false)
         }
         let plans = try await controller.repositories.plans.plans(spaceId: context.space.id, statuses: [.active])
         let plan = planId.flatMap { id in plans.first { $0.id == id } } ?? plans.first
-        guard let plan else { return emptyPlan(isPremium: context.isPremium) }
-        return PlanProgressSnapshot(
-            planId: plan.id,
-            title: plan.title,
-            progress: plan.progress,
-            savedText: WidgetAmountText.string(amount: plan.savedAmount, currency: plan.currency, locale: locale),
-            targetText: WidgetAmountText.string(amount: plan.targetAmount, currency: plan.currency, locale: locale),
-            isOverspent: plan.isOverspent,
-            overspentText: plan.isOverspent
-                ? WidgetAmountText.string(amount: plan.overspentAmount, currency: plan.currency, locale: locale)
-                : nil,
-            isPremium: context.isPremium
-        )
+        return planSnapshot(plan, isPremium: context.isPremium)
     }
 
     public func upcomingDates(now: Date = Date()) async throws -> UpcomingDatesSnapshot {
@@ -273,12 +260,11 @@ public struct WidgetDataProvider: Sendable {
                 isPremium: context.isPremium
             )
         }
-        let provider = AutoDatesProvider(calendar: calendar)
         return CapsuleSnapshot(
             capsuleId: next.id,
             authorName: context.name(for: next.authorMemberId),
             opensAt: next.opensAt,
-            daysAway: next.opensAt.flatMap { provider.daysAway(from: now, to: $0) },
+            daysAway: next.opensAt.flatMap { calendar.daysAway(from: now, to: $0) },
             isForViewer: next.recipientMemberId == context.viewer?.id,
             isPremium: context.isPremium
         )
@@ -295,32 +281,7 @@ public struct WidgetDataProvider: Sendable {
         return OurDaySnapshot(
             days: ImportantDates.daysTogether(space: context.space, now: now, calendar: calendar),
             nextDate: dates.first,
-            plan: plan.map { value in
-                PlanProgressSnapshot(
-                    planId: value.id,
-                    title: value.title,
-                    progress: value.progress,
-                    savedText: WidgetAmountText.string(
-                        amount: value.savedAmount,
-                        currency: value.currency,
-                        locale: locale
-                    ),
-                    targetText: WidgetAmountText.string(
-                        amount: value.targetAmount,
-                        currency: value.currency,
-                        locale: locale
-                    ),
-                    isOverspent: value.isOverspent,
-                    overspentText: value.isOverspent
-                        ? WidgetAmountText.string(
-                            amount: value.overspentAmount,
-                            currency: value.currency,
-                            locale: locale
-                        )
-                        : nil,
-                    isPremium: context.isPremium
-                )
-            },
+            plan: plan.map { planSnapshot($0, isPremium: context.isPremium) },
             tasks: open.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
             isPremium: context.isPremium
         )
@@ -395,11 +356,10 @@ public struct WidgetDataProvider: Sendable {
         )
     }
 
-    private func resolveViewerId(members: [MemberDTO]) -> UUID? {
+    private func resolveViewerId(repositories: Repositories) async throws -> UUID? {
         if let viewerMemberIdOverride { return viewerMemberIdOverride }
-        guard let appleUserId = identity.currentAppleUserID else { return members.first?.id }
-        let hash = AppleUserHash.value(appleUserId)
-        return members.first { $0.appleUserHash == hash }?.id ?? members.first?.id
+        guard let appleUserId = identity.currentAppleUserID else { return nil }
+        return try await repositories.members.member(appleUserId: appleUserId)?.id
     }
 
     private func openTasks(spaceId: UUID) async throws -> [TaskDTO] {
@@ -455,7 +415,7 @@ public struct WidgetDataProvider: Sendable {
             viewerMemberId: context.viewer?.id
         )
         var items: [WidgetDate] = autoDates.compactMap { autoDate in
-            guard let daysAway = provider.daysAway(from: now, to: autoDate.date) else { return nil }
+            guard let daysAway = calendar.daysAway(from: now, to: autoDate.date) else { return nil }
             return WidgetDate(
                 id: autoDate.id,
                 kind: WidgetDateKind(autoDate.kind),
@@ -481,7 +441,7 @@ public struct WidgetDataProvider: Sendable {
         )
         for event in events {
             guard let startAt = event.startAt,
-                  let daysAway = provider.daysAway(from: now, to: startAt),
+                  let daysAway = calendar.daysAway(from: now, to: startAt),
                   daysAway >= 0 else { continue }
             items.append(
                 WidgetDate(
@@ -500,15 +460,29 @@ public struct WidgetDataProvider: Sendable {
         }
     }
 
-    private func emptyPlan(isPremium: Bool) -> PlanProgressSnapshot {
-        PlanProgressSnapshot(
-            planId: nil,
-            title: nil,
-            progress: 0,
-            savedText: nil,
-            targetText: nil,
-            isOverspent: false,
-            overspentText: nil,
+    private func planSnapshot(_ plan: PlanDTO?, isPremium: Bool) -> PlanProgressSnapshot {
+        guard let plan else {
+            return PlanProgressSnapshot(
+                planId: nil,
+                title: nil,
+                progress: 0,
+                savedText: nil,
+                targetText: nil,
+                isOverspent: false,
+                overspentText: nil,
+                isPremium: isPremium
+            )
+        }
+        return PlanProgressSnapshot(
+            planId: plan.id,
+            title: plan.title,
+            progress: plan.progress,
+            savedText: Money(amount: plan.savedAmount, currency: plan.currency).formatted(locale: locale),
+            targetText: Money(amount: plan.targetAmount, currency: plan.currency).formatted(locale: locale),
+            isOverspent: plan.isOverspent,
+            overspentText: plan.isOverspent
+                ? Money(amount: plan.overspentAmount, currency: plan.currency).formatted(locale: locale)
+                : nil,
             isPremium: isPremium
         )
     }

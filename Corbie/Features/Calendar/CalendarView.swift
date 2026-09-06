@@ -158,6 +158,7 @@ struct CalendarView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         CalendarView()
@@ -165,3 +166,4 @@ struct CalendarView: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif

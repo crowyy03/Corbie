@@ -141,6 +141,7 @@ private struct SealHalf: Shape {
     }
 }
 
+#if DEBUG
 #Preview {
     CapsuleOpenView(
         capsule: CapsuleDTO(
@@ -152,3 +153,4 @@ private struct SealHalf: Shape {
     ) { _ in }
         .environment(AppEnvironment.preview())
 }
+#endif

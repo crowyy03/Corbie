@@ -60,6 +60,7 @@ struct PlanCard: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack(spacing: CorbieSpacing.m) {
         PlanCard(
@@ -91,3 +92,4 @@ struct PlanCard: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(CorbieColorPalette.bg)
 }
+#endif

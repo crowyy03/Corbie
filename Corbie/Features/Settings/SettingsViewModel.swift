@@ -11,8 +11,8 @@ final class SettingsViewModel {
     var currencies: [String] = []
     var exportURL: URL?
     var isWorking = false
-    var isLeaving = false
-    var isDeleting = false
+    private(set) var isLeaving = false
+    private(set) var isDeleting = false
 
     private var environment: AppEnvironment?
     private var savedProfile = ProfileDraft()

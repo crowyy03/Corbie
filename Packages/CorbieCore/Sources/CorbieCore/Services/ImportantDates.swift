@@ -82,7 +82,7 @@ public enum ImportantDates {
         let autoDates = provider.autoDates(space: space, members: partners, people: [], now: now)
         var candidates: [ImportantDate] = autoDates.compactMap { autoDate in
             guard let kind = importantKind(for: autoDate.kind),
-                  let daysAway = provider.daysAway(from: now, to: autoDate.date) else { return nil }
+                  let daysAway = calendar.daysAway(from: now, to: autoDate.date) else { return nil }
             return ImportantDate(
                 id: autoDate.id,
                 label: ImportantDateLabel(kind: kind, ordinal: autoDate.years, personName: autoDate.name),

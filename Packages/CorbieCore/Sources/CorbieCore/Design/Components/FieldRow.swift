@@ -1,5 +1,18 @@
 import SwiftUI
 
+public extension View {
+    func corbieFieldBox() -> some View {
+        background(
+            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
+                .fill(CorbieColorPalette.surface)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
+                .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
+        )
+    }
+}
+
 public struct FieldRow<Content: View>: View {
     private let label: String
     private let hint: String?
@@ -47,14 +60,7 @@ public struct TextFieldRow: View {
                 .foregroundStyle(CorbieColorPalette.text)
                 .padding(.horizontal, CorbieSpacing.s)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
-                .background(
-                    RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                        .fill(CorbieColorPalette.surface)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                        .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-                )
+                .corbieFieldBox()
                 .accessibilityLabel(Text(label))
         }
     }

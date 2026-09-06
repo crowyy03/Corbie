@@ -19,7 +19,7 @@ final class UsCountersTests: XCTestCase {
         )
         XCTAssertEqual(counters.daysTogether, 460)
         XCTAssertEqual(counters.next?.daysAway, 271)
-        XCTAssertEqual(counters.next?.label, .anniversary(years: 2))
+        XCTAssertEqual(counters.next?.label, ImportantDateLabel(kind: .anniversary, ordinal: 2))
     }
 
     func testWeddingWinsWhenItComesFirst() throws {
@@ -37,7 +37,7 @@ final class UsCountersTests: XCTestCase {
             now: try day(2025, 4, 5),
             calendar: calendar
         )
-        XCTAssertEqual(counters.next?.label, .wedding)
+        XCTAssertEqual(counters.next?.label, ImportantDateLabel(kind: .wedding, ordinal: 2))
         XCTAssertEqual(counters.next?.daysAway, 66)
     }
 
@@ -54,7 +54,7 @@ final class UsCountersTests: XCTestCase {
             now: try day(2025, 4, 5),
             calendar: calendar
         )
-        XCTAssertEqual(counters.next?.label, .birthday(name: "Sofia"))
+        XCTAssertEqual(counters.next?.label, ImportantDateLabel(kind: .partnerBirthday, personName: "Sofia"))
         XCTAssertEqual(counters.next?.daysAway, 26)
     }
 
@@ -76,7 +76,10 @@ final class UsCountersTests: XCTestCase {
             now: try day(2025, 4, 5),
             calendar: calendar
         )
-        XCTAssertEqual(counters.next?.label, .event(title: "The night we met"))
+        XCTAssertEqual(
+            counters.next?.label,
+            ImportantDateLabel(kind: .customEvent, personName: "The night we met")
+        )
         XCTAssertEqual(counters.next?.daysAway, 7)
     }
 
@@ -116,14 +119,6 @@ final class UsCountersTests: XCTestCase {
         let votes = String(localized: "us.tile.votes.count \(3)")
         XCTAssertNotEqual(votes, "us.tile.votes.count %lld")
         XCTAssertTrue(votes.contains("3"), votes)
-    }
-
-    func testOrdinalFollowsTheLocale() {
-        let english = Locale(identifier: "en_US")
-        XCTAssertEqual(UsCounters.ordinal(1, locale: english), "1st")
-        XCTAssertEqual(UsCounters.ordinal(2, locale: english), "2nd")
-        XCTAssertEqual(UsCounters.ordinal(3, locale: english), "3rd")
-        XCTAssertEqual(UsCounters.ordinal(11, locale: english), "11th")
     }
 
     private var calendar: Calendar {

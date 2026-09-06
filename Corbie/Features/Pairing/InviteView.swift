@@ -129,8 +129,10 @@ struct InviteView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     InviteView(environment: .preview(), spaceId: UUID(), onHasCode: {}, onDone: {})
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(CorbieColorPalette.bg)
 }
+#endif

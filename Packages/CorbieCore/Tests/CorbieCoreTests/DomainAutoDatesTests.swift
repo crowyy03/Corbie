@@ -43,7 +43,7 @@ import Testing
         let dates = provider.autoDates(space: space(togetherSince: "2024-10-12"), members: [], people: [], now: now)
         let anniversary = dates.first { $0.kind == .anniversary }
         #expect(DomainClock.text(anniversary?.date ?? Date(), in: calendar) == "2026-10-12 00:00")
-        #expect(provider.daysAway(from: now, to: anniversary?.date ?? Date()) == 0)
+        #expect(calendar.daysAway(from: now, to: anniversary?.date ?? Date()) == 0)
     }
 
     @Test func februaryTwentyNinthClampsToTheEndOfFebruary() {

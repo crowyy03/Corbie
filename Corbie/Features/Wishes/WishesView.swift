@@ -31,6 +31,9 @@ struct WishesView: View {
             consumeRoute()
             await reload()
         }
+        .onDisappear {
+            network.stop()
+        }
         .onChange(of: environment.session) { _, _ in
             Task { await reload() }
         }
@@ -223,6 +226,7 @@ struct WishesView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         WishesView()
@@ -230,3 +234,4 @@ struct WishesView: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif

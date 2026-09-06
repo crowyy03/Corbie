@@ -30,7 +30,6 @@ const currencyBySymbol: Record<string, string> = {
   "SEK": "SEK",
   "NOK": "NOK",
   "DKK": "DKK",
-  "kr": "SEK",
 };
 
 const knownCodes = new Set([

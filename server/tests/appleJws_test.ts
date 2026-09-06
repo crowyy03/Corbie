@@ -1,15 +1,8 @@
 import { assert, assertEquals, assertRejects } from "@std/assert";
 import { encodeBase64 } from "@std/encoding/base64";
 import { encodeBase64Url } from "@std/encoding/base64url";
-import {
-  appleRootCaG3Pem,
-  appleRootCaG3Sha256,
-} from "../supabase/functions/_shared/appleRootCA.ts";
-import {
-  appStoreSigningOid,
-  decodeJwsPayload,
-  verifyAppleJws,
-} from "../supabase/functions/_shared/appleJws.ts";
+import { appleRootCaG3Pem } from "../supabase/functions/_shared/appleRootCA.ts";
+import { appStoreSigningOid, verifyAppleJws } from "../supabase/functions/_shared/appleJws.ts";
 import {
   allowsCertificateSigning,
   derSignatureToRaw,
@@ -31,7 +24,10 @@ function hex(bytes: Uint8Array): string {
 
 Deno.test("the embedded pem is the Apple Root CA G3", async () => {
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", root.der as BufferSource));
-  assertEquals(hex(digest), appleRootCaG3Sha256);
+  assertEquals(
+    hex(digest),
+    "63343abfb89a6a03ebb57e9b3f5fa7be7c4f5c756f3017b3a8c488c3653e9179",
+  );
 });
 
 Deno.test("the root parses as a self signed P-384 certificate", () => {
@@ -130,13 +126,6 @@ Deno.test("a payload signed with the wrong algorithm is rejected", async () => {
   const header = { alg: "RS256", x5c: [encodeBase64(root.der)] };
   const jws = `${encodeSegment(header)}.${encodeSegment({})}.AAAA`;
   await assertRejects(() => verifyAppleJws(jws), ApiError, "algorithm");
-});
-
-Deno.test("payloads can be read without verifying, for logging only", () => {
-  const jws = `${encodeSegment({ alg: "ES256" })}.${
-    encodeSegment({ notificationType: "REFUND" })
-  }.AAAA`;
-  assertEquals(decodeJwsPayload<{ notificationType: string }>(jws).notificationType, "REFUND");
 });
 
 function concatBytes(parts: Uint8Array[]): Uint8Array {

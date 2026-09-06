@@ -92,22 +92,6 @@ import Testing
         #expect(stored.reminderOffsets == [.dayBefore, .twoWeeksBefore])
     }
 
-    @Test func multiDayIsDecidedInTheCalendarThatDrawsTheGrid() throws {
-        var auckland = Calendar(identifier: .gregorian)
-        auckland.timeZone = try #require(TimeZone(identifier: "Pacific/Auckland"))
-        var formatter = ISO8601DateFormatter()
-        formatter.timeZone = auckland.timeZone
-        let lunchStart = try #require(formatter.date(from: "2026-03-10T10:00:00+13:00"))
-        let lunchEnd = try #require(formatter.date(from: "2026-03-10T14:00:00+13:00"))
-        let lunch = EventDTO(id: UUID(), title: "Lunch", startAt: lunchStart, endAt: lunchEnd)
-        #expect(lunch.isMultiDay(calendar: auckland) == false)
-        #expect(lunch.isMultiDay(calendar: .utc))
-
-        let tripEnd = try #require(formatter.date(from: "2026-03-14T14:00:00+13:00"))
-        let trip = EventDTO(id: UUID(), title: "Trip", startAt: lunchStart, endAt: tripEnd)
-        #expect(trip.isMultiDay(calendar: auckland))
-    }
-
     @Test func eventCannotEndBeforeItStarts() async throws {
         let world = try await TestWorld.make()
         await #expect(throws: CorbieError.invalidInput("event ends before it starts")) {

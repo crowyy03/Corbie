@@ -13,21 +13,12 @@ import {
 import {
   ApiError,
   empty,
-  errorResponse,
   isUuid,
   readJson,
   requireMethod,
+  serve,
 } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
-
-function configuredEnvironment(): "Sandbox" | "Production" {
-  return normalizeEnvironment(Deno.env.get("APPLE_ENV")) ?? "Production";
-}
-
-function configuredBundleId(): string {
-  const value = Deno.env.get("APPLE_BUNDLE_ID");
-  return value && value.length > 0 ? value : "app.corbie";
-}
 
 async function handle(req: Request): Promise<Response> {
   requireMethod(req, "POST");
@@ -38,13 +29,13 @@ async function handle(req: Request): Promise<Response> {
   }
 
   const payload = await verifyAppleJws<NotificationPayload>(body.signedPayload);
-  const expected = configuredEnvironment();
+  const expected = normalizeEnvironment(Deno.env.get("APPLE_ENV")) ?? "Production";
   const environment = normalizeEnvironment(payload.data?.environment);
   if (environment !== expected) {
     throw new ApiError("invalid_request", `This endpoint only accepts ${expected} notifications`);
   }
 
-  const bundleId = configuredBundleId();
+  const bundleId = Deno.env.get("APPLE_BUNDLE_ID") || "app.corbie";
   if (payload.data?.bundleId !== bundleId) {
     console.error("notification for another app", payload.notificationUUID);
     return empty(200);
@@ -106,10 +97,4 @@ async function handle(req: Request): Promise<Response> {
   return empty(200);
 }
 
-Deno.serve(async (req) => {
-  try {
-    return await handle(req);
-  } catch (cause) {
-    return errorResponse(cause);
-  }
-});
+serve(handle);

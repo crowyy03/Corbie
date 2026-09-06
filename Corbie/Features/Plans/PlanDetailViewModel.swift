@@ -10,7 +10,6 @@ final class PlanDetailViewModel {
     var isConfirmingDelete = false
     private(set) var plan: PlanDTO?
     private(set) var expenses: [PlanExpenseDTO] = []
-    private(set) var isLoaded = false
 
     @ObservationIgnored private let planId: UUID
     @ObservationIgnored private var environment: AppEnvironment?
@@ -35,7 +34,6 @@ final class PlanDetailViewModel {
         } catch {
             environment.report(error)
         }
-        isLoaded = true
     }
 
     func startAddingExpense() {

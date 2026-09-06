@@ -90,9 +90,11 @@ struct SettingsNotificationsView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         SettingsNotificationsView()
     }
     .environment(AppEnvironment.previewSignedIn())
 }
+#endif

@@ -3,11 +3,11 @@ import { generateInviteCode } from "../_shared/inviteCode.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
 import {
   ApiError,
-  errorResponse,
   json,
   readJson,
   requireMethod,
   requireUuid,
+  serve,
 } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
@@ -84,10 +84,4 @@ async function handle(req: Request): Promise<Response> {
   throw new ApiError("internal", "Could not create an invite");
 }
 
-Deno.serve(async (req) => {
-  try {
-    return await handle(req);
-  } catch (cause) {
-    return errorResponse(cause);
-  }
-});
+serve(handle);

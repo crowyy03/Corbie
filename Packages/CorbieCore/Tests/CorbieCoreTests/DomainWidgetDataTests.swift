@@ -42,12 +42,10 @@ import Testing
 
     @Test func amountsUseTheLocaleAndDropEmptyCents() {
         let american = Locale(identifier: "en_US")
-        #expect(WidgetAmountText.string(amount: 2400, currency: "USD", locale: american) == "$2,400")
-        let cents = WidgetAmountText.string(amount: 14.5, currency: "USD", locale: american)
-        #expect(cents == "$14.50")
-        let german = WidgetAmountText.string(amount: 2400, currency: "EUR", locale: Locale(identifier: "de_DE"))
-        #expect(german?.contains("2.400") == true)
-        #expect(WidgetAmountText.string(amount: nil, currency: "USD", locale: american) == nil)
+        #expect(Money(amount: Double(2400), currency: "USD").formatted(locale: american) == "$2,400")
+        #expect(Money(amount: Double(14.5), currency: "USD").formatted(locale: american) == "$14.50")
+        let german = Money(amount: Double(2400), currency: "EUR").formatted(locale: Locale(identifier: "de_DE"))
+        #expect(german.contains("2.400"))
     }
 }
 

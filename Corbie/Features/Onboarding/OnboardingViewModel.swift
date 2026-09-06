@@ -59,7 +59,8 @@ final class OnboardingViewModel {
         do {
             try environment.storeAppleCredential(
                 userIdentifier: credential.userIdentifier,
-                identityToken: credential.identityToken
+                identityToken: credential.identityToken,
+                authorizationCode: credential.authorizationCode
             )
         } catch {
             environment.report(error)
@@ -164,7 +165,7 @@ final class OnboardingViewModel {
     }
 
     private func loadProfile(appleName: String?) async throws {
-        let existingSpace = try environment.existingSpace()
+        let existingSpace = try await environment.repositories.spaces.currentSpace(memberId: nil)
         var existingMember: MemberDTO?
         if let appleUserID = environment.identity.currentAppleUserID {
             existingMember = try await environment.repositories.members.member(appleUserId: appleUserID)
@@ -179,7 +180,10 @@ final class OnboardingViewModel {
         guard let appleUserID = environment.identity.currentAppleUserID else {
             throw CorbieError.auth("no apple user id is stored")
         }
-        let known = try space ?? environment.existingSpace()
+        var known = space
+        if known == nil {
+            known = try await environment.repositories.spaces.currentSpace(memberId: nil)
+        }
         let base: SpaceDTO
         if let known {
             base = known

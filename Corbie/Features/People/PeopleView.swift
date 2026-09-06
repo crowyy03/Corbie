@@ -106,7 +106,7 @@ private struct PersonRow: View {
                             .foregroundStyle(CorbieColorPalette.text2)
                     }
                     if let radar {
-                        Text(radar.line())
+                        Text(radar.text.line())
                             .corbieMono()
                             .foregroundStyle(CorbieColorPalette.ice)
                     }
@@ -135,6 +135,7 @@ private struct PersonRow: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         PeopleView()
@@ -142,3 +143,4 @@ private struct PersonRow: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif

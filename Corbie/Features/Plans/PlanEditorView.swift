@@ -78,7 +78,9 @@ struct PlanEditorView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     PlanEditorView(plan: nil)
         .environment(AppEnvironment.preview())
 }
+#endif

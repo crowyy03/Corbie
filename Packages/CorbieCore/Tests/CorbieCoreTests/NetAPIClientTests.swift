@@ -260,7 +260,6 @@ final class BundleAnchor {}
                 Issue.record("expected a failure")
             } catch let failure as APIError {
                 #expect(failure.status == status)
-                #expect(failure.isMethodNotAllowed == (status == 405))
             }
             #expect(transport.requestCount == 1)
             #expect(sleeper.delays.isEmpty)

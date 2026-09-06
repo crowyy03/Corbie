@@ -2,29 +2,27 @@ import CorbieCore
 import MapKit
 import SwiftUI
 
-struct LocationSearchView: View {
-    let onPick: (CalendarPlace) -> Void
+struct PlaceSearchView: View {
+    let title: String
+    let placeholder: String
+    let onPick: (MapPlace) -> Void
 
     @Environment(\.dismiss) private var dismiss
-    @State private var model = LocationSearchViewModel()
+    @State private var model = PlaceSearchViewModel()
 
     var body: some View {
         @Bindable var model = model
 
         return NavigationStack {
             VStack(alignment: .leading, spacing: CorbieSpacing.m) {
-                TextFieldRow(
-                    label: String(localized: "calendar.location.field"),
-                    placeholder: String(localized: "calendar.location.placeholder"),
-                    text: $model.query
-                )
+                searchField(query: $model.query)
                 results
                 Spacer(minLength: 0)
             }
             .padding(CorbieSpacing.l)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .background(CorbieColorPalette.bg)
-            .navigationTitle(String(localized: "calendar.location.title"))
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -36,10 +34,27 @@ struct LocationSearchView: View {
         }
     }
 
+    private func searchField(query: Binding<String>) -> some View {
+        HStack(spacing: CorbieSpacing.s) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(CorbieColorPalette.text2)
+                .accessibilityHidden(true)
+            TextField(placeholder, text: query)
+                .textFieldStyle(.plain)
+                .corbieBody()
+                .foregroundStyle(CorbieColorPalette.text)
+                .accessibilityLabel(placeholder)
+        }
+        .padding(.horizontal, CorbieSpacing.s)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(minHeight: CorbieMetrics.minimumTapTarget)
+        .corbieFieldBox()
+    }
+
     @ViewBuilder
     private var results: some View {
         if model.suggestions.isEmpty {
-            Text("calendar.location.hint")
+            Text(model.hasQuery ? "place.search.empty" : "place.search.hint")
                 .corbieMono()
                 .foregroundStyle(CorbieColorPalette.text2)
         } else {
@@ -84,6 +99,11 @@ struct LocationSearchView: View {
     }
 }
 
+#if DEBUG
 #Preview {
-    LocationSearchView { _ in }
+    PlaceSearchView(
+        title: String(localized: "lists.place.search.title"),
+        placeholder: String(localized: "lists.place.search.placeholder")
+    ) { _ in }
 }
+#endif

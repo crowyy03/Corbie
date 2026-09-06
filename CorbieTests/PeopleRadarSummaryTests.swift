@@ -20,8 +20,13 @@ final class PeopleRadarSummaryTests: XCTestCase {
         return calendar.date(from: components) ?? Date()
     }
 
-    private func summary(_ status: PeopleRadarSummary.GiftStatus, daysAway: Int = 14) -> PeopleRadarSummary {
-        PeopleRadarSummary(id: "auto.personbirthday.test", personId: UUID(), name: "Anna", daysAway: daysAway, giftStatus: status)
+    private func summary(_ gift: RadarText.Gift, daysAway: Int = 14) -> PeopleRadarSummary {
+        PeopleRadarSummary(
+            id: "auto.personbirthday.test",
+            personId: UUID(),
+            name: "Anna",
+            text: RadarText(daysAway: daysAway, gift: gift)
+        )
     }
 
     private func lines(for person: PersonDTO) -> [PeopleRadarSummary] {
@@ -31,26 +36,23 @@ final class PeopleRadarSummaryTests: XCTestCase {
     }
 
     func testSavedIdeasWinOverTheEmptyText() {
-        XCTAssertEqual(summary(.ideas(3)).giftText(locale: english), "3 ideas saved")
-        XCTAssertEqual(summary(.ideas(1)).giftText(locale: english), "1 idea saved")
-        XCTAssertEqual(summary(.nothing).giftText(locale: english), "no gift picked")
-        XCTAssertEqual(summary(.picked).giftText(locale: english), "gift picked")
-    }
-
-    func testAPickedGiftBeatsSavedIdeas() {
-        XCTAssertEqual(PeopleRadarSummary.GiftStatus(RadarStatus(ideasCount: 3, giftPicked: true)), .picked)
-        XCTAssertEqual(PeopleRadarSummary.GiftStatus(RadarStatus(ideasCount: 3, giftPicked: false)), .ideas(3))
-        XCTAssertEqual(PeopleRadarSummary.GiftStatus(RadarStatus(ideasCount: 0, giftPicked: false)), .nothing)
+        XCTAssertEqual(summary(.ideas(3)).text.giftText(locale: english), "3 ideas saved")
+        XCTAssertEqual(summary(.ideas(1)).text.giftText(locale: english), "1 idea saved")
+        XCTAssertEqual(summary(.nothing).text.giftText(locale: english), "no gift picked")
+        XCTAssertEqual(summary(.picked).text.giftText(locale: english), "gift picked")
     }
 
     func testDaysTextCountsDown() {
-        XCTAssertEqual(summary(.nothing, daysAway: 14).daysText(locale: english), "14 days to go")
-        XCTAssertEqual(summary(.nothing, daysAway: 1).daysText(locale: english), "1 day to go")
-        XCTAssertEqual(summary(.nothing, daysAway: 0).daysText(locale: english), "today")
+        XCTAssertEqual(summary(.nothing, daysAway: 14).text.daysText(locale: english), "14 days to go")
+        XCTAssertEqual(summary(.nothing, daysAway: 1).text.daysText(locale: english), "1 day to go")
+        XCTAssertEqual(summary(.nothing, daysAway: 0).text.daysText(locale: english), "today")
     }
 
     func testTheLineJoinsTheCountdownAndTheGift() {
-        XCTAssertEqual(summary(.ideas(3), daysAway: 14).line(locale: english), "14 days to go \u{00B7} 3 ideas saved")
+        XCTAssertEqual(
+            summary(.ideas(3), daysAway: 14).text.line(locale: english),
+            "14 days to go \u{00B7} 3 ideas saved"
+        )
     }
 
     func testAPersonWithIdeasReadsDifferentlyFromOneWithout() throws {
@@ -69,9 +71,9 @@ final class PeopleRadarSummaryTests: XCTestCase {
         )
         let saved = try XCTUnwrap(lines(for: withIdeas).first)
         let missing = try XCTUnwrap(lines(for: withoutIdeas).first)
-        XCTAssertEqual(saved.daysAway, 7)
-        XCTAssertEqual(saved.giftText(locale: english), "3 ideas saved")
-        XCTAssertEqual(missing.giftText(locale: english), "no gift picked")
+        XCTAssertEqual(saved.text.daysAway, 7)
+        XCTAssertEqual(saved.text.giftText(locale: english), "3 ideas saved")
+        XCTAssertEqual(missing.text.giftText(locale: english), "no gift picked")
     }
 
     func testAPickedIdeaFlipsTheText() throws {
@@ -84,7 +86,7 @@ final class PeopleRadarSummaryTests: XCTestCase {
             hasPickedGift: true
         )
         let line = try XCTUnwrap(lines(for: person).first)
-        XCTAssertEqual(line.giftText(locale: english), "gift picked")
+        XCTAssertEqual(line.text.giftText(locale: english), "gift picked")
     }
 
     func testABirthdayBeyondTheHorizonProducesNoLine() {
@@ -94,14 +96,29 @@ final class PeopleRadarSummaryTests: XCTestCase {
 
     func testTheNearestDateWinsPerPerson() {
         let personId = UUID()
-        let near = PeopleRadarSummary(id: "a", personId: personId, name: "Anna", daysAway: 3, giftStatus: .nothing)
-        let far = PeopleRadarSummary(id: "b", personId: personId, name: "Anna", daysAway: 12, giftStatus: .picked)
+        let near = PeopleRadarSummary(
+            id: "a",
+            personId: personId,
+            name: "Anna",
+            text: RadarText(daysAway: 3, gift: .nothing)
+        )
+        let far = PeopleRadarSummary(
+            id: "b",
+            personId: personId,
+            name: "Anna",
+            text: RadarText(daysAway: 12, gift: .picked)
+        )
         let byPerson = PeopleRadarSummary.byPerson([far, near])
         XCTAssertEqual(byPerson[personId], near)
     }
 
     func testSummariesWithoutAPersonAreNotIndexed() {
-        let anniversary = PeopleRadarSummary(id: "auto.anniversary.space", personId: nil, name: nil, daysAway: 5, giftStatus: .nothing)
+        let anniversary = PeopleRadarSummary(
+            id: "auto.anniversary.space",
+            personId: nil,
+            name: nil,
+            text: RadarText(daysAway: 5, gift: .nothing)
+        )
         XCTAssertTrue(PeopleRadarSummary.byPerson([anniversary]).isEmpty)
     }
 }

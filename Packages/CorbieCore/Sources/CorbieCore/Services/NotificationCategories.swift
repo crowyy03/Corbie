@@ -188,11 +188,6 @@ public enum NotificationPayload {
         guard let raw = userInfo[objectKey] as? String else { return nil }
         return UUID(uuidString: raw)
     }
-
-    public static func remoteKind(from userInfo: [String: Any]) -> RemoteChangeKind? {
-        guard let raw = userInfo[kindKey] as? String else { return nil }
-        return RemoteChangeKind(rawValue: raw)
-    }
 }
 
 public enum NotificationStrings {

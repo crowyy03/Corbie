@@ -31,7 +31,7 @@ enum WishParsedFill {
         }
         if filled.price == nil, let price = parsed.price {
             filled.price = price
-            filled.currency = WishPricing.currencyCode(parsed.currency) ?? filled.currency
+            filled.currency = Money.currencyCode(parsed.currency) ?? filled.currency
         }
         if let imageURL = parsed.imageURL {
             filled.imageURL = imageURL.absoluteString

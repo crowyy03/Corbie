@@ -218,14 +218,7 @@ struct EventDetailView: View {
             .foregroundStyle(CorbieColorPalette.text)
             .lineLimit(2...4)
             .padding(CorbieSpacing.s)
-            .background(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-            )
+            .corbieFieldBox()
             .accessibilityLabel(Text("calendar.comments.placeholder"))
 
             HStack(spacing: CorbieSpacing.s) {

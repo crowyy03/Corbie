@@ -108,7 +108,7 @@ final class ShareWishViewModel {
         persistence = controller
         guard let appleUserID = MemberIdentity().currentAppleUserID,
               let member = try? await controller.repositories.members.member(appleUserId: appleUserID),
-              let space = resolveSpace(controller, memberId: member.id)
+              let space = try? await controller.repositories.spaces.currentSpace(memberId: member.id)
         else {
             stage = .noSession
             return
@@ -126,13 +126,6 @@ final class ShareWishViewModel {
         )
         let state = await entitlements.cachedState(spaceId: space.id, trialEndsAt: space.trialEndsAt)
         stage = state.isPremium ? .ready : .readOnly
-    }
-
-    private func resolveSpace(_ controller: PersistenceController, memberId: UUID) -> SpaceDTO? {
-        let sharing = CloudKitSharing(stack: controller.stack)
-        let context = controller.viewContext
-        guard let space = try? sharing.currentSpace(in: context, currentMemberId: memberId) else { return nil }
-        return SpaceDTO(space)
     }
 
     private func parse(_ url: URL) async {
@@ -155,21 +148,5 @@ final class ShareWishViewModel {
         }
         imageURL = parsed.imageURL?.absoluteString
         localImage = parsed.imageData
-    }
-}
-
-enum WishText {
-    static func clean(_ value: String) -> String {
-        value.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-}
-
-extension WishPriority {
-    var title: String {
-        switch self {
-        case .must: return String(localized: "wishes.priority.must")
-        case .want: return String(localized: "wishes.priority.want")
-        case .someday: return String(localized: "wishes.priority.someday")
-        }
     }
 }

@@ -2,11 +2,11 @@ import { requireUser } from "../_shared/auth.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
 import {
   ApiError,
-  errorResponse,
   json,
   pathSegments,
   requireMethod,
   requireUuid,
+  serve,
 } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
@@ -42,7 +42,7 @@ async function handle(req: Request): Promise<Response> {
       status: "none",
       productId: null,
       expiresAt: null,
-      updatedAt: new Date().toISOString(),
+      updatedAt: null,
     });
   }
 
@@ -55,10 +55,4 @@ async function handle(req: Request): Promise<Response> {
   });
 }
 
-Deno.serve(async (req) => {
-  try {
-    return await handle(req);
-  } catch (cause) {
-    return errorResponse(cause);
-  }
-});
+serve(handle);

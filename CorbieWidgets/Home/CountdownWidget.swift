@@ -10,7 +10,6 @@ struct CountdownEntry: TimelineEntry {
     static let placeholder = CountdownEntry(
         date: Date(),
         snapshot: CountdownSnapshot(
-            source: .anniversary,
             kind: .anniversary,
             title: nil,
             date: Date(),
@@ -20,10 +19,13 @@ struct CountdownEntry: TimelineEntry {
         )
     )
 
-    static func load(now: Date, source: CountdownSource, provider: WidgetDataProvider) async -> CountdownEntry {
-        let snapshot = (try? await provider.countdown(source: source, now: now))
+    static func load(now: Date, source: CountdownSource?, provider: WidgetDataProvider) async -> CountdownEntry {
+        var loaded: CountdownSnapshot?
+        if let source {
+            loaded = try? await provider.countdown(source: source, now: now)
+        }
+        let snapshot = loaded
             ?? CountdownSnapshot(
-                source: source,
                 kind: nil,
                 title: nil,
                 date: nil,
@@ -80,7 +82,7 @@ struct CountdownWidgetView: View {
     let entry: CountdownEntry
 
     private var label: String {
-        WidgetDateLabel.countdown(
+        ImportantDateText.countdown(
             kind: entry.snapshot.kind,
             ordinal: entry.snapshot.ordinal,
             title: entry.snapshot.title
@@ -122,7 +124,6 @@ struct CountdownWidgetView: View {
     CountdownEntry(
         date: Date(),
         snapshot: CountdownSnapshot(
-            source: .wedding,
             kind: nil,
             title: nil,
             date: nil,

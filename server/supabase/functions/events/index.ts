@@ -1,6 +1,6 @@
 import { requireAnonId, sanitizeBatch } from "../_shared/events.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
-import { ApiError, empty, errorResponse, readJson, requireMethod } from "../_shared/respond.ts";
+import { ApiError, empty, readJson, requireMethod, serve } from "../_shared/respond.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
 async function handle(req: Request): Promise<Response> {
@@ -21,10 +21,4 @@ async function handle(req: Request): Promise<Response> {
   return empty(202);
 }
 
-Deno.serve(async (req) => {
-  try {
-    return await handle(req);
-  } catch (cause) {
-    return errorResponse(cause);
-  }
-});
+serve(handle);

@@ -127,6 +127,7 @@ struct ListPlaceSheet: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ListMapView(
         items: [
@@ -143,3 +144,4 @@ struct ListPlaceSheet: View {
         name: { _ in "you" }
     )
 }
+#endif

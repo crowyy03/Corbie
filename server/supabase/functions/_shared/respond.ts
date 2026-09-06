@@ -57,6 +57,16 @@ export function errorResponse(cause: unknown): Response {
   return failure("internal", "Something went wrong on our side");
 }
 
+export function serve(handler: (req: Request) => Promise<Response>): void {
+  Deno.serve(async (req) => {
+    try {
+      return await handler(req);
+    } catch (cause) {
+      return errorResponse(cause);
+    }
+  });
+}
+
 export function requireMethod(req: Request, method: string): void {
   if (req.method !== method) {
     throw new ApiError("invalid_request", `Use ${method} for this endpoint`, 405);

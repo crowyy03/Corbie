@@ -107,11 +107,6 @@ public actor StoreService: LocalEntitlementProviding {
         }
     }
 
-    public func stopListening() {
-        updates?.cancel()
-        updates = nil
-    }
-
     static func verified<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
         case let .verified(value):

@@ -194,14 +194,7 @@ struct WishFieldBox: ViewModifier {
         content
             .padding(.horizontal, CorbieSpacing.s)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
-            .background(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-            )
+            .corbieFieldBox()
     }
 }
 
@@ -225,7 +218,9 @@ struct WishParseSkeleton: View {
     }
 }
 
+#if DEBUG
 #Preview {
     WishEditorView(request: WishEditorRequest(wish: nil, link: nil)) {}
         .environment(AppEnvironment.preview())
 }
+#endif

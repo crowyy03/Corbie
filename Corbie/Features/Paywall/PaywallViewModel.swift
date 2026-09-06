@@ -16,7 +16,7 @@ final class PaywallViewModel {
     private(set) var selection: CorbieProduct?
     private(set) var isWorking = false
     private(set) var message: String?
-    var openedLink: PaywallLink?
+    var openedLink: LegalPage?
 
     @ObservationIgnored private var environment: AppEnvironment?
 
@@ -104,7 +104,7 @@ final class PaywallViewModel {
         }
     }
 
-    func open(_ link: PaywallLink) {
+    func open(_ link: LegalPage) {
         openedLink = link
     }
 }

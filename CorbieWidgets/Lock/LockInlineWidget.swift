@@ -40,17 +40,10 @@ struct LockInlineWidgetView: View {
 
     private var line: String? {
         guard let kind = entry.snapshot.kind, let daysAway = entry.snapshot.daysAway else { return nil }
-        let date = WidgetDate(
-            id: "inline",
-            kind: kind,
-            title: entry.snapshot.name,
-            date: entry.date,
-            daysAway: daysAway
-        )
         return String(
-            format: String(localized: "people.radar.line"),
+            format: String(localized: "widget.lock.inline.line"),
             WidgetDateLabel.relativeDays(daysAway),
-            WidgetDateLabel.upcoming(date)
+            WidgetDateLabel.upcoming(kind: kind, title: entry.snapshot.name)
         )
     }
 

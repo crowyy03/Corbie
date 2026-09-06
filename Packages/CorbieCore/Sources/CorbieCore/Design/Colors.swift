@@ -165,9 +165,3 @@ public enum CorbieColorPalette {
         )
     }
 }
-
-public typealias CorbieColor = CorbieColorPalette
-
-public extension Color {
-    static var corbie: CorbieColorPalette.Type { CorbieColorPalette.self }
-}

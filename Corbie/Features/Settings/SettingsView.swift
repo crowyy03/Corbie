@@ -8,7 +8,6 @@ struct SettingsView: View {
     @State private var sheet: SettingsSheet?
     @State private var confirmation: SettingsConfirmation?
 
-    private let swatchSize: CGFloat = 28
     private let manageURL = URL(string: "https://apps.apple.com/account/subscriptions")
 
     var body: some View {
@@ -75,70 +74,19 @@ struct SettingsView: View {
             Text("settings.you.color")
                 .corbieMono()
                 .foregroundStyle(CorbieColorPalette.text2)
-            HStack(spacing: CorbieSpacing.xs) {
-                ForEach(CorbieColorPalette.partnerPalette) { key in
-                    swatch(key)
-                }
-            }
+            MemberColorPicker(selection: $model.profile.colorKey)
         }
         .padding(.vertical, CorbieSpacing.xxs)
     }
 
-    private func swatch(_ key: MemberColorKey) -> some View {
-        let isSelected = model.profile.colorKey == key
-        return Button {
-            model.profile.colorKey = key
-        } label: {
-            Circle()
-                .fill(key.color)
-                .frame(width: swatchSize, height: swatchSize)
-                .overlay {
-                    Circle()
-                        .strokeBorder(
-                            isSelected ? CorbieColorPalette.ice : .clear,
-                            lineWidth: CorbieMetrics.hairline * 2
-                        )
-                        .padding(-CorbieSpacing.xxs)
-                }
-                .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
-                .contentShape(Circle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text(String(localized: String.LocalizationValue("onboarding.profile.color." + key.rawValue))))
-        .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
-    }
-
     private var birthdayRow: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.s) {
-            Toggle(isOn: birthdayEnabled) {
-                Text("settings.you.birthday")
-                    .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
-            }
-            .tint(CorbieColorPalette.ice)
-            if model.profile.hasBirthday {
-                HStack(spacing: CorbieSpacing.m) {
-                    Picker(selection: birthdayMonth) {
-                        ForEach(1 ... 12, id: \.self) { month in
-                            Text(verbatim: monthName(month)).tag(month)
-                        }
-                    } label: {
-                        Text("settings.you.birthday.month")
-                    }
-                    .pickerStyle(.menu)
-                    .tint(CorbieColorPalette.ice)
-
-                    Picker(selection: birthdayDay) {
-                        ForEach(1 ... ProfileDraft.dayCount(inMonth: model.profile.birthdayMonth ?? 1), id: \.self) { day in
-                            Text(verbatim: day.formatted()).tag(day)
-                        }
-                    } label: {
-                        Text("settings.you.birthday.day")
-                    }
-                    .pickerStyle(.menu)
-                    .tint(CorbieColorPalette.ice)
-                }
-            }
+            ProfileBirthdayPicker(
+                profile: $model.profile,
+                toggleTitle: String(localized: "settings.you.birthday"),
+                monthLabel: String(localized: "settings.you.birthday.month"),
+                dayLabel: String(localized: "settings.you.birthday.day")
+            )
             Text("settings.you.birthday.hint")
                 .corbieMono()
                 .foregroundStyle(CorbieColorPalette.text2)
@@ -257,8 +205,8 @@ struct SettingsView: View {
                 .corbieBody()
                 .foregroundStyle(CorbieColorPalette.text)
                 .padding(.vertical, CorbieSpacing.xxs)
-            ForEach(SettingsLegalPage.allCases) { page in
-                row(titleKey: page.titleKey) { sheet = .legal(page) }
+            ForEach(LegalPage.allCases) { page in
+                row(titleKey: page.settingsTitleKey) { sheet = .legal(page) }
             }
         } header: {
             SectionCaps(text: String(localized: "settings.section.privacy"))
@@ -304,9 +252,13 @@ struct SettingsView: View {
     private var accountSection: some View {
         Section {
             if model.isPaired {
-                destructiveRow(titleKey: "settings.account.leave") { confirmation = .leave }
+                destructiveRow(titleKey: "settings.account.leave", isWorking: model.isLeaving) {
+                    confirmation = .leave
+                }
             }
-            destructiveRow(titleKey: "settings.account.delete") { confirmation = .delete }
+            destructiveRow(titleKey: "settings.account.delete", isWorking: model.isDeleting) {
+                confirmation = .delete
+            }
         } header: {
             SectionCaps(text: String(localized: "settings.section.account"))
         }
@@ -367,7 +319,7 @@ struct SettingsView: View {
             PaywallView(request: request)
         case let .legal(page):
             if let url = page.url {
-                SettingsLegalView(url: url)
+                LegalPageView(url: url)
                     .ignoresSafeArea()
             }
         }
@@ -387,17 +339,25 @@ struct SettingsView: View {
         .frame(minHeight: CorbieMetrics.minimumTapTarget)
     }
 
-    private func destructiveRow(titleKey: String, action: @escaping () -> Void) -> some View {
+    private func destructiveRow(
+        titleKey: String,
+        isWorking: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
         Button(action: action) {
             HStack {
                 Text(String(localized: String.LocalizationValue(titleKey)))
                     .corbieBody()
                     .foregroundStyle(CorbieColorPalette.warn)
                 Spacer(minLength: 0)
+                if isWorking {
+                    ProgressView()
+                }
             }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .disabled(isWorking)
         .frame(minHeight: CorbieMetrics.minimumTapTarget)
     }
 
@@ -448,12 +408,6 @@ struct SettingsView: View {
         )
     }
 
-    private func monthName(_ month: Int) -> String {
-        let symbols = Calendar.current.standaloneMonthSymbols
-        guard symbols.indices.contains(month - 1) else { return month.formatted() }
-        return symbols[month - 1]
-    }
-
     private var confirmationBinding: Binding<Bool> {
         Binding(get: { confirmation != nil }, set: { isOn in if isOn == false { confirmation = nil } })
     }
@@ -472,29 +426,6 @@ struct SettingsView: View {
         )
     }
 
-    private var birthdayEnabled: Binding<Bool> {
-        Binding(
-            get: { model.profile.hasBirthday },
-            set: { isOn in model.profile.setBirthday(enabled: isOn) }
-        )
-    }
-
-    private var birthdayMonth: Binding<Int> {
-        Binding(
-            get: { model.profile.birthdayMonth ?? 1 },
-            set: { month in
-                model.profile.birthdayMonth = month
-                model.profile.clampBirthdayDay()
-            }
-        )
-    }
-
-    private var birthdayDay: Binding<Int> {
-        Binding(
-            get: { model.profile.birthdayDay ?? 1 },
-            set: { model.profile.birthdayDay = $0 }
-        )
-    }
 }
 
 enum SettingsSheet: Identifiable {
@@ -502,7 +433,7 @@ enum SettingsSheet: Identifiable {
     case join
     case calendarImport
     case paywall(PaywallRequest)
-    case legal(SettingsLegalPage)
+    case legal(LegalPage)
 
     var id: String {
         switch self {

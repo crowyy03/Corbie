@@ -50,7 +50,6 @@ import Testing
         #expect(link.price == 24.99)
         #expect(link.currency == "USD")
         #expect(link.canonicalURL.absoluteString == "https://www.amazon.com/dp/B0")
-        #expect(link.needsManualEntry == false)
 
         let data = try #require(link.imageData)
         #expect(data.count < ImageDownsampler.byteLimit)
@@ -68,11 +67,11 @@ import Testing
         #expect(link.title == nil)
         #expect(link.price == nil)
         #expect(link.imageData == nil)
-        #expect(link.needsManualEntry)
+        #expect(link.currency == nil)
         #expect(images.requestCount == 0)
     }
 
-    @Test func oEmbedSourcesKeepTheAuthorAndAskForTheRest() async throws {
+    @Test func anOEmbedSourceBringsThePictureAndLeavesTheRestBlank() async throws {
         let api = FakeTransport(
             json: payload(source: "instagram", title: nil, price: nil, currency: nil, author: "sofia")
         )
@@ -80,8 +79,8 @@ import Testing
         let parser = LinkParser(client: NetTestSupport.client(transport: api), imageTransport: images)
         let link = try await parser.parse(rawURL: "https://www.instagram.com/p/abc/")
         #expect(link.source == .instagram)
-        #expect(link.author == "sofia")
-        #expect(link.needsManualEntry)
+        #expect(link.title == nil)
+        #expect(link.price == nil)
         #expect(link.imageData != nil)
     }
 

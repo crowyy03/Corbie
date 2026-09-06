@@ -1,4 +1,5 @@
 import { encodeBase64Url } from "@std/encoding/base64url";
+import { sha256Hex } from "./hash.ts";
 import { parseJwt } from "./jwt.ts";
 import { ApiError } from "./respond.ts";
 
@@ -29,9 +30,8 @@ function encodeSegment(value: unknown): string {
   return encodeBase64Url(new TextEncoder().encode(JSON.stringify(value)));
 }
 
-export async function hashAppleSubject(subject: string): Promise<string> {
-  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(subject));
-  return [...new Uint8Array(bytes)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+export function hashAppleSubject(subject: string): Promise<string> {
+  return sha256Hex(subject);
 }
 
 export function isSessionToken(token: string): boolean {

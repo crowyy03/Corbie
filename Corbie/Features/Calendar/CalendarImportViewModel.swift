@@ -28,7 +28,6 @@ final class CalendarImportViewModel {
         return selection.isEmpty == false
     }
 
-    var isBusy: Bool { phase == .importing }
 
     func toggle(_ identifier: String) {
         if selection.contains(identifier) {

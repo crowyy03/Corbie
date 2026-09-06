@@ -42,11 +42,11 @@ final class SettingsStatusTests: XCTestCase {
     }
 
     func testTheLegalPagesPointAtTheHostedDocuments() {
-        XCTAssertEqual(SettingsLegalPage.privacy.url?.absoluteString, "https://corbie.app/privacy")
-        XCTAssertEqual(SettingsLegalPage.terms.url?.absoluteString, "https://corbie.app/terms")
-        for page in SettingsLegalPage.allCases {
-            let title = String(localized: String.LocalizationValue(page.titleKey))
-            XCTAssertNotEqual(title, page.titleKey)
+        XCTAssertEqual(LegalPage.privacy.url?.absoluteString, "https://corbie.app/privacy")
+        XCTAssertEqual(LegalPage.terms.url?.absoluteString, "https://corbie.app/terms")
+        for page in LegalPage.allCases {
+            let title = String(localized: String.LocalizationValue(page.settingsTitleKey))
+            XCTAssertNotEqual(title, page.settingsTitleKey)
         }
     }
 }

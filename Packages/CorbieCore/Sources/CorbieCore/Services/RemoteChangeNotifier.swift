@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 public actor RemoteChangeNotifier {
     public struct Audience: Sendable, Equatable {
@@ -28,6 +29,8 @@ public actor RemoteChangeNotifier {
     }
 
     public static let jointActionKey = "corbie.notifications.jointaction"
+
+    private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "remote-change")
 
     private let stack: CoreDataStack
     private let resolver: RemoteChangeResolver
@@ -79,8 +82,14 @@ public actor RemoteChangeNotifier {
         let alerts = RemoteChangeClassifier.alerts(for: changes, viewer: audience.viewer)
         var delivered: [RemoteChangeAlert] = []
         for alert in alerts {
-            guard (try? await scheduler.deliver(alert, prefs: audience.prefs)) != nil else { continue }
-            delivered.append(alert)
+            do {
+                guard try await scheduler.deliver(alert, prefs: audience.prefs) != nil else { continue }
+                delivered.append(alert)
+            } catch {
+                RemoteChangeNotifier.log.error(
+                    "remote alert \(alert.id, privacy: .public) was not delivered: \(error.localizedDescription, privacy: .public)"
+                )
+            }
         }
         return delivered
     }

@@ -140,9 +140,11 @@ struct PlanDetailView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         PlanDetailView(planId: UUID())
     }
     .environment(AppEnvironment.preview())
 }
+#endif

@@ -7,14 +7,7 @@ private struct PlansFieldBackground: ViewModifier {
             .padding(.horizontal, CorbieSpacing.s)
             .frame(maxWidth: .infinity, alignment: .leading)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
-            .background(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-            )
+            .corbieFieldBox()
     }
 }
 

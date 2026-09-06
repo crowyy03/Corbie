@@ -36,9 +36,6 @@ final class CapsulesStateTests: XCTestCase {
         XCTAssertTrue(CapsuleRowState.ready.isHighlighted)
         XCTAssertFalse(CapsuleRowState.sealed.isHighlighted)
         XCTAssertFalse(CapsuleRowState.opened.isHighlighted)
-        XCTAssertTrue(CapsuleRowState.sealed.isEditable)
-        XCTAssertTrue(CapsuleRowState.opened.isReadable)
-        XCTAssertFalse(CapsuleRowState.waiting.isReadable)
     }
 
     func testReadByBothNeedsTwoReaders() {

@@ -68,11 +68,8 @@ targets:
             CFBundleURLSchemes:
               - corbie
         NSCalendarsFullAccessUsageDescription: Corbie reads and writes the events you two keep in a shared calendar.
+        NSCalendarsWriteOnlyAccessUsageDescription: Add an event from Corbie to your iPhone calendar.
         NSPhotoLibraryUsageDescription: Pick a photo for a wish, a plan or a list.
-        NSCameraUsageDescription: Take a photo for a wish, a plan or a list.
-        NSLocationWhenInUseUsageDescription: Show the places from your lists around you.
-        NSFaceIDUsageDescription: Unlock capsules and votes with Face ID.
-        NSUserNotificationsUsageDescription: Remind you two about dates, tasks and capsules.
 
   CorbieWidgets:
     type: app-extension

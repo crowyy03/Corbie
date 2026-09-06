@@ -193,7 +193,7 @@ struct WidgetTaskText: View {
     private var dueText: String? {
         guard let dueAt = task.dueAt else { return nil }
         let text = WidgetDateLabel.shortDate(dueAt, now: now)
-        let daysAway = RelativeDateText().daysAway(from: now, to: dueAt) ?? 0
+        let daysAway = Calendar.current.daysAway(from: now, to: dueAt) ?? 0
         let key = daysAway < 0 ? "tasks.row.due.past" : "tasks.row.due"
         return String(format: String(localized: String.LocalizationValue(key)), text)
     }
@@ -235,7 +235,7 @@ struct WidgetDateRow: View {
                 .fill(stripeColor)
                 .frame(width: WidgetLayout.stripeWidth)
             VStack(alignment: .leading, spacing: 0) {
-                Text(WidgetDateLabel.upcoming(date))
+                Text(WidgetDateLabel.upcoming(kind: date.kind, title: date.title, ordinal: date.ordinal))
                     .corbieBody()
                     .foregroundStyle(CorbieColorPalette.text)
                     .lineLimit(1)

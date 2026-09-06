@@ -13,7 +13,6 @@ final class ListDetailViewModel {
     var mode: Mode = .list
     var draftTitle = ""
     var editingItem: ListItemDTO?
-    var selectedPlace: ListItemDTO?
     var isEditingList = false
     var isConfirmingDelete = false
     private(set) var list: ChecklistListDTO?

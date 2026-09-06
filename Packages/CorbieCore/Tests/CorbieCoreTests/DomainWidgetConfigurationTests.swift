@@ -43,6 +43,18 @@ import Testing
         #expect(snapshot.date == nil)
     }
 
+    @Test func aCountdownConfiguredForAnEventThatIsNotChosenHasNoSource() {
+        let unchosen = CountdownConfigurationIntent(source: .customEvent, event: nil)
+        #expect(unchosen.countdownSource == nil)
+        let eventId = UUID()
+        let chosen = CountdownConfigurationIntent(
+            source: .customEvent,
+            event: CorbieEventEntity(id: eventId, title: "Dinner with Anna", date: nil)
+        )
+        #expect(chosen.countdownSource == .customEvent(eventId))
+        #expect(CountdownConfigurationIntent(source: .wedding).countdownSource == .wedding)
+    }
+
     @Test func theCountdownSourceSurvivesEncoding() throws {
         let eventId = UUID()
         let sources: [CountdownSource] = [.anniversary, .wedding, .partnerBirthday, .customEvent(eventId)]

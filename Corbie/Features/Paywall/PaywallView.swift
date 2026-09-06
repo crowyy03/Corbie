@@ -33,7 +33,7 @@ struct PaywallView: View {
         .task { await model.load(environment) }
         .sheet(item: $model.openedLink) { link in
             if let url = link.url {
-                SafariView(url: url)
+                LegalPageView(url: url)
                     .ignoresSafeArea()
             }
         }
@@ -202,11 +202,11 @@ struct PaywallView: View {
 
     private var links: some View {
         HStack(spacing: CorbieSpacing.m) {
-            ForEach(PaywallLink.allCases) { link in
+            ForEach(LegalPage.allCases) { link in
                 Button {
                     model.open(link)
                 } label: {
-                    Text(LocalizedStringKey(link.titleKey))
+                    Text(LocalizedStringKey(link.paywallTitleKey))
                         .corbieCaption()
                         .foregroundStyle(CorbieColorPalette.text)
                         .underline()
@@ -230,6 +230,7 @@ struct PaywallView: View {
     }
 }
 
+#if DEBUG
 #Preview("Trial ended") {
     PaywallView(request: PaywallRequest(reason: .trialEnded))
         .environment(AppEnvironment.previewSignedIn())
@@ -239,3 +240,4 @@ struct PaywallView: View {
     PaywallView(request: PaywallRequest(reason: .capsules, action: .capsules))
         .environment(AppEnvironment.previewSignedIn())
 }
+#endif

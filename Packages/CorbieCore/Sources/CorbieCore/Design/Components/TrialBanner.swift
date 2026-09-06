@@ -1,12 +1,12 @@
 import SwiftUI
 
 public struct TrialBanner: View {
-    private let daysLeft: Int
+    private let daysLeft: Int?
     private let message: String
     private let actionTitle: String
     private let action: () -> Void
 
-    public init(daysLeft: Int, message: String, actionTitle: String, action: @escaping () -> Void) {
+    public init(daysLeft: Int?, message: String, actionTitle: String, action: @escaping () -> Void) {
         self.daysLeft = daysLeft
         self.message = message
         self.actionTitle = actionTitle
@@ -15,14 +15,16 @@ public struct TrialBanner: View {
 
     public var body: some View {
         HStack(spacing: CorbieSpacing.s) {
-            Text(daysLeft.formatted())
-                .corbieMono()
-                .fontWeight(.bold)
-                .foregroundStyle(CorbieColorPalette.accentInk)
-                .padding(.horizontal, CorbieSpacing.xs)
-                .frame(minHeight: CorbieSpacing.xl)
-                .background(Capsule(style: .continuous).fill(CorbieColorPalette.ice))
-                .accessibilityHidden(true)
+            if let daysLeft {
+                Text(daysLeft.formatted())
+                    .corbieMono()
+                    .fontWeight(.bold)
+                    .foregroundStyle(CorbieColorPalette.accentInk)
+                    .padding(.horizontal, CorbieSpacing.xs)
+                    .frame(minHeight: CorbieSpacing.xl)
+                    .background(Capsule(style: .continuous).fill(CorbieColorPalette.ice))
+                    .accessibilityHidden(true)
+            }
 
             Text(message)
                 .corbieCaption()

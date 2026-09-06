@@ -156,6 +156,7 @@ struct CapsulesView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         CapsulesView()
@@ -163,3 +164,4 @@ struct CapsulesView: View {
     .environment(AppState())
     .environment(AppEnvironment.preview())
 }
+#endif
