@@ -255,23 +255,93 @@ struct WidgetDateRow: View {
     }
 }
 
-struct WidgetPlanLine: View {
-    let plan: PlanProgressSnapshot
+struct WidgetEventRow: View {
+    let event: WidgetEvent
 
-    private var amountText: String? {
-        guard let saved = plan.savedText, let target = plan.targetText else { return nil }
-        return String(format: String(localized: "plans.card.progress"), saved, target)
+    private var stripeColor: Color {
+        guard let colorKey = event.colorKey else { return CorbieColorPalette.ice }
+        return MemberColor(key: colorKey).color
     }
 
-    private var overspendText: String? {
-        guard let overspent = plan.overspentText else { return nil }
-        return String(format: String(localized: "plans.card.overspend"), overspent)
+    var body: some View {
+        HStack(spacing: CorbieSpacing.xs) {
+            Capsule(style: .continuous)
+                .fill(stripeColor)
+                .frame(width: WidgetLayout.stripeWidth)
+            Text(event.title)
+                .corbieBody()
+                .foregroundStyle(CorbieColorPalette.text)
+                .lineLimit(1)
+            Spacer(minLength: CorbieSpacing.xs)
+            if let startAt = event.startAt, event.isAllDay == false {
+                Text(startAt, style: .time)
+                    .corbieMono()
+                    .foregroundStyle(CorbieColorPalette.text2)
+                    .lineLimit(1)
+            } else {
+                Text("today.row.allday")
+                    .corbieMono()
+                    .foregroundStyle(CorbieColorPalette.text2)
+                    .lineLimit(1)
+            }
+        }
+        .frame(height: WidgetLayout.dateRowHeight)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+struct WidgetPlanLine: View {
+    private let title: String
+    private let progress: Double
+    private let isOverspent: Bool
+    private let amountText: String?
+    private let overspendText: String?
+
+    init(plan: PlanProgressSnapshot) {
+        self.init(
+            title: plan.title ?? "",
+            progress: plan.progress,
+            isOverspent: plan.isOverspent,
+            saved: plan.savedText,
+            target: plan.targetText,
+            overspent: plan.overspentText
+        )
+    }
+
+    init(plan: TodayPlan) {
+        self.init(
+            title: plan.title,
+            progress: plan.progress,
+            isOverspent: false,
+            saved: plan.savedText,
+            target: plan.targetText,
+            overspent: nil
+        )
+    }
+
+    private init(
+        title: String,
+        progress: Double,
+        isOverspent: Bool,
+        saved: String?,
+        target: String?,
+        overspent: String?
+    ) {
+        self.title = title
+        self.progress = progress
+        self.isOverspent = isOverspent
+        if let saved, let target {
+            amountText = String(format: String(localized: "plans.card.progress"), saved, target)
+        } else {
+            amountText = nil
+        }
+        overspendText = overspent.map { String(format: String(localized: "plans.card.overspend"), $0) }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             HStack(spacing: CorbieSpacing.xs) {
-                Text(plan.title ?? "")
+                Text(title)
                     .corbieBody()
                     .foregroundStyle(CorbieColorPalette.text)
                     .lineLimit(1)
@@ -284,8 +354,8 @@ struct WidgetPlanLine: View {
                 }
             }
             ProgressBar(
-                value: plan.progress,
-                overspend: plan.isOverspent ? 0.25 : 0,
+                value: progress,
+                overspend: isOverspent ? 0.25 : 0,
                 accessibilityLabel: String(localized: "plans.card.progress.label"),
                 accessibilityValue: amountText ?? ""
             )

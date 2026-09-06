@@ -7935,16 +7935,16 @@
     },
     "notification.plan.expense.body": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ added money to %2$@"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ hat eine Ausgabe zu %2$@ eingetragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ added money to %2$@"
           }
         },
         "es": {
@@ -7969,16 +7969,16 @@
     },
     "notification.plan.expense.title": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Money added"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Neue Ausgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Money added"
           }
         },
         "es": {
@@ -12955,16 +12955,16 @@
     },
     "people.editor.birthday.hint": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "day and month, the year is optional"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Tag und Monat, kein Jahr"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "day and month, the year is optional"
           }
         },
         "es": {
@@ -13485,16 +13485,16 @@
     },
     "people.editor.relation.hint": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "any word works, the chips are shortcuts"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "eine auswählen oder selbst eintippen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "any word works, the chips are shortcuts"
           }
         },
         "es": {
@@ -13573,16 +13573,16 @@
     },
     "people.editor.relation.placeholder": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mom, boss, anything"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Mutter, Freund, Chef"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mom, boss, anything"
           }
         },
         "es": {
@@ -21727,6 +21727,16 @@
         }
       }
     },
+    "today.block.events": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Events"
+          }
+        }
+      }
+    },
     "today.block.freetasks": {
       "localizations": {
         "en": {
@@ -21737,17 +21747,17 @@
         }
       }
     },
-    "today.block.plan": {
+    "today.block.plans": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plan"
+            "value": "Plans"
           }
         }
       }
     },
-    "today.block.today": {
+    "today.block.tasks": {
       "localizations": {
         "en": {
           "stringUnit": {
@@ -21823,16 +21833,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "days together"
-          }
-        }
-      }
-    },
-    "today.plan.amount": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ of %2$@"
           }
         }
       }
@@ -26644,31 +26644,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tage, der nächste Termin, ein Plan und drei Aufgaben."
+            "value": "Tage zusammen, was heute ansteht, und ein Plan."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Days, the next date, a plan and three tasks."
+            "value": "Days together, what is on today and a plan."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Días, la siguiente fecha, un plan y tres tareas."
+            "value": "Días juntos, lo que hay hoy y un plan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jours, prochaine date, un projet et trois tâches."
+            "value": "Jours ensemble, le programme du jour et un projet."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Giorni, la prossima data, un progetto e tre attività."
+            "value": "Giorni insieme, cosa c'è oggi e un progetto."
           }
         }
       }

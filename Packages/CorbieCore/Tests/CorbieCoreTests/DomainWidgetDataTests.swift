@@ -240,13 +240,14 @@ import Testing
         #expect(custom.daysAway == 1)
     }
 
-    @Test func ourDayComposesTheOtherWidgets() async throws {
+    @Test func ourDayShowsWhatTodayShows() async throws {
         let world = try await makeWorld()
         let snapshot = try await world.provider.ourDay(now: world.now)
         #expect(snapshot.days == 460)
-        #expect(snapshot.nextDate?.title == "Dinner with Anna")
-        #expect(snapshot.plan?.planId == world.seed.plan.id)
-        #expect(snapshot.tasks.count == 3)
+        #expect(snapshot.tasks.map(\.title) == ["Book the vet"])
+        #expect(snapshot.events.isEmpty)
+        #expect(snapshot.plan?.id == world.seed.plan.id)
+        #expect(snapshot.plan?.targetText == "$5,000")
         #expect(snapshot.isPremium)
     }
 

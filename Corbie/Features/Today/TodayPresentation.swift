@@ -59,15 +59,6 @@ struct TodayPresentation {
         return String(format: String(localized: "today.comingup.gift"), locale: locale, date.ideasCount)
     }
 
-    func planAmount(_ plan: PlanDTO) -> String {
-        String(
-            format: String(localized: "today.plan.amount"),
-            locale: locale,
-            Money(amount: plan.totalSavedAmount, currency: plan.currency).formatted(locale: locale),
-            Money(amount: plan.targetAmount, currency: plan.currency).formatted(locale: locale)
-        )
-    }
-
     func moreFreeTasks(_ count: Int) -> String {
         String(format: String(localized: "today.freetasks.more"), locale: locale, count)
     }

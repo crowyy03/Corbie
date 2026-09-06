@@ -136,6 +136,11 @@ final class TodayViewModel {
         }
     }
 
+    func open(_ route: Route, block: TodayBlock, in appState: AppState) {
+        record(block: block)
+        appState.open(route)
+    }
+
     func record(block: TodayBlock) {
         analytics.record(.todayBlockTapped(block: block))
     }

@@ -7,6 +7,7 @@ struct TodayEntryRow: View {
     let time: String
     let fromPlan: String?
     let checkboxLabel: String
+    let take: (() -> Void)?
     let toggle: (() -> Void)?
     let open: () -> Void
 
@@ -34,6 +35,10 @@ struct TodayEntryRow: View {
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
                 .accessibilityLabel(Text(entry.title))
                 .accessibilityValue(Text(caption))
+                if let take {
+                    TodayTakeButton(title: entry.title, action: take)
+                        .padding(.top, CorbieSpacing.xxs)
+                }
                 if let toggle {
                     checkbox(toggle)
                 }
@@ -168,31 +173,55 @@ struct TodayWaitingRow: View {
     }
 }
 
-struct TodayPlanCard: View {
-    let title: String
-    let amount: String
-    let progress: Double
-    let open: () -> Void
+struct TodayPlansCarousel: View {
+    let plans: [TodayPlan]
+    let open: (TodayPlan) -> Void
+    let add: () -> Void
+
+    private var showsSteps: Bool {
+        plans.contains { $0.stepCount > 0 }
+    }
 
     var body: some View {
-        Button(action: open) {
+        ScrollView(.horizontal) {
+            HStack(alignment: .top, spacing: CorbieSpacing.m) {
+                if plans.isEmpty {
+                    AddPlanCard(action: add)
+                }
+                ForEach(plans) { plan in
+                    CompactPlanCard(plan: plan, showsSteps: showsSteps) { open(plan) }
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .scrollTargetBehavior(.viewAligned)
+        .scrollIndicators(.hidden)
+    }
+}
+
+struct AddPlanCard: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
             Card {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
-                    Text(title)
+                    Image(systemName: "plus")
+                        .font(.system(size: CorbieSpacing.l))
+                        .foregroundStyle(CorbieColorPalette.ice)
+                        .accessibilityHidden(true)
+                    Text("plans.empty.action")
                         .corbieBody()
                         .foregroundStyle(CorbieColorPalette.text)
                         .multilineTextAlignment(.leading)
-                    ProgressBar(value: progress)
-                    Text(amount)
-                        .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .buttonStyle(.plain)
+        .frame(width: CompactPlanCard.width)
         .frame(minHeight: CorbieMetrics.minimumTapTarget)
-        .accessibilityLabel(Text(title))
-        .accessibilityValue(Text(amount))
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
     }
 }

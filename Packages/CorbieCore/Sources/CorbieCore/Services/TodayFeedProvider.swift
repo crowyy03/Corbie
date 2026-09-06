@@ -6,11 +6,13 @@ public struct TodayFeedProvider: Sendable {
     private let repositories: Repositories
     private let unifiedTasks: UnifiedTaskProvider
     private let calendar: Calendar
+    private let locale: Locale
 
-    public init(repositories: Repositories, calendar: Calendar = .current) {
+    public init(repositories: Repositories, calendar: Calendar = .current, locale: Locale = .current) {
         self.repositories = repositories
         unifiedTasks = UnifiedTaskProvider(repositories: repositories)
         self.calendar = calendar
+        self.locale = locale
     }
 
     public func feed(space: SpaceDTO, viewerMemberId: UUID?, now: Date = Date()) async throws -> TodayFeed {
@@ -22,20 +24,28 @@ public struct TodayFeedProvider: Sendable {
         let people = try await repositories.people.people(spaceId: space.id)
         let open = try await unifiedTasks.unifiedTasks(TaskQuery(spaceId: space.id))
         let planOfStep = try await planIdByStep(spaceId: space.id)
-        let entries = try await todayEntries(
+        let tasks = tasksToday(
+            open: open,
+            viewerMemberId: viewerMemberId,
+            dayStart: dayStart,
+            dayEnd: dayEnd
+        )
+        let events = try await eventsToday(
             spaceId: space.id,
             open: open,
             planOfStep: planOfStep,
             dayStart: dayStart,
             dayEnd: dayEnd
         )
-        let entryIds = Set(entries.map(\.id))
-        let free = open.filter { $0.isFree && $0.source == .task && entryIds.contains($0.id) == false }
+        let shown = Set(tasks.map(\.id)).union(events.map(\.id))
+        let free = open.filter { $0.isFree && $0.source == .task && shown.contains($0.id) == false }
         let viewer = members.first { $0.id == viewerMemberId }
         return TodayFeed(
             day: dayStart,
             daysTogether: ImportantDates.daysTogether(space: space, now: now, calendar: calendar),
-            entries: entries,
+            plans: try await plans(spaceId: space.id),
+            tasksToday: tasks,
+            eventsToday: events,
             freeTasks: Array(free.prefix(TodayFeed.freeTaskLimit)),
             freeTasksRemaining: max(0, free.count - TodayFeed.freeTaskLimit),
             comingUp: try await comingUp(
@@ -46,7 +56,6 @@ public struct TodayFeedProvider: Sendable {
                 now: now,
                 dayEnd: dayEnd
             ),
-            plan: try await plan(spaceId: space.id),
             waiting: try await waiting(space: space, viewer: viewer, members: members, now: now),
             recap: try await recap(space: space, members: members, people: people, viewer: viewer, now: now),
             isPaired: members.count >= 2
@@ -59,7 +68,20 @@ public struct TodayFeedProvider: Sendable {
         return try await recapSummary(space: space, members: members, people: people, week: week)
     }
 
-    private func todayEntries(
+    private func tasksToday(
+        open: [UnifiedTask],
+        viewerMemberId: UUID?,
+        dayStart: Date,
+        dayEnd: Date
+    ) -> [TodayEntry] {
+        let mine = open.filter { task in
+            guard task.source == .task, let dueAt = task.dueAt, dueAt >= dayStart, dueAt < dayEnd else { return false }
+            return task.isFree || task.assigneeMemberId == viewerMemberId
+        }
+        return TodayEntry.ordered(mine.map { TodayEntry(task: $0, planId: nil, calendar: calendar) })
+    }
+
+    private func eventsToday(
         spaceId: UUID,
         open: [UnifiedTask],
         planOfStep: [UUID: UUID],
@@ -73,9 +95,9 @@ public struct TodayFeedProvider: Sendable {
                 return startAt >= dayStart && startAt < dayEnd
             }
             .map(TodayEntry.init(event:))
-        for task in open {
-            guard let dueAt = task.dueAt, dueAt >= dayStart, dueAt < dayEnd else { continue }
-            entries.append(TodayEntry(task: task, planId: planOfStep[task.id], calendar: calendar))
+        for step in open where step.source != .task {
+            guard let dueAt = step.dueAt, dueAt >= dayStart, dueAt < dayEnd else { continue }
+            entries.append(TodayEntry(task: step, planId: planOfStep[step.id], calendar: calendar))
         }
         return TodayEntry.ordered(entries)
     }
@@ -162,13 +184,31 @@ public struct TodayFeedProvider: Sendable {
         )
     }
 
-    private func plan(spaceId: UUID) async throws -> PlanDTO? {
-        let plans = try await repositories.plans.plans(spaceId: spaceId, statuses: [.active])
-        let dated = plans.filter { $0.endAt != nil }
-        if dated.isEmpty == false {
-            return dated.min { ($0.endAt ?? .distantFuture) < ($1.endAt ?? .distantFuture) }
+    private func plans(spaceId: UUID) async throws -> [TodayPlan] {
+        let active = try await repositories.plans.plans(spaceId: spaceId, statuses: [.active])
+        return active
+            .sorted(by: TodayFeedProvider.endingSoonestFirst)
+            .map { TodayPlan($0, locale: locale) }
+    }
+
+    private static func endingSoonestFirst(_ lhs: PlanDTO, _ rhs: PlanDTO) -> Bool {
+        switch (lhs.endAt, rhs.endAt) {
+        case let (left?, right?):
+            return left == right ? newestFirst(lhs, rhs) : left < right
+        case (_?, nil):
+            return true
+        case (nil, _?):
+            return false
+        case (nil, nil):
+            return newestFirst(lhs, rhs)
         }
-        return plans.max { ($0.createdAt ?? .distantPast) < ($1.createdAt ?? .distantPast) }
+    }
+
+    private static func newestFirst(_ lhs: PlanDTO, _ rhs: PlanDTO) -> Bool {
+        let left = lhs.createdAt ?? .distantPast
+        let right = rhs.createdAt ?? .distantPast
+        if left != right { return left > right }
+        return lhs.id.uuidString < rhs.id.uuidString
     }
 
     private func waiting(

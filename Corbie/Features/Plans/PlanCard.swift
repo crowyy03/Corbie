@@ -65,6 +65,62 @@ struct PlanCard: View {
     }
 }
 
+struct CompactPlanCard: View {
+    static let width: CGFloat = 240
+
+    let plan: TodayPlan
+    let showsSteps: Bool
+    let open: () -> Void
+
+    private var amount: String {
+        String(format: String(localized: "plans.card.progress"), plan.savedText, plan.targetText)
+    }
+
+    private var steps: String? {
+        planStepsBadge(done: plan.doneStepCount, total: plan.stepCount)
+    }
+
+    var body: some View {
+        Button(action: open) {
+            Card(showsChromeGradient: true) {
+                VStack(alignment: .leading, spacing: CorbieSpacing.s) {
+                    HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
+                        Image(systemName: plan.type.systemImage)
+                            .foregroundStyle(CorbieColorPalette.text2)
+                            .accessibilityHidden(true)
+                        Text(plan.title)
+                            .corbieBody()
+                            .fontWeight(.semibold)
+                            .foregroundStyle(CorbieColorPalette.text)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(2, reservesSpace: true)
+                        Spacer(minLength: 0)
+                    }
+                    ProgressBar(
+                        value: plan.progress,
+                        accessibilityLabel: String(localized: "plans.card.progress.label"),
+                        accessibilityValue: amount
+                    )
+                    Text(amount)
+                        .corbieMono()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .lineLimit(1)
+                    if showsSteps {
+                        Text(steps ?? "")
+                            .corbieMono()
+                            .foregroundStyle(CorbieColorPalette.text2)
+                            .lineLimit(1, reservesSpace: true)
+                    }
+                }
+            }
+        }
+        .buttonStyle(.plain)
+        .frame(width: CompactPlanCard.width)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+    }
+}
+
 #if DEBUG
 #Preview {
     VStack(spacing: CorbieSpacing.m) {

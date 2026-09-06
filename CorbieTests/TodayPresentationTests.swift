@@ -102,17 +102,6 @@ final class TodayPresentationTests: XCTestCase {
         XCTAssertFalse(event.isGiftMissing)
     }
 
-    func testThePlanLineShowsSavedAgainstTarget() {
-        let plan = PlanDTO(
-            id: UUID(),
-            title: "Japan",
-            targetAmount: 5000,
-            currency: "USD",
-            savedAmount: 2400
-        )
-        XCTAssertEqual(presentation.planAmount(plan), "$2,400 of $5,000")
-    }
-
     func testTheFreeTaskFooterCountsWhatIsHidden() {
         XCTAssertEqual(presentation.moreFreeTasks(4), "4 more")
     }
@@ -146,10 +135,11 @@ final class TodayPresentationTests: XCTestCase {
 
     func testEveryBlockAndQuickActionHasCatalogCopy() {
         let keys = [
-            "today.block.today",
+            "today.block.plans",
+            "today.block.tasks",
+            "today.block.events",
             "today.block.freetasks",
             "today.block.comingup",
-            "today.block.plan",
             "today.block.waiting",
             "today.header.days",
             "today.action.task",

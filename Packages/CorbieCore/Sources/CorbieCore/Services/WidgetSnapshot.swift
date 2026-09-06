@@ -47,6 +47,22 @@ public struct WidgetTask: Sendable, Codable, Equatable, Identifiable {
     }
 }
 
+public struct WidgetEvent: Sendable, Codable, Equatable, Identifiable {
+    public let id: UUID
+    public let title: String
+    public let startAt: Date?
+    public let isAllDay: Bool
+    public let colorKey: String?
+
+    public init(id: UUID, title: String, startAt: Date?, isAllDay: Bool, colorKey: String?) {
+        self.id = id
+        self.title = title
+        self.startAt = startAt
+        self.isAllDay = isAllDay
+        self.colorKey = colorKey
+    }
+}
+
 public struct WidgetWish: Sendable, Codable, Equatable, Identifiable {
     public let id: UUID
     public let title: String
@@ -266,22 +282,22 @@ public struct CapsuleSnapshot: Sendable, Codable, Equatable {
 
 public struct OurDaySnapshot: Sendable, Codable, Equatable {
     public let days: Int?
-    public let nextDate: WidgetDate?
-    public let plan: PlanProgressSnapshot?
     public let tasks: [WidgetTask]
+    public let events: [WidgetEvent]
+    public let plan: TodayPlan?
     public let isPremium: Bool
 
     public init(
         days: Int?,
-        nextDate: WidgetDate?,
-        plan: PlanProgressSnapshot?,
         tasks: [WidgetTask],
+        events: [WidgetEvent],
+        plan: TodayPlan?,
         isPremium: Bool
     ) {
         self.days = days
-        self.nextDate = nextDate
-        self.plan = plan
         self.tasks = tasks
+        self.events = events
+        self.plan = plan
         self.isPremium = isPremium
     }
 }

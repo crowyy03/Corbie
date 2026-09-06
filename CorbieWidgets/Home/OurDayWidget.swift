@@ -8,12 +8,12 @@ struct OurDayEntry: TimelineEntry {
 
     static let placeholder = OurDayEntry(
         date: Date(),
-        snapshot: OurDaySnapshot(days: 460, nextDate: nil, plan: nil, tasks: [], isPremium: true)
+        snapshot: OurDaySnapshot(days: 460, tasks: [], events: [], plan: nil, isPremium: true)
     )
 
     static func load(now: Date, provider: WidgetDataProvider) async -> OurDayEntry {
         let snapshot = (try? await provider.ourDay(now: now))
-            ?? OurDaySnapshot(days: nil, nextDate: nil, plan: nil, tasks: [], isPremium: true)
+            ?? OurDaySnapshot(days: nil, tasks: [], events: [], plan: nil, isPremium: true)
         return OurDayEntry(date: now, snapshot: snapshot)
     }
 }
@@ -41,9 +41,9 @@ struct OurDayWidgetView: View {
 
     private var isEmpty: Bool {
         entry.snapshot.days == nil
-            && entry.snapshot.nextDate == nil
-            && entry.snapshot.plan == nil
             && entry.snapshot.tasks.isEmpty
+            && entry.snapshot.events.isEmpty
+            && entry.snapshot.plan == nil
     }
 
     var body: some View {
@@ -68,18 +68,18 @@ struct OurDayWidgetView: View {
                             .accessibilityElement(children: .combine)
                         }
                     }
-                    if let nextDate = entry.snapshot.nextDate {
-                        WidgetLink(route: .calendar) {
-                            WidgetDateRow(date: nextDate, now: entry.date)
-                        }
-                    }
-                    if let plan = entry.snapshot.plan, let planId = plan.planId {
-                        WidgetLink(route: .plan(planId)) {
-                            WidgetPlanLine(plan: plan)
-                        }
-                    }
                     ForEach(entry.snapshot.tasks) { task in
                         WidgetTaskRow(task: task, now: entry.date)
+                    }
+                    ForEach(entry.snapshot.events) { event in
+                        WidgetLink(route: .calendar) {
+                            WidgetEventRow(event: event)
+                        }
+                    }
+                    if let plan = entry.snapshot.plan {
+                        WidgetLink(route: .plan(plan.id)) {
+                            WidgetPlanLine(plan: plan)
+                        }
                     }
                     Spacer(minLength: 0)
                 }
@@ -95,7 +95,7 @@ struct OurDayWidgetView: View {
     OurDayWidget()
 } timeline: {
     await OurDayEntry.load(now: Date(), provider: WidgetPreviewData.provider())
-    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: nil, nextDate: nil, plan: nil, tasks: [], isPremium: true))
-    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: 460, nextDate: nil, plan: nil, tasks: [], isPremium: false))
+    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: nil, tasks: [], events: [], plan: nil, isPremium: true))
+    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: 460, tasks: [], events: [], plan: nil, isPremium: false))
 }
 #endif

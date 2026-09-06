@@ -12,7 +12,11 @@ import Testing
     private var wednesday: Date { date("2026-09-02 09:00") }
 
     private func provider(_ world: TestWorld) -> TodayFeedProvider {
-        TodayFeedProvider(repositories: world.repositories, calendar: calendar)
+        TodayFeedProvider(
+            repositories: world.repositories,
+            calendar: calendar,
+            locale: Locale(identifier: "en_US")
+        )
     }
 
     private func feed(_ world: TestWorld, now: Date? = nil) async throws -> TodayFeed {
@@ -33,7 +37,7 @@ import Testing
         #expect(result.isPaired)
     }
 
-    @Test func allDayEntriesComeFirstAndTheRestFollowTheClock() async throws {
+    @Test func eventsKeepTheClockAndTasksStayInTheirOwnBlock() async throws {
         let world = try await TestWorld.make()
         _ = try await world.repositories.events.create(
             EventDraft(
@@ -70,26 +74,43 @@ import Testing
             )
         )
         let result = try await feed(world)
-        #expect(result.entries.map(\.title) == ["Holiday", "Vet", "Dinner"])
-        #expect(result.entries.map(\.isAllDay) == [true, true, false])
-        #expect(result.blocks.first == .today)
+        #expect(result.tasksToday.map(\.title) == ["Vet"])
+        #expect(result.eventsToday.map(\.title) == ["Holiday", "Dinner"])
+        #expect(result.eventsToday.map(\.isAllDay) == [true, false])
+        #expect(result.blocks == [.tasks, .events, .freeTasks])
     }
 
-    @Test func aDatedPlanStepArrivesWithItsPlan() async throws {
+    @Test func aTaskTheOtherOneOwnsStaysOff() async throws {
         let world = try await TestWorld.make()
-        let plan = try await world.repositories.plans.create(
-            PlanDraft(spaceId: world.space.id, title: "Japan", createdByMemberId: world.me.id)
+        _ = try await world.repositories.tasks.create(
+            TaskDraft(
+                spaceId: world.space.id,
+                title: "Theirs",
+                assigneeMemberId: world.partner.id,
+                dueAt: date("2026-09-02"),
+                createdByMemberId: world.partner.id
+            )
         )
-        _ = try await world.repositories.plans.addStep(
-            planId: plan.id,
-            draft: PlanStepDraft(title: "Papers", assigneeMemberId: world.me.id, dueAt: date("2026-09-02"))
+        _ = try await world.repositories.tasks.create(
+            TaskDraft(
+                spaceId: world.space.id,
+                title: "Mine",
+                assigneeMemberId: world.me.id,
+                dueAt: date("2026-09-02"),
+                createdByMemberId: world.me.id
+            )
+        )
+        _ = try await world.repositories.tasks.create(
+            TaskDraft(
+                spaceId: world.space.id,
+                title: "Nobodys",
+                dueAt: date("2026-09-02"),
+                createdByMemberId: world.partner.id
+            )
         )
         let result = try await feed(world)
-        let entry = try #require(result.entries.first)
-        #expect(entry.title == "Papers")
-        #expect(entry.planTitle == "Japan")
-        #expect(entry.planId == plan.id)
-        #expect(entry.task != nil)
+        #expect(result.tasksToday.map(\.title).sorted() == ["Mine", "Nobodys"])
+        #expect(result.freeTasks.isEmpty)
     }
 
     @Test func freeTasksStopAtThreeAndCountTheRest() async throws {
@@ -120,7 +141,7 @@ import Testing
             )
         )
         let result = try await feed(world)
-        #expect(result.entries.map(\.title) == ["Bins"])
+        #expect(result.tasksToday.map(\.title) == ["Bins"])
         #expect(result.freeTasks.isEmpty)
         #expect(result.freeTasksRemaining == 0)
     }
@@ -159,8 +180,11 @@ import Testing
         #expect(birthday.isGiftMissing == false)
     }
 
-    @Test func thePlanWithTheNearestDeadlineWins() async throws {
+    @Test func plansRunFromTheNearestDeadlineToTheNewestWithoutOne() async throws {
         let world = try await TestWorld.make()
+        _ = try await world.repositories.plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Older", createdByMemberId: world.me.id)
+        )
         _ = try await world.repositories.plans.create(
             PlanDraft(
                 spaceId: world.space.id,
@@ -169,6 +193,9 @@ import Testing
                 endAt: date("2027-01-01"),
                 createdByMemberId: world.me.id
             )
+        )
+        _ = try await world.repositories.plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Newer", createdByMemberId: world.me.id)
         )
         _ = try await world.repositories.plans.create(
             PlanDraft(
@@ -180,19 +207,54 @@ import Testing
             )
         )
         let result = try await feed(world)
-        #expect(result.plan?.title == "Near")
+        #expect(result.plans.map(\.title) == ["Near", "Far", "Newer", "Older"])
+        #expect(result.blocks.first == .plans)
     }
 
-    @Test func withoutADeadlineTheNewestPlanShows() async throws {
+    @Test func aCompletedPlanLeavesTheCarousel() async throws {
         let world = try await TestWorld.make()
-        _ = try await world.repositories.plans.create(
-            PlanDraft(spaceId: world.space.id, title: "Older", createdByMemberId: world.me.id)
+        let plan = try await world.repositories.plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Kitchen", createdByMemberId: world.me.id)
         )
-        _ = try await world.repositories.plans.create(
-            PlanDraft(spaceId: world.space.id, title: "Newer", createdByMemberId: world.me.id)
+        var completed = plan
+        completed.status = .completed
+        _ = try await world.repositories.plans.update(completed)
+        let result = try await feed(world)
+        #expect(result.plans.isEmpty)
+        #expect(result.isEmpty)
+    }
+
+    @Test func aCarouselPlanCarriesItsMoneyAndItsSteps() async throws {
+        let world = try await TestWorld.make()
+        let plan = try await world.repositories.plans.create(
+            PlanDraft(
+                spaceId: world.space.id,
+                title: "Japan",
+                type: .trip,
+                targetAmount: 5000,
+                currency: "USD",
+                savedAmount: 2400,
+                createdByMemberId: world.me.id
+            )
+        )
+        let step = try await world.repositories.plans.addStep(
+            planId: plan.id,
+            draft: PlanStepDraft(title: "Papers", assigneeMemberId: world.me.id)
+        )
+        _ = try await world.repositories.plans.toggleStep(stepId: step.id, by: world.me.id, at: wednesday)
+        _ = try await world.repositories.plans.addStep(
+            planId: plan.id,
+            draft: PlanStepDraft(title: "Tickets", assigneeMemberId: world.me.id)
         )
         let result = try await feed(world)
-        #expect(result.plan?.title == "Newer")
+        let carousel = try #require(result.plans.first)
+        #expect(carousel.id == plan.id)
+        #expect(carousel.type == .trip)
+        #expect(carousel.savedText == "$2,400")
+        #expect(carousel.targetText == "$5,000")
+        #expect(abs(carousel.progress - 0.48) < 0.0001)
+        #expect(carousel.doneStepCount == 1)
+        #expect(carousel.stepCount == 2)
     }
 
     @Test func waitingCollectsACapsuleAVoteAndFreshPartnerWishes() async throws {

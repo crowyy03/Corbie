@@ -78,10 +78,24 @@ struct TodayView: View {
     }
 
     @ViewBuilder private func blocks(_ model: TodayViewModel) -> some View {
-        if model.feed.entries.isEmpty == false {
-            block(String(localized: "today.block.today")) {
-                ForEach(model.feed.entries) { entry in
-                    entryRow(entry, model: model)
+        block(String(localized: "today.block.plans")) {
+            TodayPlansCarousel(
+                plans: model.feed.plans,
+                open: { plan in model.open(.plan(plan.id), block: .plans, in: appState) },
+                add: { start(quickAction: .plan, model: model) }
+            )
+        }
+        if model.feed.tasksToday.isEmpty == false {
+            block(String(localized: "today.block.tasks")) {
+                ForEach(model.feed.tasksToday) { entry in
+                    entryRow(entry, block: .tasks, model: model)
+                }
+            }
+        }
+        if model.feed.eventsToday.isEmpty == false {
+            block(String(localized: "today.block.events")) {
+                ForEach(model.feed.eventsToday) { entry in
+                    entryRow(entry, block: .events, model: model)
                 }
             }
         }
@@ -91,12 +105,12 @@ struct TodayView: View {
                     TodayFreeTaskRow(
                         title: task.title,
                         take: { edit { await model.take(task) } },
-                        open: { open(block: .freeTasks, route: .task(task.id), model: model) }
+                        open: { model.open(.task(task.id), block: .freeTasks, in: appState) }
                     )
                 }
                 if model.feed.freeTasksRemaining > 0 {
                     Button {
-                        open(block: .freeTasks, route: .tasks, model: model)
+                        model.open(.tasks, block: .freeTasks, in: appState)
                     } label: {
                         Text(presentation.moreFreeTasks(model.feed.freeTasksRemaining))
                             .corbieMono()
@@ -116,19 +130,9 @@ struct TodayView: View {
                         caption: presentation.dateCaption(date),
                         giftLine: date.isGiftMissing ? presentation.giftLine(date) : nil,
                         dotColor: environment.memberColor(id: date.memberId),
-                        open: { open(block: .comingUp, route: route(for: date), model: model) }
+                        open: { model.open(route(for: date), block: .comingUp, in: appState) }
                     )
                 }
-            }
-        }
-        if let plan = model.feed.plan {
-            block(String(localized: "today.block.plan")) {
-                TodayPlanCard(
-                    title: plan.title,
-                    amount: presentation.planAmount(plan),
-                    progress: plan.progress,
-                    open: { open(block: .plan, route: .plan(plan.id), model: model) }
-                )
             }
         }
         if model.feed.waiting.isEmpty == false {
@@ -156,16 +160,22 @@ struct TodayView: View {
         }
     }
 
-    private func entryRow(_ entry: TodayEntry, model: TodayViewModel) -> some View {
+    private func entryRow(_ entry: TodayEntry, block: TodayBlock, model: TodayViewModel) -> some View {
         TodayEntryRow(
             entry: entry,
             dotColor: environment.memberColor(id: entry.memberId),
             time: presentation.time(for: entry),
             fromPlan: entry.planTitle.map(presentation.fromPlan),
             checkboxLabel: presentation.checkboxLabel(entry),
+            take: takeAction(entry, model: model),
             toggle: entry.task == nil ? nil : { edit { await model.toggle(entry) } },
-            open: { open(block: .today, route: route(for: entry), model: model) }
+            open: { model.open(route(for: entry), block: block, in: appState) }
         )
+    }
+
+    private func takeAction(_ entry: TodayEntry, model: TodayViewModel) -> (() -> Void)? {
+        guard let task = entry.task, task.source == .task, task.isFree else { return nil }
+        return { edit { await model.take(task) } }
     }
 
     private func waitingRow(_ item: TodayWaitingItem, model: TodayViewModel) -> some View {
@@ -173,7 +183,7 @@ struct TodayView: View {
         return TodayWaitingRow(
             title: content.title,
             caption: content.caption,
-            open: { open(block: .waiting, route: content.route, model: model) }
+            open: { model.open(content.route, block: .waiting, in: appState) }
         )
     }
 
@@ -221,6 +231,8 @@ struct TodayView: View {
                 people: model?.people ?? [],
                 calendar: .current
             )
+        case .plan:
+            PlanEditorView(plan: nil)
         case .invite:
             NavigationStack {
                 InviteView(environment: environment, spaceId: environment.space?.id ?? UUID()) {
@@ -296,15 +308,10 @@ struct TodayView: View {
         return .people
     }
 
-    private func open(block: TodayBlock, route: Route, model: TodayViewModel) {
-        model.record(block: block)
-        appState.open(route)
-    }
-
     private func start(quickAction kind: TodayQuickAction, model: TodayViewModel) {
         model.record(quickAction: kind)
         switch kind {
-        case .task, .date:
+        case .task, .date, .plan:
             guard environment.premiumGate.require(.create) else { return }
         case .invite:
             break

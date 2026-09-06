@@ -1,10 +1,11 @@
 import Foundation
 
 public enum TodayBlock: String, Sendable, Equatable, CaseIterable {
-    case today
+    case plans
+    case tasks
+    case events
     case freeTasks = "free_tasks"
     case comingUp = "coming_up"
-    case plan
     case waiting
     case recap
 }
@@ -12,9 +13,54 @@ public enum TodayBlock: String, Sendable, Equatable, CaseIterable {
 public enum TodayQuickAction: String, Sendable, Equatable, CaseIterable, Identifiable {
     case task
     case date
+    case plan
     case invite
 
     public var id: String { rawValue }
+}
+
+public struct TodayPlan: Sendable, Codable, Equatable, Identifiable {
+    public let id: UUID
+    public let title: String
+    public let type: PlanType
+    public let progress: Double
+    public let savedText: String
+    public let targetText: String
+    public let doneStepCount: Int
+    public let stepCount: Int
+
+    public init(
+        id: UUID,
+        title: String,
+        type: PlanType,
+        progress: Double,
+        savedText: String,
+        targetText: String,
+        doneStepCount: Int,
+        stepCount: Int
+    ) {
+        self.id = id
+        self.title = title
+        self.type = type
+        self.progress = progress
+        self.savedText = savedText
+        self.targetText = targetText
+        self.doneStepCount = doneStepCount
+        self.stepCount = stepCount
+    }
+
+    public init(_ plan: PlanDTO, locale: Locale = .current) {
+        self.init(
+            id: plan.id,
+            title: plan.title,
+            type: plan.type,
+            progress: plan.progress,
+            savedText: Money(amount: plan.totalSavedAmount, currency: plan.currency).formatted(locale: locale),
+            targetText: Money(amount: plan.targetAmount, currency: plan.currency).formatted(locale: locale),
+            doneStepCount: plan.doneStepCount,
+            stepCount: plan.stepCount
+        )
+    }
 }
 
 public enum TodayEntryItem: Sendable, Equatable {
@@ -176,11 +222,12 @@ public struct TodayFeed: Sendable, Equatable {
 
     public let day: Date
     public let daysTogether: Int?
-    public let entries: [TodayEntry]
+    public let plans: [TodayPlan]
+    public let tasksToday: [TodayEntry]
+    public let eventsToday: [TodayEntry]
     public let freeTasks: [UnifiedTask]
     public let freeTasksRemaining: Int
     public let comingUp: [TodayDate]
-    public let plan: PlanDTO?
     public let waiting: [TodayWaitingItem]
     public let recap: RecapSummary?
     public let isPaired: Bool
@@ -188,42 +235,46 @@ public struct TodayFeed: Sendable, Equatable {
     public init(
         day: Date,
         daysTogether: Int? = nil,
-        entries: [TodayEntry] = [],
+        plans: [TodayPlan] = [],
+        tasksToday: [TodayEntry] = [],
+        eventsToday: [TodayEntry] = [],
         freeTasks: [UnifiedTask] = [],
         freeTasksRemaining: Int = 0,
         comingUp: [TodayDate] = [],
-        plan: PlanDTO? = nil,
         waiting: [TodayWaitingItem] = [],
         recap: RecapSummary? = nil,
         isPaired: Bool = false
     ) {
         self.day = day
         self.daysTogether = daysTogether
-        self.entries = entries
+        self.plans = plans
+        self.tasksToday = tasksToday
+        self.eventsToday = eventsToday
         self.freeTasks = freeTasks
         self.freeTasksRemaining = freeTasksRemaining
         self.comingUp = comingUp
-        self.plan = plan
         self.waiting = waiting
         self.recap = recap
         self.isPaired = isPaired
     }
 
     public var isEmpty: Bool {
-        entries.isEmpty
+        plans.isEmpty
+            && tasksToday.isEmpty
+            && eventsToday.isEmpty
             && freeTasks.isEmpty
             && comingUp.isEmpty
-            && plan == nil
             && waiting.isEmpty
             && recap == nil
     }
 
     public var blocks: [TodayBlock] {
         var result: [TodayBlock] = []
-        if entries.isEmpty == false { result.append(.today) }
+        if plans.isEmpty == false { result.append(.plans) }
+        if tasksToday.isEmpty == false { result.append(.tasks) }
+        if eventsToday.isEmpty == false { result.append(.events) }
         if freeTasks.isEmpty == false { result.append(.freeTasks) }
         if comingUp.isEmpty == false { result.append(.comingUp) }
-        if plan != nil { result.append(.plan) }
         if waiting.isEmpty == false { result.append(.waiting) }
         if recap != nil { result.append(.recap) }
         return result

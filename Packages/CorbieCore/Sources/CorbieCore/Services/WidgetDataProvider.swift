@@ -28,6 +28,7 @@ public struct WidgetContext: Sendable {
 
 public struct WidgetDataProvider: Sendable {
     public static let taskLimit = 3
+    public static let ourDayLineLimit = 2
     public static let wishLimit = 3
     public static let dateLimit = 3
     public static let shoppingLimit = 3
@@ -272,17 +273,22 @@ public struct WidgetDataProvider: Sendable {
 
     public func ourDay(now: Date = Date()) async throws -> OurDaySnapshot {
         guard let context = try await context(now: now) else {
-            return OurDaySnapshot(days: nil, nextDate: nil, plan: nil, tasks: [], isPremium: false)
+            return OurDaySnapshot(days: nil, tasks: [], events: [], plan: nil, isPremium: false)
         }
-        let open = try await openTasks(spaceId: context.space.id)
-        let dates = try await widgetDates(context: context, now: now)
-        let plans = try await controller.repositories.plans.plans(spaceId: context.space.id, statuses: [.active])
-        let plan = plans.first
+        let feed = try await TodayFeedProvider(
+            repositories: controller.repositories,
+            calendar: calendar,
+            locale: locale
+        ).feed(space: context.space, viewerMemberId: context.viewer?.id, now: now)
         return OurDaySnapshot(
-            days: ImportantDates.daysTogether(space: context.space, now: now, calendar: calendar),
-            nextDate: dates.first,
-            plan: plan.map { planSnapshot($0, isPremium: context.isPremium) },
-            tasks: open.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
+            days: feed.daysTogether,
+            tasks: feed.tasksToday
+                .prefix(WidgetDataProvider.ourDayLineLimit)
+                .compactMap { widgetTask($0, context: context) },
+            events: feed.eventsToday
+                .prefix(WidgetDataProvider.ourDayLineLimit)
+                .map { widgetEvent($0, context: context) },
+            plan: feed.plans.first,
             isPremium: context.isPremium
         )
     }
@@ -385,6 +391,27 @@ public struct WidgetDataProvider: Sendable {
             colorKey: context.colorKey(for: task.assigneeMemberId),
             isFree: task.isFree,
             dueAt: task.dueAt
+        )
+    }
+
+    private func widgetTask(_ entry: TodayEntry, context: WidgetContext) -> WidgetTask? {
+        guard let task = entry.task else { return nil }
+        return WidgetTask(
+            id: task.id,
+            title: task.title,
+            colorKey: context.colorKey(for: task.assigneeMemberId),
+            isFree: task.isFree,
+            dueAt: task.dueAt
+        )
+    }
+
+    private func widgetEvent(_ entry: TodayEntry, context: WidgetContext) -> WidgetEvent {
+        WidgetEvent(
+            id: entry.id,
+            title: entry.title,
+            startAt: entry.startAt,
+            isAllDay: entry.isAllDay,
+            colorKey: context.colorKey(for: entry.memberId)
         )
     }
 
