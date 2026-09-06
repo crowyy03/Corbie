@@ -13,7 +13,11 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         guard name.isEmpty == false else {
             throw CorbieError.invalidInput("person name is empty")
         }
-        try CoreDataPeopleRepository.validateBirthday(month: draft.birthdayMonth, day: draft.birthdayDay)
+        try CoreDataPeopleRepository.validateDay(
+            month: draft.birthdayMonth,
+            day: draft.birthdayDay,
+            year: draft.birthdayYear
+        )
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: draft.spaceId, in: context)
             let person = Person(context: context)
@@ -23,6 +27,7 @@ public struct CoreDataPeopleRepository: PeopleRepository {
             person.relation = draft.relation
             person.birthdayMonth = draft.birthdayMonth.map(NSNumber.init(value:))
             person.birthdayDay = draft.birthdayDay.map(NSNumber.init(value:))
+            person.birthdayYear = draft.birthdayYear.map(NSNumber.init(value:))
             person.ownerMemberId = draft.ownerMemberId
             person.note = draft.note
             return PersonDTO(person)
@@ -30,13 +35,18 @@ public struct CoreDataPeopleRepository: PeopleRepository {
     }
 
     public func update(_ person: PersonDTO) async throws -> PersonDTO {
-        try CoreDataPeopleRepository.validateBirthday(month: person.birthdayMonth, day: person.birthdayDay)
+        try CoreDataPeopleRepository.validateDay(
+            month: person.birthdayMonth,
+            day: person.birthdayDay,
+            year: person.birthdayYear
+        )
         return try await access.write { context in
             let entity: Person = try ManagedFetch.require(Person.entityName, id: person.id, in: context)
             entity.name = person.name
             entity.relation = person.relation
             entity.birthdayMonth = person.birthdayMonth.map(NSNumber.init(value:))
             entity.birthdayDay = person.birthdayDay.map(NSNumber.init(value:))
+            entity.birthdayYear = person.birthdayYear.map(NSNumber.init(value:))
             entity.ownerMemberId = person.ownerMemberId
             entity.note = person.note
             return PersonDTO(entity)
@@ -74,6 +84,63 @@ public struct CoreDataPeopleRepository: PeopleRepository {
                 event.personId = nil
             }
             context.delete(person)
+        }
+    }
+
+    public func addDate(personId: UUID, draft: PersonDateDraft) async throws -> PersonDateDTO {
+        let title = draft.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard title.isEmpty == false else {
+            throw CorbieError.invalidInput("person date title is empty")
+        }
+        try CoreDataPeopleRepository.validateDay(month: draft.month, day: draft.day, year: draft.year)
+        return try await access.write { context in
+            let person: Person = try ManagedFetch.require(Person.entityName, id: personId, in: context)
+            let date = PersonDate(context: context)
+            context.assign(date, toStoreOf: person)
+            date.person = person
+            date.title = title
+            date.month = draft.month.map(NSNumber.init(value:))
+            date.day = draft.day.map(NSNumber.init(value:))
+            date.year = draft.year.map(NSNumber.init(value:))
+            date.remindersEnabled = draft.remindersEnabled
+            return PersonDateDTO(date)
+        }
+    }
+
+    public func updateDate(_ date: PersonDateDTO) async throws -> PersonDateDTO {
+        let title = date.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard title.isEmpty == false else {
+            throw CorbieError.invalidInput("person date title is empty")
+        }
+        try CoreDataPeopleRepository.validateDay(month: date.month, day: date.day, year: date.year)
+        return try await access.write { context in
+            let entity: PersonDate = try ManagedFetch.require(PersonDate.entityName, id: date.id, in: context)
+            entity.title = title
+            entity.month = date.month.map(NSNumber.init(value:))
+            entity.day = date.day.map(NSNumber.init(value:))
+            entity.year = date.year.map(NSNumber.init(value:))
+            entity.remindersEnabled = date.remindersEnabled
+            return PersonDateDTO(entity)
+        }
+    }
+
+    public func dates(personId: UUID) async throws -> [PersonDateDTO] {
+        try await access.read { context in
+            let dates: [PersonDate] = try ManagedFetch.all(
+                PersonDate.entityName,
+                predicate: NSPredicate(format: "person.id == %@", personId as NSUUID),
+                in: context
+            )
+            return dates.map(PersonDateDTO.init).sorted(by: PersonDateDTO.inCalendarOrder)
+        }
+    }
+
+    public func deleteDate(id: UUID) async throws {
+        try await access.write { context in
+            guard let date: PersonDate = try ManagedFetch.first(PersonDate.entityName, id: id, in: context) else {
+                return
+            }
+            context.delete(date)
         }
     }
 
@@ -128,7 +195,10 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         }
     }
 
-    private static func validateBirthday(month: Int?, day: Int?) throws {
+    private static func validateDay(month: Int?, day: Int?, year: Int?) throws {
+        if let year, (1...9999).contains(year) == false {
+            throw CorbieError.invalidInput("year \(year) is out of range")
+        }
         guard let month, let day else { return }
         guard (1...12).contains(month), (1...31).contains(day) else {
             throw CorbieError.invalidInput("birthday \(month)/\(day) is out of range")

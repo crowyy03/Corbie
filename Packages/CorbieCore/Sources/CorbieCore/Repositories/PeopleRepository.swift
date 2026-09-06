@@ -6,6 +6,7 @@ public struct PersonDraft: Sendable, Equatable {
     public var relation: String?
     public var birthdayMonth: Int?
     public var birthdayDay: Int?
+    public var birthdayYear: Int?
     public var ownerMemberId: UUID?
     public var note: String?
 
@@ -15,6 +16,7 @@ public struct PersonDraft: Sendable, Equatable {
         relation: String? = nil,
         birthdayMonth: Int? = nil,
         birthdayDay: Int? = nil,
+        birthdayYear: Int? = nil,
         ownerMemberId: UUID? = nil,
         note: String? = nil
     ) {
@@ -23,8 +25,31 @@ public struct PersonDraft: Sendable, Equatable {
         self.relation = relation
         self.birthdayMonth = birthdayMonth
         self.birthdayDay = birthdayDay
+        self.birthdayYear = birthdayYear
         self.ownerMemberId = ownerMemberId
         self.note = note
+    }
+}
+
+public struct PersonDateDraft: Sendable, Equatable {
+    public var title: String
+    public var month: Int?
+    public var day: Int?
+    public var year: Int?
+    public var remindersEnabled: Bool
+
+    public init(
+        title: String,
+        month: Int? = nil,
+        day: Int? = nil,
+        year: Int? = nil,
+        remindersEnabled: Bool = true
+    ) {
+        self.title = title
+        self.month = month
+        self.day = day
+        self.year = year
+        self.remindersEnabled = remindersEnabled
     }
 }
 
@@ -56,6 +81,10 @@ public protocol PeopleRepository: Sendable {
     func person(id: UUID) async throws -> PersonDTO?
     func people(spaceId: UUID) async throws -> [PersonDTO]
     func delete(id: UUID) async throws
+    func addDate(personId: UUID, draft: PersonDateDraft) async throws -> PersonDateDTO
+    func updateDate(_ date: PersonDateDTO) async throws -> PersonDateDTO
+    func dates(personId: UUID) async throws -> [PersonDateDTO]
+    func deleteDate(id: UUID) async throws
     func addGiftIdea(personId: UUID, draft: GiftIdeaDraft) async throws -> GiftIdeaDTO
     func updateGiftIdea(_ idea: GiftIdeaDTO) async throws -> GiftIdeaDTO
     func giftIdeas(personId: UUID) async throws -> [GiftIdeaDTO]

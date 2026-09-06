@@ -54,7 +54,15 @@ struct CalendarFormatting {
             guard let name = autoDate.name, name.isEmpty == false else {
                 return String(localized: "calendar.autodate.birthday")
             }
+            if let withAge = PersonDateText.birthdayTitle(person: name, ordinal: autoDate.years, locale: locale) {
+                return withAge
+            }
             return String.localizedStringWithFormat(String(localized: "calendar.autodate.namedbirthday"), name)
+        case .event:
+            guard let name = autoDate.name, name.isEmpty == false else {
+                return String(localized: "calendar.kind.event")
+            }
+            return name
         }
     }
 

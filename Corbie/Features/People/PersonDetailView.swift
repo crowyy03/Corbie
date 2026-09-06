@@ -18,6 +18,7 @@ struct PersonDetailView: View {
                 if let person = model.person {
                     header(person)
                     factsCard(person)
+                    datesCard
                     giftIdeas
                 }
             }
@@ -58,6 +59,9 @@ struct PersonDetailView: View {
         .sheet(item: $model.giftEditor, onDismiss: { model.reload() }) { mode in
             GiftIdeaEditorView(personId: model.personId, mode: mode)
         }
+        .sheet(item: $model.dateEditor, onDismiss: { model.reload() }) { mode in
+            PersonDateEditorView(personId: model.personId, mode: mode)
+        }
         .onChange(of: model.isGone) {
             if model.isGone { dismiss() }
         }
@@ -87,11 +91,47 @@ struct PersonDetailView: View {
         Card {
             VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                 fact(key: "people.detail.relation", value: person.relation)
-                fact(key: "people.detail.birthday", value: PersonBirthday.text(person))
                 owner(person)
                 fact(key: "people.detail.note", value: person.note)
             }
         }
+    }
+
+    private var datesCard: some View {
+        VStack(alignment: .leading, spacing: CorbieSpacing.s) {
+            HStack {
+                SectionCaps(text: String(localized: "people.detail.dates"))
+                Spacer(minLength: 0)
+                Button {
+                    model.startAddingDate()
+                } label: {
+                    Image(systemName: "plus")
+                        .frame(
+                            minWidth: CorbieMetrics.minimumTapTarget,
+                            minHeight: CorbieMetrics.minimumTapTarget
+                        )
+                }
+                .accessibilityLabel(Text("people.detail.dates.add"))
+            }
+            Card {
+                VStack(alignment: .leading, spacing: CorbieSpacing.s) {
+                    if model.dateLines.isEmpty {
+                        Text("people.detail.dates.empty")
+                            .corbieMono()
+                            .foregroundStyle(CorbieColorPalette.text2)
+                    } else {
+                        ForEach(model.dateLines) { line in
+                            PersonDateRowView(
+                                line: line,
+                                edit: { model.startEditingDate(line) },
+                                remove: { Task { await model.deleteDate(line) } }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.top, CorbieSpacing.s)
     }
 
     @ViewBuilder
@@ -158,6 +198,49 @@ struct PersonDetailView: View {
             }
         }
         .padding(.top, CorbieSpacing.s)
+    }
+}
+
+private struct PersonDateRowView: View {
+    let line: PersonDateLine
+    let edit: () -> Void
+    let remove: () -> Void
+
+    var body: some View {
+        Button(action: edit) {
+            HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.s) {
+                VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
+                    Text(line.title)
+                        .corbieBody()
+                        .foregroundStyle(CorbieColorPalette.text)
+                        .multilineTextAlignment(.leading)
+                    if let caption = line.caption {
+                        Text(caption)
+                            .corbieMono()
+                            .foregroundStyle(CorbieColorPalette.text2)
+                            .multilineTextAlignment(.leading)
+                    }
+                }
+                Spacer(minLength: 0)
+                if let dayText = line.dayText {
+                    Text(dayText)
+                        .corbieBody()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .multilineTextAlignment(.trailing)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(minHeight: CorbieMetrics.minimumTapTarget)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .contextMenu {
+            Button(String(localized: "people.detail.dates.edit"), action: edit)
+            if line.isBirthday == false {
+                Button(String(localized: "people.detail.dates.remove"), role: .destructive, action: remove)
+            }
+        }
     }
 }
 

@@ -41,7 +41,14 @@ struct CalendarEntry: Identifiable, Equatable {
         startDay = day
         endDay = day
         isAllDay = true
-        kind = autoDate.kind == .anniversary || autoDate.kind == .wedding ? .anniversary : .birthday
+        switch autoDate.kind {
+        case .anniversary, .wedding:
+            kind = .anniversary
+        case .memberBirthday, .personBirthday:
+            kind = .birthday
+        case .event:
+            kind = .event
+        }
         ownerMemberId = autoDate.ownerMemberId
     }
 
@@ -132,6 +139,8 @@ enum CalendarEntries {
             return "birthday.member." + day
         case .anniversary, .wedding:
             return "anniversary." + day
+        case .event:
+            return "persondate." + autoDate.id + "." + day
         }
     }
 

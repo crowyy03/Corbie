@@ -6,7 +6,6 @@ enum RelationSuggestion: String, CaseIterable, Identifiable {
     case sister
     case brother
     case friend
-    case colleague
 
     var id: String { rawValue }
 

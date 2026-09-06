@@ -157,9 +157,18 @@ public enum CorbieModel {
         person.attribute("relation", .stringAttributeType)
         person.attribute("birthdayMonth", .integer16AttributeType)
         person.attribute("birthdayDay", .integer16AttributeType)
+        person.attribute("birthdayYear", .integer32AttributeType)
         person.attribute("ownerMemberId", .UUIDAttributeType)
         person.attribute("note", .stringAttributeType)
         person.attribute("createdAt", .dateAttributeType)
+
+        let personDate = ModelEntity(PersonDate.entityName, PersonDate.self)
+        personDate.attribute("title", .stringAttributeType)
+        personDate.attribute("month", .integer16AttributeType)
+        personDate.attribute("day", .integer16AttributeType)
+        personDate.attribute("year", .integer32AttributeType)
+        personDate.attribute("remindersEnabled", .booleanAttributeType, optional: false, defaultValue: true)
+        personDate.attribute("createdAt", .dateAttributeType)
 
         let giftIdea = ModelEntity(GiftIdea.entityName, GiftIdea.self)
         giftIdea.attribute("title", .stringAttributeType)
@@ -185,10 +194,11 @@ public enum CorbieModel {
         plan.owns(expense, many: "expenses", inverse: "plan")
         list.owns(listItem, many: "items", inverse: "list")
         person.owns(giftIdea, many: "giftIdeas", inverse: "person")
+        person.owns(personDate, many: "dates", inverse: "person")
 
         let builders = [
             space, member, task, event, comment, wish, plan, expense,
-            list, listItem, capsule, capsuleOpen, vote, voteResponse, person, giftIdea
+            list, listItem, capsule, capsuleOpen, vote, voteResponse, person, giftIdea, personDate
         ]
         let model = NSManagedObjectModel()
         model.entities = builders.map { $0.finish() }

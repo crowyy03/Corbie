@@ -7125,12 +7125,172 @@
         }
       }
     },
+    "people.age.turns": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "turns %lld"
+          }
+        }
+      }
+    },
+    "people.date.birthday.ordinal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@'s %2$@ birthday"
+          }
+        }
+      }
+    },
+    "people.date.editor.title.edit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit date"
+          }
+        }
+      }
+    },
+    "people.date.editor.title.new": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New date"
+          }
+        }
+      }
+    },
+    "people.date.label": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "people.date.reminders": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminders"
+          }
+        }
+      }
+    },
+    "people.date.reminders.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a nudge 14 days before"
+          }
+        }
+      }
+    },
+    "people.date.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Title"
+          }
+        }
+      }
+    },
+    "people.date.title.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wedding day"
+          }
+        }
+      }
+    },
+    "people.date.when": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        }
+      }
+    },
+    "people.date.year.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the year is optional - it gives you the age"
+          }
+        }
+      }
+    },
     "people.detail.birthday": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Birthday"
+          }
+        }
+      }
+    },
+    "people.detail.dates": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dates"
+          }
+        }
+      }
+    },
+    "people.detail.dates.add": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a date"
+          }
+        }
+      }
+    },
+    "people.detail.dates.edit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        }
+      }
+    },
+    "people.detail.dates.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no dates yet"
+          }
+        }
+      }
+    },
+    "people.detail.dates.remove": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove"
           }
         }
       }
@@ -7280,7 +7440,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "day and month, no year"
+            "value": "day and month, the year is optional"
           }
         }
       }
@@ -7296,6 +7456,26 @@
       }
     },
     "people.editor.birthday.none": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not set"
+          }
+        }
+      }
+    },
+    "people.editor.birthday.year": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Year"
+          }
+        }
+      }
+    },
+    "people.editor.birthday.year.none": {
       "localizations": {
         "en": {
           "stringUnit": {
@@ -7430,7 +7610,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "pick one or type your own"
+            "value": "any word works, the chips are shortcuts"
           }
         }
       }
@@ -7445,12 +7625,32 @@
         }
       }
     },
+    "people.editor.relation.other": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        }
+      }
+    },
+    "people.editor.relation.other.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "type your own"
+          }
+        }
+      }
+    },
     "people.editor.relation.placeholder": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mom, friend, boss"
+            "value": "Mom, boss, anything"
           }
         }
       }

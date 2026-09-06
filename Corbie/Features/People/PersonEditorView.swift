@@ -4,6 +4,7 @@ import SwiftUI
 struct PersonEditorView: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isRelationFocused: Bool
     @State private var model: PersonEditorViewModel
 
     init(mode: PersonEditorMode) {
@@ -64,28 +65,42 @@ struct PersonEditorView: View {
         @Bindable var model = model
 
         return VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
-            TextFieldRow(
+            FieldRow(
                 label: String(localized: "people.editor.relation"),
-                placeholder: String(localized: "people.editor.relation.placeholder"),
-                hint: String(localized: "people.editor.relation.hint"),
-                text: $model.relation
-            )
-            if model.suggestions.isEmpty == false {
-                ScrollView(.horizontal) {
-                    HStack(spacing: CorbieSpacing.xs) {
-                        ForEach(model.suggestions) { suggestion in
-                            Button {
-                                model.apply(suggestion)
-                            } label: {
-                                Chip(label: suggestion.title())
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                    .padding(.vertical, CorbieSpacing.xxs)
-                }
-                .scrollIndicators(.hidden)
+                hint: String(localized: "people.editor.relation.hint")
+            ) {
+                TextField(String(localized: "people.editor.relation.placeholder"), text: $model.relation)
+                    .focused($isRelationFocused)
+                    .textFieldStyle(.plain)
+                    .corbieBody()
+                    .foregroundStyle(CorbieColorPalette.text)
+                    .padding(.horizontal, CorbieSpacing.s)
+                    .frame(minHeight: CorbieMetrics.minimumTapTarget)
+                    .corbieFieldBox()
+                    .accessibilityLabel(Text("people.editor.relation"))
             }
+            ScrollView(.horizontal) {
+                HStack(spacing: CorbieSpacing.xs) {
+                    ForEach(model.suggestions) { suggestion in
+                        Button {
+                            model.apply(suggestion)
+                            isRelationFocused = false
+                        } label: {
+                            Chip(label: suggestion.title())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    Button {
+                        isRelationFocused = true
+                    } label: {
+                        Chip(label: String(localized: "people.editor.relation.other"))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityHint(Text("people.editor.relation.other.hint"))
+                }
+                .padding(.vertical, CorbieSpacing.xxs)
+            }
+            .scrollIndicators(.hidden)
         }
     }
 
@@ -115,6 +130,17 @@ struct PersonEditorView: View {
                         }
                     } label: {
                         Text("people.editor.birthday.day")
+                    }
+                    .pickerStyle(.menu)
+                    .frame(minHeight: CorbieMetrics.minimumTapTarget)
+
+                    Picker(selection: $model.birthdayYear) {
+                        Text("people.editor.birthday.year.none").tag(Int?.none)
+                        ForEach(PersonBirthday.yearOptions(), id: \.self) { year in
+                            Text(year.formatted(.number.grouping(.never))).tag(Int?.some(year))
+                        }
+                    } label: {
+                        Text("people.editor.birthday.year")
                     }
                     .pickerStyle(.menu)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)

@@ -124,7 +124,7 @@ public enum ImportantDates {
             return .wedding
         case .memberBirthday:
             return .partnerBirthday
-        case .personBirthday:
+        case .personBirthday, .event:
             return nil
         }
     }
