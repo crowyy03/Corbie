@@ -33,6 +33,8 @@ public struct WidgetDataProvider: Sendable {
     public static let dateLimit = 3
     public static let shoppingLimit = 3
     public static let upcomingHorizonDays = 400
+    public static let freeSlotHorizonDays = 14
+    public static let freeSlotLimit = 2
 
     private let controller: PersistenceController
     private let calendar: Calendar
@@ -293,6 +295,49 @@ public struct WidgetDataProvider: Sendable {
         )
     }
 
+    public func freeSlots(now: Date = Date()) async throws -> FreeSlotsSnapshot {
+        guard let context = try await context(now: now) else {
+            return FreeSlotsSnapshot(availability: .notPaired, isPremium: false)
+        }
+        guard let viewer = context.viewer, let partner = context.partner else {
+            return FreeSlotsSnapshot(availability: .notPaired, isPremium: context.isPremium)
+        }
+        guard let horizon = calendar.date(
+            byAdding: .day,
+            value: WidgetDataProvider.freeSlotHorizonDays,
+            to: now
+        ) else {
+            return FreeSlotsSnapshot(availability: .noSlots, isPremium: context.isPremium)
+        }
+        let store = RepositoryBusyIntervalStore(
+            repository: controller.repositories.busyIntervals,
+            spaceId: context.space.id
+        )
+        let busy = try await store.intervals(spaceId: context.space.id, from: now, to: horizon)
+        let result = FreeSlotEngine(calendar: calendar, locale: locale).result(
+            viewer: FreeSlotParticipant(memberId: viewer.id, sharesBusyTimes: viewer.sharesBusyTimes),
+            partner: FreeSlotParticipant(memberId: partner.id, sharesBusyTimes: partner.sharesBusyTimes),
+            busyRanges: busy,
+            from: now,
+            to: horizon
+        )
+        switch result {
+        case let .slots(slots):
+            let text = WidgetFreeSlotText(locale: locale, calendar: calendar)
+            return FreeSlotsSnapshot(
+                availability: .slots,
+                slots: slots.prefix(WidgetDataProvider.freeSlotLimit).map(text.slot),
+                isPremium: context.isPremium
+            )
+        case .viewerHasNoData:
+            return FreeSlotsSnapshot(availability: .viewerNotSharing, isPremium: context.isPremium)
+        case .partnerHasNoData:
+            return FreeSlotsSnapshot(availability: .partnerNotSharing, isPremium: context.isPremium)
+        case .none:
+            return FreeSlotsSnapshot(availability: .noSlots, isPremium: context.isPremium)
+        }
+    }
+
     public func lockCircular(mode: LockCircularMode, now: Date = Date()) async throws -> LockCircularSnapshot {
         guard let context = try await context(now: now) else {
             return LockCircularSnapshot(mode: mode, value: nil, progress: nil, isPremium: false)
@@ -510,6 +555,8 @@ public struct WidgetDataProvider: Sendable {
             overspentText: plan.isOverspent
                 ? Money(amount: plan.overspentAmount, currency: plan.currency).formatted(locale: locale)
                 : nil,
+            doneStepCount: plan.doneStepCount,
+            stepCount: plan.stepCount,
             isPremium: isPremium
         )
     }

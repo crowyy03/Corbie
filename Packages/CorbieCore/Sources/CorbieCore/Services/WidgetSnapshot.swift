@@ -91,6 +91,20 @@ public struct WidgetShoppingItem: Sendable, Codable, Equatable, Identifiable {
     }
 }
 
+public struct WidgetFreeSlot: Sendable, Codable, Equatable, Identifiable {
+    public let start: Date
+    public let dayText: String
+    public let windowText: String
+
+    public var id: Date { start }
+
+    public init(start: Date, dayText: String, windowText: String) {
+        self.start = start
+        self.dayText = dayText
+        self.windowText = windowText
+    }
+}
+
 public struct WidgetDate: Sendable, Codable, Equatable, Identifiable {
     public let id: String
     public let kind: WidgetDateKind
@@ -206,6 +220,8 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
     public let targetText: String?
     public let isOverspent: Bool
     public let overspentText: String?
+    public let doneStepCount: Int
+    public let stepCount: Int
     public let isPremium: Bool
 
     public init(
@@ -216,6 +232,8 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
         targetText: String?,
         isOverspent: Bool,
         overspentText: String?,
+        doneStepCount: Int = 0,
+        stepCount: Int = 0,
         isPremium: Bool
     ) {
         self.planId = planId
@@ -225,6 +243,8 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
         self.targetText = targetText
         self.isOverspent = isOverspent
         self.overspentText = overspentText
+        self.doneStepCount = doneStepCount
+        self.stepCount = stepCount
         self.isPremium = isPremium
     }
 }
@@ -298,6 +318,26 @@ public struct OurDaySnapshot: Sendable, Codable, Equatable {
         self.tasks = tasks
         self.events = events
         self.plan = plan
+        self.isPremium = isPremium
+    }
+}
+
+public enum FreeSlotsAvailability: String, Sendable, Codable, Equatable {
+    case slots
+    case notPaired
+    case viewerNotSharing
+    case partnerNotSharing
+    case noSlots
+}
+
+public struct FreeSlotsSnapshot: Sendable, Codable, Equatable {
+    public let availability: FreeSlotsAvailability
+    public let slots: [WidgetFreeSlot]
+    public let isPremium: Bool
+
+    public init(availability: FreeSlotsAvailability, slots: [WidgetFreeSlot] = [], isPremium: Bool) {
+        self.availability = availability
+        self.slots = slots
         self.isPremium = isPremium
     }
 }

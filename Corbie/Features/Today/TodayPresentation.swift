@@ -55,8 +55,8 @@ struct TodayPresentation {
     }
 
     func giftLine(_ date: TodayDate) -> String {
-        guard date.ideasCount > 0 else { return String(localized: "today.comingup.gift.none") }
-        return String(format: String(localized: "today.comingup.gift"), locale: locale, date.ideasCount)
+        guard date.ideasCount > 0 else { return String(localized: "today.comingup.gift.none", locale: locale) }
+        return String(localized: "today.comingup.gift \(date.ideasCount)", locale: locale)
     }
 
     func moreFreeTasks(_ count: Int) -> String {

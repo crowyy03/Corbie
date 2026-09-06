@@ -148,6 +148,7 @@
 		90379F44A96C671A4913DD2D /* ListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A2E5EDAD4EDC91BA498D3E /* ListDetailView.swift */; };
 		90B743D106453B897CD44200 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2361B65557E18BCF034FBD97 /* OnboardingViewModel.swift */; };
 		90CEFF8D14AE6152DF7B1CBA /* PersonDateEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAA970C048E64B107AF2DD1 /* PersonDateEditorView.swift */; };
+		914D451CCA158D3DF47F9C66 /* DebugLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B806BD1D2033FFE255DBCE /* DebugLaunch.swift */; };
 		917A3C72A6F2EA38091BE701 /* WishEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49913C98365EA36A2D088EE4 /* WishEditorView.swift */; };
 		937494C1BA08749494950C68 /* SystemCalendarEventEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01825688B7A6B74AB8404E6 /* SystemCalendarEventEditor.swift */; };
 		954D7089F15AA8625AE5BA3D /* EventEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F5FF8F6A1A703E6864751A /* EventEditorView.swift */; };
@@ -160,6 +161,7 @@
 		9A0FFEAD954472C768DE8497 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */; };
 		9A482B15C4A9A59A47308566 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D019DE6755B396A6C1CC06F8 /* TodayView.swift */; };
 		9B91ECF25CC8483DF5BA9429 /* TodayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA4FC3EDEC869BE8B899C99 /* TodayViewModelTests.swift */; };
+		9BA3BC2C5C0BD0E4C817BFB5 /* FreeSlotsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43FC976B60DFE22D03931DD /* FreeSlotsWidget.swift */; };
 		9E0AB31D46F4F1F0B4E22263 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 95073597AB82A548EAAE7530 /* InfoPlist.xcstrings */; };
 		9E7891F0830411940526CDB1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53715C4B0BEE41A246CA135 /* AppState.swift */; };
 		9F154E6E1C36EA96076AC1F3 /* PlanSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1D6A0D0765F5689804FF9B /* PlanSummaryCard.swift */; };
@@ -452,6 +454,7 @@
 		A7C36C9A264C0339C4B2A9EF /* InviteLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteLink.swift; sourceTree = "<group>"; };
 		A7F8D29552EB2C06EC982331 /* QATapTargetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QATapTargetUITests.swift; sourceTree = "<group>"; };
 		A8648E82FBB81AC50FDAB304 /* PeopleRadar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRadar.swift; sourceTree = "<group>"; };
+		A9B806BD1D2033FFE255DBCE /* DebugLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLaunch.swift; sourceTree = "<group>"; };
 		AAAC0D46F35A085E5A41767B /* UsDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsDestination.swift; sourceTree = "<group>"; };
 		AD3F3588DADB072F39C78141 /* UsCountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsCountersTests.swift; sourceTree = "<group>"; };
 		ADE157E918D961E9899DE32D /* LaunchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchUITests.swift; sourceTree = "<group>"; };
@@ -514,6 +517,7 @@
 		E1014F53AB71BB71FA3BEA7A /* PersonBirthday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonBirthday.swift; sourceTree = "<group>"; };
 		E1EF99805F9035D7CE01C2CC /* ShareWishViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareWishViewModel.swift; sourceTree = "<group>"; };
 		E2297C1D1A45A74F1A7A47D2 /* WishCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishCardView.swift; sourceTree = "<group>"; };
+		E43FC976B60DFE22D03931DD /* FreeSlotsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeSlotsWidget.swift; sourceTree = "<group>"; };
 		E608CE270F228EA4BE9A09F4 /* FreeTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeTimeViewModel.swift; sourceTree = "<group>"; };
 		E62FE938A6229D79811997DC /* GiftIdeaEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdeaEditorViewModel.swift; sourceTree = "<group>"; };
 		E6E23661E5D8D7037DB76090 /* TasksWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksWidget.swift; sourceTree = "<group>"; };
@@ -786,6 +790,7 @@
 				B89C8CB226C48144FAE480CF /* CapsuleWidget.swift */,
 				410DAD59C12E2B1AE1811FE0 /* CountdownWidget.swift */,
 				2C35828676F9F244E192F973 /* DaysTogetherWidget.swift */,
+				E43FC976B60DFE22D03931DD /* FreeSlotsWidget.swift */,
 				3585F84E7EC1022E7CF2528A /* FreeTasksWidget.swift */,
 				FF11BC15C5BDFBD7B186F414 /* OurDayWidget.swift */,
 				621508894135C64B1341F5D0 /* PartnerWishesWidget.swift */,
@@ -876,6 +881,7 @@
 				83A0DD4B03E2C24F0254E1FE /* AppEnvironment.swift */,
 				A53715C4B0BEE41A246CA135 /* AppState.swift */,
 				D439758E7E6D75110C77131A /* CorbieApp.swift */,
+				A9B806BD1D2033FFE255DBCE /* DebugLaunch.swift */,
 				6F789146CC7FE3022F9B7E8F /* LaunchRevealView.swift */,
 				DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */,
 				AEADECE3D6ABD0A50F325ECA /* RootView.swift */,
@@ -1342,6 +1348,7 @@
 				B660D036BEE72A1DD5240366 /* ChecklistCard.swift in Sources */,
 				11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */,
 				E064C7BE58B9353B4C037B08 /* CorbieMarkView.swift in Sources */,
+				914D451CCA158D3DF47F9C66 /* DebugLaunch.swift in Sources */,
 				03916B26932EEB074C4763D1 /* DebugMenuView.swift in Sources */,
 				A249BB0691EA7088FC1302C2 /* DebugNotificationsSections.swift in Sources */,
 				3B446309F35DA0FF7CE760A6 /* EventDetailView.swift in Sources */,
@@ -1492,6 +1499,7 @@
 				792F05F4F6193963E47BD0FA /* CorbieWidgetsBundle.swift in Sources */,
 				47226A1203416566AE122AAD /* CountdownWidget.swift in Sources */,
 				17D6629C7C7FD642E380F0B5 /* DaysTogetherWidget.swift in Sources */,
+				9BA3BC2C5C0BD0E4C817BFB5 /* FreeSlotsWidget.swift in Sources */,
 				A9B1A60370ECDE4B949D7FF8 /* FreeTasksWidget.swift in Sources */,
 				97EF860ED0D9BAB4289C3642 /* LockCircularWidget.swift in Sources */,
 				CBC82CF76BCDD5CCDA615BC9 /* LockInlineWidget.swift in Sources */,

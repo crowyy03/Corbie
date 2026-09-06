@@ -9,7 +9,14 @@ import UserNotifications
 struct CorbieApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var appState = AppState()
-    @State private var environment = AppEnvironment()
+    @State private var environment: AppEnvironment
+
+    init() {
+        #if DEBUG
+        DebugLaunch.resetStoreIfRequested()
+        #endif
+        _environment = State(initialValue: AppEnvironment())
+    }
 
     var body: some Scene {
         WindowGroup {
