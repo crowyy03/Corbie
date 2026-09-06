@@ -223,12 +223,7 @@ final class SmokeTabsUITests: XCTestCase {
     }
 
     private func addEvent(_ app: XCUIApplication, title: String) {
-        let fromEmptyState = app.buttons[QACatalog.text("calendar.upcoming.add")]
-        if fromEmptyState.waitForExistence(timeout: 15), fromEmptyState.isHittable {
-            fromEmptyState.tap()
-        } else {
-            app.navigationAdd.tap()
-        }
+        app.navigationAdd.tap()
         XCTAssertTrue(
             app.navigationBars[QACatalog.text("calendar.editor.title.new")].waitForExistence(timeout: 25)
         )

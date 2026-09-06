@@ -126,10 +126,7 @@ struct CalendarView: View {
                 EmptyState(
                     systemImage: "calendar",
                     title: String(localized: "calendar.placeholder.title"),
-                    monoNote: String(localized: "calendar.placeholder.note"),
-                    cta: EmptyStateAction(title: String(localized: "calendar.upcoming.add")) {
-                        editorTarget = .create(model.draftStart())
-                    }
+                    monoNote: String(localized: "calendar.placeholder.note")
                 )
                 .padding(.vertical, CorbieSpacing.l)
             } else {
