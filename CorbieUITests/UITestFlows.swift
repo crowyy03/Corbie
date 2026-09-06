@@ -1,6 +1,13 @@
 import XCTest
 
 enum UITestFlows {
+    static func launchFresh() -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments.append("-corbie-reset-store")
+        app.launch()
+        return app
+    }
+
     static func saveFailureScreenshot(_ app: XCUIApplication, named name: String) {
         guard let directory = ProcessInfo.processInfo.environment["CORBIE_SCREENSHOT_DIR"] else { return }
         let url = URL(fileURLWithPath: directory).appendingPathComponent(name + ".png")

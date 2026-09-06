@@ -6,8 +6,7 @@ final class TodayUITests: XCTestCase {
     }
 
     func testTodayCarriesTodaysWorkAndOpensAPlanFromTheCarousel() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = UITestFlows.launchFresh()
         UITestFlows.passOnboardingIfShown(app)
 
         let tabs = app.tabBars.firstMatch
@@ -32,7 +31,10 @@ final class TodayUITests: XCTestCase {
             "the event starting today is not in the Events block"
         )
         let addPlanCard = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add a plan")).firstMatch
-        XCTAssertTrue(addPlanCard.waitForExistence(timeout: 10), "an empty carousel offers no way to add a plan")
+        if addPlanCard.waitForExistence(timeout: 10) == false {
+            saveScreenshot(app, named: "today_add_plan_missing")
+            XCTFail("an empty carousel offers no way to add a plan")
+        }
         saveScreenshot(app, named: "today_without_a_plan")
 
         let planTitle = uniqueTitle("Lisbon")
