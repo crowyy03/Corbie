@@ -205,6 +205,7 @@ struct SettingsView: View {
                 .corbieBody()
                 .foregroundStyle(CorbieColorPalette.text)
                 .padding(.vertical, CorbieSpacing.xxs)
+            BusyTimesSharingToggle()
             ForEach(LegalPage.allCases) { page in
                 row(titleKey: page.settingsTitleKey) { sheet = .legal(page) }
             }

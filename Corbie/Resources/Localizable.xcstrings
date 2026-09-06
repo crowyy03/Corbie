@@ -4399,6 +4399,276 @@
         }
       }
     },
+    "freetime.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "or drop a filter"
+          }
+        }
+      }
+    },
+    "freetime.empty.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You two are booked solid. Try a longer range."
+          }
+        }
+      }
+    },
+    "freetime.filter.evenings": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evenings"
+          }
+        }
+      }
+    },
+    "freetime.filter.long": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2+ hours"
+          }
+        }
+      }
+    },
+    "freetime.filter.weekends": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekends"
+          }
+        }
+      }
+    },
+    "freetime.list.caps": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free windows"
+          }
+        }
+      }
+    },
+    "freetime.partner.ask": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask them"
+          }
+        }
+      }
+    },
+    "freetime.partner.ask.toast": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie cannot ping them from here. Ask %@ to turn on Share my busy times."
+          }
+        }
+      }
+    },
+    "freetime.partner.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "they turn it on in Settings, under Privacy"
+          }
+        }
+      }
+    },
+    "freetime.partner.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ hasn't shared their busy times yet"
+          }
+        }
+      }
+    },
+    "freetime.privacy.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie only shares when you're busy - never what you're doing. Titles, locations and guests stay on your phone."
+          }
+        }
+      }
+    },
+    "freetime.privacy.notnow": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not now"
+          }
+        }
+      }
+    },
+    "freetime.privacy.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your calendar stays yours"
+          }
+        }
+      }
+    },
+    "freetime.range.fortnight": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next 14 days"
+          }
+        }
+      }
+    },
+    "freetime.range.week": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next 7 days"
+          }
+        }
+      }
+    },
+    "freetime.sharing.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only the times, never the titles. Turn it off and your times leave the space."
+          }
+        }
+      }
+    },
+    "freetime.sharing.toggle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share my busy times"
+          }
+        }
+      }
+    },
+    "freetime.slot.after": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "after %@"
+          }
+        }
+      }
+    },
+    "freetime.slot.allday": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "all day"
+          }
+        }
+      }
+    },
+    "freetime.slot.partnertime": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ for %2$@"
+          }
+        }
+      }
+    },
+    "freetime.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When you two are free"
+          }
+        }
+      }
+    },
+    "freetime.unpaired.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "invite your partner from the Us pill"
+          }
+        }
+      }
+    },
+    "freetime.unpaired.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free time needs two calendars"
+          }
+        }
+      }
+    },
+    "freetime.unreadable.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pull down to try again"
+          }
+        }
+      }
+    },
+    "freetime.unreadable.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie could not read your busy times"
+          }
+        }
+      }
+    },
+    "freetime.you.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "only the times leave your phone, never the titles"
+          }
+        }
+      }
+    },
+    "freetime.you.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie needs your busy times too"
+          }
+        }
+      }
+    },
     "goals.card.overspend": {
       "localizations": {
         "de": {

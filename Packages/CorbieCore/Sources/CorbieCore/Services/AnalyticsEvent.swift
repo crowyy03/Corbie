@@ -6,6 +6,14 @@ public enum AnalyticsAssignee: String, Sendable, Equatable, CaseIterable, Codabl
     case partner
 }
 
+public enum FreeTimeEmptyReason: String, Sendable, Equatable, CaseIterable, Codable {
+    case notPaired = "not_paired"
+    case viewerNotSharing = "viewer_not_sharing"
+    case partnerNotSharing = "partner_not_sharing"
+    case calendarDenied = "calendar_denied"
+    case noSlots = "no_slots"
+}
+
 public enum AnalyticsEvent: Sendable, Equatable {
     case appOpen
     case onboardingStep(Int)
@@ -26,6 +34,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case expenseAdded
     case folderCreated(template: FolderTemplate)
     case folderMapOpened
+    case freetimeOpened
+    case freetimeSharingEnabled
+    case freetimeSharingDisabled
+    case freetimeSlotTapped
+    case freetimeEmpty(reason: FreeTimeEmptyReason)
     case capsuleCreated
     case capsuleOpened
     case voteCreated
@@ -65,6 +78,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .expenseAdded: return "expense_added"
         case .folderCreated: return "folder_created"
         case .folderMapOpened: return "folder_map_opened"
+        case .freetimeOpened: return "freetime_opened"
+        case .freetimeSharingEnabled: return "freetime_sharing_enabled"
+        case .freetimeSharingDisabled: return "freetime_sharing_disabled"
+        case .freetimeSlotTapped: return "freetime_slot_tapped"
+        case .freetimeEmpty: return "freetime_empty"
         case .capsuleCreated: return "capsule_created"
         case .capsuleOpened: return "capsule_opened"
         case .voteCreated: return "vote_created"
@@ -105,6 +123,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["block": .string(block.rawValue)]
         case let .todayQuickAction(kind):
             return ["kind": .string(kind.rawValue)]
+        case let .freetimeEmpty(reason):
+            return ["reason": .string(reason.rawValue)]
         case let .widgetAdded(kind):
             return ["kind": .string(AnalyticsEvent.slug(kind))]
         case let .paywallShown(reason):
@@ -115,7 +135,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
              .taskHandedBack, .wishFulfilled, .expenseAdded, .goalCompleted, .goalStepDone,
-             .folderMapOpened, .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered,
+             .folderMapOpened, .freetimeOpened, .freetimeSharingEnabled, .freetimeSharingDisabled,
+             .freetimeSlotTapped, .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered,
              .voteRevealed, .todayOpened, .recapShown, .recapNotificationSent, .recapOpened,
              .trialStarted, .restore:
             return [:]
@@ -126,7 +147,9 @@ public enum AnalyticsEvent: Sendable, Equatable {
         "app_open", "onboarding_step", "space_created", "invite_created", "invite_redeemed",
         "task_created", "task_taken", "task_done", "event_created", "wish_created", "wish_fulfilled",
         "goal_created", "goal_completed", "goal_step_created", "goal_step_done", "expense_added",
-        "folder_created", "folder_map_opened", "capsule_created", "capsule_opened", "vote_created",
+        "folder_created", "folder_map_opened", "freetime_opened", "freetime_sharing_enabled",
+        "freetime_sharing_disabled", "freetime_slot_tapped", "freetime_empty",
+        "capsule_created", "capsule_opened", "vote_created",
         "vote_answered", "vote_revealed", "widget_added", "paywall_shown", "trial_started",
         "purchase", "restore", "readonly_hit", "task_handed_back", "today_opened",
         "today_block_tapped", "today_quick_action", "recap_shown", "recap_notification_sent",

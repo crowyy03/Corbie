@@ -23,6 +23,11 @@ import Testing
         .expenseAdded,
         .folderCreated(template: .shopping),
         .folderMapOpened,
+        .freetimeOpened,
+        .freetimeSharingEnabled,
+        .freetimeSharingDisabled,
+        .freetimeSlotTapped,
+        .freetimeEmpty(reason: .partnerNotSharing),
         .capsuleCreated,
         .capsuleOpened,
         .voteCreated,
@@ -89,6 +94,9 @@ import Testing
         #expect(AnalyticsEvent.wishCreated(source: .etsy).props == ["source": .string("etsy")])
         #expect(AnalyticsEvent.folderCreated(template: .cities).props == ["template": .string("cities")])
         #expect(AnalyticsEvent.goalStepCreated(hasDue: true).props == ["has_due": .flag(true)])
+        #expect(
+            AnalyticsEvent.freetimeEmpty(reason: .noSlots).props == ["reason": .string("no_slots")]
+        )
         #expect(AnalyticsEvent.paywallShown(reason: .trialEnded).props == ["reason": .string("trial_ended")])
         #expect(AnalyticsEvent.onboardingStep(3).props == ["step": .number(3)])
         #expect(AnalyticsEvent.appOpen.props.isEmpty)
