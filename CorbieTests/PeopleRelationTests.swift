@@ -30,7 +30,15 @@ final class PeopleRelationTests: XCTestCase {
 
     func testTitlesComeFromTheCatalog() {
         XCTAssertEqual(RelationSuggestion.mom.title(locale: english), "Mom")
-        XCTAssertEqual(RelationSuggestion.colleague.title(locale: english), "Colleague")
+        XCTAssertEqual(RelationSuggestion.friend.title(locale: english), "Friend")
         XCTAssertEqual(RelationSuggestion.mom.key, "people.editor.relation.mom")
+    }
+
+    func testTheChipsAreShortcutsAndDoNotOfferAJob() {
+        XCTAssertEqual(
+            RelationSuggestion.allCases,
+            [.mom, .dad, .sister, .brother, .friend]
+        )
+        XCTAssertEqual(RelationSuggestion.matching("colleague", locale: english), [])
     }
 }

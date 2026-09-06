@@ -84,7 +84,7 @@ public struct RadarService: Sendable {
 
     public func status(for autoDate: AutoDate, input: RadarInput, now: Date) -> RadarStatus {
         switch autoDate.kind {
-        case .personBirthday:
+        case .personBirthday, .event:
             guard let person = input.people.first(where: { $0.id == autoDate.personId }) else {
                 return RadarStatus(ideasCount: 0, giftPicked: false)
             }
@@ -102,7 +102,8 @@ public struct RadarService: Sendable {
         using scheduler: NotificationScheduler
     ) async throws -> [CorbieNotificationRequest] {
         var scheduled: [CorbieNotificationRequest] = []
-        for line in lines(input, now: now, within: RadarService.schedulingHorizonDays) {
+        for line in lines(input, now: now, within: RadarService.schedulingHorizonDays)
+        where line.autoDate.remindersEnabled {
             let request = try await scheduler.scheduleRadar(
                 autoDateId: line.id,
                 name: line.name,

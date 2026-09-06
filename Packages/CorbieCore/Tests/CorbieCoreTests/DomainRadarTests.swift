@@ -129,6 +129,53 @@ import Testing
         #expect(scheduled[0].content.arguments == ["Mark", "14", "1"])
     }
 
+    @Test func aPersonDateSitsOnTheRadarLikeABirthday() {
+        let person = PersonDTO(
+            id: UUID(),
+            name: "Anna",
+            giftIdeaCount: 3,
+            dates: [PersonDateDTO(id: UUID(), title: "wedding day", month: 9, day: 12)]
+        )
+        let lines = service.lines(input(people: [person]), now: now)
+        #expect(lines.map(\.name) == ["Anna: wedding day"])
+        #expect(lines[0].kind == .event)
+        #expect(lines[0].daysAway == 7)
+        #expect(lines[0].status == RadarStatus(ideasCount: 3, giftPicked: false))
+        #expect(lines[0].route == .person(person.id))
+    }
+
+    @Test func aPickedGiftCoversEveryDateOfThatPerson() {
+        let person = PersonDTO(
+            id: UUID(),
+            name: "Anna",
+            birthdayMonth: 9,
+            birthdayDay: 12,
+            giftIdeaCount: 2,
+            hasPickedGift: true,
+            dates: [PersonDateDTO(id: UUID(), title: "wedding day", month: 9, day: 14)]
+        )
+        let lines = service.lines(input(people: [person]), now: now)
+        #expect(lines.count == 2)
+        #expect(lines.allSatisfy { $0.status == RadarStatus(ideasCount: 2, giftPicked: true) })
+    }
+
+    @Test func aDateWithRemindersOffKeepsItsLineAndLosesItsNotification() async throws {
+        let center = FakeNotificationCenter()
+        let scheduler = NotificationScheduler(client: center, calendar: calendar)
+        let quiet = PersonDateDTO(id: UUID(), title: "name day", month: 11, day: 2, remindersEnabled: false)
+        let loud = PersonDateDTO(id: UUID(), title: "moving day", month: 11, day: 3)
+        let person = PersonDTO(id: UUID(), name: "Anna", giftIdeaCount: 1, dates: [quiet, loud])
+        let lines = service.lines(input(people: [person]), now: now, within: RadarService.schedulingHorizonDays)
+        #expect(lines.map(\.name) == ["Anna: name day", "Anna: moving day"])
+        let scheduled = try await service.schedule(
+            input(people: [person]),
+            prefs: .allEnabled,
+            now: now,
+            using: scheduler
+        )
+        #expect(scheduled.map(\.content.arguments) == [["Anna: moving day", "14", "1"]])
+    }
+
     @Test func radarSchedulingRespectsThePreference() async throws {
         let center = FakeNotificationCenter()
         let scheduler = NotificationScheduler(client: center, calendar: calendar)

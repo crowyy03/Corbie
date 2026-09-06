@@ -89,6 +89,78 @@ import Testing
         #expect(try await repository.giftIdeas(personId: person.id).isEmpty)
     }
 
+    @Test func aBirthdayYearIsOptionalAndSurvivesAnEdit() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.people
+        var person = try await repository.create(
+            PersonDraft(spaceId: world.space.id, name: "Anna", birthdayMonth: 9, birthdayDay: 12)
+        )
+        #expect(person.birthdayYear == nil)
+        person.birthdayYear = 1992
+        let saved = try await repository.update(person)
+        #expect(saved.birthdayYear == 1992)
+        let stored = try #require(try await repository.person(id: person.id))
+        #expect(stored.birthdayYear == 1992)
+    }
+
+    @Test func peopleCarryTheirOwnDates() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.people
+        let person = try await repository.create(PersonDraft(spaceId: world.space.id, name: "Anna"))
+        var wedding = try await repository.addDate(
+            personId: person.id,
+            draft: PersonDateDraft(title: "wedding day", month: 6, day: 4, year: 2019)
+        )
+        _ = try await repository.addDate(
+            personId: person.id,
+            draft: PersonDateDraft(title: "name day", month: 2, day: 3, remindersEnabled: false)
+        )
+        let dates = try await repository.dates(personId: person.id)
+        #expect(dates.map(\.title) == ["name day", "wedding day"])
+        #expect(dates[0].remindersEnabled == false)
+        #expect(dates[0].year == nil)
+        #expect(dates[1].year == 2019)
+
+        wedding.title = "anniversary"
+        wedding.remindersEnabled = false
+        let saved = try await repository.updateDate(wedding)
+        #expect(saved.title == "anniversary")
+        #expect(saved.remindersEnabled == false)
+
+        let carried = try #require(try await repository.person(id: person.id))
+        #expect(carried.dates.map(\.title) == ["name day", "anniversary"])
+
+        try await repository.deleteDate(id: wedding.id)
+        #expect(try await repository.dates(personId: person.id).map(\.title) == ["name day"])
+    }
+
+    @Test func deletingAPersonRemovesTheirDates() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.people
+        let person = try await repository.create(PersonDraft(spaceId: world.space.id, name: "Temp"))
+        _ = try await repository.addDate(personId: person.id, draft: PersonDateDraft(title: "moving day", month: 4, day: 1))
+        try await repository.delete(id: person.id)
+        #expect(try world.count("PersonDate") == 0)
+    }
+
+    @Test func aDateWithoutATitleOrWithAnImpossibleDayIsRejected() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.people
+        let person = try await repository.create(PersonDraft(spaceId: world.space.id, name: "Anna"))
+        await #expect(throws: CorbieError.invalidInput("person date title is empty")) {
+            _ = try await repository.addDate(personId: person.id, draft: PersonDateDraft(title: "  ", month: 4, day: 1))
+        }
+        await #expect(throws: CorbieError.invalidInput("birthday 13/40 is out of range")) {
+            _ = try await repository.addDate(personId: person.id, draft: PersonDateDraft(title: "Nope", month: 13, day: 40))
+        }
+        await #expect(throws: CorbieError.invalidInput("year 12345 is out of range")) {
+            _ = try await repository.addDate(
+                personId: person.id,
+                draft: PersonDateDraft(title: "Nope", month: 4, day: 1, year: 12345)
+            )
+        }
+    }
+
     @Test func birthdayOutOfRangeIsRejected() async throws {
         let world = try await TestWorld.make()
         await #expect(throws: CorbieError.invalidInput("birthday 13/40 is out of range")) {

@@ -12,6 +12,7 @@ final class PersonDetailViewModel {
     private(set) var isGone = false
     var editor: PersonEditorMode?
     var giftEditor: GiftIdeaEditorMode?
+    var dateEditor: PersonDateEditorMode?
     var isConfirmingDelete = false
 
     @ObservationIgnored let personId: UUID
@@ -54,6 +55,37 @@ final class PersonDetailViewModel {
     func startEditingPerson() {
         guard let environment, let person, environment.premiumGate.require(.edit) else { return }
         editor = .existing(person)
+    }
+
+    var dateLines: [PersonDateLine] {
+        guard let person else { return [] }
+        return PersonDates.lines(for: person)
+    }
+
+    func startAddingDate() {
+        guard let environment, environment.premiumGate.require(.create) else { return }
+        dateEditor = .new
+    }
+
+    func startEditingDate(_ line: PersonDateLine) {
+        guard let environment, environment.premiumGate.require(.edit) else { return }
+        guard let dateId = line.dateId else {
+            guard let person else { return }
+            editor = .existing(person)
+            return
+        }
+        guard let date = person?.dates.first(where: { $0.id == dateId }) else { return }
+        dateEditor = .existing(date)
+    }
+
+    func deleteDate(_ line: PersonDateLine) async {
+        guard let environment, let dateId = line.dateId, environment.premiumGate.require(.edit) else { return }
+        do {
+            try await environment.repositories.people.deleteDate(id: dateId)
+        } catch {
+            environment.report(error)
+        }
+        await load()
     }
 
     func startAddingIdea() {

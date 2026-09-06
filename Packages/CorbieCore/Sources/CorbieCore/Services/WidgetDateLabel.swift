@@ -23,6 +23,9 @@ public enum WidgetDateLabel {
             guard let name = nonEmpty(title) else {
                 return String(localized: "widget.date.birthday.plain", locale: locale)
             }
+            if let withAge = PersonDateText.birthdayTitle(person: name, ordinal: ordinal, locale: locale) {
+                return withAge
+            }
             return String(format: String(localized: "widget.date.birthday", locale: locale), locale: locale, name)
         case .event:
             guard let name = nonEmpty(title) else {

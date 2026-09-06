@@ -14,6 +14,7 @@ final class PersonEditorViewModel {
     var relation: String
     var birthdayMonth: Int?
     var birthdayDay: Int
+    var birthdayYear: Int?
     var owner: PersonOwner
     var note: String
     private(set) var isSaving = false
@@ -28,6 +29,7 @@ final class PersonEditorViewModel {
         relation = person?.relation ?? ""
         birthdayMonth = person?.birthdayMonth
         birthdayDay = person?.birthdayDay ?? 1
+        birthdayYear = person?.birthdayYear
         owner = .me
         note = person?.note ?? ""
     }
@@ -73,6 +75,7 @@ final class PersonEditorViewModel {
                         relation: trimmed(relation),
                         birthdayMonth: birthdayMonth,
                         birthdayDay: birthdayMonth == nil ? nil : birthdayDay,
+                        birthdayYear: birthdayMonth == nil ? nil : birthdayYear,
                         ownerMemberId: ownerMemberId(environment),
                         note: trimmed(note)
                     )
@@ -82,6 +85,7 @@ final class PersonEditorViewModel {
                 person.relation = trimmed(relation)
                 person.birthdayMonth = birthdayMonth
                 person.birthdayDay = birthdayMonth == nil ? nil : birthdayDay
+                person.birthdayYear = birthdayMonth == nil ? nil : birthdayYear
                 person.ownerMemberId = ownerMemberId(environment)
                 person.note = trimmed(note)
                 _ = try await environment.repositories.people.update(person)

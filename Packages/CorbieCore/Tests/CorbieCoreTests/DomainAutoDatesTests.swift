@@ -105,6 +105,62 @@ import Testing
         #expect(upcoming.map(\.name) == [nil, "Soon"])
     }
 
+    @Test func aKnownBirthYearCountsTheYearsTheyTurn() {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let known = PersonDTO(id: UUID(), name: "Anna", birthdayMonth: 10, birthdayDay: 12, birthdayYear: 1992)
+        let unknown = PersonDTO(id: UUID(), name: "Mark", birthdayMonth: 10, birthdayDay: 12)
+        let dates = provider.autoDates(
+            space: space(togetherSince: nil),
+            members: [],
+            people: [known, unknown],
+            now: now
+        )
+        #expect(dates.first { $0.personId == known.id }?.years == 34)
+        #expect(dates.first { $0.personId == unknown.id }?.years == nil)
+    }
+
+    @Test func aBirthYearInTheFutureCarriesNoCount() {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let newborn = PersonDTO(id: UUID(), name: "Lev", birthdayMonth: 10, birthdayDay: 12, birthdayYear: 2026)
+        let dates = provider.autoDates(space: space(togetherSince: nil), members: [], people: [newborn], now: now)
+        #expect(DomainClock.text(dates.first?.date ?? Date(), in: calendar) == "2026-10-12 00:00")
+        #expect(dates.first?.years == nil)
+    }
+
+    @Test func everyPersonDateBecomesAYearlyEvent() {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let wedding = PersonDateDTO(id: UUID(), title: "wedding day", month: 9, day: 20, year: 2019)
+        let nameDay = PersonDateDTO(id: UUID(), title: "name day", month: 2, day: 3, remindersEnabled: false)
+        let person = PersonDTO(
+            id: UUID(),
+            name: "Anna",
+            birthdayMonth: 10,
+            birthdayDay: 12,
+            dates: [wedding, nameDay]
+        )
+        let dates = provider.autoDates(space: space(togetherSince: nil), members: [], people: [person], now: now)
+        let events = dates.filter { $0.kind == .event }
+        #expect(events.map(\.name) == ["Anna: wedding day", "Anna: name day"])
+        #expect(DomainClock.text(events[0].date, in: calendar) == "2026-09-20 00:00")
+        #expect(DomainClock.text(events[1].date, in: calendar) == "2027-02-03 00:00")
+        #expect(events[0].years == 7)
+        #expect(events[1].years == nil)
+        #expect(events[0].personId == person.id)
+        #expect(events[0].remindersEnabled)
+        #expect(events[1].remindersEnabled == false)
+        #expect(events[0].id == "auto.event." + wedding.id.uuidString)
+    }
+
+    @Test func aPersonDateWithoutADayIsIgnored() {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let person = PersonDTO(
+            id: UUID(),
+            name: "Anna",
+            dates: [PersonDateDTO(id: UUID(), title: "someday", month: nil, day: nil)]
+        )
+        #expect(provider.autoDates(space: space(togetherSince: nil), members: [], people: [person], now: now).isEmpty)
+    }
+
     @Test func peopleWithoutABirthdayAreIgnored() {
         let now = DomainClock.date("2026-09-05 12:00", in: calendar)
         let person = PersonDTO(id: UUID(), name: "Anna")

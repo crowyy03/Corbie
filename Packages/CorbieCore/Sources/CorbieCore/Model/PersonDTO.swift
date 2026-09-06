@@ -7,10 +7,12 @@ public struct PersonDTO: Sendable, Codable, Identifiable, Equatable {
     public var relation: String?
     public var birthdayMonth: Int?
     public var birthdayDay: Int?
+    public var birthdayYear: Int?
     public var ownerMemberId: UUID?
     public var note: String?
     public var giftIdeaCount: Int
     public var hasPickedGift: Bool
+    public var dates: [PersonDateDTO]
 
     public init(
         id: UUID,
@@ -19,10 +21,12 @@ public struct PersonDTO: Sendable, Codable, Identifiable, Equatable {
         relation: String? = nil,
         birthdayMonth: Int? = nil,
         birthdayDay: Int? = nil,
+        birthdayYear: Int? = nil,
         ownerMemberId: UUID? = nil,
         note: String? = nil,
         giftIdeaCount: Int = 0,
-        hasPickedGift: Bool = false
+        hasPickedGift: Bool = false,
+        dates: [PersonDateDTO] = []
     ) {
         self.id = id
         self.spaceId = spaceId
@@ -30,10 +34,12 @@ public struct PersonDTO: Sendable, Codable, Identifiable, Equatable {
         self.relation = relation
         self.birthdayMonth = birthdayMonth
         self.birthdayDay = birthdayDay
+        self.birthdayYear = birthdayYear
         self.ownerMemberId = ownerMemberId
         self.note = note
         self.giftIdeaCount = giftIdeaCount
         self.hasPickedGift = hasPickedGift
+        self.dates = dates
     }
 
     public init(_ person: Person) {
@@ -45,12 +51,16 @@ public struct PersonDTO: Sendable, Codable, Identifiable, Equatable {
             relation: person.relation,
             birthdayMonth: person.birthdayMonth?.intValue,
             birthdayDay: person.birthdayDay?.intValue,
+            birthdayYear: person.birthdayYear?.intValue,
             ownerMemberId: person.ownerMemberId,
             note: person.note,
             giftIdeaCount: ideas.count,
-            hasPickedGift: ideas.contains(where: \.isDone)
+            hasPickedGift: ideas.contains(where: \.isDone),
+            dates: person.dates.map(PersonDateDTO.init).sorted(by: PersonDateDTO.inCalendarOrder)
         )
     }
 
     public var hasBirthday: Bool { birthdayMonth != nil && birthdayDay != nil }
+
+    public var datesWithADay: [PersonDateDTO] { dates.filter(\.hasDate) }
 }

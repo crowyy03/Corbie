@@ -10,7 +10,7 @@ import Testing
         let expected: Set<String> = [
             "Space", "Member", "TaskItem", "Event", "EventComment", "Wish", "Plan",
             "PlanExpense", "ChecklistList", "ListItem", "Capsule", "CapsuleOpen", "Vote",
-            "VoteResponse", "Person", "GiftIdea"
+            "VoteResponse", "Person", "GiftIdea", "PersonDate"
         ]
         #expect(Set(model.entities.compactMap(\.name)) == expected)
     }
@@ -89,6 +89,7 @@ import Testing
             ("Plan", "expenses"),
             ("ChecklistList", "items"),
             ("Person", "giftIdeas"),
+            ("Person", "dates"),
             ("Vote", "responses"),
             ("Capsule", "opens")
         ]
@@ -138,6 +139,22 @@ import Testing
         let member = try #require(model.entitiesByName["Member"])
         #expect(member.attributesByName["appleUserId"] == nil)
         #expect(member.attributesByName["appleUserHash"]?.attributeType == .stringAttributeType)
+    }
+
+    @Test func personDatesKeepTheirOwnDayAndRemindersFlag() throws {
+        let personDate = try #require(model.entitiesByName["PersonDate"])
+        #expect(personDate.attributesByName["title"]?.attributeType == .stringAttributeType)
+        for name in ["month", "day", "year"] {
+            let attribute = try #require(personDate.attributesByName[name])
+            #expect(attribute.isOptional, "PersonDate.\(name) is required")
+        }
+        let reminders = try #require(personDate.attributesByName["remindersEnabled"])
+        #expect(reminders.attributeType == .booleanAttributeType)
+        #expect(reminders.defaultValue as? Bool == true)
+        let person = try #require(model.entitiesByName["Person"])
+        #expect(person.attributesByName["birthdayYear"]?.isOptional == true)
+        #expect(person.relationshipsByName["dates"]?.destinationEntity?.name == "PersonDate")
+        #expect(personDate.relationshipsByName["person"]?.destinationEntity?.name == "Person")
     }
 
     @Test func recurrenceIsStoredAsString() throws {

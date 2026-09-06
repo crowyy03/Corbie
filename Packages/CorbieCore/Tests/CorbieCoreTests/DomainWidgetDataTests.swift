@@ -152,6 +152,47 @@ import Testing
         #expect(birthday.title == "Anna")
     }
 
+    @Test func aPersonDateReachesTheUpcomingWidget() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        let anna = try #require(
+            try await repositories.people.people(spaceId: world.seed.space.id).first { $0.name == "Anna" }
+        )
+        _ = try await repositories.people.addDate(
+            personId: anna.id,
+            draft: PersonDateDraft(title: "wedding day", month: 9, day: 8)
+        )
+        let snapshot = try await world.provider.upcomingDates(now: world.now)
+        let date = try #require(snapshot.items.first { $0.kind == .event && $0.eventId == nil })
+        #expect(date.title == "Anna: wedding day")
+        #expect(date.daysAway == 3)
+        #expect(date.radar == RadarStatus(ideasCount: 2, giftPicked: false))
+        #expect(WidgetDateLabel.upcoming(kind: date.kind, title: date.title, locale: locale) == "Anna: wedding day")
+    }
+
+    @Test func aKnownBirthYearReachesTheWidgetAsAnOrdinal() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        var anna = try #require(
+            try await repositories.people.people(spaceId: world.seed.space.id).first { $0.name == "Anna" }
+        )
+        anna.birthdayMonth = 9
+        anna.birthdayDay = 12
+        anna.birthdayYear = 1992
+        _ = try await repositories.people.update(anna)
+        let snapshot = try await world.provider.upcomingDates(now: world.now)
+        let birthday = try #require(snapshot.items.first { $0.kind == .personBirthday })
+        #expect(birthday.ordinal == 34)
+        #expect(
+            WidgetDateLabel.upcoming(
+                kind: birthday.kind,
+                title: birthday.title,
+                ordinal: birthday.ordinal,
+                locale: locale
+            ) == "Anna's 34th birthday"
+        )
+    }
+
     @Test func theShoppingWidgetReadsThePinnedList() async throws {
         let world = try await makeWorld()
         let snapshot = try await world.provider.shopping(now: world.now)

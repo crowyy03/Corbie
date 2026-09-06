@@ -26,6 +26,7 @@ public enum WidgetDateKind: String, Sendable, Codable, Equatable, CaseIterable {
         case .wedding: self = .wedding
         case .memberBirthday: self = .memberBirthday
         case .personBirthday: self = .personBirthday
+        case .event: self = .event
         }
     }
 }

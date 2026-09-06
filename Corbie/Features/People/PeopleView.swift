@@ -113,18 +113,7 @@ private struct PersonRow: View {
     }
 
     private var caption: String? {
-        let relation = person.relation?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let birthday = PersonBirthday.text(person)
-        switch (relation?.isEmpty == false ? relation : nil, birthday) {
-        case let (.some(relation), .some(birthday)):
-            return String(localized: "people.row.caption", defaultValue: "\(relation) \u{00B7} \(birthday)")
-        case let (.some(relation), .none):
-            return relation
-        case let (.none, .some(birthday)):
-            return birthday
-        case (.none, .none):
-            return nil
-        }
+        PersonDates.rowCaption(for: person)
     }
 }
 

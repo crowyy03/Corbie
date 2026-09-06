@@ -5,6 +5,7 @@ public enum AutoDateKind: String, Sendable, Codable, Equatable, CaseIterable {
     case wedding
     case memberBirthday
     case personBirthday
+    case event
 }
 
 public struct AutoDate: Sendable, Codable, Equatable, Identifiable {
@@ -15,6 +16,7 @@ public struct AutoDate: Sendable, Codable, Equatable, Identifiable {
     public let name: String?
     public let ownerMemberId: UUID?
     public let personId: UUID?
+    public let remindersEnabled: Bool
 
     public init(
         id: String,
@@ -23,7 +25,8 @@ public struct AutoDate: Sendable, Codable, Equatable, Identifiable {
         years: Int? = nil,
         name: String? = nil,
         ownerMemberId: UUID? = nil,
-        personId: UUID? = nil
+        personId: UUID? = nil,
+        remindersEnabled: Bool = true
     ) {
         self.id = id
         self.kind = kind
@@ -32,6 +35,7 @@ public struct AutoDate: Sendable, Codable, Equatable, Identifiable {
         self.name = name
         self.ownerMemberId = ownerMemberId
         self.personId = personId
+        self.remindersEnabled = remindersEnabled
     }
 }
 
@@ -91,19 +95,40 @@ public struct AutoDatesProvider: Sendable {
             )
         }
         for person in people {
-            guard let month = person.birthdayMonth,
-                  let day = person.birthdayDay,
-                  let date = nextYearlyDate(month: month, day: day, after: now) else { continue }
-            result.append(
-                AutoDate(
-                    id: AutoDatesProvider.identifier(kind: .personBirthday, owner: person.id),
-                    kind: .personBirthday,
-                    date: date,
-                    name: person.name,
-                    ownerMemberId: person.ownerMemberId,
-                    personId: person.id
+            if let month = person.birthdayMonth,
+               let day = person.birthdayDay,
+               let next = nextYearly(month: month, day: day, year: person.birthdayYear, after: now) {
+                result.append(
+                    AutoDate(
+                        id: AutoDatesProvider.identifier(kind: .personBirthday, owner: person.id),
+                        kind: .personBirthday,
+                        date: next.date,
+                        years: next.years,
+                        name: person.name,
+                        ownerMemberId: person.ownerMemberId,
+                        personId: person.id
+                    )
                 )
-            )
+            }
+            for personDate in person.dates {
+                guard let month = personDate.month,
+                      let day = personDate.day,
+                      let next = nextYearly(month: month, day: day, year: personDate.year, after: now) else {
+                    continue
+                }
+                result.append(
+                    AutoDate(
+                        id: AutoDatesProvider.identifier(kind: .event, owner: personDate.id),
+                        kind: .event,
+                        date: next.date,
+                        years: next.years,
+                        name: PersonDateText.label(person: person.name, title: personDate.title),
+                        ownerMemberId: person.ownerMemberId,
+                        personId: person.id,
+                        remindersEnabled: personDate.remindersEnabled
+                    )
+                )
+            }
         }
         return result.sorted { lhs, rhs in
             lhs.date == rhs.date ? lhs.id < rhs.id : lhs.date < rhs.date
@@ -122,6 +147,13 @@ public struct AutoDatesProvider: Sendable {
             guard let away = calendar.daysAway(from: now, to: autoDate.date) else { return false }
             return away >= 0 && away <= days
         }
+    }
+
+    public func nextYearly(month: Int, day: Int, year: Int?, after now: Date) -> (date: Date, years: Int?)? {
+        guard let date = nextYearlyDate(month: month, day: day, after: now) else { return nil }
+        guard let year else { return (date, nil) }
+        let years = calendar.component(.year, from: date) - year
+        return (date, years > 0 ? years : nil)
     }
 
     public func nextYearlyDate(month: Int, day: Int, after now: Date) -> Date? {

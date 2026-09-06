@@ -60,6 +60,26 @@ import Testing
         #expect(WidgetDateKind(.wedding) == .wedding)
         #expect(WidgetDateKind(.memberBirthday) == .memberBirthday)
         #expect(WidgetDateKind(.personBirthday) == .personBirthday)
+        #expect(WidgetDateKind(.event) == .event)
+    }
+
+    @Test func aPersonDateReadsAsTheNameAndTheTitle() {
+        #expect(PersonDateText.label(person: "Anna", title: "wedding day", locale: locale) == "Anna: wedding day")
+        #expect(PersonDateText.label(person: " Anna ", title: " wedding day ", locale: locale) == "Anna: wedding day")
+        #expect(PersonDateText.label(person: "", title: "wedding day", locale: locale) == "wedding day")
+        #expect(PersonDateText.label(person: "Anna", title: "", locale: locale) == "Anna")
+        #expect(
+            WidgetDateLabel.upcoming(kind: .event, title: "Anna: wedding day", locale: locale) == "Anna: wedding day"
+        )
+    }
+
+    @Test func theAgeShowsUpOnlyWhenTheYearIsKnown() {
+        #expect(PersonDateText.age(turning: 34, locale: locale) == "turns 34")
+        #expect(PersonDateText.birthdayTitle(person: "Anna", ordinal: nil, locale: locale) == nil)
+        #expect(PersonDateText.birthdayTitle(person: nil, ordinal: 34, locale: locale) == nil)
+        #expect(PersonDateText.birthdayTitle(person: "Anna", ordinal: 0, locale: locale) == nil)
+        let plain = WidgetDateLabel.upcoming(kind: .personBirthday, title: "Anna", locale: locale)
+        #expect(plain.contains("34") == false)
     }
 
     @Test func aPriceWithoutAUsableCurrencyCodeHasNoText() {
