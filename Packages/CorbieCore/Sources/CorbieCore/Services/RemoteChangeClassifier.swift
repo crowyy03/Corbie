@@ -4,7 +4,7 @@ public enum RemoteChangeKind: String, Sendable, Equatable, CaseIterable {
     case taskAssigned
     case taskHandover
     case partnerWish
-    case planUpdate
+    case goalUpdate
     case capsuleOpened
     case voteUpdate
 
@@ -15,7 +15,7 @@ public enum RemoteChangeKind: String, Sendable, Equatable, CaseIterable {
         case .taskAssigned: return prefs.taskAssigned
         case .taskHandover: return prefs.taskTakenOrHandedBack
         case .partnerWish: return prefs.partnerAddedWish
-        case .planUpdate: return prefs.planUpdates
+        case .goalUpdate: return prefs.goalUpdates
         case .capsuleOpened: return prefs.capsuleUpdates
         case .voteUpdate: return prefs.voteUpdates
         }
@@ -24,16 +24,16 @@ public enum RemoteChangeKind: String, Sendable, Equatable, CaseIterable {
 
 public enum RemoteChangeProperty {
     public static let taskAssignee = "assigneeMemberId"
-    public static let planSaved = "savedAmount"
-    public static let planTarget = "targetAmount"
+    public static let goalSaved = "savedAmount"
+    public static let goalTarget = "targetAmount"
     public static let voteRevealed = "revealedAt"
 }
 
 public enum RemoteChangeSubject: Sendable, Equatable {
     case task(TaskDTO)
     case wish(WishDTO)
-    case plan(PlanDTO)
-    case expense(PlanExpenseDTO, plan: PlanDTO?)
+    case goal(GoalDTO)
+    case expense(GoalExpenseDTO, goal: GoalDTO?)
     case capsuleOpen(capsule: CapsuleDTO, memberId: UUID?)
     case vote(VoteDTO)
 }
@@ -88,10 +88,10 @@ public enum RemoteChangeClassifier {
             return taskAlert(task, change: change, viewer: viewer)
         case let .wish(wish):
             return wishAlert(wish, change: change, viewer: viewer)
-        case let .plan(plan):
-            return planAlert(plan, change: change)
-        case let .expense(expense, plan):
-            return expenseAlert(expense, plan: plan, change: change, viewer: viewer)
+        case let .goal(goal):
+            return goalAlert(goal, change: change)
+        case let .expense(expense, goal):
+            return expenseAlert(expense, goal: goal, change: change, viewer: viewer)
         case let .capsuleOpen(capsule, memberId):
             return capsuleAlert(capsule, openedBy: memberId, change: change, viewer: viewer)
         case let .vote(vote):
@@ -183,62 +183,62 @@ public enum RemoteChangeClassifier {
         )
     }
 
-    private static func planAlert(_ plan: PlanDTO, change: RemoteChange) -> RemoteChangeAlert? {
+    private static func goalAlert(_ goal: GoalDTO, change: RemoteChange) -> RemoteChangeAlert? {
         guard change.type == .update else { return nil }
-        let touchedMoney = change.properties.contains(RemoteChangeProperty.planSaved)
-            || change.properties.contains(RemoteChangeProperty.planTarget)
-        guard touchedMoney, plan.targetAmount > 0, plan.totalSavedAmount >= plan.targetAmount else { return nil }
+        let touchedMoney = change.properties.contains(RemoteChangeProperty.goalSaved)
+            || change.properties.contains(RemoteChangeProperty.goalTarget)
+        guard touchedMoney, goal.targetAmount > 0, goal.totalSavedAmount >= goal.targetAmount else { return nil }
         return RemoteChangeAlert(
-            id: RemoteChangeKind.planUpdate.prefix + "goal." + plan.id.uuidString,
-            kind: .planUpdate,
+            id: RemoteChangeKind.goalUpdate.prefix + "goal." + goal.id.uuidString,
+            kind: .goalUpdate,
             content: CorbieNotificationContent(
-                titleKey: NotificationStrings.planGoalTitle,
-                bodyKey: NotificationStrings.planGoalBody,
-                arguments: [plan.title],
-                threadIdentifier: RemoteChangeKind.planUpdate.rawValue,
+                titleKey: NotificationStrings.goalReachedTitle,
+                bodyKey: NotificationStrings.goalReachedBody,
+                arguments: [goal.title],
+                threadIdentifier: RemoteChangeKind.goalUpdate.rawValue,
                 userInfo: NotificationPayload.userInfo(
-                    remote: .planUpdate,
-                    route: .plan(plan.id),
-                    objectId: plan.id
+                    remote: .goalUpdate,
+                    route: .goal(goal.id),
+                    objectId: goal.id
                 )
             )
         )
     }
 
-    private static func expenseCopy(plan: PlanDTO?) -> (title: String, body: String) {
-        guard let plan, plan.targetAmount > 0 else {
-            return (NotificationStrings.planExpenseTitle, NotificationStrings.planExpenseBody)
+    private static func expenseCopy(goal: GoalDTO?) -> (title: String, body: String) {
+        guard let goal, goal.targetAmount > 0 else {
+            return (NotificationStrings.goalExpenseTitle, NotificationStrings.goalExpenseBody)
         }
-        if plan.isOverspent {
-            return (NotificationStrings.planOverTitle, NotificationStrings.planOverBody)
+        if goal.isOverspent {
+            return (NotificationStrings.goalOverTitle, NotificationStrings.goalOverBody)
         }
-        if plan.totalSavedAmount >= plan.targetAmount {
-            return (NotificationStrings.planGoalTitle, NotificationStrings.planGoalBody)
+        if goal.totalSavedAmount >= goal.targetAmount {
+            return (NotificationStrings.goalReachedTitle, NotificationStrings.goalReachedBody)
         }
-        return (NotificationStrings.planExpenseTitle, NotificationStrings.planExpenseBody)
+        return (NotificationStrings.goalExpenseTitle, NotificationStrings.goalExpenseBody)
     }
 
     private static func expenseAlert(
-        _ expense: PlanExpenseDTO,
-        plan: PlanDTO?,
+        _ expense: GoalExpenseDTO,
+        goal: GoalDTO?,
         change: RemoteChange,
         viewer: RemoteChangeViewer
     ) -> RemoteChangeAlert? {
         guard change.type == .insert else { return nil }
         guard let me = viewer.memberId, expense.addedByMemberId != me else { return nil }
-        let copy = expenseCopy(plan: plan)
+        let copy = expenseCopy(goal: goal)
         return RemoteChangeAlert(
-            id: RemoteChangeKind.planUpdate.prefix + expense.id.uuidString,
-            kind: .planUpdate,
+            id: RemoteChangeKind.goalUpdate.prefix + expense.id.uuidString,
+            kind: .goalUpdate,
             content: CorbieNotificationContent(
                 titleKey: copy.title,
                 bodyKey: copy.body,
-                arguments: [viewer.partnerName, plan?.title ?? ""],
-                threadIdentifier: RemoteChangeKind.planUpdate.rawValue,
+                arguments: [viewer.partnerName, goal?.title ?? ""],
+                threadIdentifier: RemoteChangeKind.goalUpdate.rawValue,
                 userInfo: NotificationPayload.userInfo(
-                    remote: .planUpdate,
-                    route: plan.map { CorbieRoute.plan($0.id) } ?? .plans,
-                    objectId: plan?.id
+                    remote: .goalUpdate,
+                    route: goal.map { CorbieRoute.goal($0.id) } ?? .goals,
+                    objectId: goal?.id
                 )
             )
         )

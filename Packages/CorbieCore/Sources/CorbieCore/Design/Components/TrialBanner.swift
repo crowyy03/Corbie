@@ -61,7 +61,7 @@ public struct TrialBanner: View {
 #if DEBUG
 struct TrialBannerGallery: View {
     var body: some View {
-        TrialBanner(daysLeft: 2, message: "Trial ends in 2 days", actionTitle: "See plans") {}
+        TrialBanner(daysLeft: 2, message: "Trial ends in 2 days", actionTitle: "See goals") {}
             .padding(CorbieSpacing.l)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(CorbieColorPalette.bg)

@@ -11,10 +11,11 @@ public struct DataExportDocument: Sendable, Codable, Equatable {
     public var events: [EventDTO]
     public var eventComments: [EventCommentDTO]
     public var wishes: [WishDTO]
-    public var plans: [PlanDTO]
-    public var expenses: [PlanExpenseDTO]
-    public var lists: [ChecklistListDTO]
-    public var listItems: [ListItemDTO]
+    public var goals: [GoalDTO]
+    public var expenses: [GoalExpenseDTO]
+    public var goalSteps: [GoalStepDTO]
+    public var folders: [TaskFolderDTO]
+    public var busyIntervals: [BusyIntervalDTO]
     public var capsules: [CapsuleDTO]
     public var votes: [VoteDTO]
     public var people: [PersonDTO]
@@ -29,10 +30,11 @@ public struct DataExportDocument: Sendable, Codable, Equatable {
         events: [EventDTO] = [],
         eventComments: [EventCommentDTO] = [],
         wishes: [WishDTO] = [],
-        plans: [PlanDTO] = [],
-        expenses: [PlanExpenseDTO] = [],
-        lists: [ChecklistListDTO] = [],
-        listItems: [ListItemDTO] = [],
+        goals: [GoalDTO] = [],
+        expenses: [GoalExpenseDTO] = [],
+        goalSteps: [GoalStepDTO] = [],
+        folders: [TaskFolderDTO] = [],
+        busyIntervals: [BusyIntervalDTO] = [],
         capsules: [CapsuleDTO] = [],
         votes: [VoteDTO] = [],
         people: [PersonDTO] = [],
@@ -46,10 +48,11 @@ public struct DataExportDocument: Sendable, Codable, Equatable {
         self.events = events
         self.eventComments = eventComments
         self.wishes = wishes
-        self.plans = plans
+        self.goals = goals
         self.expenses = expenses
-        self.lists = lists
-        self.listItems = listItems
+        self.goalSteps = goalSteps
+        self.folders = folders
+        self.busyIntervals = busyIntervals
         self.capsules = capsules
         self.votes = votes
         self.people = people
@@ -58,8 +61,8 @@ public struct DataExportDocument: Sendable, Codable, Equatable {
 
     public var entityCount: Int {
         1 + members.count + tasks.count + events.count + eventComments.count + wishes.count
-            + plans.count + expenses.count + lists.count + listItems.count + capsules.count
-            + votes.count + people.count + giftIdeas.count
+            + goals.count + expenses.count + goalSteps.count + folders.count
+            + busyIntervals.count + capsules.count + votes.count + people.count + giftIdeas.count
     }
 }
 
@@ -93,19 +96,22 @@ public struct DataExport: Sendable {
         for event in events where event.commentCount > 0 {
             eventComments.append(contentsOf: try await repositories.events.comments(eventId: event.id))
         }
-        let plans = try await repositories.plans.plans(
+        let goals = try await repositories.goals.goals(
             spaceId: spaceId,
-            statuses: PlanStatus.allCases
+            statuses: GoalStatus.allCases
         )
-        var expenses: [PlanExpenseDTO] = []
-        for plan in plans {
-            expenses.append(contentsOf: try await repositories.plans.expenses(planId: plan.id))
+        var expenses: [GoalExpenseDTO] = []
+        var goalSteps: [GoalStepDTO] = []
+        for goal in goals {
+            expenses.append(contentsOf: try await repositories.goals.expenses(goalId: goal.id))
+            goalSteps.append(contentsOf: try await repositories.goals.steps(goalId: goal.id))
         }
-        let lists = try await repositories.lists.lists(spaceId: spaceId)
-        var listItems: [ListItemDTO] = []
-        for list in lists {
-            listItems.append(contentsOf: try await repositories.lists.items(listId: list.id))
-        }
+        let folders = try await repositories.tasks.folders(spaceId: spaceId)
+        let busyIntervals = try await repositories.busyIntervals.intervals(
+            spaceId: spaceId,
+            from: .distantPast,
+            to: .distantFuture
+        )
         let people = try await repositories.people.people(spaceId: spaceId)
         var giftIdeas: [GiftIdeaDTO] = []
         for person in people {
@@ -116,14 +122,17 @@ public struct DataExport: Sendable {
             exportedAt: now,
             space: space,
             members: try await repositories.members.members(spaceId: spaceId),
-            tasks: try await repositories.tasks.tasks(TaskQuery(spaceId: spaceId, done: .any, includeArchived: true)),
+            tasks: try await repositories.tasks.tasks(
+                TaskQuery(spaceId: spaceId, done: .any, folder: .all, includeArchived: true)
+            ),
             events: events,
             eventComments: eventComments,
             wishes: wishes.map(DataExport.stripBinary),
-            plans: plans,
+            goals: goals,
             expenses: expenses,
-            lists: lists,
-            listItems: listItems,
+            goalSteps: goalSteps,
+            folders: folders,
+            busyIntervals: busyIntervals,
             capsules: try await repositories.capsules.capsules(spaceId: spaceId),
             votes: try await repositories.votes.votes(spaceId: spaceId),
             people: people,

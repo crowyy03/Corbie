@@ -17,7 +17,7 @@ final class SettingsNotificationTests: XCTestCase {
             eventSoon: false,
             dateRadar: false,
             partnerAddedWish: false,
-            planUpdates: false,
+            goalUpdates: false,
             capsuleUpdates: false,
             voteUpdates: false
         ))
@@ -51,7 +51,7 @@ final class SettingsNotificationTests: XCTestCase {
         XCTAssertTrue(SettingsNotificationToggle.taskAssigned.scheduledKinds.isEmpty)
         XCTAssertTrue(SettingsNotificationToggle.taskHandover.scheduledKinds.isEmpty)
         XCTAssertTrue(SettingsNotificationToggle.partnerWish.scheduledKinds.isEmpty)
-        XCTAssertTrue(SettingsNotificationToggle.planUpdates.scheduledKinds.isEmpty)
+        XCTAssertTrue(SettingsNotificationToggle.goalUpdates.scheduledKinds.isEmpty)
         XCTAssertTrue(SettingsNotificationToggle.voteUpdates.scheduledKinds.isEmpty)
     }
 

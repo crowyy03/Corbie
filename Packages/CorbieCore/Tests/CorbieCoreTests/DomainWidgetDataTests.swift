@@ -117,10 +117,10 @@ import Testing
         #expect(snapshot.remaining == 0)
     }
 
-    @Test func planProgressReadsTheActivePlan() async throws {
+    @Test func goalProgressReadsTheActiveGoal() async throws {
         let world = try await makeWorld()
-        let snapshot = try await world.provider.planProgress(now: world.now)
-        #expect(snapshot.planId == world.seed.plan.id)
+        let snapshot = try await world.provider.goalProgress(now: world.now)
+        #expect(snapshot.goalId == world.seed.goal.id)
         #expect(snapshot.title == "Lisbon in October")
         #expect(snapshot.savedText == "$3,268.90")
         #expect(snapshot.targetText == "$5,000")
@@ -193,10 +193,10 @@ import Testing
         )
     }
 
-    @Test func theShoppingWidgetReadsThePinnedList() async throws {
+    @Test func theShoppingWidgetReadsThePinnedFolder() async throws {
         let world = try await makeWorld()
         let snapshot = try await world.provider.shopping(now: world.now)
-        #expect(snapshot.listId == world.seed.shoppingList.id)
+        #expect(snapshot.folderId == world.seed.shoppingFolder.id)
         #expect(snapshot.items.map(\.title) == ["Milk", "Coffee", "Sourdough"])
         #expect(snapshot.items.allSatisfy { $0.isChecked == false })
         #expect(snapshot.remaining == 0)
@@ -205,8 +205,15 @@ import Testing
     @Test func checkedShoppingItemsLeaveTheWidget() async throws {
         let world = try await makeWorld()
         let repositories = world.seed.controller.repositories
-        let items = try await repositories.lists.items(listId: world.seed.shoppingList.id)
-        _ = try await repositories.lists.toggleItem(itemId: items[0].id, memberId: world.seed.me.id, at: world.now)
+        let items = try await repositories.tasks.tasks(
+            TaskQuery(spaceId: world.seed.space.id, folder: .folder(world.seed.shoppingFolder.id))
+        )
+        _ = try await repositories.tasks.setDone(
+            taskId: items[0].id,
+            isDone: true,
+            memberId: world.seed.me.id,
+            at: world.now
+        )
         let snapshot = try await world.provider.shopping(now: world.now)
         #expect(snapshot.items.map(\.title) == ["Coffee", "Sourdough"])
     }
@@ -245,7 +252,7 @@ import Testing
         let snapshot = try await world.provider.ourDay(now: world.now)
         #expect(snapshot.days == 460)
         #expect(snapshot.nextDate?.title == "Dinner with Anna")
-        #expect(snapshot.plan?.planId == world.seed.plan.id)
+        #expect(snapshot.goal?.goalId == world.seed.goal.id)
         #expect(snapshot.tasks.count == 3)
         #expect(snapshot.isPremium)
     }
@@ -254,7 +261,7 @@ import Testing
         let world = try await makeWorld()
         let days = try await world.provider.lockCircular(mode: .daysTogether, now: world.now)
         #expect(days.value == 460)
-        let ring = try await world.provider.lockCircular(mode: .planRing, now: world.now)
+        let ring = try await world.provider.lockCircular(mode: .goalRing, now: world.now)
         #expect(ring.value == 65)
         #expect(abs((ring.progress ?? 0) - 0.65378) < 0.0001)
         let countdown = try await world.provider.lockCircular(mode: .countdown, now: world.now)
@@ -278,12 +285,12 @@ import Testing
         #expect(try await provider.tasks(now: now).items.isEmpty)
         #expect(try await provider.freeTasks(now: now).isPremium == false)
         #expect(try await provider.partnerWishes(now: now).items.isEmpty)
-        #expect(try await provider.planProgress(now: now).planId == nil)
+        #expect(try await provider.goalProgress(now: now).goalId == nil)
         #expect(try await provider.upcomingDates(now: now).items.isEmpty)
-        #expect(try await provider.shopping(now: now).listId == nil)
+        #expect(try await provider.shopping(now: now).folderId == nil)
         #expect(try await provider.capsule(now: now).capsuleId == nil)
         #expect(try await provider.ourDay(now: now).days == nil)
-        #expect(try await provider.lockCircular(mode: .planRing, now: now).value == nil)
+        #expect(try await provider.lockCircular(mode: .goalRing, now: now).value == nil)
         #expect(try await provider.lockRectangular(now: now).taskTitle == nil)
         #expect(try await provider.lockInline(now: now).kind == nil)
     }

@@ -57,6 +57,34 @@ import Testing
         #expect(stored.lastSeenAt == at)
     }
 
+    @Test func busySharingIsOffUntilTheMemberTurnsItOn() async throws {
+        let world = try await TestWorld.make()
+        let members = world.repositories.members
+        #expect(try await members.member(id: world.me.id)?.sharesBusyTimes == false)
+
+        let sharing = try await members.setSharesBusyTimes(memberId: world.me.id, shares: true)
+        #expect(sharing.sharesBusyTimes)
+        #expect(try await members.member(id: world.me.id)?.sharesBusyTimes == true)
+
+        let stopped = try await members.setSharesBusyTimes(memberId: world.me.id, shares: false)
+        #expect(stopped.sharesBusyTimes == false)
+    }
+
+    @Test func theUsVisitAndRecapStampsAreWrittenSeparately() async throws {
+        let world = try await TestWorld.make()
+        let members = world.repositories.members
+        let visited = Date(timeIntervalSince1970: 1_757_000_000)
+        let seen = visited.addingTimeInterval(3600)
+
+        let afterVisit = try await members.markUsVisited(memberId: world.me.id, at: visited)
+        #expect(afterVisit.lastUsVisitAt == visited)
+        #expect(afterVisit.lastRecapSeenAt == nil)
+
+        let afterRecap = try await members.markRecapSeen(memberId: world.me.id, at: seen)
+        #expect(afterRecap.lastUsVisitAt == visited)
+        #expect(afterRecap.lastRecapSeenAt == seen)
+    }
+
     @Test func peopleCarryGiftIdeas() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.people

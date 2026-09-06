@@ -255,23 +255,23 @@ struct WidgetDateRow: View {
     }
 }
 
-struct WidgetPlanLine: View {
-    let plan: PlanProgressSnapshot
+struct WidgetGoalLine: View {
+    let goal: GoalProgressSnapshot
 
     private var amountText: String? {
-        guard let saved = plan.savedText, let target = plan.targetText else { return nil }
-        return String(format: String(localized: "plans.card.progress"), saved, target)
+        guard let saved = goal.savedText, let target = goal.targetText else { return nil }
+        return String(format: String(localized: "goals.card.progress"), saved, target)
     }
 
     private var overspendText: String? {
-        guard let overspent = plan.overspentText else { return nil }
-        return String(format: String(localized: "plans.card.overspend"), overspent)
+        guard let overspent = goal.overspentText else { return nil }
+        return String(format: String(localized: "goals.card.overspend"), overspent)
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             HStack(spacing: CorbieSpacing.xs) {
-                Text(plan.title ?? "")
+                Text(goal.title ?? "")
                     .corbieBody()
                     .foregroundStyle(CorbieColorPalette.text)
                     .lineLimit(1)
@@ -284,9 +284,9 @@ struct WidgetPlanLine: View {
                 }
             }
             ProgressBar(
-                value: plan.progress,
-                overspend: plan.isOverspent ? 0.25 : 0,
-                accessibilityLabel: String(localized: "plans.card.progress.label"),
+                value: goal.progress,
+                overspend: goal.isOverspent ? 0.25 : 0,
+                accessibilityLabel: String(localized: "goals.card.progress.label"),
                 accessibilityValue: amountText ?? ""
             )
             if let amountText {

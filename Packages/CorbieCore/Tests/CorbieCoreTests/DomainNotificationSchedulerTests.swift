@@ -295,9 +295,8 @@ import Testing
     @Test func routesRoundTripThroughTheDeepLinkString() {
         let id = UUID()
         let routes: [CorbieRoute] = [
-            .tasks, .task(id), .calendar, .event(id), .wishes, .wish(id), .plans, .plan(id),
-            .lists, .list(id), .capsules, .capsule(id), .votes, .vote(id), .people, .person(id),
-            .us, .paywall
+            .tasks, .task(id), .calendar, .event(id), .wishes, .wish(id), .goals, .goal(id),
+            .capsules, .capsule(id), .votes, .vote(id), .people, .person(id), .us, .paywall
         ]
         for route in routes {
             #expect(route.urlString.hasPrefix("corbie://"))

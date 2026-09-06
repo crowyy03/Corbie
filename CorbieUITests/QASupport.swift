@@ -42,14 +42,14 @@ enum QAText {
     static let next = "Continue"
     static let later = "Later"
     static let debugSignIn = "continue without Apple ID (debug build)"
-    static let tabs = ["Tasks", "Calendar", "Wishes", "Plans", "Us"]
+    static let tabs = ["Tasks", "Calendar", "Wishes", "Goals", "Us"]
 }
 
 enum QATab {
     static let tasks = 0
     static let calendar = 1
     static let wishes = 2
-    static let plans = 3
+    static let goals = 3
     static let us = 4
 }
 

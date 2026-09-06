@@ -8,7 +8,7 @@ enum SettingsNotificationToggle: String, CaseIterable, Identifiable {
     case eventSoon
     case dateRadar
     case partnerWish
-    case planUpdates
+    case goalUpdates
     case capsuleUpdates
     case voteUpdates
 
@@ -24,7 +24,7 @@ enum SettingsNotificationToggle: String, CaseIterable, Identifiable {
         case .eventSoon: return \.eventSoon
         case .dateRadar: return \.dateRadar
         case .partnerWish: return \.partnerAddedWish
-        case .planUpdates: return \.planUpdates
+        case .goalUpdates: return \.goalUpdates
         case .capsuleUpdates: return \.capsuleUpdates
         case .voteUpdates: return \.voteUpdates
         }
@@ -36,7 +36,7 @@ enum SettingsNotificationToggle: String, CaseIterable, Identifiable {
         case .eventSoon: return [.eventReminder, .eventDigest]
         case .dateRadar: return [.dateRadar]
         case .capsuleUpdates: return [.capsuleOpens]
-        case .taskAssigned, .taskHandover, .partnerWish, .planUpdates, .voteUpdates: return []
+        case .taskAssigned, .taskHandover, .partnerWish, .goalUpdates, .voteUpdates: return []
         }
     }
 

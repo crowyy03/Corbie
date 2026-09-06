@@ -56,9 +56,9 @@ public struct CorbieEventQuery: EntityQuery, Sendable {
 }
 
 @available(iOS 17.0, macOS 14.0, *)
-public struct CorbiePlanEntity: AppEntity, Identifiable, Sendable {
-    public static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "intent.entity.plan.type")
-    public static let defaultQuery = CorbiePlanQuery()
+public struct CorbieGoalEntity: AppEntity, Identifiable, Sendable {
+    public static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "intent.entity.goal.type")
+    public static let defaultQuery = CorbieGoalQuery()
 
     public let id: UUID
     public let title: String
@@ -70,7 +70,7 @@ public struct CorbiePlanEntity: AppEntity, Identifiable, Sendable {
         self.progress = progress
     }
 
-    public init(_ option: WidgetPlanOption) {
+    public init(_ option: WidgetGoalOption) {
         self.init(id: option.id, title: option.title, progress: option.progress)
     }
 
@@ -83,7 +83,7 @@ public struct CorbiePlanEntity: AppEntity, Identifiable, Sendable {
 }
 
 @available(iOS 17.0, macOS 14.0, *)
-public struct CorbiePlanQuery: EntityQuery, Sendable {
+public struct CorbieGoalQuery: EntityQuery, Sendable {
     private let persistence: IntentPersistence
 
     public init() {
@@ -94,12 +94,12 @@ public struct CorbiePlanQuery: EntityQuery, Sendable {
         self.persistence = persistence
     }
 
-    public func entities(for identifiers: [UUID]) async throws -> [CorbiePlanEntity] {
-        try await provider().planOptions(ids: identifiers).map(CorbiePlanEntity.init)
+    public func entities(for identifiers: [UUID]) async throws -> [CorbieGoalEntity] {
+        try await provider().goalOptions(ids: identifiers).map(CorbieGoalEntity.init)
     }
 
-    public func suggestedEntities() async throws -> [CorbiePlanEntity] {
-        try await provider().selectablePlans().map(CorbiePlanEntity.init)
+    public func suggestedEntities() async throws -> [CorbieGoalEntity] {
+        try await provider().selectableGoals().map(CorbieGoalEntity.init)
     }
 
     private func provider() -> WidgetDataProvider {
@@ -127,21 +127,21 @@ public enum CountdownSourceOption: String, AppEnum, Sendable {
 @available(iOS 17.0, macOS 14.0, *)
 public enum LockCircularModeOption: String, AppEnum, Sendable {
     case daysTogether
-    case planRing
+    case goalRing
     case countdown
 
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "intent.lock.mode.type")
 
     public static let caseDisplayRepresentations: [LockCircularModeOption: DisplayRepresentation] = [
         .daysTogether: DisplayRepresentation(title: "intent.lock.mode.days"),
-        .planRing: DisplayRepresentation(title: "intent.lock.mode.plan"),
+        .goalRing: DisplayRepresentation(title: "intent.lock.mode.goal"),
         .countdown: DisplayRepresentation(title: "intent.lock.mode.countdown")
     ]
 
     public var mode: LockCircularMode {
         switch self {
         case .daysTogether: return .daysTogether
-        case .planRing: return .planRing
+        case .goalRing: return .goalRing
         case .countdown: return .countdown
         }
     }

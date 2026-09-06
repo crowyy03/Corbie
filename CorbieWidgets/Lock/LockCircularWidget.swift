@@ -65,7 +65,7 @@ struct LockCircularWidgetView: View {
     private var route: CorbieRoute {
         switch entry.snapshot.mode {
         case .daysTogether: return .us
-        case .planRing: return .plans
+        case .goalRing: return .goals
         case .countdown: return .calendar
         }
     }
@@ -73,7 +73,7 @@ struct LockCircularWidgetView: View {
     private var accessibilityLabel: String {
         switch entry.snapshot.mode {
         case .daysTogether: return String(localized: "us.counters.days")
-        case .planRing: return String(localized: "plans.card.progress.label")
+        case .goalRing: return String(localized: "goals.card.progress.label")
         case .countdown: return String(localized: "widget.dates.heading")
         }
     }
@@ -82,7 +82,7 @@ struct LockCircularWidgetView: View {
         Group {
             if entry.snapshot.isPremium == false {
                 LockedCircularView()
-            } else if entry.snapshot.mode == .planRing {
+            } else if entry.snapshot.mode == .goalRing {
                 ring
             } else if let value = entry.snapshot.value {
                 ZStack {
@@ -111,7 +111,7 @@ struct LockCircularWidgetView: View {
 
     private var ring: some View {
         Gauge(value: min(max(entry.snapshot.progress ?? 0, 0), 1)) {
-            Text("widget.lock.circular.plan")
+            Text("widget.lock.circular.goal")
         } currentValueLabel: {
             Text((entry.snapshot.value ?? 0), format: .number)
                 .minimumScaleFactor(0.5)
@@ -129,7 +129,7 @@ struct LockCircularWidgetView: View {
     LockCircularWidget()
 } timeline: {
     await LockCircularEntry.load(now: Date(), mode: .daysTogether, provider: WidgetPreviewData.provider())
-    await LockCircularEntry.load(now: Date(), mode: .planRing, provider: WidgetPreviewData.provider())
+    await LockCircularEntry.load(now: Date(), mode: .goalRing, provider: WidgetPreviewData.provider())
     await LockCircularEntry.load(now: Date(), mode: .countdown, provider: WidgetPreviewData.provider())
     LockCircularEntry(
         date: Date(),

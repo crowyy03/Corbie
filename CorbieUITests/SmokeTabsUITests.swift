@@ -70,24 +70,24 @@ final class SmokeTabsUITests: XCTestCase {
         saveScreenshot(app, named: "wishes_created")
     }
 
-    func testPlanCreateAndExpenseInPlanCurrency() throws {
+    func testGoalCreateAndExpenseInGoalCurrency() throws {
         let app = launchSignedIn()
-        selectTab(app, QATab.plans)
+        selectTab(app, QATab.goals)
 
         let title = uniqueTitle("Lisbon")
         app.navigationAdd.tap()
-        XCTAssertTrue(app.navigationBars["New plan"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.navigationBars["New goal"].waitForExistence(timeout: 15))
         type(title, into: app.textFields["Title"])
         type("5000", into: app.textFields["Target amount"])
         app.buttons[QAText.save].tap()
 
         let card = app.anyElement(labelContaining: title)
-        XCTAssertTrue(card.waitForExistence(timeout: 20), "the new plan is not in the list")
-        saveScreenshot(app, named: "plans_created")
+        XCTAssertTrue(card.waitForExistence(timeout: 20), "the new goal is not in the list")
+        saveScreenshot(app, named: "goals_created")
         card.tap()
 
         let addExpense = app.buttons["Add expense"]
-        XCTAssertTrue(addExpense.waitForExistence(timeout: 20), "a plan without expenses offers no way to add one")
+        XCTAssertTrue(addExpense.waitForExistence(timeout: 20), "a goal without expenses offers no way to add one")
         addExpense.tap()
 
         XCTAssertTrue(app.navigationBars["Add expense"].waitForExistence(timeout: 15))
@@ -96,45 +96,9 @@ final class SmokeTabsUITests: XCTestCase {
 
         XCTAssertTrue(
             app.anyElement(labelContaining: "120").waitForExistence(timeout: 20),
-            "the expense is not on the plan"
+            "the expense is not on the goal"
         )
-        saveScreenshot(app, named: "plans_expense")
-    }
-
-    func testListCreateAddItemAndTick() throws {
-        let app = launchSignedIn()
-        selectTab(app, QATab.plans)
-        app.buttons["Lists"].tap()
-
-        let title = uniqueTitle("Groceries")
-        app.navigationAdd.tap()
-        XCTAssertTrue(app.navigationBars["New list"].waitForExistence(timeout: 15))
-        type(title, into: app.textFields["Title"])
-        app.buttons[QAText.save].tap()
-
-        let card = app.anyElement(labelContaining: title)
-        XCTAssertTrue(card.waitForExistence(timeout: 20), "the new list is not in the list tab")
-        card.tap()
-
-        let item = uniqueTitle("Milk")
-        let field = app.textFields["Add an item"]
-        type(item, into: field)
-        field.typeText("\n")
-
-        let named = app.buttons.matching(NSPredicate(format: "label == %@", item))
-        XCTAssertTrue(named.firstMatch.waitForExistence(timeout: 20), "the new item is not on the list")
-        saveScreenshot(app, named: "lists_item")
-
-        var checkbox: XCUIElement?
-        for index in 0 ..< named.count where named.element(boundBy: index).value is String {
-            checkbox = named.element(boundBy: index)
-            break
-        }
-        let tick = try XCTUnwrap(checkbox, "the item row has no checkbox to tick")
-        XCTAssertEqual(tick.value as? String, "not ticked")
-        tick.tap()
-        XCTAssertEqual(tick.value as? String, "ticked", "ticking the item did not stick")
-        saveScreenshot(app, named: "lists_ticked")
+        saveScreenshot(app, named: "goals_expense")
     }
 
     func testCapsuleCreate() throws {

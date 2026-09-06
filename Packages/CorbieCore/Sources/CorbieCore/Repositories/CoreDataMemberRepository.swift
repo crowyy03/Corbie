@@ -97,6 +97,30 @@ public struct CoreDataMemberRepository: MemberRepository {
         }
     }
 
+    public func setSharesBusyTimes(memberId: UUID, shares: Bool) async throws -> MemberDTO {
+        try await access.write { context in
+            let member: Member = try ManagedFetch.require(Member.entityName, id: memberId, in: context)
+            member.sharesBusyTimes = shares
+            return MemberDTO(member)
+        }
+    }
+
+    public func markUsVisited(memberId: UUID, at date: Date) async throws -> MemberDTO {
+        try await access.write { context in
+            let member: Member = try ManagedFetch.require(Member.entityName, id: memberId, in: context)
+            member.lastUsVisitAt = date
+            return MemberDTO(member)
+        }
+    }
+
+    public func markRecapSeen(memberId: UUID, at date: Date) async throws -> MemberDTO {
+        try await access.write { context in
+            let member: Member = try ManagedFetch.require(Member.entityName, id: memberId, in: context)
+            member.lastRecapSeenAt = date
+            return MemberDTO(member)
+        }
+    }
+
     public func delete(id: UUID) async throws {
         try await access.write { context in
             guard let member: Member = try ManagedFetch.first(Member.entityName, id: id, in: context) else { return }

@@ -10,6 +10,9 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
     public var birthdayDay: Int?
     public var joinedAt: Date?
     public var lastSeenAt: Date?
+    public var sharesBusyTimes: Bool
+    public var lastRecapSeenAt: Date?
+    public var lastUsVisitAt: Date?
     public var notificationPrefs: NotificationPrefs
 
     public init(
@@ -22,6 +25,9 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
         birthdayDay: Int? = nil,
         joinedAt: Date? = nil,
         lastSeenAt: Date? = nil,
+        sharesBusyTimes: Bool = false,
+        lastRecapSeenAt: Date? = nil,
+        lastUsVisitAt: Date? = nil,
         notificationPrefs: NotificationPrefs = .allEnabled
     ) {
         self.id = id
@@ -33,6 +39,9 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
         self.birthdayDay = birthdayDay
         self.joinedAt = joinedAt
         self.lastSeenAt = lastSeenAt
+        self.sharesBusyTimes = sharesBusyTimes
+        self.lastRecapSeenAt = lastRecapSeenAt
+        self.lastUsVisitAt = lastUsVisitAt
         self.notificationPrefs = notificationPrefs
     }
 
@@ -47,6 +56,9 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
             birthdayDay: member.birthdayDay?.intValue,
             joinedAt: member.joinedAt,
             lastSeenAt: member.lastSeenAt,
+            sharesBusyTimes: member.sharesBusyTimes,
+            lastRecapSeenAt: member.lastRecapSeenAt,
+            lastUsVisitAt: member.lastUsVisitAt,
             notificationPrefs: member.notificationPrefs
         )
     }

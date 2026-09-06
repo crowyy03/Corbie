@@ -6,18 +6,18 @@ final class RouterTests: XCTestCase {
         XCTAssertEqual(try route("corbie://tasks"), .tasks)
         XCTAssertEqual(try route("corbie://calendar"), .calendar)
         XCTAssertEqual(try route("corbie://wishes"), .wishes)
-        XCTAssertEqual(try route("corbie://plans"), .plans)
+        XCTAssertEqual(try route("corbie://goals"), .goals)
         XCTAssertEqual(try route("corbie://capsules"), .capsules)
         XCTAssertEqual(try route("corbie://votes"), .votes)
     }
 
-    func testPlanRouteCarriesIdentifier() throws {
+    func testGoalRouteCarriesIdentifier() throws {
         let identifier = UUID()
-        XCTAssertEqual(try route("corbie://plans/\(identifier.uuidString)"), .plan(identifier))
+        XCTAssertEqual(try route("corbie://goals/\(identifier.uuidString)"), .goal(identifier))
     }
 
-    func testPlanRouteRejectsNonIdentifier() throws {
-        XCTAssertNil(try route("corbie://plans/not-a-uuid"))
+    func testGoalRouteRejectsNonIdentifier() throws {
+        XCTAssertNil(try route("corbie://goals/not-a-uuid"))
     }
 
     func testJoinRoutes() throws {

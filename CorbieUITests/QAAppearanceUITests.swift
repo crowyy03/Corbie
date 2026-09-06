@@ -42,9 +42,9 @@ final class QAAppearanceUITests: XCTestCase {
             return
         }
 
-        let plans = app.buttons["See plans"]
-        XCTAssertTrue(scrollTo(plans, in: app), "the subscription section has no way into the paywall")
-        plans.tap()
+        let offers = app.buttons["See plans"]
+        XCTAssertTrue(scrollTo(offers, in: app), "the subscription section has no way into the paywall")
+        offers.tap()
 
         XCTAssertTrue(
             app.staticTexts["One subscription. Both of you."].waitForExistence(timeout: 20),

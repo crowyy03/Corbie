@@ -6,8 +6,8 @@ public struct Repositories: Sendable {
     public let tasks: any TaskRepository
     public let events: any EventRepository
     public let wishes: any WishRepository
-    public let plans: any PlanRepository
-    public let lists: any ListRepository
+    public let goals: any GoalRepository
+    public let busyIntervals: any BusyIntervalRepository
     public let capsules: any CapsuleRepository
     public let votes: any VoteRepository
     public let people: any PeopleRepository
@@ -18,8 +18,8 @@ public struct Repositories: Sendable {
         tasks = CoreDataTaskRepository(stack: stack)
         events = CoreDataEventRepository(stack: stack)
         wishes = CoreDataWishRepository(stack: stack)
-        plans = CoreDataPlanRepository(stack: stack)
-        lists = CoreDataListRepository(stack: stack)
+        goals = CoreDataGoalRepository(stack: stack)
+        busyIntervals = CoreDataBusyIntervalRepository(stack: stack)
         capsules = CoreDataCapsuleRepository(stack: stack)
         votes = CoreDataVoteRepository(stack: stack)
         people = CoreDataPeopleRepository(stack: stack)

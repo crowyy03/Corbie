@@ -10,10 +10,11 @@ public struct PreviewSeedResult: Sendable {
     public let tasks: [TaskDTO]
     public let events: [EventDTO]
     public let wishes: [WishDTO]
-    public let plan: PlanDTO
-    public let expenses: [PlanExpenseDTO]
-    public let list: ChecklistListDTO
-    public let shoppingList: ChecklistListDTO
+    public let goal: GoalDTO
+    public let expenses: [GoalExpenseDTO]
+    public let steps: [GoalStepDTO]
+    public let placesFolder: TaskFolderDTO
+    public let shoppingFolder: TaskFolderDTO
     public let capsule: CapsuleDTO
     public let vote: VoteDTO
     public let people: [PersonDTO]
@@ -52,8 +53,8 @@ public enum PreviewSeed {
         let tasks = try await seedTasks(repositories, spaceId: space.id, me: me, partner: partner, now: now, calendar: calendar)
         let events = try await seedEvents(repositories, spaceId: space.id, me: me, partner: partner, now: now, calendar: calendar)
         let wishes = try await seedWishes(repositories, spaceId: space.id, me: me, partner: partner, now: now)
-        let plan = try await repositories.plans.create(
-            PlanDraft(
+        let goal = try await repositories.goals.create(
+            GoalDraft(
                 spaceId: space.id,
                 title: "Lisbon in October",
                 type: .trip,
@@ -67,9 +68,9 @@ public enum PreviewSeed {
             )
         )
         let expenses = [
-            try await repositories.plans.addExpense(
-                planId: plan.id,
-                draft: ExpenseDraft(
+            try await repositories.goals.addExpense(
+                goalId: goal.id,
+                draft: GoalExpenseDraft(
                     amount: 640,
                     currency: "USD",
                     note: "flights",
@@ -77,20 +78,21 @@ public enum PreviewSeed {
                     addedByMemberId: me.id
                 )
             ),
-            try await repositories.plans.addExpense(
-                planId: plan.id,
-                draft: ExpenseDraft(
+            try await repositories.goals.addExpense(
+                goalId: goal.id,
+                draft: GoalExpenseDraft(
                     amount: 210,
                     currency: "EUR",
-                    fxRateToPlanCurrency: 1.09,
+                    fxRateToGoalCurrency: 1.09,
                     note: "deposit",
                     date: day(offset: -4, from: now, calendar: calendar) ?? now,
                     addedByMemberId: partner.id
                 )
             )
         ]
-        let list = try await seedPlacesList(repositories, spaceId: space.id, me: me, partner: partner)
-        let shoppingList = try await seedShoppingList(repositories, spaceId: space.id, me: me, partner: partner)
+        let steps = try await seedGoalSteps(repositories, goalId: goal.id, me: me, now: now, calendar: calendar)
+        let placesFolder = try await seedPlacesFolder(repositories, spaceId: space.id, me: me, partner: partner)
+        let shoppingFolder = try await seedShoppingFolder(repositories, spaceId: space.id, me: me, partner: partner)
         let capsule = try await repositories.capsules.create(
             CapsuleDraft(
                 spaceId: space.id,
@@ -122,10 +124,11 @@ public enum PreviewSeed {
             tasks: tasks,
             events: events,
             wishes: wishes,
-            plan: plan,
+            goal: goal,
             expenses: expenses,
-            list: list,
-            shoppingList: shoppingList,
+            steps: steps,
+            placesFolder: placesFolder,
+            shoppingFolder: shoppingFolder,
             capsule: capsule,
             vote: vote,
             people: people
@@ -304,14 +307,36 @@ public enum PreviewSeed {
         return result
     }
 
-    private static func seedPlacesList(
+    private static func seedGoalSteps(
+        _ repositories: Repositories,
+        goalId: UUID,
+        me: MemberDTO,
+        now: Date,
+        calendar: Calendar
+    ) async throws -> [GoalStepDTO] {
+        _ = try await repositories.goals.addStep(
+            goalId: goalId,
+            draft: GoalStepDraft(title: "Renew the passports", assigneeMemberId: me.id)
+        )
+        _ = try await repositories.goals.addStep(
+            goalId: goalId,
+            draft: GoalStepDraft(
+                title: "Book the airport transfer",
+                note: "two suitcases",
+                dueAt: day(offset: 20, from: now, calendar: calendar)
+            )
+        )
+        return try await repositories.goals.steps(goalId: goalId)
+    }
+
+    private static func seedPlacesFolder(
         _ repositories: Repositories,
         spaceId: UUID,
         me: MemberDTO,
         partner: MemberDTO
-    ) async throws -> ChecklistListDTO {
-        let list = try await repositories.lists.create(
-            ChecklistDraft(
+    ) async throws -> TaskFolderDTO {
+        let folder = try await repositories.tasks.createFolder(
+            TaskFolderDraft(
                 spaceId: spaceId,
                 title: "Places to go",
                 subtitle: "Lisbon, this fall",
@@ -319,45 +344,50 @@ public enum PreviewSeed {
                 createdByMemberId: me.id
             )
         )
-        _ = try await repositories.lists.addItem(
-            listId: list.id,
-            draft: ListItemDraft(
+        _ = try await repositories.tasks.create(
+            TaskDraft(
+                spaceId: spaceId,
                 title: "Time Out Market",
                 note: "go early",
+                folderId: folder.id,
                 placeName: "Time Out Market",
                 address: "Av. 24 de Julho 49",
-                latitude: 38.706,
-                longitude: -9.145,
-                addedByMemberId: me.id
+                lat: 38.706,
+                lon: -9.145,
+                createdByMemberId: me.id
             )
         )
-        _ = try await repositories.lists.addItem(
-            listId: list.id,
-            draft: ListItemDraft(
+        _ = try await repositories.tasks.create(
+            TaskDraft(
+                spaceId: spaceId,
                 title: "Miradouro da Senhora do Monte",
+                folderId: folder.id,
                 placeName: "Miradouro da Senhora do Monte",
-                latitude: 38.719,
-                longitude: -9.132,
-                addedByMemberId: partner.id
+                lat: 38.719,
+                lon: -9.132,
+                createdByMemberId: partner.id
             )
         )
-        return try await repositories.lists.list(id: list.id) ?? list
+        return try await repositories.tasks.folder(id: folder.id) ?? folder
     }
 
-    private static func seedShoppingList(
+    private static func seedShoppingFolder(
         _ repositories: Repositories,
         spaceId: UUID,
         me: MemberDTO,
         partner: MemberDTO
-    ) async throws -> ChecklistListDTO {
-        let list = try await repositories.lists.pinnedShoppingList(spaceId: spaceId, title: "Shopping", createdByMemberId: me.id)
+    ) async throws -> TaskFolderDTO {
+        let folder = try await repositories.tasks.pinnedShoppingFolder(
+            spaceId: spaceId,
+            title: "Shopping",
+            createdByMemberId: me.id
+        )
         for title in ["Milk", "Coffee", "Sourdough"] {
-            _ = try await repositories.lists.addItem(
-                listId: list.id,
-                draft: ListItemDraft(title: title, addedByMemberId: partner.id)
+            _ = try await repositories.tasks.create(
+                TaskDraft(spaceId: spaceId, title: title, folderId: folder.id, createdByMemberId: partner.id)
             )
         }
-        return try await repositories.lists.list(id: list.id) ?? list
+        return try await repositories.tasks.folder(id: folder.id) ?? folder
     }
 
     private static func seedPeople(

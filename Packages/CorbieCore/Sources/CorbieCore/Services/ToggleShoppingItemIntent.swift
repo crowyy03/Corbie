@@ -8,18 +8,18 @@ public struct ToggleShoppingItemIntent: AppIntent {
     public static let isDiscoverable = false
 
     @Parameter(title: "intent.shopping.parameter.id")
-    public var itemID: String
+    public var taskID: String
 
     public init() {
-        itemID = ""
+        taskID = ""
     }
 
-    public init(itemID: UUID) {
-        self.itemID = itemID.uuidString
+    public init(taskID: UUID) {
+        self.taskID = taskID.uuidString
     }
 
     public func perform() async throws -> some IntentResult {
-        try await TaskIntentRunner.toggleShoppingItem(itemId: TaskIntentRunner.identifier(itemID))
+        try await TaskIntentRunner.toggleShoppingItem(taskId: TaskIntentRunner.identifier(taskID))
         return .result()
     }
 }

@@ -16,11 +16,13 @@ import Testing
         .eventCreated(kind: .birthday),
         .wishCreated(source: .amazon),
         .wishFulfilled,
-        .planCreated(type: .trip),
+        .goalCreated(type: .trip),
+        .goalCompleted,
+        .goalStepCreated(hasDue: true),
+        .goalStepDone,
         .expenseAdded,
-        .listCreated(template: .shopping),
-        .listItemChecked,
-        .listMapOpened,
+        .folderCreated(template: .shopping),
+        .folderMapOpened,
         .capsuleCreated,
         .capsuleOpened,
         .voteCreated,
@@ -74,7 +76,8 @@ import Testing
     @Test func propsMatchTheSpecForTheEventsThatCarryThem() {
         #expect(AnalyticsEvent.taskCreated(assignee: .partner).props == ["assignee": .string("partner")])
         #expect(AnalyticsEvent.wishCreated(source: .etsy).props == ["source": .string("etsy")])
-        #expect(AnalyticsEvent.listCreated(template: .cities).props == ["template": .string("cities")])
+        #expect(AnalyticsEvent.folderCreated(template: .cities).props == ["template": .string("cities")])
+        #expect(AnalyticsEvent.goalStepCreated(hasDue: true).props == ["has_due": .flag(true)])
         #expect(AnalyticsEvent.paywallShown(reason: .trialEnded).props == ["reason": .string("trial_ended")])
         #expect(AnalyticsEvent.onboardingStep(3).props == ["step": .number(3)])
         #expect(AnalyticsEvent.appOpen.props.isEmpty)

@@ -102,8 +102,8 @@ struct PlaceSearchView: View {
 #if DEBUG
 #Preview {
     PlaceSearchView(
-        title: String(localized: "lists.place.search.title"),
-        placeholder: String(localized: "lists.place.search.placeholder")
+        title: String(localized: "place.search.title"),
+        placeholder: String(localized: "place.search.placeholder")
     ) { _ in }
 }
 #endif

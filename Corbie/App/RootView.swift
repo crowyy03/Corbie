@@ -76,13 +76,13 @@ struct RootView: View {
             .tag(AppState.Tab.wishes)
 
             NavigationStack {
-                PlansView()
+                GoalsView()
                     .paywallBanner()
             }
             .tabItem {
-                Label(String(localized: "tab.plans.title"), systemImage: "flag")
+                Label(String(localized: "tab.goals.title"), systemImage: "flag")
             }
-            .tag(AppState.Tab.plans)
+            .tag(AppState.Tab.goals)
 
             UsView()
             .tabItem {

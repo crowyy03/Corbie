@@ -14,7 +14,7 @@ struct PaywallView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                     header
                     values
-                    plans
+                    offers
                     actions
                     legal
                     links
@@ -78,7 +78,7 @@ struct PaywallView: View {
         }
     }
 
-    @ViewBuilder private var plans: some View {
+    @ViewBuilder private var offers: some View {
         switch model.stage {
         case .loading:
             HStack(spacing: CorbieSpacing.s) {

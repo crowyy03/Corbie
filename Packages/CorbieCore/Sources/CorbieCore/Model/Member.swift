@@ -12,6 +12,9 @@ public final class Member: NSManagedObject {
     @NSManaged public var birthdayDay: NSNumber?
     @NSManaged public var joinedAt: Date?
     @NSManaged public var lastSeenAt: Date?
+    @NSManaged public var sharesBusyTimes: Bool
+    @NSManaged public var lastRecapSeenAt: Date?
+    @NSManaged public var lastUsVisitAt: Date?
     @NSManaged public var notificationPrefsData: Data?
     @NSManaged public var space: Space?
 

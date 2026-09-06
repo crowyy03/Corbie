@@ -7,7 +7,7 @@ public struct NotificationPrefs: Codable, Sendable, Equatable, Hashable {
     public var eventSoon: Bool
     public var dateRadar: Bool
     public var partnerAddedWish: Bool
-    public var planUpdates: Bool
+    public var goalUpdates: Bool
     public var capsuleUpdates: Bool
     public var voteUpdates: Bool
 
@@ -18,7 +18,7 @@ public struct NotificationPrefs: Codable, Sendable, Equatable, Hashable {
         eventSoon: Bool = true,
         dateRadar: Bool = true,
         partnerAddedWish: Bool = true,
-        planUpdates: Bool = true,
+        goalUpdates: Bool = true,
         capsuleUpdates: Bool = true,
         voteUpdates: Bool = true
     ) {
@@ -28,7 +28,7 @@ public struct NotificationPrefs: Codable, Sendable, Equatable, Hashable {
         self.eventSoon = eventSoon
         self.dateRadar = dateRadar
         self.partnerAddedWish = partnerAddedWish
-        self.planUpdates = planUpdates
+        self.goalUpdates = goalUpdates
         self.capsuleUpdates = capsuleUpdates
         self.voteUpdates = voteUpdates
     }

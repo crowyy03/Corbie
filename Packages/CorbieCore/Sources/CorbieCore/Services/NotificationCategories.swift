@@ -47,10 +47,8 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
     case event(UUID)
     case wishes
     case wish(UUID)
-    case plans
-    case plan(UUID)
-    case lists
-    case list(UUID)
+    case goals
+    case goal(UUID)
     case capsules
     case capsule(UUID)
     case votes
@@ -65,8 +63,8 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
         public static let calendar = "calendar"
         public static let events = "events"
         public static let wishes = "wishes"
-        public static let plans = "plans"
-        public static let lists = "lists"
+        public static let goals = "goals"
+        public static let legacyGoals = "plans"
         public static let capsules = "capsules"
         public static let votes = "votes"
         public static let people = "people"
@@ -82,10 +80,8 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
         case let .event(id): return Segment.events + "/" + id.uuidString
         case .wishes: return Segment.wishes
         case let .wish(id): return Segment.wishes + "/" + id.uuidString
-        case .plans: return Segment.plans
-        case let .plan(id): return Segment.plans + "/" + id.uuidString
-        case .lists: return Segment.lists
-        case let .list(id): return Segment.lists + "/" + id.uuidString
+        case .goals: return Segment.goals
+        case let .goal(id): return Segment.goals + "/" + id.uuidString
         case .capsules: return Segment.capsules
         case let .capsule(id): return Segment.capsules + "/" + id.uuidString
         case .votes: return Segment.votes
@@ -121,10 +117,8 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
             self = .event(identifier)
         case Segment.wishes:
             self = identifier.map(CorbieRoute.wish) ?? .wishes
-        case Segment.plans:
-            self = identifier.map(CorbieRoute.plan) ?? .plans
-        case Segment.lists:
-            self = identifier.map(CorbieRoute.list) ?? .lists
+        case Segment.goals, Segment.legacyGoals:
+            self = identifier.map(CorbieRoute.goal) ?? .goals
         case Segment.capsules:
             self = identifier.map(CorbieRoute.capsule) ?? .capsules
         case Segment.votes:
@@ -214,12 +208,12 @@ public enum NotificationStrings {
     public static let taskHandedBackBody = "notification.task.handedback.body"
     public static let wishAddedTitle = "notification.wish.added.title"
     public static let wishAddedBody = "notification.wish.added.body"
-    public static let planExpenseTitle = "notification.plan.expense.title"
-    public static let planExpenseBody = "notification.plan.expense.body"
-    public static let planGoalTitle = "notification.plan.goal.title"
-    public static let planGoalBody = "notification.plan.goal.body"
-    public static let planOverTitle = "notification.plan.over.title"
-    public static let planOverBody = "notification.plan.over.body"
+    public static let goalExpenseTitle = "notification.goal.expense.title"
+    public static let goalExpenseBody = "notification.goal.expense.body"
+    public static let goalReachedTitle = "notification.goal.reached.title"
+    public static let goalReachedBody = "notification.goal.reached.body"
+    public static let goalOverTitle = "notification.goal.over.title"
+    public static let goalOverBody = "notification.goal.over.body"
     public static let capsuleOpenedTitle = "notification.capsule.opened.title"
     public static let capsuleOpenedBody = "notification.capsule.opened.body"
     public static let voteNewTitle = "notification.vote.new.title"
@@ -251,12 +245,12 @@ public enum NotificationStrings {
         taskHandedBackBody,
         wishAddedTitle,
         wishAddedBody,
-        planExpenseTitle,
-        planExpenseBody,
-        planGoalTitle,
-        planGoalBody,
-        planOverTitle,
-        planOverBody,
+        goalExpenseTitle,
+        goalExpenseBody,
+        goalReachedTitle,
+        goalReachedBody,
+        goalOverTitle,
+        goalOverBody,
         capsuleOpenedTitle,
         capsuleOpenedBody,
         voteNewTitle,

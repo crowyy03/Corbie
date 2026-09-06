@@ -9,7 +9,7 @@ public enum CountdownSource: Sendable, Codable, Equatable, Hashable {
 
 public enum LockCircularMode: String, Sendable, Codable, Equatable, CaseIterable {
     case daysTogether
-    case planRing
+    case goalRing
     case countdown
 }
 
@@ -182,8 +182,8 @@ public struct PartnerWishesSnapshot: Sendable, Codable, Equatable {
     }
 }
 
-public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
-    public let planId: UUID?
+public struct GoalProgressSnapshot: Sendable, Codable, Equatable {
+    public let goalId: UUID?
     public let title: String?
     public let progress: Double
     public let savedText: String?
@@ -193,7 +193,7 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
     public let isPremium: Bool
 
     public init(
-        planId: UUID?,
+        goalId: UUID?,
         title: String?,
         progress: Double,
         savedText: String?,
@@ -202,7 +202,7 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
         overspentText: String?,
         isPremium: Bool
     ) {
-        self.planId = planId
+        self.goalId = goalId
         self.title = title
         self.progress = progress
         self.savedText = savedText
@@ -224,14 +224,14 @@ public struct UpcomingDatesSnapshot: Sendable, Codable, Equatable {
 }
 
 public struct ShoppingSnapshot: Sendable, Codable, Equatable {
-    public let listId: UUID?
+    public let folderId: UUID?
     public let title: String?
     public let items: [WidgetShoppingItem]
     public let remaining: Int
     public let isPremium: Bool
 
-    public init(listId: UUID?, title: String?, items: [WidgetShoppingItem], remaining: Int, isPremium: Bool) {
-        self.listId = listId
+    public init(folderId: UUID?, title: String?, items: [WidgetShoppingItem], remaining: Int, isPremium: Bool) {
+        self.folderId = folderId
         self.title = title
         self.items = items
         self.remaining = remaining
@@ -267,20 +267,20 @@ public struct CapsuleSnapshot: Sendable, Codable, Equatable {
 public struct OurDaySnapshot: Sendable, Codable, Equatable {
     public let days: Int?
     public let nextDate: WidgetDate?
-    public let plan: PlanProgressSnapshot?
+    public let goal: GoalProgressSnapshot?
     public let tasks: [WidgetTask]
     public let isPremium: Bool
 
     public init(
         days: Int?,
         nextDate: WidgetDate?,
-        plan: PlanProgressSnapshot?,
+        goal: GoalProgressSnapshot?,
         tasks: [WidgetTask],
         isPremium: Bool
     ) {
         self.days = days
         self.nextDate = nextDate
-        self.plan = plan
+        self.goal = goal
         self.tasks = tasks
         self.isPremium = isPremium
     }
@@ -351,7 +351,7 @@ public struct WidgetEventOption: Sendable, Codable, Equatable, Identifiable {
     }
 }
 
-public struct WidgetPlanOption: Sendable, Codable, Equatable, Identifiable {
+public struct WidgetGoalOption: Sendable, Codable, Equatable, Identifiable {
     public let id: UUID
     public let title: String
     public let progress: Double
