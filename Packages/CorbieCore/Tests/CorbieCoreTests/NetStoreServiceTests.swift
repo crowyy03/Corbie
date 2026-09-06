@@ -51,6 +51,13 @@ import Testing
         #expect(lonely.first?.savingsPercent == nil)
     }
 
+    @Test func onlyAMultiMonthPlanHasAMonthlyPrice() {
+        let yearly = Decimal(string: "29.99") ?? 0
+        #expect(SubscriptionOfferMath.monthlyEquivalent(offer(.yearly, "29.99", display: "$29.99")) == yearly / 12)
+        #expect(SubscriptionOfferMath.monthlyEquivalent(offer(.monthly, "4.99", display: "$4.99")) == nil)
+        #expect(SubscriptionOfferMath.monthlyEquivalent(offer(.yearly, "0", display: "free")) == nil)
+    }
+
     @Test func theYearlyOfferIsShownFirst() {
         let sorted = SubscriptionOfferMath.sorted([
             offer(.monthly, "4.99", display: "$4.99"),

@@ -4,7 +4,7 @@ import StoreKit
 public actor StoreService: LocalEntitlementProviding {
     public static let shared = StoreService()
 
-    private let analytics: (any AnalyticsRecording)?
+    private var analytics: (any AnalyticsRecording)?
     private var products: [CorbieProduct: Product] = [:]
     private var updates: Task<Void, Never>?
 
@@ -14,6 +14,10 @@ public actor StoreService: LocalEntitlementProviding {
 
     deinit {
         updates?.cancel()
+    }
+
+    public func attachAnalytics(_ analytics: any AnalyticsRecording) {
+        self.analytics = analytics
     }
 
     public func loadProducts() async throws -> [CorbieProduct: Product] {

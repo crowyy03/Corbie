@@ -26,9 +26,9 @@ public enum PremiumAction: String, Sendable, Equatable, CaseIterable, Codable {
 }
 
 public enum PaywallReason: String, Sendable, Equatable, CaseIterable, Codable {
+    case trialEnding = "trial_ending"
     case trialEnded = "trial_ended"
     case settings
-    case banner
     case create
     case edit
     case widgets
@@ -53,6 +53,8 @@ public struct PaywallRequest: Sendable, Equatable, Identifiable {
 
 @Observable @MainActor
 public final class PremiumGate {
+    public nonisolated static let trialNoticeDays = 2
+
     public private(set) var state: EntitlementState
     public var pendingPaywall: PaywallRequest?
 
@@ -78,7 +80,7 @@ public final class PremiumGate {
     public var isPremium: Bool { state.isPremium }
     public var isReadOnly: Bool { state.isReadOnly }
     public var trialDaysLeft: Int? { state.trialDaysLeft }
-    public var isTrialEndingSoon: Bool { (state.trialDaysLeft ?? .max) <= 2 }
+    public var isTrialEndingSoon: Bool { (state.trialDaysLeft ?? .max) <= PremiumGate.trialNoticeDays }
 
     @discardableResult
     public func require(_ action: PremiumAction) -> Bool {

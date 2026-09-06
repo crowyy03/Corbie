@@ -76,6 +76,12 @@ public enum SubscriptionOfferMath {
         }
     }
 
+    public static func monthlyEquivalent(_ offer: SubscriptionOffer) -> Decimal? {
+        let months = offer.product.monthsPerPeriod
+        guard months > 1, offer.price > 0 else { return nil }
+        return offer.price / Decimal(months)
+    }
+
     public static func sorted(_ offers: [SubscriptionOffer]) -> [SubscriptionOffer] {
         offers.sorted { lhs, rhs in
             lhs.product.monthsPerPeriod > rhs.product.monthsPerPeriod

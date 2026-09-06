@@ -8,12 +8,14 @@ struct RootView: View {
 
     @State private var pendingJoinCode: String?
     @State private var joinRequest: JoinRequest?
+    @State private var isUsHubOnScreen = false
 
     private let credentials = AppleCredentialMonitor()
     private let partnerWatcher = PartnerJoinWatcher()
 
     var body: some View {
         content
+            .paywallRuntime()
             .task {
                 await credentials.verifyStoredCredential(environment)
                 await credentials.observeRevocation(environment)
@@ -35,11 +37,11 @@ struct RootView: View {
 
     private var signedIn: some View {
         @Bindable var state = appState
-        @Bindable var gate = environment.premiumGate
 
         return TabView(selection: $state.selectedTab) {
             NavigationStack {
                 TasksView()
+                    .paywallBanner()
             }
             .tabItem {
                 Label(String(localized: "tab.tasks.title"), systemImage: "checkmark.circle")
@@ -48,6 +50,7 @@ struct RootView: View {
 
             NavigationStack {
                 CalendarView()
+                    .paywallBanner()
             }
             .tabItem {
                 Label(String(localized: "tab.calendar.title"), systemImage: "calendar")
@@ -56,6 +59,7 @@ struct RootView: View {
 
             NavigationStack {
                 WishesView()
+                    .paywallBanner()
             }
             .tabItem {
                 Label(String(localized: "tab.wishes.title"), systemImage: "star")
@@ -64,6 +68,7 @@ struct RootView: View {
 
             NavigationStack {
                 PlansView()
+                    .paywallBanner()
             }
             .tabItem {
                 Label(String(localized: "tab.plans.title"), systemImage: "flag")
@@ -72,16 +77,19 @@ struct RootView: View {
 
             NavigationStack {
                 UsView()
+                    .paywallBanner()
             }
             .tabItem {
                 Label(String(localized: "tab.us.title"), systemImage: "person.2")
             }
             .tag(AppState.Tab.us)
         }
-        .sheet(isPresented: $state.isUsHubPresented) {
+        .fullScreenCover(isPresented: $state.isUsHubPresented) {
             UsHubSheet()
+                .onAppear { isUsHubOnScreen = true }
+                .onDisappear { isUsHubOnScreen = false }
         }
-        .sheet(item: $gate.pendingPaywall) { request in
+        .sheet(item: paywallRequest) { request in
             PaywallView(request: request)
         }
         .sheet(item: $joinRequest) { request in
@@ -92,6 +100,16 @@ struct RootView: View {
             guard phase == .active else { return }
             Task { await partnerWatcher.check(environment) }
         }
+    }
+
+    private var paywallRequest: Binding<PaywallRequest?> {
+        Binding(
+            get: { isUsHubOnScreen ? nil : environment.premiumGate.pendingPaywall },
+            set: { request in
+                guard request == nil else { return }
+                environment.premiumGate.dismissPaywall()
+            }
+        )
     }
 
     private func consumeJoinRoute() {
@@ -119,13 +137,17 @@ private struct UsHubSheet: View {
     var body: some View {
         NavigationStack {
             UsHubView()
-                .navigationTitle(String(localized: "us.hub.title"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(String(localized: "common.action.done")) {
+                        Button {
                             dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
+                                .contentShape(Rectangle())
                         }
+                        .accessibilityLabel(Text("common.action.close"))
                     }
                 }
         }
