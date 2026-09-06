@@ -4,11 +4,14 @@ import SwiftUI
 struct TaskEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var model: TaskEditorViewModel
+    @State private var isSearchingPlace = false
+    @State private var isCreatingFolder = false
 
     private let calendar: Calendar
 
-    init(model: TaskEditorViewModel, calendar: Calendar = .current) {
+    init(model: TaskEditorViewModel, opensPlaceSearch: Bool = false, calendar: Calendar = .current) {
         _model = State(initialValue: model)
+        _isSearchingPlace = State(initialValue: opensPlaceSearch)
         self.calendar = calendar
     }
 
@@ -20,9 +23,13 @@ struct TaskEditorView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                     TextFieldRow(
                         label: String(localized: "tasks.editor.field.what"),
-                        placeholder: String(localized: "tasks.editor.field.what.placeholder"),
+                        placeholder: model.titlePlaceholder,
                         text: $model.title
                     )
+
+                    FieldRow(label: String(localized: "tasks.editor.field.folder")) {
+                        folderPicker
+                    }
 
                     FieldRow(label: String(localized: "tasks.editor.field.who"), hint: model.assigneeHint) {
                         SegmentedPicker(selection: $model.assignee, options: model.assigneeOptions) { option in
@@ -32,12 +39,19 @@ struct TaskEditorView: View {
 
                     FieldRow(label: String(localized: "tasks.editor.field.due")) {
                         VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
-                            Toggle(isOn: $model.hasDueDate) {
+                            HStack(spacing: CorbieSpacing.s) {
                                 Text("tasks.editor.due.toggle")
                                     .corbieBody()
                                     .foregroundStyle(CorbieColorPalette.text)
+                                Spacer(minLength: 0)
+                                Toggle(isOn: $model.hasDueDate) { EmptyView() }
+                                    .labelsHidden()
+                                    .tint(CorbieColorPalette.ice)
                             }
-                            .tint(CorbieColorPalette.ice)
+                            .frame(minHeight: CorbieMetrics.minimumTapTarget)
+                            .contentShape(Rectangle())
+                            .onTapGesture { model.hasDueDate.toggle() }
+                            .accessibilityElement(children: .combine)
                             if model.hasDueDate {
                                 DatePicker(
                                     selection: $model.dueDate,
@@ -49,6 +63,7 @@ struct TaskEditorView: View {
                                 }
                                 .datePickerStyle(.compact)
                                 .tint(CorbieColorPalette.ice)
+                                .frame(minHeight: CorbieMetrics.minimumTapTarget)
                             }
                         }
                     }
@@ -69,10 +84,15 @@ struct TaskEditorView: View {
                             }
                             .pickerStyle(.menu)
                             .tint(CorbieColorPalette.text)
+                            .frame(minHeight: CorbieMetrics.minimumTapTarget)
                             if model.repeatOption == .weekdays {
                                 weekdayPicker
                             }
                         }
+                    }
+
+                    FieldRow(label: String(localized: "tasks.editor.field.place")) {
+                        placeRow
                     }
 
                     FieldRow(label: String(localized: "tasks.editor.field.note")) {
@@ -118,7 +138,102 @@ struct TaskEditorView: View {
                             }
                         }
                     }
+                    .fontWeight(.semibold)
                     .disabled(model.canSave == false)
+                }
+            }
+            .sheet(isPresented: $isSearchingPlace) {
+                PlaceSearchView(
+                    title: String(localized: "place.search.title"),
+                    placeholder: String(localized: "place.search.placeholder")
+                ) { place in
+                    model.place = place
+                }
+            }
+            .sheet(isPresented: $isCreatingFolder) {
+                FolderEditorView(model: model.makeFolderEditorModel()) { folder in
+                    model.folderId = folder.id
+                    Task { await model.loadFolders() }
+                }
+            }
+            .task {
+                await model.loadFolders()
+            }
+        }
+    }
+
+    private var folderPicker: some View {
+        Menu {
+            Button {
+                model.folderId = nil
+            } label: {
+                Text("tasks.editor.folder.none")
+            }
+            ForEach(model.folders) { folder in
+                Button(folder.title) {
+                    model.folderId = folder.id
+                }
+            }
+            Divider()
+            Button {
+                isCreatingFolder = true
+            } label: {
+                Text("tasks.editor.folder.new")
+            }
+        } label: {
+            HStack(spacing: CorbieSpacing.xs) {
+                Text(model.folderTitle)
+                    .corbieBody()
+                    .foregroundStyle(CorbieColorPalette.text)
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.caption)
+                    .foregroundStyle(CorbieColorPalette.text2)
+            }
+            .padding(.horizontal, CorbieSpacing.s)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(minHeight: CorbieMetrics.minimumTapTarget)
+            .corbieFieldBox()
+        }
+        .accessibilityLabel(Text("tasks.editor.field.folder"))
+        .accessibilityValue(Text(model.folderTitle))
+    }
+
+    private var placeRow: some View {
+        VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
+            if let place = model.place {
+                VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
+                    Text(place.name)
+                        .corbieBody()
+                        .foregroundStyle(CorbieColorPalette.text)
+                    if let address = place.address, address.isEmpty == false {
+                        Text(address)
+                            .corbieMono()
+                            .foregroundStyle(CorbieColorPalette.text2)
+                    }
+                }
+                .padding(.horizontal, CorbieSpacing.s)
+                .padding(.vertical, CorbieSpacing.xs)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(minHeight: CorbieMetrics.minimumTapTarget)
+                .corbieFieldBox()
+            }
+            HStack(spacing: CorbieSpacing.xs) {
+                Button {
+                    isSearchingPlace = true
+                } label: {
+                    Chip(label: model.place == nil
+                        ? String(localized: "tasks.editor.place.add")
+                        : String(localized: "tasks.editor.place.change"))
+                }
+                .buttonStyle(.plain)
+                if model.place != nil {
+                    Button {
+                        model.place = nil
+                    } label: {
+                        Chip(label: String(localized: "tasks.editor.place.remove"))
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }

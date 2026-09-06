@@ -9,7 +9,7 @@ import Testing
         .spaceCreated,
         .inviteCreated,
         .inviteRedeemed,
-        .taskCreated(assignee: .partner),
+        .taskCreated(hasFolder: true, assignee: .partner),
         .taskTaken,
         .taskDone,
         .taskHandedBack,
@@ -74,7 +74,12 @@ import Testing
     }
 
     @Test func propsMatchTheSpecForTheEventsThatCarryThem() {
-        #expect(AnalyticsEvent.taskCreated(assignee: .partner).props == ["assignee": .string("partner")])
+        #expect(
+            AnalyticsEvent.taskCreated(hasFolder: false, assignee: .partner).props == [
+                "has_folder": .flag(false),
+                "assignee": .string("partner")
+            ]
+        )
         #expect(AnalyticsEvent.wishCreated(source: .etsy).props == ["source": .string("etsy")])
         #expect(AnalyticsEvent.folderCreated(template: .cities).props == ["template": .string("cities")])
         #expect(AnalyticsEvent.goalStepCreated(hasDue: true).props == ["has_due": .flag(true)])

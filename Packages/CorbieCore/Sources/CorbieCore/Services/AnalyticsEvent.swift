@@ -12,7 +12,7 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case spaceCreated
     case inviteCreated
     case inviteRedeemed
-    case taskCreated(assignee: AnalyticsAssignee)
+    case taskCreated(hasFolder: Bool, assignee: AnalyticsAssignee)
     case taskTaken
     case taskDone
     case taskHandedBack
@@ -77,8 +77,8 @@ public enum AnalyticsEvent: Sendable, Equatable {
         switch self {
         case let .onboardingStep(step):
             return ["step": .number(Double(step))]
-        case let .taskCreated(assignee):
-            return ["assignee": .string(assignee.rawValue)]
+        case let .taskCreated(hasFolder, assignee):
+            return ["has_folder": .flag(hasFolder), "assignee": .string(assignee.rawValue)]
         case let .eventCreated(kind):
             return ["kind": .string(kind.rawValue)]
         case let .wishCreated(source):

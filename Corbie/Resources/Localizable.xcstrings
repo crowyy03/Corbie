@@ -17779,6 +17779,16 @@
         }
       }
     },
+    "tasks.action.addplace": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add place"
+          }
+        }
+      }
+    },
     "tasks.action.delete": {
       "localizations": {
         "de": {
@@ -17915,6 +17925,36 @@
         }
       }
     },
+    "tasks.action.list": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "List"
+          }
+        }
+      }
+    },
+    "tasks.action.map": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
+          }
+        }
+      }
+    },
+    "tasks.action.move": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move to folder"
+          }
+        }
+      }
+    },
     "tasks.action.take": {
       "localizations": {
         "de": {
@@ -17979,6 +18019,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prendi %@"
+          }
+        }
+      }
+    },
+    "tasks.action.undone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not done"
           }
         }
       }
@@ -18119,6 +18169,16 @@
         }
       }
     },
+    "tasks.editor.field.folder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder"
+          }
+        }
+      }
+    },
     "tasks.editor.field.note": {
       "localizations": {
         "de": {
@@ -18149,6 +18209,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nota"
+          }
+        }
+      }
+    },
+    "tasks.editor.field.place": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Place"
           }
         }
       }
@@ -18289,6 +18359,26 @@
         }
       }
     },
+    "tasks.editor.folder.new": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New folder"
+          }
+        }
+      }
+    },
+    "tasks.editor.folder.none": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None"
+          }
+        }
+      }
+    },
     "tasks.editor.info": {
       "localizations": {
         "de": {
@@ -18353,6 +18443,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "telefono, indirizzo, cosa controllare"
+          }
+        }
+      }
+    },
+    "tasks.editor.place.add": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a place"
+          }
+        }
+      }
+    },
+    "tasks.editor.place.change": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change place"
+          }
+        }
+      }
+    },
+    "tasks.editor.place.remove": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove place"
           }
         }
       }
@@ -19037,6 +19157,276 @@
         }
       }
     },
+    "tasks.folder.action.cleardone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear done"
+          }
+        }
+      }
+    },
+    "tasks.folder.action.delete": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete folder"
+          }
+        }
+      }
+    },
+    "tasks.folder.action.edit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit folder"
+          }
+        }
+      }
+    },
+    "tasks.folder.add": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New folder"
+          }
+        }
+      }
+    },
+    "tasks.folder.all": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        }
+      }
+    },
+    "tasks.folder.delete.confirm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete this folder?"
+          }
+        }
+      }
+    },
+    "tasks.folder.delete.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Its tasks stay, without a folder."
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.field.anyone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anyone can tick"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.field.anyone.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "off means only the one who added a line ticks it"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.field.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subtitle"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.field.subtitle.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisbon, this fall"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.field.template": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Template"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.field.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Title"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.title.edit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.title.new": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New folder"
+          }
+        }
+      }
+    },
+    "tasks.folder.editor.title.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shopping, To watch, Places"
+          }
+        }
+      }
+    },
+    "tasks.folder.empty.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing in this folder yet."
+          }
+        }
+      }
+    },
+    "tasks.folder.menu.label": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder actions"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.cities": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cities"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.cities.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisbon, Porto, Faro"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.places": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Places to go"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.places.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a bar, a park, a museum"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.shopping": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shopping"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.shopping.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "milk, bread, batteries"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.watch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Things to watch"
+          }
+        }
+      }
+    },
+    "tasks.folder.template.watch.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a film, a series, a show"
+          }
+        }
+      }
+    },
     "tasks.item.checked": {
       "localizations": {
         "de": {
@@ -19101,6 +19491,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "non spuntata"
+          }
+        }
+      }
+    },
+    "tasks.map.addedby": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "added by %@"
+          }
+        }
+      }
+    },
+    "tasks.map.openinmaps": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in Maps"
           }
         }
       }
@@ -19237,6 +19647,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "non l'ha ancora presa nessuno"
+          }
+        }
+      }
+    },
+    "tasks.row.subtitle.fromgoal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "from goal: %@"
           }
         }
       }

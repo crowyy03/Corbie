@@ -19,7 +19,7 @@ public enum CorbieRadius {
 public enum CorbieMetrics {
     public static let controlHeight: CGFloat = 56
     public static let minimumTapTarget: CGFloat = 44
-    public static let segmentHeight: CGFloat = 36
+    public static let segmentHeight: CGFloat = 44
     public static let chipHeight: CGFloat = 34
     public static let progressBarHeight: CGFloat = 8
     public static let hairline: CGFloat = 1
