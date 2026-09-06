@@ -8,7 +8,7 @@ final class PlansPresentationTests: XCTestCase {
     private func plan(
         target: Double,
         saved: Double,
-        spent: Double,
+        added: Double,
         status: PlanStatus = .active
     ) -> PlanDTO {
         PlanDTO(
@@ -18,24 +18,24 @@ final class PlansPresentationTests: XCTestCase {
             targetAmount: target,
             currency: "USD",
             savedAmount: saved,
-            spentAmount: spent,
+            addedAmount: added,
             status: status
         )
     }
 
-    func testTotalsSplitSavedSpentAndLeft() {
-        let totals = PlanTotals(plan: plan(target: 5000, saved: 2400, spent: 1900))
-        XCTAssertEqual(totals.saved, 2400)
-        XCTAssertEqual(totals.spent, 1900)
-        XCTAssertEqual(totals.left, 2600)
-        XCTAssertEqual(totals.progress, 0.48, accuracy: 0.0001)
+    func testAddedMoneyCountsTowardsSavedAndLeft() {
+        let totals = PlanTotals(plan: plan(target: 5000, saved: 2400, added: 1900))
+        XCTAssertEqual(totals.saved, 4300)
+        XCTAssertEqual(totals.added, 1900)
+        XCTAssertEqual(totals.left, 700)
+        XCTAssertEqual(totals.progress, 0.86, accuracy: 0.0001)
         XCTAssertFalse(totals.isOverspent)
         XCTAssertEqual(totals.overspend, 0)
         XCTAssertEqual(totals.overspendFraction, 0)
     }
 
     func testOverspendIsMeasuredAgainstTheTarget() {
-        let totals = PlanTotals(plan: plan(target: 5000, saved: 5000, spent: 5340))
+        let totals = PlanTotals(plan: plan(target: 5000, saved: 4000, added: 1340))
         XCTAssertTrue(totals.isOverspent)
         XCTAssertEqual(totals.overspend, 340, accuracy: 0.0001)
         XCTAssertEqual(totals.overspendFraction, 0.068, accuracy: 0.0001)
@@ -44,18 +44,18 @@ final class PlansPresentationTests: XCTestCase {
     }
 
     func testLeftNeverGoesBelowZeroAndTargetlessPlanHasNoProgress() {
-        let saturated = PlanTotals(plan: plan(target: 1000, saved: 1500, spent: 0))
+        let saturated = PlanTotals(plan: plan(target: 1000, saved: 1500, added: 0))
         XCTAssertEqual(saturated.left, 0)
         XCTAssertEqual(saturated.progress, 1)
 
-        let targetless = PlanTotals(plan: plan(target: 0, saved: 300, spent: 700))
+        let targetless = PlanTotals(plan: plan(target: 0, saved: 300, added: 700))
         XCTAssertEqual(targetless.progress, 0)
         XCTAssertEqual(targetless.overspendFraction, 0)
         XCTAssertTrue(targetless.isOverspent)
     }
 
     func testSavedOfTargetReadsAsMoneyInThePlanCurrency() {
-        let totals = PlanTotals(plan: plan(target: 5000, saved: 2400, spent: 0))
+        let totals = PlanTotals(plan: plan(target: 5000, saved: 2400, added: 0))
         XCTAssertEqual(totals.savedOfTarget(locale: usd), "$2,400 of $5,000")
     }
 

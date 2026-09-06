@@ -8,7 +8,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
     public var targetAmount: Double
     public var currency: String
     public var savedAmount: Double
-    public var spentAmount: Double
+    public var addedAmount: Double
     public var startAt: Date?
     public var endAt: Date?
     public var status: PlanStatus
@@ -25,7 +25,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
         targetAmount: Double = 0,
         currency: String = "USD",
         savedAmount: Double = 0,
-        spentAmount: Double = 0,
+        addedAmount: Double = 0,
         startAt: Date? = nil,
         endAt: Date? = nil,
         status: PlanStatus = .active,
@@ -41,7 +41,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
         self.targetAmount = targetAmount
         self.currency = currency
         self.savedAmount = savedAmount
-        self.spentAmount = spentAmount
+        self.addedAmount = addedAmount
         self.startAt = startAt
         self.endAt = endAt
         self.status = status
@@ -61,7 +61,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
             targetAmount: plan.targetAmount,
             currency: plan.currency ?? "USD",
             savedAmount: plan.savedAmount,
-            spentAmount: expenses.reduce(0) { $0 + $1.amountInPlanCurrency },
+            addedAmount: expenses.reduce(0) { $0 + $1.amountInPlanCurrency },
             startAt: plan.startAt,
             endAt: plan.endAt,
             status: plan.status,
@@ -72,14 +72,16 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
         )
     }
 
-    public var leftAmount: Double { max(0, targetAmount - savedAmount) }
+    public var totalSavedAmount: Double { savedAmount + addedAmount }
 
-    public var isOverspent: Bool { spentAmount > targetAmount }
+    public var leftAmount: Double { max(0, targetAmount - totalSavedAmount) }
 
-    public var overspentAmount: Double { max(0, spentAmount - targetAmount) }
+    public var isOverspent: Bool { totalSavedAmount > targetAmount }
+
+    public var overspentAmount: Double { max(0, totalSavedAmount - targetAmount) }
 
     public var progress: Double {
         guard targetAmount > 0 else { return 0 }
-        return min(1, max(0, savedAmount / targetAmount))
+        return min(1, max(0, totalSavedAmount / targetAmount))
     }
 }

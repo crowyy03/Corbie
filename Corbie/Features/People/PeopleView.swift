@@ -1,10 +1,6 @@
 import CorbieCore
 import SwiftUI
 
-struct PersonDestination: Hashable {
-    let id: UUID
-}
-
 struct PeopleView: View {
     @Environment(AppEnvironment.self) private var environment
     @State private var model = PeopleViewModel()
@@ -21,7 +17,7 @@ struct PeopleView: View {
                     }
                 } else {
                     ForEach(model.people) { person in
-                        NavigationLink(value: PersonDestination(id: person.id)) {
+                        NavigationLink(value: UsDestination.person(person.id)) {
                             PersonRow(
                                 person: person,
                                 radar: model.radar[person.id],
@@ -39,9 +35,6 @@ struct PeopleView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(CorbieColorPalette.bg)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: PersonDestination.self) { destination in
-            PersonDetailView(personId: destination.id)
-        }
         .toolbar {
             AddToolbarItem {
                 model.startAdding()
@@ -139,6 +132,7 @@ private struct PersonRow: View {
 #Preview {
     NavigationStack {
         PeopleView()
+            .usDestinations()
     }
     .environment(AppState())
     .environment(AppEnvironment.preview())

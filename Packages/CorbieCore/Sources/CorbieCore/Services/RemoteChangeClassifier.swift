@@ -187,7 +187,7 @@ public enum RemoteChangeClassifier {
         guard change.type == .update else { return nil }
         let touchedMoney = change.properties.contains(RemoteChangeProperty.planSaved)
             || change.properties.contains(RemoteChangeProperty.planTarget)
-        guard touchedMoney, plan.targetAmount > 0, plan.savedAmount >= plan.targetAmount else { return nil }
+        guard touchedMoney, plan.targetAmount > 0, plan.totalSavedAmount >= plan.targetAmount else { return nil }
         return RemoteChangeAlert(
             id: RemoteChangeKind.planUpdate.prefix + "goal." + plan.id.uuidString,
             kind: .planUpdate,
@@ -205,6 +205,19 @@ public enum RemoteChangeClassifier {
         )
     }
 
+    private static func expenseCopy(plan: PlanDTO?) -> (title: String, body: String) {
+        guard let plan, plan.targetAmount > 0 else {
+            return (NotificationStrings.planExpenseTitle, NotificationStrings.planExpenseBody)
+        }
+        if plan.isOverspent {
+            return (NotificationStrings.planOverTitle, NotificationStrings.planOverBody)
+        }
+        if plan.totalSavedAmount >= plan.targetAmount {
+            return (NotificationStrings.planGoalTitle, NotificationStrings.planGoalBody)
+        }
+        return (NotificationStrings.planExpenseTitle, NotificationStrings.planExpenseBody)
+    }
+
     private static func expenseAlert(
         _ expense: PlanExpenseDTO,
         plan: PlanDTO?,
@@ -213,13 +226,13 @@ public enum RemoteChangeClassifier {
     ) -> RemoteChangeAlert? {
         guard change.type == .insert else { return nil }
         guard let me = viewer.memberId, expense.addedByMemberId != me else { return nil }
-        let isOverspent = plan?.isOverspent ?? false
+        let copy = expenseCopy(plan: plan)
         return RemoteChangeAlert(
             id: RemoteChangeKind.planUpdate.prefix + expense.id.uuidString,
             kind: .planUpdate,
             content: CorbieNotificationContent(
-                titleKey: isOverspent ? NotificationStrings.planOverTitle : NotificationStrings.planExpenseTitle,
-                bodyKey: isOverspent ? NotificationStrings.planOverBody : NotificationStrings.planExpenseBody,
+                titleKey: copy.title,
+                bodyKey: copy.body,
                 arguments: [viewer.partnerName, plan?.title ?? ""],
                 threadIdentifier: RemoteChangeKind.planUpdate.rawValue,
                 userInfo: NotificationPayload.userInfo(

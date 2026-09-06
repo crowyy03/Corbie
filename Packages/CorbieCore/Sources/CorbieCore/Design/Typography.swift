@@ -27,7 +27,7 @@ struct CorbieSectionCapsStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .font(.system(size: size, weight: .semibold, design: .monospaced))
+            .font(.system(size: size, weight: .semibold, design: .default))
             .tracking(CorbieFont.sectionCapsTracking)
             .textCase(.uppercase)
     }
@@ -53,7 +53,7 @@ struct CorbieMonoStyle: ViewModifier {
     @ScaledMetric(relativeTo: .footnote) private var size: CGFloat = CorbieFont.monoSize
 
     func body(content: Content) -> some View {
-        content.font(.system(size: size, weight: .regular, design: .monospaced))
+        content.font(.system(size: size, weight: .regular, design: .default))
     }
 }
 

@@ -37,8 +37,9 @@ import Testing
 
         let stored = try #require(try await repository.plan(id: plan.id))
         #expect(stored.savedAmount == 2400)
-        #expect(stored.spentAmount == 1750)
-        #expect(stored.leftAmount == 2600)
+        #expect(stored.addedAmount == 1750)
+        #expect(stored.totalSavedAmount == 4150)
+        #expect(stored.leftAmount == 850)
         #expect(stored.isOverspent == false)
         #expect(stored.expenseCount == 2)
     }
@@ -67,7 +68,7 @@ import Testing
         )
         try await repository.deleteExpense(id: expense.id)
         let stored = try #require(try await repository.plan(id: plan.id))
-        #expect(stored.spentAmount == 0)
+        #expect(stored.addedAmount == 0)
         #expect(try await repository.expenses(planId: plan.id).isEmpty)
     }
 

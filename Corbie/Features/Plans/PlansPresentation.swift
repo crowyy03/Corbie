@@ -5,7 +5,7 @@ struct PlanTotals: Equatable {
     let currency: String
     let target: Double
     let saved: Double
-    let spent: Double
+    let added: Double
     let left: Double
     let overspend: Double
     let progress: Double
@@ -14,8 +14,8 @@ struct PlanTotals: Equatable {
     init(plan: PlanDTO) {
         currency = plan.currency
         target = plan.targetAmount
-        saved = plan.savedAmount
-        spent = plan.spentAmount
+        saved = plan.totalSavedAmount
+        added = plan.addedAmount
         left = plan.leftAmount
         overspend = plan.overspentAmount
         progress = plan.progress

@@ -4404,7 +4404,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ added an expense to %2$@"
+            "value": "%1$@ added money to %2$@"
           }
         }
       }
@@ -4414,7 +4414,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "New expense"
+            "value": "Money added"
           }
         }
       }
@@ -7980,7 +7980,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Add expense"
+            "value": "Add money"
           }
         },
         "es": {
@@ -8139,6 +8139,16 @@
         }
       }
     },
+    "plans.detail.added": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Added"
+          }
+        }
+      }
+    },
     "plans.detail.delete.confirm": {
       "localizations": {
         "de": {
@@ -8184,7 +8194,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Expenses"
+            "value": "Added"
           }
         },
         "es": {
@@ -8218,7 +8228,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nothing spent on this plan yet."
+            "value": "Nothing added to this plan yet."
           }
         },
         "es": {
@@ -8252,7 +8262,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "every expense keeps the rate of the day it was added"
+            "value": "every entry keeps the rate of the day it was added"
           }
         },
         "es": {
@@ -8423,40 +8433,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Saved"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        }
-      }
-    },
-    "plans.detail.spent": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "new",
-            "value": ""
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spent"
           }
         },
         "es": {
@@ -8694,7 +8670,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "what you two put aside, not what you spent"
+            "value": "what you two already have before adding more"
           }
         },
         "es": {
@@ -9238,7 +9214,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "what it was"
+            "value": "where it came from"
           }
         },
         "es": {
@@ -9272,7 +9248,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Converted to the plan currency at today's rate. The rate is kept with the expense."
+            "value": "Converted to the plan currency at today's rate. The rate is kept with the entry."
           }
         },
         "es": {
@@ -9306,7 +9282,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Add expense"
+            "value": "Add money"
           }
         },
         "es": {

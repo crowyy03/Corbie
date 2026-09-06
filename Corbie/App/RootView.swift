@@ -9,12 +9,21 @@ struct RootView: View {
     @State private var pendingJoinCode: String?
     @State private var joinRequest: JoinRequest?
     @State private var isUsHubOnScreen = false
+    @State private var isLaunchRevealShown = true
 
     private let credentials = AppleCredentialMonitor()
     private let partnerWatcher = PartnerJoinWatcher()
 
     var body: some View {
         content
+            .overlay {
+                if isLaunchRevealShown {
+                    LaunchRevealView(isReady: environment.session != .loading) {
+                        isLaunchRevealShown = false
+                    }
+                    .transition(.opacity)
+                }
+            }
             .paywallRuntime()
             .task {
                 await credentials.verifyStoredCredential(environment)
@@ -75,10 +84,7 @@ struct RootView: View {
             }
             .tag(AppState.Tab.plans)
 
-            NavigationStack {
-                UsView()
-                    .paywallBanner()
-            }
+            UsView()
             .tabItem {
                 Label(String(localized: "tab.us.title"), systemImage: "person.2")
             }
@@ -137,6 +143,7 @@ private struct UsHubSheet: View {
     var body: some View {
         NavigationStack {
             UsHubView()
+                .usDestinations()
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {

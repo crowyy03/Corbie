@@ -122,9 +122,9 @@ import Testing
         let snapshot = try await world.provider.planProgress(now: world.now)
         #expect(snapshot.planId == world.seed.plan.id)
         #expect(snapshot.title == "Lisbon in October")
-        #expect(snapshot.savedText == "$2,400")
+        #expect(snapshot.savedText == "$3,268.90")
         #expect(snapshot.targetText == "$5,000")
-        #expect(abs(snapshot.progress - 0.48) < 0.0001)
+        #expect(abs(snapshot.progress - 0.65378) < 0.0001)
         #expect(snapshot.isOverspent == false)
     }
 
@@ -214,8 +214,8 @@ import Testing
         let days = try await world.provider.lockCircular(mode: .daysTogether, now: world.now)
         #expect(days.value == 460)
         let ring = try await world.provider.lockCircular(mode: .planRing, now: world.now)
-        #expect(ring.value == 48)
-        #expect(abs((ring.progress ?? 0) - 0.48) < 0.0001)
+        #expect(ring.value == 65)
+        #expect(abs((ring.progress ?? 0) - 0.65378) < 0.0001)
         let countdown = try await world.provider.lockCircular(mode: .countdown, now: world.now)
         #expect(countdown.value == 1)
         let rectangular = try await world.provider.lockRectangular(now: world.now)

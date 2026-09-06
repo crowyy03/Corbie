@@ -50,7 +50,7 @@ struct PlanSummaryCard: View {
     private var amounts: some View {
         HStack(alignment: .top, spacing: CorbieSpacing.s) {
             column(label: String(localized: "plans.detail.saved"), amount: totals.saved)
-            column(label: String(localized: "plans.detail.spent"), amount: totals.spent)
+            column(label: String(localized: "plans.detail.added"), amount: totals.added)
             column(label: String(localized: "plans.detail.left"), amount: totals.left)
         }
     }
@@ -86,7 +86,7 @@ struct PlanSummaryCard: View {
         targetAmount: 4000,
         currency: "USD",
         savedAmount: 3200,
-        spentAmount: 4340,
+        addedAmount: 4340,
         startAt: Date(),
         endAt: Date().addingTimeInterval(30 * 24 * 60 * 60)
     )

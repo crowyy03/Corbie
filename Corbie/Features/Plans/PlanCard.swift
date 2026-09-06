@@ -71,7 +71,7 @@ struct PlanCard: View {
                 targetAmount: 5000,
                 currency: "USD",
                 savedAmount: 2400,
-                spentAmount: 1900,
+                addedAmount: 1900,
                 startAt: Date(),
                 endAt: Date().addingTimeInterval(14 * 24 * 60 * 60)
             )
@@ -84,7 +84,7 @@ struct PlanCard: View {
                 targetAmount: 4000,
                 currency: "USD",
                 savedAmount: 4000,
-                spentAmount: 4340
+                addedAmount: 4340
             )
         )
     }

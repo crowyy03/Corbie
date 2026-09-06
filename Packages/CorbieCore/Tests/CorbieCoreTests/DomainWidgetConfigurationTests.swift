@@ -106,7 +106,7 @@ import Testing
         #expect(options.map(\.id) == [world.seed.plan.id])
         let resolved = try await world.provider.planOptions(ids: [world.seed.plan.id, UUID()])
         #expect(resolved.map(\.title) == ["Lisbon in October"])
-        #expect(abs((resolved.first?.progress ?? 0) - 0.48) < 0.0001)
+        #expect(abs((resolved.first?.progress ?? 0) - 0.65378) < 0.0001)
     }
 
     @Test func theShoppingWidgetCountsWhatItCannotShow() async throws {

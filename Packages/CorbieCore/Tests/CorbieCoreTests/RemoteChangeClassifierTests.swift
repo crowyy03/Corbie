@@ -74,13 +74,24 @@ import Testing
 
     @Test func anExpenseOverTheTargetUsesTheOverBudgetCopy() {
         var plan = PlanDTO(id: UUID(), title: "Kitchen", targetAmount: 1000, savedAmount: 1000)
-        plan.spentAmount = 1340
+        plan.addedAmount = 340
         let expense = PlanExpenseDTO(id: UUID(), planId: plan.id, amount: 340, addedByMemberId: partner)
         let alert = RemoteChangeClassifier.alert(
             for: RemoteChange(type: .insert, subject: .expense(expense, plan: plan)),
             viewer: viewer
         )
         #expect(alert?.content.titleKey == NotificationStrings.planOverTitle)
+    }
+
+    @Test func moneyThatReachesTheTargetUsesTheGoalCopy() {
+        var plan = PlanDTO(id: UUID(), title: "Kitchen", targetAmount: 1000, savedAmount: 800)
+        plan.addedAmount = 200
+        let expense = PlanExpenseDTO(id: UUID(), planId: plan.id, amount: 200, addedByMemberId: partner)
+        let alert = RemoteChangeClassifier.alert(
+            for: RemoteChange(type: .insert, subject: .expense(expense, plan: plan)),
+            viewer: viewer
+        )
+        #expect(alert?.content.titleKey == NotificationStrings.planGoalTitle)
     }
 
     @Test func myOwnExpenseDoesNotAlertMe() {

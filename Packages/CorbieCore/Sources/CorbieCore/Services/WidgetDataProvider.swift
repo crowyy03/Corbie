@@ -477,7 +477,7 @@ public struct WidgetDataProvider: Sendable {
             planId: plan.id,
             title: plan.title,
             progress: plan.progress,
-            savedText: Money(amount: plan.savedAmount, currency: plan.currency).formatted(locale: locale),
+            savedText: Money(amount: plan.totalSavedAmount, currency: plan.currency).formatted(locale: locale),
             targetText: Money(amount: plan.targetAmount, currency: plan.currency).formatted(locale: locale),
             isOverspent: plan.isOverspent,
             overspentText: plan.isOverspent

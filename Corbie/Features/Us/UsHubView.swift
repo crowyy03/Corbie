@@ -16,21 +16,21 @@ struct UsHubView: View {
                     title: String(localized: "us.hub.capsules"),
                     line: String(localized: "us.tile.capsules.line"),
                     countText: String(localized: "us.tile.capsules.count \(model.capsuleCount)"),
-                    destination: CapsulesView()
+                    destination: .capsules(startsWithEditor: false)
                 )
                 UsTile(
                     systemImage: "hand.raised",
                     title: String(localized: "us.hub.votes"),
                     line: String(localized: "us.tile.votes.line"),
                     countText: String(localized: "us.tile.votes.count \(model.voteCount)"),
-                    destination: VotesView()
+                    destination: .votes(startsWithEditor: false)
                 )
                 UsTile(
                     systemImage: "person.crop.circle",
                     title: String(localized: "us.hub.people"),
                     line: String(localized: "us.tile.people.line"),
                     countText: String(localized: "us.tile.people.count \(model.peopleCount)"),
-                    destination: PeopleView()
+                    destination: .people
                 )
                 settings
             }
@@ -108,9 +108,7 @@ struct UsHubView: View {
     }
 
     private var settings: some View {
-        NavigationLink {
-            SettingsView()
-        } label: {
+        NavigationLink(value: UsDestination.settings) {
             Card {
                 HStack(spacing: CorbieSpacing.s) {
                     Image(systemName: "gearshape")
@@ -138,17 +136,15 @@ struct UsHubView: View {
     }
 }
 
-private struct UsTile<Destination: View>: View {
+private struct UsTile: View {
     let systemImage: String
     let title: String
     let line: String
     let countText: String
-    let destination: Destination
+    let destination: UsDestination
 
     var body: some View {
-        NavigationLink {
-            destination
-        } label: {
+        NavigationLink(value: destination) {
             Card {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
                     HStack(spacing: CorbieSpacing.xs) {
@@ -185,6 +181,7 @@ private struct UsTile<Destination: View>: View {
 #Preview {
     NavigationStack {
         UsHubView()
+            .usDestinations()
     }
     .environment(AppState())
     .environment(AppEnvironment.preview())

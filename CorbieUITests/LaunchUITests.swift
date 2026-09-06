@@ -28,6 +28,7 @@ final class LaunchUITests: XCTestCase {
     private func passOnboardingIfShown(_ app: XCUIApplication) {
         let debugSignIn = app.buttons["continue without Apple ID (debug build)"]
         guard debugSignIn.waitForExistence(timeout: 8) else { return }
+        UITestFlows.waitUntilHittable(debugSignIn)
         save(screenshot: app, named: "onboarding_intro")
         debugSignIn.tap()
 
