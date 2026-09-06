@@ -84,6 +84,22 @@ public enum TaskIntentRunner {
         return updated
     }
 
+    @discardableResult
+    public static func toggleGoalStep(
+        stepId: UUID,
+        persistence: IntentPersistence = .shared,
+        now: Date = Date()
+    ) async throws -> GoalStepDTO {
+        let memberId = try? await persistence.currentMemberId()
+        let updated = try await persistence.controller().repositories.goals.toggleStep(
+            stepId: stepId,
+            by: memberId,
+            at: now
+        )
+        WidgetReloader.reloadNow()
+        return updated
+    }
+
     public static func identifier(_ value: String) throws -> UUID {
         guard let id = UUID(uuidString: value) else {
             throw CorbieError.invalidInput("identifier " + value + " is not a uuid")

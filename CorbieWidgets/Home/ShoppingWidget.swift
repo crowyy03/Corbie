@@ -43,6 +43,9 @@ struct ShoppingWidgetView: View {
         Group {
             if entry.snapshot.isPremium == false {
                 LockedWidgetView()
+            } else if entry.snapshot.folderId == nil {
+                WidgetEmptyState(title: "widget.shopping.nolist", note: "widget.shopping.nolist.note")
+                    .widgetURL(CorbieRoute.tasks.url)
             } else if entry.snapshot.items.isEmpty {
                 WidgetEmptyState(title: "widget.shopping.empty", note: "widget.shopping.empty.note")
                     .widgetURL(CorbieRoute.tasks.url)

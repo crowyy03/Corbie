@@ -63,22 +63,35 @@ public struct CorbieGoalEntity: AppEntity, Identifiable, Sendable {
     public let id: UUID
     public let title: String
     public let progress: Double
+    public let stepsDone: Int
+    public let stepsTotal: Int
 
-    public init(id: UUID, title: String, progress: Double) {
+    public init(id: UUID, title: String, progress: Double, stepsDone: Int = 0, stepsTotal: Int = 0) {
         self.id = id
         self.title = title
         self.progress = progress
+        self.stepsDone = stepsDone
+        self.stepsTotal = stepsTotal
     }
 
     public init(_ option: WidgetGoalOption) {
-        self.init(id: option.id, title: option.title, progress: option.progress)
+        self.init(
+            id: option.id,
+            title: option.title,
+            progress: option.progress,
+            stepsDone: option.stepsDone,
+            stepsTotal: option.stepsTotal
+        )
+    }
+
+    public var subtitleText: String {
+        let percent = Int((progress * 100).rounded()).formatted(.percent)
+        guard stepsTotal > 0 else { return percent }
+        return percent + " · " + WidgetGoalText.steps(done: stepsDone, total: stepsTotal)
     }
 
     public var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(
-            title: "\(title)",
-            subtitle: "\(Int((progress * 100).rounded()).formatted(.percent))"
-        )
+        DisplayRepresentation(title: "\(title)", subtitle: "\(subtitleText)")
     }
 }
 

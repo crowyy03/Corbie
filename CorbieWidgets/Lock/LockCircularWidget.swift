@@ -64,7 +64,7 @@ struct LockCircularWidgetView: View {
 
     private var route: CorbieRoute {
         switch entry.snapshot.mode {
-        case .daysTogether: return .us
+        case .daysTogether: return .today
         case .goalRing: return .goals
         case .countdown: return .calendar
         }

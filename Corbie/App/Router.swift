@@ -38,6 +38,7 @@ enum Router {
 
     static func route(for route: CorbieRoute) -> Route? {
         switch route {
+        case .today: return .today
         case .tasks: return .tasks
         case let .task(id): return .task(id)
         case .calendar: return .calendar

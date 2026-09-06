@@ -21,6 +21,7 @@ struct CorbieWidgetsBundle: WidgetBundle {
         ShoppingWidget()
         CapsuleWidget()
         OurDayWidget()
+        FreeSlotsWidget()
     }
 
     @WidgetBundleBuilder

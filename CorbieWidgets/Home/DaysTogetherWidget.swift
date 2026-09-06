@@ -56,7 +56,7 @@ struct DaysTogetherWidgetView: View {
                 WidgetEmptyState(title: "widget.daystogether.empty", note: "widget.daystogether.empty.note")
             }
         }
-        .widgetURL(CorbieRoute.calendar.url)
+        .widgetURL(CorbieRoute.today.url)
     }
 }
 

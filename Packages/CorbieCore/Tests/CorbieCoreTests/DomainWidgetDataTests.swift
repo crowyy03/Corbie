@@ -92,7 +92,7 @@ import Testing
         let world = try await makeWorld()
         let snapshot = try await world.provider.tasks(now: world.now)
         #expect(snapshot.items.count == 3)
-        #expect(snapshot.remaining == 1)
+        #expect(snapshot.remaining == 2)
         #expect(snapshot.items[0].title == "Book the vet")
         #expect(snapshot.items[0].colorKey == MemberColorKey.p1.rawValue)
         let free = snapshot.items.first { $0.title == "Buy milk" }
@@ -100,10 +100,36 @@ import Testing
         #expect(free?.colorKey == nil)
     }
 
-    @Test func theFreeTaskWidgetOnlyShowsUnassignedWork() async throws {
+    @Test func theTaskWidgetCarriesDatedGoalStepsLikeTheScreen() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        let step = try #require(
+            try await repositories.goals.datedSteps(spaceId: world.seed.space.id)
+                .first { $0.title == "Book the airport transfer" }
+        )
+        _ = try await repositories.tasks.markDone(
+            taskId: try #require(world.seed.tasks.first { $0.title == "Book the vet" }).id,
+            memberId: world.seed.me.id,
+            at: world.now
+        )
+        _ = try await repositories.tasks.markDone(
+            taskId: try #require(world.seed.tasks.first { $0.title == "Buy milk" }).id,
+            memberId: world.seed.me.id,
+            at: world.now
+        )
+        let snapshot = try await world.provider.tasks(now: world.now)
+        #expect(snapshot.items.map(\.title) == ["Pick up the parcel", "Water the plants", "Book the airport transfer"])
+        #expect(snapshot.items[2].source == .goalStep(goalTitle: "Lisbon in October"))
+        #expect(snapshot.items[2].id == step.id)
+        #expect(snapshot.items[0].source == .task)
+        #expect(snapshot.items[0].goalTitle == nil)
+    }
+
+    @Test func theFreeTaskWidgetOnlyShowsUnassignedTasksAndNeverSteps() async throws {
         let world = try await makeWorld()
         let snapshot = try await world.provider.freeTasks(now: world.now)
         #expect(snapshot.items.map(\.title) == ["Buy milk"])
+        #expect(snapshot.items.allSatisfy { $0.source == .task })
         #expect(snapshot.remaining == 0)
     }
 
@@ -126,6 +152,20 @@ import Testing
         #expect(snapshot.targetText == "$5,000")
         #expect(abs(snapshot.progress - 0.65378) < 0.0001)
         #expect(snapshot.isOverspent == false)
+        #expect(snapshot.stepsTotal == 2)
+        #expect(snapshot.stepsDone == 0)
+        #expect(snapshot.hasSteps)
+    }
+
+    @Test func theGoalStepBadgeCountsWhatIsTicked() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        let step = try #require(world.seed.steps.first { $0.title == "Renew the passports" })
+        _ = try await repositories.goals.toggleStep(stepId: step.id, by: world.seed.me.id, at: world.now)
+        let snapshot = try await world.provider.goalProgress(now: world.now)
+        #expect(snapshot.stepsDone == 1)
+        #expect(snapshot.stepsTotal == 2)
+        #expect(WidgetGoalText.steps(done: 1, total: 2, locale: locale) == "1/2 steps")
     }
 
     @Test func upcomingDatesMergeAutoDatesAndEvents() async throws {
@@ -202,6 +242,16 @@ import Testing
         #expect(snapshot.remaining == 0)
     }
 
+    @Test func aSpaceWithoutAShoppingFolderReportsNoList() async throws {
+        let world = try await makeWorld()
+        try await world.seed.controller.repositories.tasks.deleteFolder(id: world.seed.shoppingFolder.id)
+        let snapshot = try await world.provider.shopping(now: world.now)
+        #expect(snapshot.folderId == nil)
+        #expect(snapshot.title == nil)
+        #expect(snapshot.items.isEmpty)
+        #expect(snapshot.isPremium)
+    }
+
     @Test func checkedShoppingItemsLeaveTheWidget() async throws {
         let world = try await makeWorld()
         let repositories = world.seed.controller.repositories
@@ -247,14 +297,48 @@ import Testing
         #expect(custom.daysAway == 1)
     }
 
-    @Test func ourDayComposesTheOtherWidgets() async throws {
+    @Test func ourDayRendersTheSameFeedAsTheTodayScreen() async throws {
+        let world = try await makeWorld()
+        let feed = try await TodayFeedProvider(
+            repositories: world.seed.controller.repositories,
+            calendar: calendar
+        ).feed(space: world.seed.space, viewerMemberId: world.seed.me.id, now: world.now)
+        let snapshot = try await world.provider.ourDay(now: world.now)
+        #expect(snapshot.daysTogether == feed.daysTogether)
+        #expect(snapshot.entries.map(\.id) == feed.entries.prefix(WidgetDataProvider.ourDayEntryLimit).map(\.id))
+        #expect(snapshot.entries.map(\.title) == feed.entries.prefix(WidgetDataProvider.ourDayEntryLimit).map(\.title))
+        #expect(snapshot.entriesRemaining == max(0, feed.entries.count - WidgetDataProvider.ourDayEntryLimit))
+        #expect(
+            snapshot.freeTasks.map(\.id) == feed.freeTasks.prefix(WidgetDataProvider.ourDayFreeTaskLimit).map(\.id)
+        )
+        #expect(snapshot.nextDate?.id == feed.comingUp.first?.id)
+        #expect(snapshot.goal?.goalId == feed.goal?.id)
+    }
+
+    @Test func ourDayCarriesTheDayTheScreenShows() async throws {
         let world = try await makeWorld()
         let snapshot = try await world.provider.ourDay(now: world.now)
-        #expect(snapshot.days == 460)
+        #expect(snapshot.daysTogether == 460)
+        #expect(snapshot.entries.map(\.title) == ["Book the vet"])
+        #expect(snapshot.entries[0].isAllDay == false)
+        #expect(snapshot.entries[0].colorKey == MemberColorKey.p1.rawValue)
+        #expect(snapshot.entries[0].goalTitle == nil)
+        #expect(snapshot.freeTasks.map(\.title) == ["Buy milk"])
         #expect(snapshot.nextDate?.title == "Dinner with Anna")
         #expect(snapshot.goal?.goalId == world.seed.goal.id)
-        #expect(snapshot.tasks.count == 3)
         #expect(snapshot.isPremium)
+    }
+
+    @Test func aDatedGoalStepReachesOurDayWithItsGoal() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        _ = try await repositories.goals.addStep(
+            goalId: world.seed.goal.id,
+            draft: GoalStepDraft(title: "Collect the suits", dueAt: world.now)
+        )
+        let snapshot = try await world.provider.ourDay(now: world.now)
+        let step = try #require(snapshot.entries.first { $0.title == "Collect the suits" })
+        #expect(step.goalTitle == "Lisbon in October")
     }
 
     @Test func theLockScreenSnapshotsCoverEveryMode() async throws {
@@ -289,7 +373,8 @@ import Testing
         #expect(try await provider.upcomingDates(now: now).items.isEmpty)
         #expect(try await provider.shopping(now: now).folderId == nil)
         #expect(try await provider.capsule(now: now).capsuleId == nil)
-        #expect(try await provider.ourDay(now: now).days == nil)
+        #expect(try await provider.ourDay(now: now).daysTogether == nil)
+        #expect(try await provider.freeSlots(now: now).availability == .notPaired)
         #expect(try await provider.lockCircular(mode: .goalRing, now: now).value == nil)
         #expect(try await provider.lockRectangular(now: now).taskTitle == nil)
         #expect(try await provider.lockInline(now: now).kind == nil)
@@ -304,5 +389,6 @@ import Testing
         #expect(try await world.provider.tasks(now: world.now).isPremium == false)
         #expect(try await world.provider.daysTogether(now: world.now).isPremium == false)
         #expect(try await world.provider.ourDay(now: world.now).isPremium == false)
+        #expect(try await world.provider.freeSlots(now: world.now).isPremium == false)
     }
 }

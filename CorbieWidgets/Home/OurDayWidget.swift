@@ -8,12 +8,11 @@ struct OurDayEntry: TimelineEntry {
 
     static let placeholder = OurDayEntry(
         date: Date(),
-        snapshot: OurDaySnapshot(days: 460, nextDate: nil, goal: nil, tasks: [], isPremium: true)
+        snapshot: OurDaySnapshot(daysTogether: 460, isPremium: true)
     )
 
     static func load(now: Date, provider: WidgetDataProvider) async -> OurDayEntry {
-        let snapshot = (try? await provider.ourDay(now: now))
-            ?? OurDaySnapshot(days: nil, nextDate: nil, goal: nil, tasks: [], isPremium: true)
+        let snapshot = (try? await provider.ourDay(now: now)) ?? OurDaySnapshot(isPremium: true)
         return OurDayEntry(date: now, snapshot: snapshot)
     }
 }
@@ -39,52 +38,91 @@ struct OurDayWidget: Widget {
 struct OurDayWidgetView: View {
     let entry: OurDayEntry
 
-    private var isEmpty: Bool {
-        entry.snapshot.days == nil
-            && entry.snapshot.nextDate == nil
-            && entry.snapshot.goal == nil
-            && entry.snapshot.tasks.isEmpty
-    }
+    private var snapshot: OurDaySnapshot { entry.snapshot }
 
     var body: some View {
         Group {
-            if entry.snapshot.isPremium == false {
+            if snapshot.isPremium == false {
                 LockedWidgetView()
-            } else if isEmpty {
+            } else if snapshot.isEmpty {
                 WidgetEmptyState(title: "widget.ourday.empty", note: "widget.ourday.empty.note")
-                    .widgetURL(CorbieRoute.us.url)
+                    .widgetURL(CorbieRoute.today.url)
             } else {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
-                    if let days = entry.snapshot.days {
-                        WidgetLink(route: .us) {
-                            VStack(alignment: .leading, spacing: 0) {
-                                WidgetCounter(value: days, compact: true)
-                                Text("widget.daystogether.caption")
-                                    .corbieMono()
-                                    .foregroundStyle(CorbieColorPalette.text2)
-                                    .lineLimit(1)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .accessibilityElement(children: .combine)
-                        }
-                    }
-                    if let nextDate = entry.snapshot.nextDate {
-                        WidgetLink(route: .calendar) {
-                            WidgetDateRow(date: nextDate, now: entry.date)
-                        }
-                    }
-                    if let goal = entry.snapshot.goal, let goalId = goal.goalId {
-                        WidgetLink(route: .goal(goalId)) {
-                            WidgetGoalLine(goal: goal)
-                        }
-                    }
-                    ForEach(entry.snapshot.tasks) { task in
-                        WidgetTaskRow(task: task, now: entry.date)
-                    }
+                    header
+                    today
+                    freeTasks
+                    comingUp
+                    goal
                     Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .widgetURL(CorbieRoute.tasks.url)
+                .widgetURL(CorbieRoute.today.url)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var header: some View {
+        if let days = snapshot.daysTogether {
+            WidgetLink(route: .today) {
+                VStack(alignment: .leading, spacing: 0) {
+                    WidgetCounter(value: days, compact: true)
+                    Text("today.header.days")
+                        .corbieMono()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .lineLimit(1)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityElement(children: .combine)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var today: some View {
+        if snapshot.entries.isEmpty == false {
+            VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
+                WidgetHeading(text: String(localized: "today.block.today"))
+                ForEach(snapshot.entries) { entry in
+                    WidgetTodayRow(entry: entry)
+                }
+                if snapshot.entriesRemaining > 0 {
+                    WidgetOverflowLine(count: snapshot.entriesRemaining)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var freeTasks: some View {
+        if snapshot.freeTasks.isEmpty == false {
+            VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
+                WidgetHeading(text: String(localized: "today.block.freetasks"))
+                ForEach(snapshot.freeTasks) { task in
+                    FreeTaskRow(task: task, now: entry.date)
+                }
+                if snapshot.freeTasksRemaining > 0 {
+                    WidgetOverflowLine(count: snapshot.freeTasksRemaining)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var comingUp: some View {
+        if let nextDate = snapshot.nextDate {
+            WidgetLink(route: .calendar) {
+                WidgetDateRow(date: nextDate, now: entry.date)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var goal: some View {
+        if let goal = snapshot.goal, let goalId = goal.goalId {
+            WidgetLink(route: .goal(goalId)) {
+                WidgetGoalLine(goal: goal)
             }
         }
     }
@@ -95,7 +133,7 @@ struct OurDayWidgetView: View {
     OurDayWidget()
 } timeline: {
     await OurDayEntry.load(now: Date(), provider: WidgetPreviewData.provider())
-    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: nil, nextDate: nil, goal: nil, tasks: [], isPremium: true))
-    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: 460, nextDate: nil, goal: nil, tasks: [], isPremium: false))
+    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(isPremium: true))
+    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(daysTogether: 460, isPremium: false))
 }
 #endif

@@ -157,6 +157,18 @@ struct WidgetOverflowLine: View {
     }
 }
 
+struct WidgetTaskMark: View {
+    let color: Color
+
+    var body: some View {
+        Circle()
+            .strokeBorder(color, lineWidth: WidgetLayout.markLine)
+            .frame(width: WidgetLayout.markSize, height: WidgetLayout.markSize)
+            .frame(width: CorbieMetrics.minimumTapTarget, height: WidgetLayout.rowHeight)
+            .contentShape(Rectangle())
+    }
+}
+
 struct WidgetTaskRow: View {
     let task: WidgetTask
     let now: Date
@@ -166,19 +178,26 @@ struct WidgetTaskRow: View {
         return MemberColor(key: colorKey).color
     }
 
+    private var doneLabel: Text {
+        Text(String(format: String(localized: "widget.tasks.done.accessibility"), task.title))
+    }
+
     var body: some View {
         HStack(spacing: 0) {
-            Button(intent: ToggleTaskDoneIntent(taskID: task.id)) {
-                Circle()
-                    .strokeBorder(markColor, lineWidth: WidgetLayout.markLine)
-                    .frame(width: WidgetLayout.markSize, height: WidgetLayout.markSize)
-                    .frame(width: CorbieMetrics.minimumTapTarget, height: WidgetLayout.rowHeight)
-                    .contentShape(Rectangle())
+            Group {
+                switch task.source {
+                case .task:
+                    Button(intent: ToggleTaskDoneIntent(taskID: task.id)) {
+                        WidgetTaskMark(color: markColor)
+                    }
+                case .goalStep:
+                    Button(intent: ToggleGoalStepIntent(stepID: task.id)) {
+                        WidgetTaskMark(color: markColor)
+                    }
+                }
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(
-                Text(String(format: String(localized: "widget.tasks.done.accessibility"), task.title))
-            )
+            .accessibilityLabel(doneLabel)
             WidgetTaskText(task: task, now: now)
             Spacer(minLength: CorbieSpacing.xs)
         }
@@ -190,7 +209,10 @@ struct WidgetTaskText: View {
     let task: WidgetTask
     let now: Date
 
-    private var dueText: String? {
+    private var caption: String? {
+        if let goalTitle = task.goalTitle {
+            return String(format: String(localized: "tasks.row.subtitle.fromgoal"), goalTitle)
+        }
         guard let dueAt = task.dueAt else { return nil }
         let text = WidgetDateLabel.shortDate(dueAt, now: now)
         let daysAway = Calendar.current.daysAway(from: now, to: dueAt) ?? 0
@@ -204,13 +226,71 @@ struct WidgetTaskText: View {
                 .corbieBody()
                 .foregroundStyle(CorbieColorPalette.text)
                 .lineLimit(1)
-            if let dueText {
-                Text(dueText)
+            if let caption {
+                Text(caption)
                     .corbieMono()
                     .foregroundStyle(CorbieColorPalette.text2)
                     .lineLimit(1)
             }
         }
+        .accessibilityElement(children: .combine)
+    }
+}
+
+struct WidgetTodayRow: View {
+    let entry: WidgetTodayEntry
+
+    private var dotColor: Color {
+        guard let colorKey = entry.colorKey else { return CorbieColorPalette.text2 }
+        return MemberColor(key: colorKey).color
+    }
+
+    private var caption: String {
+        if let goalTitle = entry.goalTitle {
+            return String(format: String(localized: "today.row.fromgoal"), goalTitle)
+        }
+        guard let timeText = entry.timeText else { return String(localized: "today.row.allday") }
+        return timeText
+    }
+
+    var body: some View {
+        HStack(spacing: CorbieSpacing.xs) {
+            MemberDot(color: dotColor)
+            Text(entry.title)
+                .corbieBody()
+                .foregroundStyle(CorbieColorPalette.text)
+                .strikethrough(entry.isDone, color: CorbieColorPalette.text2)
+                .lineLimit(1)
+            Spacer(minLength: CorbieSpacing.xs)
+            Text(caption)
+                .corbieMono()
+                .foregroundStyle(CorbieColorPalette.text2)
+                .lineLimit(1)
+        }
+        .frame(height: WidgetLayout.dateRowHeight)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+struct WidgetFreeSlotRow: View {
+    let slot: WidgetFreeSlot
+
+    var body: some View {
+        HStack(spacing: CorbieSpacing.xs) {
+            Capsule(style: .continuous)
+                .fill(CorbieColorPalette.ice)
+                .frame(width: WidgetLayout.stripeWidth)
+            Text(slot.dayText)
+                .corbieBody()
+                .foregroundStyle(CorbieColorPalette.text)
+                .lineLimit(1)
+            Spacer(minLength: CorbieSpacing.xs)
+            Text(slot.windowText)
+                .corbieMono()
+                .foregroundStyle(CorbieColorPalette.text2)
+                .lineLimit(1)
+        }
+        .frame(height: WidgetLayout.dateRowHeight)
         .accessibilityElement(children: .combine)
     }
 }
@@ -268,6 +348,11 @@ struct WidgetGoalLine: View {
         return String(format: String(localized: "goals.card.overspend"), overspent)
     }
 
+    private var stepsText: String? {
+        guard goal.hasSteps else { return nil }
+        return WidgetGoalText.steps(done: goal.stepsDone, total: goal.stepsTotal)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             HStack(spacing: CorbieSpacing.xs) {
@@ -289,11 +374,20 @@ struct WidgetGoalLine: View {
                 accessibilityLabel: String(localized: "goals.card.progress.label"),
                 accessibilityValue: amountText ?? ""
             )
-            if let amountText {
-                Text(amountText)
-                    .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
-                    .lineLimit(1)
+            HStack(spacing: CorbieSpacing.xs) {
+                if let amountText {
+                    Text(amountText)
+                        .corbieMono()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .lineLimit(1)
+                }
+                Spacer(minLength: 0)
+                if let stepsText {
+                    Text(stepsText)
+                        .corbieMono()
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .lineLimit(1)
+                }
             }
         }
     }

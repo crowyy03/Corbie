@@ -9,6 +9,7 @@ enum WidgetKinds {
     static let shopping = "Shopping"
     static let capsule = "Capsule"
     static let ourDay = "OurDay"
+    static let freeSlots = "FreeSlots"
     static let lockCircular = "LockCircular"
     static let lockRectangular = "LockRectangular"
     static let lockInline = "LockInline"

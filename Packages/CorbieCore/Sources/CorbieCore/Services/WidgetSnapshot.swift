@@ -31,19 +31,91 @@ public enum WidgetDateKind: String, Sendable, Codable, Equatable, CaseIterable {
     }
 }
 
+public enum WidgetTaskSource: Sendable, Codable, Equatable {
+    case task
+    case goalStep(goalTitle: String)
+
+    public init(_ source: UnifiedTaskSource) {
+        switch source {
+        case .task: self = .task
+        case let .goalStep(goalTitle): self = .goalStep(goalTitle: goalTitle)
+        }
+    }
+
+    public var goalTitle: String? {
+        switch self {
+        case .task: return nil
+        case let .goalStep(goalTitle): return goalTitle
+        }
+    }
+}
+
 public struct WidgetTask: Sendable, Codable, Equatable, Identifiable {
     public let id: UUID
     public let title: String
     public let colorKey: String?
     public let isFree: Bool
     public let dueAt: Date?
+    public let source: WidgetTaskSource
 
-    public init(id: UUID, title: String, colorKey: String?, isFree: Bool, dueAt: Date?) {
+    public init(
+        id: UUID,
+        title: String,
+        colorKey: String?,
+        isFree: Bool,
+        dueAt: Date?,
+        source: WidgetTaskSource = .task
+    ) {
         self.id = id
         self.title = title
         self.colorKey = colorKey
         self.isFree = isFree
         self.dueAt = dueAt
+        self.source = source
+    }
+
+    public var goalTitle: String? { source.goalTitle }
+}
+
+public struct WidgetTodayEntry: Sendable, Codable, Equatable, Identifiable {
+    public let id: UUID
+    public let title: String
+    public let timeText: String?
+    public let isAllDay: Bool
+    public let goalTitle: String?
+    public let colorKey: String?
+    public let isDone: Bool
+
+    public init(
+        id: UUID,
+        title: String,
+        timeText: String?,
+        isAllDay: Bool,
+        goalTitle: String?,
+        colorKey: String?,
+        isDone: Bool
+    ) {
+        self.id = id
+        self.title = title
+        self.timeText = timeText
+        self.isAllDay = isAllDay
+        self.goalTitle = goalTitle
+        self.colorKey = colorKey
+        self.isDone = isDone
+    }
+}
+
+public struct WidgetFreeSlot: Sendable, Codable, Equatable, Identifiable {
+    public let start: Date
+    public let dayText: String
+    public let windowText: String
+
+    public var id: Date { start }
+
+    public init(start: Date, dayText: String, windowText: String) {
+        self.start = start
+        self.dayText = dayText
+        self.windowText = windowText
     }
 }
 
@@ -190,6 +262,8 @@ public struct GoalProgressSnapshot: Sendable, Codable, Equatable {
     public let targetText: String?
     public let isOverspent: Bool
     public let overspentText: String?
+    public let stepsDone: Int
+    public let stepsTotal: Int
     public let isPremium: Bool
 
     public init(
@@ -200,6 +274,8 @@ public struct GoalProgressSnapshot: Sendable, Codable, Equatable {
         targetText: String?,
         isOverspent: Bool,
         overspentText: String?,
+        stepsDone: Int = 0,
+        stepsTotal: Int = 0,
         isPremium: Bool
     ) {
         self.goalId = goalId
@@ -209,8 +285,12 @@ public struct GoalProgressSnapshot: Sendable, Codable, Equatable {
         self.targetText = targetText
         self.isOverspent = isOverspent
         self.overspentText = overspentText
+        self.stepsDone = stepsDone
+        self.stepsTotal = stepsTotal
         self.isPremium = isPremium
     }
+
+    public var hasSteps: Bool { stepsTotal > 0 }
 }
 
 public struct UpcomingDatesSnapshot: Sendable, Codable, Equatable {
@@ -265,23 +345,60 @@ public struct CapsuleSnapshot: Sendable, Codable, Equatable {
 }
 
 public struct OurDaySnapshot: Sendable, Codable, Equatable {
-    public let days: Int?
+    public let daysTogether: Int?
+    public let entries: [WidgetTodayEntry]
+    public let entriesRemaining: Int
+    public let freeTasks: [WidgetTask]
+    public let freeTasksRemaining: Int
     public let nextDate: WidgetDate?
     public let goal: GoalProgressSnapshot?
-    public let tasks: [WidgetTask]
     public let isPremium: Bool
 
     public init(
-        days: Int?,
-        nextDate: WidgetDate?,
-        goal: GoalProgressSnapshot?,
-        tasks: [WidgetTask],
+        daysTogether: Int? = nil,
+        entries: [WidgetTodayEntry] = [],
+        entriesRemaining: Int = 0,
+        freeTasks: [WidgetTask] = [],
+        freeTasksRemaining: Int = 0,
+        nextDate: WidgetDate? = nil,
+        goal: GoalProgressSnapshot? = nil,
         isPremium: Bool
     ) {
-        self.days = days
+        self.daysTogether = daysTogether
+        self.entries = entries
+        self.entriesRemaining = entriesRemaining
+        self.freeTasks = freeTasks
+        self.freeTasksRemaining = freeTasksRemaining
         self.nextDate = nextDate
         self.goal = goal
-        self.tasks = tasks
+        self.isPremium = isPremium
+    }
+
+    public var isEmpty: Bool {
+        daysTogether == nil
+            && entries.isEmpty
+            && freeTasks.isEmpty
+            && nextDate == nil
+            && goal == nil
+    }
+}
+
+public enum FreeSlotsAvailability: String, Sendable, Codable, Equatable, CaseIterable {
+    case slots
+    case notPaired
+    case viewerNotSharing
+    case partnerNotSharing
+    case noSlots
+}
+
+public struct FreeSlotsSnapshot: Sendable, Codable, Equatable {
+    public let availability: FreeSlotsAvailability
+    public let slots: [WidgetFreeSlot]
+    public let isPremium: Bool
+
+    public init(availability: FreeSlotsAvailability, slots: [WidgetFreeSlot] = [], isPremium: Bool) {
+        self.availability = availability
+        self.slots = slots
         self.isPremium = isPremium
     }
 }
@@ -355,10 +472,26 @@ public struct WidgetGoalOption: Sendable, Codable, Equatable, Identifiable {
     public let id: UUID
     public let title: String
     public let progress: Double
+    public let stepsDone: Int
+    public let stepsTotal: Int
 
-    public init(id: UUID, title: String, progress: Double) {
+    public init(id: UUID, title: String, progress: Double, stepsDone: Int = 0, stepsTotal: Int = 0) {
         self.id = id
         self.title = title
         self.progress = progress
+        self.stepsDone = stepsDone
+        self.stepsTotal = stepsTotal
     }
+
+    public init(_ goal: GoalDTO) {
+        self.init(
+            id: goal.id,
+            title: goal.title,
+            progress: goal.progress,
+            stepsDone: goal.doneStepCount,
+            stepsTotal: goal.stepCount
+        )
+    }
+
+    public var hasSteps: Bool { stepsTotal > 0 }
 }

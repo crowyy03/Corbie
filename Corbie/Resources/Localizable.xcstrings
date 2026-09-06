@@ -7143,6 +7143,26 @@
         }
       }
     },
+    "intent.goalstep.parameter.id": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step"
+          }
+        }
+      }
+    },
+    "intent.goalstep.toggle.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tick a goal step"
+          }
+        }
+      }
+    },
     "intent.lock.description": {
       "localizations": {
         "de": {
@@ -8165,16 +8185,16 @@
     },
     "notification.goal.expense.body": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@ added money to %2$@"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ hat eine Ausgabe zu %2$@ eingetragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ added money to %2$@"
           }
         },
         "es": {
@@ -8199,16 +8219,16 @@
     },
     "notification.goal.expense.title": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Money added"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Neue Ausgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Money added"
           }
         },
         "es": {
@@ -13195,16 +13215,16 @@
     },
     "people.editor.birthday.hint": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "day and month, the year is optional"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Tag und Monat, kein Jahr"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "day and month, the year is optional"
           }
         },
         "es": {
@@ -13725,16 +13745,16 @@
     },
     "people.editor.relation.hint": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "any word works, the chips are shortcuts"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "eine auswählen oder selbst eintippen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "any word works, the chips are shortcuts"
           }
         },
         "es": {
@@ -13813,16 +13833,16 @@
     },
     "people.editor.relation.placeholder": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mom, boss, anything"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Mutter, Freund, Chef"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mom, boss, anything"
           }
         },
         "es": {
@@ -24501,6 +24521,56 @@
         }
       }
     },
+    "widget.freeslots.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The next two windows you two share."
+          }
+        }
+      }
+    },
+    "widget.freeslots.empty": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing free in the next two weeks."
+          }
+        }
+      }
+    },
+    "widget.freeslots.empty.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the calendar screen takes a longer range"
+          }
+        }
+      }
+    },
+    "widget.freeslots.partner": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They have not shared their busy times yet."
+          }
+        }
+      }
+    },
+    "widget.freeslots.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free time"
+          }
+        }
+      }
+    },
     "widget.freetasks.description": {
       "localizations": {
         "de": {
@@ -24886,7 +24956,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Days together, a plan ring or a countdown."
+            "value": "Days together, a goal ring or a countdown."
           }
         },
         "es": {
@@ -24909,35 +24979,35 @@
         }
       }
     },
-    "widget.lock.circular.plan": {
+    "widget.lock.circular.goal": {
       "localizations": {
         "de": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Plan"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plan"
+            "value": "Goal"
           }
         },
         "es": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Plan"
           }
         },
         "fr": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Projet"
           }
         },
         "it": {
           "stringUnit": {
-            "state": "translated",
+            "state": "needs_review",
             "value": "Progetto"
           }
         }
@@ -25550,7 +25620,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Days, the next date, a plan and three tasks."
+            "value": "Days, the next date, a goal and three tasks."
           }
         },
         "es": {
@@ -25618,7 +25688,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "add a task, a date or a plan"
+            "value": "add a task, a date or a goal"
           }
         },
         "es": {
@@ -25773,6 +25843,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "aggiungi voci in Corbie"
+          }
+        }
+      }
+    },
+    "widget.shopping.nolist": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No shopping list yet."
+          }
+        }
+      }
+    },
+    "widget.shopping.nolist.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "start one in Tasks"
           }
         }
       }

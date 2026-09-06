@@ -32,6 +32,10 @@ public struct WidgetDataProvider: Sendable {
     public static let dateLimit = 3
     public static let shoppingLimit = 3
     public static let upcomingHorizonDays = 400
+    public static let ourDayEntryLimit = 3
+    public static let ourDayFreeTaskLimit = 2
+    public static let freeSlotHorizonDays = 14
+    public static let freeSlotLimit = 2
 
     private let controller: PersistenceController
     private let calendar: Calendar
@@ -150,7 +154,8 @@ public struct WidgetDataProvider: Sendable {
         guard let context = try await context(now: now) else {
             return FreeTasksSnapshot(items: [], remaining: 0, isPremium: false)
         }
-        let free = try await openTasks(spaceId: context.space.id).filter(\.isFree)
+        let free = try await openTasks(spaceId: context.space.id)
+            .filter { $0.isFree && $0.source == .task }
         return FreeTasksSnapshot(
             items: free.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
             remaining: max(0, free.count - WidgetDataProvider.taskLimit),
@@ -273,19 +278,65 @@ public struct WidgetDataProvider: Sendable {
 
     public func ourDay(now: Date = Date()) async throws -> OurDaySnapshot {
         guard let context = try await context(now: now) else {
-            return OurDaySnapshot(days: nil, nextDate: nil, goal: nil, tasks: [], isPremium: false)
+            return OurDaySnapshot(isPremium: false)
         }
-        let open = try await openTasks(spaceId: context.space.id)
-        let dates = try await widgetDates(context: context, now: now)
-        let goals = try await controller.repositories.goals.goals(spaceId: context.space.id, statuses: [.active])
-        let goal = goals.first
+        let feed = try await TodayFeedProvider(repositories: controller.repositories, calendar: calendar)
+            .feed(space: context.space, viewerMemberId: context.viewer?.id, now: now)
+        let entryLimit = WidgetDataProvider.ourDayEntryLimit
+        let freeTaskLimit = WidgetDataProvider.ourDayFreeTaskLimit
         return OurDaySnapshot(
-            days: ImportantDates.daysTogether(space: context.space, now: now, calendar: calendar),
-            nextDate: dates.first,
-            goal: goal.map { goalSnapshot($0, isPremium: context.isPremium) },
-            tasks: open.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
+            daysTogether: feed.daysTogether,
+            entries: feed.entries.prefix(entryLimit).map { widgetEntry($0, context: context) },
+            entriesRemaining: max(0, feed.entries.count - entryLimit),
+            freeTasks: feed.freeTasks.prefix(freeTaskLimit).map { widgetTask($0, context: context) },
+            freeTasksRemaining: feed.freeTasksRemaining + max(0, feed.freeTasks.count - freeTaskLimit),
+            nextDate: feed.comingUp.first.map { widgetDate($0, context: context) },
+            goal: feed.goal.map { goalSnapshot($0, isPremium: context.isPremium) },
             isPremium: context.isPremium
         )
+    }
+
+    public func freeSlots(now: Date = Date()) async throws -> FreeSlotsSnapshot {
+        guard let context = try await context(now: now) else {
+            return FreeSlotsSnapshot(availability: .notPaired, isPremium: false)
+        }
+        guard let viewer = context.viewer, let partner = context.partner else {
+            return FreeSlotsSnapshot(availability: .notPaired, isPremium: context.isPremium)
+        }
+        guard let horizon = calendar.date(
+            byAdding: .day,
+            value: WidgetDataProvider.freeSlotHorizonDays,
+            to: now
+        ) else {
+            return FreeSlotsSnapshot(availability: .noSlots, isPremium: context.isPremium)
+        }
+        let store = RepositoryBusyIntervalStore(
+            repository: controller.repositories.busyIntervals,
+            spaceId: context.space.id
+        )
+        let busy = try await store.intervals(spaceId: context.space.id, from: now, to: horizon)
+        let result = FreeSlotEngine(calendar: calendar, locale: locale).result(
+            viewer: FreeSlotParticipant(memberId: viewer.id, sharesBusyTimes: viewer.sharesBusyTimes),
+            partner: FreeSlotParticipant(memberId: partner.id, sharesBusyTimes: partner.sharesBusyTimes),
+            busyRanges: busy,
+            from: now,
+            to: horizon
+        )
+        switch result {
+        case let .slots(slots):
+            let text = WidgetFreeSlotText(locale: locale, calendar: calendar)
+            return FreeSlotsSnapshot(
+                availability: .slots,
+                slots: slots.prefix(WidgetDataProvider.freeSlotLimit).map(text.slot),
+                isPremium: context.isPremium
+            )
+        case .viewerHasNoData:
+            return FreeSlotsSnapshot(availability: .viewerNotSharing, isPremium: context.isPremium)
+        case .partnerHasNoData:
+            return FreeSlotsSnapshot(availability: .partnerNotSharing, isPremium: context.isPremium)
+        case .none:
+            return FreeSlotsSnapshot(availability: .noSlots, isPremium: context.isPremium)
+        }
     }
 
     public func lockCircular(mode: LockCircularMode, now: Date = Date()) async throws -> LockCircularSnapshot {
@@ -335,7 +386,7 @@ public struct WidgetDataProvider: Sendable {
         return LockRectangularSnapshot(
             taskTitle: next?.title,
             taskId: next?.id,
-            freeCount: open.filter(\.isFree).count,
+            freeCount: open.filter { $0.isFree && $0.source == .task }.count,
             nextDate: dates.first,
             isPremium: context.isPremium
         )
@@ -363,30 +414,55 @@ public struct WidgetDataProvider: Sendable {
         return try await repositories.members.member(appleUserId: appleUserId)?.id
     }
 
-    private func openTasks(spaceId: UUID) async throws -> [TaskDTO] {
-        let tasks = try await controller.repositories.tasks.tasks(TaskQuery(spaceId: spaceId))
-        return tasks.sorted { lhs, rhs in
-            switch (lhs.dueAt, rhs.dueAt) {
-            case let (left?, right?):
-                return left == right ? lhs.title < rhs.title : left < right
-            case (nil, _?):
-                return false
-            case (_?, nil):
-                return true
-            case (nil, nil):
-                return (lhs.createdAt ?? .distantPast) < (rhs.createdAt ?? .distantPast)
-            }
-        }
+    private func openTasks(spaceId: UUID) async throws -> [UnifiedTask] {
+        try await UnifiedTaskProvider(repositories: controller.repositories)
+            .unifiedTasks(TaskQuery(spaceId: spaceId))
     }
 
-    private func widgetTask(_ task: TaskDTO, context: WidgetContext) -> WidgetTask {
+    private func widgetTask(_ task: UnifiedTask, context: WidgetContext) -> WidgetTask {
         WidgetTask(
             id: task.id,
             title: task.title,
             colorKey: context.colorKey(for: task.assigneeMemberId),
             isFree: task.isFree,
-            dueAt: task.dueAt
+            dueAt: task.dueAt,
+            source: WidgetTaskSource(task.source)
         )
+    }
+
+    private func widgetEntry(_ entry: TodayEntry, context: WidgetContext) -> WidgetTodayEntry {
+        WidgetTodayEntry(
+            id: entry.id,
+            title: entry.title,
+            timeText: entry.isAllDay ? nil : entry.startAt.map(timeText),
+            isAllDay: entry.isAllDay,
+            goalTitle: entry.goalTitle,
+            colorKey: context.colorKey(for: entry.memberId),
+            isDone: entry.isDone
+        )
+    }
+
+    private func widgetDate(_ date: TodayDate, context: WidgetContext) -> WidgetDate {
+        WidgetDate(
+            id: date.id,
+            kind: WidgetDateKind(date.kind),
+            title: date.name,
+            date: date.date,
+            daysAway: date.daysAway,
+            ordinal: date.ordinal,
+            colorKey: context.colorKey(for: date.memberId),
+            eventId: date.eventId,
+            radar: date.radar
+        )
+    }
+
+    private func timeText(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
+        formatter.setLocalizedDateFormatFromTemplate("jm")
+        return formatter.string(from: date)
     }
 
     private func widgetDates(context: WidgetContext, now: Date) async throws -> [WidgetDate] {
@@ -484,6 +560,8 @@ public struct WidgetDataProvider: Sendable {
             overspentText: goal.isOverspent
                 ? Money(amount: goal.overspentAmount, currency: goal.currency).formatted(locale: locale)
                 : nil,
+            stepsDone: goal.doneStepCount,
+            stepsTotal: goal.stepCount,
             isPremium: isPremium
         )
     }
@@ -535,14 +613,14 @@ extension WidgetDataProvider {
         )
         return goals
             .prefix(WidgetDataProvider.optionLimit)
-            .map { WidgetGoalOption(id: $0.id, title: $0.title, progress: $0.progress) }
+            .map(WidgetGoalOption.init)
     }
 
     public func goalOptions(ids: [UUID]) async throws -> [WidgetGoalOption] {
         var result: [WidgetGoalOption] = []
         for id in ids {
             guard let goal = try await controller.repositories.goals.goal(id: id) else { continue }
-            result.append(WidgetGoalOption(id: goal.id, title: goal.title, progress: goal.progress))
+            result.append(WidgetGoalOption(goal))
         }
         return result
     }
