@@ -7,6 +7,9 @@ struct LocalizedRun {
     let cont: String
     let later: String
     let tabs: [String]
+    let planSegments: [String]
+    let usPill: String
+    let close: String
 }
 
 final class LocalizationUITests: XCTestCase {
@@ -18,7 +21,10 @@ final class LocalizationUITests: XCTestCase {
         debugSignIn: "continue without Apple ID (debug build)",
         cont: "Continue",
         later: "Later",
-        tabs: ["Tasks", "Calendar", "Wishes", "Plans", "Us"]
+        tabs: ["Today", "Tasks", "Calendar", "Wishes", "Plans"],
+        planSegments: ["Big", "Lists"],
+        usPill: "Open the Us hub",
+        close: "Close"
     )
 
     private static let german = LocalizedRun(
@@ -26,17 +32,23 @@ final class LocalizationUITests: XCTestCase {
         locale: "de_DE",
         debugSignIn: "ohne Apple-ID weiter (Debug-Build)",
         cont: "Weiter",
-        later: "Später",
-        tabs: ["Aufgaben", "Kalender", "Wünsche", "Pläne", "Wir"]
+        later: "Sp\u{E4}ter",
+        tabs: ["Heute", "Aufgaben", "Kalender", "W\u{FC}nsche", "Pl\u{E4}ne"],
+        planSegments: ["Gro\u{DF}", "Listen"],
+        usPill: "Wir \u{F6}ffnen",
+        close: "Schlie\u{DF}en"
     )
 
     private static let spanish = LocalizedRun(
         language: "es",
         locale: "es_ES",
-        debugSignIn: "seguir sin Apple ID (compilación de prueba)",
+        debugSignIn: "seguir sin Apple ID (compilaci\u{F3}n de prueba)",
         cont: "Continuar",
         later: "Luego",
-        tabs: ["Tareas", "Calendario", "Deseos", "Planes", "Nosotros"]
+        tabs: ["Hoy", "Tareas", "Calendario", "Deseos", "Planes"],
+        planSegments: ["Grandes", "Listas"],
+        usPill: "Abrir Nosotros",
+        close: "Cerrar"
     )
 
     private static let french = LocalizedRun(
@@ -45,7 +57,10 @@ final class LocalizationUITests: XCTestCase {
         debugSignIn: "continuer sans identifiant Apple (build de test)",
         cont: "Continuer",
         later: "Plus tard",
-        tabs: ["Tâches", "Calendrier", "Souhaits", "Projets", "Nous"]
+        tabs: ["Aujourd'hui", "T\u{E2}ches", "Calendrier", "Souhaits", "Projets"],
+        planSegments: ["Gros", "Listes"],
+        usPill: "Ouvrir Nous",
+        close: "Fermer"
     )
 
     private static let italian = LocalizedRun(
@@ -53,31 +68,34 @@ final class LocalizationUITests: XCTestCase {
         locale: "it_IT",
         debugSignIn: "continua senza Apple ID (build di test)",
         cont: "Continua",
-        later: "Più tardi",
-        tabs: ["Attività", "Calendario", "Desideri", "Progetti", "Noi"]
+        later: "Pi\u{F9} tardi",
+        tabs: ["Oggi", "Attivit\u{E0}", "Calendario", "Desideri", "Progetti"],
+        planSegments: ["Grandi", "Liste"],
+        usPill: "Apri Noi",
+        close: "Chiudi"
     )
 
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
 
-    func testEnglishTabsFitTheTabBar() throws {
+    func testEnglishFitsTheTabsSegmentsAndPill() throws {
         try run(Self.english)
     }
 
-    func testGermanTabsFitTheTabBar() throws {
+    func testGermanFitsTheTabsSegmentsAndPill() throws {
         try run(Self.german)
     }
 
-    func testSpanishTabsFitTheTabBar() throws {
+    func testSpanishFitsTheTabsSegmentsAndPill() throws {
         try run(Self.spanish)
     }
 
-    func testFrenchTabsFitTheTabBar() throws {
+    func testFrenchFitsTheTabsSegmentsAndPill() throws {
         try run(Self.french)
     }
 
-    func testItalianTabsFitTheTabBar() throws {
+    func testItalianFitsTheTabsSegmentsAndPill() throws {
         try run(Self.italian)
     }
 
@@ -93,25 +111,50 @@ final class LocalizationUITests: XCTestCase {
 
         let tabBar = app.tabBars.firstMatch
         XCTAssertTrue(tabBar.waitForExistence(timeout: 20), localization.language)
-        XCTAssertEqual(tabBar.buttons.count, localization.tabs.count)
+        XCTAssertEqual(tabBar.buttons.count, localization.tabs.count, localization.language)
 
         for (index, title) in localization.tabs.enumerated() {
             let button = tabBar.buttons[title]
-            XCTAssertTrue(button.waitForExistence(timeout: 5), "\(localization.language): \(title)")
+            XCTAssertTrue(button.waitForExistence(timeout: 10), "\(localization.language): \(title)")
             button.tap()
-            save(app, localization, "tab\(index)_\(localization.language)")
+            save(app, localization, "tab\(index)")
         }
+
+        try checkPlanSegments(app, localization)
+        try checkUsHub(app, localization, tabBar: tabBar)
+    }
+
+    private func checkPlanSegments(_ app: XCUIApplication, _ localization: LocalizedRun) throws {
+        for title in localization.planSegments {
+            let segment = app.buttons[title].firstMatch
+            XCTAssertTrue(segment.waitForExistence(timeout: 10), "\(localization.language): \(title)")
+        }
+        let lists = app.buttons[localization.planSegments[1]].firstMatch
+        lists.tap()
+        save(app, localization, "plans_lists")
+    }
+
+    private func checkUsHub(_ app: XCUIApplication, _ localization: LocalizedRun, tabBar: XCUIElement) throws {
+        tabBar.buttons[localization.tabs[0]].tap()
+        let pill = app.buttons[localization.usPill].firstMatch
+        XCTAssertTrue(pill.waitForExistence(timeout: 15), "\(localization.language): \(localization.usPill)")
+        pill.tap()
+        let close = app.buttons[localization.close].firstMatch
+        XCTAssertTrue(close.waitForExistence(timeout: 15), "\(localization.language): \(localization.close)")
+        save(app, localization, "us_hub")
+        close.tap()
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 15), localization.language)
     }
 
     private func passOnboarding(_ app: XCUIApplication, _ localization: LocalizedRun) {
         let debugSignIn = app.buttons[localization.debugSignIn]
         guard debugSignIn.waitForExistence(timeout: 15) else { return }
-        save(app, localization, "onboarding_intro_\(localization.language)")
+        save(app, localization, "onboarding_intro")
         debugSignIn.tap()
 
         let continueButton = app.buttons[localization.cont]
         XCTAssertTrue(continueButton.waitForExistence(timeout: 20), localization.language)
-        save(app, localization, "onboarding_profile_\(localization.language)")
+        save(app, localization, "onboarding_profile")
         let nameField = app.textFields.firstMatch
         if nameField.exists, (nameField.value as? String)?.isEmpty ?? true {
             nameField.tap()
@@ -121,14 +164,14 @@ final class LocalizationUITests: XCTestCase {
 
         let later = app.buttons[localization.later]
         XCTAssertTrue(later.waitForExistence(timeout: 25), localization.language)
-        save(app, localization, "onboarding_invite_\(localization.language)")
+        save(app, localization, "onboarding_invite")
         later.tap()
     }
 
     private func save(_ app: XCUIApplication, _ localization: LocalizedRun, _ name: String) {
         let shot = app.screenshot()
         let attachment = XCTAttachment(screenshot: shot)
-        attachment.name = name
+        attachment.name = name + "_" + localization.language
         attachment.lifetime = .keepAlways
         add(attachment)
         guard let screenshotDirectory else { return }

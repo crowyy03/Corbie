@@ -38,6 +38,10 @@ page ("Add Language"), then paste each file into its own language.
   4.99 and 29.99, the four European listings say 5,99 and 39,99. The price tier chosen in
   App Store Connect has to match those lines in every storefront the listing serves, and the
   German, Spanish, French and Italian listings each serve more than one country.
-- Screenshot captions are the copy for the six screens in spec section 12. The image work is
-  separate; the captions here are what goes on the art.
+- Screenshot captions are the copy for six screens: widgets on the home screen, Today, tasks,
+  wishes, a plan with its prep list, and the subscription. The image work is separate; the
+  captions here are what goes on the art. Shared free time and the Sunday recap are described
+  in the text but have no screenshot of their own yet.
+- The free tier after the trial is the calendar, Today (view only) and the weekly recap. Every
+  listing says so in the subscription block; if that changes, all five files change with it.
 - Age rating 4+, categories Lifestyle (primary) and Productivity (secondary), per spec 12.

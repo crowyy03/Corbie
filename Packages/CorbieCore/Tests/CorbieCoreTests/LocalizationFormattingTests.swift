@@ -35,6 +35,48 @@ import Testing
         #expect(ImportantDateText.ordinalText(2, locale: Locale(identifier: "it_IT")) == "2\u{BA}")
     }
 
+    @Test func euroSignFollowsTheAmountInSpanishAndItalian() {
+        let spanish = euros.formatted(locale: Locale(identifier: "es_ES"))
+        let italian = euros.formatted(locale: Locale(identifier: "it_IT"))
+
+        #expect(spanish.hasSuffix("\u{20AC}"))
+        #expect(italian.hasSuffix("\u{20AC}"))
+        #expect(spanish.hasPrefix("91,50"))
+        #expect(italian.hasPrefix("91,50"))
+    }
+
+    @Test func aWholeAmountDropsTheDecimals() {
+        let amount = Money(amount: Decimal(120), currency: "EUR")
+
+        #expect(amount.formatted(locale: Locale(identifier: "de_DE")) == "120\u{A0}\u{20AC}")
+        #expect(amount.formatted(locale: Locale(identifier: "en_US")) == "\u{20AC}120")
+    }
+
+    @Test func aCurrencyWithoutDecimalsKeepsItsOwnDigits() {
+        let yen = Money(amount: Decimal(2400), currency: "JPY")
+
+        #expect(yen.formatted(locale: Locale(identifier: "de_DE")).hasPrefix("2.400"))
+        #expect(yen.formatted(locale: Locale(identifier: "en_US")).contains("2,400"))
+        #expect(yen.approximate(locale: Locale(identifier: "en_US")).hasPrefix("\u{2248} "))
+    }
+
+    @Test func shortDateLeadsWithTheDayOutsideAmericanEnglish() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Europe/Berlin") ?? .gmt
+        let day = calendar.date(from: DateComponents(year: 2026, month: 9, day: 6)) ?? Date()
+
+        for identifier in ["de_DE", "fr_FR", "es_ES", "it_IT"] {
+            let text = RelativeDateText(locale: Locale(identifier: identifier), calendar: calendar)
+                .dueText(for: day, now: day)
+            #expect(text.hasPrefix("6"), "\(identifier): \(text)")
+        }
+
+        let american = RelativeDateText(locale: Locale(identifier: "en_US"), calendar: calendar)
+            .dueText(for: day, now: day)
+        #expect(american.hasPrefix("6") == false, "\(american)")
+        #expect(american.contains("6"))
+    }
+
     @Test func firstWeekdayFollowsTheLocale() {
         var american = Calendar(identifier: .gregorian)
         american.locale = Locale(identifier: "en_US")
@@ -43,5 +85,11 @@ import Testing
 
         #expect(american.firstWeekday == 1)
         #expect(german.firstWeekday == 2)
+
+        for identifier in ["fr_FR", "es_ES", "it_IT"] {
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.locale = Locale(identifier: identifier)
+            #expect(calendar.firstWeekday == 2, "\(identifier)")
+        }
     }
 }
