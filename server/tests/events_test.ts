@@ -22,7 +22,7 @@ Deno.test("the allowlist matches the architecture event list", () => {
   for (const name of ["app_open", "wish_created", "paywall_shown", "purchase", "readonly_hit"]) {
     assert(allowedEventNames.has(name), name);
   }
-  assertEquals(allowedEventNames.size, 41);
+  assertEquals(allowedEventNames.size, 42);
 });
 
 Deno.test("events outside the allowlist are dropped, not rejected", () => {

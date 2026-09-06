@@ -8,12 +8,12 @@ struct OurDayEntry: TimelineEntry {
 
     static let placeholder = OurDayEntry(
         date: Date(),
-        snapshot: OurDaySnapshot(days: 460, nextDate: nil, goal: nil, tasks: [], isPremium: true)
+        snapshot: OurDaySnapshot(days: 460, nextDate: nil, plan: nil, tasks: [], isPremium: true)
     )
 
     static func load(now: Date, provider: WidgetDataProvider) async -> OurDayEntry {
         let snapshot = (try? await provider.ourDay(now: now))
-            ?? OurDaySnapshot(days: nil, nextDate: nil, goal: nil, tasks: [], isPremium: true)
+            ?? OurDaySnapshot(days: nil, nextDate: nil, plan: nil, tasks: [], isPremium: true)
         return OurDayEntry(date: now, snapshot: snapshot)
     }
 }
@@ -42,7 +42,7 @@ struct OurDayWidgetView: View {
     private var isEmpty: Bool {
         entry.snapshot.days == nil
             && entry.snapshot.nextDate == nil
-            && entry.snapshot.goal == nil
+            && entry.snapshot.plan == nil
             && entry.snapshot.tasks.isEmpty
     }
 
@@ -73,9 +73,9 @@ struct OurDayWidgetView: View {
                             WidgetDateRow(date: nextDate, now: entry.date)
                         }
                     }
-                    if let goal = entry.snapshot.goal, let goalId = goal.goalId {
-                        WidgetLink(route: .goal(goalId)) {
-                            WidgetGoalLine(goal: goal)
+                    if let plan = entry.snapshot.plan, let planId = plan.planId {
+                        WidgetLink(route: .plan(planId)) {
+                            WidgetPlanLine(plan: plan)
                         }
                     }
                     ForEach(entry.snapshot.tasks) { task in
@@ -95,7 +95,7 @@ struct OurDayWidgetView: View {
     OurDayWidget()
 } timeline: {
     await OurDayEntry.load(now: Date(), provider: WidgetPreviewData.provider())
-    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: nil, nextDate: nil, goal: nil, tasks: [], isPremium: true))
-    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: 460, nextDate: nil, goal: nil, tasks: [], isPremium: false))
+    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: nil, nextDate: nil, plan: nil, tasks: [], isPremium: true))
+    OurDayEntry(date: Date(), snapshot: OurDaySnapshot(days: 460, nextDate: nil, plan: nil, tasks: [], isPremium: false))
 }
 #endif

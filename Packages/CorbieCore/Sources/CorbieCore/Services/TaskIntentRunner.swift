@@ -65,23 +65,15 @@ public enum TaskIntentRunner {
 
     @discardableResult
     public static func toggleShoppingItem(
-        taskId: UUID,
+        itemId: UUID,
         persistence: IntentPersistence = .shared,
         now: Date = Date()
-    ) async throws -> TaskDTO {
+    ) async throws -> ListItemDTO {
         let repositories = persistence.controller().repositories
-        guard let task = try await repositories.tasks.task(id: taskId) else {
-            throw CorbieError.notFound("task " + taskId.uuidString)
-        }
         let memberId = try? await persistence.currentMemberId()
-        let updated = try await repositories.tasks.setDone(
-            taskId: taskId,
-            isDone: task.isDone == false,
-            memberId: memberId,
-            at: now
-        )
+        let item = try await repositories.lists.toggleItem(itemId: itemId, memberId: memberId, at: now)
         WidgetReloader.reloadNow()
-        return updated
+        return item
     }
 
     public static func identifier(_ value: String) throws -> UUID {

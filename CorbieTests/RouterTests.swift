@@ -7,25 +7,27 @@ final class RouterTests: XCTestCase {
         XCTAssertEqual(try route("corbie://tasks"), .tasks)
         XCTAssertEqual(try route("corbie://calendar"), .calendar)
         XCTAssertEqual(try route("corbie://wishes"), .wishes)
-        XCTAssertEqual(try route("corbie://goals"), .goals)
+        XCTAssertEqual(try route("corbie://plans"), .plans)
         XCTAssertEqual(try route("corbie://capsules"), .capsules)
         XCTAssertEqual(try route("corbie://votes"), .votes)
         XCTAssertEqual(try route("corbie://us"), .us)
     }
 
-    func testTheOldPlansLinksStillOpenGoals() throws {
+    func testTheGoalsAliasAndTheListsLinkBothLandOnPlans() throws {
         let identifier = UUID()
-        XCTAssertEqual(try route("corbie://plans"), .goals)
-        XCTAssertEqual(try route("corbie://plans/\(identifier.uuidString)"), .goal(identifier))
+        XCTAssertEqual(try route("corbie://goals"), .plans)
+        XCTAssertEqual(try route("corbie://goals/\(identifier.uuidString)"), .plan(identifier))
+        XCTAssertEqual(try route("corbie://lists"), .plans)
+        XCTAssertEqual(try route("corbie://lists/\(identifier.uuidString)"), .plans)
     }
 
-    func testGoalRouteCarriesIdentifier() throws {
+    func testPlanRouteCarriesIdentifier() throws {
         let identifier = UUID()
-        XCTAssertEqual(try route("corbie://goals/\(identifier.uuidString)"), .goal(identifier))
+        XCTAssertEqual(try route("corbie://plans/\(identifier.uuidString)"), .plan(identifier))
     }
 
-    func testGoalRouteRejectsNonIdentifier() throws {
-        XCTAssertNil(try route("corbie://goals/not-a-uuid"))
+    func testPlanRouteRejectsNonIdentifier() throws {
+        XCTAssertNil(try route("corbie://plans/not-a-uuid"))
     }
 
     func testJoinRoutes() throws {

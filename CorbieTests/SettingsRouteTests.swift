@@ -22,7 +22,7 @@ final class SettingsRouteTests: XCTestCase {
         let identifier = UUID()
         XCTAssertEqual(Router.route(for: CorbieRoute.task(identifier)), .task(identifier))
         XCTAssertEqual(Router.route(for: CorbieRoute.person(identifier)), .person(identifier))
-        XCTAssertEqual(Router.route(for: CorbieRoute.goal(identifier)), .goal(identifier))
+        XCTAssertEqual(Router.route(for: CorbieRoute.plan(identifier)), .plan(identifier))
         XCTAssertEqual(Router.route(for: CorbieRoute.capsule(identifier)), .capsules)
         XCTAssertEqual(Router.route(for: CorbieRoute.vote(identifier)), .votes)
         XCTAssertEqual(Router.route(for: CorbieRoute.event(identifier)), .calendar)
@@ -44,7 +44,7 @@ final class SettingsRouteTests: XCTestCase {
     func testEveryCoreRouteStringSurvivesTheRoundTrip() throws {
         let identifier = UUID()
         let routes: [CorbieRoute] = [
-            .tasks, .task(identifier), .calendar, .wishes, .goals, .goal(identifier),
+            .tasks, .task(identifier), .calendar, .wishes, .plans, .plan(identifier),
             .capsules, .capsule(identifier), .votes, .vote(identifier), .people, .person(identifier), .us
         ]
         for route in routes {

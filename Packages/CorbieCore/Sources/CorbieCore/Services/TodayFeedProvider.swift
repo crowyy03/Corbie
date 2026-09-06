@@ -21,11 +21,11 @@ public struct TodayFeedProvider: Sendable {
         let members = try await repositories.members.members(spaceId: space.id)
         let people = try await repositories.people.people(spaceId: space.id)
         let open = try await unifiedTasks.unifiedTasks(TaskQuery(spaceId: space.id))
-        let goalOfStep = try await goalIdByStep(spaceId: space.id)
+        let planOfStep = try await planIdByStep(spaceId: space.id)
         let entries = try await todayEntries(
             spaceId: space.id,
             open: open,
-            goalOfStep: goalOfStep,
+            planOfStep: planOfStep,
             dayStart: dayStart,
             dayEnd: dayEnd
         )
@@ -46,7 +46,7 @@ public struct TodayFeedProvider: Sendable {
                 now: now,
                 dayEnd: dayEnd
             ),
-            goal: try await goal(spaceId: space.id),
+            plan: try await plan(spaceId: space.id),
             waiting: try await waiting(space: space, viewer: viewer, members: members, now: now),
             recap: try await recap(space: space, members: members, people: people, viewer: viewer, now: now),
             isPaired: members.count >= 2
@@ -62,7 +62,7 @@ public struct TodayFeedProvider: Sendable {
     private func todayEntries(
         spaceId: UUID,
         open: [UnifiedTask],
-        goalOfStep: [UUID: UUID],
+        planOfStep: [UUID: UUID],
         dayStart: Date,
         dayEnd: Date
     ) async throws -> [TodayEntry] {
@@ -75,15 +75,15 @@ public struct TodayFeedProvider: Sendable {
             .map(TodayEntry.init(event:))
         for task in open {
             guard let dueAt = task.dueAt, dueAt >= dayStart, dueAt < dayEnd else { continue }
-            entries.append(TodayEntry(task: task, goalId: goalOfStep[task.id], calendar: calendar))
+            entries.append(TodayEntry(task: task, planId: planOfStep[task.id], calendar: calendar))
         }
         return TodayEntry.ordered(entries)
     }
 
-    private func goalIdByStep(spaceId: UUID) async throws -> [UUID: UUID] {
-        let steps = try await repositories.goals.datedSteps(spaceId: spaceId)
+    private func planIdByStep(spaceId: UUID) async throws -> [UUID: UUID] {
+        let steps = try await repositories.plans.datedSteps(spaceId: spaceId)
         return steps.reduce(into: [:]) { result, step in
-            result[step.id] = step.goalId
+            result[step.id] = step.planId
         }
     }
 
@@ -162,13 +162,13 @@ public struct TodayFeedProvider: Sendable {
         )
     }
 
-    private func goal(spaceId: UUID) async throws -> GoalDTO? {
-        let goals = try await repositories.goals.goals(spaceId: spaceId, statuses: [.active])
-        let dated = goals.filter { $0.endAt != nil }
+    private func plan(spaceId: UUID) async throws -> PlanDTO? {
+        let plans = try await repositories.plans.plans(spaceId: spaceId, statuses: [.active])
+        let dated = plans.filter { $0.endAt != nil }
         if dated.isEmpty == false {
             return dated.min { ($0.endAt ?? .distantFuture) < ($1.endAt ?? .distantFuture) }
         }
-        return goals.max { ($0.createdAt ?? .distantPast) < ($1.createdAt ?? .distantPast) }
+        return plans.max { ($0.createdAt ?? .distantPast) < ($1.createdAt ?? .distantPast) }
     }
 
     private func waiting(
@@ -227,17 +227,17 @@ public struct TodayFeedProvider: Sendable {
         week: RecapWeek
     ) async throws -> RecapSummary {
         let tasks = try await repositories.tasks.tasks(
-            TaskQuery(spaceId: space.id, done: .any, folder: .all)
+            TaskQuery(spaceId: space.id, done: .any)
         )
-        let goals = try await repositories.goals.goals(
+        let plans = try await repositories.plans.plans(
             spaceId: space.id,
             statuses: [.active, .completed]
         )
-        var steps: [GoalStepDTO] = []
-        var expenses: [GoalExpenseDTO] = []
-        for goal in goals {
-            steps.append(contentsOf: try await repositories.goals.steps(goalId: goal.id))
-            expenses.append(contentsOf: try await repositories.goals.expenses(goalId: goal.id))
+        var steps: [PlanStepDTO] = []
+        var expenses: [PlanExpenseDTO] = []
+        for plan in plans {
+            steps.append(contentsOf: try await repositories.plans.steps(planId: plan.id))
+            expenses.append(contentsOf: try await repositories.plans.expenses(planId: plan.id))
         }
         let horizon = calendar.date(byAdding: .day, value: 7, to: week.end)
         let events = try await repositories.events.events(spaceId: space.id, from: week.end, to: horizon)
@@ -250,7 +250,7 @@ public struct TodayFeedProvider: Sendable {
                 members: members,
                 tasks: tasks,
                 steps: steps,
-                goals: goals,
+                plans: plans,
                 expenses: expenses,
                 events: events,
                 wishes: wishes,

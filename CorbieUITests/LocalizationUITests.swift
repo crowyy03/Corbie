@@ -18,7 +18,7 @@ final class LocalizationUITests: XCTestCase {
         debugSignIn: "continue without Apple ID (debug build)",
         cont: "Continue",
         later: "Later",
-        tabs: ["Tasks", "Calendar", "Wishes", "Goals", "Us"]
+        tabs: ["Tasks", "Calendar", "Wishes", "Plans", "Us"]
     )
 
     private static let german = LocalizedRun(

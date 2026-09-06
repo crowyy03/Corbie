@@ -119,7 +119,7 @@ import Testing
     @Test func aPrefsRoundTripKeepsTheOlderNineToggles() throws {
         let stored = """
         {"taskAssigned":false,"taskTakenOrHandedBack":true,"taskDueToday":false,"eventSoon":true,\
-        "dateRadar":false,"partnerAddedWish":true,"goalUpdates":false,"capsuleUpdates":true,"voteUpdates":false}
+        "dateRadar":false,"partnerAddedWish":true,"planUpdates":false,"capsuleUpdates":true,"voteUpdates":false}
         """
         let prefs = try #require(JSONValue.decode(NotificationPrefs.self, from: Data(stored.utf8)))
         #expect(prefs.taskAssigned == false)

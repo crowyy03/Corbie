@@ -13,12 +13,12 @@ import Testing
         _ = try await repositories.wishes.create(
             WishDraft(spaceId: world.space.id, ownerMemberId: world.partner.id, title: "Headphones", price: 199)
         )
-        let goal = try await repositories.goals.create(
-            GoalDraft(spaceId: world.space.id, title: "Lisbon", targetAmount: 5000, currency: "USD")
+        let plan = try await repositories.plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Lisbon", targetAmount: 5000, currency: "USD")
         )
-        _ = try await repositories.goals.addExpense(
-            goalId: goal.id,
-            draft: GoalExpenseDraft(amount: 120, currency: "USD", addedByMemberId: world.me.id)
+        _ = try await repositories.plans.addExpense(
+            planId: plan.id,
+            draft: PlanExpenseDraft(amount: 120, currency: "USD", addedByMemberId: world.me.id)
         )
 
         let export = DataExport(controller: world.controller)
@@ -28,7 +28,7 @@ import Testing
         #expect(document.members.count == 2)
         #expect(document.tasks.count == 2)
         #expect(document.wishes.count == 1)
-        #expect(document.goals.count == 1)
+        #expect(document.plans.count == 1)
         #expect(document.expenses.count == 1)
         #expect(document.entityCount == 8)
 
@@ -37,7 +37,7 @@ import Testing
         #expect(decoded.entityCount == document.entityCount)
         #expect(decoded.space.id == document.space.id)
         #expect(decoded.tasks.map(\.id) == document.tasks.map(\.id))
-        #expect(decoded.expenses.first?.amountInGoalCurrency == 120)
+        #expect(decoded.expenses.first?.amountInPlanCurrency == 120)
     }
 
     @Test func theExportWritesAJsonFileNamedAfterTheMoment() async throws {

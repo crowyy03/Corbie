@@ -107,22 +107,22 @@ public struct RecapMemberTally: Sendable, Equatable, Identifiable {
     public var id: UUID { memberId }
 }
 
-public struct RecapGoalMove: Sendable, Equatable, Identifiable {
-    public let goalId: UUID
+public struct RecapPlanMove: Sendable, Equatable, Identifiable {
+    public let planId: UUID
     public let title: String
     public let delta: Double
     public let currency: String
     public let progress: Double
 
-    public init(goalId: UUID, title: String, delta: Double, currency: String, progress: Double) {
-        self.goalId = goalId
+    public init(planId: UUID, title: String, delta: Double, currency: String, progress: Double) {
+        self.planId = planId
         self.title = title
         self.delta = delta
         self.currency = currency
         self.progress = progress
     }
 
-    public var id: UUID { goalId }
+    public var id: UUID { planId }
 }
 
 public struct RecapUpcoming: Sendable, Equatable, Identifiable {
@@ -152,12 +152,12 @@ public struct RecapMilestone: Sendable, Equatable {
 }
 
 public struct RecapSummary: Sendable, Equatable {
-    public static let goalLimit = 2
+    public static let planLimit = 2
     public static let upcomingLimit = 3
 
     public let week: RecapWeek
     public let members: [RecapMemberTally]
-    public let goals: [RecapGoalMove]
+    public let plans: [RecapPlanMove]
     public let comingUp: [RecapUpcoming]
     public let daysTogether: Int?
     public let milestone: RecapMilestone?
@@ -165,21 +165,21 @@ public struct RecapSummary: Sendable, Equatable {
     public init(
         week: RecapWeek,
         members: [RecapMemberTally] = [],
-        goals: [RecapGoalMove] = [],
+        plans: [RecapPlanMove] = [],
         comingUp: [RecapUpcoming] = [],
         daysTogether: Int? = nil,
         milestone: RecapMilestone? = nil
     ) {
         self.week = week
         self.members = members
-        self.goals = goals
+        self.plans = plans
         self.comingUp = comingUp
         self.daysTogether = daysTogether
         self.milestone = milestone
     }
 
     public var hasActivity: Bool {
-        members.contains { $0.tasksDone > 0 || $0.wishesAdded > 0 } || goals.isEmpty == false
+        members.contains { $0.tasksDone > 0 || $0.wishesAdded > 0 } || plans.isEmpty == false
     }
 
     public var isPaired: Bool { members.count >= 2 }

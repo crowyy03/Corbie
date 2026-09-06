@@ -20,20 +20,21 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case spaceCreated
     case inviteCreated
     case inviteRedeemed
-    case taskCreated(hasFolder: Bool, assignee: AnalyticsAssignee)
+    case taskCreated(assignee: AnalyticsAssignee)
     case taskTaken
     case taskDone
     case taskHandedBack
     case eventCreated(kind: EventKind)
     case wishCreated(source: WishSource)
     case wishFulfilled
-    case goalCreated(type: GoalType)
-    case goalCompleted
-    case goalStepCreated(hasDue: Bool)
-    case goalStepDone
+    case planCreated(type: PlanType)
+    case planCompleted
+    case planStepCreated(hasDue: Bool)
+    case planStepDone
     case expenseAdded
-    case folderCreated(template: FolderTemplate)
-    case folderMapOpened
+    case listCreated(template: ListTemplate)
+    case listItemChecked
+    case listMapOpened
     case freetimeOpened
     case freetimeSharingEnabled
     case freetimeSharingDisabled
@@ -71,13 +72,14 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .eventCreated: return "event_created"
         case .wishCreated: return "wish_created"
         case .wishFulfilled: return "wish_fulfilled"
-        case .goalCreated: return "goal_created"
-        case .goalCompleted: return "goal_completed"
-        case .goalStepCreated: return "goal_step_created"
-        case .goalStepDone: return "goal_step_done"
+        case .planCreated: return "plan_created"
+        case .planCompleted: return "plan_completed"
+        case .planStepCreated: return "plan_step_created"
+        case .planStepDone: return "plan_step_done"
         case .expenseAdded: return "expense_added"
-        case .folderCreated: return "folder_created"
-        case .folderMapOpened: return "folder_map_opened"
+        case .listCreated: return "list_created"
+        case .listItemChecked: return "list_item_checked"
+        case .listMapOpened: return "list_map_opened"
         case .freetimeOpened: return "freetime_opened"
         case .freetimeSharingEnabled: return "freetime_sharing_enabled"
         case .freetimeSharingDisabled: return "freetime_sharing_disabled"
@@ -107,17 +109,17 @@ public enum AnalyticsEvent: Sendable, Equatable {
         switch self {
         case let .onboardingStep(step):
             return ["step": .number(Double(step))]
-        case let .taskCreated(hasFolder, assignee):
-            return ["has_folder": .flag(hasFolder), "assignee": .string(assignee.rawValue)]
+        case let .taskCreated(assignee):
+            return ["assignee": .string(assignee.rawValue)]
         case let .eventCreated(kind):
             return ["kind": .string(kind.rawValue)]
         case let .wishCreated(source):
             return ["source": .string(source.rawValue)]
-        case let .goalCreated(type):
+        case let .planCreated(type):
             return ["type": .string(type.rawValue)]
-        case let .goalStepCreated(hasDue):
+        case let .planStepCreated(hasDue):
             return ["has_due": .flag(hasDue)]
-        case let .folderCreated(template):
+        case let .listCreated(template):
             return ["template": .string(template.rawValue)]
         case let .todayBlockTapped(block):
             return ["block": .string(block.rawValue)]
@@ -134,11 +136,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .readonlyHit(action):
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
-             .taskHandedBack, .wishFulfilled, .expenseAdded, .goalCompleted, .goalStepDone,
-             .folderMapOpened, .freetimeOpened, .freetimeSharingEnabled, .freetimeSharingDisabled,
-             .freetimeSlotTapped, .capsuleCreated, .capsuleOpened, .voteCreated, .voteAnswered,
-             .voteRevealed, .todayOpened, .recapShown, .recapNotificationSent, .recapOpened,
-             .trialStarted, .restore:
+             .taskHandedBack, .wishFulfilled, .expenseAdded, .planCompleted, .planStepDone,
+             .listItemChecked, .listMapOpened, .freetimeOpened, .freetimeSharingEnabled,
+             .freetimeSharingDisabled, .freetimeSlotTapped, .capsuleCreated, .capsuleOpened,
+             .voteCreated, .voteAnswered, .voteRevealed, .todayOpened, .recapShown,
+             .recapNotificationSent, .recapOpened, .trialStarted, .restore:
             return [:]
         }
     }
@@ -146,8 +148,9 @@ public enum AnalyticsEvent: Sendable, Equatable {
     public static let allowedNames: Set<String> = [
         "app_open", "onboarding_step", "space_created", "invite_created", "invite_redeemed",
         "task_created", "task_taken", "task_done", "event_created", "wish_created", "wish_fulfilled",
-        "goal_created", "goal_completed", "goal_step_created", "goal_step_done", "expense_added",
-        "folder_created", "folder_map_opened", "freetime_opened", "freetime_sharing_enabled",
+        "plan_created", "plan_completed", "plan_step_created", "plan_step_done", "expense_added",
+        "list_created", "list_item_checked", "list_map_opened",
+        "freetime_opened", "freetime_sharing_enabled",
         "freetime_sharing_disabled", "freetime_slot_tapped", "freetime_empty",
         "capsule_created", "capsule_opened", "vote_created",
         "vote_answered", "vote_revealed", "widget_added", "paywall_shown", "trial_started",

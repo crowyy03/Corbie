@@ -16,7 +16,7 @@ struct CorbieWidgetsBundle: WidgetBundle {
         TasksWidget()
         FreeTasksWidget()
         PartnerWishesWidget()
-        GoalProgressWidget()
+        PlanProgressWidget()
         UpcomingDatesWidget()
         ShoppingWidget()
         CapsuleWidget()

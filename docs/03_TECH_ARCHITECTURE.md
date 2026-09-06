@@ -1,6 +1,6 @@
 # CORBIE — Техническая архитектура v1
 
-> ⚠️ **Читать вместе с `01a_SPEC_AMENDMENT_01.md`** — поправка №1 меняет состав сущностей (`TaskFolder`, `Goal`, `GoalStep`, `BusyInterval`; удалены `ChecklistList`/`ListItem`), добавляет `TodayFeedProvider`, `FreeSlotEngine`, `BusyPublisher`, `RecapBuilder` и требование не публиковать в CloudKit ничего, кроме анонимных интервалов занятости.
+> ⚠️ **Читать вместе с `01b_SPEC_AMENDMENT_01_REVISION.md`** - пересмотр поправки №1 оставляет состав сущностей базовой спеки (`ChecklistList`, `ListItem`, `Plan`, `PlanExpense`), добавляет `PlanStep` и `BusyInterval`, удаляет `TaskFolder`, добавляет `TodayFeedProvider`, `FreeSlotEngine`, `BusyPublisher`, `RecapBuilder` и требование не публиковать в CloudKit ничего, кроме анонимных интервалов занятости.
 
 ## 1. Обзор
 
@@ -173,7 +173,7 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 
 ## 13. Аналитика (своя)
 
-- События: `app_open`, `onboarding_step`, `space_created`, `invite_created`, `invite_redeemed`, `task_created(has_folder, assignee)`, `task_taken`, `task_done`, `task_handed_back`, `event_created`, `wish_created(source)`, `wish_fulfilled`, `goal_created(type)`, `goal_completed`, `goal_step_created(has_due)`, `goal_step_done`, `expense_added`, `folder_created(template)`, `folder_map_opened`, `capsule_created`, `capsule_opened`, `vote_created`, `vote_answered`, `vote_revealed`, `widget_added(kind)`, `paywall_shown(reason)`, `trial_started`, `purchase(product)`, `restore`, `readonly_hit`, `today_opened`, `today_block_tapped(block)`, `today_quick_action(kind)`, `recap_shown`, `recap_notification_sent`, `recap_opened`, `freetime_opened`, `freetime_sharing_enabled`, `freetime_sharing_disabled`, `freetime_slot_tapped`, `freetime_empty(reason)`.
+- События: `app_open`, `onboarding_step`, `space_created`, `invite_created`, `invite_redeemed`, `task_created(assignee)`, `task_taken`, `task_done`, `task_handed_back`, `event_created`, `wish_created(source)`, `wish_fulfilled`, `plan_created(type)`, `plan_completed`, `plan_step_created(has_due)`, `plan_step_done`, `expense_added`, `list_created(template)`, `list_item_checked`, `list_map_opened`, `capsule_created`, `capsule_opened`, `vote_created`, `vote_answered`, `vote_revealed`, `widget_added(kind)`, `paywall_shown(reason)`, `trial_started`, `purchase(product)`, `restore`, `readonly_hit`, `today_opened`, `today_block_tapped(block)`, `today_quick_action(kind)`, `recap_shown`, `recap_notification_sent`, `recap_opened`, `freetime_opened`, `freetime_sharing_enabled`, `freetime_sharing_disabled`, `freetime_slot_tapped`, `freetime_empty(reason)`.
 - `anonId` — UUID на устройстве, не связан с Apple ID. Никаких PII.
 - Батч раз в 60 с или 20 событий; офлайн-очередь.
 - Дашборд — SQL-вьюхи в Supabase: воронка онбординга, доля пар, D1/D7/D30, trial→paid.

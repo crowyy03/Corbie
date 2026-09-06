@@ -2,7 +2,7 @@ import Foundation
 
 public enum UnifiedTaskSource: Sendable, Equatable, Hashable {
     case task
-    case goalStep(goalTitle: String)
+    case planStep(planTitle: String)
 }
 
 public struct UnifiedTask: Sendable, Equatable, Identifiable {
@@ -52,7 +52,7 @@ public struct UnifiedTask: Sendable, Equatable, Identifiable {
         )
     }
 
-    public init(_ step: GoalStepDTO) {
+    public init(_ step: PlanStepDTO) {
         self.init(
             id: step.id,
             title: step.title,
@@ -62,36 +62,36 @@ public struct UnifiedTask: Sendable, Equatable, Identifiable {
             isDone: step.isDone,
             doneByMemberId: step.doneByMemberId,
             createdAt: step.createdAt,
-            source: .goalStep(goalTitle: step.goalTitle)
+            source: .planStep(planTitle: step.planTitle)
         )
     }
 
     public var isFree: Bool { assigneeMemberId == nil }
 
-    public var goalTitle: String? {
+    public var planTitle: String? {
         switch source {
         case .task: return nil
-        case let .goalStep(goalTitle): return goalTitle
+        case let .planStep(planTitle): return planTitle
         }
     }
 }
 
 public struct UnifiedTaskProvider: Sendable {
     private let tasks: any TaskRepository
-    private let goals: any GoalRepository
+    private let plans: any PlanRepository
 
-    public init(tasks: any TaskRepository, goals: any GoalRepository) {
+    public init(tasks: any TaskRepository, plans: any PlanRepository) {
         self.tasks = tasks
-        self.goals = goals
+        self.plans = plans
     }
 
     public init(repositories: Repositories) {
-        self.init(tasks: repositories.tasks, goals: repositories.goals)
+        self.init(tasks: repositories.tasks, plans: repositories.plans)
     }
 
     public func unifiedTasks(_ query: TaskQuery) async throws -> [UnifiedTask] {
         let plain = try await tasks.tasks(query).map(UnifiedTask.init)
-        let steps = try await goals.datedSteps(spaceId: query.spaceId)
+        let steps = try await plans.datedSteps(spaceId: query.spaceId)
             .filter { UnifiedTaskProvider.matches($0, query: query) }
             .map(UnifiedTask.init)
         return (plain + steps).sorted(by: UnifiedTaskProvider.order)
@@ -108,19 +108,13 @@ public struct UnifiedTaskProvider: Sendable {
                 at: date
             )
             return UnifiedTask(updated)
-        case .goalStep:
-            let updated = try await goals.toggleStep(stepId: item.id, by: memberId, at: date)
+        case .planStep:
+            let updated = try await plans.toggleStep(stepId: item.id, by: memberId, at: date)
             return UnifiedTask(updated)
         }
     }
 
-    private static func matches(_ step: GoalStepDTO, query: TaskQuery) -> Bool {
-        switch query.folder {
-        case .all, .none:
-            break
-        case .folder:
-            return false
-        }
+    private static func matches(_ step: PlanStepDTO, query: TaskQuery) -> Bool {
         switch query.done {
         case .any:
             break

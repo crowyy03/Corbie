@@ -75,20 +75,20 @@ import Testing
         #expect(result.blocks.first == .today)
     }
 
-    @Test func aDatedGoalStepArrivesWithItsGoal() async throws {
+    @Test func aDatedPlanStepArrivesWithItsPlan() async throws {
         let world = try await TestWorld.make()
-        let goal = try await world.repositories.goals.create(
-            GoalDraft(spaceId: world.space.id, title: "Japan", createdByMemberId: world.me.id)
+        let plan = try await world.repositories.plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Japan", createdByMemberId: world.me.id)
         )
-        _ = try await world.repositories.goals.addStep(
-            goalId: goal.id,
-            draft: GoalStepDraft(title: "Papers", assigneeMemberId: world.me.id, dueAt: date("2026-09-02"))
+        _ = try await world.repositories.plans.addStep(
+            planId: plan.id,
+            draft: PlanStepDraft(title: "Papers", assigneeMemberId: world.me.id, dueAt: date("2026-09-02"))
         )
         let result = try await feed(world)
         let entry = try #require(result.entries.first)
         #expect(entry.title == "Papers")
-        #expect(entry.goalTitle == "Japan")
-        #expect(entry.goalId == goal.id)
+        #expect(entry.planTitle == "Japan")
+        #expect(entry.planId == plan.id)
         #expect(entry.task != nil)
     }
 
@@ -159,10 +159,10 @@ import Testing
         #expect(birthday.isGiftMissing == false)
     }
 
-    @Test func theGoalWithTheNearestDeadlineWins() async throws {
+    @Test func thePlanWithTheNearestDeadlineWins() async throws {
         let world = try await TestWorld.make()
-        _ = try await world.repositories.goals.create(
-            GoalDraft(
+        _ = try await world.repositories.plans.create(
+            PlanDraft(
                 spaceId: world.space.id,
                 title: "Far",
                 targetAmount: 1000,
@@ -170,8 +170,8 @@ import Testing
                 createdByMemberId: world.me.id
             )
         )
-        _ = try await world.repositories.goals.create(
-            GoalDraft(
+        _ = try await world.repositories.plans.create(
+            PlanDraft(
                 spaceId: world.space.id,
                 title: "Near",
                 targetAmount: 1000,
@@ -180,19 +180,19 @@ import Testing
             )
         )
         let result = try await feed(world)
-        #expect(result.goal?.title == "Near")
+        #expect(result.plan?.title == "Near")
     }
 
-    @Test func withoutADeadlineTheNewestGoalShows() async throws {
+    @Test func withoutADeadlineTheNewestPlanShows() async throws {
         let world = try await TestWorld.make()
-        _ = try await world.repositories.goals.create(
-            GoalDraft(spaceId: world.space.id, title: "Older", createdByMemberId: world.me.id)
+        _ = try await world.repositories.plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Older", createdByMemberId: world.me.id)
         )
-        _ = try await world.repositories.goals.create(
-            GoalDraft(spaceId: world.space.id, title: "Newer", createdByMemberId: world.me.id)
+        _ = try await world.repositories.plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Newer", createdByMemberId: world.me.id)
         )
         let result = try await feed(world)
-        #expect(result.goal?.title == "Newer")
+        #expect(result.plan?.title == "Newer")
     }
 
     @Test func waitingCollectsACapsuleAVoteAndFreshPartnerWishes() async throws {

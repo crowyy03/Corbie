@@ -15,10 +15,10 @@ struct PaywallValueRow: Identifiable, Equatable {
             noteKey: "paywall.value.widgets.note"
         ),
         PaywallValueRow(
-            id: "goals",
+            id: "plans",
             systemImage: "flag",
-            titleKey: "paywall.value.goals.title",
-            noteKey: "paywall.value.goals.note"
+            titleKey: "paywall.value.plans.title",
+            noteKey: "paywall.value.plans.note"
         ),
         PaywallValueRow(
             id: "capsules",
@@ -41,7 +41,6 @@ enum PaywallCopy {
         case .capsules: return "paywall.reason.capsules"
         case .votes: return "paywall.reason.votes"
         case .people: return "paywall.reason.people"
-        case .folders: return "paywall.reason.folders"
         case .freeTime: return "paywall.reason.freetime"
         }
     }

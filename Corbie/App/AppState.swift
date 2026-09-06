@@ -8,7 +8,7 @@ final class AppState {
         case tasks
         case calendar
         case wishes
-        case goals
+        case plans
     }
 
     var selectedTab: Tab = .today
@@ -32,7 +32,7 @@ final class AppState {
         case .tasks, .task: .tasks
         case .calendar: .calendar
         case .wishes: .wishes
-        case .goals, .goal: .goals
+        case .plans, .plan: .plans
         case .capsules, .votes, .people, .person, .us, .join: nil
         }
     }

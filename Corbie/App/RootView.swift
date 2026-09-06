@@ -85,13 +85,13 @@ struct RootView: View {
             .tag(AppState.Tab.wishes)
 
             NavigationStack {
-                GoalsView()
+                PlansView()
                     .paywallBanner()
             }
             .tabItem {
-                Label(String(localized: "tab.goals.title"), systemImage: "flag")
+                Label(String(localized: "tab.plans.title"), systemImage: "flag")
             }
-            .tag(AppState.Tab.goals)
+            .tag(AppState.Tab.plans)
 
         }
         .fullScreenCover(isPresented: $state.isUsHubPresented) {

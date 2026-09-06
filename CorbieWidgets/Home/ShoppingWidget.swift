@@ -8,12 +8,12 @@ struct ShoppingEntry: TimelineEntry {
 
     static let placeholder = ShoppingEntry(
         date: Date(),
-        snapshot: ShoppingSnapshot(folderId: nil, title: nil, items: [], remaining: 0, isPremium: true)
+        snapshot: ShoppingSnapshot(listId: nil, title: nil, items: [], remaining: 0, isPremium: true)
     )
 
     static func load(now: Date, provider: WidgetDataProvider) async -> ShoppingEntry {
         let snapshot = (try? await provider.shopping(now: now))
-            ?? ShoppingSnapshot(folderId: nil, title: nil, items: [], remaining: 0, isPremium: true)
+            ?? ShoppingSnapshot(listId: nil, title: nil, items: [], remaining: 0, isPremium: true)
         return ShoppingEntry(date: now, snapshot: snapshot)
     }
 }
@@ -39,13 +39,18 @@ struct ShoppingWidget: Widget {
 struct ShoppingWidgetView: View {
     let entry: ShoppingEntry
 
+    private var route: CorbieRoute {
+        guard let listId = entry.snapshot.listId else { return .lists }
+        return .list(listId)
+    }
+
     var body: some View {
         Group {
             if entry.snapshot.isPremium == false {
                 LockedWidgetView()
             } else if entry.snapshot.items.isEmpty {
                 WidgetEmptyState(title: "widget.shopping.empty", note: "widget.shopping.empty.note")
-                    .widgetURL(CorbieRoute.tasks.url)
+                    .widgetURL(route.url)
             } else {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(entry.snapshot.items) { item in
@@ -57,7 +62,7 @@ struct ShoppingWidgetView: View {
                     Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .widgetURL(CorbieRoute.tasks.url)
+                .widgetURL(route.url)
             }
         }
     }
@@ -73,7 +78,7 @@ struct ShoppingRow: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            Button(intent: ToggleShoppingItemIntent(taskID: item.id)) {
+            Button(intent: ToggleShoppingItemIntent(itemID: item.id)) {
                 Image(systemName: item.isChecked ? "checkmark.circle.fill" : "circle")
                     .corbieBody()
                     .imageScale(.large)
@@ -85,7 +90,7 @@ struct ShoppingRow: View {
             .accessibilityLabel(
                 Text(String(format: String(localized: "widget.shopping.toggle.accessibility"), item.title))
             )
-            .accessibilityValue(Text(item.isChecked ? "tasks.item.checked" : "tasks.item.unchecked"))
+            .accessibilityValue(Text(item.isChecked ? "lists.item.checked" : "lists.item.unchecked"))
             Text(item.title)
                 .corbieBody()
                 .foregroundStyle(CorbieColorPalette.text)
@@ -104,11 +109,11 @@ struct ShoppingRow: View {
     await ShoppingEntry.load(now: Date(), provider: WidgetPreviewData.provider())
     ShoppingEntry(
         date: Date(),
-        snapshot: ShoppingSnapshot(folderId: UUID(), title: "Shopping", items: [], remaining: 0, isPremium: true)
+        snapshot: ShoppingSnapshot(listId: UUID(), title: "Shopping", items: [], remaining: 0, isPremium: true)
     )
     ShoppingEntry(
         date: Date(),
-        snapshot: ShoppingSnapshot(folderId: nil, title: nil, items: [], remaining: 0, isPremium: false)
+        snapshot: ShoppingSnapshot(listId: nil, title: nil, items: [], remaining: 0, isPremium: false)
     )
 }
 #endif

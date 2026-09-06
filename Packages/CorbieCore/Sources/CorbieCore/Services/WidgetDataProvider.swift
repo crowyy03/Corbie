@@ -189,13 +189,13 @@ public struct WidgetDataProvider: Sendable {
         )
     }
 
-    public func goalProgress(goalId: UUID? = nil, now: Date = Date()) async throws -> GoalProgressSnapshot {
+    public func planProgress(planId: UUID? = nil, now: Date = Date()) async throws -> PlanProgressSnapshot {
         guard let context = try await context(now: now) else {
-            return goalSnapshot(nil, isPremium: false)
+            return planSnapshot(nil, isPremium: false)
         }
-        let goals = try await controller.repositories.goals.goals(spaceId: context.space.id, statuses: [.active])
-        let goal = goalId.flatMap { id in goals.first { $0.id == id } } ?? goals.first
-        return goalSnapshot(goal, isPremium: context.isPremium)
+        let plans = try await controller.repositories.plans.plans(spaceId: context.space.id, statuses: [.active])
+        let plan = planId.flatMap { id in plans.first { $0.id == id } } ?? plans.first
+        return planSnapshot(plan, isPremium: context.isPremium)
     }
 
     public func upcomingDates(now: Date = Date()) async throws -> UpcomingDatesSnapshot {
@@ -211,24 +211,23 @@ public struct WidgetDataProvider: Sendable {
 
     public func shopping(now: Date = Date()) async throws -> ShoppingSnapshot {
         guard let context = try await context(now: now) else {
-            return ShoppingSnapshot(folderId: nil, title: nil, items: [], remaining: 0, isPremium: false)
+            return ShoppingSnapshot(listId: nil, title: nil, items: [], remaining: 0, isPremium: false)
         }
-        let folders = try await controller.repositories.tasks.folders(spaceId: context.space.id)
-        guard let pinned = folders.first(where: \.isPinnedShopping) else {
-            return ShoppingSnapshot(folderId: nil, title: nil, items: [], remaining: 0, isPremium: context.isPremium)
+        let lists = try await controller.repositories.lists.lists(spaceId: context.space.id)
+        guard let pinned = lists.first(where: \.isPinnedShopping) else {
+            return ShoppingSnapshot(listId: nil, title: nil, items: [], remaining: 0, isPremium: context.isPremium)
         }
-        let open = try await controller.repositories.tasks.tasks(
-            TaskQuery(spaceId: context.space.id, folder: .folder(pinned.id))
-        )
+        let items = try await controller.repositories.lists.items(listId: pinned.id)
+        let open = items.filter { $0.isChecked == false }
         return ShoppingSnapshot(
-            folderId: pinned.id,
+            listId: pinned.id,
             title: pinned.title,
-            items: open.prefix(WidgetDataProvider.shoppingLimit).map { task in
+            items: open.prefix(WidgetDataProvider.shoppingLimit).map { item in
                 WidgetShoppingItem(
-                    id: task.id,
-                    title: task.title,
-                    isChecked: task.isDone,
-                    colorKey: context.colorKey(for: task.createdByMemberId)
+                    id: item.id,
+                    title: item.title,
+                    isChecked: item.isChecked,
+                    colorKey: context.colorKey(for: item.addedByMemberId)
                 )
             },
             remaining: max(0, open.count - WidgetDataProvider.shoppingLimit),
@@ -273,16 +272,16 @@ public struct WidgetDataProvider: Sendable {
 
     public func ourDay(now: Date = Date()) async throws -> OurDaySnapshot {
         guard let context = try await context(now: now) else {
-            return OurDaySnapshot(days: nil, nextDate: nil, goal: nil, tasks: [], isPremium: false)
+            return OurDaySnapshot(days: nil, nextDate: nil, plan: nil, tasks: [], isPremium: false)
         }
         let open = try await openTasks(spaceId: context.space.id)
         let dates = try await widgetDates(context: context, now: now)
-        let goals = try await controller.repositories.goals.goals(spaceId: context.space.id, statuses: [.active])
-        let goal = goals.first
+        let plans = try await controller.repositories.plans.plans(spaceId: context.space.id, statuses: [.active])
+        let plan = plans.first
         return OurDaySnapshot(
             days: ImportantDates.daysTogether(space: context.space, now: now, calendar: calendar),
             nextDate: dates.first,
-            goal: goal.map { goalSnapshot($0, isPremium: context.isPremium) },
+            plan: plan.map { planSnapshot($0, isPremium: context.isPremium) },
             tasks: open.prefix(WidgetDataProvider.taskLimit).map { widgetTask($0, context: context) },
             isPremium: context.isPremium
         )
@@ -300,12 +299,12 @@ public struct WidgetDataProvider: Sendable {
                 progress: nil,
                 isPremium: context.isPremium
             )
-        case .goalRing:
-            let goals = try await controller.repositories.goals.goals(spaceId: context.space.id, statuses: [.active])
+        case .planRing:
+            let plans = try await controller.repositories.plans.plans(spaceId: context.space.id, statuses: [.active])
             return LockCircularSnapshot(
                 mode: mode,
-                value: goals.first.map { Int(($0.progress * 100).rounded()) },
-                progress: goals.first?.progress,
+                value: plans.first.map { Int(($0.progress * 100).rounded()) },
+                progress: plans.first?.progress,
                 isPremium: context.isPremium
             )
         case .countdown:
@@ -461,10 +460,10 @@ public struct WidgetDataProvider: Sendable {
         }
     }
 
-    private func goalSnapshot(_ goal: GoalDTO?, isPremium: Bool) -> GoalProgressSnapshot {
-        guard let goal else {
-            return GoalProgressSnapshot(
-                goalId: nil,
+    private func planSnapshot(_ plan: PlanDTO?, isPremium: Bool) -> PlanProgressSnapshot {
+        guard let plan else {
+            return PlanProgressSnapshot(
+                planId: nil,
                 title: nil,
                 progress: 0,
                 savedText: nil,
@@ -474,15 +473,15 @@ public struct WidgetDataProvider: Sendable {
                 isPremium: isPremium
             )
         }
-        return GoalProgressSnapshot(
-            goalId: goal.id,
-            title: goal.title,
-            progress: goal.progress,
-            savedText: Money(amount: goal.totalSavedAmount, currency: goal.currency).formatted(locale: locale),
-            targetText: Money(amount: goal.targetAmount, currency: goal.currency).formatted(locale: locale),
-            isOverspent: goal.isOverspent,
-            overspentText: goal.isOverspent
-                ? Money(amount: goal.overspentAmount, currency: goal.currency).formatted(locale: locale)
+        return PlanProgressSnapshot(
+            planId: plan.id,
+            title: plan.title,
+            progress: plan.progress,
+            savedText: Money(amount: plan.totalSavedAmount, currency: plan.currency).formatted(locale: locale),
+            targetText: Money(amount: plan.targetAmount, currency: plan.currency).formatted(locale: locale),
+            isOverspent: plan.isOverspent,
+            overspentText: plan.isOverspent
+                ? Money(amount: plan.overspentAmount, currency: plan.currency).formatted(locale: locale)
                 : nil,
             isPremium: isPremium
         )
@@ -527,22 +526,22 @@ extension WidgetDataProvider {
         return result
     }
 
-    public func selectableGoals(now: Date = Date()) async throws -> [WidgetGoalOption] {
+    public func selectablePlans(now: Date = Date()) async throws -> [WidgetPlanOption] {
         guard let context = try await context(now: now) else { return [] }
-        let goals = try await controller.repositories.goals.goals(
+        let plans = try await controller.repositories.plans.plans(
             spaceId: context.space.id,
             statuses: [.active, .completed]
         )
-        return goals
+        return plans
             .prefix(WidgetDataProvider.optionLimit)
-            .map { WidgetGoalOption(id: $0.id, title: $0.title, progress: $0.progress) }
+            .map { WidgetPlanOption(id: $0.id, title: $0.title, progress: $0.progress) }
     }
 
-    public func goalOptions(ids: [UUID]) async throws -> [WidgetGoalOption] {
-        var result: [WidgetGoalOption] = []
+    public func planOptions(ids: [UUID]) async throws -> [WidgetPlanOption] {
+        var result: [WidgetPlanOption] = []
         for id in ids {
-            guard let goal = try await controller.repositories.goals.goal(id: id) else { continue }
-            result.append(WidgetGoalOption(id: goal.id, title: goal.title, progress: goal.progress))
+            guard let plan = try await controller.repositories.plans.plan(id: id) else { continue }
+            result.append(WidgetPlanOption(id: plan.id, title: plan.title, progress: plan.progress))
         }
         return result
     }

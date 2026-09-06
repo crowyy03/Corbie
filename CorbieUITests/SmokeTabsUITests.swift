@@ -70,24 +70,24 @@ final class SmokeTabsUITests: XCTestCase {
         saveScreenshot(app, named: "wishes_created")
     }
 
-    func testGoalCreateAndExpenseInGoalCurrency() throws {
+    func testPlanCreateAndExpenseInPlanCurrency() throws {
         let app = launchSignedIn()
-        selectTab(app, QATab.goals)
+        selectTab(app, QATab.plans)
 
         let title = uniqueTitle("Lisbon")
         app.navigationAdd.tap()
-        XCTAssertTrue(app.navigationBars["New goal"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.navigationBars["New plan"].waitForExistence(timeout: 15))
         type(title, into: app.textFields["Title"])
         type("5000", into: app.textFields["Target amount"])
         app.buttons[QAText.save].tap()
 
         let card = app.anyElement(labelContaining: title)
-        XCTAssertTrue(card.waitForExistence(timeout: 20), "the new goal is not in the list")
-        saveScreenshot(app, named: "goals_created")
+        XCTAssertTrue(card.waitForExistence(timeout: 20), "the new plan is not in the list")
+        saveScreenshot(app, named: "plans_created")
         card.tap()
 
         let addExpense = app.buttons["Add expense"]
-        XCTAssertTrue(addExpense.waitForExistence(timeout: 20), "a goal without expenses offers no way to add one")
+        XCTAssertTrue(addExpense.waitForExistence(timeout: 20), "a plan without expenses offers no way to add one")
         addExpense.tap()
 
         XCTAssertTrue(app.navigationBars["Add expense"].waitForExistence(timeout: 15))
@@ -96,9 +96,9 @@ final class SmokeTabsUITests: XCTestCase {
 
         XCTAssertTrue(
             app.anyElement(labelContaining: "120").waitForExistence(timeout: 20),
-            "the expense is not on the goal"
+            "the expense is not on the plan"
         )
-        saveScreenshot(app, named: "goals_expense")
+        saveScreenshot(app, named: "plans_expense")
     }
 
     func testCapsuleCreate() throws {

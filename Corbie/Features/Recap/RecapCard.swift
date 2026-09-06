@@ -13,7 +13,7 @@ struct RecapCard: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.m) {
                     SectionCaps(text: String(localized: "recap.title"))
                     columns
-                    goals
+                    plans
                     comingUp
                     footer
                 }
@@ -47,11 +47,11 @@ struct RecapCard: View {
         }
     }
 
-    @ViewBuilder private var goals: some View {
-        if summary.goals.isEmpty == false {
+    @ViewBuilder private var plans: some View {
+        if summary.plans.isEmpty == false {
             VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
-                ForEach(summary.goals) { move in
-                    Text(presentation.goalLine(move))
+                ForEach(summary.plans) { move in
+                    Text(presentation.planLine(move))
                         .corbieBody()
                         .foregroundStyle(CorbieColorPalette.text)
                         .multilineTextAlignment(.leading)
@@ -119,9 +119,9 @@ private struct RecapCardGallery: View {
                         wishesAdded: 0
                     )
                 ],
-                goals: [
-                    RecapGoalMove(
-                        goalId: UUID(),
+                plans: [
+                    RecapPlanMove(
+                        planId: UUID(),
                         title: "Japan",
                         delta: 300,
                         currency: "EUR",

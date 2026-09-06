@@ -145,23 +145,21 @@ import Testing
 
     @Test func togglingAShoppingItemFlipsItBothWays() async throws {
         let world = try await makeWorld()
-        let items = try await world.seed.controller.repositories.tasks.tasks(
-            TaskQuery(spaceId: world.seed.space.id, folder: .folder(world.seed.shoppingFolder.id))
-        )
+        let items = try await world.seed.controller.repositories.lists.items(listId: world.seed.shoppingList.id)
         let first = try #require(items.first)
         let checked = try await TaskIntentRunner.toggleShoppingItem(
-            taskId: first.id,
+            itemId: first.id,
             persistence: world.persistence,
             now: world.now
         )
-        #expect(checked.isDone)
-        #expect(checked.doneByMemberId == world.seed.me.id)
+        #expect(checked.isChecked)
+        #expect(checked.checkedByMemberId == world.seed.me.id)
         let unchecked = try await TaskIntentRunner.toggleShoppingItem(
-            taskId: first.id,
+            itemId: first.id,
             persistence: world.persistence,
             now: world.now
         )
-        #expect(unchecked.isDone == false)
+        #expect(unchecked.isChecked == false)
     }
 
     @Test func identifiersMustBeUUIDs() throws {
@@ -197,7 +195,7 @@ import AppIntents
         let itemId = UUID()
         #expect(ToggleTaskDoneIntent(taskID: taskId).taskID == taskId.uuidString)
         #expect(TakeTaskIntent(taskID: taskId).taskID == taskId.uuidString)
-        #expect(ToggleShoppingItemIntent(taskID: itemId).taskID == itemId.uuidString)
+        #expect(ToggleShoppingItemIntent(itemID: itemId).itemID == itemId.uuidString)
     }
 
     @Test func performingTheToggleIntentWritesThroughTheSharedPersistence() async throws {
