@@ -2,14 +2,14 @@
 import CorbieCore
 import SwiftUI
 
-struct DebugMenuView: View {
+struct DebugNotificationsSections: View {
     @Environment(AppEnvironment.self) private var environment
     @State private var authorization: NotificationAuthorization = .notDetermined
     @State private var pending: [String] = []
     @State private var hasSeenJointAction = false
 
     var body: some View {
-        List {
+        Group {
             Section {
                 line(title: "Notification permission", value: authorization.rawValue)
                 line(title: "Joint action seen", value: hasSeenJointAction.description)
@@ -17,7 +17,7 @@ struct DebugMenuView: View {
                 line(title: "Space", value: environment.space?.id.uuidString ?? "-")
                 line(title: "Member", value: environment.currentMember?.id.uuidString ?? "-")
             } header: {
-                SectionCaps(text: "State")
+                Text(verbatim: "State")
             }
             .listRowBackground(CorbieColorPalette.surface)
 
@@ -33,7 +33,7 @@ struct DebugMenuView: View {
                         .foregroundStyle(CorbieColorPalette.text2)
                 }
             } header: {
-                SectionCaps(text: "Pending notifications")
+                Text(verbatim: "Pending notifications")
             }
             .listRowBackground(CorbieColorPalette.surface)
 
@@ -52,11 +52,6 @@ struct DebugMenuView: View {
             }
             .listRowBackground(CorbieColorPalette.surface)
         }
-        .listStyle(.insetGrouped)
-        .scrollContentBackground(.hidden)
-        .background(CorbieColorPalette.bg)
-        .navigationTitle(Text(verbatim: "Developer"))
-        .navigationBarTitleDisplayMode(.inline)
         .task { await reload() }
     }
 
@@ -81,7 +76,9 @@ struct DebugMenuView: View {
 
 #Preview {
     NavigationStack {
-        DebugMenuView()
+        List {
+            DebugNotificationsSections()
+        }
     }
     .environment(AppEnvironment.previewSignedIn())
 }

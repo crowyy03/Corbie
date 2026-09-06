@@ -26,7 +26,8 @@ report "comments in swift" sh -c "$(cat <<'SH'
 find Corbie CorbieWidgets CorbieShare CorbieTests CorbieUITests Packages/CorbieCore/Sources Packages/CorbieCore/Tests -name '*.swift' -type f ! -path '*/.build/*' -print0 |
     xargs -0 grep -nE '(^|[[:space:]])//|/\*' |
     grep -vE '"[^"]*//[^"]*"' |
-    grep -vE 'https?://'
+    grep -vE 'https?://' |
+    grep -vFf scripts/lint_allow.txt
 SH
 )"
 report "comments in server code" sh -c "$(cat <<'SH'

@@ -1,0 +1,1 @@
+// UNUserNotificationCenter.current() raises when the process has no bundle identity

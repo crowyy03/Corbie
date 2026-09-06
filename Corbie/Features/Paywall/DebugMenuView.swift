@@ -90,6 +90,7 @@ struct DebugMenuView: View {
             } footer: {
                 Text(verbatim: state)
             }
+            DebugNotificationsSections()
         }
         .navigationTitle(Text(verbatim: "Developer"))
         .navigationBarTitleDisplayMode(.inline)
