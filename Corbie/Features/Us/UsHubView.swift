@@ -99,23 +99,33 @@ struct UsHubView: View {
     }
 
     private var settings: some View {
-        Card {
-            HStack(spacing: CorbieSpacing.s) {
-                Image(systemName: "gearshape")
-                    .foregroundStyle(CorbieColorPalette.text2)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
-                    Text("us.hub.settings")
-                        .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
-                    Text("us.settings.note")
-                        .corbieMono()
+        NavigationLink {
+            SettingsView()
+        } label: {
+            Card {
+                HStack(spacing: CorbieSpacing.s) {
+                    Image(systemName: "gearshape")
                         .foregroundStyle(CorbieColorPalette.text2)
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
+                        Text("us.hub.settings")
+                            .corbieBody()
+                            .foregroundStyle(CorbieColorPalette.text)
+                        Text("us.settings.note")
+                            .corbieMono()
+                            .foregroundStyle(CorbieColorPalette.text2)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right")
+                        .font(.footnote)
+                        .foregroundStyle(CorbieColorPalette.text2)
+                        .accessibilityHidden(true)
                 }
-                Spacer(minLength: 0)
             }
         }
+        .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
     }
 }
 

@@ -77,6 +77,10 @@ public actor NotificationScheduler {
         }
     }
 
+    public func authorizationStatus() async -> NotificationAuthorization {
+        await client.authorizationStatus()
+    }
+
     public func registerCategories() async {
         await client.registerCategories(NotificationCategories.all)
     }
@@ -275,14 +279,46 @@ public actor NotificationScheduler {
         await cancel(prefix: NotificationKind.eventDigest.prefix + eventId.uuidString)
     }
 
+    @discardableResult
+    public func deliver(
+        _ alert: RemoteChangeAlert,
+        prefs: NotificationPrefs,
+        now: Date = Date()
+    ) async throws -> CorbieNotificationRequest? {
+        guard alert.kind.isEnabled(in: prefs) else { return nil }
+        let request = CorbieNotificationRequest(
+            id: alert.id,
+            fireDate: now,
+            content: alert.content,
+            isImmediate: true
+        )
+        try await client.add(request)
+        return request
+    }
+
     public func cancelAll(kind: NotificationKind) async {
         await cancel(prefix: kind.prefix)
     }
 
+    public func cancelAll(kinds: [NotificationKind]) async {
+        guard kinds.isEmpty == false else { return }
+        let prefixes = kinds.map(\.prefix)
+        let pending = await client.pendingIdentifiers()
+        let matching = pending.filter { identifier in
+            prefixes.contains { identifier.hasPrefix($0) }
+        }
+        await cancel(identifiers: matching)
+    }
+
+    public func cancelDisabled(in prefs: NotificationPrefs) async {
+        await cancelAll(kinds: NotificationKind.allCases.filter { $0.isEnabled(in: prefs) == false })
+    }
+
     public func cancelEverything() async {
         let pending = await client.pendingIdentifiers()
+        let prefixes = NotificationKind.allCases.map(\.prefix) + RemoteChangeKind.allCases.map(\.prefix)
         let corbie = pending.filter { identifier in
-            NotificationKind.allCases.contains { identifier.hasPrefix($0.prefix) }
+            prefixes.contains { identifier.hasPrefix($0) }
         }
         guard corbie.isEmpty == false else { return }
         await client.removePending(identifiers: corbie)

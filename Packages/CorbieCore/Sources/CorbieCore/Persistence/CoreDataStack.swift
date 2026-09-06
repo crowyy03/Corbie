@@ -71,6 +71,22 @@ public final class CoreDataStack: @unchecked Sendable {
         return context
     }
 
+    public func onRemoteChange(_ handler: (@Sendable ([RemoteChangeRecord]) -> Void)?) {
+        history?.setHandler(handler)
+    }
+
+    @discardableResult
+    public func processHistory() throws -> Int {
+        try history?.process() ?? 0
+    }
+
+    public func reloadStores() throws {
+        if let failure = CoreDataStack.load(container) {
+            throw CorbieError.persistence(failure.localizedDescription)
+        }
+        CoreDataStack.configure(container.viewContext, author: author)
+    }
+
     public func store(for scope: StoreScope) -> NSPersistentStore? {
         let stores = container.persistentStoreCoordinator.persistentStores
         if let named = stores.first(where: { $0.url?.lastPathComponent == scope.fileName }) {

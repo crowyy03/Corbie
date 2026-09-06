@@ -3,12 +3,15 @@ import Foundation
 
 enum Route: Equatable {
     case tasks
+    case task(UUID)
     case calendar
     case wishes
     case plans
     case plan(UUID)
     case capsules
     case votes
+    case people
+    case person(UUID)
     case join(String)
 }
 
@@ -31,6 +34,23 @@ enum Router {
         return nil
     }
 
+    static func route(for route: CorbieRoute) -> Route? {
+        switch route {
+        case .tasks: return .tasks
+        case let .task(id): return .task(id)
+        case .calendar: return .calendar
+        case .event: return .calendar
+        case .wishes, .wish: return .wishes
+        case .plans, .lists, .list: return .plans
+        case let .plan(id): return .plan(id)
+        case .capsules, .capsule: return .capsules
+        case .votes, .vote: return .votes
+        case .people: return .people
+        case let .person(id): return .person(id)
+        case .us, .paywall: return nil
+        }
+    }
+
     private static func isCorbieHost(_ host: String?) -> Bool {
         guard let host else { return false }
         let bare = host.hasPrefix("www.") ? String(host.dropFirst(4)) : host
@@ -43,7 +63,7 @@ enum Router {
 
         switch first {
         case "tasks":
-            return .tasks
+            return identified(rest.first, make: Route.task) ?? .tasks
         case "calendar":
             return .calendar
         case "wishes":
@@ -56,11 +76,18 @@ enum Router {
             return .capsules
         case "votes":
             return .votes
+        case "people":
+            return identified(rest.first, make: Route.person) ?? .people
         case "join":
             return joinRoute(code: rest.first)
         default:
             return nil
         }
+    }
+
+    private static func identified(_ segment: String?, make: (UUID) -> Route) -> Route? {
+        guard let segment, let identifier = UUID(uuidString: segment) else { return nil }
+        return make(identifier)
     }
 
     private static func webRoute(segments: [String]) -> Route? {

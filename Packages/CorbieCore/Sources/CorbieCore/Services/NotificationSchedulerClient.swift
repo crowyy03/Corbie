@@ -58,11 +58,13 @@ public struct CorbieNotificationRequest: Sendable, Equatable, Identifiable {
     public let id: String
     public let fireDate: Date
     public let content: CorbieNotificationContent
+    public let isImmediate: Bool
 
-    public init(id: String, fireDate: Date, content: CorbieNotificationContent) {
+    public init(id: String, fireDate: Date, content: CorbieNotificationContent, isImmediate: Bool = false) {
         self.id = id
         self.fireDate = fireDate
         self.content = content
+        self.isImmediate = isImmediate
     }
 }
 
@@ -166,7 +168,9 @@ public struct SystemNotificationCenterClient: NotificationCenterClient {
             [.year, .month, .day, .hour, .minute],
             from: request.fireDate
         )
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let trigger: UNNotificationTrigger? = request.isImmediate
+            ? nil
+            : UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         do {
             try await UNUserNotificationCenter.current().add(
                 UNNotificationRequest(identifier: request.id, content: content, trigger: trigger)
