@@ -11,6 +11,7 @@ struct CalendarView: View {
     @State private var model = CalendarViewModel()
     @State private var editorTarget: EventEditorTarget?
     @State private var isImporting = false
+    @State private var isFreeTimePresented = false
 
     var body: some View {
         ScrollView {
@@ -41,6 +42,16 @@ struct CalendarView: View {
                 }
                 .accessibilityLabel(Text("calendar.actions.label"))
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    openFreeTime()
+                } label: {
+                    Image(systemName: "clock.badge.checkmark")
+                        .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
+                        .contentShape(Rectangle())
+                }
+                .accessibilityLabel(Text("freetime.title"))
+            }
             AddToolbarItem {
                 editorTarget = .create(model.draftStart())
             }
@@ -63,6 +74,9 @@ struct CalendarView: View {
         }
         .sheet(isPresented: $isImporting) {
             CalendarImportView()
+        }
+        .sheet(isPresented: $isFreeTimePresented) {
+            FreeTimeView()
         }
         .navigationDestination(for: CalendarEventRoute.self) { route in
             EventDetailView(eventId: route.id, calendar: model.calendar)
@@ -149,6 +163,14 @@ struct CalendarView: View {
             return String(localized: "calendar.upcoming.title")
         }
         return model.formatting.shortDate(selectedDay)
+    }
+
+    private func openFreeTime() {
+        guard environment.premiumGate.isPremium else {
+            environment.premiumGate.presentPaywall(reason: .settings)
+            return
+        }
+        isFreeTimePresented = true
     }
 
     private func consumeRoute() {

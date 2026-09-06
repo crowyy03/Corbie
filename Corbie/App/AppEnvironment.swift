@@ -1,7 +1,9 @@
 import CorbieCore
 import CoreData
+import EventKit
 import Observation
 import SwiftUI
+import UIKit
 
 @MainActor
 @Observable
@@ -39,7 +41,10 @@ final class AppEnvironment {
     @ObservationIgnored let remoteChanges: RemoteChangeNotifier
     @ObservationIgnored let sessionService: SessionService
 
-    private(set) var busyPublisher: BusyPublisher?
+    @ObservationIgnored private(set) var busyPublisher: BusyPublisher?
+    @ObservationIgnored private var corbieEventBusyPublisher: CorbieEventBusyPublisher?
+    @ObservationIgnored private var busySourceObservers: [any NSObjectProtocol] = []
+
     let premiumGate: PremiumGate
     let toasts: ToastCenter
     let theme: ThemeStore
@@ -139,19 +144,90 @@ final class AppEnvironment {
             }
             let partner = try await repositories.members.partner(of: member.id, spaceId: space.id)
             session = .signedIn(SessionContext(space: space, member: member, partner: partner))
-            busyPublisher = BusyPublisher(
-                source: SystemDeviceCalendarSource(),
-                store: RepositoryBusyIntervalStore(repository: repositories.busyIntervals, spaceId: space.id)
-            )
+            startBusyPublishing(spaceId: space.id)
             await updateNotificationAudience()
             await resyncNotificationBacklog()
             premiumGate.update(await entitlements.cachedState(spaceId: space.id, trialEndsAt: space.trialEndsAt))
             try? await repositories.members.touchLastSeen(memberId: member.id)
             Task { await premiumGate.refresh(spaceId: space.id) }
+            Task { await publishBusyTimes() }
         } catch {
             session = .signedOut
             report(error)
         }
+    }
+
+    func publishBusyTimes(force: Bool = false) async {
+        guard case let .signedIn(context) = session else { return }
+        if let corbieEventBusyPublisher {
+            do {
+                try await corbieEventBusyPublisher.publish(
+                    spaceId: context.space.id,
+                    memberId: context.member.id,
+                    force: force
+                )
+            } catch {
+                report(error)
+            }
+        }
+        guard let busyPublisher else { return }
+        do {
+            _ = try await busyPublisher.publish(
+                memberId: context.member.id,
+                sharesBusyTimes: context.member.sharesBusyTimes,
+                force: force
+            )
+        } catch {
+            report(error)
+        }
+    }
+
+    func stopSharingBusyTimes() async {
+        guard case let .signedIn(context) = session, let busyPublisher else { return }
+        do {
+            try await busyPublisher.disableSharing(memberId: context.member.id)
+        } catch {
+            report(error)
+        }
+    }
+
+    private func startBusyPublishing(spaceId: UUID) {
+        let store = RepositoryBusyIntervalStore(repository: repositories.busyIntervals, spaceId: spaceId)
+        busyPublisher = BusyPublisher(source: SystemDeviceCalendarSource(), store: store)
+        corbieEventBusyPublisher = CorbieEventBusyPublisher(events: repositories.events, store: store)
+        observeBusySources()
+    }
+
+    private func stopBusyPublishing() {
+        busyPublisher = nil
+        corbieEventBusyPublisher = nil
+    }
+
+    private func observeBusySources() {
+        guard busySourceObservers.isEmpty else { return }
+        let center = NotificationCenter.default
+        busySourceObservers.append(
+            center.addObserver(
+                forName: UIApplication.didBecomeActiveNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                Task { @MainActor in await self?.publishBusyTimes() }
+            }
+        )
+        busySourceObservers.append(
+            center.addObserver(forName: .EKEventStoreChanged, object: nil, queue: .main) { [weak self] _ in
+                Task { @MainActor in await self?.deviceCalendarChanged() }
+            }
+        )
+    }
+
+    private func deviceCalendarChanged() async {
+        guard case let .signedIn(context) = session, let busyPublisher else { return }
+        await busyPublisher.calendarStoreChanged(
+            memberId: context.member.id,
+            sharesBusyTimes: context.member.sharesBusyTimes
+        )
     }
 
     func refreshEntitlement() async {
@@ -179,6 +255,7 @@ final class AppEnvironment {
     }
 
     func signOut() {
+        stopBusyPublishing()
         try? identity.clear()
         try? secrets.removeValue(for: Self.sessionTokenKey)
         try? secrets.removeValue(for: Self.appleIdentityTokenKey)
@@ -244,6 +321,7 @@ final class AppEnvironment {
     }
 
     func wipeLocalState() async {
+        stopBusyPublishing()
         await notifications.cancelEverything()
         await remoteChanges.stop()
         await remoteChanges.update(audience: nil)

@@ -4,15 +4,22 @@ import Observation
 
 enum EventEditorTarget: Identifiable, Equatable {
     case create(Date)
+    case createSlot(start: Date, end: Date)
     case edit(EventDTO)
 
     var id: String {
         switch self {
         case let .create(date):
-            return "create." + String(Int(date.timeIntervalSinceReferenceDate.rounded()))
+            return "create." + Self.stamp(date)
+        case let .createSlot(start, end):
+            return "slot." + Self.stamp(start) + "." + Self.stamp(end)
         case let .edit(event):
             return "edit." + event.id.uuidString
         }
+    }
+
+    private static func stamp(_ date: Date) -> String {
+        String(Int(date.timeIntervalSinceReferenceDate.rounded()))
     }
 }
 
@@ -53,6 +60,17 @@ final class EventEditorViewModel {
             isAllDay = false
             start = date
             end = configured.date(byAdding: .minute, value: Self.defaultDurationMinutes, to: date) ?? date
+            kind = .event
+            personId = nil
+            note = ""
+            reminders = []
+            place = nil
+        case let .createSlot(slotStart, slotEnd):
+            existing = nil
+            title = ""
+            isAllDay = false
+            start = slotStart
+            end = max(slotEnd, slotStart)
             kind = .event
             personId = nil
             note = ""
