@@ -4501,6 +4501,16 @@
         }
       }
     },
+    "goals.card.steps": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@/%2$@ steps"
+          }
+        }
+      }
+    },
     "goals.detail.action.addexpense": {
       "localizations": {
         "de": {
@@ -4726,7 +4736,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Added"
+            "value": "Money added"
           }
         },
         "es": {
@@ -4885,40 +4895,6 @@
         }
       }
     },
-    "goals.detail.note": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Notiz"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Note"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nota"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Note"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nota"
-          }
-        }
-      }
-    },
     "goals.detail.overspend": {
       "localizations": {
         "de": {
@@ -4949,6 +4925,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ oltre l'obiettivo"
+          }
+        }
+      }
+    },
+    "goals.detail.progress": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progress"
           }
         }
       }
@@ -4987,36 +4973,42 @@
         }
       }
     },
-    "goals.detail.spent": {
+    "goals.detail.steps": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ausgegeben"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Spent"
+            "value": "Preparation"
           }
-        },
-        "es": {
+        }
+      }
+    },
+    "goals.detail.steps.add.action": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gastado"
+            "value": "Add the step"
           }
-        },
-        "fr": {
+        }
+      }
+    },
+    "goals.detail.steps.add.placeholder": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dépensé"
+            "value": "Add a step"
           }
-        },
-        "it": {
+        }
+      }
+    },
+    "goals.detail.steps.hint": {
+      "localizations": {
+        "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Speso"
+            "value": "a step with a date also shows up in Tasks and Today"
           }
         }
       }
@@ -5871,6 +5863,16 @@
         }
       }
     },
+    "goals.section.active": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
+          }
+        }
+      }
+    },
     "goals.section.completed": {
       "localizations": {
         "de": {
@@ -6003,6 +6005,156 @@
           "stringUnit": {
             "state": "translated",
             "value": "Finito"
+          }
+        }
+      }
+    },
+    "goals.step.action.edit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit %@"
+          }
+        }
+      }
+    },
+    "goals.step.action.note.hide": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide note"
+          }
+        }
+      }
+    },
+    "goals.step.action.note.show": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show note"
+          }
+        }
+      }
+    },
+    "goals.step.due": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "due %@"
+          }
+        }
+      }
+    },
+    "goals.step.due.past": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "was due %@"
+          }
+        }
+      }
+    },
+    "goals.step.due.toggle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set a date"
+          }
+        }
+      }
+    },
+    "goals.step.editor.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step"
+          }
+        }
+      }
+    },
+    "goals.step.field.due": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Due"
+          }
+        }
+      }
+    },
+    "goals.step.field.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note"
+          }
+        }
+      }
+    },
+    "goals.step.field.note.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "what it takes"
+          }
+        }
+      }
+    },
+    "goals.step.field.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step"
+          }
+        }
+      }
+    },
+    "goals.step.field.title.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collect the documents"
+          }
+        }
+      }
+    },
+    "goals.step.field.who": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Who"
+          }
+        }
+      }
+    },
+    "goals.step.who.me": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Me"
+          }
+        }
+      }
+    },
+    "goals.step.who.nobody": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nobody"
           }
         }
       }

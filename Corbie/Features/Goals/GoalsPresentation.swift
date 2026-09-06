@@ -91,3 +91,41 @@ func goalDateRange(start: Date?, end: Date?, locale: Locale = .current) -> Strin
         return nil
     }
 }
+
+struct GoalStepDue: Equatable {
+    let text: String
+    let isOverdue: Bool
+}
+
+func goalStepsBadge(done: Int, total: Int, locale: Locale = .current) -> String? {
+    guard total > 0 else { return nil }
+    return String(
+        format: String(localized: "goals.card.steps"),
+        done.formatted(.number.locale(locale)),
+        total.formatted(.number.locale(locale))
+    )
+}
+
+func goalStepDue(
+    for step: GoalStepDTO,
+    now: Date,
+    locale: Locale = .current,
+    calendar: Calendar = .current
+) -> GoalStepDue? {
+    guard let dueAt = step.dueAt else { return nil }
+    let dates = RelativeDateText(locale: locale, calendar: calendar)
+    let isOverdue = step.isDone == false && (dates.calendar.daysAway(from: now, to: dueAt) ?? 0) < 0
+    let format = isOverdue
+        ? String(localized: "goals.step.due.past")
+        : String(localized: "goals.step.due")
+    return GoalStepDue(
+        text: String(format: format, dates.dueText(for: dueAt, now: now)),
+        isOverdue: isOverdue
+    )
+}
+
+func goalStepOrder(_ steps: [GoalStepDTO], moving offsets: IndexSet, to destination: Int) -> [UUID] {
+    var ids = steps.map(\.id)
+    ids.move(fromOffsets: offsets, toOffset: destination)
+    return ids
+}
