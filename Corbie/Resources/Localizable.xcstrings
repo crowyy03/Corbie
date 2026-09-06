@@ -24016,6 +24016,30 @@
             "state": "translated",
             "value": "no gift picked · %lld ideas saved"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kein Geschenk gewählt · %lld Ideen gespeichert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sin regalo elegido · %lld ideas guardadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aucun cadeau choisi · %lld idées enregistrées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nessun regalo scelto · %lld idee salvate"
+          }
         }
       }
     },
