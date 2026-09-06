@@ -198,24 +198,7 @@ final class SmokeTabsUITests: XCTestCase {
         openUsTile(app, key: "us.hub.people")
 
         let name = uniqueTitle("Anna")
-        let birthday = monthAndDay(daysFromNow: 30)
-        openEditor(app, title: QACatalog.text("people.editor.title.new"), emptyStateKey: "people.empty.action")
-        type(name, into: app.textFields[QACatalog.text("people.editor.name")])
-
-        let monthPicker = app.buttons[
-            QACatalog.text("people.editor.birthday.month") + ", " + QACatalog.text("people.editor.birthday.none")
-        ]
-        XCTAssertTrue(monthPicker.waitForExistence(timeout: 25), "the person editor has no month picker")
-        monthPicker.tap()
-        app.buttons[birthday.monthName].tap()
-
-        let dayPicker = app.buttons
-            .matching(NSPredicate(format: "label BEGINSWITH %@", QACatalog.text("people.editor.birthday.day") + ", "))
-            .firstMatch
-        XCTAssertTrue(dayPicker.waitForExistence(timeout: 25), "picking a month did not reveal the day picker")
-        dayPicker.tap()
-        app.buttons["\(birthday.day)"].tap()
-        app.buttons[QAText.save].tap()
+        addPerson(app, name: name, birthdayDaysFromNow: 30)
 
         XCTAssertTrue(
             app.anyElement(labelContaining: name).waitForExistence(timeout: 30),
@@ -237,16 +220,6 @@ final class SmokeTabsUITests: XCTestCase {
             "the birthday did not reach the Coming up block on Today"
         )
         saveScreenshot(app, named: "smoke_person_birthday_on_today")
-    }
-
-    private func openEditor(_ app: XCUIApplication, title: String, emptyStateKey: String) {
-        let fromEmptyState = app.buttons[QACatalog.text(emptyStateKey)]
-        if fromEmptyState.waitForExistence(timeout: 15), fromEmptyState.isHittable {
-            fromEmptyState.tap()
-        } else {
-            app.navigationAdd.tap()
-        }
-        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 25), "\(title) did not open")
     }
 
     private func addEvent(_ app: XCUIApplication, title: String) {

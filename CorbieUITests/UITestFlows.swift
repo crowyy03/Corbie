@@ -1,9 +1,8 @@
 import XCTest
 
 enum UITestFlows {
-    static func launchFresh() -> XCUIApplication {
-        let app = XCUIApplication()
-        app.launchArguments.append("-corbie-reset-store")
+    static func launchFresh(language: String = "en", extraArguments: [String] = []) -> XCUIApplication {
+        let app = XCUIApplication.corbie(language: language, extraArguments: extraArguments)
         app.launch()
         return app
     }

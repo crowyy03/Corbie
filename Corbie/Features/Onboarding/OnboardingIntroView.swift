@@ -18,6 +18,9 @@ struct OnboardingIntroView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
 
             dots
+            #if DEBUG
+            debugSignInButton
+            #endif
             signInButton
 
             Text("onboarding.intro.signin.note")
@@ -136,12 +139,6 @@ struct OnboardingIntroView: View {
         .clipShape(RoundedRectangle(cornerRadius: CorbieRadius.pill, style: .continuous))
         .disabled(model.isWorking)
         .opacity(model.isWorking ? 0.4 : 1)
-        #if DEBUG
-        .overlay(alignment: .top) {
-            debugSignInButton
-                .offset(y: -CorbieMetrics.controlHeight)
-        }
-        #endif
     }
 
     #if DEBUG
@@ -169,8 +166,10 @@ struct OnboardingIntroView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     OnboardingIntroView(model: OnboardingViewModel(environment: .preview(), appState: AppState()))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(CorbieColorPalette.bg)
 }
+#endif

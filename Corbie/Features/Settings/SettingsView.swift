@@ -473,6 +473,7 @@ enum SettingsConfirmation: Identifiable {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         SettingsView()
@@ -480,3 +481,4 @@ enum SettingsConfirmation: Identifiable {
     .environment(AppState())
     .environment(AppEnvironment.previewSignedIn())
 }
+#endif

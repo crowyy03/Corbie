@@ -8,9 +8,7 @@ final class FreeTimeUITests: XCTestCase {
     }
 
     func testTheCalendarOpensFreeTimeAndAsksAboutSharingFirst() throws {
-        let app = XCUIApplication()
-        app.launchArguments += ["-" + privacyNoticeSeenKey, "NO"]
-        app.launch()
+        let app = UITestFlows.launchFresh(extraArguments: ["-" + privacyNoticeSeenKey, "NO"])
         UITestFlows.passOnboardingIfShown(app)
 
         let calendarTab = app.tabBars.firstMatch.buttons["Calendar"]

@@ -25,7 +25,7 @@ enum QARun {
         ProcessInfo.processInfo.environment["CORBIE_SCREENSHOT_DIR"]
     }
 
-    static var locale: String {
+    static func locale(for language: String) -> String {
         switch language {
         case "de": return "de_DE"
         case "es": return "es_ES"
@@ -112,25 +112,25 @@ enum QAText {
     static var sharedSettings: String { QACatalog.text("us.hub.settings") }
     static var settingsTitle: String { QACatalog.text("settings.title") }
     static var paywallHeadline: String { QACatalog.text("paywall.headline") }
-    static let developer = "Developer"
+    static var developerRow: String { QACatalog.text("settings.developer") }
+    static let developerTitle = "Developer"
     static let expireTrial = "Expire the trial"
 }
 
 extension XCUIApplication {
     static let themePreferenceDefaultsKey = "corbie.design.themePreference"
+    static let resetStoreArgument = "-corbie-reset-store"
 
     static func corbie(
-        startsEmpty: Bool = true,
+        language: String = QARun.language,
         appearance: String = QARun.appearance,
         extraArguments: [String] = []
     ) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-AppleLanguages", "(\(QARun.language))", "-AppleLocale", QARun.locale]
+        app.launchArguments += ["-AppleLanguages", "(\(language))", "-AppleLocale", QARun.locale(for: language)]
         app.launchArguments += ["-" + themePreferenceDefaultsKey, appearance]
+        app.launchArguments += [resetStoreArgument]
         app.launchArguments += extraArguments
-        if startsEmpty {
-            app.launchArguments += ["-corbie-erase-everything"]
-        }
         if QARun.usesLargeText {
             app.launchArguments += [
                 "-UIPreferredContentSizeCategoryName",
@@ -168,17 +168,12 @@ extension XCUIApplication {
 extension XCTestCase {
     @discardableResult
     func launchSignedIn(
-        startsEmpty: Bool = true,
         appearance: String = QARun.appearance,
         extraArguments: [String] = [],
         file: StaticString = #filePath,
         line: UInt = #line
     ) -> XCUIApplication {
-        let app = XCUIApplication.corbie(
-            startsEmpty: startsEmpty,
-            appearance: appearance,
-            extraArguments: extraArguments
-        )
+        let app = XCUIApplication.corbie(appearance: appearance, extraArguments: extraArguments)
         app.launch()
         passOnboardingIfShown(app, file: file, line: line)
         let tabBar = app.tabBars.firstMatch
@@ -284,11 +279,11 @@ extension XCTestCase {
 
     func openDeveloperMenu(_ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
         openSharedSettings(app, file: file, line: line)
-        let developer = app.collectionViews.buttons[QAText.developer].firstMatch
+        let developer = app.collectionViews.buttons[QAText.developerRow].firstMatch
         XCTAssertTrue(scrollTo(developer, in: app), "settings has no developer menu", file: file, line: line)
         developer.tap()
         XCTAssertTrue(
-            app.navigationBars[QAText.developer].waitForExistence(timeout: 30),
+            app.navigationBars[QAText.developerTitle].waitForExistence(timeout: 30),
             "the developer menu did not open",
             file: file,
             line: line
@@ -368,6 +363,70 @@ extension XCTestCase {
         )
         let url = URL(fileURLWithPath: directory).appendingPathComponent(file + ".png")
         try? shot.pngRepresentation.write(to: url)
+    }
+
+    func openEditor(
+        _ app: XCUIApplication,
+        title: String,
+        emptyStateKey: String,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let fromEmptyState = app.buttons[QACatalog.text(emptyStateKey)]
+        if fromEmptyState.waitForExistence(timeout: 15), fromEmptyState.isHittable {
+            fromEmptyState.tap()
+        } else {
+            app.navigationAdd.tap()
+        }
+        XCTAssertTrue(
+            app.navigationBars[title].waitForExistence(timeout: 25),
+            "\(title) did not open",
+            file: file,
+            line: line
+        )
+    }
+
+    func addPerson(
+        _ app: XCUIApplication,
+        name: String,
+        birthdayDaysFromNow: Int,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let birthday = monthAndDay(daysFromNow: birthdayDaysFromNow)
+        openEditor(
+            app,
+            title: QACatalog.text("people.editor.title.new"),
+            emptyStateKey: "people.empty.action",
+            file: file,
+            line: line
+        )
+        type(name, into: app.textFields[QACatalog.text("people.editor.name")], file: file, line: line)
+
+        let monthPicker = app.buttons[
+            QACatalog.text("people.editor.birthday.month") + ", " + QACatalog.text("people.editor.birthday.none")
+        ]
+        XCTAssertTrue(
+            monthPicker.waitForExistence(timeout: 25),
+            "the person editor has no month picker",
+            file: file,
+            line: line
+        )
+        monthPicker.tap()
+        app.buttons[birthday.monthName].tap()
+
+        let dayPicker = app.buttons
+            .matching(NSPredicate(format: "label BEGINSWITH %@", QACatalog.text("people.editor.birthday.day") + ", "))
+            .firstMatch
+        XCTAssertTrue(
+            dayPicker.waitForExistence(timeout: 25),
+            "picking a month did not reveal the day picker",
+            file: file,
+            line: line
+        )
+        dayPicker.tap()
+        app.buttons["\(birthday.day)"].tap()
+        app.buttons[QAText.save].tap()
     }
 
     func uniqueTitle(_ prefix: String) -> String {

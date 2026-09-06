@@ -4,59 +4,23 @@ Found in the QA pass and not fixed there. Anything fixed in that pass is in `doc
 instead. Severity: **blocker** stops a submission, **major** ships a broken feature, **minor** is
 wrong but survivable.
 
-Last checked against the build in this worktree on 2026-09-06, Xcode 26.6, iOS 26.5 runtime.
+Last checked against the build in this worktree on 2026-09-06, Xcode 26.6, iOS 26.5 runtime, on
+iPhone 17 Pro Max QA, iPhone 17e QA and iPhone 17 Badge.
 
 ## Blockers
-
-### German, Spanish, French and Italian print the catalog key on screen
-
-The four non-English tables are 107 keys short of English, and a key that is missing from a
-`<lang>.lproj/Localizable.strings` does not fall back to English: `String(localized:)` returns the
-key itself. The German tab bar reads `tab.today.title`, not `Today` and not `Heute`. Eight further
-keys carry an entry with an empty value, which renders as nothing at all.
-
-Reproduce:
-
-```
-xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max QA' \
-  -derivedDataPath /tmp/corbie-dd-qa build
-cd /tmp/corbie-dd-qa/Build/Products/Debug-iphonesimulator/Corbie.app
-python3 - <<'PY'
-import json, subprocess
-load = lambda l: json.loads(subprocess.run(
-    ['plutil','-convert','json','-o','-', f'{l}.lproj/Localizable.strings'],
-    capture_output=True, text=True).stdout)
-en = load('en')
-for l in ['de','es','fr','it']:
-    t = load(l)
-    print(l, 'missing', len([k for k in en if k not in t]),
-             'empty', len([k for k,v in t.items() if v == '']))
-PY
-```
-
-prints `de missing 107 empty 8` and the same for the other three. In the app: launch with
-`-AppleLanguages (de) -AppleLocale de_DE` and the first tab is labelled `tab.today.title`.
-
-The missing keys are the ones added after the localization pass: everything under `today.`,
-`freetime.`, `recap.`, `plans.step.`, `plans.detail.steps`, `people.date.`, `us.pill.label.new`,
-`tab.today.title`. The empty ones are `plans.detail.action.addexpense`, `plans.detail.expenses`,
-`plans.detail.expenses.empty`, `plans.detail.expenses.note`, `plans.editor.field.saved.hint`,
-`plans.expense.field.note.placeholder`, `plans.expense.info`, `plans.expense.title`.
-
-Fix, in the localization module: fill the 107 keys in `Corbie/Resources/Localizable.xcstrings` and
-give the 8 empty ones a value. `scripts/check_translations.sh` is the gate and currently reports 468
-entries. Until it passes, do not ship a localised App Store listing, and do not trust any German
-screenshot.
-
-`CorbieUITests/LocalizationUITests` skips a language whose tab titles are missing and names the keys
-in the skip reason, so the suite goes green on its own once the catalog is filled.
 
 ### The app has no icon
 
 `Corbie/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json` declares one universal 1024x1024
 slot and the folder contains no image file, so the build has no icon and App Store Connect rejects
-the upload. Fix: export the two-raven mark from `docs/02_BRAND_BOOK.md` section 2 at 1024x1024 into
-that `.appiconset`.
+the upload.
+
+Reproduce: `ls Corbie/Resources/Assets.xcassets/AppIcon.appiconset/` lists `Contents.json` and
+nothing else.
+
+Fix: export the two-raven mark at 1024x1024 into that `.appiconset`. The mark already exists as a
+vector view, `CorbieMarkView` in `Packages/CorbieCore/Sources/CorbieCore/Design`, and it is what the
+onboarding intro draws, so the icon can be rendered from it rather than redrawn.
 
 ### The server base URL is never configured
 
@@ -78,59 +42,35 @@ the same guard so the failure names the cause instead of a network error.
 
 ## Minor
 
-### An automated run can never show a StoreKit price on the paywall
-
-`Products.storekit` is attached to the Run action only, so `xcodebuild test` opens the paywall with no
-products and it renders `paywall.state.unavailable` ("The App Store did not answer") instead of the
-two offers. `QAAppearanceUITests.testThePaywallShowsWhatAppReviewLooksFor` therefore asserts the
-headline, Restore, the two legal links and the auto-renew sentence, then skips the price and period
-check with that reason.
-
-This is not a project.yml oversight: XcodeGen 2.46 emits `StoreKitConfigurationFileReference` for the
-Run action only. Setting `storeKitConfiguration` under `schemes.Corbie.test` is accepted and silently
-dropped, which is why it is not there.
-
-Fix: add a `Corbie.xctestplan` carrying `storeKitConfigurationFileReference` and point
-`schemes.Corbie.test.testPlans` at it. Until then the price is a manual check
-(`docs/TEST_PLAN.md` section 8).
-
-### Navigation bar items are 36 points tall
-
-`UsPill` asks for `.frame(minWidth: 44, minHeight: 44)`
-(`Packages/CorbieCore/Sources/CorbieCore/Design/Components/UsPill.swift:22`) but inside a
-`ToolbarItem` the bar constrains it: XCUITest reports the pill's frame as `{{343, 66}, {73, 36}}` on
-iPhone 17 Pro Max, and the toolbar Save button as 36 points tall too. Whether the system still hands
-those items a 44 point touch region was not measured, so `QATapTargetUITests` checks only the
-controls the app lays out itself (filter chip, Take, Who segment, due toggle, Today checkbox,
-appearance segment) and leaves the bar items out.
-
-Reproduce: any UI test, `print(app.usPill.frame)` after `launchSignedIn()`.
-
-Fix, if the founder wants the pill visually bigger: give it its own row instead of a toolbar item, or
-accept the bar height. Nothing to change if the system region is enough.
-
 ### A completely empty Today hides the plans carousel
 
 The revision says every block without data is hidden except the plans strip, which shows one
 "Add a plan" card. That holds while any other block has data
 (`CorbieUITests/TodayUITests` proves it), but when the whole feed is empty `TodayView` draws the
-module 16 empty state instead of the blocks (`Corbie/Features/Today/TodayView.swift:44`), and that
+module 16 empty state instead of the blocks (`Corbie/Features/Today/TodayView.swift:43`), and that
 state offers Add a task, Add a date and Invite your partner, with no way to start a plan.
 
-Reproduce: fresh install, do not add anything, open Today. Screenshot `tab0_today`.
+Reproduce: fresh install, add nothing, open Today, outside the weekly recap window. The recap card
+counts towards `TodayFeed.isEmpty`
+(`Packages/CorbieCore/Sources/CorbieCore/Services/TodayFeed.swift:261`), so between Sunday 19:00 and
+Monday 09:00 the blocks and the carousel appear and the bug hides. Seen on iPhone 17 Pro Max at 18:57
+on 2026-09-06: the empty state with its three buttons and no carousel. The same screen at 19:00, once
+the recap window had opened, drew the carousel next to the recap card, which is why none of the
+screenshots kept from the final matrix - all taken after 19:00 - show it.
 
 Fix, for the founder to decide: either keep the empty state and give it a fourth action, or keep the
 carousel above the empty state so the "Add a plan" card is always there. Both need a new catalog key
 if the empty state gains an action.
 
-### The Us counters still show a dash when there is nothing to count
+### The Us counters show a dash when there is nothing to count
 
 `UsHubView.counterColumn` renders `Text(value.map { $0.formatted() } ?? "-")` in the 56pt counter
 font (`Corbie/Features/Us/UsHubView.swift:108`). On a new space with no together-since date and no
-upcoming date, both columns render a hyphen at counter size.
+upcoming date, both columns render a hyphen at counter size, which reads as a redaction bar rather
+than as "nothing yet".
 
 Reproduce: fresh install, skip the together-since date in onboarding, open the Us hub. Screenshot
-`us_hub` from the QA run.
+`promax_en_light/us_hub.png`.
 
 Fix, for the founder to decide: drop the number entirely when there is nothing to count and let the
 mono caption carry the state, which is what `us.counters.empty` already says.
@@ -138,10 +78,52 @@ mono caption carry the state, which is what `us.counters.empty` already says.
 ### A list item exposes two buttons with the same VoiceOver label
 
 `ListItemRow` builds a checkbox button labelled with the item title
-(`Corbie/Features/Plans/Lists/ListItemRow.swift:34`) and a details button whose label is the same
-title (`:75`). VoiceOver announces "Milk, button" twice in a row and only the value ("ticked" / "not
-ticked") tells them apart. Fix: give the details button its own label, for example the item title
-plus its note, or fold the two into one element with a custom action.
+(`Corbie/Features/Plans/Lists/ListItemRow.swift:34`) and a details button whose only content is the
+same title (`:41`). VoiceOver announces "Milk, button" twice in a row and only the value
+("ticked" / "not ticked") tells them apart.
+
+Reproduce: a list with one item that has no place and no note, VoiceOver on, swipe through the row.
+
+Fix: give one of them a label that says what it does, the way the Today row does with
+`today.row.check` ("Tick %@"). That needs a new catalog key and it changes what
+`CorbieUITests/PlansUITests` and `SmokeTabsUITests` query, so it belongs to the Plans module rather
+than to a QA patch.
+
+### An automated run can never show a StoreKit price on the paywall
+
+`Products.storekit` reaches the Run action only, so `xcodebuild test` opens the paywall with no
+products and it renders `paywall.state.unavailable` ("The App Store did not answer") instead of the
+two offers. `QAAppearanceUITests.testThePaywallShowsWhatAppReviewLooksFor` therefore asserts the
+headline, Restore, the two legal links and the auto-renew sentence, then skips the price and period
+check with that reason. It is the one skip in a green run.
+
+Two routes were tried and neither works from the command line. `storeKitConfiguration` under
+`schemes.Corbie.test` is accepted by XcodeGen 2.46 and silently dropped: the generated
+`Corbie.xcscheme` carries `StoreKitConfigurationFileReference` under `LaunchAction` only. A
+`Corbie.xctestplan` with `defaultOptions.storeKitConfigurationFileReference` is read (the scheme
+gains a `TestPlans` block and the run reports `XCODE_TEST_PLAN_NAME`), but the configuration never
+reaches the app: nothing named StoreKit appears in the generated `.xctestrun`, the paywall still
+reports no products, and pointing the same key at a file that does not exist builds and runs without
+a word of complaint, so the key is ignored rather than misspelt.
+
+Fix: none from `xcodebuild` on Xcode 26.6. The price is a manual check through the Xcode Run action,
+which does carry the configuration (`docs/TEST_PLAN.md` section 8).
+
+### Navigation bar items are 36 points tall
+
+`UsPill` asks for `.frame(minWidth: 44, minHeight: 44)`
+(`Packages/CorbieCore/Sources/CorbieCore/Design/Components/UsPill.swift:22`) but inside a
+`ToolbarItem` the bar constrains it: the QA session before this one measured the pill at 73 by 36
+points on iPhone 17 Pro Max and the toolbar Save button at 36 points tall as well. This session did
+not re-measure. Whether the system still hands those items a 44 point touch region was never
+measured at all, so `QATapTargetUITests` checks only the controls the app lays out itself (filter
+chip, Take, Who segment, due toggle, Today checkbox, appearance segment) and leaves the bar items
+out.
+
+Reproduce: any UI test, `print(app.usPill.frame)` after `launchSignedIn()`.
+
+Fix, if the founder wants the pill visually bigger: give it its own row instead of a toolbar item, or
+accept the bar height. Nothing to change if the system region is enough.
 
 ### The primary button is not the accent colour
 
@@ -167,16 +149,13 @@ feature screens hints that a reminder was not scheduled: `TaskDueNotifications` 
 editor swallow the refusal silently. Worth a one-line hint next to the due date toggle once someone
 has denied.
 
-### Free time and the Us badge cannot be finished by one person
+### Free time and half the Us badge cannot be finished by one person
 
 A solo space can raise the badge dot from an unanswered vote it created itself
-(`CorbieUITests/UsBadgeUITests`) and from an unopened capsule, but the two remaining triggers in
-`UsBadgeRule` need a partner: a wish added by the partner and a gift not yet picked for a partner
-date. The same holds for free time: `FreeTimeView` shows "Free time needs two calendars" without a
+(`CorbieUITests/UsBadgeUITests`), from an unopened capsule, and from a person whose birthday falls
+inside fourteen days with no gift picked (`CorbieUITests/QAUsBadgeUITests`). The two remaining
+triggers in `UsBadgeRule` need a partner: a wish added by the partner, and a gift not picked for the
+partner's own birthday or the anniversary, which `RadarService.partnerStatus` reads from the partner's
+wishes. The same holds for free time: `FreeTimeView` shows "Free time needs two calendars" without a
 partner, so the slot list, the filters and the "Ask them" path are two-Apple-ID checks
 (`docs/TEST_PLAN.md` section 4).
-- minor: `SmokeTabsUITests.testCapsuleCreate` does not find the new capsule in the list right after saving; unclear whether the list refreshes late or the row label differs from the title. Reproduce during the Today and Us rework.
-- test debt: eight QA UI tests fail on "the Us hub has no settings entry" because they look for the settings row by a label that the localization pass changed; with the amendment the hub opens from the pill, so these tests are rewritten in the QA pass after the rework rather than patched now.
-- test debt: `QAPermissionsUITests.testThePhotoPickerIsReachableWithPhotosDenied` taps an ambiguous "Cancel" (two matches on screen).
-## Found by the localization screenshot run on 2026-09-06
-- cosmetic, debug builds only: on the onboarding intro the "continue without Apple ID (debug build)" button sits on top of the page dots (screenshots `onboarding_intro` in en, de and fr). The same overlap happens in English, so it is a layout issue in the intro, not a translation length. Release builds do not compile the button.

@@ -13,7 +13,15 @@ enum DebugLaunch {
         }
         _ = StoreReset.removeFiles(at: stores)
         let keychain = KeychainStore()
-        for key in [MemberIdentity.appleUserIDKey, AppEnvironment.sessionTokenKey, AppEnvironment.appleIdentityTokenKey] {
+        let keys = [
+            MemberIdentity.appleUserIDKey,
+            AnonymousIdentity.storageKey,
+            AppEnvironment.sessionTokenKey,
+            AppEnvironment.appleIdentityTokenKey,
+            AppEnvironment.appleAuthorizationCodeKey,
+            AppEnvironment.appleRefreshTokenKey,
+        ]
+        for key in keys {
             try? keychain.removeValue(for: key)
         }
         let defaults = UserDefaults.corbieShared

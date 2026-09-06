@@ -6,8 +6,7 @@ final class UsBadgeUITests: XCTestCase {
     }
 
     func testAnUnansweredVoteDotsThePillUntilItIsAnswered() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = UITestFlows.launchFresh()
         UITestFlows.passOnboardingIfShown(app)
 
         let quiet = app.buttons["Open the Us hub"].firstMatch

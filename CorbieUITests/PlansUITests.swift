@@ -8,8 +8,7 @@ final class PlansUITests: XCTestCase {
     }
 
     func testAPlanTakesMoneyAndAPrepStepFromItsOwnScreen() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = UITestFlows.launchFresh()
         UITestFlows.passOnboardingIfShown(app)
 
         let tab = app.tabBars.firstMatch.buttons.element(boundBy: plansTab)
@@ -69,8 +68,7 @@ final class PlansUITests: XCTestCase {
     }
 
     func testPrepStepsCanBeDraggedIntoAnotherOrder() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = UITestFlows.launchFresh()
         UITestFlows.passOnboardingIfShown(app)
 
         let tab = app.tabBars.firstMatch.buttons.element(boundBy: plansTab)
@@ -113,8 +111,7 @@ final class PlansUITests: XCTestCase {
     }
 
     func testAListTakesAnItemAndTicksIt() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = UITestFlows.launchFresh()
         UITestFlows.passOnboardingIfShown(app)
 
         let tab = app.tabBars.firstMatch.buttons.element(boundBy: plansTab)

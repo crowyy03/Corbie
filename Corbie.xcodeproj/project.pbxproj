@@ -176,6 +176,7 @@
 		AED0DE09546B96C72F20DF27 /* PlanStepEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF3624D6483041F9D4D4B85 /* PlanStepEditorView.swift */; };
 		AFD3D709CD0D834E52B7ABC6 /* PersonBirthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1014F53AB71BB71FA3BEA7A /* PersonBirthday.swift */; };
 		B1EE512764B5E74F9CD123B9 /* PeopleRadarSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06D24E69364151FE6F40BBC /* PeopleRadarSummaryTests.swift */; };
+		B21AE6FCD08FA4606B825AC7 /* QAUsBadgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F04166F84B0D8BDB60B7D6 /* QAUsBadgeUITests.swift */; };
 		B4B7513B620D0E5E0A33FAAE /* PlansPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B310FDE0142B17C029F56392 /* PlansPresentationTests.swift */; };
 		B65C5E297D2BD2BA85E0EEBB /* TasksSubtitleFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D923BE0154ECDD8036DCC4D /* TasksSubtitleFormatterTests.swift */; };
 		B660D036BEE72A1DD5240366 /* ChecklistCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2904ABEA4475A26774945E1E /* ChecklistCard.swift */; };
@@ -304,6 +305,7 @@
 		00E5161ADF9FC4B2ADE6678A /* PersonDateEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDateEditorViewModel.swift; sourceTree = "<group>"; };
 		01FAB1B4B5DDE62CE6516AB2 /* RecapPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecapPresentationTests.swift; sourceTree = "<group>"; };
 		025448DC8DE14E31514EAF21 /* FreeTimeCorbieEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeTimeCorbieEventTests.swift; sourceTree = "<group>"; };
+		03F04166F84B0D8BDB60B7D6 /* QAUsBadgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAUsBadgeUITests.swift; sourceTree = "<group>"; };
 		0624B532D1637B058E2944E4 /* LockCircularWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockCircularWidget.swift; sourceTree = "<group>"; };
 		062DF1A1AB7A3DF299FFA27B /* QARelativeDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QARelativeDateTests.swift; sourceTree = "<group>"; };
 		068D5A77BF5774DFB9C303CA /* CalendarImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarImportTests.swift; sourceTree = "<group>"; };
@@ -758,6 +760,7 @@
 				833DE92EF338706B8E2DAA59 /* QASettingsUITests.swift */,
 				254E445A388AA3E4C5573F04 /* QASupport.swift */,
 				A7F8D29552EB2C06EC982331 /* QATapTargetUITests.swift */,
+				03F04166F84B0D8BDB60B7D6 /* QAUsBadgeUITests.swift */,
 				36E0E59CAC219D930E70B512 /* SmokeTabsUITests.swift */,
 				F43BC912363D3C11DCD49E3C /* TodayUITests.swift */,
 				55858ADE19906DD3BA5CB177 /* UITestFlows.swift */,
@@ -1534,6 +1537,7 @@
 				30408DE5B9DFF45A0CF2F91C /* QASettingsUITests.swift in Sources */,
 				7BEC95E55DF0D0EA1DC07C5C /* QASupport.swift in Sources */,
 				996F45CA4A8CC2FE6F38E264 /* QATapTargetUITests.swift in Sources */,
+				B21AE6FCD08FA4606B825AC7 /* QAUsBadgeUITests.swift in Sources */,
 				F0EF350F0551F4CF959D1FF7 /* SmokeTabsUITests.swift in Sources */,
 				7B0C362CE3FFA9D19C70E613 /* TodayUITests.swift in Sources */,
 				6949864DE3E9685AB8FF85BA /* UITestFlows.swift in Sources */,

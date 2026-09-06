@@ -6,6 +6,22 @@ final class QAReleaseTests: XCTestCase {
         Bundle.main.infoDictionary ?? [:]
     }
 
+    private func keys(inLanguage language: String) throws -> Set<String> {
+        var found: Set<String> = []
+        for tableExtension in ["strings", "stringsdict"] {
+            guard let url = Bundle.main.url(
+                forResource: "Localizable",
+                withExtension: tableExtension,
+                subdirectory: nil,
+                localization: language
+            ) else { continue }
+            let plist = try PropertyListSerialization.propertyList(from: Data(contentsOf: url), format: nil)
+            guard let table = plist as? [String: Any] else { continue }
+            found.formUnion(table.keys)
+        }
+        return found
+    }
+
     private func englishCatalog() throws -> [String: String] {
         let url = try XCTUnwrap(
             Bundle.main.url(
@@ -68,6 +84,18 @@ final class QAReleaseTests: XCTestCase {
     func testTheAppShipsTheFiveLanguagesTheSpecNames() {
         let localizations = Set(Bundle.main.localizations).subtracting(["Base"])
         XCTAssertEqual(localizations, ["en", "de", "es", "fr", "it"])
+    }
+
+    func testEveryLanguageShipsEveryKeyEnglishHas() throws {
+        let english = try keys(inLanguage: "en")
+        XCTAssertGreaterThan(english.count, 500, "the English tables look truncated")
+        for language in ["de", "es", "fr", "it"] {
+            let missing = english.subtracting(try keys(inLanguage: language)).sorted()
+            XCTAssertTrue(
+                missing.isEmpty,
+                "\(language) is short of English and would print the key on screen: \(missing.prefix(10))"
+            )
+        }
     }
 
     func testNoPlaceholderCopyReachesTheEnglishStrings() throws {

@@ -6,8 +6,7 @@ final class PeopleNavigationUITests: XCTestCase {
     }
 
     func testOpeningAPersonShowsTheirGiftIdeasOnceAndBackReturnsToTheList() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = UITestFlows.launchFresh()
         UITestFlows.passOnboardingIfShown(app)
 
         let pill = app.buttons["Open the Us hub"].firstMatch

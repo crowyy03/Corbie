@@ -2,7 +2,6 @@ import XCTest
 
 struct LocalizedRun {
     let language: String
-    let locale: String
     let debugSignIn: String
     let cont: String
     let later: String
@@ -17,7 +16,6 @@ final class LocalizationUITests: XCTestCase {
 
     private static let english = LocalizedRun(
         language: "en",
-        locale: "en_US",
         debugSignIn: "continue without Apple ID (debug build)",
         cont: "Continue",
         later: "Later",
@@ -29,7 +27,6 @@ final class LocalizationUITests: XCTestCase {
 
     private static let german = LocalizedRun(
         language: "de",
-        locale: "de_DE",
         debugSignIn: "ohne Apple-ID weiter (Debug-Build)",
         cont: "Weiter",
         later: "Sp\u{E4}ter",
@@ -41,7 +38,6 @@ final class LocalizationUITests: XCTestCase {
 
     private static let spanish = LocalizedRun(
         language: "es",
-        locale: "es_ES",
         debugSignIn: "seguir sin Apple ID (compilaci\u{F3}n de prueba)",
         cont: "Continuar",
         later: "Luego",
@@ -53,7 +49,6 @@ final class LocalizationUITests: XCTestCase {
 
     private static let french = LocalizedRun(
         language: "fr",
-        locale: "fr_FR",
         debugSignIn: "continuer sans identifiant Apple (build de test)",
         cont: "Continuer",
         later: "Plus tard",
@@ -65,7 +60,6 @@ final class LocalizationUITests: XCTestCase {
 
     private static let italian = LocalizedRun(
         language: "it",
-        locale: "it_IT",
         debugSignIn: "continua senza Apple ID (build di test)",
         cont: "Continua",
         later: "Pi\u{F9} tardi",
@@ -100,12 +94,7 @@ final class LocalizationUITests: XCTestCase {
     }
 
     private func run(_ localization: LocalizedRun) throws {
-        let app = XCUIApplication()
-        app.launchArguments += [
-            "-AppleLanguages", "(\(localization.language))",
-            "-AppleLocale", localization.locale
-        ]
-        app.launch()
+        let app = UITestFlows.launchFresh(language: localization.language)
 
         passOnboarding(app, localization)
 

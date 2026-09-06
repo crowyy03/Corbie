@@ -8,17 +8,21 @@ What a machine checks, what a person has to check, and what came out of the run 
 
 | Suite | Where | Count | What it proves |
 | --- | --- | --- | --- |
-| `CorbieCoreTests` | `Packages/CorbieCore/Tests` | 460 | Repositories on an in-memory store, formatters, recurrence, FX, entitlement resolution, widget snapshots, App Intents, the Us badge rule, the Today feed. |
-| `CorbieTests` | `CorbieTests` | 244 | View model logic, copy, routing, release facts (`QAReleaseTests`), relative dates (`QARelativeDateTests`). |
-| `CorbieUITests` | `CorbieUITests` | 38 | The walks below, driven through the DEBUG-only "continue without Apple ID (debug build)" button. |
+| `CorbieCoreTests` | `Packages/CorbieCore/Tests` | 473 | Repositories on an in-memory store, formatters, recurrence, FX, entitlement resolution, widget snapshots, App Intents, the Us badge rule, the Today feed. |
+| `CorbieTests` | `CorbieTests` | 245 | View model logic, copy, routing, release facts (`QAReleaseTests`), relative dates (`QARelativeDateTests`). |
+| `CorbieUITests` | `CorbieUITests` | 39 | The walks below, driven through the DEBUG-only "continue without Apple ID (debug build)" button. One of them skips itself: the paywall price needs StoreKit, which `xcodebuild` does not hand the app (`docs/KNOWN_ISSUES.md`). |
 | Server | `server` | 111 | Deno tests for the Supabase functions. |
 
 ### UI walks
 
-Every walk starts from an empty space: `XCUIApplication.corbie()` passes `-corbie-erase-everything`,
-which the app honours in `AppEnvironment.bootstrap` under `#if DEBUG` and nowhere else. Labels come
-from the string catalog through `QACatalog`, which the UI test target compiles in, so a walk reads the
-same text the screen draws and never a hardcoded English string.
+Every walk starts from an empty install: `XCUIApplication.corbie()` passes `-corbie-reset-store`,
+which `DebugLaunch.resetStoreIfRequested` honours in `CorbieApp.init` under `#if DEBUG` and nowhere
+else. It deletes both store files with their sidecars, the app group defaults and the keychain items
+before Core Data opens, so no test depends on what the one before it left behind. Every suite goes
+through it: the QA and Smoke walks through `launchSignedIn`, the others through
+`UITestFlows.launchFresh`. Labels come from the string catalog through `QACatalog`, which the UI test
+target compiles in, so a walk reads the same text the screen draws and never a hardcoded English
+string.
 
 | Test | What it does |
 | --- | --- |
@@ -36,6 +40,7 @@ same text the screen draws and never a hardcoded English string.
 | `PeopleNavigationUITests` | A person opened from the hub shows their gift ideas once, and back returns to the list. |
 | `FreeTimeUITests` | The calendar entry into free time raises the privacy sheet first, "Not now" leaves the screen usable, the range picker and filters are there. |
 | `UsBadgeUITests` | An unanswered vote dots the Us pill and answering it clears the dot. |
+| `QAUsBadgeUITests` | The second trigger a solo space can raise: a person whose birthday is seven days out with no gift picked dots the pill, and marking a gift idea picked clears it. |
 | `QAReadOnlyUITests.testAnExpiredTrialLocksCreationAndKeepsTheCalendarAndToday` | Expires the trial through the developer menu: the Tasks plus raises the paywall with `paywall.reason.create`, the calendar still opens its editor, Today still draws the feed, and the Today checkbox raises the paywall with `paywall.reason.edit` without ticking the task. |
 | `QAReadOnlyUITests.testTheWeeklyRecapStaysFreeAfterTheTrial` | With the trial expired, opens the weekly recap card and checks no paywall follows. Skips outside the card's window (Sunday 19:00 to Monday 09:00). |
 | `QASettingsUITests.testTheThemeSegmentSwitchesAndGoesBack` | Switches the theme to Dark and back to System. |
@@ -48,7 +53,7 @@ same text the screen draws and never a hardcoded English string.
 | `QAOfflineUITests` | Invite and link parsing against an unreachable server. See section 2. |
 | `QATapTargetUITests` | Measures the controls the app lays out itself against 44 points: the Tasks filter chip, Take on a task row, the Who segment, the due date toggle, the Today checkbox, the appearance segment. |
 | `QAAppearanceUITests` | Screenshot tour of the five tabs, the Lists segment, the Us hub, settings top to bottom, and the paywall, in whatever appearance, text size and language the run asks for. Asserts the paywall carries Restore, Privacy, Terms and the auto-renew sentence. |
-| `LocalizationUITests` | Onboarding and the tab bar in each shipped language, with the titles read from that language's table. Skips a language whose tab titles are missing (see `docs/KNOWN_ISSUES.md`). |
+| `LocalizationUITests` | Onboarding, the five tabs, both Plans segments and the Us hub in each of the five languages, with every label written out in that language, and a screenshot per screen into `<screenshot dir>/<lang>`. |
 
 ### How to run
 
@@ -59,14 +64,16 @@ xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pr
 
 xcrun simctl uninstall "iPhone 17 Pro Max QA" app.corbie
 
-TEST_RUNNER_CORBIE_SCREENSHOT_DIR=/tmp/corbie-shots \
-TEST_RUNNER_CORBIE_SCREENSHOT_PREFIX=promax_en_light \
+TEST_RUNNER_CORBIE_SCREENSHOT_DIR=/tmp/corbie-shots/promax_en_light \
 TEST_RUNNER_CORBIE_UI_LANGUAGE=en \
 TEST_RUNNER_CORBIE_UI_LARGE_TEXT=0 \
 TEST_RUNNER_CORBIE_UI_APPEARANCE=light \
 xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max QA' \
   -derivedDataPath /tmp/corbie-dd-qa -only-testing:CorbieUITests test-without-building
 ```
+
+`CORBIE_SCREENSHOT_PREFIX` still prefixes a file name if it is set; the runs below give each pass its
+own directory instead, so the same screenshot name can be compared across devices and appearances.
 
 The `TEST_RUNNER_` prefix is what carries a variable into the test runner process; without it the
 runner sees nothing and no screenshot is written. `CORBIE_UI_LANGUAGE`, `CORBIE_UI_LARGE_TEXT` and
@@ -96,8 +103,17 @@ iPhone SE runtime installed, so iPhone 17e stands in for the small screen.
 | German light | all three | de | light | default | `QAAppearanceUITests`, `LaunchUITests` |
 | German dark | all three | de | dark | default | `QAAppearanceUITests` |
 
-Uninstall the app before each pass; the erase argument clears the store but not the notification
-permission, which the system keeps per install.
+Uninstall the app before each pass; the reset argument clears the store, the defaults and the
+keychain but not the notification permission, which the system keeps per install.
+
+The run on 2026-09-06 went through all five passes on all three devices. The full English light pass
+reports `Executed 39 tests, with 1 test skipped and 0 failures` on each device, and so does the
+closing run on iPhone 17 Pro Max after the last fix; the skip is the paywall price. The three dark
+and Dynamic Type XL passes report `Executed 3 tests, with 1 test skipped`, the German light pass
+`Executed 9 tests, with 1 test skipped`. Screenshots are one directory per pass (`promax_en_light`,
+`promax_en_dark`, `promax_en_xl`, `promax_de_light`, `promax_de_dark`, `promax_final`, and the same
+prefixes for `e17_` and `badge_`, plus `badge_permissions_denied`), with the localization walk
+writing a subdirectory per language inside the pass it ran in.
 
 ## 2. Network paths and how they fail
 
@@ -126,12 +142,18 @@ Revoke first, then run the walk. `simctl privacy` has no notification service, s
 denied by answering the prompt inside the test (`denySystemPromptIfShown`).
 
 ```
-xcrun simctl privacy "iPhone 17 Pro Max QA" deny calendar app.corbie
-xcrun simctl privacy "iPhone 17 Pro Max QA" deny photos app.corbie
-xcrun simctl privacy "iPhone 17 Pro Max QA" deny location app.corbie
+xcrun simctl privacy "iPhone 17 Badge" deny calendar app.corbie
+xcrun simctl privacy "iPhone 17 Badge" deny photos app.corbie
+xcrun simctl privacy "iPhone 17 Badge" deny location app.corbie
 xcodebuild ... -only-testing:CorbieUITests/QAPermissionsUITests test-without-building
-xcrun simctl privacy "iPhone 17 Pro Max QA" reset all app.corbie
+xcrun simctl privacy "iPhone 17 Badge" reset all app.corbie
 ```
+
+The app has to be installed before `simctl privacy` can name it, so run a pass first, then deny, then
+run the permission walk again. That is what the 2026-09-06 run did on iPhone 17 Badge: three tests,
+no failures, screenshots in `badge_permissions_denied`. Denying at the system level takes the prompt
+out of the picture entirely, which is a stronger check than answering it inside the test, and the
+calendar screen still showed `calendar.import.denied.title` with Cancel working.
 
 | Permission | Asked where | Denied behaviour | Observed |
 | --- | --- | --- | --- |
@@ -144,9 +166,10 @@ xcrun simctl privacy "iPhone 17 Pro Max QA" reset all app.corbie
 
 The QA simulators run a solo space. These need a partner and go on the two-Apple-ID list:
 
-- The Us badge from a wish added by the partner and from a gift not yet picked for a partner date.
-  A solo user can raise the dot from an unanswered vote and an unopened capsule, which the automated
-  suite does.
+- The Us badge from a wish added by the partner, and from a gift not yet picked for the partner's own
+  birthday or the anniversary. A solo user can raise the dot from an unanswered vote, an unopened
+  capsule and a person's birthday inside fourteen days with no gift picked; the automated suite does
+  the vote (`UsBadgeUITests`) and the person (`QAUsBadgeUITests`).
 - Every free time screen past the empty state: the slot list, the three filters, the two ranges,
   "Ask them", and the partner-has-not-shared state.
 - Leave space: the row only renders when a partner exists.
