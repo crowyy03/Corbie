@@ -16,10 +16,11 @@ Tab bar: Today · Tasks · Calendar · Wishes · Plans; Us is a toolbar pill wit
 - Persistence: **Core Data + NSPersistentCloudKitContainer** with private + shared stores in an App Group. **Never SwiftData** — it cannot share via CKShare.
 - Core Data model: every attribute optional or defaulted, no unique constraints, no ordered relationships, all relationships bidirectional, `id: UUID` indexed on every entity.
 - No third-party SDKs. No Firebase, no analytics SDKs, no crash reporters. Server calls only to our Supabase functions via `APIClient`.
-- Purchases: StoreKit 2 only. Always pass `appAccountToken = Space.id`. Premium gate = `space.trialActive || entitlement.active`, entitlement fetched by `spaceId` from server.
+- Purchases: StoreKit 2 only. Always pass `appAccountToken = Space.id`. The trial is an Apple introductory offer (14 days), never a self-managed trial clock. Premium gate resolves from the local StoreKit entitlement, the server entitlement by `spaceId`, and the CloudKit-cached status, in that order. Never gate the non-paying partner on `Transaction.currentEntitlements`.
+- Never hardcode prices, struck-through amounts or discount percentages: compute from `Product.price` and format with the product's locale and currency.
 - Widgets: WidgetKit + App Intents. Read the shared SQLite via App Group. Call `WidgetCenter.shared.reloadAllTimelines()` after every save in app, extension, and intents.
 - Localization: all user-facing strings via String Catalog keys (`feature.screen.element`). Never hardcode English in views. Dates, numbers, currencies via `Locale.current`.
-- Colors/typography only from `CorbieCore/Design`. No inline hex, no system pink/red as accent.
+- Colors/typography only from `CorbieCore/Design`. Three themes (sand, sage, deep): views read semantic tokens from the environment palette, no hex literals outside `Palettes.swift`, no system colors, no `.accentColor`. Member colours are user-chosen slots (`teal`, `blue`, `violet`, `rose`, `clay`, `green`) resolved by the theme, never stored as hex; the incompatible-pair rules live in the repository layer as well as the picker.
 - Copy tone: short, dry, no exclamation marks, no emoji in UI. Empty states are one human sentence + one mono-font sub-line.
 
 ## Project layout
@@ -53,7 +54,8 @@ Feature folders: `Features/Tasks/TasksView.swift`, `TasksViewModel.swift`, `Task
 - Don't add a chat, feed, or social features.
 - Don't add gender selection; partner color is a picker.
 - Don't add hearts, pink accents, exclamation marks, or emoji to UI.
-- Don't add free tier beyond Calendar + Today (view) + Weekly recap + read-only after trial.
+- Don't add free tier beyond Calendar, Today (view), Weekly recap, viewing everything already made, and the DaysTogether and Countdown widgets.
+- Don't put padlock icons on rows in read-only mode and never hide the user's own data behind the paywall: gate the action, not the view. Calendar stays fully editable.
 - Don't add a `Us` tab: Us is a toolbar pill with a badge. Lists live inside the Plans tab, never as task folders.
 - Never publish calendar event titles, locations or attendees to CloudKit; only anonymous `BusyInterval` ranges.
 - Don't call third-party APIs from the client (all parsing/FX via our server).
