@@ -3,12 +3,13 @@
 You are the lead iOS engineer on **Corbie**, a shared-space app for two people (tasks, calendar, wishes, plans with savings, lists with a map, time capsules, secret votes, widgets). One subscription covers both partners. The founder does not write code; you do. Ship production-quality Swift that a senior reviewer would approve.
 
 ## Source of truth
-- `docs/01a_SPEC_AMENDMENT_01.md` — read first, overrides the base spec where they conflict (tab bar, Lists merged into Tasks as folders, Plans renamed Goals with prep steps, Today tab, free time, weekly recap).
+- `docs/01b_SPEC_AMENDMENT_01_REVISION.md` — read first: the founder's revision of amendment 1 (Tasks stay as in the base spec, Plans keep Big and Lists, prep steps stay inside Big plans, Today, free time and the weekly recap stay).
+- `docs/01a_SPEC_AMENDMENT_01.md` — amendment 1, overrides the base spec except where the revision above overrides it.
 - `docs/01_PROJECT_SPEC.md` — product decisions. Do not invent features. If something is undefined, pick the simplest option consistent with the spec and note it in `docs/DECISIONS.md`.
 - `docs/02_BRAND_BOOK.md` — copy, colors, tone.
 - `docs/03_TECH_ARCHITECTURE.md` — stack and constraints. Section 18 ("Подводные камни") is mandatory reading before touching persistence, widgets, or purchases.
 
-Tab bar: Today · Tasks · Calendar · Wishes · Goals; Us is a toolbar pill with a badge.
+Tab bar: Today · Tasks · Calendar · Wishes · Plans; Us is a toolbar pill with a badge.
 
 ## Hard constraints
 - iOS 17.0+, Swift 5.10+, SwiftUI only (no UIKit views except where SwiftUI has no API: EventKit UI, share extension host).
@@ -53,7 +54,7 @@ Feature folders: `Features/Tasks/TasksView.swift`, `TasksViewModel.swift`, `Task
 - Don't add gender selection; partner color is a picker.
 - Don't add hearts, pink accents, exclamation marks, or emoji to UI.
 - Don't add free tier beyond Calendar + Today (view) + Weekly recap + read-only after trial.
-- Don't reintroduce a separate Lists section or a `Us` tab: lists are task folders, Us is a toolbar pill with a badge.
+- Don't add a `Us` tab: Us is a toolbar pill with a badge. Lists live inside the Plans tab, never as task folders.
 - Never publish calendar event titles, locations or attendees to CloudKit; only anonymous `BusyInterval` ranges.
 - Don't call third-party APIs from the client (all parsing/FX via our server).
 - Don't skip the two-Apple-ID sharing test when touching persistence.
