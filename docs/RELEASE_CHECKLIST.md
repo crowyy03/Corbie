@@ -53,7 +53,7 @@ Status values: **done**, **blocked on Apple account**, **blocked on device test*
 | Six screenshots per size | not done | The QA run produces light, dark and Dynamic Type XL captures for three device sizes under the screenshot directory, but they are plain captures, not the angled marketing layout the spec asks for. |
 | Preview video, 20 seconds | not done | Nothing recorded. |
 | Store listing in five languages | not done, App Store Connect only | The app itself is translated: `scripts/check_translations.sh` passes, and `CorbieUITests/LocalizationUITests` walks onboarding, the five tabs, both Plans segments and the Us hub in de, es, fr and it with every label written out in that language (screenshots under `<pass>/de`, `/es`, `/fr`, `/it`). The listing copy still has to be written and typed into App Store Connect. |
-| Rating prompt after the third joint action, not before day five | not done | `grep -rn "requestReview\|SKStoreReviewController" Corbie Packages/CorbieCore/Sources` returns nothing. Spec section 12 asks for it. |
+| Rating prompt after the third joint action, not before day five | done | `ReviewPromptTracker` (Packages/CorbieCore/Sources/CorbieCore/Services/ReviewPromptTracker.swift) counts partner-authored change batches through `RemoteChangeNotifier.handle`, records the install date on first launch, and `RootView.askForReviewIfEarned` calls `requestReview` once when the count reaches 3 and 5 days have passed; rules pinned by `DomainReviewPromptTests`. |
 
 ## Gates before a build goes out
 

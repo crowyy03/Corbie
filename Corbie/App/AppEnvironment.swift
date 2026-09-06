@@ -39,6 +39,7 @@ final class AppEnvironment {
     @ObservationIgnored let linkParser: LinkParser
     @ObservationIgnored let notifications: NotificationScheduler
     @ObservationIgnored let remoteChanges: RemoteChangeNotifier
+    @ObservationIgnored let reviewPrompt = ReviewPromptTracker()
     @ObservationIgnored let sessionService: SessionService
 
     @ObservationIgnored private(set) var busyPublisher: BusyPublisher?
@@ -127,6 +128,7 @@ final class AppEnvironment {
         usBadge.observeReloads()
         await analytics.start()
         await notifications.registerCategories()
+        reviewPrompt.recordLaunch()
         await remoteChanges.start()
         await reloadSession()
     }

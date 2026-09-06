@@ -36,6 +36,7 @@ public actor RemoteChangeNotifier {
     private let resolver: RemoteChangeResolver
     private let scheduler: NotificationScheduler
     private let defaults: UserDefaults
+    private let reviewPrompt: ReviewPromptTracker
 
     private var audience: Audience?
     private var isObserving = false
@@ -48,6 +49,7 @@ public actor RemoteChangeNotifier {
         self.stack = stack
         self.scheduler = scheduler
         self.defaults = defaults
+        reviewPrompt = ReviewPromptTracker(defaults: defaults)
         resolver = RemoteChangeResolver(stack: stack)
     }
 
@@ -78,6 +80,7 @@ public actor RemoteChangeNotifier {
         guard let audience else { return [] }
         let changes = await resolver.changes(for: records, spaceId: audience.spaceId)
         guard changes.isEmpty == false else { return [] }
+        reviewPrompt.recordJointAction()
         guard await noteJointAction() else { return [] }
         let alerts = RemoteChangeClassifier.alerts(for: changes, viewer: audience.viewer)
         var delivered: [RemoteChangeAlert] = []

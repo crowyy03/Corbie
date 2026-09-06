@@ -1,10 +1,12 @@
 import CorbieCore
+import StoreKit
 import SwiftUI
 
 struct RootView: View {
     @Environment(AppState.self) private var appState
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.requestReview) private var requestReview
 
     @State private var pendingJoinCode: String?
     @State private var joinRequest: JoinRequest?
@@ -31,6 +33,12 @@ struct RootView: View {
             }
             .task(id: appState.route) { consumeRoute() }
             .task(id: environment.session) { consumeRoute() }
+    }
+
+    private func askForReviewIfEarned() {
+        guard environment.isPaired, environment.reviewPrompt.shouldRequest() else { return }
+        environment.reviewPrompt.markRequested()
+        requestReview()
     }
 
     @ViewBuilder private var content: some View {
@@ -108,6 +116,7 @@ struct RootView: View {
         .task { await partnerWatcher.observe(environment) }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
+            askForReviewIfEarned()
             Task { await partnerWatcher.check(environment) }
         }
     }
