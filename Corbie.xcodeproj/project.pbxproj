@@ -60,6 +60,7 @@
 		3892F6AA99CAE846758E50CC /* PartnerWishesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621508894135C64B1341F5D0 /* PartnerWishesWidget.swift */; };
 		39361CD7786F483E5EE4ED67 /* FreeTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608CE270F228EA4BE9A09F4 /* FreeTimeViewModel.swift */; };
 		3A93089746C71D07E63D09B7 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4EAF790494EF27B38A13 /* TasksView.swift */; };
+		3B1CE498F84E6FC819BD4821 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
 		3B446309F35DA0FF7CE760A6 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E68716AC348C23CA7C9F09 /* EventDetailView.swift */; };
 		3CFA06639AC7CB620183CE09 /* CapsuleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C79D73B22AA0D41D5FA2F4 /* CapsuleEditorView.swift */; };
 		3EDDBB6697B796AA408F6B59 /* PlansFormControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09013D496480F18D7830B2F /* PlansFormControls.swift */; };
@@ -1136,6 +1137,7 @@
 			buildConfigurationList = 2A1FF2429275F87CC66A45A9 /* Build configuration list for PBXNativeTarget "CorbieUITests" */;
 			buildPhases = (
 				F1792FA3D8BDE3CC82BD7A4C /* Sources */,
+				208CA3C212342D6A6E71C173 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1232,6 +1234,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		208CA3C212342D6A6E71C173 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B1CE498F84E6FC819BD4821 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		29B1FFF60836238ECC2F51C9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;

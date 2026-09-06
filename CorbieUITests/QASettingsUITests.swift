@@ -6,60 +6,93 @@ final class QASettingsUITests: XCTestCase {
         try XCTSkipUnless(QARun.isEnglish, "the settings walk reads English labels")
     }
 
-    func testThemeSwitchAndExport() throws {
-        let app = launchSignedIn()
-        openSettings(app)
+    func testTheThemeSegmentSwitchesAndGoesBack() throws {
+        let app = launchSignedIn(appearance: "system")
+        openSharedSettings(app)
 
-        let dark = app.buttons["Dark"]
+        let dark = settingsRow(app, "settings.appearance.dark")
         XCTAssertTrue(scrollTo(dark, in: app), "the appearance section has no Dark option")
         dark.tap()
         XCTAssertTrue(dark.isSelected, "picking Dark did not select it")
         saveScreenshot(app, named: "settings_theme_dark")
 
-        let system = app.buttons["System"]
+        let system = settingsRow(app, "settings.appearance.system")
         XCTAssertTrue(system.exists, "the appearance section has no System option")
         system.tap()
         XCTAssertTrue(system.isSelected, "the theme did not go back to System")
+    }
 
-        let export = app.buttons["Export my data"]
+    func testTheExportProducesAFileTheShareSheetCanTake() throws {
+        let app = launchSignedIn()
+        openSharedSettings(app)
+
+        let export = settingsRow(app, "settings.data.export")
         XCTAssertTrue(scrollTo(export, in: app), "settings has no export row")
         export.tap()
 
-        let share = app.buttons["Share the file"]
-        XCTAssertTrue(share.waitForExistence(timeout: 30), "the export produced no file to share")
+        let share = settingsRow(app, "settings.data.share")
+        XCTAssertTrue(share.waitForExistence(timeout: 40), "the export produced no file to share")
         share.tap()
 
         let sheet = app.otherElements["ActivityListView"]
-        XCTAssertTrue(sheet.waitForExistence(timeout: 30), "sharing the export opened no share sheet")
+        XCTAssertTrue(sheet.waitForExistence(timeout: 40), "sharing the export opened no share sheet")
         saveScreenshot(app, named: "settings_export_share_sheet")
-        app.buttons["Close"].firstMatch.tap()
+        sheet.swipeDown()
     }
 
-    func testZDeleteAccountReturnsToOnboarding() throws {
+    func testTheBusyTimesToggleTurnsSharingOnAndOff() throws {
         let app = launchSignedIn()
-        openSettings(app)
+        openSharedSettings(app)
 
-        let delete = app.buttons["Delete account"]
+        let toggle = settingsSwitch(app, "freetime.sharing.toggle")
+        XCTAssertTrue(scrollTo(toggle, in: app), "the privacy section has no busy times toggle")
+        XCTAssertEqual(toggle.value as? String, "0", "a fresh member already shares their busy times")
+        saveScreenshot(app, named: "settings_busy_times_off")
+
+        flip(toggle)
+        denySystemPromptIfShown()
+        let turnedOn = expectation(for: NSPredicate(format: "value == %@", "1"), evaluatedWith: toggle)
+        wait(for: [turnedOn], timeout: 40)
+        saveScreenshot(app, named: "settings_busy_times_on")
+
+        flip(toggle)
+        let turnedOff = expectation(for: NSPredicate(format: "value == %@", "0"), evaluatedWith: toggle)
+        wait(for: [turnedOff], timeout: 40)
+    }
+
+    private func flip(_ toggle: XCUIElement) {
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+    }
+
+    func testASoloSpaceOffersNoLeaveRowAndDeletesFromTheAccountSection() throws {
+        let app = launchSignedIn()
+        openSharedSettings(app)
+
+        let delete = settingsRow(app, "settings.account.delete")
+        XCTAssertTrue(scrollTo(delete, in: app), "settings has no way to delete the account")
+        XCTAssertFalse(
+            settingsRow(app, "settings.account.leave").exists,
+            "a solo space offers Leave space, which needs a partner to leave to"
+        )
+    }
+
+    func testZDeletingTheAccountReturnsToOnboarding() throws {
+        let app = launchSignedIn()
+        openSharedSettings(app)
+
+        let delete = settingsRow(app, "settings.account.delete")
         XCTAssertTrue(scrollTo(delete, in: app), "settings has no way to delete the account")
         delete.tap()
 
-        let confirm = app.buttons["Delete account"].firstMatch
-        XCTAssertTrue(confirm.waitForExistence(timeout: 15), "deleting the account asks for no confirmation")
+        let confirm = app.sheets.buttons[QACatalog.text("settings.account.delete")]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 20), "deleting the account asks for no confirmation")
         saveScreenshot(app, named: "settings_delete_confirm")
-        app.sheets.buttons["Delete account"].tap()
+        confirm.tap()
 
         XCTAssertTrue(
-            app.buttons[QAText.debugSignIn].waitForExistence(timeout: 60),
+            app.buttons[QAText.debugSignIn].waitForExistence(timeout: 90),
             "deleting the account did not land back on onboarding"
         )
         saveScreenshot(app, named: "settings_after_delete")
-    }
-
-    private func openSettings(_ app: XCUIApplication) {
-        selectTab(app, QATab.us)
-        let settings = app.anyElement(labelContaining: "Couple settings")
-        XCTAssertTrue(settings.waitForExistence(timeout: 20), "the Us hub has no settings entry")
-        settings.tap()
-        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 20), "settings did not open")
     }
 }

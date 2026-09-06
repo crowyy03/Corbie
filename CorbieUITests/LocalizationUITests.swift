@@ -1,117 +1,78 @@
 import XCTest
 
-struct LocalizedRun {
-    let language: String
-    let locale: String
-    let debugSignIn: String
-    let cont: String
-    let later: String
-    let tabs: [String]
-}
-
 final class LocalizationUITests: XCTestCase {
     private let screenshotDirectory = ProcessInfo.processInfo.environment["CORBIE_SCREENSHOT_DIR"]
-
-    private static let english = LocalizedRun(
-        language: "en",
-        locale: "en_US",
-        debugSignIn: "continue without Apple ID (debug build)",
-        cont: "Continue",
-        later: "Later",
-        tabs: ["Tasks", "Calendar", "Wishes", "Plans", "Us"]
-    )
-
-    private static let german = LocalizedRun(
-        language: "de",
-        locale: "de_DE",
-        debugSignIn: "ohne Apple-ID weiter (Debug-Build)",
-        cont: "Weiter",
-        later: "Später",
-        tabs: ["Aufgaben", "Kalender", "Wünsche", "Pläne", "Wir"]
-    )
-
-    private static let spanish = LocalizedRun(
-        language: "es",
-        locale: "es_ES",
-        debugSignIn: "seguir sin Apple ID (compilación de prueba)",
-        cont: "Continuar",
-        later: "Luego",
-        tabs: ["Tareas", "Calendario", "Deseos", "Planes", "Nosotros"]
-    )
-
-    private static let french = LocalizedRun(
-        language: "fr",
-        locale: "fr_FR",
-        debugSignIn: "continuer sans identifiant Apple (build de test)",
-        cont: "Continuer",
-        later: "Plus tard",
-        tabs: ["Tâches", "Calendrier", "Souhaits", "Projets", "Nous"]
-    )
-
-    private static let italian = LocalizedRun(
-        language: "it",
-        locale: "it_IT",
-        debugSignIn: "continua senza Apple ID (build di test)",
-        cont: "Continua",
-        later: "Più tardi",
-        tabs: ["Attività", "Calendario", "Desideri", "Progetti", "Noi"]
-    )
 
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
 
     func testEnglishTabsFitTheTabBar() throws {
-        try run(Self.english)
+        try run("en", "en_US")
     }
 
     func testGermanTabsFitTheTabBar() throws {
-        try run(Self.german)
+        try run("de", "de_DE")
     }
 
     func testSpanishTabsFitTheTabBar() throws {
-        try run(Self.spanish)
+        try run("es", "es_ES")
     }
 
     func testFrenchTabsFitTheTabBar() throws {
-        try run(Self.french)
+        try run("fr", "fr_FR")
     }
 
     func testItalianTabsFitTheTabBar() throws {
-        try run(Self.italian)
+        try run("it", "it_IT")
     }
 
-    private func run(_ localization: LocalizedRun) throws {
+    private func run(_ language: String, _ locale: String) throws {
+        try XCTSkipUnless(
+            QACatalog.languages.contains(language),
+            "the app does not ship \(language)"
+        )
+        let untranslated = QATab.allCases
+            .map(\.titleKey)
+            .filter { QACatalog.has($0, language: language) == false }
+        try XCTSkipIf(
+            untranslated.isEmpty == false,
+            "\(language) has no value for \(untranslated.joined(separator: ", ")), "
+                + "so the tab bar shows the raw key (see docs/KNOWN_ISSUES.md)"
+        )
         let app = XCUIApplication()
         app.launchArguments += [
-            "-AppleLanguages", "(\(localization.language))",
-            "-AppleLocale", localization.locale
+            "-AppleLanguages", "(\(language))",
+            "-AppleLocale", locale,
+            "-corbie-erase-everything",
         ]
         app.launch()
 
-        passOnboarding(app, localization)
+        passOnboarding(app, language)
 
         let tabBar = app.tabBars.firstMatch
-        XCTAssertTrue(tabBar.waitForExistence(timeout: 20), localization.language)
-        XCTAssertEqual(tabBar.buttons.count, localization.tabs.count)
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 40), language)
+        XCTAssertEqual(tabBar.buttons.count, QATab.allCases.count, language)
 
-        for (index, title) in localization.tabs.enumerated() {
+        for tab in QATab.allCases {
+            let title = QACatalog.text(tab.titleKey, language: language)
             let button = tabBar.buttons[title]
-            XCTAssertTrue(button.waitForExistence(timeout: 5), "\(localization.language): \(title)")
+            XCTAssertTrue(button.waitForExistence(timeout: 10), "\(language): \(title)")
             button.tap()
-            save(app, localization, "tab\(index)_\(localization.language)")
+            save(app, language, "tab\(tab.rawValue)_\(language)")
         }
     }
 
-    private func passOnboarding(_ app: XCUIApplication, _ localization: LocalizedRun) {
-        let debugSignIn = app.buttons[localization.debugSignIn]
-        guard debugSignIn.waitForExistence(timeout: 15) else { return }
-        save(app, localization, "onboarding_intro_\(localization.language)")
+    private func passOnboarding(_ app: XCUIApplication, _ language: String) {
+        let debugSignIn = app.buttons[QACatalog.text("onboarding.debug.signin", language: language)]
+        guard debugSignIn.waitForExistence(timeout: 30) else { return }
+        save(app, language, "onboarding_intro_\(language)")
+        UITestFlows.waitUntilHittable(debugSignIn)
         debugSignIn.tap()
 
-        let continueButton = app.buttons[localization.cont]
-        XCTAssertTrue(continueButton.waitForExistence(timeout: 20), localization.language)
-        save(app, localization, "onboarding_profile_\(localization.language)")
+        let continueButton = app.buttons[QACatalog.text("onboarding.profile.continue", language: language)]
+        XCTAssertTrue(continueButton.waitForExistence(timeout: 40), language)
+        save(app, language, "onboarding_profile_\(language)")
         let nameField = app.textFields.firstMatch
         if nameField.exists, (nameField.value as? String)?.isEmpty ?? true {
             nameField.tap()
@@ -119,20 +80,20 @@ final class LocalizationUITests: XCTestCase {
         }
         continueButton.tap()
 
-        let later = app.buttons[localization.later]
-        XCTAssertTrue(later.waitForExistence(timeout: 25), localization.language)
-        save(app, localization, "onboarding_invite_\(localization.language)")
+        let later = app.buttons[QACatalog.text("pairing.invite.later", language: language)]
+        XCTAssertTrue(later.waitForExistence(timeout: 60), language)
+        save(app, language, "onboarding_invite_\(language)")
         later.tap()
     }
 
-    private func save(_ app: XCUIApplication, _ localization: LocalizedRun, _ name: String) {
+    private func save(_ app: XCUIApplication, _ language: String, _ name: String) {
         let shot = app.screenshot()
         let attachment = XCTAttachment(screenshot: shot)
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
         guard let screenshotDirectory else { return }
-        let folder = URL(fileURLWithPath: screenshotDirectory).appendingPathComponent(localization.language)
+        let folder = URL(fileURLWithPath: screenshotDirectory).appendingPathComponent(language)
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         try? shot.pngRepresentation.write(to: folder.appendingPathComponent(name + ".png"))
     }

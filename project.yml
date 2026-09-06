@@ -144,6 +144,7 @@ targets:
     platform: iOS
     sources:
       - path: CorbieUITests
+      - path: Corbie/Resources/Localizable.xcstrings
     dependencies:
       - target: Corbie
     settings:
