@@ -5,7 +5,7 @@ struct TodayEntryRow: View {
     let entry: TodayEntry
     let dotColor: Color
     let time: String
-    let fromGoal: String?
+    let fromPlan: String?
     let checkboxLabel: String
     let toggle: (() -> Void)?
     let open: () -> Void
@@ -42,8 +42,8 @@ struct TodayEntryRow: View {
     }
 
     private var caption: String {
-        guard let fromGoal else { return time }
-        return time + " · " + fromGoal
+        guard let fromPlan else { return time }
+        return time + " · " + fromPlan
     }
 
     private func checkbox(_ action: @escaping () -> Void) -> some View {
@@ -168,7 +168,7 @@ struct TodayWaitingRow: View {
     }
 }
 
-struct TodayGoalCard: View {
+struct TodayPlanCard: View {
     let title: String
     let amount: String
     let progress: Double

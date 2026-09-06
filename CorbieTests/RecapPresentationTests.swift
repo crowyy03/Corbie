@@ -13,12 +13,12 @@ final class RecapPresentationTests: XCTestCase {
         RecapPresentation(locale: Locale(identifier: "en_US"), calendar: calendar)
     }
 
-    private func move(delta: Double, progress: Double = 0.48) -> RecapGoalMove {
-        RecapGoalMove(goalId: UUID(), title: "Japan", delta: delta, currency: "EUR", progress: progress)
+    private func move(delta: Double, progress: Double = 0.48) -> RecapPlanMove {
+        RecapPlanMove(planId: UUID(), title: "Japan", delta: delta, currency: "EUR", progress: progress)
     }
 
-    func testAGoalLineCarriesTheTitleTheDeltaAndThePercent() {
-        XCTAssertEqual(presentation.goalLine(move(delta: 300)), "Japan +€300, 48%")
+    func testAPlanLineCarriesTheTitleTheDeltaAndThePercent() {
+        XCTAssertEqual(presentation.planLine(move(delta: 300)), "Japan +€300, 48%")
     }
 
     func testMoneyTakenBackReadsAsAMinus() {
@@ -51,9 +51,9 @@ final class RecapPresentationTests: XCTestCase {
         let keys = [
             "recap.title",
             "recap.tasks",
-            "recap.goal.line",
-            "recap.goal.delta.up",
-            "recap.goal.delta.down",
+            "recap.plan.line",
+            "recap.plan.delta.up",
+            "recap.plan.delta.down",
             "recap.milestone",
             "recap.open",
             "settings.notifications.weeklyrecap"

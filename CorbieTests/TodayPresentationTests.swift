@@ -44,15 +44,15 @@ final class TodayPresentationTests: XCTestCase {
     func testATaskWithNoClockOnItsDueDateCountsAsAllDay() {
         let task = TodayEntry(
             task: UnifiedTask(id: UUID(), title: "Vet", dueAt: date("2026-09-06"), source: .task),
-            goalId: nil,
+            planId: nil,
             calendar: calendar
         )
         XCTAssertTrue(task.isAllDay)
         XCTAssertEqual(presentation.time(for: task), "all day")
     }
 
-    func testAGoalStepSaysWhichGoalItCameFrom() {
-        XCTAssertEqual(presentation.fromGoal("Japan"), "from goal: Japan")
+    func testAPlanStepSaysWhichPlanItCameFrom() {
+        XCTAssertEqual(presentation.fromPlan("Japan"), "from plan: Japan")
     }
 
     func testTheGiftLineCountsIdeasAndFallsBackWhenThereAreNone() {
@@ -102,15 +102,15 @@ final class TodayPresentationTests: XCTestCase {
         XCTAssertFalse(event.isGiftMissing)
     }
 
-    func testTheGoalLineShowsSavedAgainstTarget() {
-        let goal = GoalDTO(
+    func testThePlanLineShowsSavedAgainstTarget() {
+        let plan = PlanDTO(
             id: UUID(),
             title: "Japan",
             targetAmount: 5000,
             currency: "USD",
             savedAmount: 2400
         )
-        XCTAssertEqual(presentation.goalAmount(goal), "$2,400 of $5,000")
+        XCTAssertEqual(presentation.planAmount(plan), "$2,400 of $5,000")
     }
 
     func testTheFreeTaskFooterCountsWhatIsHidden() {
@@ -126,7 +126,7 @@ final class TodayPresentationTests: XCTestCase {
     func testTheCheckboxLabelFlipsWithTheTask() {
         let open = TodayEntry(
             task: UnifiedTask(id: UUID(), title: "Vet", dueAt: date("2026-09-06"), source: .task),
-            goalId: nil,
+            planId: nil,
             calendar: calendar
         )
         let done = TodayEntry(
@@ -137,7 +137,7 @@ final class TodayPresentationTests: XCTestCase {
                 isDone: true,
                 source: .task
             ),
-            goalId: nil,
+            planId: nil,
             calendar: calendar
         )
         XCTAssertEqual(presentation.checkboxLabel(open), "Tick Vet")
@@ -149,7 +149,7 @@ final class TodayPresentationTests: XCTestCase {
             "today.block.today",
             "today.block.freetasks",
             "today.block.comingup",
-            "today.block.goal",
+            "today.block.plan",
             "today.block.waiting",
             "today.header.days",
             "today.action.task",

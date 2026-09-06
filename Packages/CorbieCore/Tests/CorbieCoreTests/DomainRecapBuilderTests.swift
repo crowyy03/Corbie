@@ -6,7 +6,7 @@ import Testing
     private let calendar = DomainClock.calendar(locale: "en_US", timeZone: "UTC")
     private let me = UUID()
     private let partner = UUID()
-    private let goalId = UUID()
+    private let planId = UUID()
 
     private var week: RecapWeek {
         RecapSchedule.week(closing: DomainClock.date("2026-09-06 19:00", in: calendar), calendar: calendar)
@@ -55,19 +55,19 @@ import Testing
                 TaskDTO(id: UUID(), title: "Still open", createdAt: date("2026-09-01"))
             ],
             steps: [
-                GoalStepDTO(
+                PlanStepDTO(
                     id: UUID(),
-                    goalId: goalId,
-                    goalTitle: "Japan",
+                    planId: planId,
+                    planTitle: "Japan",
                     title: "Papers",
                     isDone: true,
                     doneByMemberId: partner,
                     doneAt: date("2026-09-03 10:00")
                 )
             ],
-            goals: [
-                GoalDTO(
-                    id: goalId,
+            plans: [
+                PlanDTO(
+                    id: planId,
                     title: "Japan",
                     targetAmount: 5000,
                     currency: "EUR",
@@ -76,20 +76,20 @@ import Testing
                 )
             ],
             expenses: [
-                GoalExpenseDTO(
+                PlanExpenseDTO(
                     id: UUID(),
-                    goalId: goalId,
+                    planId: planId,
                     amount: 300,
                     currency: "EUR",
-                    amountInGoalCurrency: 300,
+                    amountInPlanCurrency: 300,
                     date: date("2026-09-04 15:00")
                 ),
-                GoalExpenseDTO(
+                PlanExpenseDTO(
                     id: UUID(),
-                    goalId: goalId,
+                    planId: planId,
                     amount: 50,
                     currency: "EUR",
-                    amountInGoalCurrency: 50,
+                    amountInPlanCurrency: 50,
                     date: date("2026-08-20 15:00")
                 )
             ],
@@ -116,10 +116,10 @@ import Testing
         #expect(summary.members.map(\.wishesAdded) == [0, 2])
     }
 
-    @Test func aGoalMovesByTheMoneyAddedInsideTheWeek() throws {
+    @Test func aPlanMovesByTheMoneyAddedInsideTheWeek() throws {
         let summary = RecapBuilder(calendar: calendar).summary(seeded(), week: week)
-        let move = try #require(summary.goals.first)
-        #expect(summary.goals.count == 1)
+        let move = try #require(summary.plans.first)
+        #expect(summary.plans.count == 1)
         #expect(move.title == "Japan")
         #expect(move.delta == 300)
         #expect(move.currency == "EUR")

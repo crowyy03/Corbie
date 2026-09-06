@@ -4,7 +4,7 @@ enum WidgetKinds {
     static let tasks = "Tasks"
     static let freeTasks = "FreeTasks"
     static let partnerWishes = "PartnerWishes"
-    static let goalProgress = "GoalProgress"
+    static let planProgress = "PlanProgress"
     static let upcomingDates = "UpcomingDates"
     static let shopping = "Shopping"
     static let capsule = "Capsule"

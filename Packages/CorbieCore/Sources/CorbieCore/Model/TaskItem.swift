@@ -15,16 +15,10 @@ public final class TaskItem: NSManagedObject {
     @NSManaged public var createdByMemberId: UUID?
     @NSManaged public var takenAt: Date?
     @NSManaged public var recurrenceRaw: String?
-    @NSManaged public var placeName: String?
-    @NSManaged public var address: String?
-    @NSManaged public var lat: NSNumber?
-    @NSManaged public var lon: NSNumber?
-    @NSManaged public var sortIndex: Int32
-    @NSManaged public var sourceGoalId: UUID?
+    @NSManaged public var sourcePlanId: UUID?
     @NSManaged public var archivedAt: Date?
     @NSManaged public var createdAt: Date?
     @NSManaged public var space: Space?
-    @NSManaged public var folder: TaskFolder?
 
     public var recurrence: Recurrence {
         get { Recurrence(rawValue: recurrenceRaw ?? "") ?? .none }

@@ -4,9 +4,9 @@ public struct RecapInput: Sendable {
     public var space: SpaceDTO
     public var members: [MemberDTO]
     public var tasks: [TaskDTO]
-    public var steps: [GoalStepDTO]
-    public var goals: [GoalDTO]
-    public var expenses: [GoalExpenseDTO]
+    public var steps: [PlanStepDTO]
+    public var plans: [PlanDTO]
+    public var expenses: [PlanExpenseDTO]
     public var events: [EventDTO]
     public var wishes: [WishDTO]
     public var people: [PersonDTO]
@@ -15,9 +15,9 @@ public struct RecapInput: Sendable {
         space: SpaceDTO,
         members: [MemberDTO] = [],
         tasks: [TaskDTO] = [],
-        steps: [GoalStepDTO] = [],
-        goals: [GoalDTO] = [],
-        expenses: [GoalExpenseDTO] = [],
+        steps: [PlanStepDTO] = [],
+        plans: [PlanDTO] = [],
+        expenses: [PlanExpenseDTO] = [],
         events: [EventDTO] = [],
         wishes: [WishDTO] = [],
         people: [PersonDTO] = []
@@ -26,7 +26,7 @@ public struct RecapInput: Sendable {
         self.members = members
         self.tasks = tasks
         self.steps = steps
-        self.goals = goals
+        self.plans = plans
         self.expenses = expenses
         self.events = events
         self.wishes = wishes
@@ -45,7 +45,7 @@ public struct RecapBuilder: Sendable {
         RecapSummary(
             week: week,
             members: tallies(input, week: week),
-            goals: moves(input, week: week),
+            plans: moves(input, week: week),
             comingUp: upcoming(input, week: week),
             daysTogether: ImportantDates.daysTogether(
                 space: input.space,
@@ -77,19 +77,19 @@ public struct RecapBuilder: Sendable {
         }
     }
 
-    private func moves(_ input: RecapInput, week: RecapWeek) -> [RecapGoalMove] {
-        input.goals
-            .compactMap { goal -> RecapGoalMove? in
+    private func moves(_ input: RecapInput, week: RecapWeek) -> [RecapPlanMove] {
+        input.plans
+            .compactMap { plan -> RecapPlanMove? in
                 let delta = input.expenses
-                    .filter { $0.goalId == goal.id && closed($0.date, in: week) }
-                    .reduce(0) { $0 + $1.amountInGoalCurrency }
+                    .filter { $0.planId == plan.id && closed($0.date, in: week) }
+                    .reduce(0) { $0 + $1.amountInPlanCurrency }
                 guard delta != 0 else { return nil }
-                return RecapGoalMove(
-                    goalId: goal.id,
-                    title: goal.title,
+                return RecapPlanMove(
+                    planId: plan.id,
+                    title: plan.title,
                     delta: delta,
-                    currency: goal.currency,
-                    progress: goal.progress
+                    currency: plan.currency,
+                    progress: plan.progress
                 )
             }
             .sorted { lhs, rhs in
@@ -97,9 +97,9 @@ public struct RecapBuilder: Sendable {
                 let right = abs(rhs.delta)
                 if left != right { return left > right }
                 if lhs.title != rhs.title { return lhs.title < rhs.title }
-                return lhs.goalId.uuidString < rhs.goalId.uuidString
+                return lhs.planId.uuidString < rhs.planId.uuidString
             }
-            .prefix(RecapSummary.goalLimit)
+            .prefix(RecapSummary.planLimit)
             .map { $0 }
     }
 

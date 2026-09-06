@@ -33,18 +33,17 @@ final class PaywallCopyTests: XCTestCase {
     }
 
     func testEveryValueRowResolves() {
-        XCTAssertEqual(PaywallValueRow.all.map(\.id), ["widgets", "goals", "capsules"])
+        XCTAssertEqual(PaywallValueRow.all.map(\.id), ["widgets", "plans", "capsules"])
         for row in PaywallValueRow.all {
             for key in [row.titleKey, row.noteKey] {
                 XCTAssertNotEqual(PaywallCopy.text(key), key, "missing catalog value for \(key)")
             }
         }
-        XCTAssertEqual(PaywallCopy.text("paywall.value.goals.title"), "Goals and folders")
+        XCTAssertEqual(PaywallCopy.text("paywall.value.plans.title"), "Plans and wishes")
         XCTAssertEqual(PaywallCopy.text("paywall.value.capsules.title"), "Capsules and votes")
     }
 
-    func testTheFeaturesTheAmendmentMadePremiumHaveTheirOwnLine() {
-        XCTAssertEqual(PaywallCopy.reasonText(PremiumAction.folders.paywallReason), "Task folders come with the subscription.")
+    func testFreeTimeHasItsOwnPaywallLine() {
         XCTAssertEqual(PaywallCopy.reasonText(PremiumAction.freeTime.paywallReason), "Free time comes with the subscription.")
     }
 

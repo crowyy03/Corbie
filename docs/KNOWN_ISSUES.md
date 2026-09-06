@@ -113,8 +113,6 @@ silently. Worth a one-line hint next to the due date toggle once someone has den
 
 ## Found by the first full UI run on 2026-09-06 (before the amendment rework)
 
-- major: in the task editor the due date toggle row is 28pt tall, the Save button 36pt and the Who segment 36pt; the 44pt minimum applies to every interactive control. The segment height constant `CorbieMetrics.segmentHeight` is 36 by design and should grow to 44 or the control gets a taller hit area. Fix with the Tasks rework (module 04) and check the same rows in every editor.
-- major: a plan with no expenses offers no way to add the first one from the detail screen (`SmokeTabsUITests.testPlanCreateAndExpenseInPlanCurrency`). Fix in the Goals rework (module 07): the add money action must be visible in the empty state too.
 - minor: `SmokeTabsUITests.testCapsuleCreate` does not find the new capsule in the list right after saving; unclear whether the list refreshes late or the row label differs from the title. Reproduce during the Today and Us rework.
 - test debt: eight QA UI tests fail on "the Us hub has no settings entry" because they look for the settings row by a label that the localization pass changed; with the amendment the hub opens from the pill, so these tests are rewritten in the QA pass after the rework rather than patched now.
 - test debt: `QAPermissionsUITests.testThePhotoPickerIsReachableWithPhotosDenied` taps an ambiguous "Cancel" (two matches on screen).

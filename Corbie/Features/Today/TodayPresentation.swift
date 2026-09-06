@@ -37,8 +37,8 @@ struct TodayPresentation {
         return formatter.string(from: startAt)
     }
 
-    func fromGoal(_ title: String) -> String {
-        String(format: String(localized: "today.row.fromgoal"), locale: locale, title)
+    func fromPlan(_ title: String) -> String {
+        String(format: String(localized: "today.row.fromplan"), locale: locale, title)
     }
 
     func dateTitle(_ date: TodayDate) -> String {
@@ -59,12 +59,12 @@ struct TodayPresentation {
         return String(format: String(localized: "today.comingup.gift"), locale: locale, date.ideasCount)
     }
 
-    func goalAmount(_ goal: GoalDTO) -> String {
+    func planAmount(_ plan: PlanDTO) -> String {
         String(
-            format: String(localized: "today.goal.amount"),
+            format: String(localized: "today.plan.amount"),
             locale: locale,
-            Money(amount: goal.totalSavedAmount, currency: goal.currency).formatted(locale: locale),
-            Money(amount: goal.targetAmount, currency: goal.currency).formatted(locale: locale)
+            Money(amount: plan.totalSavedAmount, currency: plan.currency).formatted(locale: locale),
+            Money(amount: plan.targetAmount, currency: plan.currency).formatted(locale: locale)
         )
     }
 

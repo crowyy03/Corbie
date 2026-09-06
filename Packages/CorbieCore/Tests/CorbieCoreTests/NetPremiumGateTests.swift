@@ -28,12 +28,12 @@ import Testing
     @Test func theAmendedPremiumFeaturesAreGated() {
         let analytics = RecordingAnalytics()
         let readOnly = gate(.readOnly, analytics: analytics)
-        #expect(readOnly.require(.folders) == false)
-        #expect(readOnly.pendingPaywall?.reason == .folders)
+        #expect(readOnly.require(.freeTime) == false)
+        #expect(readOnly.pendingPaywall?.reason == .freeTime)
         readOnly.dismissPaywall()
         #expect(readOnly.require(.freeTime) == false)
         #expect(readOnly.pendingPaywall?.reason == .freeTime)
-        #expect(analytics.events.contains(.readonlyHit(action: .folders)))
+        #expect(analytics.events.contains(.readonlyHit(action: .freeTime)))
         #expect(analytics.events.contains(.readonlyHit(action: .freeTime)))
     }
 

@@ -8,8 +8,8 @@ import Testing
 
     @Test func modelHasEveryEntityFromTheSpec() {
         let expected: Set<String> = [
-            "Space", "Member", "TaskItem", "TaskFolder", "Event", "EventComment", "Wish", "Goal",
-            "GoalExpense", "GoalStep", "BusyInterval", "Capsule", "CapsuleOpen", "Vote",
+            "Space", "Member", "TaskItem", "Event", "EventComment", "Wish", "Plan",
+            "PlanExpense", "PlanStep", "ChecklistList", "ListItem", "BusyInterval", "Capsule", "CapsuleOpen", "Vote",
             "VoteResponse", "Person", "GiftIdea", "PersonDate"
         ]
         #expect(Set(model.entities.compactMap(\.name)) == expected)
@@ -73,7 +73,7 @@ import Testing
     @Test func spaceOwnsItsChildrenAndChildrenNullifyBack() throws {
         let space = try #require(model.entitiesByName["Space"])
         let childNames = [
-            "members", "tasks", "folders", "events", "wishes", "goals", "busyIntervals",
+            "members", "tasks", "events", "wishes", "plans", "lists", "busyIntervals",
             "capsules", "votes", "people"
         ]
         for name in childNames {
@@ -89,8 +89,9 @@ import Testing
     @Test func parentsCascadeToTheirOwnChildren() throws {
         let owners = [
             ("Event", "comments"),
-            ("Goal", "expenses"),
-            ("Goal", "steps"),
+            ("Plan", "expenses"),
+            ("Plan", "steps"),
+            ("ChecklistList", "items"),
             ("Person", "giftIdeas"),
             ("Person", "dates"),
             ("Vote", "responses"),
@@ -160,17 +161,6 @@ import Testing
         #expect(personDate.relationshipsByName["person"]?.destinationEntity?.name == "Person")
     }
 
-    @Test func deletingAFolderKeepsItsTasks() throws {
-        let folder = try #require(model.entitiesByName["TaskFolder"])
-        let tasks = try #require(folder.relationshipsByName["tasks"])
-        #expect(tasks.deleteRule == .nullifyDeleteRule)
-        #expect(tasks.isToMany)
-        let inverse = try #require(tasks.inverseRelationship)
-        #expect(inverse.name == "folder")
-        #expect(inverse.deleteRule == .nullifyDeleteRule)
-        #expect(inverse.isToMany == false)
-    }
-
     @Test func busyIntervalsCarryNoText() throws {
         let busy = try #require(model.entitiesByName["BusyInterval"])
         let textual = busy.attributesByName.values.filter { $0.attributeType == .stringAttributeType }
@@ -180,14 +170,23 @@ import Testing
         #expect(busy.attributesByName["memberId"]?.attributeType == .UUIDAttributeType)
     }
 
-    @Test func placesAndFoldersLiveOnTheTask() throws {
+    @Test func theTaskCarriesOnlyItsOwnFields() throws {
         let task = try #require(model.entitiesByName["TaskItem"])
-        for name in ["placeName", "address", "lat", "lon", "sourceGoalId"] {
-            #expect(task.attributesByName[name]?.isOptional == true, "TaskItem.\(name) is required")
+        #expect(task.attributesByName["sourcePlanId"]?.isOptional == true)
+        for name in ["placeName", "address", "lat", "lon", "sortIndex"] {
+            #expect(task.attributesByName[name] == nil, "TaskItem.\(name) came back")
         }
-        let sortIndex = try #require(task.attributesByName["sortIndex"])
+        #expect(task.relationshipsByName["folder"] == nil)
+    }
+
+    @Test func listItemsCarryTheirPlace() throws {
+        let item = try #require(model.entitiesByName["ListItem"])
+        for name in ["placeName", "address", "latitude", "longitude"] {
+            #expect(item.attributesByName[name]?.isOptional == true, "ListItem.\(name) is required")
+        }
+        let sortIndex = try #require(item.attributesByName["sortIndex"])
         #expect(sortIndex.defaultValue as? Int == 0)
-        #expect(task.relationshipsByName["folder"]?.destinationEntity?.name == "TaskFolder")
+        #expect(item.relationshipsByName["list"]?.destinationEntity?.name == "ChecklistList")
     }
 
     @Test func memberCarriesTheBusyAndBadgeFields() throws {

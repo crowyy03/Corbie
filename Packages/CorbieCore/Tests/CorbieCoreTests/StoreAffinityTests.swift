@@ -31,12 +31,10 @@ import Testing
         let wish = try await repositories.wishes.create(
             WishDraft(spaceId: spaceId, ownerMemberId: member.id, title: "Lamp")
         )
-        let goal = try await repositories.goals.create(
-            GoalDraft(spaceId: spaceId, title: "Lisbon", targetAmount: 1000, currency: "USD")
+        let plan = try await repositories.plans.create(
+            PlanDraft(spaceId: spaceId, title: "Lisbon", targetAmount: 1000, currency: "USD")
         )
-        let folder = try await repositories.tasks.createFolder(
-            TaskFolderDraft(spaceId: spaceId, title: "Cities", template: .cities)
-        )
+        let list = try await repositories.lists.create(ChecklistDraft(spaceId: spaceId, title: "Cities"))
         let person = try await repositories.people.create(PersonDraft(spaceId: spaceId, name: "Anna"))
 
         let comment = try await repositories.events.addComment(
@@ -44,11 +42,12 @@ import Testing
             memberId: member.id,
             text: "Table for two"
         )
-        let expense = try await repositories.goals.addExpense(
-            goalId: goal.id,
-            draft: GoalExpenseDraft(amount: 120, currency: "USD")
+        let expense = try await repositories.plans.addExpense(
+            planId: plan.id,
+            draft: PlanExpenseDraft(amount: 120, currency: "USD")
         )
-        let step = try await repositories.goals.addStep(goalId: goal.id, draft: GoalStepDraft(title: "Pack"))
+        let step = try await repositories.plans.addStep(planId: plan.id, draft: PlanStepDraft(title: "Pack"))
+        let item = try await repositories.lists.addItem(listId: list.id, draft: ListItemDraft(title: "Porto"))
         let busy = try await repositories.busyIntervals.replace(
             spaceId: spaceId,
             memberId: member.id,
@@ -63,12 +62,13 @@ import Testing
             (TaskItem.entityName, task.id),
             (Event.entityName, event.id),
             (Wish.entityName, wish.id),
-            (Goal.entityName, goal.id),
-            (TaskFolder.entityName, folder.id),
+            (Plan.entityName, plan.id),
+            (ChecklistList.entityName, list.id),
             (Person.entityName, person.id),
             (EventComment.entityName, comment.id),
-            (GoalExpense.entityName, expense.id),
-            (GoalStep.entityName, step.id),
+            (PlanExpense.entityName, expense.id),
+            (PlanStep.entityName, step.id),
+            (ListItem.entityName, item.id),
             (BusyInterval.entityName, try #require(busy.first).id),
             (GiftIdea.entityName, idea.id)
         ]

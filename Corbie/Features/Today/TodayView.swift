@@ -121,13 +121,13 @@ struct TodayView: View {
                 }
             }
         }
-        if let goal = model.feed.goal {
-            block(String(localized: "today.block.goal")) {
-                TodayGoalCard(
-                    title: goal.title,
-                    amount: presentation.goalAmount(goal),
-                    progress: goal.progress,
-                    open: { open(block: .goal, route: .goal(goal.id), model: model) }
+        if let plan = model.feed.plan {
+            block(String(localized: "today.block.plan")) {
+                TodayPlanCard(
+                    title: plan.title,
+                    amount: presentation.planAmount(plan),
+                    progress: plan.progress,
+                    open: { open(block: .plan, route: .plan(plan.id), model: model) }
                 )
             }
         }
@@ -161,7 +161,7 @@ struct TodayView: View {
             entry: entry,
             dotColor: environment.memberColor(id: entry.memberId),
             time: presentation.time(for: entry),
-            fromGoal: entry.goalTitle.map(presentation.fromGoal),
+            fromPlan: entry.planTitle.map(presentation.fromPlan),
             checkboxLabel: presentation.checkboxLabel(entry),
             toggle: entry.task == nil ? nil : { edit { await model.toggle(entry) } },
             open: { open(block: .today, route: route(for: entry), model: model) }
@@ -285,8 +285,8 @@ struct TodayView: View {
         case .event:
             return .calendar
         case let .task(task):
-            guard let goalId = entry.goalId else { return .task(task.id) }
-            return .goal(goalId)
+            guard let planId = entry.planId else { return .task(task.id) }
+            return .plan(planId)
         }
     }
 

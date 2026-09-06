@@ -4,7 +4,7 @@ public enum TodayBlock: String, Sendable, Equatable, CaseIterable {
     case today
     case freeTasks = "free_tasks"
     case comingUp = "coming_up"
-    case goal
+    case plan
     case waiting
     case recap
 }
@@ -24,18 +24,18 @@ public enum TodayEntryItem: Sendable, Equatable {
 
 public struct TodayEntry: Sendable, Equatable, Identifiable {
     public let item: TodayEntryItem
-    public let goalId: UUID?
+    public let planId: UUID?
     public let isAllDay: Bool
 
     public init(event: EventDTO) {
         item = .event(event)
-        goalId = nil
+        planId = nil
         isAllDay = event.isAllDay
     }
 
-    public init(task: UnifiedTask, goalId: UUID?, calendar: Calendar) {
+    public init(task: UnifiedTask, planId: UUID?, calendar: Calendar) {
         item = .task(task)
-        self.goalId = goalId
+        self.planId = planId
         guard let dueAt = task.dueAt else {
             isAllDay = true
             return
@@ -78,10 +78,10 @@ public struct TodayEntry: Sendable, Equatable, Identifiable {
         }
     }
 
-    public var goalTitle: String? {
+    public var planTitle: String? {
         switch item {
         case .event: return nil
-        case let .task(task): return task.goalTitle
+        case let .task(task): return task.planTitle
         }
     }
 
@@ -180,7 +180,7 @@ public struct TodayFeed: Sendable, Equatable {
     public let freeTasks: [UnifiedTask]
     public let freeTasksRemaining: Int
     public let comingUp: [TodayDate]
-    public let goal: GoalDTO?
+    public let plan: PlanDTO?
     public let waiting: [TodayWaitingItem]
     public let recap: RecapSummary?
     public let isPaired: Bool
@@ -192,7 +192,7 @@ public struct TodayFeed: Sendable, Equatable {
         freeTasks: [UnifiedTask] = [],
         freeTasksRemaining: Int = 0,
         comingUp: [TodayDate] = [],
-        goal: GoalDTO? = nil,
+        plan: PlanDTO? = nil,
         waiting: [TodayWaitingItem] = [],
         recap: RecapSummary? = nil,
         isPaired: Bool = false
@@ -203,7 +203,7 @@ public struct TodayFeed: Sendable, Equatable {
         self.freeTasks = freeTasks
         self.freeTasksRemaining = freeTasksRemaining
         self.comingUp = comingUp
-        self.goal = goal
+        self.plan = plan
         self.waiting = waiting
         self.recap = recap
         self.isPaired = isPaired
@@ -213,7 +213,7 @@ public struct TodayFeed: Sendable, Equatable {
         entries.isEmpty
             && freeTasks.isEmpty
             && comingUp.isEmpty
-            && goal == nil
+            && plan == nil
             && waiting.isEmpty
             && recap == nil
     }
@@ -223,7 +223,7 @@ public struct TodayFeed: Sendable, Equatable {
         if entries.isEmpty == false { result.append(.today) }
         if freeTasks.isEmpty == false { result.append(.freeTasks) }
         if comingUp.isEmpty == false { result.append(.comingUp) }
-        if goal != nil { result.append(.goal) }
+        if plan != nil { result.append(.plan) }
         if waiting.isEmpty == false { result.append(.waiting) }
         if recap != nil { result.append(.recap) }
         return result

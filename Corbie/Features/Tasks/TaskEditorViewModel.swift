@@ -48,9 +48,6 @@ final class TaskEditorViewModel {
     var dueDate: Date
     var repeatOption: TaskRepeatOption
     var weekdays: Set<Int>
-    var folderId: UUID?
-    var place: MapPlace?
-    private(set) var folders: [TaskFolderDTO] = []
     private(set) var isSaving = false
 
     @ObservationIgnored var onError: ((any Error) -> Void)?
@@ -65,7 +62,6 @@ final class TaskEditorViewModel {
 
     init(
         task: TaskDTO?,
-        folderId: UUID? = nil,
         context: TasksContext,
         repository: any TaskRepository,
         notifications: TaskDueNotifications,
@@ -91,8 +87,6 @@ final class TaskEditorViewModel {
         } else {
             weekdays = []
         }
-        self.folderId = task?.folderId ?? folderId
-        place = task.flatMap(MapPlace.init(task:))
     }
 
     var isEditing: Bool { existingTask != nil }
@@ -107,19 +101,6 @@ final class TaskEditorViewModel {
 
     var canSave: Bool {
         title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false && isSaving == false
-    }
-
-    var selectedFolder: TaskFolderDTO? {
-        guard let folderId else { return nil }
-        return folders.first { $0.id == folderId }
-    }
-
-    var folderTitle: String {
-        selectedFolder?.title ?? String(localized: "tasks.editor.folder.none")
-    }
-
-    var titlePlaceholder: String {
-        selectedFolder?.template.itemPlaceholder ?? String(localized: "tasks.editor.field.what.placeholder")
     }
 
     var assigneeHint: String {
@@ -145,26 +126,6 @@ final class TaskEditorViewModel {
             return .monthly
         case .weekdays:
             return weekdays.isEmpty ? .none : .weekdays(weekdays.sorted())
-        }
-    }
-
-    func makeFolderEditorModel() -> FolderEditorViewModel {
-        let created = FolderEditorViewModel(
-            folder: nil,
-            context: context,
-            repository: repository,
-            analytics: analytics
-        )
-        created.onError = onError
-        return created
-    }
-
-    func loadFolders() async {
-        guard let spaceId = context.spaceId else { return }
-        do {
-            folders = try await repository.folders(spaceId: spaceId)
-        } catch {
-            onError?(error)
         }
     }
 
@@ -200,13 +161,7 @@ final class TaskEditorViewModel {
             task.assigneeMemberId = assigneeMemberId
             task.dueAt = dueAt
             task.recurrence = recurrence
-            task.placeName = place?.name
-            task.address = place?.address
-            task.lat = place?.latitude
-            task.lon = place?.longitude
-            let updated = try await repository.update(task)
-            guard updated.folderId != folderId else { return updated }
-            return try await repository.move(taskId: updated.id, toFolder: folderId)
+            return try await repository.update(task)
         }
         guard let spaceId = context.spaceId else {
             throw CorbieError.notFound("space for a new task")
@@ -219,15 +174,10 @@ final class TaskEditorViewModel {
                 assigneeMemberId: assigneeMemberId,
                 dueAt: dueAt,
                 recurrence: recurrence,
-                folderId: folderId,
-                placeName: place?.name,
-                address: place?.address,
-                lat: place?.latitude,
-                lon: place?.longitude,
                 createdByMemberId: context.memberId
             )
         )
-        analytics.record(.taskCreated(hasFolder: folderId != nil, assignee: assignee.analyticsAssignee))
+        analytics.record(.taskCreated(assignee: assignee.analyticsAssignee))
         return created
     }
 

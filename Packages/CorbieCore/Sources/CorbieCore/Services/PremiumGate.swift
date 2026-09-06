@@ -8,14 +8,13 @@ public enum PremiumAction: String, Sendable, Equatable, CaseIterable, Codable {
     case capsules
     case votes
     case people
-    case folders
     case freeTime = "free_time"
     case calendar
 
     public var isGated: Bool {
         switch self {
         case .calendar: return false
-        case .create, .edit, .widgets, .capsules, .votes, .people, .folders, .freeTime: return true
+        case .create, .edit, .widgets, .capsules, .votes, .people, .freeTime: return true
         }
     }
 
@@ -27,7 +26,6 @@ public enum PremiumAction: String, Sendable, Equatable, CaseIterable, Codable {
         case .capsules: return .capsules
         case .votes: return .votes
         case .people: return .people
-        case .folders: return .folders
         case .freeTime: return .freeTime
         case .calendar: return .settings
         }
@@ -44,7 +42,6 @@ public enum PaywallReason: String, Sendable, Equatable, CaseIterable, Codable {
     case capsules
     case votes
     case people
-    case folders
     case freeTime = "free_time"
 }
 

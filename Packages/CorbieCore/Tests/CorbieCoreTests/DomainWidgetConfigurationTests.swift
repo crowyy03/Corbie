@@ -64,10 +64,10 @@ import Testing
         }
     }
 
-    @Test func aChosenGoalWinsOverTheNewestOne() async throws {
+    @Test func aChosenPlanWinsOverTheNewestOne() async throws {
         let world = try await makeWorld()
-        let second = try await world.seed.controller.repositories.goals.create(
-            GoalDraft(
+        let second = try await world.seed.controller.repositories.plans.create(
+            PlanDraft(
                 spaceId: world.seed.space.id,
                 title: "Kitchen",
                 type: .renovation,
@@ -77,17 +77,17 @@ import Testing
                 createdByMemberId: world.seed.me.id
             )
         )
-        let chosen = try await world.provider.goalProgress(goalId: second.id, now: world.now)
-        #expect(chosen.goalId == second.id)
+        let chosen = try await world.provider.planProgress(planId: second.id, now: world.now)
+        #expect(chosen.planId == second.id)
         #expect(chosen.title == "Kitchen")
-        let fallback = try await world.provider.goalProgress(goalId: nil, now: world.now)
-        #expect(fallback.goalId == second.id)
+        let fallback = try await world.provider.planProgress(planId: nil, now: world.now)
+        #expect(fallback.planId == second.id)
     }
 
-    @Test func aGoalThatIsGoneFallsBackToTheNewestOne() async throws {
+    @Test func aPlanThatIsGoneFallsBackToTheNewestOne() async throws {
         let world = try await makeWorld()
-        let snapshot = try await world.provider.goalProgress(goalId: UUID(), now: world.now)
-        #expect(snapshot.goalId == world.seed.goal.id)
+        let snapshot = try await world.provider.planProgress(planId: UUID(), now: world.now)
+        #expect(snapshot.planId == world.seed.plan.id)
     }
 
     @Test func theEventQueryOffersUpcomingEventsAndResolvesThemById() async throws {
@@ -100,11 +100,11 @@ import Testing
         #expect(resolved.map(\.id) == [first.id])
     }
 
-    @Test func theGoalQueryOffersGoalsAndResolvesThemById() async throws {
+    @Test func thePlanQueryOffersPlansAndResolvesThemById() async throws {
         let world = try await makeWorld()
-        let options = try await world.provider.selectableGoals(now: world.now)
-        #expect(options.map(\.id) == [world.seed.goal.id])
-        let resolved = try await world.provider.goalOptions(ids: [world.seed.goal.id, UUID()])
+        let options = try await world.provider.selectablePlans(now: world.now)
+        #expect(options.map(\.id) == [world.seed.plan.id])
+        let resolved = try await world.provider.planOptions(ids: [world.seed.plan.id, UUID()])
         #expect(resolved.map(\.title) == ["Lisbon in October"])
         #expect(abs((resolved.first?.progress ?? 0) - 0.65378) < 0.0001)
     }
@@ -113,13 +113,9 @@ import Testing
         let world = try await makeWorld()
         let repositories = world.seed.controller.repositories
         for title in ["Butter", "Eggs"] {
-            _ = try await repositories.tasks.create(
-                TaskDraft(
-                    spaceId: world.seed.space.id,
-                    title: title,
-                    folderId: world.seed.shoppingFolder.id,
-                    createdByMemberId: world.seed.me.id
-                )
+            _ = try await repositories.lists.addItem(
+                listId: world.seed.shoppingList.id,
+                draft: ListItemDraft(title: title, addedByMemberId: world.seed.me.id)
             )
         }
         let snapshot = try await world.provider.shopping(now: world.now)

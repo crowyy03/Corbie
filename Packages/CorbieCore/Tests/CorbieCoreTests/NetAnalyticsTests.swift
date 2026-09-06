@@ -9,20 +9,21 @@ import Testing
         .spaceCreated,
         .inviteCreated,
         .inviteRedeemed,
-        .taskCreated(hasFolder: true, assignee: .partner),
+        .taskCreated(assignee: .partner),
         .taskTaken,
         .taskDone,
         .taskHandedBack,
         .eventCreated(kind: .birthday),
         .wishCreated(source: .amazon),
         .wishFulfilled,
-        .goalCreated(type: .trip),
-        .goalCompleted,
-        .goalStepCreated(hasDue: true),
-        .goalStepDone,
+        .planCreated(type: .trip),
+        .planCompleted,
+        .planStepCreated(hasDue: true),
+        .planStepDone,
         .expenseAdded,
-        .folderCreated(template: .shopping),
-        .folderMapOpened,
+        .listCreated(template: .shopping),
+        .listItemChecked,
+        .listMapOpened,
         .freetimeOpened,
         .freetimeSharingEnabled,
         .freetimeSharingDisabled,
@@ -85,15 +86,10 @@ import Testing
     }
 
     @Test func propsMatchTheSpecForTheEventsThatCarryThem() {
-        #expect(
-            AnalyticsEvent.taskCreated(hasFolder: false, assignee: .partner).props == [
-                "has_folder": .flag(false),
-                "assignee": .string("partner")
-            ]
-        )
+        #expect(AnalyticsEvent.taskCreated(assignee: .partner).props == ["assignee": .string("partner")])
         #expect(AnalyticsEvent.wishCreated(source: .etsy).props == ["source": .string("etsy")])
-        #expect(AnalyticsEvent.folderCreated(template: .cities).props == ["template": .string("cities")])
-        #expect(AnalyticsEvent.goalStepCreated(hasDue: true).props == ["has_due": .flag(true)])
+        #expect(AnalyticsEvent.listCreated(template: .cities).props == ["template": .string("cities")])
+        #expect(AnalyticsEvent.planStepCreated(hasDue: true).props == ["has_due": .flag(true)])
         #expect(
             AnalyticsEvent.freetimeEmpty(reason: .noSlots).props == ["reason": .string("no_slots")]
         )

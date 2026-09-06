@@ -12,9 +12,9 @@ struct RecapPresentation {
         self.calendar = configured
     }
 
-    func goalLine(_ move: RecapGoalMove) -> String {
+    func planLine(_ move: RecapPlanMove) -> String {
         String(
-            format: String(localized: "recap.goal.line"),
+            format: String(localized: "recap.plan.line"),
             locale: locale,
             move.title,
             deltaText(move),
@@ -22,11 +22,11 @@ struct RecapPresentation {
         )
     }
 
-    func deltaText(_ move: RecapGoalMove) -> String {
+    func deltaText(_ move: RecapPlanMove) -> String {
         let money = Money(amount: abs(move.delta), currency: move.currency).formatted(locale: locale)
         let format = move.delta < 0
-            ? String(localized: "recap.goal.delta.down")
-            : String(localized: "recap.goal.delta.up")
+            ? String(localized: "recap.plan.delta.down")
+            : String(localized: "recap.plan.delta.up")
         return String(format: format, locale: locale, money)
     }
 

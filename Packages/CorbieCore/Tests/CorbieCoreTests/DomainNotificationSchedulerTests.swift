@@ -295,7 +295,7 @@ import Testing
     @Test func routesRoundTripThroughTheDeepLinkString() {
         let id = UUID()
         let routes: [CorbieRoute] = [
-            .tasks, .task(id), .calendar, .event(id), .wishes, .wish(id), .goals, .goal(id),
+            .tasks, .task(id), .calendar, .event(id), .wishes, .wish(id), .plans, .plan(id),
             .capsules, .capsule(id), .votes, .vote(id), .people, .person(id), .us, .paywall
         ]
         for route in routes {
