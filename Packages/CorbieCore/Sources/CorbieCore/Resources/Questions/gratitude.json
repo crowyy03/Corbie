@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0601",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which small thing did I do this week that you noticed but never mentioned?",
+      "es": "¿Qué cosa pequeña hice esta semana que notaste y nunca mencionaste?",
+      "fr": "Quelle petite chose ai-je faite cette semaine que tu as vue sans le dire ?",
+      "de": "Welche Kleinigkeit von mir hast du diese Woche bemerkt, ohne es zu sagen?",
+      "it": "Quale piccola cosa ho fatto questa settimana che hai notato senza dirlo?"
+    }
+  },
+  {
+    "id": "q0602",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do I do without being asked that saves you time?",
+      "es": "¿Qué hago sin que me lo pidas que te ahorra tiempo?",
+      "fr": "Que fais-je sans que tu me le demandes qui te fait gagner du temps ?",
+      "de": "Was mache ich ungefragt, das dir Zeit spart?",
+      "it": "Cosa faccio senza che me lo chiedi e che ti fa risparmiare tempo?"
+    }
+  },
+  {
+    "id": "q0603",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which thank you have you never said out loud to me?",
+      "es": "¿Qué agradecimiento nunca me has dicho en voz alta?",
+      "fr": "Quel merci ne m'as-tu jamais dit à voix haute ?",
+      "de": "Welches Danke hast du mir nie laut gesagt?",
+      "it": "Quale ringraziamento non mi hai mai detto ad alta voce?"
+    }
+  },
+  {
+    "id": "q0604",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you miss first if I were away for a month?",
+      "es": "¿Qué echarías de menos primero si yo me fuera un mes?",
+      "fr": "Que te manquerait-il en premier si je partais un mois ?",
+      "de": "Was würde dir zuerst fehlen, wenn ich einen Monat weg wäre?",
+      "it": "Cosa ti mancherebbe per primo se fossi via un mese?"
+    }
+  },
+  {
+    "id": "q0605",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my things have you quietly adopted as your own?",
+      "es": "¿Qué cosa mía has adoptado como tuya sin decir nada?",
+      "fr": "Lequel de mes objets as-tu adopté comme le tien sans rien dire ?",
+      "de": "Welche meiner Sachen hast du stillschweigend zu deinen gemacht?",
+      "it": "Quale mia cosa hai adottato come tua senza dire niente?"
+    }
+  },
+  {
+    "id": "q0606",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you learn from a place you could not wait to leave?",
+      "es": "¿Qué aprendiste de un sitio del que no veías la hora de irte?",
+      "fr": "Qu'as-tu appris d'un endroit que tu avais hâte de quitter ?",
+      "de": "Was hast du an einem Ort gelernt, von dem du nur weg wolltest?",
+      "it": "Cosa hai imparato da un posto da cui non vedevi l'ora di andartene?"
+    }
+  },
+  {
+    "id": "q0607",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which kind of help from me is hardest for you to accept?",
+      "es": "¿Qué tipo de ayuda mía te cuesta más aceptar?",
+      "fr": "Quel type d'aide de ma part t'est le plus difficile à accepter ?",
+      "de": "Welche Hilfe von mir fällt dir am schwersten anzunehmen?",
+      "it": "Quale tipo di aiuto da parte mia ti è più difficile accettare?"
+    }
+  },
+  {
+    "id": "q0608",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What have I handled so long that you forgot it needs doing?",
+      "es": "¿De qué me ocupo desde hace tanto que olvidaste que hay que hacerlo?",
+      "fr": "De quoi je m'occupe depuis si longtemps que tu as oublié qu'il faut le faire ?",
+      "de": "Was erledige ich so lange, dass du vergessen hast, dass es nötig ist?",
+      "it": "Di cosa mi occupo da così tanto che hai dimenticato che va fatto?"
+    }
+  },
+  {
+    "id": "q0609",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What thank you do you owe someone you will never see again?",
+      "es": "¿Qué agradecimiento le debes a alguien a quien no volverás a ver?",
+      "fr": "Quel merci dois-tu à quelqu'un que tu ne reverras jamais ?",
+      "de": "Welches Danke schuldest du jemandem, den du nie wiedersiehst?",
+      "it": "Quale ringraziamento devi a qualcuno che non rivedrai mai più?"
+    }
+  },
+  {
+    "id": "q0610",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which compliment about you do you have trouble believing?",
+      "es": "¿Qué cumplido sobre ti te cuesta creer?",
+      "fr": "Quel compliment sur toi as-tu du mal à croire ?",
+      "de": "Welches Kompliment über dich fällt dir schwer zu glauben?",
+      "it": "Quale complimento su di te fatichi a credere?"
+    }
+  },
+  {
+    "id": "q0611",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What did I say once that you still repeat to yourself?",
+      "es": "¿Qué te dije una vez que todavía te repites?",
+      "fr": "Qu'ai-je dit une fois que tu te répètes encore ?",
+      "de": "Was habe ich einmal gesagt, das du dir immer noch vorsagst?",
+      "it": "Cosa ti ho detto una volta che ancora ti ripeti?"
+    }
+  },
+  {
+    "id": "q0612",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you thank your past self for?",
+      "es": "¿Por qué le das las gracias a tu yo del pasado?",
+      "fr": "De quoi remercies-tu la personne que tu étais avant ?",
+      "de": "Wofür dankst du deinem früheren Ich?",
+      "it": "Per cosa ringrazi il te di un tempo?"
+    }
+  },
+  {
+    "id": "q0613",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who do you tell your good news to before anyone else?",
+      "es": "¿A quién le cuentas tus buenas noticias antes que a nadie?",
+      "fr": "À qui annonces-tu tes bonnes nouvelles avant tout le monde ?",
+      "de": "Wem erzählst du gute Nachrichten vor allen anderen?",
+      "it": "A chi racconti le tue buone notizie prima che a chiunque altro?"
+    }
+  },
+  {
+    "id": "q0614",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What did you notice about me on the first day that still holds?",
+      "es": "¿Qué notaste en mí el primer día que sigue siendo cierto?",
+      "fr": "Qu'as-tu remarqué chez moi le premier jour qui reste vrai ?",
+      "de": "Was ist dir am ersten Tag an mir aufgefallen und stimmt bis heute?",
+      "it": "Cosa hai notato di me il primo giorno che vale ancora?"
+    }
+  },
+  {
+    "id": "q0615",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who taught you something you still use every week?",
+      "es": "¿Quién te enseñó algo que sigues usando cada semana?",
+      "fr": "Qui t'a appris quelque chose que tu utilises encore chaque semaine ?",
+      "de": "Wer hat dir etwas beigebracht, das du jede Woche nutzt?",
+      "it": "Chi ti ha insegnato qualcosa che usi ancora ogni settimana?"
+    }
+  },
+  {
+    "id": "q0616",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you get for free that turned out to matter?",
+      "es": "¿Qué conseguiste gratis que acabó siendo importante?",
+      "fr": "Qu'as-tu eu gratuitement qui s'est révélé important ?",
+      "de": "Was hast du umsonst bekommen, das sich als wichtig erwies?",
+      "it": "Cosa hai avuto gratis che poi si è rivelato importante?"
+    }
+  },
+  {
+    "id": "q0617",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my qualities do you brag about when I am not there?",
+      "es": "¿Qué cualidad mía presumes cuando yo no estoy?",
+      "fr": "De quelle qualité chez moi te vantes-tu quand je ne suis pas là ?",
+      "de": "Mit welcher meiner Eigenschaften gibst du an, wenn ich nicht dabei bin?",
+      "it": "Di quale mia qualità ti vanti quando non ci sono?"
+    }
+  },
+  {
+    "id": "q0618",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What has someone done for you that you copied for someone else?",
+      "es": "¿Qué hizo alguien por ti que luego tú copiaste con otra persona?",
+      "fr": "Qu'a fait quelqu'un pour toi que tu as reproduit pour quelqu'un d'autre ?",
+      "de": "Was hat jemand für dich getan, das du für andere übernommen hast?",
+      "it": "Cosa ha fatto qualcuno per te che tu hai poi copiato per un altro?"
+    }
+  },
+  {
+    "id": "q0619",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which person from this week deserves a message from you tonight?",
+      "es": "¿Qué persona de esta semana merece un mensaje tuyo esta noche?",
+      "fr": "Quelle personne de cette semaine mérite un message de toi ce soir ?",
+      "de": "Welche Person aus dieser Woche verdient heute Abend eine Nachricht?",
+      "it": "Quale persona di questa settimana merita un tuo messaggio stasera?"
+    }
+  },
+  {
+    "id": "q0620",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which promise did someone keep to you that you never forgot?",
+      "es": "¿Qué promesa te cumplió alguien y no has olvidado nunca?",
+      "fr": "Quelle promesse quelqu'un t'a-t-il tenue sans que tu l'oublies ?",
+      "de": "Welches Versprechen hat jemand dir gehalten, das du nie vergessen hast?",
+      "it": "Quale promessa ti ha mantenuto qualcuno e non hai mai dimenticato?"
+    }
+  },
+  {
+    "id": "q0621",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Where have you been more patient with me than I noticed?",
+      "es": "¿En qué has tenido más paciencia conmigo de la que yo noté?",
+      "fr": "Où as-tu eu plus de patience avec moi que je ne l'ai remarqué ?",
+      "de": "Wo warst du geduldiger mit mir, als ich es gemerkt habe?",
+      "it": "In cosa hai avuto più pazienza con me di quanto io abbia notato?"
+    }
+  },
+  {
+    "id": "q0622",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you own that a friend talked you into buying?",
+      "es": "¿Qué tienes que te convenció de comprar un amigo?",
+      "fr": "Que possèdes-tu qu'un ami t'a poussé à acheter ?",
+      "de": "Was besitzt du, weil ein Freund es dir eingeredet hat?",
+      "it": "Cosa possiedi che un amico ti ha convinto a comprare?"
+    }
+  },
+  {
+    "id": "q0623",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do for me that you actually enjoy doing?",
+      "es": "¿Qué haces por mí que además disfrutas haciendo?",
+      "fr": "Que fais-tu pour moi que tu aimes vraiment faire ?",
+      "de": "Was tust du für mich, das dir sogar Spaß macht?",
+      "it": "Cosa fai per me che ti piace davvero fare?"
+    }
+  },
+  {
+    "id": "q0624",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What did I once talk you into that you are glad about now?",
+      "es": "¿A qué te convencí una vez y ahora te alegras?",
+      "fr": "Qu'ai-je réussi à te faire faire une fois, et tu t'en réjouis aujourd'hui ?",
+      "de": "Wozu habe ich dich mal überredet, worüber du heute froh bist?",
+      "it": "Cosa ti ho fatto provare una volta e di cui oggi sei felice?"
+    }
+  },
+  {
+    "id": "q0625",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which stranger helped you when it really counted?",
+      "es": "¿Qué desconocido te ayudó cuando de verdad importaba?",
+      "fr": "Quel inconnu t'a aidé au moment où ça comptait vraiment ?",
+      "de": "Welcher fremde Mensch hat dir geholfen, als es darauf ankam?",
+      "it": "Quale sconosciuto ti ha aiutato quando contava davvero?"
+    }
+  },
+  {
+    "id": "q0626",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What am I good at that I do not realise?",
+      "es": "¿En qué destaco sin darme cuenta?",
+      "fr": "Qu'est-ce que je réussis bien sans m'en rendre compte ?",
+      "de": "Worin bin ich gut, ohne es zu merken?",
+      "it": "In cosa riesco bene senza rendermene conto?"
+    }
+  },
+  {
+    "id": "q0627",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which thing you do for me should I stop taking for granted?",
+      "es": "¿Qué cosa que haces por mí debería dejar de dar por hecha?",
+      "fr": "Qu'est-ce que tu fais pour moi que je devrais arrêter de trouver normal ?",
+      "de": "Was tust du für mich, das ich nicht mehr selbstverständlich nehmen sollte?",
+      "it": "Cosa fai per me che dovrei smettere di dare per scontato?"
+    }
+  },
+  {
+    "id": "q0628",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What made you feel useful this week?",
+      "es": "¿Qué te hizo sentirte útil esta semana?",
+      "fr": "Qu'est-ce qui t'a fait te sentir utile cette semaine ?",
+      "de": "Wobei hast du dich diese Woche nützlich gefühlt?",
+      "it": "Cosa ti ha fatto sentire utile questa settimana?"
+    }
+  },
+  {
+    "id": "q0629",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my choices made your year easier?",
+      "es": "¿Qué decisión mía te hizo el año más fácil?",
+      "fr": "Laquelle de mes décisions t'a rendu l'année plus facile ?",
+      "de": "Welche meiner Entscheidungen hat dir das Jahr erleichtert?",
+      "it": "Quale mia scelta ti ha reso l'anno più facile?"
+    }
+  },
+  {
+    "id": "q0630",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What is the best thing anyone has said about the two of us?",
+      "es": "¿Qué es lo mejor que alguien ha dicho sobre nosotros dos?",
+      "fr": "Quelle est la plus belle chose qu'on ait dite sur nous deux ?",
+      "de": "Was ist das Beste, das jemand über uns beide gesagt hat?",
+      "it": "Qual è la cosa più bella che qualcuno ha detto su noi due?"
+    }
+  },
+  {
+    "id": "q0631",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my flaws turned out to be useful to you?",
+      "es": "¿Qué defecto mío te acabó resultando útil?",
+      "fr": "Lequel de mes défauts s'est révélé utile pour toi ?",
+      "de": "Welcher meiner Fehler hat sich für dich als nützlich erwiesen?",
+      "it": "Quale mio difetto ti è tornato utile?"
+    }
+  },
+  {
+    "id": "q0632",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Whose life outside ours would be worse without you?",
+      "es": "¿La vida de quién, fuera de la nuestra, sería peor sin ti?",
+      "fr": "La vie de qui, en dehors de la nôtre, serait pire sans toi ?",
+      "de": "Wessen Leben außerhalb unseres wäre ohne dich schlechter?",
+      "it": "La vita di chi, fuori dalla nostra, sarebbe peggiore senza di te?"
+    }
+  },
+  {
+    "id": "q0633",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of your routines exists because of me?",
+      "es": "¿Qué rutina tuya existe gracias a mí?",
+      "fr": "Laquelle de tes routines existe grâce à moi ?",
+      "de": "Welche deiner Routinen gibt es nur wegen mir?",
+      "it": "Quale tua routine esiste grazie a me?"
+    }
+  },
+  {
+    "id": "q0634",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you inherit from someone that you are glad to have?",
+      "es": "¿Qué heredaste de alguien que te alegra tener?",
+      "fr": "Qu'as-tu hérité de quelqu'un qui compte encore pour toi ?",
+      "de": "Was hast du von jemandem geerbt, worüber du froh bist?",
+      "it": "Cosa hai ereditato da qualcuno che sei felice di avere?"
+    }
+  },
+  {
+    "id": "q0635",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who would be surprised to hear they influenced you?",
+      "es": "¿A quién le sorprendería saber que influyó en ti?",
+      "fr": "Qui serait surpris d'apprendre qu'il t'a influencé ?",
+      "de": "Wer wäre überrascht zu hören, dass er dich geprägt hat?",
+      "it": "Chi si stupirebbe di sapere di averti influenzato?"
+    }
+  },
+  {
+    "id": "q0636",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What have I noticed about you that nobody else has?",
+      "es": "¿Qué he notado de ti que no ha notado nadie más?",
+      "fr": "Qu'ai-je remarqué chez toi que personne d'autre n'a vu ?",
+      "de": "Was habe ich an dir bemerkt, das sonst niemand sieht?",
+      "it": "Cosa ho notato di te che nessun altro ha notato?"
+    }
+  },
+  {
+    "id": "q0637",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which small kindness do you remember from a bad day?",
+      "es": "¿Qué pequeño gesto amable recuerdas de un mal día?",
+      "fr": "Quel petit geste gentil gardes-tu d'une mauvaise journée ?",
+      "de": "An welche kleine Freundlichkeit an einem schlechten Tag denkst du?",
+      "it": "Quale piccolo gesto gentile ricordi di una brutta giornata?"
+    }
+  },
+  {
+    "id": "q0638",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What went right this month that you expected to go wrong?",
+      "es": "¿Qué salió bien este mes que esperabas que saliera mal?",
+      "fr": "Qu'est-ce qui a bien marché ce mois-ci alors que tu craignais le pire ?",
+      "de": "Was lief diesen Monat gut, obwohl du Schlimmes erwartet hast?",
+      "it": "Cosa è andato bene questo mese anche se te lo aspettavi storto?"
+    }
+  },
+  {
+    "id": "q0639",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which ordinary evening of ours would you defend to a bored friend?",
+      "es": "¿Qué noche corriente nuestra defenderías ante un amigo aburrido?",
+      "fr": "Laquelle de nos soirées ordinaires défendrais-tu devant un ami blasé ?",
+      "de": "Welchen gewöhnlichen Abend von uns würdest du vor einem gelangweilten Freund verteidigen?",
+      "it": "Quale nostra serata normale difenderesti davanti a un amico annoiato?"
+    }
+  },
+  {
+    "id": "q0640",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you own that someone made for you by hand?",
+      "es": "¿Qué tienes que alguien te hizo a mano?",
+      "fr": "Que possèdes-tu que quelqu'un a fabriqué à la main pour toi ?",
+      "de": "Was besitzt du, das jemand für dich von Hand gemacht hat?",
+      "it": "Cosa possiedi che qualcuno ha fatto a mano per te?"
+    }
+  },
+  {
+    "id": "q0641",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you never have to explain to me?",
+      "es": "¿Qué no tienes que explicarme nunca?",
+      "fr": "Qu'est-ce que tu n'as jamais besoin de m'expliquer ?",
+      "de": "Was musst du mir nie erklären?",
+      "it": "Cosa non devi mai spiegarmi?"
+    }
+  },
+  {
+    "id": "q0642",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What are you glad you did not have to do alone?",
+      "es": "¿Qué te alegra no haber tenido que afrontar sin ayuda?",
+      "fr": "Qu'est-ce que tu n'as heureusement pas eu à affronter sans aide ?",
+      "de": "Worüber bist du froh, es nicht allein gemacht zu haben?",
+      "it": "Cosa sei felice di non aver dovuto affrontare senza aiuto?"
+    }
+  },
+  {
+    "id": "q0643",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which part of your week would collapse without one other person?",
+      "es": "¿Qué parte de tu semana se vendría abajo sin otra persona?",
+      "fr": "Quelle partie de ta semaine s'effondrerait sans une autre personne ?",
+      "de": "Welcher Teil deiner Woche bricht ohne eine andere Person zusammen?",
+      "it": "Quale parte della tua settimana crollerebbe senza un'altra persona?"
+    }
+  },
+  {
+    "id": "q0644",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What have I done for you that I have completely forgotten?",
+      "es": "¿Qué he hecho por ti que yo he olvidado por completo?",
+      "fr": "Qu'ai-je fait pour toi que j'ai complètement oublié ?",
+      "de": "Was habe ich für dich getan, das ich völlig vergessen habe?",
+      "it": "Cosa ho fatto per te che io ho completamente dimenticato?"
+    }
+  },
+  {
+    "id": "q0645",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which good thing in your life started with a coincidence?",
+      "es": "¿Qué cosa buena de tu vida empezó por casualidad?",
+      "fr": "Quelle bonne chose dans ta vie a commencé par un hasard ?",
+      "de": "Welche gute Sache in deinem Leben begann mit einem Zufall?",
+      "it": "Quale cosa bella della tua vita è iniziata per caso?"
+    }
+  },
+  {
+    "id": "q0646",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which place in this city are you quietly grateful for?",
+      "es": "¿Qué lugar de esta ciudad agradeces en silencio?",
+      "fr": "Pour quel endroit de cette ville éprouves-tu une gratitude discrète ?",
+      "de": "Für welchen Ort in dieser Stadt bist du still dankbar?",
+      "it": "Per quale posto di questa città provi gratitudine in silenzio?"
+    }
+  },
+  {
+    "id": "q0647",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which five minutes of today would you save?",
+      "es": "¿Qué cinco minutos de hoy guardarías?",
+      "fr": "Quelles cinq minutes d'aujourd'hui garderais-tu ?",
+      "de": "Welche fünf Minuten von heute würdest du aufheben?",
+      "it": "Quali cinque minuti di oggi salveresti?"
+    }
+  },
+  {
+    "id": "q0648",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who in your life gets less credit than they deserve?",
+      "es": "¿A quién de tu vida se le reconoce menos de lo que merece?",
+      "fr": "Qui, dans ta vie, est moins reconnu qu'il ne le mérite ?",
+      "de": "Wer in deinem Leben bekommt weniger Anerkennung als verdient?",
+      "it": "Chi nella tua vita riceve meno riconoscimento di quanto merita?"
+    }
+  },
+  {
+    "id": "q0649",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you attempt only because I am nearby?",
+      "es": "¿Qué te atreves a intentar solo porque yo estoy cerca?",
+      "fr": "Que tentes-tu seulement parce que je suis à côté ?",
+      "de": "Was traust du dich nur, weil ich in der Nähe bin?",
+      "it": "Cosa provi a fare solo perché io sono vicino?"
+    }
+  },
+  {
+    "id": "q0650",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which favour would you ask me for if it cost me nothing?",
+      "es": "¿Qué favor me pedirías si a mí no me costara nada?",
+      "fr": "Quel service me demanderais-tu si ça ne me coûtait rien ?",
+      "de": "Um welchen Gefallen würdest du mich bitten, wenn er mich nichts kostet?",
+      "it": "Quale favore mi chiederesti se non mi costasse nulla?"
+    }
+  },
+  {
+    "id": "q0651",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do people thank you for that costs you nothing?",
+      "es": "¿Por qué cosa te da las gracias la gente sin que a ti te cueste nada?",
+      "fr": "Pour quoi les gens te remercient-ils alors que ça ne te coûte rien ?",
+      "de": "Wofür danken dir Leute, obwohl es dich nichts kostet?",
+      "it": "Per cosa ti ringrazia la gente anche se a te non costa nulla?"
+    }
+  },
+  {
+    "id": "q0652",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my efforts counted even though it did not work?",
+      "es": "¿Qué esfuerzo mío contó aunque no funcionara?",
+      "fr": "Lequel de mes efforts a compté même s'il n'a rien donné ?",
+      "de": "Welche meiner Bemühungen zählte, obwohl sie nichts brachte?",
+      "it": "Quale mio sforzo ha contato anche se non ha funzionato?"
+    }
+  },
+  {
+    "id": "q0653",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What has this year given you that you never asked for?",
+      "es": "¿Qué te ha dado este año que tú nunca pediste?",
+      "fr": "Que t'a donné cette année sans que tu l'aies demandé ?",
+      "de": "Was hat dir dieses Jahr gegeben, ohne dass du darum gebeten hast?",
+      "it": "Cosa ti ha dato quest'anno senza che tu lo chiedessi?"
+    }
+  },
+  {
+    "id": "q0654",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which piece of luck are the two of us still living off?",
+      "es": "¿De qué golpe de suerte seguimos viviendo nosotros dos?",
+      "fr": "De quel coup de chance vivons-nous encore tous les deux ?",
+      "de": "Von welchem Glücksfall zehren wir beide immer noch?",
+      "it": "Di quale colpo di fortuna viviamo ancora noi due?"
+    }
+  },
+  {
+    "id": "q0655",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "What would you thank the people who raised me for?",
+      "es": "¿Por qué darías las gracias a quienes me criaron?",
+      "fr": "Pour quoi remercierais-tu ceux qui m'ont élevé ?",
+      "de": "Wofür würdest du denen danken, die mich großgezogen haben?",
+      "it": "Per cosa ringrazieresti chi mi ha cresciuto?"
+    }
+  },
+  {
+    "id": "q0656",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which cheap thing of yours outperforms an expensive one?",
+      "es": "¿Qué cosa barata tuya funciona mejor que una cara?",
+      "fr": "Quel objet bon marché chez toi vaut mieux qu'un cher ?",
+      "de": "Welche billige Sache von dir schlägt eine teure?",
+      "it": "Quale tua cosa economica batte una costosa?"
+    }
+  },
+  {
+    "id": "q0657",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your friends should I be thanking for something?",
+      "es": "¿A qué amigo tuyo debería estar dándole las gracias por algo?",
+      "fr": "Lequel de tes amis devrais-je remercier pour quelque chose ?",
+      "de": "Welchem deiner Freunde sollte ich für etwas danken?",
+      "it": "Quale tuo amico dovrei ringraziare per qualcosa?"
+    }
+  },
+  {
+    "id": "q0658",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do I say too rarely that you would like to hear?",
+      "es": "¿Qué digo demasiado poco que te gustaría oír?",
+      "fr": "Que dis-je trop rarement et que tu aimerais entendre ?",
+      "de": "Was sage ich zu selten, das du gern hören würdest?",
+      "it": "Cosa dico troppo di rado che ti piacerebbe sentire?"
+    }
+  },
+  {
+    "id": "q0659",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which problem of yours did I solve without noticing?",
+      "es": "¿Qué problema tuyo resolví sin darme cuenta?",
+      "fr": "Lequel de tes problèmes ai-je réglé sans m'en apercevoir ?",
+      "de": "Welches deiner Probleme habe ich gelöst, ohne es zu merken?",
+      "it": "Quale tuo problema ho risolto senza accorgermene?"
+    }
+  },
+  {
+    "id": "q0660",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which help did you refuse and later wish you had taken?",
+      "es": "¿Qué ayuda rechazaste y luego deseaste haber aceptado?",
+      "fr": "Quelle aide as-tu refusée avant de regretter de ne pas l'avoir prise ?",
+      "de": "Welche Hilfe hast du abgelehnt und später vermisst?",
+      "it": "Quale aiuto hai rifiutato e poi avresti voluto accettare?"
+    }
+  },
+  {
+    "id": "q0661",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our shared things do you value more than I think?",
+      "es": "¿Qué cosa nuestra valoras más de lo que yo creo?",
+      "fr": "Lequel de nos objets communs comptes-tu plus que je ne crois ?",
+      "de": "Welche unserer gemeinsamen Sachen schätzt du mehr, als ich denke?",
+      "it": "Quale nostra cosa in comune apprezzi più di quanto io creda?"
+    }
+  },
+  {
+    "id": "q0662",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did a hard month last year leave you with?",
+      "es": "¿Con qué te quedaste de un mes duro del año pasado?",
+      "fr": "Que t'a laissé un mois difficile de l'an dernier ?",
+      "de": "Was hat dir ein harter Monat im letzten Jahr hinterlassen?",
+      "it": "Cosa ti ha lasciato un mese duro dell'anno scorso?"
+    }
+  },
+  {
+    "id": "q0663",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which message of mine have you kept?",
+      "es": "¿Qué mensaje mío has guardado?",
+      "fr": "Lequel de mes messages as-tu gardé ?",
+      "de": "Welche Nachricht von mir hast du aufgehoben?",
+      "it": "Quale mio messaggio hai conservato?"
+    }
+  },
+  {
+    "id": "q0664",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you appreciate in me that other people find odd?",
+      "es": "¿Qué aprecias de mí que a otros les parece raro?",
+      "fr": "Qu'apprécies-tu chez moi que les autres trouvent bizarre ?",
+      "de": "Was schätzt du an mir, das andere seltsam finden?",
+      "it": "Cosa apprezzi di me che agli altri sembra strano?"
+    }
+  },
+  {
+    "id": "q0665",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which thing you use daily would you buy again at twice the price?",
+      "es": "¿Qué cosa que usas a diario volverías a comprar al doble de precio?",
+      "fr": "Quel objet du quotidien rachèterais-tu au double du prix ?",
+      "de": "Welche Sache, die du täglich nutzt, würdest du auch zum doppelten Preis kaufen?",
+      "it": "Quale cosa che usi ogni giorno ricompreresti al doppio del prezzo?"
+    }
+  },
+  {
+    "id": "q0666",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the best money you ever spent on someone else?",
+      "es": "¿Cuál es el mejor dinero que has gastado en otra persona?",
+      "fr": "Quel est le meilleur argent que tu aies dépensé pour quelqu'un ?",
+      "de": "Was ist das beste Geld, das du für jemand anderen ausgegeben hast?",
+      "it": "Qual è il denaro meglio speso per qualcun altro?"
+    }
+  },
+  {
+    "id": "q0667",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your habits came from someone much older than you?",
+      "es": "¿Qué costumbre tuya viene de alguien mucho mayor que tú?",
+      "fr": "Laquelle de tes habitudes vient de quelqu'un bien plus âgé que toi ?",
+      "de": "Welche deiner Gewohnheiten stammt von jemandem viel Älterem?",
+      "it": "Quale tua abitudine viene da qualcuno molto più grande di te?"
+    }
+  },
+  {
+    "id": "q0668",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you learn from someone you no longer speak to?",
+      "es": "¿Qué aprendiste de alguien con quien ya no hablas?",
+      "fr": "Qu'as-tu appris de quelqu'un à qui tu ne parles plus ?",
+      "de": "Was hast du von jemandem gelernt, mit dem du nicht mehr redest?",
+      "it": "Cosa hai imparato da qualcuno con cui non parli più?"
+    }
+  },
+  {
+    "id": "q0669",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you thank the version of me from a year ago for?",
+      "es": "¿Por qué le das las gracias a la versión mía de hace un año?",
+      "fr": "De quoi remercies-tu la version de moi d'il y a un an ?",
+      "de": "Wofür dankst du der Version von mir von vor einem Jahr?",
+      "it": "Per cosa ringrazi la versione di me di un anno fa?"
+    }
+  },
+  {
+    "id": "q0670",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our routines would you protect in a busy week?",
+      "es": "¿Qué rutina nuestra protegerías en una semana cargada?",
+      "fr": "Laquelle de nos routines protégerais-tu dans une semaine chargée ?",
+      "de": "Welche unserer Routinen würdest du in einer vollen Woche schützen?",
+      "it": "Quale nostra routine proteggeresti in una settimana piena?"
+    }
+  },
+  {
+    "id": "q0671",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did someone give you that you could never have bought?",
+      "es": "¿Qué te dio alguien que tú nunca habrías podido comprar?",
+      "fr": "Que t'a donné quelqu'un que tu n'aurais jamais pu acheter ?",
+      "de": "Was hat dir jemand gegeben, das du nie hättest kaufen können?",
+      "it": "Cosa ti ha dato qualcuno che non avresti mai potuto comprare?"
+    }
+  },
+  {
+    "id": "q0672",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my worries do you take seriously when others laugh?",
+      "es": "¿Qué preocupación mía te tomas en serio cuando otros se ríen?",
+      "fr": "Laquelle de mes inquiétudes prends-tu au sérieux quand d'autres en rient ?",
+      "de": "Welche meiner Sorgen nimmst du ernst, wenn andere lachen?",
+      "it": "Quale mia preoccupazione prendi sul serio quando gli altri ne ridono?"
+    }
+  },
+  {
+    "id": "q0673",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do for other people that nobody notices?",
+      "es": "¿Qué haces por los demás que nadie nota?",
+      "fr": "Que fais-tu pour les autres que personne ne remarque ?",
+      "de": "Was tust du für andere, das niemand bemerkt?",
+      "it": "Cosa fai per gli altri che nessuno nota?"
+    }
+  },
+  {
+    "id": "q0674",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would be the first line of a speech about me tonight?",
+      "es": "¿Cuál sería la primera frase de un discurso sobre mí esta noche?",
+      "fr": "Quelle serait la première phrase d'un discours sur moi ce soir ?",
+      "de": "Wie würde der erste Satz einer Rede über mich heute Abend lauten?",
+      "it": "Quale sarebbe la prima frase di un discorso su di me stasera?"
+    }
+  },
+  {
+    "id": "q0675",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which object in your bag has saved you more than once?",
+      "es": "¿Qué objeto de tu bolso te ha salvado más de una vez?",
+      "fr": "Quel objet dans ton sac t'a tiré d'affaire plus d'une fois ?",
+      "de": "Welcher Gegenstand in deiner Tasche hat dich mehrfach gerettet?",
+      "it": "Quale oggetto nella tua borsa ti ha tolto dai guai più di una volta?"
+    }
+  },
+  {
+    "id": "q0676",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What have I never had to ask you for twice?",
+      "es": "¿Qué no he tenido que pedirte nunca dos veces?",
+      "fr": "Que n'ai-je jamais eu à te demander deux fois ?",
+      "de": "Worum musste ich dich nie zweimal bitten?",
+      "it": "Cosa non ho mai dovuto chiederti due volte?"
+    }
+  },
+  {
+    "id": "q0677",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "If someone asked for one fact about me, what would you tell them?",
+      "es": "Si alguien te pidiera un dato sobre mí, ¿cuál le contarías?",
+      "fr": "Si on te demandait une seule chose sur moi, que dirais-tu ?",
+      "de": "Wenn dich jemand nach einer Sache über mich fragt, was sagst du?",
+      "it": "Se qualcuno ti chiedesse una cosa sola su di me, cosa diresti?"
+    }
+  },
+  {
+    "id": "q0678",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your small wins went uncelebrated this year?",
+      "es": "¿Qué pequeña victoria tuya se quedó sin celebrar este año?",
+      "fr": "Laquelle de tes petites victoires n'a pas été fêtée cette année ?",
+      "de": "Welcher deiner kleinen Erfolge blieb dieses Jahr ungefeiert?",
+      "it": "Quale tua piccola vittoria è rimasta senza festa quest'anno?"
+    }
+  },
+  {
+    "id": "q0679",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which favour do you keep meaning to return?",
+      "es": "¿Qué favor sigues queriendo devolver?",
+      "fr": "Quel service comptes-tu toujours rendre en retour ?",
+      "de": "Welchen Gefallen willst du schon lange erwidern?",
+      "it": "Quale favore ti riprometti sempre di ricambiare?"
+    }
+  },
+  {
+    "id": "q0680",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which thing we bought together was worth every cent?",
+      "es": "¿Qué cosa que compramos juntos valió cada céntimo?",
+      "fr": "Quel achat fait ensemble valait chaque centime ?",
+      "de": "Welche gemeinsame Anschaffung war jeden Cent wert?",
+      "it": "Quale cosa comprata insieme è valsa ogni centesimo?"
+    }
+  },
+  {
+    "id": "q0681",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you like about the way I handle bad news?",
+      "es": "¿Qué te gusta de cómo encajo las malas noticias?",
+      "fr": "Qu'aimes-tu dans ma façon d'encaisser les mauvaises nouvelles ?",
+      "de": "Was gefällt dir daran, wie ich mit schlechten Nachrichten umgehe?",
+      "it": "Cosa ti piace di come reagisco alle brutte notizie?"
+    }
+  },
+  {
+    "id": "q0682",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Whose job that you never see makes your week possible?",
+      "es": "¿Qué trabajo que nunca ves hace posible tu semana?",
+      "fr": "Quel métier que tu ne vois jamais rend ta semaine possible ?",
+      "de": "Welche Arbeit, die du nie siehst, macht deine Woche möglich?",
+      "it": "Quale lavoro che non vedi mai rende possibile la tua settimana?"
+    }
+  },
+  {
+    "id": "q0683",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which thing you learned by accident do you use the most?",
+      "es": "¿Qué aprendiste por casualidad y usas más que nada?",
+      "fr": "Qu'as-tu appris par hasard et qui te sert le plus ?",
+      "de": "Was hast du zufällig gelernt und nutzt es am meisten?",
+      "it": "Cosa hai imparato per caso e usi più di tutto?"
+    }
+  },
+  {
+    "id": "q0684",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my routines do you find comforting?",
+      "es": "¿Qué rutina mía te resulta reconfortante?",
+      "fr": "Laquelle de mes routines te rassure ?",
+      "de": "Welche meiner Routinen findest du beruhigend?",
+      "it": "Quale mia routine trovi rassicurante?"
+    }
+  },
+  {
+    "id": "q0685",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What has someone forgiven you for that you still think about?",
+      "es": "¿Qué te ha perdonado alguien en lo que todavía piensas?",
+      "fr": "Qu'est-ce que quelqu'un t'a pardonné et que tu n'as pas oublié ?",
+      "de": "Was hat dir jemand verziehen, woran du immer noch denkst?",
+      "it": "Cosa ti ha perdonato qualcuno, e ci pensi ancora?"
+    }
+  },
+  {
+    "id": "q0686",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which photo of the two of us do you look at most?",
+      "es": "¿Qué foto de nosotros dos miras más?",
+      "fr": "Quelle photo de nous deux regardes-tu le plus ?",
+      "de": "Welches Foto von uns beiden schaust du am häufigsten an?",
+      "it": "Quale foto di noi due guardi più spesso?"
+    }
+  },
+  {
+    "id": "q0687",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you get from me that you would ask nobody else for?",
+      "es": "¿Qué recibes de mí que no le pedirías a nadie más?",
+      "fr": "Que reçois-tu de moi que tu ne demanderais à personne d'autre ?",
+      "de": "Was bekommst du von mir, worum du sonst niemanden bitten würdest?",
+      "it": "Cosa ricevi da me che non chiederesti a nessun altro?"
+    }
+  },
+  {
+    "id": "q0688",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which small repair of yours are you still proud of?",
+      "es": "¿Qué pequeño arreglo tuyo te sigue enorgulleciendo?",
+      "fr": "Quelle petite réparation faite de tes mains fait encore ta fierté ?",
+      "de": "Auf welche kleine Reparatur von dir bist du noch stolz?",
+      "it": "Quale tua piccola riparazione è ancora un tuo vanto?"
+    }
+  },
+  {
+    "id": "q0689",
+    "theme": "gratitude",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What did I do on your worst day this year that helped?",
+      "es": "¿Qué hice en tu peor día de este año que te ayudó?",
+      "fr": "Qu'ai-je fait lors de ta pire journée cette année qui t'a fait du bien ?",
+      "de": "Was habe ich an deinem schlimmsten Tag dieses Jahr getan, das half?",
+      "it": "Cosa ho fatto nel tuo giorno peggiore di quest'anno che ti ha fatto bene?"
+    }
+  },
+  {
+    "id": "q0690",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would your neighbours thank you for if they knew?",
+      "es": "¿Por qué te darían las gracias tus vecinos si lo supieran?",
+      "fr": "Pour quoi tes voisins te remercieraient-ils s'ils le savaient ?",
+      "de": "Wofür würden dir deine Nachbarn danken, wenn sie es wüssten?",
+      "it": "Per cosa ti ringrazierebbero i vicini se lo sapessero?"
+    }
+  },
+  {
+    "id": "q0691",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you notice me doing for other people?",
+      "es": "¿Qué me ves hacer por otras personas?",
+      "fr": "Que me vois-tu faire pour les autres ?",
+      "de": "Was tue ich für andere, das dir auffällt?",
+      "it": "Cosa mi vedi fare per le altre persone?"
+    }
+  },
+  {
+    "id": "q0692",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of my reactions do you count on?",
+      "es": "¿Con qué reacción mía cuentas siempre?",
+      "fr": "Sur laquelle de mes réactions comptes-tu ?",
+      "de": "Auf welche meiner Reaktionen verlässt du dich?",
+      "it": "Su quale mia reazione conti sempre?"
+    }
+  },
+  {
+    "id": "q0693",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which gift did you only appreciate years later?",
+      "es": "¿Qué regalo solo supiste apreciar años después?",
+      "fr": "Quel cadeau n'as-tu apprécié que des années plus tard ?",
+      "de": "Welches Geschenk hast du erst Jahre später zu schätzen gewusst?",
+      "it": "Quale regalo hai apprezzato solo anni dopo?"
+    }
+  },
+  {
+    "id": "q0694",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which advice of mine did you follow without telling me?",
+      "es": "¿Qué consejo mío seguiste sin decírmelo?",
+      "fr": "Lequel de mes conseils as-tu suivi sans me le dire ?",
+      "de": "Welchen Rat von mir hast du befolgt, ohne es mir zu sagen?",
+      "it": "Quale mio consiglio hai seguito senza dirmelo?"
+    }
+  },
+  {
+    "id": "q0695",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you thank a machine for on a normal day?",
+      "es": "¿Por qué le darías las gracias a una máquina en un día normal?",
+      "fr": "Pour quoi remercierais-tu une machine un jour normal ?",
+      "de": "Wofür würdest du an einem normalen Tag einer Maschine danken?",
+      "it": "Per cosa ringrazieresti una macchina in un giorno normale?"
+    }
+  },
+  {
+    "id": "q0696",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which person we both know is glad the two of us met?",
+      "es": "¿Qué persona que ambos conocemos se alegra de que nos conociéramos?",
+      "fr": "Quelle personne qu'on connaît tous les deux est contente qu'on se soit rencontrés ?",
+      "de": "Welche Person, die wir beide kennen, freut sich, dass wir uns kennengelernt haben?",
+      "it": "Quale persona che conosciamo entrambi è contenta che ci siamo incontrati?"
+    }
+  },
+  {
+    "id": "q0697",
+    "theme": "gratitude",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What have I given you that you use more than I expected?",
+      "es": "¿Qué te he dado que usas más de lo que yo esperaba?",
+      "fr": "Que t'ai-je donné que tu utilises plus que je ne le pensais ?",
+      "de": "Was habe ich dir geschenkt, das du mehr nutzt, als ich dachte?",
+      "it": "Cosa ti ho dato che usi più di quanto mi aspettassi?"
+    }
+  },
+  {
+    "id": "q0698",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you have now that you once thought you would never get?",
+      "es": "¿Qué tienes ahora que pensaste que nunca conseguirías?",
+      "fr": "Qu'as-tu aujourd'hui que tu pensais ne jamais obtenir ?",
+      "de": "Was hast du heute, von dem du dachtest, du bekämst es nie?",
+      "it": "Cosa hai adesso che pensavi non avresti mai avuto?"
+    }
+  },
+  {
+    "id": "q0699",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which sound at home tells you the day is going well?",
+      "es": "¿Qué sonido de casa te dice que el día va bien?",
+      "fr": "Quel bruit chez toi te dit que la journée se passe bien ?",
+      "de": "Welches Geräusch zu Hause sagt dir, dass der Tag gut läuft?",
+      "it": "Quale suono di casa ti dice che la giornata sta andando bene?"
+    }
+  },
+  {
+    "id": "q0700",
+    "theme": "gratitude",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What should I be thanking you for tonight?",
+      "es": "¿Por qué debería darte las gracias esta noche?",
+      "fr": "Pour quoi devrais-je te remercier ce soir ?",
+      "de": "Wofür sollte ich dir heute Abend danken?",
+      "it": "Per cosa dovrei ringraziarti stasera?"
+    }
+  }
+]
