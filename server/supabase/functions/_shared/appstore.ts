@@ -1,6 +1,12 @@
 import { sha256Hex } from "./hash.ts";
 
-export type EntitlementStatus = "none" | "active" | "grace" | "expired" | "revoked";
+export type EntitlementStatus =
+  | "none"
+  | "active"
+  | "in_grace_period"
+  | "in_billing_retry"
+  | "expired"
+  | "revoked";
 
 export interface NotificationPayload {
   notificationType?: string;
@@ -64,8 +70,10 @@ export function mapNotificationToStatus(
 
   if (type === "DID_FAIL_TO_RENEW") {
     const grace = renewal.gracePeriodExpiresDate;
-    if (grace !== undefined) return grace > now ? "grace" : "expired";
-    return subtype === "GRACE_PERIOD" ? "grace" : "expired";
+    if (grace !== undefined && grace > now) return "in_grace_period";
+    if (grace === undefined && subtype === "GRACE_PERIOD") return "in_grace_period";
+    if (renewal.isInBillingRetryPeriod === true) return "in_billing_retry";
+    return "expired";
   }
 
   if (activeTypes.has(type)) {
@@ -84,7 +92,7 @@ export function expiresAtOf(
   transaction: TransactionInfo,
   renewal: RenewalInfo,
 ): string | null {
-  const millis = status === "grace"
+  const millis = status === "in_grace_period" || status === "in_billing_retry"
     ? renewal.gracePeriodExpiresDate ?? transaction.expiresDate
     : transaction.expiresDate;
   if (millis === undefined) return null;

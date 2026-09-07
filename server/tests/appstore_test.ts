@@ -29,7 +29,7 @@ Deno.test("a renewal event whose expiry already passed is expired", () => {
   );
 });
 
-Deno.test("failed renewal inside the grace window is grace", () => {
+Deno.test("failed renewal inside the grace window is in_grace_period", () => {
   assertEquals(
     mapNotificationToStatus(
       "DID_FAIL_TO_RENEW",
@@ -38,11 +38,38 @@ Deno.test("failed renewal inside the grace window is grace", () => {
       { gracePeriodExpiresDate: future },
       now,
     ),
-    "grace",
+    "in_grace_period",
+  );
+  assertEquals(
+    mapNotificationToStatus("DID_FAIL_TO_RENEW", "GRACE_PERIOD", { expiresDate: past }, {}, now),
+    "in_grace_period",
   );
 });
 
-Deno.test("failed renewal without a grace window is expired", () => {
+Deno.test("failed renewal that Apple is still retrying is in_billing_retry", () => {
+  assertEquals(
+    mapNotificationToStatus(
+      "DID_FAIL_TO_RENEW",
+      undefined,
+      { expiresDate: past },
+      { isInBillingRetryPeriod: true },
+      now,
+    ),
+    "in_billing_retry",
+  );
+  assertEquals(
+    mapNotificationToStatus(
+      "DID_FAIL_TO_RENEW",
+      "GRACE_PERIOD",
+      { expiresDate: past },
+      { gracePeriodExpiresDate: past, isInBillingRetryPeriod: true },
+      now,
+    ),
+    "in_billing_retry",
+  );
+});
+
+Deno.test("failed renewal with no grace window and no retry is expired", () => {
   assertEquals(
     mapNotificationToStatus("DID_FAIL_TO_RENEW", undefined, { expiresDate: past }, {}, now),
     "expired",
@@ -97,10 +124,18 @@ Deno.test("an unknown notification type falls back to the transaction expiry", (
   assertEquals(mapNotificationToStatus("TEST", undefined, {}, {}, now), "none");
 });
 
-Deno.test("grace status reports the grace expiry, other statuses the transaction expiry", () => {
+Deno.test("the two retry statuses report the grace expiry, the rest the transaction expiry", () => {
   assertEquals(
-    expiresAtOf("grace", { expiresDate: past }, { gracePeriodExpiresDate: future }),
+    expiresAtOf("in_grace_period", { expiresDate: past }, { gracePeriodExpiresDate: future }),
     new Date(future).toISOString(),
+  );
+  assertEquals(
+    expiresAtOf("in_billing_retry", { expiresDate: past }, { gracePeriodExpiresDate: future }),
+    new Date(future).toISOString(),
+  );
+  assertEquals(
+    expiresAtOf("in_billing_retry", { expiresDate: past }, {}),
+    new Date(past).toISOString(),
   );
   assertEquals(
     expiresAtOf("active", { expiresDate: future }, { gracePeriodExpiresDate: past }),

@@ -9193,6 +9193,74 @@
         }
       }
     },
+    "notification.trial.ending.body": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie ist ein Abo für euch beide."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie is one subscription for you two."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie es una suscripción para los dos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie est un abonnement pour vous deux."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie è un abbonamento per voi due."
+          }
+        }
+      }
+    },
+    "notification.trial.ending.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eure Testphase endet in %@ Tagen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your trial ends in %@ days"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuestra prueba termina en %@ días"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre essai se termine dans %@ jours"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La vostra prova finisce tra %@ giorni"
+          }
+        }
+      }
+    },
     "notification.vote.new.body": {
       "localizations": {
         "de": {

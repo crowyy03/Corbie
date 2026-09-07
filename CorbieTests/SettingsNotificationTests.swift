@@ -32,12 +32,21 @@ final class SettingsNotificationTests: XCTestCase {
         }
     }
 
-    func testEveryScheduledKindIsCancelledBySomeToggle() {
+    func testEveryKindAPreferenceGatesIsCancelledBySomeToggle() {
         let covered = SettingsNotificationToggle.allCases.flatMap(\.scheduledKinds)
-        for kind in NotificationKind.allCases {
+        for kind in NotificationKind.allCases where kind != .trialEnding {
             XCTAssertTrue(covered.contains(kind), kind.rawValue)
         }
         XCTAssertEqual(covered.count, Set(covered).count)
+    }
+
+    func testTheTrialNoticeStaysOnWithEveryToggleOff() {
+        var prefs = NotificationPrefs.allEnabled
+        for toggle in SettingsNotificationToggle.allCases {
+            prefs = toggle.set(false, in: prefs)
+        }
+        XCTAssertTrue(NotificationKind.trialEnding.isEnabled(in: prefs))
+        XCTAssertFalse(SettingsNotificationToggle.allCases.flatMap(\.scheduledKinds).contains(.trialEnding))
     }
 
     func testAToggleCancelsExactlyTheKindsItsPreferenceGates() {

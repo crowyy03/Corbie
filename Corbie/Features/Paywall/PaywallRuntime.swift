@@ -24,7 +24,6 @@ struct PaywallRuntime: ViewModifier {
     }
 
     private func refresh() async {
-        guard environment.space != nil else { return }
         await environment.refreshEntitlement()
     }
 }

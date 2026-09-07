@@ -23,7 +23,7 @@ function architectureEventNames(): Set<string> {
   const bullet = doc.split("\n").find((line) => line.startsWith("- События:"));
   if (!bullet) throw new Error("architecture section 13 has no event list");
   return new Set(
-    [...bullet.matchAll(/`([a-z_]+)(?:\([a-z_]+\))?`/g)].map((match) => match[1]),
+    [...bullet.matchAll(/`([a-z_]+)(?:\([a-z_, ]+\))?`/g)].map((match) => match[1]),
   );
 }
 

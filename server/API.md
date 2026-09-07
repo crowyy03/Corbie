@@ -106,7 +106,9 @@ Response `200`: `{"base": "USD", "date": "2026-09-05", "rates": {"EUR": 0.91, "G
 
 Called by Apple (App Store Server Notifications V2). Body is `{"signedPayload": "<JWS>"}`. The function verifies the JWS chain against Apple root certificates, decodes `signedTransactionInfo` and `signedRenewalInfo`, maps `appAccountToken` to `space_id` and upserts `entitlements`. The same function is deployed to a sandbox and a production project, told apart by the `APPLE_ENV` secret. Responds `200` with empty body; Apple retries on non-2xx.
 
-Status mapping: `SUBSCRIBED`, `DID_RENEW`, `DID_CHANGE_RENEWAL_STATUS`, `DID_CHANGE_RENEWAL_PREF`, `OFFER_REDEEMED`, `PRICE_INCREASE` and `RENEWAL_EXTENDED` with `expiresDate` in the future become `active`; `DID_FAIL_TO_RENEW` with a grace period becomes `grace`; `EXPIRED` and `GRACE_PERIOD_EXPIRED` become `expired`; `REFUND` and `REVOKE` become `revoked`. Any other type is read from `expiresDate` alone: in the future it is `active`, in the past `expired`, and with no `expiresDate` the status is `none`.
+Status mapping: `SUBSCRIBED`, `DID_RENEW`, `DID_CHANGE_RENEWAL_STATUS`, `DID_CHANGE_RENEWAL_PREF`, `OFFER_REDEEMED`, `PRICE_INCREASE` and `RENEWAL_EXTENDED` with `expiresDate` in the future become `active`; `DID_FAIL_TO_RENEW` becomes `in_grace_period` when `gracePeriodExpiresDate` is still ahead (or when the subtype is `GRACE_PERIOD` and Apple sent no date), `in_billing_retry` when `isInBillingRetryPeriod` is set and the grace window is over or absent, and `expired` otherwise; `EXPIRED` and `GRACE_PERIOD_EXPIRED` become `expired`; `REFUND` and `REVOKE` become `revoked`. Any other type is read from `expiresDate` alone: in the future it is `active`, in the past `expired`, and with no `expiresDate` the status is `none`.
+
+`expiresAt` is `gracePeriodExpiresDate` for `in_grace_period` and `in_billing_retry`, falling back to `expiresDate`, and `expiresDate` for every other status.
 
 ### GET `/entitlement/{spaceId}`
 
@@ -114,7 +116,7 @@ Auth required.
 
 Response `200`: `{"spaceId": "<uuid>", "status": "active", "productId": "app.corbie.yearly", "expiresAt": "2027-09-05T10:00:00Z", "updatedAt": "..."}`
 
-`status` is one of `none`, `active`, `grace`, `expired`, `revoked`. Unknown space returns `200` with `status: "none"` and every other field `null`.
+`status` is one of `none`, `active`, `in_grace_period`, `in_billing_retry`, `expired`, `revoked`. The client treats `active` and `in_grace_period` as premium, and `in_billing_retry` as premium only while `expiresAt` is still ahead. Unknown space returns `200` with `status: "none"` and every other field `null`.
 
 ### POST `/events`
 

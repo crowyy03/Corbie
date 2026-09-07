@@ -111,6 +111,8 @@ The views live in the `analytics` schema, which is not exposed over the API:
 - `analytics.onboarding_funnel` - devices per onboarding step, by first-open week
 - `analytics.paired_ratio` - redeemed invites against created spaces, by first-open week
 - `analytics.retention_d1_d7_d30` - weekly cohort of first `app_open`, share back on day 1, 7 and 30
-- `analytics.trial_to_paid` - weekly cohort of `trial_started`, share that later purchased
+- `analytics.entitlement_status` - spaces per subscription status, how many are unexpired, and when Apple last wrote to each status
+
+There is no trial-to-paid view. The trial is an Apple introductory offer, so `trial_started` and `purchase_completed` are the same tap and the paid renewal never reaches the client: the only record of it is a `DID_RENEW` notification landing on `entitlements`.
 
 Raw events are kept 30 days. `purge_expired_rows()` runs nightly through `pg_cron` when the extension is available.

@@ -126,7 +126,7 @@ The QA simulators have no route to the Supabase functions (see the server URL en
 | Join a code | `JoinViewModel`, `APIClient.redeemInvite` | The failure is mapped to a `JoinFailure` line under the field; the redeemed share is kept so a retry resumes at the CloudKit step instead of burning a second code. | Read in code only; the join sheet opens and stays usable (`QADeepLinkUITests`). |
 | Link parsing | `LinkParser`, `WishEditorViewModel.linkChanged` | The editor shows `wishes.editor.link.failed` and the title, price and photo stay editable. The wish is stored with `needsParse`, and `WishParseRetry` retries at most five per appearance once the network is back. | Yes, `QAOfflineUITests.testAnUnreachableParserStillLetsTheWishBeSavedByHand`, screenshot `offline_parse_failed`. |
 | Currency rates | `FXService.rates` | A cached table per base currency is used first and answers again if the call throws (`FXService.swift:162`); the cache lives in the App Group with a 24 hour TTL. Wishes and plans never wait for the network to draw a price. | Read in code; the approximate figure is simply absent on a fresh install with no cache. |
-| Entitlement | `EntitlementService.refresh`, `cachedState` | `cachedState` resolves from the keychain copy plus `Space.trialEndsAt` without a call, so the trial keeps working offline. `refresh` mixes the server answer, the local StoreKit transaction and the trial; a missing server answer alone cannot take premium away. | Read in code; every UI run is on the trial with no server. |
+| Entitlement | `EntitlementService.refresh`, `cachedState` | `cachedState` resolves from the keychain copy plus the status mirrored on the space without a call, so a paid pair keeps premium offline. `refresh` takes the local StoreKit entitlement first, then the server answer, then the mirror; a missing server answer alone cannot take premium away. | Read in code; every UI run forces premium through `DebugEntitlementOverride` and never calls the server. |
 | StoreKit products | `StoreService.products` | No StoreKit configuration on the test action, so the paywall renders `paywall.state.unavailable` with a Try again button and the legal line still shows. | Yes, screenshot `paywall_top`. |
 | Analytics | `Analytics` | Events go into a capped offline queue (500) saved to disk and flushed in batches of at most 20; a transport error keeps the batch, a permanent 4xx drops it. | Read in code, covered by `CorbieCoreTests` (`NetAnalyticsQueueTests`). |
 | Session token | `SessionService` | Guarded by `isConfigured`, so with no server URL it never fires; a failure is reported as a toast and onboarding continues on the Apple identity token. | Read in code. |
@@ -190,8 +190,9 @@ Timings below are what to expect on Wi-Fi. Anything slower than double them is a
 3. **Join.** Phone B: install, launch, Sign in with Apple with the second Apple ID, fill the profile,
    then "Have a code?" and type the code. Expected: "joining" for up to 15 s, then "You two are
    connected", then the tabs. Phone A shows the partner in Shared settings within 30 s.
-4. **Trial extension.** Phone A: Shared settings, Subscription. Expected: the trial has been pushed to
-   seven days from the join, once and only once (`TrialExtensionGuard`).
+4. **One subscription for two.** Phone A: subscribe with the 14 day introductory offer. Expected on
+   phone B, which paid nothing and has no transaction on its Apple ID: premium within a minute, and
+   Shared settings, Subscription showing the same end date phone A sees.
 5. **Edits both ways.** Phone A: create a task assigned to nobody. Expected on phone B within 5 s: the
    task in Free with a Take button. Phone B: take it. Expected on phone A within 5 s: the task under
    In progress with phone B's colour and "took today". Repeat with a date, a wish, a plan money entry,
