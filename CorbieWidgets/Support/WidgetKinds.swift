@@ -10,6 +10,8 @@ enum WidgetKinds {
     static let freeSlots = "FreeSlots"
     static let capsule = "Capsule"
     static let ourDay = "OurDay"
+    static let questionSmall = "QuestionSmall"
+    static let questionMedium = "QuestionMedium"
     static let lockCircular = "LockCircular"
     static let lockRectangular = "LockRectangular"
     static let lockInline = "LockInline"

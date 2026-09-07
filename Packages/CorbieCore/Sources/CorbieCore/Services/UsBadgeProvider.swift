@@ -71,6 +71,11 @@ public final class UsBadgeProvider {
                 votes: try await repositories.votes.votes(spaceId: viewed.space.id),
                 wishes: try await repositories.wishes.wishes(
                     WishQuery(spaceId: viewed.space.id, owner: .any, fulfilled: nil)
+                ),
+                question: try await repositories.questions.storedQuestion(
+                    spaceId: viewed.space.id,
+                    viewerMemberId: viewed.member.id,
+                    now: now()
                 )
             )
             showsDot = rule.showsDot(input, now: now())

@@ -90,8 +90,8 @@ enum PlansRoute {
         case let .plan(identifier): .plan(identifier)
         case .lists: .lists
         case let .list(identifier): .list(identifier)
-        case .today, .tasks, .task, .calendar, .wishes, .capsules, .votes, .people, .person, .us, .join, .paywall,
-             .none:
+        case .today, .tasks, .task, .calendar, .wishes, .capsules, .votes, .people, .person, .us, .question,
+             .join, .paywall, .none:
             nil
         }
     }

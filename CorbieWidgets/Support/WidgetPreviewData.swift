@@ -20,6 +20,24 @@ enum WidgetPreviewData {
         }
     }
 
+    static func question(viewerAnswered: Bool) -> QuestionSnapshot {
+        QuestionSnapshot(
+            text: "What made you laugh today",
+            viewer: WidgetQuestionMember(
+                name: "Ilya",
+                colorKey: MemberColorKey.defaultA.rawValue,
+                hasAnswered: viewerAnswered
+            ),
+            partner: WidgetQuestionMember(
+                name: "Sofia",
+                colorKey: MemberColorKey.defaultB.rawValue,
+                hasAnswered: false
+            ),
+            isRevealed: false,
+            isPremium: true
+        )
+    }
+
     private static func shareBusyTimes(seed: PreviewSeedResult, now: Date, calendar: Calendar) async throws {
         let repositories = seed.controller.repositories
         for member in [seed.me, seed.partner] {

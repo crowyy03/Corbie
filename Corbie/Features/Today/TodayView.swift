@@ -39,6 +39,7 @@ struct TodayView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                 header(model)
+                TodayQuestionCard()
                 plansBlock(model)
                 if model.hasLoaded, model.feed.isEmpty {
                     emptyState(model)

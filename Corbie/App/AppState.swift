@@ -28,7 +28,7 @@ final class AppState {
 
     private static func tab(for route: Route) -> Tab? {
         switch route {
-        case .today: .today
+        case .today, .question: .today
         case .tasks, .task: .tasks
         case .calendar: .calendar
         case .wishes: .wishes

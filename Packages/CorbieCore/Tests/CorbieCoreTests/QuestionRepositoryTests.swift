@@ -236,6 +236,38 @@ import Testing
         #expect(history.first?.answers.first?.isHidden == true)
     }
 
+    @Test func theStoredReadNeverCreatesTheDay() async throws {
+        let (world, repository) = try await world()
+        let now = DomainClock.date("2026-09-07 08:00", in: calendar)
+        #expect(try await repository.storedQuestion(spaceId: world.space.id, viewerMemberId: world.me.id, now: now) == nil)
+        #expect(try world.count(DailyQuestion.entityName) == 0)
+
+        let created = try #require(try await repository.todaysQuestion(spaceId: world.space.id, now: now))
+        let stored = try #require(
+            try await repository.storedQuestion(spaceId: world.space.id, viewerMemberId: world.partner.id, now: now)
+        )
+        #expect(stored.id == created.id)
+        #expect(stored.dayKey == "2026-09-07")
+
+        _ = try await repository.answer(
+            dailyQuestionId: created.id,
+            memberId: world.me.id,
+            text: "A dog on the tram",
+            at: now
+        )
+        let seenByPartner = try #require(
+            try await repository.storedQuestion(spaceId: world.space.id, viewerMemberId: world.partner.id, now: now)
+        )
+        #expect(seenByPartner.hasAnswered(world.me.id))
+        #expect(seenByPartner.answer(by: world.me.id)?.isHidden == true)
+
+        let tomorrow = DomainClock.date("2026-09-08 08:00", in: calendar)
+        #expect(
+            try await repository.storedQuestion(spaceId: world.space.id, viewerMemberId: world.me.id, now: tomorrow) == nil
+        )
+        #expect(try world.count(DailyQuestion.entityName) == 1)
+    }
+
     @Test func theBadgeRemembersTheDayYouLastLooked() async throws {
         let (world, repository) = try await world()
         let member = try await repository.markSeen(memberId: world.me.id, dayKey: "2026-09-07")

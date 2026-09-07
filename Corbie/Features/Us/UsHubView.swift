@@ -26,6 +26,13 @@ struct UsHubView: View {
                     destination: .votes(startsWithEditor: false)
                 )
                 UsTile(
+                    systemImage: "text.bubble",
+                    title: String(localized: "us.hub.questions"),
+                    line: String(localized: "us.tile.questions.line"),
+                    countText: String(localized: "us.tile.questions.count \(model.answeredQuestionCount)"),
+                    destination: .questions
+                )
+                UsTile(
                     systemImage: "person.crop.circle",
                     title: String(localized: "us.hub.people"),
                     line: String(localized: "us.tile.people.line"),

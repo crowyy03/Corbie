@@ -8,6 +8,7 @@ public struct UsBadgeInput: Sendable, Equatable {
     public var capsules: [CapsuleDTO]
     public var votes: [VoteDTO]
     public var wishes: [WishDTO]
+    public var question: DailyQuestionDTO?
 
     public init(
         space: SpaceDTO,
@@ -16,7 +17,8 @@ public struct UsBadgeInput: Sendable, Equatable {
         people: [PersonDTO] = [],
         capsules: [CapsuleDTO] = [],
         votes: [VoteDTO] = [],
-        wishes: [WishDTO] = []
+        wishes: [WishDTO] = [],
+        question: DailyQuestionDTO? = nil
     ) {
         self.space = space
         self.viewer = viewer
@@ -25,6 +27,7 @@ public struct UsBadgeInput: Sendable, Equatable {
         self.capsules = capsules
         self.votes = votes
         self.wishes = wishes
+        self.question = question
     }
 }
 
@@ -40,6 +43,13 @@ public struct UsBadgeRule: Sendable {
             || hasUnansweredVote(input)
             || hasWishFromPartner(input)
             || hasGiftToPick(input, now: now)
+            || hasQuestionToAnswer(input)
+    }
+
+    private func hasQuestionToAnswer(_ input: UsBadgeInput) -> Bool {
+        guard input.space.isPaired, let question = input.question else { return false }
+        return question.hasAnswered(input.viewer.id) == false
+            && input.viewer.lastQuestionSeenDayKey != question.dayKey
     }
 
     private func hasCapsuleToOpen(_ input: UsBadgeInput, now: Date) -> Bool {

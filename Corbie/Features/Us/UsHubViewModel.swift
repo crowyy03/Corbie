@@ -9,6 +9,7 @@ final class UsHubViewModel {
     private(set) var peopleCount = 0
     private(set) var capsuleCount = 0
     private(set) var voteCount = 0
+    private(set) var answeredQuestionCount = 0
 
     func load(_ environment: AppEnvironment, now: Date = Date()) async {
         guard let space = environment.space else {
@@ -31,6 +32,11 @@ final class UsHubViewModel {
             peopleCount = people.count
             capsuleCount = try await repositories.capsules.capsules(spaceId: space.id).count
             voteCount = try await repositories.votes.votes(spaceId: space.id).count
+            let viewerMemberId = environment.currentMember?.id
+            answeredQuestionCount = try await repositories.questions.history(
+                spaceId: space.id,
+                viewerMemberId: viewerMemberId
+            ).filter { $0.hasAnswered(viewerMemberId) }.count
         } catch {
             environment.report(error)
         }

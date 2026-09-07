@@ -5,6 +5,7 @@ enum UsDestination: Hashable {
     case votes(startsWithEditor: Bool)
     case people
     case person(UUID)
+    case questions
     case settings
 }
 
@@ -20,6 +21,8 @@ private struct UsDestinationsModifier: ViewModifier {
                 PeopleView()
             case let .person(id):
                 PersonDetailView(personId: id)
+            case .questions:
+                QuestionHistoryView()
             case .settings:
                 SettingsView()
             }

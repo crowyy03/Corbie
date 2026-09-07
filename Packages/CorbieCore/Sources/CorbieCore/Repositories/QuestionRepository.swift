@@ -2,6 +2,7 @@ import Foundation
 
 public protocol QuestionRepository: Sendable {
     func todaysQuestion(spaceId: UUID, viewerMemberId: UUID?, now: Date) async throws -> DailyQuestionDTO?
+    func storedQuestion(spaceId: UUID, viewerMemberId: UUID?, now: Date) async throws -> DailyQuestionDTO?
     func answer(dailyQuestionId: UUID, memberId: UUID, text: String, at date: Date) async throws -> DailyQuestionDTO
     func editAnswer(answerId: UUID, text: String, at date: Date) async throws -> DailyQuestionDTO
     func nudge(dailyQuestionId: UUID, memberId: UUID, at date: Date) async throws -> DailyQuestionDTO

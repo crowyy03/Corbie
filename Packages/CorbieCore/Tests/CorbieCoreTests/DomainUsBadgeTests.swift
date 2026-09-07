@@ -131,6 +131,42 @@ import Testing
         #expect(rule.showsDot(input(partnerBirthday: (month: 9, day: 12), wishes: [bought]), now: now) == false)
     }
 
+    @Test func todaysQuestionShowsTheDotUntilYouAnswerOrLook() {
+        let today = DailyQuestionDTO(id: UUID(), dayKey: "2026-09-05")
+        #expect(rule.showsDot(questionInput(today), now: now))
+
+        var answered = today
+        answered.answers = [QuestionAnswerDTO(id: UUID(), memberId: viewerId, text: "A dog on the tram")]
+        #expect(rule.showsDot(questionInput(answered), now: now) == false)
+
+        #expect(rule.showsDot(questionInput(today, lastSeenDayKey: "2026-09-05"), now: now) == false)
+        #expect(rule.showsDot(questionInput(today, lastSeenDayKey: "2026-09-04"), now: now))
+        #expect(rule.showsDot(questionInput(nil), now: now) == false)
+    }
+
+    @Test func aSpaceWithNobodyElseInItIsNeverDottedByTheQuestion() {
+        let today = DailyQuestionDTO(id: UUID(), dayKey: "2026-09-05")
+        #expect(rule.showsDot(questionInput(today, memberCount: 1), now: now) == false)
+    }
+
+    private func questionInput(
+        _ question: DailyQuestionDTO?,
+        lastSeenDayKey: String? = nil,
+        memberCount: Int = 2
+    ) -> UsBadgeInput {
+        UsBadgeInput(
+            space: SpaceDTO(id: UUID(), memberCount: memberCount),
+            viewer: MemberDTO(
+                id: viewerId,
+                displayName: "Ilya",
+                lastUsVisitAt: now,
+                lastQuestionSeenDayKey: lastSeenDayKey
+            ),
+            partner: MemberDTO(id: partnerId, displayName: "Sofia"),
+            question: question
+        )
+    }
+
     @Test func theViewersOwnBirthdayIsNotAGiftToPick() {
         let input = UsBadgeInput(
             space: SpaceDTO(id: UUID()),
@@ -185,6 +221,31 @@ import Testing
 
         try await badge.markVisited(memberId: world.me.id)
         #expect(badge.showsDot)
+    }
+
+    @Test func todaysQuestionDotsThePillUntilTheViewerOpensIt() async throws {
+        let world = try await TestWorld.make()
+        let clock = Date(timeIntervalSince1970: 1_788_000_000)
+        let badge = UsBadgeProvider(repositories: world.repositories, now: { clock })
+        await badge.refresh(space: world.space, viewer: world.me, partner: world.partner)
+        #expect(badge.showsDot == false)
+
+        let question = try #require(
+            try await world.repositories.questions.todaysQuestion(
+                spaceId: world.space.id,
+                viewerMemberId: world.me.id,
+                now: clock
+            )
+        )
+        await badge.refresh(space: world.space, viewer: world.me, partner: world.partner)
+        #expect(badge.showsDot)
+
+        let looked = try await world.repositories.questions.markSeen(
+            memberId: world.me.id,
+            dayKey: question.dayKey
+        )
+        await badge.refresh(space: world.space, viewer: looked, partner: world.partner)
+        #expect(badge.showsDot == false)
     }
 
     @Test func signingOutDropsTheDot() async throws {

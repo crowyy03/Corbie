@@ -234,6 +234,38 @@ import Testing
         #expect(snapshot.daysAway == 186)
     }
 
+    @Test func theQuestionWidgetCarriesTodaysTextAndWhoAnswered() async throws {
+        let world = try await makeWorld()
+        let first = try await world.provider.question(now: world.now)
+        let text = try #require(first.text)
+        #expect(text.isEmpty == false)
+        #expect(first.viewer?.name == "Ilya")
+        #expect(first.viewer?.hasAnswered == false)
+        #expect(first.partner?.name == "Sofia")
+        #expect(first.isRevealed == false)
+        #expect(first.isPremium)
+
+        let questions = world.seed.controller.repositories.questions
+        let today = try #require(
+            try await questions.todaysQuestion(
+                spaceId: world.seed.space.id,
+                viewerMemberId: world.seed.me.id,
+                now: world.now
+            )
+        )
+        _ = try await questions.answer(
+            dailyQuestionId: today.id,
+            memberId: world.seed.me.id,
+            text: "A dog on the tram",
+            at: world.now
+        )
+        let after = try await world.provider.question(now: world.now)
+        #expect(after.text == text)
+        #expect(after.viewer?.hasAnswered == true)
+        #expect(after.partner?.hasAnswered == false)
+        #expect(after.isRevealed == false)
+    }
+
     @Test func theCountdownWidgetResolvesEverySource() async throws {
         let world = try await makeWorld()
         let anniversary = try await world.provider.countdown(source: .anniversary, now: world.now)
@@ -349,6 +381,7 @@ import Testing
         #expect(try await provider.upcomingDates(now: now).items.isEmpty)
         #expect(try await provider.shopping(now: now).listId == nil)
         #expect(try await provider.capsule(now: now).capsuleId == nil)
+        #expect(try await provider.question(now: now).text == nil)
         #expect(try await provider.ourDay(now: now).days == nil)
         #expect(try await provider.freeSlots(now: now).availability == .notPaired)
         #expect(try await provider.lockCircular(mode: .planRing, now: now).value == nil)

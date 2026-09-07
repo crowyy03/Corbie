@@ -19,6 +19,7 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
     case people
     case person(UUID)
     case us
+    case question
     case paywall
 
     public enum Segment {
@@ -33,6 +34,7 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
         public static let votes = "votes"
         public static let people = "people"
         public static let us = "us"
+        public static let question = "question"
         public static let paywall = "paywall"
     }
 
@@ -56,6 +58,7 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
         case .people: return Segment.people
         case let .person(id): return Segment.people + "/" + id.uuidString
         case .us: return Segment.us
+        case .question: return Segment.question
         case .paywall: return Segment.paywall
         }
     }
@@ -98,6 +101,8 @@ public enum CorbieRoute: Sendable, Equatable, Hashable {
             self = identifier.map(CorbieRoute.person) ?? .people
         case Segment.us:
             self = .us
+        case Segment.question:
+            self = .question
         case Segment.paywall:
             self = .paywall
         default:
