@@ -20,25 +20,52 @@ public enum CorbieProduct: String, Sendable, Equatable, CaseIterable, Codable {
     }
 }
 
+public enum SubscriptionPeriodUnit: String, Sendable, Equatable, CaseIterable, Codable {
+    case day
+    case week
+    case month
+    case year
+
+    public var days: Int {
+        switch self {
+        case .day: return 1
+        case .week: return 7
+        case .month: return 30
+        case .year: return 365
+        }
+    }
+}
+
+public enum StoreRenewalState: String, Sendable, Equatable, CaseIterable, Codable {
+    case subscribed
+    case inGracePeriod = "in_grace_period"
+    case inBillingRetry = "in_billing_retry"
+    case expired
+    case revoked
+}
+
 public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
     public let product: CorbieProduct
     public let displayPrice: String
     public let price: Decimal
     public let currencyCode: String?
     public let savingsPercent: Int?
+    public let eligibleFreeTrialDays: Int?
 
     public init(
         product: CorbieProduct,
         displayPrice: String,
         price: Decimal,
         currencyCode: String? = nil,
-        savingsPercent: Int? = nil
+        savingsPercent: Int? = nil,
+        eligibleFreeTrialDays: Int? = nil
     ) {
         self.product = product
         self.displayPrice = displayPrice
         self.price = price
         self.currencyCode = currencyCode
         self.savingsPercent = savingsPercent
+        self.eligibleFreeTrialDays = eligibleFreeTrialDays
     }
 
     public var id: String { product.rawValue }
@@ -49,7 +76,8 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
             displayPrice: displayPrice,
             price: price,
             currencyCode: currencyCode,
-            savingsPercent: percent
+            savingsPercent: percent,
+            eligibleFreeTrialDays: eligibleFreeTrialDays
         )
     }
 }
@@ -84,6 +112,11 @@ public enum SubscriptionOfferMath {
         offers.sorted { lhs, rhs in
             lhs.product.monthsPerPeriod > rhs.product.monthsPerPeriod
         }
+    }
+
+    public static func freeTrialDays(unit: SubscriptionPeriodUnit, value: Int, periodCount: Int) -> Int? {
+        let days = unit.days * value * periodCount
+        return days > 0 ? days : nil
     }
 }
 

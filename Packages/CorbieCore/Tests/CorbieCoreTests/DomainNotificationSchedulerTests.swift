@@ -290,17 +290,43 @@ import Testing
         #expect(vote?.actions.map(\.identifier) == [NotificationCategories.Action.castVote])
     }
 
-    @Test func everyKindMapsToAPreference() {
+    @Test func everyKindMapsToAPreferenceExceptTheTrialNotice() {
         var prefs = NotificationPrefs.allEnabled
         prefs.eventSoon = false
         prefs.taskDueToday = false
         prefs.capsuleUpdates = false
         prefs.dateRadar = false
         prefs.weeklyRecap = false
-        for kind in NotificationKind.allCases {
+        for kind in NotificationKind.allCases where kind != .trialEnding {
             #expect(kind.isEnabled(in: .allEnabled))
             #expect(kind.isEnabled(in: prefs) == false)
             #expect(kind.prefix.hasPrefix("corbie."))
         }
+        #expect(NotificationKind.trialEnding.isEnabled(in: prefs))
+    }
+
+    @Test func theTrialNoticeFiresTwoDaysBeforeTheEndAtTenLocal() async throws {
+        let center = FakeNotificationCenter()
+        let request = try await scheduler(center).scheduleTrialEnding(
+            endsAt: DomainClock.date("2026-10-04 08:30", in: calendar),
+            now: DomainClock.date("2026-09-20 12:00", in: calendar)
+        )
+        #expect(DomainClock.text(try #require(request).fireDate, in: calendar) == "2026-10-02 10:00")
+        #expect(request?.id == NotificationIdentifier.trialEnding)
+    }
+
+    @Test func theTrialNoticeIsSkippedWhenItsMomentHasPassed() async throws {
+        let center = FakeNotificationCenter()
+        let late = try await scheduler(center).scheduleTrialEnding(
+            endsAt: DomainClock.date("2026-10-04 08:30", in: calendar),
+            now: DomainClock.date("2026-10-03 12:00", in: calendar)
+        )
+        #expect(late == nil)
+        let tooShort = try await scheduler(center).scheduleTrialEnding(
+            endsAt: DomainClock.date("2026-09-21 08:30", in: calendar),
+            now: DomainClock.date("2026-09-20 12:00", in: calendar)
+        )
+        #expect(tooShort == nil)
+        #expect(await center.requests.isEmpty)
     }
 }

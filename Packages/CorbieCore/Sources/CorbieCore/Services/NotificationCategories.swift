@@ -79,6 +79,8 @@ public enum NotificationStrings {
     public static let recapTitle = "notification.recap.title"
     public static let recapBody = "notification.recap.body"
     public static let recapBodyDates = "notification.recap.body.dates"
+    public static let trialEndingTitle = "notification.trial.ending.title"
+    public static let trialEndingBody = "notification.trial.ending.body"
     public static let memberFallback = "member.name.partner"
 
     public static let all: [String] = [
@@ -120,6 +122,8 @@ public enum NotificationStrings {
         recapTitle,
         recapBody,
         recapBodyDates,
+        trialEndingTitle,
+        trialEndingBody,
         memberFallback,
         "notification.action.task.take",
         "notification.action.task.done",

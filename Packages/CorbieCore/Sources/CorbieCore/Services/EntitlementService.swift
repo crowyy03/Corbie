@@ -7,6 +7,7 @@ public actor EntitlementService {
     private let spaces: any SpaceRepository
     private let store: (any SecretStore)?
     private let local: (any LocalEntitlementProviding)?
+    private let notifications: NotificationScheduler?
     private let now: @Sendable () -> Date
 
     private var lastState: EntitlementState = .readOnly
@@ -16,12 +17,14 @@ public actor EntitlementService {
         spaces: any SpaceRepository,
         store: (any SecretStore)? = KeychainStore(),
         local: (any LocalEntitlementProviding)? = nil,
+        notifications: NotificationScheduler? = nil,
         now: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.client = client
         self.spaces = spaces
         self.store = store
         self.local = local
+        self.notifications = notifications
         self.now = now
     }
 
@@ -33,30 +36,28 @@ public actor EntitlementService {
         let localEntitlement = await local?.currentEntitlement()
         let resolved = EntitlementResolver.resolve(
             EntitlementInputs(
-                trialEndsAt: space?.trialEndsAt,
-                server: server,
                 local: localEntitlement,
+                server: server,
+                space: space.map(MirroredEntitlement.init(space:)),
                 now: now()
             )
         )
-        lastState = resolved
         await mirror(resolved, server: server, into: space)
-        return resolved
+        let effective = EntitlementService.forcedState(now: now()) ?? resolved
+        lastState = effective
+        await scheduleTrialEnding(effective)
+        return effective
     }
 
-    public func cachedState(spaceId: UUID, trialEndsAt: Date?) -> EntitlementState {
-        EntitlementResolver.resolve(
+    public func cachedState(space: SpaceDTO) -> EntitlementState {
+        if let forced = EntitlementService.forcedState(now: now()) { return forced }
+        return EntitlementResolver.resolve(
             EntitlementInputs(
-                trialEndsAt: trialEndsAt,
-                server: cachedEntitlement(spaceId: spaceId),
-                local: nil,
+                server: cachedEntitlement(spaceId: space.id),
+                space: MirroredEntitlement(space: space),
                 now: now()
             )
         )
-    }
-
-    public func extendTrialForSecondMember(space: SpaceDTO) async throws -> SpaceDTO {
-        try await spaces.extendTrial(spaceId: space.id, days: SpaceDTO.trialDays, now: now())
     }
 
     public func cachedEntitlement(spaceId: UUID) -> ServerEntitlement? {
@@ -78,12 +79,20 @@ public actor EntitlementService {
         switch state {
         case .trial:
             return .trial
-        case .active, .grace:
+        case .premium, .grace:
             return .active
         case .readOnly:
             guard let status = server?.status, status != EntitlementStatus.none else { return .readonly }
             return .expired
         }
+    }
+
+    private static func forcedState(now: Date) -> EntitlementState? {
+        #if DEBUG
+        return DebugEntitlementOverride.stored()?.state(now: now)
+        #else
+        return nil
+        #endif
     }
 
     private func serverEntitlement(spaceId: UUID) async -> ServerEntitlement? {
@@ -113,5 +122,14 @@ public actor EntitlementService {
             expiresAt: expiresAt,
             payerMemberId: space.subscriptionPayerMemberId
         )
+    }
+
+    private func scheduleTrialEnding(_ state: EntitlementState) async {
+        guard let notifications else { return }
+        guard let endsAt = state.trialEndsAt else {
+            await notifications.cancelTrialEnding()
+            return
+        }
+        _ = try? await notifications.scheduleTrialEnding(endsAt: endsAt, now: now())
     }
 }

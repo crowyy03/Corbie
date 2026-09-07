@@ -124,7 +124,7 @@ final class ShareWishViewModel {
             client: APIClient(identity: .shared),
             spaces: controller.repositories.spaces
         )
-        let state = await entitlements.cachedState(spaceId: space.id, trialEndsAt: space.trialEndsAt)
+        let state = await entitlements.cachedState(space: space)
         stage = state.isPremium ? .ready : .readOnly
     }
 

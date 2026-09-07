@@ -28,6 +28,7 @@ enum DebugLaunch {
         for key in defaults.dictionaryRepresentation().keys {
             defaults.removeObject(forKey: key)
         }
+        DebugEntitlementOverride.store(.premium)
     }
 }
 #endif

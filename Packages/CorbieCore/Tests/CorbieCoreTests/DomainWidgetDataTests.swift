@@ -5,37 +5,31 @@ import Testing
 @Suite struct DomainWidgetPremiumTests {
     private let now = Date(timeIntervalSince1970: 1_780_000_000)
 
-    private func space(status: SubscriptionStatus, trialEndsAt: Date?, expiresAt: Date?) -> SpaceDTO {
-        SpaceDTO(
-            id: UUID(),
-            trialEndsAt: trialEndsAt,
-            subscriptionStatus: status,
-            subscriptionExpiresAt: expiresAt
-        )
+    private func space(status: SubscriptionStatus, expiresAt: Date?) -> SpaceDTO {
+        SpaceDTO(id: UUID(), subscriptionStatus: status, subscriptionExpiresAt: expiresAt)
     }
 
-    @Test func aLiveTrialUnlocksTheWidgets() {
-        let subject = space(status: .trial, trialEndsAt: now.addingTimeInterval(3600), expiresAt: nil)
+    @Test func aRunningIntroTrialUnlocksTheWidgets() {
+        let subject = space(status: .trial, expiresAt: now.addingTimeInterval(3600))
         #expect(WidgetPremiumRule.isPremium(space: subject, now: now))
-    }
-
-    @Test func anExpiredTrialWithoutASubscriptionLocksTheWidgets() {
-        let subject = space(status: .expired, trialEndsAt: now.addingTimeInterval(-3600), expiresAt: nil)
-        #expect(WidgetPremiumRule.isPremium(space: subject, now: now) == false)
+        let over = space(status: .trial, expiresAt: now.addingTimeInterval(-3600))
+        #expect(WidgetPremiumRule.isPremium(space: over, now: now) == false)
+        let undated = space(status: .trial, expiresAt: nil)
+        #expect(WidgetPremiumRule.isPremium(space: undated, now: now) == false)
     }
 
     @Test func anActiveSubscriptionUnlocksUntilItExpires() {
-        let live = space(status: .active, trialEndsAt: nil, expiresAt: now.addingTimeInterval(86_400))
+        let live = space(status: .active, expiresAt: now.addingTimeInterval(86_400))
         #expect(WidgetPremiumRule.isPremium(space: live, now: now))
-        let lapsed = space(status: .active, trialEndsAt: nil, expiresAt: now.addingTimeInterval(-1))
+        let lapsed = space(status: .active, expiresAt: now.addingTimeInterval(-1))
         #expect(WidgetPremiumRule.isPremium(space: lapsed, now: now) == false)
-        let openEnded = space(status: .active, trialEndsAt: nil, expiresAt: nil)
+        let openEnded = space(status: .active, expiresAt: nil)
         #expect(WidgetPremiumRule.isPremium(space: openEnded, now: now))
     }
 
     @Test func readOnlyAndNoneStayLocked() {
         for status in [SubscriptionStatus.none, .readonly, .expired] {
-            let subject = space(status: status, trialEndsAt: nil, expiresAt: now.addingTimeInterval(86_400))
+            let subject = space(status: status, expiresAt: now.addingTimeInterval(86_400))
             #expect(WidgetPremiumRule.isPremium(space: subject, now: now) == false)
         }
     }
@@ -359,8 +353,8 @@ import Testing
     @Test func anExpiredSpaceLocksEverySnapshot() async throws {
         let world = try await makeWorld()
         var space = world.seed.space
-        space.trialEndsAt = DomainClock.date("2026-08-01", in: calendar)
         space.subscriptionStatus = .expired
+        space.subscriptionExpiresAt = DomainClock.date("2026-08-01", in: calendar)
         _ = try await world.seed.controller.repositories.spaces.update(space)
         #expect(try await world.provider.tasks(now: world.now).isPremium == false)
         #expect(try await world.provider.daysTogether(now: world.now).isPremium == false)
@@ -489,8 +483,8 @@ import Testing
         let world = try await makeWorld()
         try await share(world, viewer: true, partner: true)
         var space = world.seed.space
-        space.trialEndsAt = DomainClock.date("2026-08-01", in: calendar)
         space.subscriptionStatus = .expired
+        space.subscriptionExpiresAt = DomainClock.date("2026-08-01", in: calendar)
         _ = try await world.seed.controller.repositories.spaces.update(space)
         let snapshot = try await world.provider.freeSlots(now: world.now)
         #expect(snapshot.isPremium == false)

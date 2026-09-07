@@ -74,24 +74,6 @@ final class PairingInviteTests: XCTestCase {
         XCTAssertEqual(countdown.text(locale: .posix), "0:01")
     }
 
-    func testTrialIsExtendedOncePerSpace() {
-        let store = TrialExtensionGuard(suiteName: suiteName)
-        let space = UUID()
-        let otherSpace = UUID()
-
-        XCTAssertFalse(store.shouldExtend(spaceId: space, memberCount: 1))
-        XCTAssertTrue(store.shouldExtend(spaceId: space, memberCount: 2))
-
-        store.markExtended(spaceId: space)
-
-        XCTAssertFalse(store.shouldExtend(spaceId: space, memberCount: 2))
-        XCTAssertTrue(store.shouldExtend(spaceId: otherSpace, memberCount: 2))
-    }
-
-    func testTrialGuardKeepsSpacesApart() {
-        XCTAssertNotEqual(TrialExtensionGuard.key(UUID()), TrialExtensionGuard.key(UUID()))
-    }
-
     func testJoinFailureNamesWhatTheServerSaid() {
         XCTAssertEqual(JoinFailure.kind(for: serverError(status: 404, code: "not_found")), .notFound)
         XCTAssertEqual(JoinFailure.kind(for: serverError(status: 410, code: "expired")), .expired)

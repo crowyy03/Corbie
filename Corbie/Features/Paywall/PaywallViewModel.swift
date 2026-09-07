@@ -50,14 +50,16 @@ final class PaywallViewModel {
     }
 
     func select(_ product: CorbieProduct) {
-        guard isWorking == false else { return }
+        guard isWorking == false, selection != product else { return }
         selection = product
+        environment?.analytics.record(.planSelected(product: product))
     }
 
     func purchase() async -> Bool {
         guard let environment, let offer = selectedOffer, isWorking == false else { return false }
         guard let space = environment.space else {
             message = PaywallCopy.text("paywall.state.nospace")
+            environment.analytics.record(.purchaseFailed(reason: .noSpace))
             return false
         }
         isWorking = true

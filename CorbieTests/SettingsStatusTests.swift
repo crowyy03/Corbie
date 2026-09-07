@@ -4,20 +4,20 @@ import XCTest
 
 final class SettingsStatusTests: XCTestCase {
     func testTheTrialLineCountsTheDaysLeft() {
-        let status = SettingsSubscriptionStatus(state: .trial(daysLeft: 3))
+        let status = SettingsSubscriptionStatus(state: .trial(daysLeft: 3, endsAt: Date(timeIntervalSince1970: 1_800_000_000)))
         XCTAssertTrue(status.text.contains("3"), status.text)
         XCTAssertTrue(status.showsPlans)
     }
 
     func testAnActiveSubscriptionNamesItsEndDate() {
         let expiry = Date(timeIntervalSince1970: 1_800_000_000)
-        let status = SettingsSubscriptionStatus(state: .active(source: .server, expiresAt: expiry))
+        let status = SettingsSubscriptionStatus(state: .premium(source: .server, expiresAt: expiry))
         XCTAssertTrue(status.text.contains(expiry.formatted(date: .abbreviated, time: .omitted)), status.text)
         XCTAssertFalse(status.showsPlans)
     }
 
     func testAnActiveSubscriptionWithoutAnEndDateStillReadsAsActive() {
-        let status = SettingsSubscriptionStatus(state: .active(source: .storeKit, expiresAt: nil))
+        let status = SettingsSubscriptionStatus(state: .premium(source: .storeKit, expiresAt: nil))
         XCTAssertEqual(status.text, String(localized: "settings.subscription.active"))
     }
 

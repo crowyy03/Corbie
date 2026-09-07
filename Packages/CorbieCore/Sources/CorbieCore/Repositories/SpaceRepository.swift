@@ -5,7 +5,6 @@ public protocol SpaceRepository: Sendable {
     func space(id: UUID) async throws -> SpaceDTO?
     func currentSpace(memberId: UUID?) async throws -> SpaceDTO?
     func update(_ space: SpaceDTO) async throws -> SpaceDTO
-    func extendTrial(spaceId: UUID, days: Int, now: Date) async throws -> SpaceDTO
     func setSubscription(
         spaceId: UUID,
         status: SubscriptionStatus,

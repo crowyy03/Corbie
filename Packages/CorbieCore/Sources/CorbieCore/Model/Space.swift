@@ -10,7 +10,6 @@ public final class Space: NSManagedObject {
     @NSManaged public var togetherSince: Date?
     @NSManaged public var weddingDate: Date?
     @NSManaged public var displayCurrency: String?
-    @NSManaged public var trialEndsAt: Date?
     @NSManaged public var subscriptionStatusRaw: String?
     @NSManaged public var subscriptionExpiresAt: Date?
     @NSManaged public var subscriptionPayerMemberId: UUID?

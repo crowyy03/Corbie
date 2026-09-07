@@ -33,8 +33,8 @@ import Testing
         readOnly.dismissPaywall()
         #expect(readOnly.require(.freeTime) == false)
         #expect(readOnly.pendingPaywall?.reason == .freeTime)
-        #expect(analytics.events.contains(.readonlyHit(action: .freeTime)))
-        #expect(analytics.events.contains(.readonlyHit(action: .freeTime)))
+        #expect(analytics.events.contains(.readonlyHit(feature: .freeTime)))
+        #expect(analytics.events.contains(.paywallDismissed(screen: .comparison)))
     }
 
     @Test func aReadOnlySpaceAsksForThePaywallAndReportsIt() {
@@ -49,9 +49,9 @@ import Testing
         #expect(request?.reason == .create)
         #expect(request?.action == .create)
         #expect(request?.requestedAt == NetTestSupport.date("2026-09-05T10:00:00Z"))
-        #expect(analytics.names == ["paywall_shown", "readonly_hit"])
-        #expect(analytics.events.first == .paywallShown(reason: .create))
-        #expect(analytics.events.last == .readonlyHit(action: .create))
+        #expect(analytics.names == ["comparison_shown", "readonly_hit"])
+        #expect(analytics.events.first == .comparisonShown(reason: .create))
+        #expect(analytics.events.last == .readonlyHit(feature: .create))
     }
 
     @Test func everyGatedActionHasItsOwnReason() {
@@ -60,14 +60,14 @@ import Testing
             let readOnly = gate(.readOnly, analytics: analytics)
             #expect(readOnly.require(action) == false)
             #expect(readOnly.pendingPaywall?.reason == action.paywallReason)
-            #expect(analytics.events.contains(.readonlyHit(action: action)))
+            #expect(analytics.events.contains(.readonlyHit(feature: action)))
         }
         #expect(PremiumAction.calendar.isGated == false)
     }
 
     @Test func aTrialLetsEverythingThrough() {
         let analytics = RecordingAnalytics()
-        let trial = gate(.trial(daysLeft: 2), analytics: analytics)
+        let trial = gate(.trial(daysLeft: 2, endsAt: NetTestSupport.date("2026-09-07T10:00:00Z")), analytics: analytics)
         #expect(trial.isPremium)
         #expect(trial.trialDaysLeft == 2)
         #expect(trial.state.isTrialEndingSoon)
@@ -80,7 +80,7 @@ import Testing
 
     @Test func aSubscribedSpaceLetsEverythingThrough() {
         let analytics = RecordingAnalytics()
-        let active = gate(.active(source: .server, expiresAt: nil), analytics: analytics)
+        let active = gate(.premium(source: .server, expiresAt: nil), analytics: analytics)
         #expect(active.isPremium)
         #expect(active.state.isTrialEndingSoon == false)
         #expect(active.require(.capsules))
@@ -97,9 +97,21 @@ import Testing
         readOnly.presentPaywall(reason: .settings)
         #expect(readOnly.pendingPaywall?.reason == .settings)
         #expect(readOnly.pendingPaywall?.action == nil)
-        #expect(analytics.names == ["paywall_shown"])
-        readOnly.dismissPaywall()
+        #expect(analytics.names == ["comparison_shown"])
+        readOnly.dismissPaywall(screen: .trialOffer)
         #expect(readOnly.pendingPaywall == nil)
+        #expect(analytics.names == ["comparison_shown", "paywall_dismissed"])
+    }
+
+    @Test func enteringTheGracePeriodIsReportedOnce() {
+        let analytics = RecordingAnalytics()
+        let active = gate(.premium(source: .storeKit, expiresAt: nil), analytics: analytics)
+        active.update(.grace(expiresAt: nil))
+        active.update(.grace(expiresAt: NetTestSupport.date("2026-09-09T10:00:00Z")))
+        #expect(analytics.names == ["grace_period_entered"])
+        active.update(.readOnly)
+        active.update(.grace(expiresAt: nil))
+        #expect(analytics.names == ["grace_period_entered", "grace_period_entered"])
     }
 
     @Test func aPurchaseClosesAnOpenPaywall() {
@@ -107,9 +119,48 @@ import Testing
         let readOnly = gate(.readOnly, analytics: analytics)
         #expect(readOnly.require(.edit) == false)
         #expect(readOnly.pendingPaywall != nil)
-        readOnly.update(.active(source: .storeKit, expiresAt: nil))
+        readOnly.update(.premium(source: .storeKit, expiresAt: nil))
         #expect(readOnly.pendingPaywall == nil)
         #expect(readOnly.isPremium)
         #expect(readOnly.require(.edit))
     }
 }
+
+#if DEBUG
+@Suite struct NetDebugEntitlementOverrideTests {
+    private let now = NetTestSupport.date("2026-09-05T10:00:00Z")
+
+    @Test func everyForcedStateIsReachable() {
+        #expect(DebugEntitlementOverride.premium.state(now: now) == .premium(source: .storeKit, expiresAt: nil))
+        #expect(DebugEntitlementOverride.trialEnding.state(now: now) == .trial(
+            daysLeft: PremiumGate.trialNoticeDays,
+            endsAt: now.addingTimeInterval(Double(PremiumGate.trialNoticeDays) * 86_400)
+        ))
+        #expect(DebugEntitlementOverride.readOnly.state(now: now) == .readOnly)
+        #expect(DebugEntitlementOverride.gracePeriod.state(now: now) == .grace(
+            expiresAt: now.addingTimeInterval(Double(DebugEntitlementOverride.gracePeriodDays) * 86_400)
+        ))
+        #expect(DebugEntitlementOverride.allCases.count == 5)
+    }
+
+    @Test func onlyTheIneligibleOverrideTouchesTheIntroOffer() {
+        #expect(DebugEntitlementOverride.introOfferUsed.hidesIntroOffer)
+        #expect(DebugEntitlementOverride.introOfferUsed.state(now: now) == nil)
+        for override in DebugEntitlementOverride.allCases where override != .introOfferUsed {
+            #expect(override.hidesIntroOffer == false)
+            #expect(override.state(now: now) != nil)
+        }
+    }
+
+    @Test func theOverrideRoundTripsThroughItsOwnSuite() {
+        let name = "corbie.tests." + UUID().uuidString
+        let defaults = NetTestSupport.defaults(name)
+        #expect(DebugEntitlementOverride.stored(suiteName: name) == nil)
+        DebugEntitlementOverride.store(.gracePeriod, suiteName: name)
+        #expect(DebugEntitlementOverride.stored(suiteName: name) == .gracePeriod)
+        DebugEntitlementOverride.store(nil, suiteName: name)
+        #expect(DebugEntitlementOverride.stored(suiteName: name) == nil)
+        NetTestSupport.removeDefaults(defaults, name: name)
+    }
+}
+#endif

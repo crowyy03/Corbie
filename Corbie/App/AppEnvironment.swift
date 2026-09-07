@@ -77,19 +77,20 @@ final class AppEnvironment {
         sessionService = SessionService(configuration: client.configuration)
         analytics = Analytics(client: client, identity: anonymousIdentity)
         self.store = store
+        let scheduler = NotificationScheduler(client: notificationClient)
+        notifications = scheduler
         let entitlementService = EntitlementService(
             client: client,
             spaces: persistence.repositories.spaces,
             store: secrets,
-            local: store
+            local: store,
+            notifications: scheduler
         )
         entitlements = entitlementService
         premiumGate = PremiumGate(analytics: analytics, entitlements: entitlementService)
         usBadge = UsBadgeProvider(repositories: repositories)
         fx = FXService(client: client)
         linkParser = LinkParser(client: client)
-        let scheduler = NotificationScheduler(client: notificationClient)
-        notifications = scheduler
         remoteChanges = RemoteChangeNotifier(stack: persistence.stack, scheduler: scheduler)
         toasts = ToastCenter()
         theme = ThemeStore()
@@ -152,7 +153,7 @@ final class AppEnvironment {
             startBusyPublishing(spaceId: space.id)
             await updateNotificationAudience()
             await resyncNotificationBacklog()
-            premiumGate.update(await entitlements.cachedState(spaceId: space.id, trialEndsAt: space.trialEndsAt))
+            premiumGate.update(await entitlements.cachedState(space: space))
             try? await repositories.members.touchLastSeen(memberId: member.id)
             Task { await premiumGate.refresh(spaceId: space.id) }
             Task { await publishBusyTimes() }
@@ -395,7 +396,8 @@ extension AppEnvironment {
             id: UUID(),
             createdAt: Date(),
             creatorMemberId: member.id,
-            trialEndsAt: Date().addingTimeInterval(7 * 24 * 3600),
+            subscriptionStatus: .active,
+            subscriptionExpiresAt: Date().addingTimeInterval(365 * 24 * 3600),
             memberCount: paired ? 2 : 1
         )
         environment.session = .signedIn(

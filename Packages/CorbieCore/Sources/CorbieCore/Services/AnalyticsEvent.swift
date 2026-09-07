@@ -6,6 +6,13 @@ public enum AnalyticsAssignee: String, Sendable, Equatable, CaseIterable, Codabl
     case partner
 }
 
+public enum PurchaseFailureReason: String, Sendable, Equatable, CaseIterable, Codable {
+    case unavailable
+    case unverified
+    case noSpace = "no_space"
+    case storeError = "store_error"
+}
+
 public enum FreeTimeEmptyReason: String, Sendable, Equatable, CaseIterable, Codable {
     case notPaired = "not_paired"
     case viewerNotSharing = "viewer_not_sharing"
@@ -52,11 +59,17 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case recapNotificationSent
     case recapOpened
     case widgetAdded(kind: String)
-    case paywallShown(reason: PaywallReason)
-    case trialStarted
-    case purchase(product: String)
-    case restore
-    case readonlyHit(action: PremiumAction)
+    case trialOfferShown
+    case trialStarted(product: CorbieProduct)
+    case comparisonShown(reason: PaywallReason)
+    case planSelected(product: CorbieProduct)
+    case purchaseStarted(product: CorbieProduct)
+    case purchaseCompleted(product: CorbieProduct, isTrial: Bool)
+    case purchaseFailed(reason: PurchaseFailureReason)
+    case restoreTapped
+    case readonlyHit(feature: PremiumAction)
+    case paywallDismissed(screen: PaywallScreen)
+    case gracePeriodEntered
 
     public var name: String {
         switch self {
@@ -97,11 +110,17 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .recapNotificationSent: return "recap_notification_sent"
         case .recapOpened: return "recap_opened"
         case .widgetAdded: return "widget_added"
-        case .paywallShown: return "paywall_shown"
+        case .trialOfferShown: return "trial_offer_shown"
         case .trialStarted: return "trial_started"
-        case .purchase: return "purchase"
-        case .restore: return "restore"
+        case .comparisonShown: return "comparison_shown"
+        case .planSelected: return "plan_selected"
+        case .purchaseStarted: return "purchase_started"
+        case .purchaseCompleted: return "purchase_completed"
+        case .purchaseFailed: return "purchase_failed"
+        case .restoreTapped: return "restore_tapped"
         case .readonlyHit: return "readonly_hit"
+        case .paywallDismissed: return "paywall_dismissed"
+        case .gracePeriodEntered: return "grace_period_entered"
         }
     }
 
@@ -129,18 +148,25 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["reason": .string(reason.rawValue)]
         case let .widgetAdded(kind):
             return ["kind": .string(AnalyticsEvent.slug(kind))]
-        case let .paywallShown(reason):
+        case let .comparisonShown(reason):
             return ["reason": .string(reason.rawValue)]
-        case let .purchase(product):
-            return ["product": .string(AnalyticsEvent.slug(product))]
-        case let .readonlyHit(action):
-            return ["action": .string(action.rawValue)]
+        case let .trialStarted(product), let .planSelected(product), let .purchaseStarted(product):
+            return ["product": .string(product.identifier)]
+        case let .purchaseCompleted(product, isTrial):
+            return ["product": .string(product.identifier), "is_trial": .flag(isTrial)]
+        case let .purchaseFailed(reason):
+            return ["reason": .string(reason.rawValue)]
+        case let .readonlyHit(feature):
+            return ["feature": .string(feature.rawValue)]
+        case let .paywallDismissed(screen):
+            return ["screen": .string(screen.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
              .taskHandedBack, .wishFulfilled, .expenseAdded, .planCompleted, .planStepDone,
              .listItemChecked, .listMapOpened, .freetimeOpened, .freetimeSharingEnabled,
              .freetimeSharingDisabled, .freetimeSlotTapped, .capsuleCreated, .capsuleOpened,
              .voteCreated, .voteAnswered, .voteRevealed, .todayOpened, .recapShown,
-             .recapNotificationSent, .recapOpened, .trialStarted, .restore:
+             .recapNotificationSent, .recapOpened, .trialOfferShown, .restoreTapped,
+             .gracePeriodEntered:
             return [:]
         }
     }
@@ -153,8 +179,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
         "freetime_opened", "freetime_sharing_enabled",
         "freetime_sharing_disabled", "freetime_slot_tapped", "freetime_empty",
         "capsule_created", "capsule_opened", "vote_created",
-        "vote_answered", "vote_revealed", "widget_added", "paywall_shown", "trial_started",
-        "purchase", "restore", "readonly_hit", "task_handed_back", "today_opened",
+        "vote_answered", "vote_revealed", "widget_added",
+        "trial_offer_shown", "trial_started", "comparison_shown", "plan_selected",
+        "purchase_started", "purchase_completed", "purchase_failed", "restore_tapped",
+        "readonly_hit", "paywall_dismissed", "grace_period_entered",
+        "task_handed_back", "today_opened",
         "today_block_tapped", "today_quick_action", "recap_shown", "recap_notification_sent",
         "recap_opened"
     ]

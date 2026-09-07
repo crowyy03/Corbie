@@ -361,10 +361,7 @@ public struct LockInlineSnapshot: Sendable, Codable, Equatable {
 
 public enum WidgetPremiumRule {
     public static func isPremium(space: SpaceDTO, now: Date) -> Bool {
-        if space.trialActive(at: now) { return true }
-        guard space.subscriptionStatus == .active else { return false }
-        guard let expiresAt = space.subscriptionExpiresAt else { return true }
-        return expiresAt > now
+        MirroredEntitlement(space: space).isPremium(at: now)
     }
 }
 

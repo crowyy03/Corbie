@@ -48,6 +48,8 @@ public enum PreviewSeed {
         space.togetherSince = day(offset: -460, from: now, calendar: calendar)
         space.weddingDate = day(offset: -120, from: now, calendar: calendar)
         space.creatorMemberId = me.id
+        space.subscriptionStatus = .active
+        space.subscriptionExpiresAt = day(offset: 365, from: now, calendar: calendar)
         space = try await repositories.spaces.update(space)
 
         let tasks = try await seedTasks(repositories, spaceId: space.id, me: me, partner: partner, now: now, calendar: calendar)

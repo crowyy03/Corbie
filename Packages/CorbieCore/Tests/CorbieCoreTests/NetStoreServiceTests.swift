@@ -1,4 +1,5 @@
 import Foundation
+import StoreKit
 import Testing
 @testable import CorbieCore
 
@@ -72,14 +73,57 @@ import Testing
         #expect(LocalEntitlement(productId: "app.corbie.yearly").isActive(at: now))
         #expect(LocalEntitlement(productId: "app.corbie.yearly", expiresAt: now.addingTimeInterval(60)).isActive(at: now))
         #expect(LocalEntitlement(productId: "app.corbie.yearly", expiresAt: now).isActive(at: now) == false)
-        #expect(LocalEntitlement(productId: "app.corbie.yearly", isRevoked: true).isActive(at: now) == false)
+        #expect(LocalEntitlement(productId: "app.corbie.yearly", renewal: .revoked).isActive(at: now) == false)
+        #expect(LocalEntitlement(productId: "app.corbie.yearly", renewal: .expired).isActive(at: now) == false)
+        #expect(LocalEntitlement(productId: "app.corbie.yearly", renewal: .inGracePeriod).isActive(at: now) == false)
+    }
+
+    @Test func fourteenFreeDaysComeOutOfATwoWeekIntroPeriod() {
+        #expect(SubscriptionOfferMath.freeTrialDays(unit: .week, value: 2, periodCount: 1) == 14)
+        #expect(SubscriptionOfferMath.freeTrialDays(unit: .day, value: 14, periodCount: 1) == 14)
+        #expect(SubscriptionOfferMath.freeTrialDays(unit: .month, value: 1, periodCount: 1) == 30)
+        #expect(SubscriptionOfferMath.freeTrialDays(unit: .week, value: 1, periodCount: 2) == 14)
+        #expect(SubscriptionOfferMath.freeTrialDays(unit: .week, value: 0, periodCount: 1) == nil)
+    }
+
+    @Test func theSavingsBadgeSurvivesAnEligibleTrial() {
+        let offers = SubscriptionOfferMath.applySavings(to: [
+            SubscriptionOffer(
+                product: .monthly,
+                displayPrice: "$4.99",
+                price: Decimal(string: "4.99") ?? 0,
+                currencyCode: "USD",
+                eligibleFreeTrialDays: 14
+            ),
+            SubscriptionOffer(
+                product: .yearly,
+                displayPrice: "$29.99",
+                price: Decimal(string: "29.99") ?? 0,
+                currencyCode: "USD",
+                eligibleFreeTrialDays: 14
+            )
+        ])
+        let yearly = offers.first { $0.product == .yearly }
+        #expect(yearly?.savingsPercent == 50)
+        #expect(yearly?.eligibleFreeTrialDays == 14)
+    }
+
+    @Test func aRevokedTransactionBeatsTheRenewalState() {
+        #expect(StoreService.renewalState(nil, isRevoked: true) == .revoked)
+        #expect(StoreService.renewalState(nil, isRevoked: false) == .subscribed)
+        #expect(StoreService.renewalState(.subscribed, isRevoked: true) == .revoked)
+        #expect(StoreService.renewalState(.subscribed, isRevoked: false) == .subscribed)
+        #expect(StoreService.renewalState(.inGracePeriod, isRevoked: false) == .inGracePeriod)
+        #expect(StoreService.renewalState(.inBillingRetryPeriod, isRevoked: false) == .inBillingRetry)
+        #expect(StoreService.renewalState(.expired, isRevoked: false) == .expired)
+        #expect(StoreService.renewalState(.revoked, isRevoked: false) == .revoked)
     }
 
     @Test func theLatestTransactionWins() {
         let now = NetTestSupport.date("2026-09-05T10:00:00Z")
         let older = LocalEntitlement(productId: "app.corbie.monthly", expiresAt: now.addingTimeInterval(86_400))
         let newer = LocalEntitlement(productId: "app.corbie.yearly", expiresAt: now.addingTimeInterval(360 * 86_400))
-        let forever = LocalEntitlement(productId: "app.corbie.yearly", expiresAt: nil)
+        let forever = LocalEntitlement(productId: "app.corbie.yearly")
         #expect(StoreService.isNewer(newer, than: older))
         #expect(StoreService.isNewer(older, than: newer) == false)
         #expect(StoreService.isNewer(older, than: nil))

@@ -1,15 +1,12 @@
 import Foundation
 
 public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
-    public static let trialDays = 7
-
     public let id: UUID
     public var createdAt: Date?
     public var creatorMemberId: UUID?
     public var togetherSince: Date?
     public var weddingDate: Date?
     public var displayCurrency: String
-    public var trialEndsAt: Date?
     public var subscriptionStatus: SubscriptionStatus
     public var subscriptionExpiresAt: Date?
     public var subscriptionPayerMemberId: UUID?
@@ -22,8 +19,7 @@ public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
         togetherSince: Date? = nil,
         weddingDate: Date? = nil,
         displayCurrency: String = "USD",
-        trialEndsAt: Date? = nil,
-        subscriptionStatus: SubscriptionStatus = .trial,
+        subscriptionStatus: SubscriptionStatus = .none,
         subscriptionExpiresAt: Date? = nil,
         subscriptionPayerMemberId: UUID? = nil,
         memberCount: Int = 0
@@ -34,7 +30,6 @@ public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
         self.togetherSince = togetherSince
         self.weddingDate = weddingDate
         self.displayCurrency = displayCurrency
-        self.trialEndsAt = trialEndsAt
         self.subscriptionStatus = subscriptionStatus
         self.subscriptionExpiresAt = subscriptionExpiresAt
         self.subscriptionPayerMemberId = subscriptionPayerMemberId
@@ -49,17 +44,11 @@ public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
             togetherSince: space.togetherSince,
             weddingDate: space.weddingDate,
             displayCurrency: space.displayCurrency ?? "USD",
-            trialEndsAt: space.trialEndsAt,
             subscriptionStatus: space.subscriptionStatus,
             subscriptionExpiresAt: space.subscriptionExpiresAt,
             subscriptionPayerMemberId: space.subscriptionPayerMemberId,
             memberCount: space.members.count
         )
-    }
-
-    public func trialActive(at date: Date = Date()) -> Bool {
-        guard let trialEndsAt else { return false }
-        return trialEndsAt > date
     }
 
     public var isPaired: Bool { memberCount >= 2 }

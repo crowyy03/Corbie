@@ -6,9 +6,9 @@ struct SettingsSubscriptionStatus: Equatable {
 
     var text: String {
         switch state {
-        case let .trial(daysLeft):
+        case let .trial(daysLeft, _):
             return String.localizedStringWithFormat(String(localized: "settings.subscription.trial"), daysLeft)
-        case let .active(_, expiresAt):
+        case let .premium(_, expiresAt):
             guard let expiresAt else { return String(localized: "settings.subscription.active") }
             return String.localizedStringWithFormat(
                 String(localized: "settings.subscription.active.until"),

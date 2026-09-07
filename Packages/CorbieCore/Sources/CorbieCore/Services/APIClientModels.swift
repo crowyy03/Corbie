@@ -217,7 +217,8 @@ public struct FXRatesPayload: Sendable, Equatable, Codable {
 public enum EntitlementStatus: String, Sendable, Equatable, CaseIterable, Codable {
     case none
     case active
-    case grace
+    case inGracePeriod = "in_grace_period"
+    case inBillingRetry = "in_billing_retry"
     case expired
     case revoked
 

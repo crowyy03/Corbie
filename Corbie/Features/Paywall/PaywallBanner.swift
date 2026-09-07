@@ -7,11 +7,11 @@ enum PaywallBannerState: Equatable {
 
     static func make(_ state: EntitlementState) -> PaywallBannerState? {
         switch state {
-        case let .trial(daysLeft):
+        case let .trial(daysLeft, _):
             return state.isTrialEndingSoon ? .trialEnding(daysLeft: daysLeft) : nil
         case .readOnly:
             return .readOnly
-        case .active, .grace:
+        case .premium, .grace:
             return nil
         }
     }

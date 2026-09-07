@@ -7,6 +7,7 @@ public enum NotificationKind: String, Sendable, Equatable, CaseIterable {
     case dateRadar
     case eventDigest
     case weeklyRecap
+    case trialEnding
 
     public var prefix: String { "corbie." + rawValue + "." }
 
@@ -22,6 +23,8 @@ public enum NotificationKind: String, Sendable, Equatable, CaseIterable {
             return prefs.dateRadar
         case .weeklyRecap:
             return prefs.weeklyRecap
+        case .trialEnding:
+            return true
         }
     }
 }
@@ -53,6 +56,8 @@ public enum NotificationIdentifier {
     }
 
     public static let weeklyRecap = NotificationKind.weeklyRecap.prefix + "sunday"
+
+    public static let trialEnding = NotificationKind.trialEnding.prefix + "notice"
 }
 
 public actor NotificationScheduler {
@@ -62,6 +67,7 @@ public actor NotificationScheduler {
     public static let allDayReminderHour = 9
     public static let radarHour = 10
     public static let radarLeadDays = 14
+    public static let trialEndingHour = 10
 
     private let client: any NotificationCenterClient
     private let calendar: Calendar
@@ -322,6 +328,32 @@ public actor NotificationScheduler {
 
     public func cancelWeeklyRecap() async {
         await cancel(identifiers: [NotificationIdentifier.weeklyRecap])
+    }
+
+    @discardableResult
+    public func scheduleTrialEnding(endsAt: Date, now: Date) async throws -> CorbieNotificationRequest? {
+        await cancelTrialEnding()
+        guard let leadDay = calendar.date(byAdding: .day, value: -PremiumGate.trialNoticeDays, to: endsAt),
+              let fireDate = date(bySettingHour: NotificationScheduler.trialEndingHour, on: leadDay),
+              fireDate > now,
+              fireDate < endsAt else { return nil }
+        let request = CorbieNotificationRequest(
+            id: NotificationIdentifier.trialEnding,
+            fireDate: fireDate,
+            content: CorbieNotificationContent(
+                titleKey: NotificationStrings.trialEndingTitle,
+                bodyKey: NotificationStrings.trialEndingBody,
+                arguments: [String(PremiumGate.trialNoticeDays)],
+                threadIdentifier: NotificationKind.trialEnding.rawValue,
+                userInfo: [NotificationPayload.kindKey: NotificationKind.trialEnding.rawValue]
+            )
+        )
+        try await client.add(request)
+        return request
+    }
+
+    public func cancelTrialEnding() async {
+        await cancel(identifiers: [NotificationIdentifier.trialEnding])
     }
 
     private func name(of tally: RecapMemberTally) -> String {

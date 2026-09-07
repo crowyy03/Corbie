@@ -3,7 +3,7 @@ import Testing
 @testable import CorbieCore
 
 @Suite struct SpaceRepositoryTests {
-    @Test func createStartsASevenDayTrial() async throws {
+    @Test func createLeavesTheSubscriptionUnset() async throws {
         let controller = PersistenceController.inMemory()
         let now = Date(timeIntervalSince1970: 1_757_000_000)
         let space = try await controller.repositories.spaces.create(
@@ -11,12 +11,10 @@ import Testing
             creatorMemberId: nil,
             now: now
         )
-        let expected = Calendar.utc.date(byAdding: .day, value: 7, to: now)
         #expect(space.displayCurrency == "EUR")
-        #expect(space.subscriptionStatus == .trial)
-        #expect(space.trialEndsAt == expected)
-        #expect(space.trialActive(at: now))
-        #expect(space.trialActive(at: expected?.addingTimeInterval(1) ?? now) == false)
+        #expect(space.subscriptionStatus == .none)
+        #expect(space.subscriptionExpiresAt == nil)
+        #expect(MirroredEntitlement(space: space).isPremium(at: now) == false)
     }
 
     @Test func twoMembersMakeTheSpacePaired() async throws {
@@ -24,19 +22,6 @@ import Testing
         let space = try #require(try await world.repositories.spaces.space(id: world.space.id))
         #expect(space.memberCount == 2)
         #expect(space.isPaired)
-    }
-
-    @Test func extendTrialNeverShortensIt() async throws {
-        let controller = PersistenceController.inMemory()
-        let repository = controller.repositories.spaces
-        let now = Date(timeIntervalSince1970: 1_757_000_000)
-        let space = try await repository.create(displayCurrency: "USD", creatorMemberId: nil, now: now)
-        let earlier = try await repository.extendTrial(spaceId: space.id, days: 1, now: now)
-        #expect(earlier.trialEndsAt == space.trialEndsAt)
-
-        let later = now.addingTimeInterval(60 * 60 * 24 * 5)
-        let extended = try await repository.extendTrial(spaceId: space.id, days: 7, now: later)
-        #expect(try #require(extended.trialEndsAt) > #require(space.trialEndsAt))
     }
 
     @Test func settingsRoundTrip() async throws {

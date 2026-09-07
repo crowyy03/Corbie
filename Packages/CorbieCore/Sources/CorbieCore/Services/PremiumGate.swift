@@ -45,6 +45,11 @@ public enum PaywallReason: String, Sendable, Equatable, CaseIterable, Codable {
     case freeTime = "free_time"
 }
 
+public enum PaywallScreen: String, Sendable, Equatable, CaseIterable, Codable {
+    case trialOffer = "trial_offer"
+    case comparison
+}
+
 public struct PaywallRequest: Sendable, Equatable, Identifiable {
     public let id: UUID
     public let reason: PaywallReason
@@ -88,6 +93,7 @@ public final class PremiumGate {
     public var isPremium: Bool { state.isPremium }
     public var isReadOnly: Bool { state.isReadOnly }
     public var trialDaysLeft: Int? { state.trialDaysLeft }
+    public var trialEndsAt: Date? { state.trialEndsAt }
 
     @discardableResult
     public func require(_ action: PremiumAction) -> Bool {
@@ -99,22 +105,28 @@ public final class PremiumGate {
             action: action,
             requestedAt: now()
         )
-        analytics.record(.paywallShown(reason: action.paywallReason))
-        analytics.record(.readonlyHit(action: action))
+        analytics.record(.comparisonShown(reason: action.paywallReason))
+        analytics.record(.readonlyHit(feature: action))
         return false
     }
 
     public func presentPaywall(reason: PaywallReason) {
         pendingPaywall = PaywallRequest(id: makeId(), reason: reason, action: nil, requestedAt: now())
-        analytics.record(.paywallShown(reason: reason))
+        analytics.record(.comparisonShown(reason: reason))
     }
 
-    public func dismissPaywall() {
+    public func dismissPaywall(screen: PaywallScreen = .comparison) {
+        guard pendingPaywall != nil else { return }
         pendingPaywall = nil
+        analytics.record(.paywallDismissed(screen: screen))
     }
 
     public func update(_ newState: EntitlementState) {
+        let wasInGracePeriod = PremiumGate.isGrace(state)
         state = newState
+        if PremiumGate.isGrace(newState), wasInGracePeriod == false {
+            analytics.record(.gracePeriodEntered)
+        }
         if newState.isPremium {
             pendingPaywall = nil
         }
@@ -123,5 +135,10 @@ public final class PremiumGate {
     public func refresh(spaceId: UUID) async {
         guard let entitlements else { return }
         update(await entitlements.refresh(spaceId: spaceId))
+    }
+
+    private static func isGrace(_ state: EntitlementState) -> Bool {
+        guard case .grace = state else { return false }
+        return true
     }
 }

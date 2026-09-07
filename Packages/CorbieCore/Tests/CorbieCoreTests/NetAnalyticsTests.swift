@@ -41,11 +41,17 @@ import Testing
         .recapNotificationSent,
         .recapOpened,
         .widgetAdded(kind: "DaysTogether"),
-        .paywallShown(reason: .trialEnded),
-        .trialStarted,
-        .purchase(product: "app.corbie.yearly"),
-        .restore,
-        .readonlyHit(action: .create)
+        .trialOfferShown,
+        .trialStarted(product: .yearly),
+        .comparisonShown(reason: .trialEnded),
+        .planSelected(product: .yearly),
+        .purchaseStarted(product: .yearly),
+        .purchaseCompleted(product: .yearly, isTrial: true),
+        .purchaseFailed(reason: .unverified),
+        .restoreTapped,
+        .readonlyHit(feature: .create),
+        .paywallDismissed(screen: .trialOffer),
+        .gracePeriodEntered
     ]
 
     @Test func everyNameIsOnTheServerAllowlist() {
@@ -73,7 +79,6 @@ import Testing
 
     @Test func freeFormPropsAreReducedToASlug() throws {
         #expect(AnalyticsEvent.widgetAdded(kind: "Days Together").props["kind"] == .string("days_together"))
-        #expect(AnalyticsEvent.purchase(product: "app.corbie.yearly").props["product"] == .string("app.corbie.yearly"))
         let leak = AnalyticsEvent.widgetAdded(kind: "sofia@example.com wants a widget with a really long name")
         let kind = try #require(leak.props["kind"])
         guard case let .string(value) = kind else {
@@ -85,6 +90,21 @@ import Testing
         #expect(value.contains(" ") == false)
     }
 
+    @Test func thePaywallEventsCarryTheProductAndTheScreen() {
+        #expect(AnalyticsEvent.trialStarted(product: .yearly).props == ["product": .string("app.corbie.yearly")])
+        #expect(AnalyticsEvent.planSelected(product: .monthly).props == ["product": .string("app.corbie.monthly")])
+        #expect(AnalyticsEvent.purchaseStarted(product: .monthly).props == ["product": .string("app.corbie.monthly")])
+        #expect(AnalyticsEvent.purchaseCompleted(product: .yearly, isTrial: true).props == [
+            "product": .string("app.corbie.yearly"),
+            "is_trial": .flag(true)
+        ])
+        #expect(AnalyticsEvent.purchaseFailed(reason: .noSpace).props == ["reason": .string("no_space")])
+        #expect(AnalyticsEvent.readonlyHit(feature: .freeTime).props == ["feature": .string("free_time")])
+        #expect(AnalyticsEvent.paywallDismissed(screen: .comparison).props == ["screen": .string("comparison")])
+        #expect(AnalyticsEvent.trialOfferShown.props.isEmpty)
+        #expect(AnalyticsEvent.gracePeriodEntered.props.isEmpty)
+    }
+
     @Test func propsMatchTheSpecForTheEventsThatCarryThem() {
         #expect(AnalyticsEvent.taskCreated(assignee: .partner).props == ["assignee": .string("partner")])
         #expect(AnalyticsEvent.wishCreated(source: .etsy).props == ["source": .string("etsy")])
@@ -93,7 +113,7 @@ import Testing
         #expect(
             AnalyticsEvent.freetimeEmpty(reason: .noSlots).props == ["reason": .string("no_slots")]
         )
-        #expect(AnalyticsEvent.paywallShown(reason: .trialEnded).props == ["reason": .string("trial_ended")])
+        #expect(AnalyticsEvent.comparisonShown(reason: .trialEnded).props == ["reason": .string("trial_ended")])
         #expect(AnalyticsEvent.onboardingStep(3).props == ["step": .number(3)])
         #expect(AnalyticsEvent.appOpen.props.isEmpty)
     }

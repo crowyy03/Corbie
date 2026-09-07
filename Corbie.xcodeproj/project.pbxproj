@@ -218,7 +218,6 @@
 		DAB655A1374F723007BADF04 /* ProfileDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6F023BC5F0ED16CE427934 /* ProfileDraft.swift */; };
 		DB49A62A8AAC99403F012178 /* InviteLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C36C9A264C0339C4B2A9EF /* InviteLink.swift */; };
 		DC2FFED1B16BABC452427F5E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BC345B3464E4B2B019D6B1 /* PaywallView.swift */; };
-		DDE2C10CD9F2995180F78F86 /* TrialExtensionGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0DE001C52A82D21679FF05 /* TrialExtensionGuard.swift */; };
 		DEC212CA530DF97C3DE26504 /* ShareWishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A67B744A9671E1BD5330BF /* ShareWishView.swift */; };
 		DF00BF1979A39EA45E30F329 /* TasksViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BAE6C658C5951759EDF1FC /* TasksViewModelTests.swift */; };
 		DF3CCF3BFD26C2FE6589E33A /* QAPermissionsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9818F574AFDFD4406B85F66 /* QAPermissionsUITests.swift */; };
@@ -326,7 +325,6 @@
 		1BFF7F690EB495556EF1DB56 /* WishPricing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishPricing.swift; sourceTree = "<group>"; };
 		1C27F9ABB03B1021C0871309 /* TasksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewModel.swift; sourceTree = "<group>"; };
 		1D688A263B95FEDA84123054 /* SettingsRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouteTests.swift; sourceTree = "<group>"; };
-		1E0DE001C52A82D21679FF05 /* TrialExtensionGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialExtensionGuard.swift; sourceTree = "<group>"; };
 		1F7AA1C3F9878A5F209E5682 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		2183B6C384A387CB74ECB150 /* CalendarImportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarImportViewModel.swift; sourceTree = "<group>"; };
 		21BB2145F66B815CA0F988EF /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
@@ -638,7 +636,6 @@
 				74ACB5C732DFF5ECA879A237 /* PartnerJoinWatcher.swift */,
 				46B1F14A2EE5B02237047500 /* SessionService.swift */,
 				FF23E9135E67AEC9C3C0B166 /* SpaceContentProbe.swift */,
-				1E0DE001C52A82D21679FF05 /* TrialExtensionGuard.swift */,
 			);
 			path = Pairing;
 			sourceTree = "<group>";
@@ -1457,7 +1454,6 @@
 				4A0C0BB8F16349D252595BD2 /* TodayRows.swift in Sources */,
 				9A482B15C4A9A59A47308566 /* TodayView.swift in Sources */,
 				0A28B1F219F9458F7DB8BC77 /* TodayViewModel.swift in Sources */,
-				DDE2C10CD9F2995180F78F86 /* TrialExtensionGuard.swift in Sources */,
 				0193A7A738B8E4E9BAE5159E /* UsCounters.swift in Sources */,
 				59B69066A3FF2DA605D1CEAD /* UsDestination.swift in Sources */,
 				BF35CC07D8D35E04F7FE49BE /* UsHubView.swift in Sources */,

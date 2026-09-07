@@ -13,8 +13,7 @@ public enum CorbieModel {
         space.attribute("togetherSince", .dateAttributeType)
         space.attribute("weddingDate", .dateAttributeType)
         space.attribute("displayCurrency", .stringAttributeType, defaultValue: "USD")
-        space.attribute("trialEndsAt", .dateAttributeType)
-        space.attribute("subscriptionStatusRaw", .stringAttributeType, defaultValue: SubscriptionStatus.trial.rawValue)
+        space.attribute("subscriptionStatusRaw", .stringAttributeType, defaultValue: SubscriptionStatus.none.rawValue)
         space.attribute("subscriptionExpiresAt", .dateAttributeType)
         space.attribute("subscriptionPayerMemberId", .UUIDAttributeType)
 
