@@ -282,6 +282,10 @@ extension XCTestCase {
         app.collectionViews.switches[QACatalog.text(key)].firstMatch
     }
 
+    func flip(_ toggle: XCUIElement) {
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+    }
+
     func openSharedSettings(_ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
         openUsHub(app, file: file, line: line)
         let settings = app.button(labelContaining: QAText.sharedSettings)

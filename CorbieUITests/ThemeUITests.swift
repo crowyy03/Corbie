@@ -14,7 +14,7 @@ final class ThemeUITests: XCTestCase {
         let follow = settingsSwitch(app, "settings.appearance.followsystem")
         XCTAssertTrue(scrollTo(follow, in: app), "settings has no appearance toggle")
         if (follow.value as? String) == "1" {
-            follow.tap()
+            flip(follow)
         }
 
         let deep = app.collectionViews.buttons[QACatalog.text("theme.name.deep")].firstMatch
@@ -37,7 +37,7 @@ final class ThemeUITests: XCTestCase {
         let follow = settingsSwitch(app, "settings.appearance.followsystem")
         XCTAssertTrue(scrollTo(follow, in: app), "settings has no appearance toggle")
         if (follow.value as? String) == "1" {
-            follow.tap()
+            flip(follow)
         }
         let sage = app.collectionViews.buttons[QACatalog.text("theme.name.sage")].firstMatch
         XCTAssertTrue(scrollTo(sage, in: app), "the theme picker offers no Sage card")

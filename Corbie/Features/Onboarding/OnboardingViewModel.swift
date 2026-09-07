@@ -194,12 +194,14 @@ final class OnboardingViewModel {
         } else {
             base = try await makeSpace()
         }
-        let created = try await environment.repositories.members.upsertCurrentMember(
+        let saved = try await environment.repositories.members.upsertCurrentMember(
             appleUserId: appleUserID,
             spaceId: base.id,
             draft: profile.memberDraft,
-            theme: environment.theme.settings.theme
-        ).member
+            theme: environment.theme.activeTheme
+        )
+        environment.showColorShift(saved)
+        let created = saved.member
         member = created
         profile.colorSlot = created.colorSlot
         if base.creatorMemberId == nil {
@@ -216,8 +218,9 @@ final class OnboardingViewModel {
         guard let member, let space else { return }
         let saved = try await environment.repositories.members.update(
             profile.applied(to: member),
-            theme: environment.theme.settings.theme
+            theme: environment.theme.activeTheme
         )
+        environment.showColorShift(saved)
         self.member = saved.member
         profile.colorSlot = saved.member.colorSlot
         self.space = try await environment.repositories.spaces.update(profile.applied(to: space))

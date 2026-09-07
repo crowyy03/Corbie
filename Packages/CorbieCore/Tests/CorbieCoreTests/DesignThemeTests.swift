@@ -71,13 +71,14 @@ import Testing
         defer { removeSuite(defaults, name) }
 
         let provider = ThemeProvider(store: ThemeStore(defaults: defaults))
+        provider.systemScheme = .dark
         #expect(provider.preferredColorScheme == nil)
-        #expect(provider.theme(for: .dark) == .deep)
+        #expect(provider.activeTheme == .deep)
 
         provider.setFollowsSystem(false)
         provider.setTheme(.sage)
         #expect(provider.preferredColorScheme == ColorScheme.light)
-        #expect(provider.palette(for: .dark) == CorbieTheme.sage.palette)
+        #expect(provider.activeTheme == .sage)
 
         #expect(ThemeStore(defaults: defaults).settings.theme == .sage)
     }
@@ -90,7 +91,9 @@ import Testing
         let provider = ThemeProvider(store: ThemeStore(defaults: defaults))
         provider.setLightTheme(.sage)
         provider.setDarkTheme(.deep)
-        #expect(provider.theme(for: .light) == .sage)
-        #expect(provider.theme(for: .dark) == .deep)
+        provider.systemScheme = .light
+        #expect(provider.activeTheme == .sage)
+        provider.systemScheme = .dark
+        #expect(provider.activeTheme == .deep)
     }
 }

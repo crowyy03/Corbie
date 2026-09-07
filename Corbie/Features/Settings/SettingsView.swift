@@ -6,7 +6,6 @@ struct SettingsView: View {
 
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.openURL) private var openURL
-    @Environment(\.theme) private var theme
     @State private var model = SettingsViewModel()
     @State private var sheet: SettingsSheet?
     @State private var confirmation: SettingsConfirmation?
@@ -60,7 +59,7 @@ struct SettingsView: View {
             colorRow
             birthdayRow
             Button(String(localized: "settings.you.save")) {
-                Task { await model.saveProfile(theme: theme) }
+                Task { await model.saveProfile() }
             }
             .buttonStyle(.plain)
             .foregroundStyle(model.canSaveProfile ? palette.accent : palette.text2)

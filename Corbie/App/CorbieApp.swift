@@ -43,7 +43,7 @@ private struct ThemedRoot: View {
     @Environment(\.colorScheme) private var colorScheme
 
     private var theme: CorbieTheme {
-        environment.theme.theme(for: colorScheme)
+        environment.theme.activeTheme
     }
 
     var body: some View {
@@ -57,6 +57,9 @@ private struct ThemedRoot: View {
             .corbieTheme(theme)
             .tint(theme.palette.accent)
             .preferredColorScheme(environment.theme.preferredColorScheme)
+            .onChange(of: colorScheme, initial: true) { _, scheme in
+                environment.theme.systemScheme = scheme
+            }
     }
 }
 

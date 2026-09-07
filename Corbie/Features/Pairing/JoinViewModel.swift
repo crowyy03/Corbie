@@ -145,17 +145,9 @@ final class JoinViewModel {
             appleUserId: appleUserID,
             spaceId: space.id,
             draft: profile.memberDraft,
-            theme: environment.theme.settings.theme
+            theme: environment.theme.activeTheme
         )
-        if let shifted = saved.shiftedColorFrom {
-            environment.toasts.show(
-                message: String(
-                    format: String(localized: "settings.you.color.shifted"),
-                    String(localized: String.LocalizationValue(shifted.displayNameKey)),
-                    String(localized: String.LocalizationValue(saved.member.colorSlot.displayNameKey))
-                )
-            )
-        }
+        environment.showColorShift(saved)
     }
 
     private func carryTogetherSince(into space: SpaceDTO) async throws {

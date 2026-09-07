@@ -27,4 +27,15 @@ extension AppEnvironment {
     var partnerName: String {
         partner?.displayName ?? String(localized: "member.name.partner")
     }
+
+    func showColorShift(_ saved: MemberSaveResult) {
+        guard let shifted = saved.shiftedColorFrom else { return }
+        toasts.show(
+            message: String(
+                format: String(localized: "settings.you.color.shifted"),
+                String(localized: String.LocalizationValue(shifted.displayNameKey)),
+                String(localized: String.LocalizationValue(saved.member.colorSlot.displayNameKey))
+            )
+        )
+    }
 }

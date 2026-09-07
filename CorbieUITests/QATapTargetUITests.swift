@@ -38,9 +38,13 @@ final class QATapTargetUITests: XCTestCase {
         assertBigEnough(app.buttons[QACatalog.text("today.row.check", title)], "the Today checkbox")
 
         openSharedSettings(app)
-        let dark = settingsRow(app, "settings.appearance.dark")
-        XCTAssertTrue(scrollTo(dark, in: app), "the appearance section has no Dark option")
-        assertBigEnough(dark, "the appearance segment")
+        let violet = settingsRow(app, "member.color.violet")
+        XCTAssertTrue(scrollTo(violet, in: app), "settings has no member colour picker")
+        assertBigEnough(violet, "the member colour swatch")
+
+        let deep = settingsRow(app, "theme.name.deep")
+        XCTAssertTrue(scrollTo(deep, in: app), "the appearance section has no Deep theme card")
+        assertBigEnough(deep, "the theme card")
     }
 
     private func addFreeTaskDueToday(_ app: XCUIApplication, title: String) {

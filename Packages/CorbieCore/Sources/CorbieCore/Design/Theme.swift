@@ -81,6 +81,7 @@ public extension UserDefaults {
 @Observable @MainActor
 public final class ThemeProvider {
     public private(set) var settings: ThemeSettings
+    public var systemScheme: ColorScheme = .light
 
     @ObservationIgnored private let store: ThemeStore
 
@@ -93,12 +94,8 @@ public final class ThemeProvider {
         settings.preferredColorScheme
     }
 
-    public func theme(for colorScheme: ColorScheme) -> CorbieTheme {
-        settings.resolved(for: colorScheme)
-    }
-
-    public func palette(for colorScheme: ColorScheme) -> ThemePalette {
-        theme(for: colorScheme).palette
+    public var activeTheme: CorbieTheme {
+        settings.resolved(for: systemScheme)
     }
 
     public func setFollowsSystem(_ follows: Bool) {
