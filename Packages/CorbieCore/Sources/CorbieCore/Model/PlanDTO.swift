@@ -9,6 +9,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
     public var currency: String
     public var savedAmount: Double
     public var addedAmount: Double
+    public var isOpenEnded: Bool
     public var startAt: Date?
     public var endAt: Date?
     public var status: PlanStatus
@@ -28,6 +29,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
         currency: String = "USD",
         savedAmount: Double = 0,
         addedAmount: Double = 0,
+        isOpenEnded: Bool = false,
         startAt: Date? = nil,
         endAt: Date? = nil,
         status: PlanStatus = .active,
@@ -46,6 +48,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
         self.currency = currency
         self.savedAmount = savedAmount
         self.addedAmount = addedAmount
+        self.isOpenEnded = isOpenEnded
         self.startAt = startAt
         self.endAt = endAt
         self.status = status
@@ -69,6 +72,7 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
             currency: plan.currency ?? "USD",
             savedAmount: plan.savedAmount,
             addedAmount: expenses.reduce(0) { $0 + $1.amountInPlanCurrency },
+            isOpenEnded: plan.isOpenEnded,
             startAt: plan.startAt,
             endAt: plan.endAt,
             status: plan.status,
@@ -83,11 +87,21 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
 
     public var totalSavedAmount: Double { savedAmount + addedAmount }
 
-    public var leftAmount: Double { max(0, targetAmount - totalSavedAmount) }
+    public var total: Double { totalSavedAmount }
 
-    public var isOverspent: Bool { totalSavedAmount > targetAmount }
+    public var contributionCount: Int { expenseCount }
 
-    public var overspentAmount: Double { max(0, totalSavedAmount - targetAmount) }
+    public var leftAmount: Double {
+        guard isOpenEnded == false else { return 0 }
+        return max(0, targetAmount - totalSavedAmount)
+    }
+
+    public var isOverspent: Bool { isOpenEnded == false && totalSavedAmount > targetAmount }
+
+    public var overspentAmount: Double {
+        guard isOpenEnded == false else { return 0 }
+        return max(0, totalSavedAmount - targetAmount)
+    }
 
     public var overspentFraction: Double {
         guard targetAmount > 0 else { return 0 }
@@ -95,7 +109,9 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
     }
 
     public var progress: Double {
-        guard targetAmount > 0 else { return 0 }
+        guard isOpenEnded == false, targetAmount > 0 else { return 0 }
         return min(1, max(0, totalSavedAmount / targetAmount))
     }
+
+    public var showsProgress: Bool { isOpenEnded == false && targetAmount > 0 }
 }

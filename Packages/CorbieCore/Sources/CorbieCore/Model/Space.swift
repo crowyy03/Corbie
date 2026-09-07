@@ -14,6 +14,9 @@ public final class Space: NSManagedObject {
     @NSManaged public var subscriptionStatusRaw: String?
     @NSManaged public var subscriptionExpiresAt: Date?
     @NSManaged public var subscriptionPayerMemberId: UUID?
+    @NSManaged public var anchorTimeZone: String?
+    @NSManaged public var questionSeed: Int64
+    @NSManaged public var questionIndex: Int32
 
     @NSManaged public var members: Set<Member>
     @NSManaged public var tasks: Set<TaskItem>
@@ -25,6 +28,8 @@ public final class Space: NSManagedObject {
     @NSManaged public var capsules: Set<CapsuleItem>
     @NSManaged public var votes: Set<Vote>
     @NSManaged public var people: Set<Person>
+    @NSManaged public var questions: Set<DailyQuestion>
+    @NSManaged public var choreSets: Set<ChoreSet>
 
     public var subscriptionStatus: SubscriptionStatus {
         get { SubscriptionStatus(rawValue: subscriptionStatusRaw ?? "") ?? .none }

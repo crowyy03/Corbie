@@ -23,6 +23,8 @@ public struct CoreDataTaskRepository: TaskRepository {
             task.assigneeMemberId = draft.assigneeMemberId
             task.dueAt = draft.dueAt
             task.recurrence = draft.recurrence
+            task.rotatesBetweenMembers = draft.rotatesBetweenMembers
+            task.choreItemId = draft.choreItemId
             task.createdByMemberId = draft.createdByMemberId
             task.takenAt = draft.assigneeMemberId == nil ? nil : Date()
             return TaskDTO(task)
@@ -37,6 +39,8 @@ public struct CoreDataTaskRepository: TaskRepository {
             entity.assigneeMemberId = task.assigneeMemberId
             entity.dueAt = task.dueAt
             entity.recurrence = task.recurrence
+            entity.rotatesBetweenMembers = task.rotatesBetweenMembers
+            entity.choreItemId = task.choreItemId
             entity.archivedAt = task.archivedAt
             return TaskDTO(entity)
         }
@@ -99,8 +103,16 @@ public struct CoreDataTaskRepository: TaskRepository {
             next.assigneeMemberId = source.assigneeMemberId
             next.createdByMemberId = source.createdByMemberId
             next.recurrence = source.recurrence
+            next.rotatesBetweenMembers = source.rotatesBetweenMembers
+            next.choreItemId = source.choreItemId
             next.dueAt = dueAt
-            next.takenAt = source.assigneeMemberId == nil ? nil : Date()
+            if source.rotatesBetweenMembers {
+                next.assigneeMemberId = RecurrenceEngine.nextAssignee(
+                    after: source.assigneeMemberId,
+                    among: (source.space?.members ?? []).compactMap(\.id)
+                )
+            }
+            next.takenAt = next.assigneeMemberId == nil ? nil : Date()
             return TaskDTO(next)
         }
     }

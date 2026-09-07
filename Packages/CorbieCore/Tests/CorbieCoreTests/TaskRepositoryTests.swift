@@ -102,6 +102,59 @@ import Testing
         #expect(open.count == 1)
     }
 
+    @Test func aRotatingChoreGoesToTheOtherOneEachTime() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.tasks
+        let due = Date(timeIntervalSince1970: 1_757_000_000)
+        let task = try await repository.create(
+            TaskDraft(
+                spaceId: world.space.id,
+                title: "Clean the bathroom",
+                assigneeMemberId: world.me.id,
+                dueAt: due,
+                recurrence: .weekly,
+                rotatesBetweenMembers: true,
+                choreItemId: UUID(),
+                createdByMemberId: world.me.id
+            )
+        )
+        #expect(task.comesFromChoreSplit)
+
+        let firstDone = try await repository.markDone(taskId: task.id, memberId: world.me.id, at: due)
+        let second = try await repository.createNextOccurrence(of: task.id, dueAt: firstDone.nextOccurrenceDueAt)
+        #expect(second.assigneeMemberId == world.partner.id)
+        #expect(second.rotatesBetweenMembers)
+        #expect(second.choreItemId == task.choreItemId)
+
+        let secondDone = try await repository.markDone(
+            taskId: second.id,
+            memberId: world.partner.id,
+            at: second.dueAt ?? due
+        )
+        let third = try await repository.createNextOccurrence(of: second.id, dueAt: secondDone.nextOccurrenceDueAt)
+        #expect(third.assigneeMemberId == world.me.id)
+    }
+
+    @Test func aChoreNobodyOwnsStaysFreeWhenItComesBack() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.tasks
+        let due = Date(timeIntervalSince1970: 1_757_000_000)
+        let task = try await repository.create(
+            TaskDraft(
+                spaceId: world.space.id,
+                title: "Water the plants",
+                dueAt: due,
+                recurrence: .everyTwoWeeks,
+                createdByMemberId: world.me.id
+            )
+        )
+        let completion = try await repository.markDone(taskId: task.id, memberId: world.me.id, at: due)
+        let next = try await repository.createNextOccurrence(of: task.id, dueAt: completion.nextOccurrenceDueAt)
+        #expect(next.assigneeMemberId == nil)
+        #expect(next.isFree)
+        #expect(next.recurrence == .everyTwoWeeks)
+    }
+
     @Test func aLateRecurringTaskCatchesUpToTheFuture() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.tasks

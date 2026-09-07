@@ -23,7 +23,8 @@ public struct CoreDataPlanRepository: PlanRepository {
             plan.space = space
             plan.title = title
             plan.type = draft.type
-            plan.targetAmount = draft.targetAmount
+            plan.isOpenEnded = draft.isOpenEnded
+            plan.targetAmount = draft.isOpenEnded ? 0 : draft.targetAmount
             plan.currency = draft.currency
             plan.savedAmount = draft.savedAmount
             plan.startAt = draft.startAt
@@ -40,7 +41,8 @@ public struct CoreDataPlanRepository: PlanRepository {
             let entity: Plan = try ManagedFetch.require(Plan.entityName, id: plan.id, in: context)
             entity.title = plan.title
             entity.type = plan.type
-            entity.targetAmount = plan.targetAmount
+            entity.isOpenEnded = plan.isOpenEnded
+            entity.targetAmount = plan.isOpenEnded ? 0 : plan.targetAmount
             entity.currency = plan.currency
             entity.savedAmount = plan.savedAmount
             entity.startAt = plan.startAt

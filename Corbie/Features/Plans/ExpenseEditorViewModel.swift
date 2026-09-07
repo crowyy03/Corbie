@@ -49,7 +49,7 @@ final class ExpenseEditorViewModel {
                 from: currency,
                 to: plan.currency
             )
-            _ = try await environment.repositories.plans.addExpense(
+            let expense = try await environment.repositories.plans.addExpense(
                 planId: plan.id,
                 draft: PlanExpenseDraft(
                     amount: amount,
@@ -60,7 +60,7 @@ final class ExpenseEditorViewModel {
                     addedByMemberId: environment.currentMember?.id
                 )
             )
-            environment.analytics.record(.expenseAdded)
+            environment.analytics.record(.expenseAdded(isNegative: expense.amount < 0))
             return true
         } catch {
             environment.report(error)

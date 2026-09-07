@@ -43,6 +43,17 @@ export const allowedEventNames = new Set([
   "recap_shown",
   "recap_notification_sent",
   "recap_opened",
+  "question_shown",
+  "question_answered",
+  "question_revealed",
+  "question_nudge_sent",
+  "question_history_opened",
+  "chore_flow_started",
+  "chore_list_built",
+  "chore_rating_done",
+  "chore_revealed",
+  "chore_applied",
+  "chore_resplit",
 ]);
 
 export const droppedPropKeys = new Set([
