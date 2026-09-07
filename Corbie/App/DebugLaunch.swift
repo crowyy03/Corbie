@@ -4,6 +4,14 @@ import Foundation
 
 enum DebugLaunch {
     static let resetStoreArgument = "-corbie-reset-store"
+    static let entitlementArgument = "-corbie-entitlement"
+
+    static func applyEntitlementArgument(arguments: [String] = ProcessInfo.processInfo.arguments) {
+        guard let flag = arguments.firstIndex(of: entitlementArgument), flag + 1 < arguments.count,
+              let override = DebugEntitlementOverride(rawValue: arguments[flag + 1])
+        else { return }
+        DebugEntitlementOverride.store(override)
+    }
 
     static func resetStoreIfRequested(arguments: [String] = ProcessInfo.processInfo.arguments) {
         guard arguments.contains(resetStoreArgument) else { return }

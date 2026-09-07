@@ -14,6 +14,7 @@ struct CorbieApp: App {
     init() {
         #if DEBUG
         DebugLaunch.resetStoreIfRequested()
+        DebugLaunch.applyEntitlementArgument()
         #endif
         _environment = State(initialValue: AppEnvironment())
     }

@@ -12998,31 +12998,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eure Woche ist fast um."
+            "value": "Eure Testphase ist fast um."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your week is almost up."
+            "value": "Your trial is almost up."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La semana casi se acaba."
+            "value": "Vuestra prueba casi se acaba."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Votre semaine touche à sa fin."
+            "value": "Votre essai touche à sa fin."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "La vostra settimana è quasi finita."
+            "value": "La vostra prova è quasi finita."
           }
         }
       }

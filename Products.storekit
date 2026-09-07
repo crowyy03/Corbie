@@ -1,7 +1,11 @@
 {
   "identifier" : "C0RB1E00",
-  "nonRenewingSubscriptions" : [],
-  "products" : [],
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
   "settings" : {
     "_applicationInternalID" : "",
     "_developerTeamID" : "",
@@ -23,8 +27,12 @@
       "name" : "Corbie Premium",
       "subscriptions" : [
         {
-          "adHocOffers" : [],
-          "codeOffers" : [],
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
           "displayPrice" : "4.99",
           "familyShareable" : false,
           "groupNumber" : 1,
@@ -50,8 +58,12 @@
           "type" : "RecurringSubscription"
         },
         {
-          "adHocOffers" : [],
-          "codeOffers" : [],
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
           "displayPrice" : "29.99",
           "familyShareable" : false,
           "groupNumber" : 1,

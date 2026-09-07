@@ -88,7 +88,7 @@
 A: tap "Invite" ──► POST /invite {shareURL, spaceId}  ──► {code:"K7M2QX", expiresAt}
 A: system share sheet with code (and deep link corbie://join/K7M2QX)
 B: enter code ──► GET /invite/K7M2QX ──► {shareURL} ──► CKContainer.accept(share metadata)
-B: shared DB syncs Space ──► app detects Space with 2 members ──► trialEndsAt = max(trialEndsAt, now+7d)
+B: shared DB syncs Space ──► app detects Space with 2 members ──► reload session (B is premium because the space is)
 Server: mark invite redeemed; delete after 15 min TTL regardless
 ```
 

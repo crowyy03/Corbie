@@ -35,7 +35,7 @@ final class QAAppearanceUITests: XCTestCase {
     }
 
     func testThePaywallShowsWhatAppReviewLooksFor() throws {
-        let app = launchSignedIn()
+        let app = launchSignedIn(extraArguments: ["-corbie-entitlement", "read_only"])
         openSharedSettings(app)
 
         let offers = settingsRow(app, "settings.subscription.plans")
