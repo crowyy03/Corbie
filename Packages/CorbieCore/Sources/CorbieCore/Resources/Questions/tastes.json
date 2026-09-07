@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0301",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you pretend to like more than you actually do?",
+      "es": "¿Qué finges que te gusta más de lo que en realidad te gusta?",
+      "fr": "Qu'est-ce que tu fais semblant d'aimer plus que ce n'est vraiment le cas ?",
+      "de": "Was magst du angeblich mehr, als du es wirklich tust?",
+      "it": "Cosa fingi di apprezzare più di quanto non faccia davvero?"
+    }
+  },
+  {
+    "id": "q0302",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which film do you defend against everyone you know?",
+      "es": "¿Qué película defiendes contra todo tu entorno?",
+      "fr": "Quel film défends-tu contre tout ton entourage ?",
+      "de": "Welchen Film verteidigst du gegen alle, die du kennst?",
+      "it": "Quale film difendi contro tutti quelli che conosci?"
+    }
+  },
+  {
+    "id": "q0303",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the best thing you have ever eaten standing up?",
+      "es": "¿Qué es lo mejor que has comido de pie?",
+      "fr": "Quelle est la meilleure chose que tu aies mangée debout ?",
+      "de": "Was ist das Beste, was du je im Stehen gegessen hast?",
+      "it": "Qual è la cosa più buona che hai mangiato in piedi?"
+    }
+  },
+  {
+    "id": "q0304",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which album can you listen to end to end without skipping anything?",
+      "es": "¿Qué disco escuchas de principio a fin sin saltarte nada?",
+      "fr": "Quel album écoutes-tu du début à la fin sans rien passer ?",
+      "de": "Welches Album hörst du von vorn bis hinten, ohne etwas zu überspringen?",
+      "it": "Quale disco ascolti dall'inizio alla fine senza saltare niente?"
+    }
+  },
+  {
+    "id": "q0305",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you like that does not fit with the rest of your taste?",
+      "es": "¿Qué te gusta que no encaja con el resto de tus gustos?",
+      "fr": "Qu'aimes-tu qui ne colle pas avec le reste de tes goûts ?",
+      "de": "Was magst du, das zum Rest deines Geschmacks überhaupt nicht passt?",
+      "it": "Cosa ti piace che non c'entra niente con il resto dei tuoi gusti?"
+    }
+  },
+  {
+    "id": "q0306",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which city disappointed you and you would still recommend?",
+      "es": "¿Qué ciudad te decepcionó y aun así recomendarías?",
+      "fr": "Quelle ville t'a déçu et que tu recommanderais quand même ?",
+      "de": "Welche Stadt hat dich enttäuscht und würdest du trotzdem empfehlen?",
+      "it": "Quale città ti ha deluso e consiglieresti comunque?"
+    }
+  },
+  {
+    "id": "q0307",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always order out that you never make at home?",
+      "es": "¿Qué pides siempre fuera y nunca preparas en casa?",
+      "fr": "Que commandes-tu toujours au restaurant sans jamais le faire chez toi ?",
+      "de": "Was bestellst du immer auswärts und machst es nie selbst?",
+      "it": "Cosa ordini sempre fuori e non prepari mai a casa?"
+    }
+  },
+  {
+    "id": "q0308",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the one flavour you would remove from the world?",
+      "es": "¿Qué sabor eliminarías del mundo?",
+      "fr": "Quel goût supprimerais-tu du monde ?",
+      "de": "Welchen Geschmack würdest du aus der Welt streichen?",
+      "it": "Quale sapore elimineresti dal mondo?"
+    }
+  },
+  {
+    "id": "q0309",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my playlists would you delete first?",
+      "es": "¿Cuál de mis listas de reproducción borrarías primero?",
+      "fr": "Laquelle de mes playlists supprimerais-tu en premier ?",
+      "de": "Welche meiner Playlists würdest du als Erstes löschen?",
+      "it": "Quale mia playlist cancelleresti per prima?"
+    }
+  },
+  {
+    "id": "q0310",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which smell would make you turn around in the street?",
+      "es": "¿Qué olor te haría darte la vuelta en la calle?",
+      "fr": "Quelle odeur te ferait te retourner dans la rue ?",
+      "de": "Bei welchem Geruch würdest du dich auf der Straße umdrehen?",
+      "it": "Quale odore ti farebbe voltare per strada?"
+    }
+  },
+  {
+    "id": "q0311",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which book did you finish out of stubbornness alone?",
+      "es": "¿Qué libro terminaste solo por cabezonería?",
+      "fr": "Quel livre as-tu fini uniquement par entêtement ?",
+      "de": "Welches Buch hast du nur aus Sturheit zu Ende gelesen?",
+      "it": "Quale libro hai finito solo per testardaggine?"
+    }
+  },
+  {
+    "id": "q0312",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you like that you have never managed to explain to anyone?",
+      "es": "¿Qué te gusta y nunca has sabido explicarle a nadie?",
+      "fr": "Qu'aimes-tu sans avoir jamais su l'expliquer à personne ?",
+      "de": "Was magst du, ohne es je jemandem erklären zu können?",
+      "it": "Cosa ti piace senza che tu sia mai riuscito a spiegarlo a nessuno?"
+    }
+  },
+  {
+    "id": "q0313",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which restaurant would you go back to for one single dish?",
+      "es": "¿A qué restaurante volverías solo por un plato?",
+      "fr": "Dans quel restaurant retournerais-tu pour un seul plat ?",
+      "de": "In welches Restaurant würdest du wegen eines einzigen Gerichts zurückgehen?",
+      "it": "In quale ristorante torneresti solo per un piatto?"
+    }
+  },
+  {
+    "id": "q0314",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the last thing you loved that you found completely by accident?",
+      "es": "¿Qué es lo último que te ha encantado y encontraste por casualidad?",
+      "fr": "Quelle est la dernière chose que tu as adorée et trouvée par hasard ?",
+      "de": "Was hast du zuletzt geliebt und rein zufällig entdeckt?",
+      "it": "Qual è l'ultima cosa che hai amato e trovato per caso?"
+    }
+  },
+  {
+    "id": "q0315",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which famous sight do you have no interest in ever seeing?",
+      "es": "¿Qué lugar famoso no te interesa ver jamás?",
+      "fr": "Quel lieu célèbre n'as-tu aucune envie de voir un jour ?",
+      "de": "Welche berühmte Sehenswürdigkeit willst du nie sehen?",
+      "it": "Quale luogo famoso non hai alcuna voglia di vedere?"
+    }
+  },
+  {
+    "id": "q0316",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you find beautiful that is not supposed to be?",
+      "es": "¿Qué te parece bonito aunque se supone que no lo es?",
+      "fr": "Que trouves-tu beau alors que ça n'est pas censé l'être ?",
+      "de": "Was findest du schön, obwohl es das gar nicht sein soll?",
+      "it": "Cosa trovi bello anche se non dovrebbe esserlo?"
+    }
+  },
+  {
+    "id": "q0317",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What kind of holiday would you turn down without thinking?",
+      "es": "¿Qué tipo de viaje rechazarías sin pensarlo?",
+      "fr": "Quel genre de vacances refuserais-tu sans réfléchir ?",
+      "de": "Welche Art von Urlaub würdest du ohne Nachdenken ablehnen?",
+      "it": "Che tipo di vacanza rifiuteresti senza pensarci?"
+    }
+  },
+  {
+    "id": "q0318",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What would be on the menu if you had to feed me for a week?",
+      "es": "¿Qué habría en el menú si tuvieras que darme de comer una semana?",
+      "fr": "Que mettrais-tu au menu si tu devais me nourrir pendant une semaine ?",
+      "de": "Was stünde auf der Karte, wenn du mich eine Woche verpflegen müsstest?",
+      "it": "Cosa metteresti nel menù se dovessi darmi da mangiare per una settimana?"
+    }
+  },
+  {
+    "id": "q0319",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which taste of yours has changed the most in the last ten years?",
+      "es": "¿Qué gusto tuyo ha cambiado más en los últimos diez años?",
+      "fr": "Lequel de tes goûts a le plus changé ces dix dernières années ?",
+      "de": "Welche deiner Vorlieben hat sich in zehn Jahren am meisten verändert?",
+      "it": "Quale tuo gusto è cambiato di più negli ultimi dieci anni?"
+    }
+  },
+  {
+    "id": "q0320",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which sound do you find pleasant that other people complain about?",
+      "es": "¿Qué sonido te resulta agradable y a los demás les molesta?",
+      "fr": "Quel bruit trouves-tu agréable alors que les autres s'en plaignent ?",
+      "de": "Welches Geräusch findest du angenehm, über das sich andere beschweren?",
+      "it": "Quale suono trovi piacevole mentre gli altri se ne lamentano?"
+    }
+  },
+  {
+    "id": "q0321",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you never share a plate of with anyone?",
+      "es": "¿Qué plato no compartirías con nadie?",
+      "fr": "Quel plat ne partagerais-tu avec personne ?",
+      "de": "Welchen Teller würdest du mit niemandem teilen?",
+      "it": "Quale piatto non divideresti con nessuno?"
+    }
+  },
+  {
+    "id": "q0322",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which shop could you spend an hour in and buy nothing?",
+      "es": "¿En qué tienda pasarías una hora sin comprar nada?",
+      "fr": "Dans quel magasin passerais-tu une heure sans rien acheter ?",
+      "de": "In welchem Laden könntest du eine Stunde verbringen, ohne etwas zu kaufen?",
+      "it": "In quale negozio passeresti un'ora senza comprare niente?"
+    }
+  },
+  {
+    "id": "q0323",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you like now that you actively disliked at twenty?",
+      "es": "¿Qué te gusta ahora que detestabas a los veinte?",
+      "fr": "Qu'aimes-tu aujourd'hui que tu détestais à vingt ans ?",
+      "de": "Was magst du heute, das du mit zwanzig nicht ausstehen konntest?",
+      "it": "Cosa ti piace oggi che a vent'anni detestavi?"
+    }
+  },
+  {
+    "id": "q0324",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which drink do you order when you want the evening to slow down?",
+      "es": "¿Qué bebida pides cuando quieres que la noche vaya más lenta?",
+      "fr": "Que commandes-tu quand tu veux que la soirée ralentisse ?",
+      "de": "Was bestellst du, wenn der Abend langsamer werden soll?",
+      "it": "Cosa ordini quando vuoi che la serata rallenti?"
+    }
+  },
+  {
+    "id": "q0325",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my recommendations did you actually follow?",
+      "es": "¿Qué recomendación mía has seguido de verdad?",
+      "fr": "Laquelle de mes recommandations as-tu vraiment suivie ?",
+      "de": "Welche meiner Empfehlungen hast du wirklich befolgt?",
+      "it": "Quale mio consiglio hai davvero seguito?"
+    }
+  },
+  {
+    "id": "q0326",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which decade's style would you wear without any irony?",
+      "es": "¿El estilo de qué década llevarías sin ninguna ironía?",
+      "fr": "Le style de quelle décennie porterais-tu sans aucune ironie ?",
+      "de": "Den Stil welches Jahrzehnts würdest du ganz ohne Ironie tragen?",
+      "it": "Lo stile di quale decennio indosseresti senza alcuna ironia?"
+    }
+  },
+  {
+    "id": "q0327",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always notice first in someone else's home?",
+      "es": "¿En qué te fijas siempre primero en casa de otra persona?",
+      "fr": "Que remarques-tu toujours en premier chez quelqu'un d'autre ?",
+      "de": "Was fällt dir in der Wohnung von anderen immer zuerst auf?",
+      "it": "Cosa noti sempre per prima cosa in casa di un altro?"
+    }
+  },
+  {
+    "id": "q0328",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which cheap version of something did you try once and never again?",
+      "es": "¿De qué probaste la versión barata una vez y nunca más?",
+      "fr": "De quoi as-tu essayé la version bon marché une seule fois ?",
+      "de": "Wovon hast du die billige Version einmal probiert und nie wieder?",
+      "it": "Di cosa hai provato la versione economica una volta sola?"
+    }
+  },
+  {
+    "id": "q0329",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What does everyone love that you tried twice and still did not like?",
+      "es": "¿Qué le encanta a todo el mundo y a ti no, ni tras probarlo dos veces?",
+      "fr": "Qu'est-ce que tout le monde adore et que tu as essayé deux fois sans aimer ?",
+      "de": "Was lieben alle, das du zweimal probiert hast und trotzdem nicht magst?",
+      "it": "Cosa piace a tutti e a te no, nemmeno dopo due tentativi?"
+    }
+  },
+  {
+    "id": "q0330",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How do you decide that a film is not worth finishing?",
+      "es": "¿Cómo decides que una película no merece que la termines?",
+      "fr": "Comment décides-tu qu'un film ne vaut pas la peine d'être fini ?",
+      "de": "Woran entscheidest du, dass ein Film das Zuendesehen nicht wert ist?",
+      "it": "Come decidi che un film non vale la pena di finirlo?"
+    }
+  },
+  {
+    "id": "q0331",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do we both like for completely different reasons?",
+      "es": "¿Qué nos gusta a los dos por razones totalmente distintas?",
+      "fr": "Qu'aimons-nous tous les deux pour des raisons complètement différentes ?",
+      "de": "Was mögen wir beide aus völlig verschiedenen Gründen?",
+      "it": "Cosa piace a entrambi per motivi completamente diversi?"
+    }
+  },
+  {
+    "id": "q0332",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which meal could you eat every day for a month without complaining?",
+      "es": "¿Qué comida podrías comer cada día durante un mes sin quejarte?",
+      "fr": "Quel plat pourrais-tu manger tous les jours pendant un mois sans te plaindre ?",
+      "de": "Welches Gericht könntest du einen Monat lang täglich essen, ohne zu klagen?",
+      "it": "Quale piatto potresti mangiare ogni giorno per un mese senza lamentarti?"
+    }
+  },
+  {
+    "id": "q0333",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you put in a museum of your own taste?",
+      "es": "¿Qué pondrías en un museo de tu propio gusto?",
+      "fr": "Que mettrais-tu dans un musée de tes propres goûts ?",
+      "de": "Was käme in ein Museum deines eigenen Geschmacks?",
+      "it": "Cosa metteresti in un museo del tuo gusto?"
+    }
+  },
+  {
+    "id": "q0334",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your things would tell a stranger the most about your taste?",
+      "es": "¿Qué cosa tuya le diría más a un desconocido sobre tus gustos?",
+      "fr": "Lequel de tes objets en dirait le plus à un inconnu sur tes goûts ?",
+      "de": "Welches deiner Dinge würde einem Fremden am meisten über deinen Geschmack sagen?",
+      "it": "Quale tua cosa direbbe di più a uno sconosciuto sui tuoi gusti?"
+    }
+  },
+  {
+    "id": "q0335",
+    "theme": "tastes",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my tastes have you slowly started to share?",
+      "es": "¿Qué gusto mío has ido haciendo tuyo poco a poco?",
+      "fr": "Lequel de mes goûts as-tu peu à peu adopté ?",
+      "de": "Welche meiner Vorlieben hast du nach und nach übernommen?",
+      "it": "Quale mio gusto hai lentamente fatto tuo?"
+    }
+  },
+  {
+    "id": "q0336",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which meal would you rather cook than be served?",
+      "es": "¿Qué plato prefieres cocinar tú antes que te lo sirvan?",
+      "fr": "Quel plat préfères-tu cuisiner toi-même plutôt qu'on te le serve ?",
+      "de": "Welches Gericht kochst du lieber selbst, als es serviert zu bekommen?",
+      "it": "Quale piatto preferisci cucinare invece che fartelo servire?"
+    }
+  },
+  {
+    "id": "q0337",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which food opinion of yours would your family argue with?",
+      "es": "¿Qué opinión tuya sobre la comida discutiría tu familia?",
+      "fr": "Quelle opinion culinaire à toi ta famille contesterait-elle ?",
+      "de": "Welche deiner Meinungen über Essen würde deine Familie bestreiten?",
+      "it": "Quale tua opinione sul cibo contesterebbe la tua famiglia?"
+    }
+  },
+  {
+    "id": "q0338",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which music from your teenage years still holds up for you?",
+      "es": "¿Qué música de tu adolescencia sigue aguantando bien?",
+      "fr": "Quelle musique de ton adolescence tient encore la route pour toi ?",
+      "de": "Welche Musik aus deiner Jugend hältst du bis heute für gut?",
+      "it": "Quale musica della tua adolescenza regge ancora per te?"
+    }
+  },
+  {
+    "id": "q0339",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of music do you put on when nobody else is listening?",
+      "es": "¿Qué música pones cuando no te escucha nadie?",
+      "fr": "Quelle musique mets-tu quand personne d'autre n'écoute ?",
+      "de": "Welche Musik legst du auf, wenn niemand sonst zuhört?",
+      "it": "Che musica metti quando non ti ascolta nessuno?"
+    }
+  },
+  {
+    "id": "q0340",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which piece of clothing do you own purely for yourself?",
+      "es": "¿Qué prenda tienes solo para ti?",
+      "fr": "Quel vêtement possèdes-tu uniquement pour toi ?",
+      "de": "Welches Kleidungsstück besitzt du nur für dich selbst?",
+      "it": "Quale capo di abbigliamento hai solo per te?"
+    }
+  },
+  {
+    "id": "q0341",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would pick the better place for a last-minute weekend?",
+      "es": "¿Quién de los dos elegiría mejor sitio para una escapada de última hora?",
+      "fr": "Qui de nous deux choisirait le mieux un week-end de dernière minute ?",
+      "de": "Wer von uns würde das bessere Ziel für ein spontanes Wochenende wählen?",
+      "it": "Chi di noi due sceglierebbe meglio un weekend all'ultimo minuto?"
+    }
+  },
+  {
+    "id": "q0342",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the smallest detail that makes a meal feel special to you?",
+      "es": "¿Cuál es el detalle más pequeño que te hace especial una comida?",
+      "fr": "Quel est le plus petit détail qui rend un repas spécial pour toi ?",
+      "de": "Welche Kleinigkeit macht für dich ein Essen zu etwas Besonderem?",
+      "it": "Qual è il dettaglio più piccolo che ti rende speciale un pasto?"
+    }
+  },
+  {
+    "id": "q0343",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which two things do you like together that horrify everyone else?",
+      "es": "¿Qué dos cosas te gustan juntas y horrorizan a los demás?",
+      "fr": "Quelles deux choses aimes-tu ensemble au grand dam de tout le monde ?",
+      "de": "Welche zwei Dinge magst du zusammen, was alle anderen entsetzt?",
+      "it": "Quali due cose ti piacciono insieme e fanno inorridire gli altri?"
+    }
+  },
+  {
+    "id": "q0344",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you enjoy that requires no skill at all?",
+      "es": "¿Qué disfrutas que no requiere ninguna habilidad?",
+      "fr": "Qu'apprécies-tu qui ne demande aucune compétence ?",
+      "de": "Was genießt du, wofür man überhaupt kein Können braucht?",
+      "it": "Cosa ti piace fare senza che serva alcuna abilità?"
+    }
+  },
+  {
+    "id": "q0345",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the best thing you own that cost almost nothing?",
+      "es": "¿Qué es lo mejor que tienes y casi no te costó nada?",
+      "fr": "Quelle est la meilleure chose que tu possèdes et qui n'a presque rien coûté ?",
+      "de": "Was ist das Beste, das du besitzt und fast nichts gekostet hat?",
+      "it": "Qual è la cosa migliore che possiedi e che non è costata quasi nulla?"
+    }
+  },
+  {
+    "id": "q0346",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which souvenir have you kept that made no sense to keep?",
+      "es": "¿Qué recuerdo de viaje has guardado sin que tuviera ningún sentido?",
+      "fr": "Quel souvenir de voyage as-tu gardé sans aucune raison valable ?",
+      "de": "Welches Reisemitbringsel hast du behalten, obwohl es keinen Sinn ergab?",
+      "it": "Quale souvenir hai tenuto senza che avesse alcun senso tenerlo?"
+    }
+  },
+  {
+    "id": "q0347",
+    "theme": "tastes",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which place do the two of us like best in bad weather?",
+      "es": "¿Qué sitio nos gusta más a los dos cuando hace mal tiempo?",
+      "fr": "Quel endroit préférons-nous tous les deux quand il fait mauvais ?",
+      "de": "Welchen Ort mögen wir beide bei schlechtem Wetter am liebsten?",
+      "it": "Quale posto piace di più a entrambi quando il tempo è brutto?"
+    }
+  },
+  {
+    "id": "q0348",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did someone introduce you to that you could not do without now?",
+      "es": "¿Qué te descubrió alguien y ya no podrías dejar?",
+      "fr": "Que quelqu'un t'a-t-il fait découvrir dont tu ne peux plus te passer ?",
+      "de": "Was hat dir jemand gezeigt, worauf du heute nicht mehr verzichten willst?",
+      "it": "Cosa ti ha fatto scoprire qualcuno e di cui non potresti più fare a meno?"
+    }
+  },
+  {
+    "id": "q0349",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which fictional home would you move into tomorrow?",
+      "es": "¿A qué casa de ficción te mudarías mañana mismo?",
+      "fr": "Dans quelle maison de fiction emménagerais-tu demain ?",
+      "de": "In welches Zuhause aus einem Film oder Buch würdest du morgen einziehen?",
+      "it": "In quale casa di finzione ti trasferiresti domani?"
+    }
+  },
+  {
+    "id": "q0350",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your tastes do you keep entirely to yourself?",
+      "es": "¿Qué gusto tuyo te guardas completamente para ti?",
+      "fr": "Quel goût gardes-tu entièrement pour toi ?",
+      "de": "Welche deiner Vorlieben behältst du ganz für dich?",
+      "it": "Quale tuo gusto tieni tutto per te?"
+    }
+  },
+  {
+    "id": "q0351",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which film would you make me watch to explain something about you?",
+      "es": "¿Qué película me pondrías para explicarme algo sobre ti?",
+      "fr": "Quel film me ferais-tu regarder pour m'expliquer quelque chose sur toi ?",
+      "de": "Welchen Film würdest du mir zeigen, um mir etwas über dich zu erklären?",
+      "it": "Quale film mi faresti vedere per spiegarmi qualcosa di te?"
+    }
+  },
+  {
+    "id": "q0352",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you cook for someone you wanted to impress?",
+      "es": "¿Qué cocinarías para alguien a quien quisieras impresionar?",
+      "fr": "Que cuisinerais-tu pour quelqu'un que tu voudrais impressionner ?",
+      "de": "Was würdest du kochen, um jemanden zu beeindrucken?",
+      "it": "Cosa cucineresti per qualcuno che vuoi impressionare?"
+    }
+  },
+  {
+    "id": "q0353",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of place do you always end up in when you travel alone?",
+      "es": "¿En qué tipo de sitio acabas siempre cuando viajas solo?",
+      "fr": "Dans quel genre d'endroit finis-tu toujours quand tu voyages seul ?",
+      "de": "An welcher Art von Ort landest du immer, wenn du allein unterwegs bist?",
+      "it": "In che tipo di posto finisci sempre quando viaggi da solo?"
+    }
+  },
+  {
+    "id": "q0354",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which meal do you never eat without thinking of one particular person?",
+      "es": "¿Qué comida no pruebas nunca sin pensar en una persona concreta?",
+      "fr": "Quel plat ne manges-tu jamais sans penser à une personne précise ?",
+      "de": "Welches Gericht isst du nie, ohne an eine bestimmte Person zu denken?",
+      "it": "Quale piatto non mangi mai senza pensare a una persona precisa?"
+    }
+  },
+  {
+    "id": "q0355",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would ruin an otherwise perfect trip for you?",
+      "es": "¿Qué te arruinaría un viaje por lo demás perfecto?",
+      "fr": "Qu'est-ce qui gâcherait pour toi un voyage par ailleurs parfait ?",
+      "de": "Was würde dir eine ansonsten perfekte Reise verderben?",
+      "it": "Cosa ti rovinerebbe un viaggio per il resto perfetto?"
+    }
+  },
+  {
+    "id": "q0356",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your likes would surprise people who only know you a little?",
+      "es": "¿Qué gusto tuyo sorprendería a quien te conoce solo un poco?",
+      "fr": "Lequel de tes goûts surprendrait ceux qui te connaissent à peine ?",
+      "de": "Welche deiner Vorlieben würde Leute überraschen, die dich kaum kennen?",
+      "it": "Quale tuo gusto sorprenderebbe chi ti conosce appena?"
+    }
+  },
+  {
+    "id": "q0357",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which artist or band did you quietly outgrow?",
+      "es": "¿De qué artista o grupo te fuiste alejando sin decírselo a nadie?",
+      "fr": "De quel artiste ou groupe t'es-tu détaché sans le dire à personne ?",
+      "de": "Aus welchem Künstler oder welcher Band bist du still herausgewachsen?",
+      "it": "Da quale artista o gruppo ti sei allontanato senza dirlo a nessuno?"
+    }
+  },
+  {
+    "id": "q0358",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What would you pick for us if we had one free evening and no plan?",
+      "es": "¿Qué elegirías para los dos con una noche libre y ningún plan?",
+      "fr": "Que choisirais-tu pour nous deux avec une soirée libre et aucun plan ?",
+      "de": "Was würdest du für uns wählen bei einem freien Abend ohne Plan?",
+      "it": "Cosa sceglieresti per noi due con una serata libera e nessun piano?"
+    }
+  },
+  {
+    "id": "q0359",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which kind of humour do you find hardest to fake laughing at?",
+      "es": "¿Qué tipo de humor te cuesta más fingir que te hace gracia?",
+      "fr": "Quel type d'humour t'est le plus difficile de faire semblant d'apprécier ?",
+      "de": "Bei welcher Art von Humor fällt dir gespieltes Lachen am schwersten?",
+      "it": "Con quale tipo di umorismo ti riesce più difficile fingere di ridere?"
+    }
+  },
+  {
+    "id": "q0360",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the last thing you photographed just because it looked good?",
+      "es": "¿Qué es lo último que fotografiaste solo porque se veía bien?",
+      "fr": "Quelle est la dernière chose que tu as photographiée juste parce que c'était beau ?",
+      "de": "Was hast du zuletzt fotografiert, nur weil es gut aussah?",
+      "it": "Qual è l'ultima cosa che hai fotografato solo perché era bella?"
+    }
+  },
+  {
+    "id": "q0361",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which city would you move to for the food alone?",
+      "es": "¿A qué ciudad te mudarías solo por la comida?",
+      "fr": "Dans quelle ville déménagerais-tu rien que pour la nourriture ?",
+      "de": "In welche Stadt würdest du allein wegen des Essens ziehen?",
+      "it": "In quale città ti trasferiresti solo per il cibo?"
+    }
+  },
+  {
+    "id": "q0362",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which present taught you something about what you actually like?",
+      "es": "¿Qué regalo te enseñó algo sobre lo que de verdad te gusta?",
+      "fr": "Quel cadeau t'a appris quelque chose sur ce que tu aimes vraiment ?",
+      "de": "Welches Geschenk hat dir gezeigt, was du wirklich magst?",
+      "it": "Quale regalo ti ha insegnato qualcosa su ciò che ti piace davvero?"
+    }
+  },
+  {
+    "id": "q0363",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What would you put on if you wanted to change my mood?",
+      "es": "¿Qué pondrías si quisieras cambiarme el humor?",
+      "fr": "Que mettrais-tu si tu voulais changer mon humeur ?",
+      "de": "Was würdest du auflegen, wenn du meine Stimmung ändern wolltest?",
+      "it": "Cosa metteresti se volessi cambiarmi l'umore?"
+    }
+  },
+  {
+    "id": "q0364",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What would you never let me choose for both of us?",
+      "es": "¿Qué no me dejarías elegir nunca por los dos?",
+      "fr": "Que ne me laisserais-tu jamais choisir pour nous deux ?",
+      "de": "Was würdest du mich nie für uns beide aussuchen lassen?",
+      "it": "Cosa non mi lasceresti mai scegliere per tutti e due?"
+    }
+  },
+  {
+    "id": "q0365",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you look at for far longer than makes any sense?",
+      "es": "¿Qué te quedas mirando mucho más tiempo del que tiene sentido?",
+      "fr": "Que regardes-tu bien plus longtemps que de raison ?",
+      "de": "Was betrachtest du viel länger, als es irgendeinen Sinn ergibt?",
+      "it": "Cosa guardi molto più a lungo di quanto abbia senso?"
+    }
+  },
+  {
+    "id": "q0366",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which sport or game could you watch without understanding any of it?",
+      "es": "¿Qué deporte o juego verías sin entender absolutamente nada?",
+      "fr": "Quel sport ou jeu pourrais-tu regarder sans y comprendre quoi que ce soit ?",
+      "de": "Welchen Sport oder welches Spiel könntest du schauen, ohne etwas zu verstehen?",
+      "it": "Quale sport o gioco guarderesti senza capirci niente?"
+    }
+  },
+  {
+    "id": "q0367",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which flavour puts you instantly in one specific year?",
+      "es": "¿Qué sabor te lleva al instante a un año concreto?",
+      "fr": "Quelle saveur te ramène instantanément à une année précise ?",
+      "de": "Welcher Geschmack versetzt dich sofort in ein bestimmtes Jahr?",
+      "it": "Quale sapore ti riporta subito a un anno preciso?"
+    }
+  },
+  {
+    "id": "q0368",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What would you serve me at the end of my worst week?",
+      "es": "¿Qué me servirías al final de mi peor semana?",
+      "fr": "Que me servirais-tu à la fin de ma pire semaine ?",
+      "de": "Was würdest du mir am Ende meiner schlimmsten Woche servieren?",
+      "it": "Cosa mi serviresti alla fine della mia peggiore settimana?"
+    }
+  },
+  {
+    "id": "q0369",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you choose to fall asleep to for the rest of your life?",
+      "es": "¿Con qué elegirías dormirte el resto de tu vida?",
+      "fr": "Avec quoi choisirais-tu de t'endormir pour le reste de ta vie ?",
+      "de": "Womit würdest du für den Rest deines Lebens einschlafen wollen?",
+      "it": "Con cosa sceglieresti di addormentarti per il resto della vita?"
+    }
+  },
+  {
+    "id": "q0370",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which opinion about music would you defend in a room of experts?",
+      "es": "¿Qué opinión sobre música defenderías en una sala llena de expertos?",
+      "fr": "Quelle opinion sur la musique défendrais-tu face à une salle d'experts ?",
+      "de": "Welche Meinung über Musik würdest du vor lauter Fachleuten verteidigen?",
+      "it": "Quale opinione sulla musica difenderesti in una sala piena di esperti?"
+    }
+  },
+  {
+    "id": "q0371",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my clothes would you keep if you could keep only one?",
+      "es": "¿Qué prenda mía te quedarías si solo pudieras quedarte con una?",
+      "fr": "Lequel de mes vêtements garderais-tu si tu n'en gardais qu'un ?",
+      "de": "Welches meiner Kleidungsstücke würdest du behalten, wenn nur eines ginge?",
+      "it": "Quale mio capo terresti se potessi tenerne uno solo?"
+    }
+  },
+  {
+    "id": "q0372",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the most beautiful thing you have seen this month?",
+      "es": "¿Qué es lo más bonito que has visto este mes?",
+      "fr": "Quelle est la plus belle chose que tu aies vue ce mois-ci ?",
+      "de": "Was ist das Schönste, was du diesen Monat gesehen hast?",
+      "it": "Qual è la cosa più bella che hai visto questo mese?"
+    }
+  },
+  {
+    "id": "q0373",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would make you stay at a party longer than you planned?",
+      "es": "¿Qué haría que te quedaras en una fiesta más de lo previsto?",
+      "fr": "Qu'est-ce qui te ferait rester à une soirée plus longtemps que prévu ?",
+      "de": "Was würde dich auf einer Feier länger bleiben lassen als geplant?",
+      "it": "Cosa ti farebbe restare a una festa più del previsto?"
+    }
+  },
+  {
+    "id": "q0374",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always want to try on a menu and never order?",
+      "es": "¿Qué te apetece siempre de una carta y nunca acabas pidiendo?",
+      "fr": "Que veux-tu toujours essayer sur une carte sans jamais le commander ?",
+      "de": "Was willst du auf einer Speisekarte immer probieren und bestellst es nie?",
+      "it": "Cosa vuoi sempre provare su un menù e non ordini mai?"
+    }
+  },
+  {
+    "id": "q0375",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which everyday object do you have strong opinions about the design of?",
+      "es": "¿Sobre el diseño de qué objeto cotidiano tienes opiniones muy firmes?",
+      "fr": "Sur le design de quel objet du quotidien as-tu des avis très tranchés ?",
+      "de": "Über das Design welches Alltagsgegenstands hast du feste Meinungen?",
+      "it": "Sul design di quale oggetto di tutti i giorni hai opinioni molto nette?"
+    }
+  },
+  {
+    "id": "q0376",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is your test for whether a place is worth staying in?",
+      "es": "¿Cuál es tu prueba para saber si merece la pena quedarse en un sitio?",
+      "fr": "Quel est ton test pour savoir si un endroit mérite qu'on y reste ?",
+      "de": "Woran erkennst du, ob ein Ort es wert ist zu bleiben?",
+      "it": "Qual è la tua prova per capire se vale la pena restare in un posto?"
+    }
+  },
+  {
+    "id": "q0377",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which trend did you resist longest before giving in?",
+      "es": "¿A qué moda te resististe más tiempo antes de rendirte?",
+      "fr": "À quelle mode as-tu résisté le plus longtemps avant de céder ?",
+      "de": "Welchem Trend hast du am längsten widerstanden, bevor du nachgabst?",
+      "it": "A quale moda hai resistito più a lungo prima di cedere?"
+    }
+  },
+  {
+    "id": "q0378",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which seat in a room do you always end up taking?",
+      "es": "¿Qué sitio de una habitación acabas ocupando siempre?",
+      "fr": "Quelle place dans une pièce finis-tu toujours par prendre ?",
+      "de": "Welchen Platz in einem Raum nimmst du am Ende immer ein?",
+      "it": "Quale posto in una stanza finisci sempre per occupare?"
+    }
+  },
+  {
+    "id": "q0379",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you like about the way I dress that I never planned?",
+      "es": "¿Qué te gusta de cómo me visto que yo nunca planeé?",
+      "fr": "Qu'aimes-tu dans ma façon de m'habiller que je n'ai jamais voulue ?",
+      "de": "Was magst du an meiner Kleidung, das ich nie geplant habe?",
+      "it": "Cosa ti piace di come mi vesto che io non ho mai pianificato?"
+    }
+  },
+  {
+    "id": "q0380",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you like that you would never put on a profile?",
+      "es": "¿Qué te gusta que nunca pondrías en un perfil?",
+      "fr": "Qu'aimes-tu que tu ne mettrais jamais sur un profil ?",
+      "de": "Was magst du, das du nie in ein Profil schreiben würdest?",
+      "it": "Cosa ti piace che non metteresti mai in un profilo?"
+    }
+  },
+  {
+    "id": "q0381",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you eat abroad that you have never found since?",
+      "es": "¿Qué comiste en el extranjero que no has vuelto a encontrar?",
+      "fr": "Qu'as-tu mangé à l'étranger que tu n'as jamais retrouvé depuis ?",
+      "de": "Was hast du im Ausland gegessen und seitdem nie wiedergefunden?",
+      "it": "Cosa hai mangiato all'estero e non hai mai più ritrovato?"
+    }
+  },
+  {
+    "id": "q0382",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which meal from a book or film do you still want to try?",
+      "es": "¿Qué comida de un libro o una película sigues queriendo probar?",
+      "fr": "Quel repas d'un livre ou d'un film veux-tu encore goûter ?",
+      "de": "Welches Essen aus einem Buch oder Film willst du noch probieren?",
+      "it": "Quale pasto di un libro o di un film vuoi ancora provare?"
+    }
+  },
+  {
+    "id": "q0383",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which thing from your childhood do you most want me to like?",
+      "es": "¿Qué cosa de tu infancia te gustaría más que me gustara?",
+      "fr": "Quelle chose de ton enfance aimerais-tu le plus que j'aime ?",
+      "de": "Was aus deiner Kindheit soll mir am meisten gefallen?",
+      "it": "Quale cosa della tua infanzia vorresti di più che mi piacesse?"
+    }
+  },
+  {
+    "id": "q0384",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What have you stopped liking without noticing when it happened?",
+      "es": "¿Qué ha dejado de gustarte sin que notaras cuándo pasó?",
+      "fr": "Qu'as-tu cessé d'aimer sans remarquer quand c'est arrivé ?",
+      "de": "Was magst du nicht mehr, ohne gemerkt zu haben, wann das passiert ist?",
+      "it": "Cosa hai smesso di amare senza accorgerti di quando è successo?"
+    }
+  },
+  {
+    "id": "q0385",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your possessions would you replace with exactly the same one?",
+      "es": "¿Qué cosa tuya sustituirías por otra exactamente igual?",
+      "fr": "Lequel de tes objets remplacerais-tu par exactement le même ?",
+      "de": "Welchen deiner Gegenstände würdest du durch genau denselben ersetzen?",
+      "it": "Quale tuo oggetto sostituiresti con uno esattamente uguale?"
+    }
+  },
+  {
+    "id": "q0386",
+    "theme": "tastes",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our shared tastes did neither of us have before?",
+      "es": "¿Qué gusto compartido no teníamos ninguno de los dos antes?",
+      "fr": "Quel goût commun n'avions-nous ni l'un ni l'autre avant ?",
+      "de": "Welchen gemeinsamen Geschmack hatte vorher keiner von uns beiden?",
+      "it": "Quale gusto in comune non aveva nessuno dei due prima?"
+    }
+  },
+  {
+    "id": "q0387",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which three things would make a hotel room feel like yours?",
+      "es": "¿Qué tres cosas harían que una habitación de hotel se sintiera tuya?",
+      "fr": "Quelles trois choses rendraient une chambre d'hôtel vraiment tienne ?",
+      "de": "Welche drei Dinge würden ein Hotelzimmer zu deinem machen?",
+      "it": "Quali tre cose renderebbero tua una stanza d'albergo?"
+    }
+  },
+  {
+    "id": "q0388",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you read or watch again whenever you are ill?",
+      "es": "¿Qué vuelves a leer o a ver siempre que estás enfermo?",
+      "fr": "Que relis-tu ou revois-tu chaque fois que tu es malade ?",
+      "de": "Was liest oder schaust du wieder, wenn du krank bist?",
+      "it": "Cosa rileggi o riguardi ogni volta che stai male?"
+    }
+  },
+  {
+    "id": "q0389",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which place have you loved and would never want to live in?",
+      "es": "¿Qué lugar te ha encantado y no querrías vivir en él jamás?",
+      "fr": "Quel endroit as-tu adoré sans jamais vouloir y vivre ?",
+      "de": "Welchen Ort hast du geliebt und würdest nie dort wohnen wollen?",
+      "it": "Quale posto hai amato senza volerci mai vivere?"
+    }
+  },
+  {
+    "id": "q0390",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which meal of ours would you want made exactly the same way again?",
+      "es": "¿Qué comida nuestra querrías que se repitiera exactamente igual?",
+      "fr": "Quel repas à nous voudrais-tu refaire exactement de la même façon ?",
+      "de": "Welches unserer Essen soll noch einmal genau so gemacht werden?",
+      "it": "Quale nostro pasto vorresti rifatto esattamente allo stesso modo?"
+    }
+  },
+  {
+    "id": "q0391",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us is harder to buy a present for?",
+      "es": "¿A quién de los dos es más difícil comprarle un regalo?",
+      "fr": "Pour qui de nous deux est-il plus difficile d'acheter un cadeau ?",
+      "de": "Wem von uns beiden kann man schwerer ein Geschenk kaufen?",
+      "it": "Per chi di noi due è più difficile comprare un regalo?"
+    }
+  },
+  {
+    "id": "q0392",
+    "theme": "tastes",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which taste of yours have I never asked you about?",
+      "es": "¿Sobre qué gusto tuyo no te he preguntado nunca?",
+      "fr": "Sur quel goût à toi ne t'ai-je jamais posé de question ?",
+      "de": "Nach welcher deiner Vorlieben habe ich dich nie gefragt?",
+      "it": "Su quale tuo gusto non ti ho mai fatto domande?"
+    }
+  },
+  {
+    "id": "q0393",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you put on for a long drive with no destination?",
+      "es": "¿Qué pondrías para un viaje largo en coche sin destino?",
+      "fr": "Que mettrais-tu pour une longue route sans destination ?",
+      "de": "Was würdest du für eine lange Fahrt ohne Ziel auflegen?",
+      "it": "Cosa metteresti per un lungo viaggio in auto senza meta?"
+    }
+  },
+  {
+    "id": "q0394",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What would I get wrong if I ordered for you?",
+      "es": "¿En qué me equivocaría si pidiera yo por ti?",
+      "fr": "Que raterais-je si je commandais à ta place ?",
+      "de": "Was würde ich falsch machen, wenn ich für dich bestelle?",
+      "it": "Cosa sbaglierei se ordinassi io per te?"
+    }
+  },
+  {
+    "id": "q0395",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which book have you given to more than one person?",
+      "es": "¿Qué libro has regalado a más de una persona?",
+      "fr": "Quel livre as-tu offert à plus d'une personne ?",
+      "de": "Welches Buch hast du mehr als einer Person geschenkt?",
+      "it": "Quale libro hai regalato a più di una persona?"
+    }
+  },
+  {
+    "id": "q0396",
+    "theme": "tastes",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you find restful that most people find dull?",
+      "es": "¿Qué te resulta descansado y a casi todos les parece aburrido?",
+      "fr": "Que trouves-tu reposant alors que la plupart trouvent ça ennuyeux ?",
+      "de": "Was findest du erholsam, was die meisten langweilig finden?",
+      "it": "Cosa trovi riposante mentre quasi tutti lo trovano noioso?"
+    }
+  },
+  {
+    "id": "q0397",
+    "theme": "tastes",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which place of ours would you take a visitor to first?",
+      "es": "¿A qué sitio nuestro llevarías primero a alguien de visita?",
+      "fr": "Dans quel endroit à nous emmènerais-tu d'abord quelqu'un de passage ?",
+      "de": "An welchen unserer Orte würdest du Besuch zuerst mitnehmen?",
+      "it": "In quale nostro posto porteresti per primo qualcuno in visita?"
+    }
+  },
+  {
+    "id": "q0398",
+    "theme": "tastes",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which music of mine have you learned to live with?",
+      "es": "¿Con qué música mía has aprendido a convivir?",
+      "fr": "À quelle musique à moi t'es-tu habitué avec le temps ?",
+      "de": "Mit welcher Musik von mir hast du dich arrangiert?",
+      "it": "Con quale mia musica hai imparato a convivere?"
+    }
+  },
+  {
+    "id": "q0399",
+    "theme": "tastes",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would last longer on the other's food?",
+      "es": "¿Quién de los dos aguantaría más comiendo lo del otro?",
+      "fr": "Qui de nous deux tiendrait le plus longtemps avec la nourriture de l'autre ?",
+      "de": "Wer von uns hielte es länger mit dem Essen des anderen aus?",
+      "it": "Chi di noi due resisterebbe di più mangiando come l'altro?"
+    }
+  },
+  {
+    "id": "q0400",
+    "theme": "tastes",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which restaurant or bar of ours would you be sorry to see close?",
+      "es": "¿Qué restaurante o bar nuestro sentirías que cerrara?",
+      "fr": "Quel restaurant ou bar à nous regretterais-tu s'il fermait ?",
+      "de": "Welches unserer Lokale würdest du vermissen, wenn es schließt?",
+      "it": "Quale nostro ristorante o bar ti dispiacerebbe veder chiudere?"
+    }
+  }
+]

@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0401",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always pay more for without hesitating?",
+      "es": "¿Por qué cosa pagas siempre más sin dudarlo?",
+      "fr": "Pour quoi payes-tu toujours plus cher sans hésiter ?",
+      "de": "Wofür zahlst du immer mehr, ohne zu zögern?",
+      "it": "Per cosa paghi sempre di più senza esitare?"
+    }
+  },
+  {
+    "id": "q0402",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which rule do you follow even when nobody would ever check?",
+      "es": "¿Qué norma cumples aunque nadie vaya a comprobarlo nunca?",
+      "fr": "Quelle règle respectes-tu même si personne ne le vérifiera jamais ?",
+      "de": "An welche Regel hältst du dich, auch wenn es nie jemand prüft?",
+      "it": "Quale regola rispetti anche se nessuno lo verificherà mai?"
+    }
+  },
+  {
+    "id": "q0403",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the smallest thing you refuse to give way on?",
+      "es": "¿Cuál es la cosa más pequeña en la que no cedes nunca?",
+      "fr": "Quelle est la plus petite chose sur laquelle tu ne cèdes jamais ?",
+      "de": "Was ist die kleinste Sache, bei der du nie nachgibst?",
+      "it": "Qual è la cosa più piccola su cui non cedi mai?"
+    }
+  },
+  {
+    "id": "q0404",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which promise to another person do you keep even when it costs you?",
+      "es": "¿Qué promesa hecha a otra persona cumples aunque te cueste?",
+      "fr": "Quelle promesse faite à quelqu'un tiens-tu même quand elle te coûte ?",
+      "de": "Welches Versprechen an andere hältst du, auch wenn es dich etwas kostet?",
+      "it": "Quale promessa fatta a un'altra persona mantieni anche quando ti costa?"
+    }
+  },
+  {
+    "id": "q0405",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you defend in public but quietly doubt in private?",
+      "es": "¿Qué defiendes en público y pones en duda en privado?",
+      "fr": "Que défends-tu en public tout en le remettant en question en privé ?",
+      "de": "Was verteidigst du öffentlich und bezweifelst insgeheim?",
+      "it": "Cosa difendi in pubblico e metti in dubbio in privato?"
+    }
+  },
+  {
+    "id": "q0406",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Where in your life do you settle for good enough on purpose?",
+      "es": "¿En qué parte de tu vida te conformas a propósito con lo suficiente?",
+      "fr": "Dans quel domaine de ta vie te contentes-tu volontairement du minimum ?",
+      "de": "Wo in deinem Leben gibst du dich absichtlich mit gut genug zufrieden?",
+      "it": "In quale parte della tua vita ti accontenti apposta del sufficiente?"
+    }
+  },
+  {
+    "id": "q0407",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you spend time on that you would never call useful?",
+      "es": "¿A qué dedicas tiempo aunque nunca lo llamarías útil?",
+      "fr": "À quoi consacres-tu du temps sans jamais le qualifier d'utile ?",
+      "de": "Wofür nimmst du dir Zeit, obwohl du es nie nützlich nennen würdest?",
+      "it": "A cosa dedichi tempo pur non definendolo mai utile?"
+    }
+  },
+  {
+    "id": "q0408",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your opinions has cost you something?",
+      "es": "¿Qué opinión tuya te ha costado algo?",
+      "fr": "Quelle opinion t'a déjà coûté quelque chose ?",
+      "de": "Welche deiner Meinungen hat dich schon etwas gekostet?",
+      "it": "Quale tua opinione ti è già costata qualcosa?"
+    }
+  },
+  {
+    "id": "q0409",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would make you leave a place where everything else was fine?",
+      "es": "¿Qué te haría irte de un sitio donde todo lo demás está bien?",
+      "fr": "Qu'est-ce qui te ferait quitter un endroit où tout le reste va bien ?",
+      "de": "Was würde dich einen Ort verlassen lassen, an dem sonst alles passt?",
+      "it": "Cosa ti farebbe lasciare un posto dove tutto il resto va bene?"
+    }
+  },
+  {
+    "id": "q0410",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which favour would you never ask anyone for?",
+      "es": "¿Qué favor no le pedirías nunca a nadie?",
+      "fr": "Quel service ne demanderais-tu jamais à personne ?",
+      "de": "Um welchen Gefallen würdest du nie jemanden bitten?",
+      "it": "Quale favore non chiederesti mai a nessuno?"
+    }
+  },
+  {
+    "id": "q0411",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you refuse to hurry, no matter who is waiting?",
+      "es": "¿Qué te niegas a hacer deprisa, espere quien espere?",
+      "fr": "Que refuses-tu de faire vite, peu importe qui attend ?",
+      "de": "Wobei lässt du dich nicht hetzen, egal wer wartet?",
+      "it": "Cosa ti rifiuti di fare in fretta, chiunque stia aspettando?"
+    }
+  },
+  {
+    "id": "q0412",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which decision would you make again knowing exactly how it ended?",
+      "es": "¿Qué decisión repetirías sabiendo exactamente cómo acabó?",
+      "fr": "Quelle décision referais-tu en sachant exactement comment ça s'est terminé ?",
+      "de": "Welche Entscheidung würdest du wieder treffen, obwohl du das Ende kennst?",
+      "it": "Quale decisione rifaresti sapendo esattamente come è andata a finire?"
+    }
+  },
+  {
+    "id": "q0413",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What makes you trust someone faster than you should?",
+      "es": "¿Qué hace que confíes en alguien antes de lo prudente?",
+      "fr": "Qu'est-ce qui te fait faire confiance à quelqu'un trop vite ?",
+      "de": "Was bringt dich dazu, jemandem schneller zu vertrauen, als klug wäre?",
+      "it": "Cosa ti fa fidare di qualcuno più in fretta di quanto dovresti?"
+    }
+  },
+  {
+    "id": "q0414",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you demand of yourself and of nobody else?",
+      "es": "¿Qué te exiges a ti y a nadie más?",
+      "fr": "Qu'exiges-tu de toi et de personne d'autre ?",
+      "de": "Was verlangst du von dir und von sonst niemandem?",
+      "it": "Cosa pretendi da te e da nessun altro?"
+    }
+  },
+  {
+    "id": "q0415",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Would you rather arrive on time or arrive when everything is ready?",
+      "es": "¿Prefieres llegar puntual o llegar cuando esté todo listo?",
+      "fr": "Préfères-tu arriver à l'heure ou arriver quand tout est prêt ?",
+      "de": "Kommst du lieber pünktlich oder erst, wenn alles fertig ist?",
+      "it": "Preferisci arrivare puntuale o arrivare quando è tutto pronto?"
+    }
+  },
+  {
+    "id": "q0416",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always tell the truth about, even when a lie is easier?",
+      "es": "¿Sobre qué dices siempre la verdad, aunque mentir sea más fácil?",
+      "fr": "Sur quoi dis-tu toujours la vérité, même quand mentir serait plus simple ?",
+      "de": "Wobei sagst du immer die Wahrheit, auch wenn Lügen leichter wäre?",
+      "it": "Su cosa dici sempre la verità, anche quando mentire sarebbe più facile?"
+    }
+  },
+  {
+    "id": "q0417",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which sacrifice do people admire that you find pointless?",
+      "es": "¿Qué sacrificio admira la gente y a ti te parece inútil?",
+      "fr": "Quel sacrifice les gens admirent-ils alors que tu le trouves inutile ?",
+      "de": "Welches Opfer bewundern andere, das du für sinnlos hältst?",
+      "it": "Quale sacrificio la gente ammira e tu trovi inutile?"
+    }
+  },
+  {
+    "id": "q0418",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you own that you would give to the right person today?",
+      "es": "¿Qué cosa tuya le darías hoy mismo a la persona adecuada?",
+      "fr": "Quel objet donnerais-tu aujourd'hui à la bonne personne ?",
+      "de": "Welchen deiner Gegenstände würdest du heute der richtigen Person geben?",
+      "it": "Quale tuo oggetto daresti oggi stesso alla persona giusta?"
+    }
+  },
+  {
+    "id": "q0419",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you judge other people for more harshly than you would like?",
+      "es": "¿Qué le juzgas a la gente con más dureza de la que quisieras?",
+      "fr": "Que juges-tu chez les autres plus sévèrement que tu ne le voudrais ?",
+      "de": "Wofür verurteilst du andere strenger, als dir lieb ist?",
+      "it": "Cosa giudichi negli altri più duramente di quanto vorresti?"
+    }
+  },
+  {
+    "id": "q0420",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which daily choice do you make on principle instead of convenience?",
+      "es": "¿Qué decisión cotidiana tomas por principio y no por comodidad?",
+      "fr": "Quel choix quotidien fais-tu par principe et non par confort ?",
+      "de": "Welche Alltagsentscheidung triffst du aus Prinzip statt aus Bequemlichkeit?",
+      "it": "Quale scelta quotidiana fai per principio e non per comodità?"
+    }
+  },
+  {
+    "id": "q0421",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you happily be the last person on earth still doing?",
+      "es": "¿Qué seguirías haciendo aunque fueras la última persona en hacerlo?",
+      "fr": "Que ferais-tu volontiers en étant la dernière personne à le faire ?",
+      "de": "Was würdest du gern als letzter Mensch überhaupt noch tun?",
+      "it": "Cosa continueresti a fare volentieri anche da ultima persona al mondo?"
+    }
+  },
+  {
+    "id": "q0422",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you take on so that nobody else has to deal with it?",
+      "es": "¿De qué te encargas para que nadie más tenga que hacerlo?",
+      "fr": "De quoi te charges-tu pour que personne d'autre n'ait à le faire ?",
+      "de": "Was übernimmst du, damit sich sonst niemand darum kümmern muss?",
+      "it": "Di cosa ti fai carico perché nessun altro debba occuparsene?"
+    }
+  },
+  {
+    "id": "q0423",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who would you call first if you had to admit you were wrong?",
+      "es": "¿A quién llamarías primero si tuvieras que admitir que te equivocaste?",
+      "fr": "Qui appellerais-tu en premier si tu devais admettre ton erreur ?",
+      "de": "Wen würdest du zuerst anrufen, wenn du einen Fehler zugeben müsstest?",
+      "it": "Chi chiameresti per primo se dovessi ammettere di aver sbagliato?"
+    }
+  },
+  {
+    "id": "q0424",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which counts for more with you: a fast apology or a complete one?",
+      "es": "¿Qué vale más para ti: una disculpa rápida o una disculpa completa?",
+      "fr": "Qu'est-ce qui compte le plus pour toi : des excuses rapides ou complètes ?",
+      "de": "Was zählt für dich mehr: eine schnelle oder eine vollständige Entschuldigung?",
+      "it": "Cosa conta di più per te: una scusa rapida o una scusa completa?"
+    }
+  },
+  {
+    "id": "q0425",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your habits would you defend to someone who disapproved?",
+      "es": "¿Qué costumbre tuya defenderías ante alguien que la desaprueba?",
+      "fr": "Laquelle de tes habitudes défendrais-tu face à quelqu'un qui la désapprouve ?",
+      "de": "Welche deiner Gewohnheiten würdest du gegen Missbilligung verteidigen?",
+      "it": "Quale tua abitudine difenderesti davanti a chi la disapprova?"
+    }
+  },
+  {
+    "id": "q0426",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you give away most easily: time, money or attention?",
+      "es": "¿Qué das con más facilidad: tiempo, dinero o atención?",
+      "fr": "Que donnes-tu le plus facilement : du temps, de l'argent ou de l'attention ?",
+      "de": "Was gibst du am leichtesten her: Zeit, Geld oder Aufmerksamkeit?",
+      "it": "Cosa dai più facilmente: tempo, denaro o attenzione?"
+    }
+  },
+  {
+    "id": "q0427",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "How do you want me to tell you something you will not want to hear?",
+      "es": "¿Cómo quieres que te diga algo que no te va a gustar oír?",
+      "fr": "Comment veux-tu que je te dise une chose que tu n'auras pas envie d'entendre ?",
+      "de": "Wie soll ich dir etwas sagen, das du nicht hören willst?",
+      "it": "Come vuoi che ti dica una cosa che non ti farà piacere sentire?"
+    }
+  },
+  {
+    "id": "q0428",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my principles would you borrow?",
+      "es": "¿Qué principio mío adoptarías?",
+      "fr": "Lequel de mes principes emprunterais-tu ?",
+      "de": "Welches meiner Prinzipien würdest du übernehmen?",
+      "it": "Quale mio principio faresti tuo?"
+    }
+  },
+  {
+    "id": "q0429",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do we disagree about that never needs to be settled?",
+      "es": "¿En qué no estamos de acuerdo sin que haga falta resolverlo?",
+      "fr": "Sur quoi ne sommes-nous pas d'accord sans qu'il faille trancher ?",
+      "de": "Worin sind wir uns uneinig, ohne dass es geklärt werden müsste?",
+      "it": "Su cosa non siamo d'accordo senza che serva risolverlo?"
+    }
+  },
+  {
+    "id": "q0430",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which decision would you never want either of us to make alone?",
+      "es": "¿Qué decisión querrías que no tomáramos nunca por separado?",
+      "fr": "Quelle décision voudrais-tu qu'on ne prenne jamais séparément ?",
+      "de": "Welche Entscheidung sollte keiner von uns allein treffen?",
+      "it": "Quale decisione vorresti che non prendessimo mai separatamente?"
+    }
+  },
+  {
+    "id": "q0431",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you think I would refuse to do even for a good reason?",
+      "es": "¿Qué crees que yo me negaría a hacer incluso por una buena razón?",
+      "fr": "Que penses-tu que je refuserais de faire, même pour une bonne raison ?",
+      "de": "Was würde ich deiner Meinung nach selbst aus gutem Grund ablehnen?",
+      "it": "Cosa pensi che io mi rifiuterei di fare anche per un buon motivo?"
+    }
+  },
+  {
+    "id": "q0432",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us should decide when there is no time to think?",
+      "es": "¿Quién de nosotros debería decidir cuando no hay tiempo para pensar?",
+      "fr": "Qui de nous deux devrait décider quand il n'y a pas le temps de réfléchir ?",
+      "de": "Wer von uns sollte entscheiden, wenn keine Zeit zum Nachdenken bleibt?",
+      "it": "Chi di noi dovrebbe decidere quando non c'è tempo per pensare?"
+    }
+  },
+  {
+    "id": "q0433",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you need from me when you have a hard call to make?",
+      "es": "¿Qué necesitas de mí cuando tienes que tomar una decisión difícil?",
+      "fr": "De quoi as-tu besoin de ma part quand tu dois trancher quelque chose de difficile ?",
+      "de": "Was brauchst du von mir, wenn du eine schwere Entscheidung treffen musst?",
+      "it": "Cosa ti serve da me quando devi prendere una decisione difficile?"
+    }
+  },
+  {
+    "id": "q0434",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our unwritten rules would you break first?",
+      "es": "¿Cuál de nuestras normas no escritas romperías primero?",
+      "fr": "Laquelle de nos règles non écrites enfreindrais-tu en premier ?",
+      "de": "Welche unserer ungeschriebenen Regeln würdest du zuerst brechen?",
+      "it": "Quale delle nostre regole non scritte infrangeresti per prima?"
+    }
+  },
+  {
+    "id": "q0435",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What would the two of us protect first if things got tight?",
+      "es": "¿Qué protegeríamos primero si las cosas se pusieran difíciles?",
+      "fr": "Que protégerions-nous en premier si les choses devenaient difficiles ?",
+      "de": "Was würden wir zuerst schützen, wenn es eng wird?",
+      "it": "Cosa proteggeremmo per primo se le cose si facessero difficili?"
+    }
+  },
+  {
+    "id": "q0436",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Would you rather we had fewer things or fewer obligations?",
+      "es": "¿Qué preferirías: que tuviéramos menos cosas o menos obligaciones?",
+      "fr": "Préférerais-tu qu'on ait moins de choses ou moins d'obligations ?",
+      "de": "Hättest du lieber, dass wir weniger Dinge oder weniger Pflichten haben?",
+      "it": "Preferiresti che avessimo meno cose o meno impegni?"
+    }
+  },
+  {
+    "id": "q0437",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your values did you inherit and never once question?",
+      "es": "¿Qué valor heredaste y no has cuestionado ni una sola vez?",
+      "fr": "Quelle valeur as-tu héritée sans jamais la remettre en question ?",
+      "de": "Welchen Wert hast du geerbt und nie ein einziges Mal hinterfragt?",
+      "it": "Quale valore hai ereditato senza metterlo mai in discussione?"
+    }
+  },
+  {
+    "id": "q0438",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did your family treat as unforgivable?",
+      "es": "¿Qué consideraba imperdonable tu familia?",
+      "fr": "Qu'est-ce que ta famille considérait comme impardonnable ?",
+      "de": "Was galt in deiner Familie als unverzeihlich?",
+      "it": "Cosa considerava imperdonabile la tua famiglia?"
+    }
+  },
+  {
+    "id": "q0439",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your beliefs would the people who raised you not recognise?",
+      "es": "¿Qué idea tuya no reconocerían quienes te criaron?",
+      "fr": "Laquelle de tes convictions ne serait pas reconnue par ceux qui t'ont élevé ?",
+      "de": "Welche deiner Überzeugungen würden die Menschen, die dich großgezogen haben, nicht wiedererkennen?",
+      "it": "Quale tua convinzione non riconoscerebbe chi ti ha cresciuto?"
+    }
+  },
+  {
+    "id": "q0440",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you teach someone if you only got one sentence?",
+      "es": "¿Qué le enseñarías a alguien si solo tuvieras una frase?",
+      "fr": "Qu'apprendrais-tu à quelqu'un si tu n'avais droit qu'à une phrase ?",
+      "de": "Was würdest du jemandem beibringen, wenn du nur einen Satz hättest?",
+      "it": "Cosa insegneresti a qualcuno se avessi a disposizione una sola frase?"
+    }
+  },
+  {
+    "id": "q0441",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which rule from your childhood turned out to be nonsense?",
+      "es": "¿Qué norma de tu infancia resultó ser una tontería?",
+      "fr": "Quelle règle de ton enfance s'est révélée absurde ?",
+      "de": "Welche Regel aus deiner Kindheit hat sich als Unsinn herausgestellt?",
+      "it": "Quale regola della tua infanzia si è rivelata una sciocchezza?"
+    }
+  },
+  {
+    "id": "q0442",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you happily accept less money for?",
+      "es": "¿Por qué aceptarías cobrar menos sin pensarlo?",
+      "fr": "Pour quoi accepterais-tu volontiers de gagner moins ?",
+      "de": "Wofür würdest du bereitwillig weniger Geld nehmen?",
+      "it": "Per cosa accetteresti volentieri di guadagnare di meno?"
+    }
+  },
+  {
+    "id": "q0443",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always finish, even after it stops being worth it?",
+      "es": "¿Qué terminas siempre, aunque ya haya dejado de merecer la pena?",
+      "fr": "Que finis-tu toujours, même quand ça n'en vaut plus la peine ?",
+      "de": "Was bringst du immer zu Ende, auch wenn es sich nicht mehr lohnt?",
+      "it": "Cosa porti sempre a termine, anche quando non ne vale più la pena?"
+    }
+  },
+  {
+    "id": "q0444",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which kind of help is hardest for you to accept?",
+      "es": "¿Qué tipo de ayuda te cuesta más aceptar?",
+      "fr": "Quel type d'aide as-tu le plus de mal à accepter ?",
+      "de": "Welche Art von Hilfe fällt dir am schwersten anzunehmen?",
+      "it": "Che tipo di aiuto fai più fatica ad accettare?"
+    }
+  },
+  {
+    "id": "q0445",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do for people you will never see again?",
+      "es": "¿Qué haces por personas a las que no volverás a ver?",
+      "fr": "Que fais-tu pour des gens que tu ne reverras jamais ?",
+      "de": "Was tust du für Menschen, die du nie wiedersehen wirst?",
+      "it": "Cosa fai per persone che non rivedrai mai più?"
+    }
+  },
+  {
+    "id": "q0446",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which small dishonesty do you think is completely fine?",
+      "es": "¿Qué pequeña mentira te parece del todo aceptable?",
+      "fr": "Quel petit mensonge te semble tout à fait acceptable ?",
+      "de": "Welche kleine Unehrlichkeit findest du völlig in Ordnung?",
+      "it": "Quale piccola disonestà ti sembra del tutto accettabile?"
+    }
+  },
+  {
+    "id": "q0447",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first thing you drop when your week is too full?",
+      "es": "¿Qué es lo primero que dejas caer cuando la semana se llena demasiado?",
+      "fr": "Qu'est-ce que tu laisses tomber en premier quand ta semaine est trop chargée ?",
+      "de": "Was lässt du als Erstes fallen, wenn deine Woche zu voll wird?",
+      "it": "Qual è la prima cosa che lasci perdere quando la settimana è troppo piena?"
+    }
+  },
+  {
+    "id": "q0448",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which is worse to you: being lied to or being managed?",
+      "es": "¿Qué es peor para ti: que te mientan o que te manejen?",
+      "fr": "Qu'est-ce qui est pire pour toi : qu'on te mente ou qu'on te manipule ?",
+      "de": "Was ist für dich schlimmer: belogen oder gelenkt zu werden?",
+      "it": "Cosa è peggio per te: che ti mentano o che ti manovrino?"
+    }
+  },
+  {
+    "id": "q0449",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your things would you run back into the house for?",
+      "es": "¿Por qué cosa tuya volverías corriendo a casa?",
+      "fr": "Pour quel objet ferais-tu demi-tour et rentrerais-tu en courant ?",
+      "de": "Für welchen deiner Gegenstände würdest du noch einmal zurücklaufen?",
+      "it": "Per quale tuo oggetto torneresti indietro di corsa?"
+    }
+  },
+  {
+    "id": "q0450",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Whose good opinion still quietly steers your choices?",
+      "es": "¿La buena opinión de quién sigue guiando tus decisiones?",
+      "fr": "L'estime de qui continue de guider tes choix ?",
+      "de": "Wessen gute Meinung lenkt insgeheim noch immer deine Entscheidungen?",
+      "it": "L'approvazione di chi continua a guidare le tue scelte?"
+    }
+  },
+  {
+    "id": "q0451",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which rule that everyone follows do you think is pointless?",
+      "es": "¿Qué norma que todo el mundo cumple te parece absurda?",
+      "fr": "Quelle règle que tout le monde respecte te semble inutile ?",
+      "de": "Welche Regel, an die sich alle halten, findest du sinnlos?",
+      "it": "Quale regola che tutti rispettano ti sembra inutile?"
+    }
+  },
+  {
+    "id": "q0452",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would be the first house rule in a place that was only yours?",
+      "es": "¿Cuál sería la primera norma de la casa en un sitio solo tuyo?",
+      "fr": "Quelle serait la première règle de la maison dans un endroit rien qu'à toi ?",
+      "de": "Was wäre die erste Hausregel an einem Ort, der nur dir gehört?",
+      "it": "Quale sarebbe la prima regola della casa in un posto solo tuo?"
+    }
+  },
+  {
+    "id": "q0453",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your principles would not survive a week on a desert island?",
+      "es": "¿Qué principio tuyo no sobreviviría una semana en una isla desierta?",
+      "fr": "Lequel de tes principes ne survivrait pas à une semaine sur une île déserte ?",
+      "de": "Welches deiner Prinzipien würde eine Woche auf einer einsamen Insel nicht überstehen?",
+      "it": "Quale tuo principio non sopravvivrebbe a una settimana su un'isola deserta?"
+    }
+  },
+  {
+    "id": "q0454",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would go on a warning label about you?",
+      "es": "¿Qué pondría en una etiqueta de advertencia sobre ti?",
+      "fr": "Que dirait une étiquette de mise en garde à ton sujet ?",
+      "de": "Was stünde auf einem Warnhinweis über dich?",
+      "it": "Cosa ci sarebbe su un'etichetta di avvertenza su di te?"
+    }
+  },
+  {
+    "id": "q0455",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would argue longer with a machine that ate our money?",
+      "es": "¿Quién de nosotros discutiría más rato con una máquina que se tragó el dinero?",
+      "fr": "Qui de nous deux s'obstinerait le plus avec une machine qui a avalé notre argent ?",
+      "de": "Wer von uns würde länger mit einem Automaten streiten, der unser Geld geschluckt hat?",
+      "it": "Chi di noi litigherebbe più a lungo con una macchinetta che si è mangiata i soldi?"
+    }
+  },
+  {
+    "id": "q0456",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you refuse to do even for a whole year of income?",
+      "es": "¿Qué te negarías a hacer aunque te pagaran un año entero de sueldo?",
+      "fr": "Que refuserais-tu de faire, même pour une année entière de revenus ?",
+      "de": "Was würdest du selbst für ein ganzes Jahreseinkommen ablehnen?",
+      "it": "Cosa ti rifiuteresti di fare anche per un anno intero di stipendio?"
+    }
+  },
+  {
+    "id": "q0457",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "If we each had one veto a year, what would you save yours for?",
+      "es": "Si cada uno tuviera un veto al año, ¿para qué guardarías el tuyo?",
+      "fr": "Si chacun avait un veto par an, pour quoi garderais-tu le tien ?",
+      "de": "Wenn jeder von uns ein Veto im Jahr hätte, wofür würdest du deins aufheben?",
+      "it": "Se ognuno avesse un veto all'anno, per cosa terresti il tuo?"
+    }
+  },
+  {
+    "id": "q0458",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your rules would you break for a stranger in trouble?",
+      "es": "¿Qué norma tuya romperías por un desconocido en apuros?",
+      "fr": "Laquelle de tes règles enfreindrais-tu pour un inconnu en difficulté ?",
+      "de": "Welche deiner Regeln würdest du für eine fremde Person in Not brechen?",
+      "it": "Quale tua regola infrangeresti per uno sconosciuto nei guai?"
+    }
+  },
+  {
+    "id": "q0459",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you write on the door of a kitchen shared with strangers?",
+      "es": "¿Qué escribirías en la puerta de una cocina compartida con desconocidos?",
+      "fr": "Qu'écrirais-tu sur la porte d'une cuisine partagée avec des inconnus ?",
+      "de": "Was würdest du an die Tür einer Küche schreiben, die du mit Fremden teilst?",
+      "it": "Cosa scriveresti sulla porta di una cucina condivisa con estranei?"
+    }
+  },
+  {
+    "id": "q0460",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you do first if lying became impossible for a day?",
+      "es": "¿Qué harías primero si mentir fuera imposible durante un día?",
+      "fr": "Que ferais-tu en premier si mentir devenait impossible pendant un jour ?",
+      "de": "Was würdest du zuerst tun, wenn Lügen einen Tag lang unmöglich wäre?",
+      "it": "Cosa faresti per prima cosa se per un giorno mentire fosse impossibile?"
+    }
+  },
+  {
+    "id": "q0461",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you fine people for if you could?",
+      "es": "¿Por qué multarías a la gente si pudieras?",
+      "fr": "Pour quoi mettrais-tu des amendes aux gens si tu le pouvais ?",
+      "de": "Wofür würdest du Leute bestrafen, wenn du könntest?",
+      "it": "Per cosa multeresti la gente se potessi?"
+    }
+  },
+  {
+    "id": "q0462",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you want left out of a documentary about you?",
+      "es": "¿Qué querrías que se quedara fuera de un documental sobre ti?",
+      "fr": "Que voudrais-tu voir coupé d'un documentaire sur toi ?",
+      "de": "Was sollte in einer Doku über dich auf keinen Fall vorkommen?",
+      "it": "Cosa vorresti che restasse fuori da un documentario su di te?"
+    }
+  },
+  {
+    "id": "q0463",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our habits would you make compulsory for everyone?",
+      "es": "¿Cuál de nuestras costumbres harías obligatoria para todo el mundo?",
+      "fr": "Laquelle de nos habitudes rendrais-tu obligatoire pour tout le monde ?",
+      "de": "Welche unserer Gewohnheiten würdest du für alle zur Pflicht machen?",
+      "it": "Quale delle nostre abitudini renderesti obbligatoria per tutti?"
+    }
+  },
+  {
+    "id": "q0464",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Whose advice would you follow blindly for a week?",
+      "es": "¿Los consejos de quién seguirías a ciegas durante una semana?",
+      "fr": "Les conseils de qui suivrais-tu aveuglément pendant une semaine ?",
+      "de": "Wessen Rat würdest du eine Woche lang blind befolgen?",
+      "it": "I consigli di chi seguiresti alla cieca per una settimana?"
+    }
+  },
+  {
+    "id": "q0465",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you never let a machine decide for you?",
+      "es": "¿Qué no dejarías nunca que decidiera una máquina por ti?",
+      "fr": "Que ne laisserais-tu jamais une machine décider à ta place ?",
+      "de": "Was würdest du nie eine Maschine für dich entscheiden lassen?",
+      "it": "Cosa non lasceresti mai decidere a una macchina al posto tuo?"
+    }
+  },
+  {
+    "id": "q0466",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would go further to return something a stranger lost?",
+      "es": "¿Quién de nosotros se esforzaría más por devolver lo que perdió un desconocido?",
+      "fr": "Qui de nous deux irait le plus loin pour rendre ce qu'un inconnu a perdu ?",
+      "de": "Wer von uns würde weiter gehen, um einer fremden Person Verlorenes zurückzugeben?",
+      "it": "Chi di noi farebbe di più per restituire ciò che ha perso uno sconosciuto?"
+    }
+  },
+  {
+    "id": "q0467",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would be your one condition for lending someone a lot of money?",
+      "es": "¿Cuál sería tu única condición para prestarle mucho dinero a alguien?",
+      "fr": "Quelle serait ta seule condition pour prêter beaucoup d'argent à quelqu'un ?",
+      "de": "Was wäre deine einzige Bedingung, um jemandem viel Geld zu leihen?",
+      "it": "Quale sarebbe la tua unica condizione per prestare molti soldi a qualcuno?"
+    }
+  },
+  {
+    "id": "q0468",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your standards would you drop for a very good story?",
+      "es": "¿Qué exigencia tuya dejarías caer a cambio de una buena historia?",
+      "fr": "Laquelle de tes exigences laisserais-tu tomber pour une très bonne histoire ?",
+      "de": "Welchen deiner Ansprüche würdest du für eine richtig gute Geschichte fallen lassen?",
+      "it": "Quale tua esigenza lasceresti cadere in cambio di una bella storia da raccontare?"
+    }
+  },
+  {
+    "id": "q0469",
+    "theme": "values",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the pettiest thing you would go to court over?",
+      "es": "¿Cuál es la tontería más pequeña por la que irías a juicio?",
+      "fr": "Quelle est la plus petite broutille pour laquelle tu irais au tribunal ?",
+      "de": "Was ist die kleinste Nichtigkeit, für die du vor Gericht ziehen würdest?",
+      "it": "Qual è la sciocchezza più piccola per cui andresti in tribunale?"
+    }
+  },
+  {
+    "id": "q0470",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "What would the two of us be shameless about if nobody knew us here?",
+      "es": "¿En qué seríamos unos descarados si nadie nos conociera aquí?",
+      "fr": "De quoi n'aurions-nous aucune honte si personne ne nous connaissait ici ?",
+      "de": "Wobei wären wir völlig schamlos, wenn uns hier niemand kennen würde?",
+      "it": "In cosa saremmo sfacciati se nessuno ci conoscesse qui?"
+    }
+  },
+  {
+    "id": "q0471",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you never lend to anyone?",
+      "es": "¿Qué no le prestas nunca a nadie?",
+      "fr": "Que ne prêtes-tu jamais à personne ?",
+      "de": "Was leihst du nie jemandem?",
+      "it": "Cosa non presti mai a nessuno?"
+    }
+  },
+  {
+    "id": "q0472",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What makes you say yes to something you have no time for?",
+      "es": "¿Qué hace que digas que sí a algo para lo que no tienes tiempo?",
+      "fr": "Qu'est-ce qui te fait dire oui à quelque chose pour quoi tu n'as pas le temps ?",
+      "de": "Was bringt dich dazu, zu etwas Ja zu sagen, wofür du keine Zeit hast?",
+      "it": "Cosa ti fa dire di sì a qualcosa per cui non hai tempo?"
+    }
+  },
+  {
+    "id": "q0473",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you say no to first and then think about properly?",
+      "es": "¿A qué le dices que no primero y luego te lo piensas en serio?",
+      "fr": "À quoi dis-tu non d'abord, avant d'y réfléchir vraiment ?",
+      "de": "Wozu sagst du erst Nein und denkst dann richtig darüber nach?",
+      "it": "A cosa dici prima di no e solo dopo ci pensi davvero?"
+    }
+  },
+  {
+    "id": "q0474",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which advice do you give often and follow badly?",
+      "es": "¿Qué consejo das a menudo y sigues mal?",
+      "fr": "Quel conseil donnes-tu souvent et suis-tu mal ?",
+      "de": "Welchen Rat gibst du oft und befolgst ihn selbst schlecht?",
+      "it": "Quale consiglio dai spesso e segui male?"
+    }
+  },
+  {
+    "id": "q0475",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you keep paying for even if money got tight?",
+      "es": "¿Qué seguirías pagando aunque el dinero escaseara?",
+      "fr": "Que continuerais-tu à payer même si l'argent venait à manquer ?",
+      "de": "Wofür würdest du weiter zahlen, auch wenn das Geld knapp wird?",
+      "it": "Cosa continueresti a pagare anche se i soldi scarseggiassero?"
+    }
+  },
+  {
+    "id": "q0476",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you insist on paying for yourself?",
+      "es": "¿Qué insistes en pagar tú?",
+      "fr": "Qu'insistes-tu pour payer toi-même ?",
+      "de": "Was bestehst du darauf, selbst zu bezahlen?",
+      "it": "Cosa insisti a pagare tu?"
+    }
+  },
+  {
+    "id": "q0477",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who do you always answer straight away?",
+      "es": "¿A quién le contestas siempre al momento?",
+      "fr": "À qui réponds-tu toujours immédiatement ?",
+      "de": "Wem antwortest du immer sofort?",
+      "it": "A chi rispondi sempre subito?"
+    }
+  },
+  {
+    "id": "q0478",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our arrangements would you keep exactly as it is?",
+      "es": "¿Qué acuerdo nuestro dejarías exactamente como está?",
+      "fr": "Lequel de nos arrangements garderais-tu exactement tel quel ?",
+      "de": "Welche unserer Absprachen würdest du genau so lassen, wie sie ist?",
+      "it": "Quale nostro accordo lasceresti esattamente com'è?"
+    }
+  },
+  {
+    "id": "q0479",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "When we spend money together, what should it go to first?",
+      "es": "Cuando gastamos dinero juntos, ¿a qué debería ir primero?",
+      "fr": "Quand on dépense de l'argent ensemble, à quoi cela devrait-il servir d'abord ?",
+      "de": "Wenn wir zusammen Geld ausgeben, wofür sollte es zuerst draufgehen?",
+      "it": "Quando spendiamo soldi insieme, a cosa dovrebbero andare per primi?"
+    }
+  },
+  {
+    "id": "q0480",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my choices did you not understand at first and now do?",
+      "es": "¿Qué decisión mía no entendiste al principio y ahora sí?",
+      "fr": "Lequel de mes choix ne comprenais-tu pas au début et comprends-tu maintenant ?",
+      "de": "Welche meiner Entscheidungen hast du erst nicht verstanden und jetzt schon?",
+      "it": "Quale mia scelta all'inizio non capivi e adesso sì?"
+    }
+  },
+  {
+    "id": "q0481",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you want me to say no to more often?",
+      "es": "¿A qué quieres que le diga que no más a menudo?",
+      "fr": "À quoi aimerais-tu que je dise non plus souvent ?",
+      "de": "Wozu soll ich öfter Nein sagen?",
+      "it": "A cosa vorresti che dicessi di no più spesso?"
+    }
+  },
+  {
+    "id": "q0482",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our promises to other people do you take most seriously?",
+      "es": "¿Cuál de nuestras promesas a otras personas te tomas más en serio?",
+      "fr": "Laquelle de nos promesses à d'autres personnes prends-tu le plus au sérieux ?",
+      "de": "Welches unserer Versprechen an andere nimmst du am ernstesten?",
+      "it": "Quale delle nostre promesse ad altri prendi più sul serio?"
+    }
+  },
+  {
+    "id": "q0483",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which promise are you glad you never made?",
+      "es": "¿Qué promesa te alegras de no haber hecho nunca?",
+      "fr": "Quelle promesse es-tu content de n'avoir jamais faite ?",
+      "de": "Über welches Versprechen bist du froh, es nie gegeben zu haben?",
+      "it": "Di quale promessa sei contento di non averla mai fatta?"
+    }
+  },
+  {
+    "id": "q0484",
+    "theme": "values",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How do you decide who gets your time in a busy week?",
+      "es": "¿Cómo decides a quién le das tu tiempo en una semana llena?",
+      "fr": "Comment décides-tu à qui tu donnes ton temps dans une semaine chargée ?",
+      "de": "Wie entscheidest du in einer vollen Woche, wer deine Zeit bekommt?",
+      "it": "Come decidi a chi dare il tuo tempo in una settimana piena?"
+    }
+  },
+  {
+    "id": "q0485",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What should I ask you before I say yes for both of us?",
+      "es": "¿Qué debería preguntarte antes de decir que sí por los dos?",
+      "fr": "Que devrais-je te demander avant de dire oui pour nous deux ?",
+      "de": "Was sollte ich dich fragen, bevor ich für uns beide zusage?",
+      "it": "Cosa dovrei chiederti prima di dire di sì per entrambi?"
+    }
+  },
+  {
+    "id": "q0486",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you trust me to decide without you?",
+      "es": "¿Qué confías en que yo decida sin ti?",
+      "fr": "Sur quoi me fais-tu confiance pour décider sans toi ?",
+      "de": "Was traust du mir zu, ohne dich zu entscheiden?",
+      "it": "Su cosa ti fidi a lasciarmi decidere senza di te?"
+    }
+  },
+  {
+    "id": "q0487",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What should the two of us keep doing even in a bad month?",
+      "es": "¿Qué deberíamos seguir haciendo incluso en un mes malo?",
+      "fr": "Que devrions-nous continuer à faire même dans un mauvais mois ?",
+      "de": "Was sollten wir auch in einem schlechten Monat weiter tun?",
+      "it": "Cosa dovremmo continuare a fare anche in un mese storto?"
+    }
+  },
+  {
+    "id": "q0488",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your limits did you find out about the hard way?",
+      "es": "¿Qué límite tuyo descubriste por las malas?",
+      "fr": "Quelle limite as-tu découverte à tes dépens ?",
+      "de": "Welche deiner Grenzen hast du auf die harte Tour entdeckt?",
+      "it": "Quale tuo limite hai scoperto nel modo peggiore?"
+    }
+  },
+  {
+    "id": "q0489",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you go back and stand up for now?",
+      "es": "¿Por qué darías la cara ahora si pudieras volver atrás?",
+      "fr": "Pour quoi prendrais-tu position aujourd'hui si tu pouvais revenir en arrière ?",
+      "de": "Wofür würdest du heute einstehen, wenn du zurückgehen könntest?",
+      "it": "Per cosa prenderesti posizione oggi se potessi tornare indietro?"
+    }
+  },
+  {
+    "id": "q0490",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What have you forgiven that you were sure you never would?",
+      "es": "¿Qué has perdonado estando seguro de que no lo harías nunca?",
+      "fr": "Qu'as-tu pardonné alors que tu étais certain de ne jamais le faire ?",
+      "de": "Was hast du verziehen, obwohl du sicher warst, es nie zu tun?",
+      "it": "Cosa hai perdonato pur essendo certo che non l'avresti mai fatto?"
+    }
+  },
+  {
+    "id": "q0491",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your choices looks selfish and is not?",
+      "es": "¿Qué decisión tuya parece egoísta y no lo es?",
+      "fr": "Lequel de tes choix a l'air égoïste sans l'être ?",
+      "de": "Welche deiner Entscheidungen wirkt egoistisch, ist es aber nicht?",
+      "it": "Quale tua scelta sembra egoista ma non lo è?"
+    }
+  },
+  {
+    "id": "q0492",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you protect in yourself that nobody ever asks about?",
+      "es": "¿Qué proteges de ti mismo que nadie te pregunta nunca?",
+      "fr": "Que protèges-tu en toi dont personne ne te parle jamais ?",
+      "de": "Was schützt du in dir, wonach dich nie jemand fragt?",
+      "it": "Cosa proteggi dentro di te di cui nessuno ti chiede mai?"
+    }
+  },
+  {
+    "id": "q0493",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which kind of success would leave you cold?",
+      "es": "¿Qué tipo de éxito te dejaría frío?",
+      "fr": "Quelle réussite te laisserait indifférent ?",
+      "de": "Welche Art von Erfolg würde dich kaltlassen?",
+      "it": "Che tipo di successo ti lascerebbe indifferente?"
+    }
+  },
+  {
+    "id": "q0494",
+    "theme": "values",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you refuse to compete for?",
+      "es": "¿Por qué te niegas a competir?",
+      "fr": "Pour quoi refuses-tu d'entrer en compétition ?",
+      "de": "Wofür weigerst du dich zu konkurrieren?",
+      "it": "Per cosa ti rifiuti di competere?"
+    }
+  },
+  {
+    "id": "q0495",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you think the two of us owe the people who helped us?",
+      "es": "¿Qué crees que les debemos a quienes nos han ayudado?",
+      "fr": "Que penses-tu que nous devons aux gens qui nous ont aidés ?",
+      "de": "Was schulden wir deiner Meinung nach den Menschen, die uns geholfen haben?",
+      "it": "Cosa pensi che dobbiamo a chi ci ha aiutato?"
+    }
+  },
+  {
+    "id": "q0496",
+    "theme": "values",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want our friends to be able to count on us for?",
+      "es": "¿Para qué quieres que nuestros amigos puedan contar con nosotros?",
+      "fr": "Pour quoi veux-tu que nos amis puissent compter sur nous ?",
+      "de": "Wofür sollen unsere Freunde auf uns zählen können?",
+      "it": "Per cosa vuoi che i nostri amici possano contare su di noi?"
+    }
+  },
+  {
+    "id": "q0497",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of our decisions are you glad we took slowly?",
+      "es": "¿Qué decisión nuestra te alegra que tomáramos despacio?",
+      "fr": "Laquelle de nos décisions es-tu content qu'on ait prise lentement ?",
+      "de": "Über welche unserer Entscheidungen bist du froh, dass wir sie langsam getroffen haben?",
+      "it": "Di quale nostra decisione sei contento che l'abbiamo presa con calma?"
+    }
+  },
+  {
+    "id": "q0498",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What have you given up for the two of us that you would give up again?",
+      "es": "¿A qué has renunciado por los dos y volverías a renunciar?",
+      "fr": "À quoi as-tu renoncé pour nous deux et renoncerais-tu encore ?",
+      "de": "Worauf hast du für uns beide verzichtet und würdest es wieder tun?",
+      "it": "A cosa hai rinunciato per noi due e ci rinunceresti di nuovo?"
+    }
+  },
+  {
+    "id": "q0499",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of our principles did we build ourselves rather than inherit?",
+      "es": "¿Qué principio nuestro construimos nosotros en vez de heredarlo?",
+      "fr": "Lequel de nos principes avons-nous construit nous-mêmes au lieu d'en hériter ?",
+      "de": "Welches unserer Prinzipien haben wir selbst gebaut statt geerbt?",
+      "it": "Quale nostro principio abbiamo costruito da soli invece di ereditarlo?"
+    }
+  },
+  {
+    "id": "q0500",
+    "theme": "values",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which belief of yours have I changed without ever arguing for it?",
+      "es": "¿Qué idea tuya he cambiado yo sin haberla defendido nunca?",
+      "fr": "Quelle conviction ai-je changée chez toi sans jamais la défendre ?",
+      "de": "Welche deiner Überzeugungen habe ich verändert, ohne je dafür zu argumentieren?",
+      "it": "Quale tua convinzione ho cambiato senza averla mai difesa?"
+    }
+  }
+]
