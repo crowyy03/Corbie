@@ -13,6 +13,8 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
     public var createdByMemberId: UUID?
     public var takenAt: Date?
     public var recurrence: Recurrence
+    public var rotatesBetweenMembers: Bool
+    public var choreItemId: UUID?
     public var archivedAt: Date?
     public var createdAt: Date?
 
@@ -29,6 +31,8 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
         createdByMemberId: UUID? = nil,
         takenAt: Date? = nil,
         recurrence: Recurrence = .none,
+        rotatesBetweenMembers: Bool = false,
+        choreItemId: UUID? = nil,
         archivedAt: Date? = nil,
         createdAt: Date? = nil
     ) {
@@ -44,6 +48,8 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
         self.createdByMemberId = createdByMemberId
         self.takenAt = takenAt
         self.recurrence = recurrence
+        self.rotatesBetweenMembers = rotatesBetweenMembers
+        self.choreItemId = choreItemId
         self.archivedAt = archivedAt
         self.createdAt = createdAt
     }
@@ -62,10 +68,14 @@ public struct TaskDTO: Sendable, Codable, Identifiable, Equatable {
             createdByMemberId: task.createdByMemberId,
             takenAt: task.takenAt,
             recurrence: task.recurrence,
+            rotatesBetweenMembers: task.rotatesBetweenMembers,
+            choreItemId: task.choreItemId,
             archivedAt: task.archivedAt,
             createdAt: task.createdAt
         )
     }
 
     public var isFree: Bool { assigneeMemberId == nil }
+
+    public var comesFromChoreSplit: Bool { choreItemId != nil }
 }

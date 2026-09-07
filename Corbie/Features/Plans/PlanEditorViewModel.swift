@@ -74,7 +74,7 @@ final class PlanEditorViewModel {
                 plan.note = trimmedNote.isEmpty ? nil : trimmedNote
                 _ = try await environment.repositories.plans.update(plan)
             } else {
-                _ = try await environment.repositories.plans.create(
+                let created = try await environment.repositories.plans.create(
                     PlanDraft(
                         spaceId: space.id,
                         title: trimmedTitle,
@@ -88,7 +88,7 @@ final class PlanEditorViewModel {
                         createdByMemberId: environment.currentMember?.id
                     )
                 )
-                environment.analytics.record(.planCreated(type: type))
+                environment.analytics.record(.planCreated(type: type, isOpenEnded: created.isOpenEnded))
             }
             return true
         } catch {

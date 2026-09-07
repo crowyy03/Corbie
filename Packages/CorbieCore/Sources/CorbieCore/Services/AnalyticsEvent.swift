@@ -27,11 +27,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case eventCreated(kind: EventKind)
     case wishCreated(source: WishSource)
     case wishFulfilled
-    case planCreated(type: PlanType)
+    case planCreated(type: PlanType, isOpenEnded: Bool)
     case planCompleted
     case planStepCreated(hasDue: Bool)
     case planStepDone
-    case expenseAdded
+    case expenseAdded(isNegative: Bool)
     case listCreated(template: ListTemplate)
     case listItemChecked
     case listMapOpened
@@ -45,6 +45,17 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case voteCreated
     case voteAnswered
     case voteRevealed
+    case questionShown
+    case questionAnswered
+    case questionRevealed
+    case questionNudgeSent
+    case questionHistoryOpened
+    case choreFlowStarted
+    case choreListBuilt(itemCount: Int, customCount: Int)
+    case choreRatingDone
+    case choreRevealed(tradeCount: Int, rotateCount: Int)
+    case choreApplied(taskCount: Int)
+    case choreResplit
     case todayOpened
     case todayBlockTapped(block: TodayBlock)
     case todayQuickAction(kind: TodayQuickAction)
@@ -90,6 +101,17 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case .voteCreated: return "vote_created"
         case .voteAnswered: return "vote_answered"
         case .voteRevealed: return "vote_revealed"
+        case .questionShown: return "question_shown"
+        case .questionAnswered: return "question_answered"
+        case .questionRevealed: return "question_revealed"
+        case .questionNudgeSent: return "question_nudge_sent"
+        case .questionHistoryOpened: return "question_history_opened"
+        case .choreFlowStarted: return "chore_flow_started"
+        case .choreListBuilt: return "chore_list_built"
+        case .choreRatingDone: return "chore_rating_done"
+        case .choreRevealed: return "chore_revealed"
+        case .choreApplied: return "chore_applied"
+        case .choreResplit: return "chore_resplit"
         case .todayOpened: return "today_opened"
         case .todayBlockTapped: return "today_block_tapped"
         case .todayQuickAction: return "today_quick_action"
@@ -115,8 +137,16 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["kind": .string(kind.rawValue)]
         case let .wishCreated(source):
             return ["source": .string(source.rawValue)]
-        case let .planCreated(type):
-            return ["type": .string(type.rawValue)]
+        case let .planCreated(type, isOpenEnded):
+            return ["type": .string(type.rawValue), "is_open_ended": .flag(isOpenEnded)]
+        case let .expenseAdded(isNegative):
+            return ["is_negative": .flag(isNegative)]
+        case let .choreListBuilt(itemCount, customCount):
+            return ["item_count": .number(Double(itemCount)), "custom_count": .number(Double(customCount))]
+        case let .choreRevealed(tradeCount, rotateCount):
+            return ["trade_count": .number(Double(tradeCount)), "rotate_count": .number(Double(rotateCount))]
+        case let .choreApplied(taskCount):
+            return ["task_count": .number(Double(taskCount))]
         case let .planStepCreated(hasDue):
             return ["has_due": .flag(hasDue)]
         case let .listCreated(template):
@@ -136,10 +166,12 @@ public enum AnalyticsEvent: Sendable, Equatable {
         case let .readonlyHit(action):
             return ["action": .string(action.rawValue)]
         case .appOpen, .spaceCreated, .inviteCreated, .inviteRedeemed, .taskTaken, .taskDone,
-             .taskHandedBack, .wishFulfilled, .expenseAdded, .planCompleted, .planStepDone,
+             .taskHandedBack, .wishFulfilled, .planCompleted, .planStepDone,
              .listItemChecked, .listMapOpened, .freetimeOpened, .freetimeSharingEnabled,
              .freetimeSharingDisabled, .freetimeSlotTapped, .capsuleCreated, .capsuleOpened,
-             .voteCreated, .voteAnswered, .voteRevealed, .todayOpened, .recapShown,
+             .voteCreated, .voteAnswered, .voteRevealed, .questionShown, .questionAnswered,
+             .questionRevealed, .questionNudgeSent, .questionHistoryOpened, .choreFlowStarted,
+             .choreRatingDone, .choreResplit, .todayOpened, .recapShown,
              .recapNotificationSent, .recapOpened, .trialStarted, .restore:
             return [:]
         }
@@ -156,7 +188,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
         "vote_answered", "vote_revealed", "widget_added", "paywall_shown", "trial_started",
         "purchase", "restore", "readonly_hit", "task_handed_back", "today_opened",
         "today_block_tapped", "today_quick_action", "recap_shown", "recap_notification_sent",
-        "recap_opened"
+        "recap_opened", "question_shown", "question_answered", "question_revealed",
+        "question_nudge_sent", "question_history_opened", "chore_flow_started",
+        "chore_list_built", "chore_rating_done", "chore_revealed", "chore_applied",
+        "chore_resplit"
     ]
 
     public static let droppedPropKeys: Set<String> = [

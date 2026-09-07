@@ -297,6 +297,8 @@ import Testing
         prefs.capsuleUpdates = false
         prefs.dateRadar = false
         prefs.weeklyRecap = false
+        prefs.questionOfTheDay = false
+        prefs.choreSplitReady = false
         for kind in NotificationKind.allCases {
             #expect(kind.isEnabled(in: .allEnabled))
             #expect(kind.isEnabled(in: prefs) == false)

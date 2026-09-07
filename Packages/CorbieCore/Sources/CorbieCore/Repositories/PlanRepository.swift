@@ -7,6 +7,7 @@ public struct PlanDraft: Sendable, Equatable {
     public var targetAmount: Double
     public var currency: String
     public var savedAmount: Double
+    public var isOpenEnded: Bool
     public var startAt: Date?
     public var endAt: Date?
     public var note: String?
@@ -19,6 +20,7 @@ public struct PlanDraft: Sendable, Equatable {
         targetAmount: Double = 0,
         currency: String = "USD",
         savedAmount: Double = 0,
+        isOpenEnded: Bool = false,
         startAt: Date? = nil,
         endAt: Date? = nil,
         note: String? = nil,
@@ -30,6 +32,7 @@ public struct PlanDraft: Sendable, Equatable {
         self.targetAmount = targetAmount
         self.currency = currency
         self.savedAmount = savedAmount
+        self.isOpenEnded = isOpenEnded
         self.startAt = startAt
         self.endAt = endAt
         self.note = note

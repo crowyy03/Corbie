@@ -16,6 +16,13 @@ public enum RecurrenceEngine {
         )
     }
 
+    public static func nextAssignee(after current: UUID?, among members: [UUID]) -> UUID? {
+        let ordered = members.sorted { $0.uuidString < $1.uuidString }
+        guard ordered.count >= 2 else { return current }
+        guard let current, let index = ordered.firstIndex(of: current) else { return ordered.first }
+        return ordered[(index + 1) % ordered.count]
+    }
+
     public static func nextOccurrence(
         recurrence: Recurrence,
         dueAt: Date?,

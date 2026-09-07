@@ -48,4 +48,6 @@ public struct PlanExpenseDTO: Sendable, Codable, Identifiable, Equatable {
     }
 
     public var isConverted: Bool { fxRateToPlanCurrency != 1 }
+
+    public var isWithdrawal: Bool { amount < 0 }
 }

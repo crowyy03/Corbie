@@ -10,6 +10,7 @@ public final class Plan: NSManagedObject {
     @NSManaged public var targetAmount: Double
     @NSManaged public var currency: String?
     @NSManaged public var savedAmount: Double
+    @NSManaged public var isOpenEnded: Bool
     @NSManaged public var startAt: Date?
     @NSManaged public var endAt: Date?
     @NSManaged public var statusRaw: String?

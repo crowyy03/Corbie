@@ -10,7 +10,8 @@ import Testing
         let expected: Set<String> = [
             "Space", "Member", "TaskItem", "Event", "EventComment", "Wish", "Plan",
             "PlanExpense", "PlanStep", "ChecklistList", "ListItem", "BusyInterval", "Capsule", "CapsuleOpen", "Vote",
-            "VoteResponse", "Person", "GiftIdea", "PersonDate"
+            "VoteResponse", "Person", "GiftIdea", "PersonDate", "DailyQuestion", "QuestionAnswer",
+            "ChoreSet", "ChoreItem", "ChoreRating", "ChoreAssignment"
         ]
         #expect(Set(model.entities.compactMap(\.name)) == expected)
     }
@@ -74,7 +75,7 @@ import Testing
         let space = try #require(model.entitiesByName["Space"])
         let childNames = [
             "members", "tasks", "events", "wishes", "plans", "lists", "busyIntervals",
-            "capsules", "votes", "people"
+            "capsules", "votes", "people", "questions", "choreSets"
         ]
         for name in childNames {
             let relationship = try #require(space.relationshipsByName[name])
@@ -95,7 +96,11 @@ import Testing
             ("Person", "giftIdeas"),
             ("Person", "dates"),
             ("Vote", "responses"),
-            ("Capsule", "opens")
+            ("Capsule", "opens"),
+            ("DailyQuestion", "answers"),
+            ("ChoreSet", "items"),
+            ("ChoreItem", "ratings"),
+            ("ChoreItem", "assignments")
         ]
         for (entityName, relationshipName) in owners {
             let entity = try #require(model.entitiesByName[entityName])

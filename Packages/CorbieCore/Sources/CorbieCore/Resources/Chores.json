@@ -1,0 +1,574 @@
+[
+  {
+    "id": "c001",
+    "group": "kitchen",
+    "frequency": "daily",
+    "preselected": true,
+    "text": {
+      "en": "Wash the dishes",
+      "de": "Geschirr spülen",
+      "es": "Lavar los platos",
+      "fr": "Faire la vaisselle",
+      "it": "Lavare i piatti"
+    }
+  },
+  {
+    "id": "c002",
+    "group": "kitchen",
+    "frequency": "daily",
+    "preselected": false,
+    "text": {
+      "en": "Load and empty the dishwasher",
+      "de": "Spülmaschine ein- und ausräumen",
+      "es": "Cargar y vaciar el lavavajillas",
+      "fr": "Remplir et vider le lave-vaisselle",
+      "it": "Caricare e svuotare la lavastoviglie"
+    }
+  },
+  {
+    "id": "c003",
+    "group": "kitchen",
+    "frequency": "daily",
+    "preselected": true,
+    "text": {
+      "en": "Cook dinner",
+      "de": "Abendessen kochen",
+      "es": "Hacer la cena",
+      "fr": "Préparer le dîner",
+      "it": "Preparare la cena"
+    }
+  },
+  {
+    "id": "c004",
+    "group": "kitchen",
+    "frequency": "daily",
+    "preselected": false,
+    "text": {
+      "en": "Wipe the counters",
+      "de": "Arbeitsflächen abwischen",
+      "es": "Limpiar la encimera",
+      "fr": "Nettoyer le plan de travail",
+      "it": "Pulire il piano di lavoro"
+    }
+  },
+  {
+    "id": "c005",
+    "group": "kitchen",
+    "frequency": "fewTimesAWeek",
+    "preselected": true,
+    "text": {
+      "en": "Take out the trash",
+      "de": "Müll rausbringen",
+      "es": "Sacar la basura",
+      "fr": "Sortir les poubelles",
+      "it": "Portare fuori la spazzatura"
+    }
+  },
+  {
+    "id": "c006",
+    "group": "kitchen",
+    "frequency": "monthly",
+    "preselected": false,
+    "text": {
+      "en": "Clean out the fridge",
+      "de": "Kühlschrank ausräumen und putzen",
+      "es": "Limpiar la nevera",
+      "fr": "Nettoyer le frigo",
+      "it": "Pulire il frigorifero"
+    }
+  },
+  {
+    "id": "c007",
+    "group": "kitchen",
+    "frequency": "weekly",
+    "preselected": false,
+    "text": {
+      "en": "Restock the kitchen basics",
+      "de": "Küchenvorräte auffüllen",
+      "es": "Reponer lo básico de la cocina",
+      "fr": "Réapprovisionner la cuisine",
+      "it": "Rifornire la dispensa"
+    }
+  },
+  {
+    "id": "c008",
+    "group": "cleaning",
+    "frequency": "weekly",
+    "preselected": true,
+    "text": {
+      "en": "Vacuum",
+      "de": "Staubsaugen",
+      "es": "Pasar la aspiradora",
+      "fr": "Passer l'aspirateur",
+      "it": "Passare l'aspirapolvere"
+    }
+  },
+  {
+    "id": "c009",
+    "group": "cleaning",
+    "frequency": "weekly",
+    "preselected": false,
+    "text": {
+      "en": "Mop the floors",
+      "de": "Böden wischen",
+      "es": "Fregar los suelos",
+      "fr": "Laver les sols",
+      "it": "Lavare i pavimenti"
+    }
+  },
+  {
+    "id": "c010",
+    "group": "cleaning",
+    "frequency": "weekly",
+    "preselected": true,
+    "text": {
+      "en": "Clean the bathroom",
+      "de": "Bad putzen",
+      "es": "Limpiar el baño",
+      "fr": "Nettoyer la salle de bain",
+      "it": "Pulire il bagno"
+    }
+  },
+  {
+    "id": "c011",
+    "group": "cleaning",
+    "frequency": "everyTwoWeeks",
+    "preselected": false,
+    "text": {
+      "en": "Dust",
+      "de": "Staub wischen",
+      "es": "Quitar el polvo",
+      "fr": "Faire la poussière",
+      "it": "Spolverare"
+    }
+  },
+  {
+    "id": "c012",
+    "group": "cleaning",
+    "frequency": "everyTwoWeeks",
+    "preselected": true,
+    "text": {
+      "en": "Change the sheets",
+      "de": "Bettwäsche wechseln",
+      "es": "Cambiar las sábanas",
+      "fr": "Changer les draps",
+      "it": "Cambiare le lenzuola"
+    }
+  },
+  {
+    "id": "c013",
+    "group": "cleaning",
+    "frequency": "fewTimesAWeek",
+    "preselected": false,
+    "text": {
+      "en": "Tidy the living room",
+      "de": "Wohnzimmer aufräumen",
+      "es": "Ordenar el salón",
+      "fr": "Ranger le salon",
+      "it": "Riordinare il soggiorno"
+    }
+  },
+  {
+    "id": "c014",
+    "group": "cleaning",
+    "frequency": "quarterly",
+    "preselected": false,
+    "text": {
+      "en": "Clean the windows",
+      "de": "Fenster putzen",
+      "es": "Limpiar las ventanas",
+      "fr": "Laver les vitres",
+      "it": "Pulire i vetri"
+    }
+  },
+  {
+    "id": "c015",
+    "group": "laundry",
+    "frequency": "fewTimesAWeek",
+    "preselected": true,
+    "text": {
+      "en": "Run the wash",
+      "de": "Wäsche waschen",
+      "es": "Poner la lavadora",
+      "fr": "Lancer une machine",
+      "it": "Fare la lavatrice"
+    }
+  },
+  {
+    "id": "c016",
+    "group": "laundry",
+    "frequency": "fewTimesAWeek",
+    "preselected": false,
+    "text": {
+      "en": "Hang the washing or run the dryer",
+      "de": "Wäsche aufhängen oder trocknen",
+      "es": "Tender la ropa o usar la secadora",
+      "fr": "Étendre le linge ou lancer le sèche-linge",
+      "it": "Stendere il bucato o usare l'asciugatrice"
+    }
+  },
+  {
+    "id": "c017",
+    "group": "laundry",
+    "frequency": "weekly",
+    "preselected": true,
+    "text": {
+      "en": "Fold and put the laundry away",
+      "de": "Wäsche zusammenlegen und wegräumen",
+      "es": "Doblar y guardar la ropa",
+      "fr": "Plier et ranger le linge",
+      "it": "Piegare e riporre il bucato"
+    }
+  },
+  {
+    "id": "c018",
+    "group": "laundry",
+    "frequency": "weekly",
+    "preselected": false,
+    "text": {
+      "en": "Ironing",
+      "de": "Bügeln",
+      "es": "Planchar",
+      "fr": "Repasser",
+      "it": "Stirare"
+    }
+  },
+  {
+    "id": "c019",
+    "group": "shopping",
+    "frequency": "weekly",
+    "preselected": true,
+    "text": {
+      "en": "The grocery run",
+      "de": "Lebensmittel einkaufen",
+      "es": "Hacer la compra",
+      "fr": "Faire les courses",
+      "it": "Fare la spesa"
+    }
+  },
+  {
+    "id": "c020",
+    "group": "shopping",
+    "frequency": "monthly",
+    "preselected": false,
+    "text": {
+      "en": "Household supplies",
+      "de": "Haushaltsartikel besorgen",
+      "es": "Comprar productos para la casa",
+      "fr": "Acheter les produits d'entretien",
+      "it": "Comprare i prodotti per la casa"
+    }
+  },
+  {
+    "id": "c021",
+    "group": "shopping",
+    "frequency": "weekly",
+    "preselected": true,
+    "text": {
+      "en": "Plan the week's meals",
+      "de": "Essen für die Woche planen",
+      "es": "Planificar las comidas de la semana",
+      "fr": "Planifier les repas de la semaine",
+      "it": "Pianificare i pasti della settimana"
+    }
+  },
+  {
+    "id": "c022",
+    "group": "money",
+    "frequency": "monthly",
+    "preselected": true,
+    "text": {
+      "en": "Pay the bills",
+      "de": "Rechnungen bezahlen",
+      "es": "Pagar las facturas",
+      "fr": "Payer les factures",
+      "it": "Pagare le bollette"
+    }
+  },
+  {
+    "id": "c023",
+    "group": "money",
+    "frequency": "monthly",
+    "preselected": false,
+    "text": {
+      "en": "Keep track of the budget",
+      "de": "Budget im Blick behalten",
+      "es": "Llevar el control del presupuesto",
+      "fr": "Suivre le budget",
+      "it": "Tenere d'occhio il budget"
+    }
+  },
+  {
+    "id": "c024",
+    "group": "money",
+    "frequency": "monthly",
+    "preselected": false,
+    "text": {
+      "en": "Book appointments",
+      "de": "Termine ausmachen",
+      "es": "Pedir citas",
+      "fr": "Prendre les rendez-vous",
+      "it": "Prendere appuntamenti"
+    }
+  },
+  {
+    "id": "c025",
+    "group": "money",
+    "frequency": "weekly",
+    "preselected": true,
+    "text": {
+      "en": "Deal with the post and parcels",
+      "de": "Post und Pakete erledigen",
+      "es": "Ocuparse del correo y los paquetes",
+      "fr": "S'occuper du courrier et des colis",
+      "it": "Occuparsi di posta e pacchi"
+    }
+  },
+  {
+    "id": "c026",
+    "group": "money",
+    "frequency": "quarterly",
+    "preselected": false,
+    "text": {
+      "en": "Renew documents and insurance",
+      "de": "Dokumente und Versicherungen verlängern",
+      "es": "Renovar documentos y seguros",
+      "fr": "Renouveler les papiers et les assurances",
+      "it": "Rinnovare documenti e assicurazioni"
+    }
+  },
+  {
+    "id": "c027",
+    "group": "pets",
+    "frequency": "daily",
+    "preselected": false,
+    "text": {
+      "en": "Feed the pets",
+      "de": "Tiere füttern",
+      "es": "Dar de comer a los animales",
+      "fr": "Nourrir les animaux",
+      "it": "Dare da mangiare agli animali"
+    }
+  },
+  {
+    "id": "c028",
+    "group": "pets",
+    "frequency": "daily",
+    "preselected": false,
+    "text": {
+      "en": "Walk the dog",
+      "de": "Mit dem Hund rausgehen",
+      "es": "Sacar al perro",
+      "fr": "Sortir le chien",
+      "it": "Portare fuori il cane"
+    }
+  },
+  {
+    "id": "c029",
+    "group": "pets",
+    "frequency": "fewTimesAWeek",
+    "preselected": false,
+    "text": {
+      "en": "Litter tray or cage",
+      "de": "Katzenklo oder Käfig sauber machen",
+      "es": "Limpiar el arenero o la jaula",
+      "fr": "Nettoyer la litière ou la cage",
+      "it": "Pulire la lettiera o la gabbia"
+    }
+  },
+  {
+    "id": "c030",
+    "group": "pets",
+    "frequency": "quarterly",
+    "preselected": false,
+    "text": {
+      "en": "Vet trips",
+      "de": "Zum Tierarzt fahren",
+      "es": "Llevar al veterinario",
+      "fr": "Aller chez le vétérinaire",
+      "it": "Portare dal veterinario"
+    }
+  },
+  {
+    "id": "c031",
+    "group": "plants",
+    "frequency": "fewTimesAWeek",
+    "preselected": true,
+    "text": {
+      "en": "Water the plants",
+      "de": "Pflanzen gießen",
+      "es": "Regar las plantas",
+      "fr": "Arroser les plantes",
+      "it": "Innaffiare le piante"
+    }
+  },
+  {
+    "id": "c032",
+    "group": "car",
+    "frequency": "everyTwoWeeks",
+    "preselected": false,
+    "text": {
+      "en": "Fill up the car",
+      "de": "Tanken",
+      "es": "Echar gasolina",
+      "fr": "Faire le plein",
+      "it": "Fare benzina"
+    }
+  },
+  {
+    "id": "c033",
+    "group": "car",
+    "frequency": "monthly",
+    "preselected": false,
+    "text": {
+      "en": "Wash the car",
+      "de": "Auto waschen",
+      "es": "Lavar el coche",
+      "fr": "Laver la voiture",
+      "it": "Lavare la macchina"
+    }
+  },
+  {
+    "id": "c034",
+    "group": "car",
+    "frequency": "quarterly",
+    "preselected": false,
+    "text": {
+      "en": "Service and inspections",
+      "de": "Inspektion und Hauptuntersuchung",
+      "es": "Revisiones e ITV",
+      "fr": "Révision et contrôle technique",
+      "it": "Tagliando e revisione"
+    }
+  },
+  {
+    "id": "c035",
+    "group": "outside",
+    "frequency": "weekly",
+    "preselected": false,
+    "text": {
+      "en": "Wheel the bins out",
+      "de": "Mülltonnen rausstellen",
+      "es": "Sacar los contenedores",
+      "fr": "Sortir les bacs",
+      "it": "Portare fuori i bidoni"
+    }
+  },
+  {
+    "id": "c036",
+    "group": "outside",
+    "frequency": "everyTwoWeeks",
+    "preselected": false,
+    "text": {
+      "en": "The garden or the balcony",
+      "de": "Garten oder Balkon",
+      "es": "El jardín o el balcón",
+      "fr": "Le jardin ou le balcon",
+      "it": "Il giardino o il balcone"
+    }
+  },
+  {
+    "id": "c037",
+    "group": "outside",
+    "frequency": "everyTwoWeeks",
+    "preselected": false,
+    "text": {
+      "en": "Snow or leaves",
+      "de": "Schnee schippen oder Laub fegen",
+      "es": "Quitar la nieve o las hojas",
+      "fr": "Déneiger ou ramasser les feuilles",
+      "it": "Spalare la neve o raccogliere le foglie"
+    }
+  },
+  {
+    "id": "c038",
+    "group": "keepingInTouch",
+    "frequency": "monthly",
+    "preselected": true,
+    "text": {
+      "en": "Keep track of birthdays",
+      "de": "Geburtstage im Kopf behalten",
+      "es": "Acordarse de los cumpleaños",
+      "fr": "Penser aux anniversaires",
+      "it": "Ricordare i compleanni"
+    }
+  },
+  {
+    "id": "c039",
+    "group": "keepingInTouch",
+    "frequency": "monthly",
+    "preselected": false,
+    "text": {
+      "en": "Buy the presents",
+      "de": "Geschenke besorgen",
+      "es": "Comprar los regalos",
+      "fr": "Acheter les cadeaux",
+      "it": "Comprare i regali"
+    }
+  },
+  {
+    "id": "c040",
+    "group": "keepingInTouch",
+    "frequency": "weekly",
+    "preselected": true,
+    "text": {
+      "en": "Plan the weekend",
+      "de": "Wochenende planen",
+      "es": "Planear el fin de semana",
+      "fr": "Organiser le week-end",
+      "it": "Organizzare il fine settimana"
+    }
+  },
+  {
+    "id": "c041",
+    "group": "keepingInTouch",
+    "frequency": "weekly",
+    "preselected": false,
+    "text": {
+      "en": "Stay in touch with each other's families",
+      "de": "Kontakt zu den Familien halten",
+      "es": "Mantener el contacto con las familias",
+      "fr": "Garder le contact avec les familles",
+      "it": "Tenersi in contatto con le famiglie"
+    }
+  },
+  {
+    "id": "c042",
+    "group": "keepingInTouch",
+    "frequency": "everyTwoWeeks",
+    "preselected": false,
+    "text": {
+      "en": "Answer invitations",
+      "de": "Auf Einladungen antworten",
+      "es": "Responder a las invitaciones",
+      "fr": "Répondre aux invitations",
+      "it": "Rispondere agli inviti"
+    }
+  },
+  {
+    "id": "c043",
+    "group": "keepingInTouch",
+    "frequency": "quarterly",
+    "preselected": false,
+    "text": {
+      "en": "Book trips and tickets",
+      "de": "Reisen und Tickets buchen",
+      "es": "Reservar viajes y entradas",
+      "fr": "Réserver les voyages et les billets",
+      "it": "Prenotare viaggi e biglietti"
+    }
+  },
+  {
+    "id": "c044",
+    "group": "keepingInTouch",
+    "frequency": "weekly",
+    "preselected": false,
+    "text": {
+      "en": "Keep the shared calendar current",
+      "de": "Gemeinsamen Kalender pflegen",
+      "es": "Mantener el calendario compartido al día",
+      "fr": "Tenir le calendrier partagé à jour",
+      "it": "Tenere aggiornato il calendario condiviso"
+    }
+  }
+]

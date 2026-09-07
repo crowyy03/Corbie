@@ -17,6 +17,9 @@ public enum CorbieModel {
         space.attribute("subscriptionStatusRaw", .stringAttributeType, defaultValue: SubscriptionStatus.trial.rawValue)
         space.attribute("subscriptionExpiresAt", .dateAttributeType)
         space.attribute("subscriptionPayerMemberId", .UUIDAttributeType)
+        space.attribute("anchorTimeZone", .stringAttributeType)
+        space.attribute("questionSeed", .integer64AttributeType, optional: false, defaultValue: 0)
+        space.attribute("questionIndex", .integer32AttributeType, optional: false, defaultValue: 0)
 
         let member = ModelEntity(Member.entityName, Member.self)
         member.attribute("appleUserHash", .stringAttributeType)
@@ -29,6 +32,7 @@ public enum CorbieModel {
         member.attribute("sharesBusyTimes", .booleanAttributeType, optional: false, defaultValue: false)
         member.attribute("lastRecapSeenAt", .dateAttributeType)
         member.attribute("lastUsVisitAt", .dateAttributeType)
+        member.attribute("lastQuestionSeenDayKey", .stringAttributeType)
         member.attribute("notificationPrefsData", .binaryDataAttributeType)
 
         let task = ModelEntity(TaskItem.entityName, TaskItem.self)
@@ -42,6 +46,8 @@ public enum CorbieModel {
         task.attribute("createdByMemberId", .UUIDAttributeType)
         task.attribute("takenAt", .dateAttributeType)
         task.attribute("recurrenceRaw", .stringAttributeType, defaultValue: Recurrence.none.rawValue)
+        task.attribute("rotatesBetweenMembers", .booleanAttributeType, optional: false, defaultValue: false)
+        task.attribute("choreItemId", .UUIDAttributeType)
         task.attribute("archivedAt", .dateAttributeType)
         task.attribute("createdAt", .dateAttributeType)
 
@@ -89,6 +95,7 @@ public enum CorbieModel {
         plan.attribute("targetAmount", .doubleAttributeType, optional: false, defaultValue: 0.0)
         plan.attribute("currency", .stringAttributeType, defaultValue: "USD")
         plan.attribute("savedAmount", .doubleAttributeType, optional: false, defaultValue: 0.0)
+        plan.attribute("isOpenEnded", .booleanAttributeType, optional: false, defaultValue: false)
         plan.attribute("startAt", .dateAttributeType)
         plan.attribute("endAt", .dateAttributeType)
         plan.attribute("statusRaw", .stringAttributeType, defaultValue: PlanStatus.active.rawValue)
@@ -191,6 +198,47 @@ public enum CorbieModel {
         personDate.attribute("remindersEnabled", .booleanAttributeType, optional: false, defaultValue: true)
         personDate.attribute("createdAt", .dateAttributeType)
 
+        let question = ModelEntity(DailyQuestion.entityName, DailyQuestion.self)
+        question.attribute("questionId", .stringAttributeType)
+        question.attribute("dayKey", .stringAttributeType)
+        question.attribute("nudgedByMemberId", .UUIDAttributeType)
+        question.attribute("nudgedAt", .dateAttributeType)
+        question.attribute("createdAt", .dateAttributeType)
+
+        let questionAnswer = ModelEntity(QuestionAnswer.entityName, QuestionAnswer.self)
+        questionAnswer.attribute("memberId", .UUIDAttributeType)
+        questionAnswer.attribute("text", .stringAttributeType)
+        questionAnswer.attribute("createdAt", .dateAttributeType)
+        questionAnswer.attribute("editedAt", .dateAttributeType)
+
+        let choreSet = ModelEntity(ChoreSet.entityName, ChoreSet.self)
+        choreSet.attribute("statusRaw", .stringAttributeType, defaultValue: ChoreSetStatus.building.rawValue)
+        choreSet.attribute("createdAt", .dateAttributeType)
+        choreSet.attribute("revealedAt", .dateAttributeType)
+        choreSet.attribute("appliedAt", .dateAttributeType)
+
+        let choreItem = ModelEntity(ChoreItem.entityName, ChoreItem.self)
+        choreItem.attribute("catalogId", .stringAttributeType)
+        choreItem.attribute("title", .stringAttributeType)
+        choreItem.attribute("frequencyRaw", .stringAttributeType, defaultValue: ChoreFrequency.weekly.rawValue)
+        choreItem.attribute("isIncluded", .booleanAttributeType, optional: false, defaultValue: true)
+        choreItem.attribute("addedByMemberId", .UUIDAttributeType)
+        choreItem.attribute("sortIndex", .integer32AttributeType, optional: false, defaultValue: 0)
+
+        let choreRating = ModelEntity(ChoreRating.entityName, ChoreRating.self)
+        choreRating.attribute("memberId", .UUIDAttributeType)
+        choreRating.attribute("verdictRaw", .stringAttributeType, defaultValue: ChoreVerdict.neutral.rawValue)
+        choreRating.attribute("createdAt", .dateAttributeType)
+
+        let choreAssignment = ModelEntity(ChoreAssignment.entityName, ChoreAssignment.self)
+        choreAssignment.attribute("resultRaw", .stringAttributeType, defaultValue: ChoreAssignmentResult.anyone.rawValue)
+        choreAssignment.attribute("assignedMemberId", .UUIDAttributeType)
+        choreAssignment.attribute("memberAId", .UUIDAttributeType)
+        choreAssignment.attribute("memberBId", .UUIDAttributeType)
+        choreAssignment.attribute("scoreA", .integer16AttributeType, optional: false, defaultValue: 0)
+        choreAssignment.attribute("scoreB", .integer16AttributeType, optional: false, defaultValue: 0)
+        choreAssignment.attribute("createdAt", .dateAttributeType)
+
         let giftIdea = ModelEntity(GiftIdea.entityName, GiftIdea.self)
         giftIdea.attribute("title", .stringAttributeType)
         giftIdea.attribute("url", .stringAttributeType)
@@ -210,6 +258,8 @@ public enum CorbieModel {
         space.owns(capsule, many: "capsules", inverse: "space")
         space.owns(vote, many: "votes", inverse: "space")
         space.owns(person, many: "people", inverse: "space")
+        space.owns(question, many: "questions", inverse: "space")
+        space.owns(choreSet, many: "choreSets", inverse: "space")
         event.owns(comment, many: "comments", inverse: "event")
         capsule.owns(capsuleOpen, many: "opens", inverse: "capsule")
         vote.owns(voteResponse, many: "responses", inverse: "vote")
@@ -218,10 +268,15 @@ public enum CorbieModel {
         list.owns(listItem, many: "items", inverse: "list")
         person.owns(giftIdea, many: "giftIdeas", inverse: "person")
         person.owns(personDate, many: "dates", inverse: "person")
+        question.owns(questionAnswer, many: "answers", inverse: "dailyQuestion")
+        choreSet.owns(choreItem, many: "items", inverse: "choreSet")
+        choreItem.owns(choreRating, many: "ratings", inverse: "choreItem")
+        choreItem.owns(choreAssignment, many: "assignments", inverse: "choreItem")
 
         let builders = [
             space, member, task, event, comment, wish, plan, expense, step, list, listItem, busy,
-            capsule, capsuleOpen, vote, voteResponse, person, giftIdea, personDate
+            capsule, capsuleOpen, vote, voteResponse, person, giftIdea, personDate,
+            question, questionAnswer, choreSet, choreItem, choreRating, choreAssignment
         ]
         let model = NSManagedObjectModel()
         model.entities = builders.map { $0.finish() }

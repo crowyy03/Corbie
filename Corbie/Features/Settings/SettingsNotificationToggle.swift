@@ -12,6 +12,8 @@ enum SettingsNotificationToggle: String, CaseIterable, Identifiable {
     case capsuleUpdates
     case voteUpdates
     case weeklyRecap
+    case questionOfDay
+    case choreSplit
 
     var id: String { rawValue }
 
@@ -29,6 +31,8 @@ enum SettingsNotificationToggle: String, CaseIterable, Identifiable {
         case .capsuleUpdates: return \.capsuleUpdates
         case .voteUpdates: return \.voteUpdates
         case .weeklyRecap: return \.weeklyRecap
+        case .questionOfDay: return \.questionOfTheDay
+        case .choreSplit: return \.choreSplitReady
         }
     }
 
@@ -39,6 +43,8 @@ enum SettingsNotificationToggle: String, CaseIterable, Identifiable {
         case .dateRadar: return [.dateRadar]
         case .capsuleUpdates: return [.capsuleOpens]
         case .weeklyRecap: return [.weeklyRecap]
+        case .questionOfDay: return [.questionOfTheDay]
+        case .choreSplit: return [.choreSplitReady]
         case .taskAssigned, .taskHandover, .partnerWish, .planUpdates, .voteUpdates: return []
         }
     }
