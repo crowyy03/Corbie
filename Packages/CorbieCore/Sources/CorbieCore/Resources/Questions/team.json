@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0901",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which decision do we make faster together than alone?",
+      "es": "¿Qué decisión tomamos más rápido juntos que por separado?",
+      "fr": "Quelle décision prenons-nous plus vite ensemble que chacun de son côté ?",
+      "de": "Welche Entscheidung treffen wir zusammen schneller als allein?",
+      "it": "Quale decisione prendiamo più in fretta insieme che da soli?"
+    }
+  },
+  {
+    "id": "q0902",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What decision of yours do you want me to talk you out of?",
+      "es": "¿De qué decisión tuya quieres que te haga desistir?",
+      "fr": "De quelle décision veux-tu que je te dissuade ?",
+      "de": "Wovon soll ich dich abbringen, wenn du es entschieden hast?",
+      "it": "Da quale tua decisione vuoi che ti faccia desistere?"
+    }
+  },
+  {
+    "id": "q0903",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which small decisions do you happily hand to me?",
+      "es": "¿Qué decisiones pequeñas me dejas a mí sin pensarlo?",
+      "fr": "Quelles petites décisions me laisses-tu volontiers ?",
+      "de": "Welche kleinen Entscheidungen überlässt du mir gern?",
+      "it": "Quali piccole decisioni mi lasci volentieri?"
+    }
+  },
+  {
+    "id": "q0904",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do with a mistake before you tell me about it?",
+      "es": "¿Qué haces con un error tuyo antes de contármelo?",
+      "fr": "Que fais-tu d'une erreur avant de m'en parler ?",
+      "de": "Was machst du mit einem Fehler, bevor du ihn mir erzählst?",
+      "it": "Cosa fai con un tuo errore prima di raccontarmelo?"
+    }
+  },
+  {
+    "id": "q0905",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which task do we both quietly avoid?",
+      "es": "¿Qué tarea evitamos los dos sin decirlo?",
+      "fr": "Quelle tâche évitons-nous tous les deux sans le dire ?",
+      "de": "Welche Aufgabe drücken wir beide stillschweigend?",
+      "it": "Quale compito evitiamo entrambi senza dirlo?"
+    }
+  },
+  {
+    "id": "q0906",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would survive longer running the other's day?",
+      "es": "¿Quién de los dos aguantaría más llevando el día del otro?",
+      "fr": "Lequel de nous deux tiendrait le plus longtemps à la place de l'autre ?",
+      "de": "Wer von uns würde den Tag des anderen länger durchhalten?",
+      "it": "Chi di noi due reggerebbe di più vivendo la giornata dell'altro?"
+    }
+  },
+  {
+    "id": "q0907",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you need from me before you start something big?",
+      "es": "¿Qué necesitas de mí antes de empezar algo grande?",
+      "fr": "De quoi as-tu besoin de ma part avant de te lancer dans du lourd ?",
+      "de": "Was brauchst du von mir, bevor du etwas Großes anfängst?",
+      "it": "Di cosa hai bisogno da me prima di iniziare qualcosa di grosso?"
+    }
+  },
+  {
+    "id": "q0908",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which decision would you rather flip a coin on than discuss?",
+      "es": "¿Qué decisión preferirías echar a suertes antes que discutirla?",
+      "fr": "Quelle décision préférerais-tu jouer à pile ou face plutôt que débattre ?",
+      "de": "Welche Entscheidung würdest du lieber auslosen als besprechen?",
+      "it": "Quale decisione preferiresti tirare a sorte invece di discuterla?"
+    }
+  },
+  {
+    "id": "q0909",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What should we always do in the same order?",
+      "es": "¿Qué deberíamos hacer siempre en el mismo orden?",
+      "fr": "Que devrions-nous toujours faire dans le même ordre ?",
+      "de": "Was sollten wir immer in derselben Reihenfolge machen?",
+      "it": "Cosa dovremmo fare sempre nello stesso ordine?"
+    }
+  },
+  {
+    "id": "q0910",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "How do you tell me that something is not working?",
+      "es": "¿Cómo me dices tú que algo no está funcionando?",
+      "fr": "Comment me fais-tu comprendre que quelque chose ne marche pas ?",
+      "de": "Wie sagst du mir, dass etwas nicht funktioniert?",
+      "it": "Come mi fai capire che qualcosa non funziona?"
+    }
+  },
+  {
+    "id": "q0911",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What should I always repeat back to you?",
+      "es": "¿Qué debería repetirte siempre para confirmarlo?",
+      "fr": "Que devrais-je toujours te répéter pour confirmer ?",
+      "de": "Was sollte ich dir immer noch einmal wiederholen?",
+      "it": "Cosa dovrei ripeterti sempre per conferma?"
+    }
+  },
+  {
+    "id": "q0912",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Who should be in charge of tickets and times when we travel?",
+      "es": "¿Quién debería encargarse de los billetes y los horarios cuando viajamos?",
+      "fr": "Qui devrait s'occuper des billets et des horaires quand on voyage ?",
+      "de": "Wer sollte auf Reisen für Tickets und Zeiten zuständig sein?",
+      "it": "Chi dovrebbe occuparsi di biglietti e orari quando viaggiamo?"
+    }
+  },
+  {
+    "id": "q0913",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of help makes things worse for you?",
+      "es": "¿Qué tipo de ayuda te empeora las cosas?",
+      "fr": "Quel genre d'aide empire les choses pour toi ?",
+      "de": "Welche Art von Hilfe macht es für dich schlimmer?",
+      "it": "Che tipo di aiuto ti peggiora le cose?"
+    }
+  },
+  {
+    "id": "q0914",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our plans always needs a backup?",
+      "es": "¿Qué plan nuestro necesita siempre un plan B?",
+      "fr": "Lequel de nos plans a toujours besoin d'un plan B ?",
+      "de": "Welcher unserer Pläne braucht immer einen Plan B?",
+      "it": "Quale nostro piano ha sempre bisogno di un piano B?"
+    }
+  },
+  {
+    "id": "q0915",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How much notice do you need before a change of plan?",
+      "es": "¿Con cuánta antelación necesitas saber un cambio de planes?",
+      "fr": "Combien de temps à l'avance dois-tu savoir qu'un plan change ?",
+      "de": "Wie viel Vorlauf brauchst du bei einer Planänderung?",
+      "it": "Con quanto anticipo devi sapere che un piano cambia?"
+    }
+  },
+  {
+    "id": "q0916",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you take on because you are faster at it?",
+      "es": "¿De qué te encargas únicamente porque lo haces más rápido?",
+      "fr": "De quoi t'occupes-tu simplement parce que tu vas plus vite ?",
+      "de": "Was übernimmst du, weil du einfach schneller darin bist?",
+      "it": "Di cosa ti occupi solo perché sei più veloce?"
+    }
+  },
+  {
+    "id": "q0917",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which small job would you never hand over?",
+      "es": "¿Qué tarea pequeña no cederías nunca?",
+      "fr": "Quelle petite tâche ne céderais-tu jamais ?",
+      "de": "Welche kleine Aufgabe würdest du nie abgeben?",
+      "it": "Quale piccolo compito non cederesti mai?"
+    }
+  },
+  {
+    "id": "q0918",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "In a survival show, which of us gets voted out first?",
+      "es": "En un programa de supervivencia, ¿a quién de los dos echan primero?",
+      "fr": "Dans une émission de survie, lequel de nous deux part en premier ?",
+      "de": "Wer von uns fliegt in einer Survival-Show zuerst raus?",
+      "it": "In un reality di sopravvivenza, chi di noi due esce per primo?"
+    }
+  },
+  {
+    "id": "q0919",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you find easier to write than to say?",
+      "es": "¿Qué te resulta más fácil escribir que decir?",
+      "fr": "Qu'est-ce qu'il t'est plus facile d'écrire que de dire ?",
+      "de": "Was fällt dir leichter zu schreiben als zu sagen?",
+      "it": "Cosa ti riesce più facile scrivere che dire?"
+    }
+  },
+  {
+    "id": "q0920",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our routines only works because one of us starts it?",
+      "es": "¿Qué rutina nuestra funciona solo porque uno de los dos la arranca?",
+      "fr": "Laquelle de nos routines ne tient que parce que l'un de nous la lance ?",
+      "de": "Welche unserer Routinen läuft nur, weil einer von uns anfängt?",
+      "it": "Quale nostra routine funziona solo perché uno di noi la avvia?"
+    }
+  },
+  {
+    "id": "q0921",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of silence from me should worry you?",
+      "es": "¿Qué clase de silencio mío debería preocuparte?",
+      "fr": "Quel genre de silence de ma part devrait t'inquiéter ?",
+      "de": "Welche Art von Schweigen von mir sollte dich beunruhigen?",
+      "it": "Che tipo di silenzio da parte mia dovrebbe preoccuparti?"
+    }
+  },
+  {
+    "id": "q0922",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which decision are we still putting off?",
+      "es": "¿Qué decisión seguimos aplazando?",
+      "fr": "Quelle décision continuons-nous de repousser ?",
+      "de": "Welche Entscheidung schieben wir immer noch vor uns her?",
+      "it": "Quale decisione continuiamo a rimandare?"
+    }
+  },
+  {
+    "id": "q0923",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "What have we got a system for that we never discussed?",
+      "es": "¿Para qué tenemos un sistema del que nunca llegamos a hablar?",
+      "fr": "Pour quoi avons-nous un système dont on n'a jamais parlé ?",
+      "de": "Wofür haben wir ein System, über das wir nie geredet haben?",
+      "it": "Per cosa abbiamo un sistema di cui non abbiamo mai parlato?"
+    }
+  },
+  {
+    "id": "q0924",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want me to remind you about?",
+      "es": "¿De qué quieres que te acuerde yo?",
+      "fr": "De quoi veux-tu que je te fasse penser ?",
+      "de": "Woran soll ich dich erinnern?",
+      "it": "Di cosa vuoi che ti ricordi io?"
+    }
+  },
+  {
+    "id": "q0925",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us is the optimist about time?",
+      "es": "¿Quién de los dos es el optimista con el tiempo?",
+      "fr": "Lequel de nous deux est l'optimiste avec l'heure ?",
+      "de": "Wer von uns beiden ist der Optimist bei der Zeit?",
+      "it": "Chi di noi due è l'ottimista con il tempo?"
+    }
+  },
+  {
+    "id": "q0926",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which job do you actually prefer doing alone?",
+      "es": "¿Qué tarea prefieres hacer tú a solas?",
+      "fr": "Quelle tâche préfères-tu vraiment faire en solo ?",
+      "de": "Welche Aufgabe machst du wirklich lieber allein?",
+      "it": "Quale compito preferisci davvero fare in solitaria?"
+    }
+  },
+  {
+    "id": "q0927",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What helps you most when you cannot decide?",
+      "es": "¿Qué te ayuda más cuando no consigues decidir?",
+      "fr": "Qu'est-ce qui t'aide le plus quand tu n'arrives pas à décider ?",
+      "de": "Was hilft dir am meisten, wenn du dich nicht entscheiden kannst?",
+      "it": "Cosa ti aiuta di più quando non riesci a decidere?"
+    }
+  },
+  {
+    "id": "q0928",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do we always leave until the last hour?",
+      "es": "¿Qué dejamos siempre para la última hora?",
+      "fr": "Qu'est-ce qu'on laisse toujours pour la dernière heure ?",
+      "de": "Was lassen wir immer bis zur letzten Stunde liegen?",
+      "it": "Cosa lasciamo sempre all'ultima ora?"
+    }
+  },
+  {
+    "id": "q0929",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first thing you sort out in a new place?",
+      "es": "¿Qué es lo primero que dejas resuelto en un sitio nuevo?",
+      "fr": "Quelle est la première chose que tu règles dans un lieu nouveau ?",
+      "de": "Was regelst du an einem neuen Ort als Erstes?",
+      "it": "Qual è la prima cosa che sistemi in un posto nuovo?"
+    }
+  },
+  {
+    "id": "q0930",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want us to be better prepared for?",
+      "es": "¿Para qué quieres que estemos mejor preparados?",
+      "fr": "À quoi veux-tu qu'on soit mieux préparés ?",
+      "de": "Worauf sollen wir besser vorbereitet sein?",
+      "it": "A cosa vuoi che siamo più preparati?"
+    }
+  },
+  {
+    "id": "q0931",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us should be trusted with the map?",
+      "es": "¿A quién de los dos habría que confiarle el mapa?",
+      "fr": "À qui de nous deux faut-il confier la carte ?",
+      "de": "Wem von uns sollte man die Karte anvertrauen?",
+      "it": "A chi di noi due andrebbe affidata la mappa?"
+    }
+  },
+  {
+    "id": "q0932",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you tidy when you are avoiding something else?",
+      "es": "¿Qué ordenas cuando estás evitando otra cosa?",
+      "fr": "Que ranges-tu quand tu évites autre chose ?",
+      "de": "Was räumst du auf, wenn du etwas anderes vermeidest?",
+      "it": "Cosa metti in ordine quando stai evitando altro?"
+    }
+  },
+  {
+    "id": "q0933",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What have the two of us learned to stop debating?",
+      "es": "¿Qué hemos aprendido los dos a dejar de debatir?",
+      "fr": "Qu'avons-nous appris tous les deux à ne plus débattre ?",
+      "de": "Worüber haben wir beide gelernt, nicht mehr zu diskutieren?",
+      "it": "Su cosa abbiamo imparato entrambi a non discutere più?"
+    }
+  },
+  {
+    "id": "q0934",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How do you like to be woken when something urgent happens?",
+      "es": "¿Cómo prefieres que te despierten si pasa algo urgente?",
+      "fr": "Comment préfères-tu qu'on te réveille s'il y a une urgence ?",
+      "de": "Wie willst du geweckt werden, wenn etwas Dringendes passiert?",
+      "it": "Come preferisci che ti sveglino se succede qualcosa di urgente?"
+    }
+  },
+  {
+    "id": "q0935",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you need to hear when a plan goes wrong?",
+      "es": "¿Qué necesitas oír cuando un plan sale mal?",
+      "fr": "Qu'as-tu besoin d'entendre quand un plan tourne mal ?",
+      "de": "Was musst du hören, wenn ein Plan schiefgeht?",
+      "it": "Cosa hai bisogno di sentirti dire quando un piano va storto?"
+    }
+  },
+  {
+    "id": "q0936",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our habits saves us the most time?",
+      "es": "¿Qué costumbre nuestra nos ahorra más tiempo?",
+      "fr": "Laquelle de nos habitudes nous fait gagner le plus de temps ?",
+      "de": "Welche unserer Gewohnheiten spart uns am meisten Zeit?",
+      "it": "Quale nostra abitudine ci fa risparmiare più tempo?"
+    }
+  },
+  {
+    "id": "q0937",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If we had one shared superpower, which job would it replace?",
+      "es": "Si tuviéramos un solo superpoder común, ¿qué tarea sustituiría?",
+      "fr": "Si on avait un seul superpouvoir commun, quelle tâche remplacerait-il ?",
+      "de": "Wenn wir eine gemeinsame Superkraft hätten, welche Aufgabe ersetzt sie?",
+      "it": "Se avessimo un solo superpotere in comune, quale compito sostituirebbe?"
+    }
+  },
+  {
+    "id": "q0938",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your promises to yourself do you actually keep?",
+      "es": "¿Qué promesa personal sí cumples de verdad?",
+      "fr": "Laquelle de tes promesses à toi-même tiens-tu vraiment ?",
+      "de": "Welches Versprechen an dich selbst hältst du wirklich?",
+      "it": "Quale promessa personale mantieni davvero?"
+    }
+  },
+  {
+    "id": "q0939",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What should I ask you about before I answer for us?",
+      "es": "¿Sobre qué debería preguntarte antes de responder por los dos?",
+      "fr": "Sur quoi dois-je te consulter avant de répondre pour nous deux ?",
+      "de": "Wozu soll ich dich fragen, bevor ich für uns antworte?",
+      "it": "Su cosa devo chiederti prima di rispondere per tutti e due?"
+    }
+  },
+  {
+    "id": "q0940",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is your signal that you have had enough of a day?",
+      "es": "¿Cuál es tu señal de que ya has tenido bastante día?",
+      "fr": "Quel est ton signal quand ta journée a assez duré ?",
+      "de": "Woran merkt man, dass dir der Tag gereicht hat?",
+      "it": "Qual è il tuo segnale che la giornata ti basta così?"
+    }
+  },
+  {
+    "id": "q0941",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our arrangements should we redo from scratch?",
+      "es": "¿Qué acuerdo nuestro deberíamos rehacer desde cero?",
+      "fr": "Lequel de nos arrangements faudrait-il refaire de zéro ?",
+      "de": "Welche unserer Absprachen sollten wir ganz neu machen?",
+      "it": "Quale nostro accordo dovremmo rifare da zero?"
+    }
+  },
+  {
+    "id": "q0942",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What are you better at when someone is watching?",
+      "es": "¿En qué se te da mejor cuando alguien te mira?",
+      "fr": "Qu'est-ce que tu réussis mieux quand on te regarde ?",
+      "de": "Was gelingt dir besser, wenn jemand zusieht?",
+      "it": "Cosa ti riesce meglio quando qualcuno ti guarda?"
+    }
+  },
+  {
+    "id": "q0943",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us should be banned from saying we have time?",
+      "es": "¿A quién de los dos habría que prohibirle decir que hay tiempo?",
+      "fr": "Lequel de nous deux devrait avoir interdiction de dire qu'on a le temps ?",
+      "de": "Wem von uns sollte man verbieten zu sagen, dass wir Zeit haben?",
+      "it": "A chi di noi due andrebbe vietato dire che abbiamo tempo?"
+    }
+  },
+  {
+    "id": "q0944",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which two-person job would we be disqualified from?",
+      "es": "¿De qué trabajo en pareja nos descalificarían?",
+      "fr": "De quel travail à deux serions-nous disqualifiés ?",
+      "de": "Bei welcher Zweierarbeit würde man uns disqualifizieren?",
+      "it": "Da quale lavoro in coppia ci squalificherebbero?"
+    }
+  },
+  {
+    "id": "q0945",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you like to do together that needs no talking?",
+      "es": "¿Qué te gustaría hacer juntos sin necesidad de hablar?",
+      "fr": "Qu'aimerais-tu faire à deux sans avoir à parler ?",
+      "de": "Was würdest du gern zu zweit machen, ganz ohne Reden?",
+      "it": "Cosa ti piacerebbe fare insieme senza bisogno di parlare?"
+    }
+  },
+  {
+    "id": "q0946",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you postpone until you are alone?",
+      "es": "¿Qué dejas para cuando estás a solas?",
+      "fr": "Qu'est-ce que tu gardes pour les moments de solitude ?",
+      "de": "Was schiebst du auf, bis du allein bist?",
+      "it": "Cosa rimandi a quando sei in solitudine?"
+    }
+  },
+  {
+    "id": "q0947",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you trust me to handle without checking?",
+      "es": "¿Qué confías en que yo resuelva sin comprobarlo?",
+      "fr": "Que me laisses-tu gérer sans jamais vérifier ?",
+      "de": "Was überlässt du mir, ohne nachzuprüfen?",
+      "it": "Cosa mi lasci gestire senza controllare?"
+    }
+  },
+  {
+    "id": "q0948",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which decision do you make better when tired?",
+      "es": "¿Qué decisión te sale mejor con sueño?",
+      "fr": "Quelle décision prends-tu mieux quand la fatigue est là ?",
+      "de": "Welche Entscheidung triffst du müde besser?",
+      "it": "Quale decisione prendi meglio quando la stanchezza si fa sentire?"
+    }
+  },
+  {
+    "id": "q0949",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "What did we split up as jobs without ever saying so?",
+      "es": "¿Qué tareas nos repartimos sin haberlo dicho nunca?",
+      "fr": "Quelles tâches nous sommes-nous réparties sans jamais le dire ?",
+      "de": "Welche Aufgaben haben wir aufgeteilt, ohne es je zu sagen?",
+      "it": "Quali compiti ci siamo divisi senza mai dirlo?"
+    }
+  },
+  {
+    "id": "q0950",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to be warned about, even if it is small?",
+      "es": "¿Sobre qué quieres que te avise, aunque sea una tontería?",
+      "fr": "De quoi veux-tu qu'on te prévienne, même si c'est minime ?",
+      "de": "Wovor willst du gewarnt werden, auch wenn es Kleinkram ist?",
+      "it": "Di cosa vuoi che ti avvisi, anche se è una sciocchezza?"
+    }
+  },
+  {
+    "id": "q0951",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you want to be in charge of that you never claimed?",
+      "es": "¿De qué te gustaría encargarte y nunca lo has pedido?",
+      "fr": "De quoi aimerais-tu être responsable sans l'avoir jamais demandé ?",
+      "de": "Wofür wärst du gern zuständig, hast es aber nie gesagt?",
+      "it": "Di cosa vorresti occuparti senza averlo mai chiesto?"
+    }
+  },
+  {
+    "id": "q0952",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do when you notice I am struggling?",
+      "es": "¿Qué haces cuando notas que lo estoy pasando mal?",
+      "fr": "Que fais-tu quand tu vois que je rame ?",
+      "de": "Was machst du, wenn du merkst, dass ich mich quäle?",
+      "it": "Cosa fai quando ti accorgi che sono in difficoltà?"
+    }
+  },
+  {
+    "id": "q0953",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which errand would you happily do for both of us every week?",
+      "es": "¿Qué recado harías con gusto por los dos cada semana?",
+      "fr": "Quelle course ferais-tu volontiers pour nous deux chaque semaine ?",
+      "de": "Welche Besorgung würdest du jede Woche gern für uns beide machen?",
+      "it": "Quale commissione faresti volentieri per entrambi ogni settimana?"
+    }
+  },
+  {
+    "id": "q0954",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you decide alone that you could share?",
+      "es": "¿Qué decides tú a solas y podrías compartir?",
+      "fr": "Que décides-tu de ton côté alors que tu pourrais partager ?",
+      "de": "Was entscheidest du allein, obwohl du es teilen könntest?",
+      "it": "Cosa decidi per conto tuo pur potendo condividerlo?"
+    }
+  },
+  {
+    "id": "q0955",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would be the better boss to the other for a day?",
+      "es": "¿Quién de los dos sería mejor jefe del otro durante un día?",
+      "fr": "Lequel de nous deux serait le meilleur chef de l'autre pour un jour ?",
+      "de": "Wer von uns wäre für einen Tag der bessere Chef des anderen?",
+      "it": "Chi di noi due sarebbe il capo migliore dell'altro per un giorno?"
+    }
+  },
+  {
+    "id": "q0956",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do we need a rule about that we do not have?",
+      "es": "¿Sobre qué nos hace falta una norma que no tenemos?",
+      "fr": "Sur quoi nous faudrait-il une règle qu'on n'a pas ?",
+      "de": "Wofür bräuchten wir eine Regel, die es noch nicht gibt?",
+      "it": "Su cosa ci servirebbe una regola che non abbiamo?"
+    }
+  },
+  {
+    "id": "q0957",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What did we get right early that we never changed?",
+      "es": "¿Qué acertamos pronto y no hemos cambiado nunca?",
+      "fr": "Qu'avons-nous réussi très tôt et jamais changé ?",
+      "de": "Was haben wir früh richtig gemacht und nie geändert?",
+      "it": "Cosa abbiamo azzeccato subito e non abbiamo mai cambiato?"
+    }
+  },
+  {
+    "id": "q0958",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How do you want to hear bad news, fast or complete?",
+      "es": "¿Cómo quieres las malas noticias, rápidas o completas?",
+      "fr": "Comment veux-tu les mauvaises nouvelles, vite ou en entier ?",
+      "de": "Wie willst du schlechte Nachrichten, schnell oder vollständig?",
+      "it": "Come vuoi le brutte notizie, in fretta o complete?"
+    }
+  },
+  {
+    "id": "q0959",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you write down that you would never forget anyway?",
+      "es": "¿Qué apuntas aunque no se te fuera a olvidar nunca?",
+      "fr": "Qu'écris-tu alors que tu ne l'oublierais jamais ?",
+      "de": "Was schreibst du auf, obwohl du es ohnehin nie vergessen würdest?",
+      "it": "Cosa annoti anche se non lo dimenticheresti mai?"
+    }
+  },
+  {
+    "id": "q0960",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What are you keeping an eye on right now that I am not?",
+      "es": "¿Qué estás vigilando ahora mismo que yo no?",
+      "fr": "Que surveilles-tu en ce moment et pas moi ?",
+      "de": "Was behältst du gerade im Blick, was ich nicht sehe?",
+      "it": "Cosa stai tenendo d'occhio in questo momento e io no?"
+    }
+  },
+  {
+    "id": "q0961",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which small disaster would we handle worst together?",
+      "es": "¿Qué pequeño desastre llevaríamos peor entre los dos?",
+      "fr": "Quel petit désastre gérerions-nous le plus mal à deux ?",
+      "de": "Welche kleine Katastrophe würden wir beide am schlechtesten meistern?",
+      "it": "Quale piccolo disastro gestiremmo peggio in due?"
+    }
+  },
+  {
+    "id": "q0962",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want me to say out loud when we are stuck?",
+      "es": "¿Qué quieres que diga en voz alta cuando nos atascamos?",
+      "fr": "Que veux-tu que je dise à voix haute quand on est bloqués ?",
+      "de": "Was soll ich laut aussprechen, wenn wir feststecken?",
+      "it": "Cosa vuoi che dica ad alta voce quando siamo bloccati?"
+    }
+  },
+  {
+    "id": "q0963",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which choice do you make the same way every time?",
+      "es": "¿Qué elección haces igual siempre?",
+      "fr": "Quel choix fais-tu exactement de la même façon à chaque fois ?",
+      "de": "Welche Wahl triffst du jedes Mal genau gleich?",
+      "it": "Quale scelta fai sempre allo stesso modo?"
+    }
+  },
+  {
+    "id": "q0964",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is your best trick for getting out of the house on time?",
+      "es": "¿Cuál es tu mejor truco para salir de casa a tiempo?",
+      "fr": "Quelle est ton astuce pour sortir de chez toi à l'heure ?",
+      "de": "Was ist dein bester Trick, um pünktlich aus dem Haus zu kommen?",
+      "it": "Qual è il tuo trucco migliore per uscire di casa in orario?"
+    }
+  },
+  {
+    "id": "q0965",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my strengths do you rely on more than I know?",
+      "es": "¿En qué punto fuerte mío te apoyas más de lo que yo sé?",
+      "fr": "Sur laquelle de mes forces comptes-tu plus que je ne le sais ?",
+      "de": "Auf welche meiner Stärken verlässt du dich mehr, als ich weiß?",
+      "it": "Su quale mio punto di forza conti più di quanto io sappia?"
+    }
+  },
+  {
+    "id": "q0966",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which task do you do better when I am not in the room?",
+      "es": "¿Qué tarea te sale mejor cuando yo no estoy delante?",
+      "fr": "Quelle tâche réussis-tu mieux quand je ne suis pas là ?",
+      "de": "Welche Aufgabe gelingt dir besser, wenn ich nicht im Raum bin?",
+      "it": "Quale compito ti riesce meglio quando io non ci sono?"
+    }
+  },
+  {
+    "id": "q0967",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our old arrangements would you bring back?",
+      "es": "¿Qué acuerdo antiguo nuestro recuperarías?",
+      "fr": "Lequel de nos anciens arrangements ferais-tu revenir ?",
+      "de": "Welche unserer alten Absprachen würdest du zurückholen?",
+      "it": "Quale nostro vecchio accordo faresti tornare?"
+    }
+  },
+  {
+    "id": "q0968",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first sign to you that a plan is going wrong?",
+      "es": "¿Cuál es para ti la primera señal de que un plan se tuerce?",
+      "fr": "Quel est pour toi le premier signe qu'un plan dérape ?",
+      "de": "Was ist für dich das erste Zeichen, dass ein Plan schiefgeht?",
+      "it": "Qual è per te il primo segnale che un piano sta andando storto?"
+    }
+  },
+  {
+    "id": "q0969",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us should never be trusted with a deadline?",
+      "es": "¿A quién de los dos no habría que confiarle nunca una fecha límite?",
+      "fr": "À qui de nous deux ne faut-il jamais confier une échéance ?",
+      "de": "Wem von uns sollte man nie eine Frist anvertrauen?",
+      "it": "A chi di noi due non andrebbe mai affidata una scadenza?"
+    }
+  },
+  {
+    "id": "q0970",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Who should start a hard conversation with other people, you or me?",
+      "es": "¿Quién debería empezar una conversación difícil con otros, tú o yo?",
+      "fr": "Qui devrait entamer une conversation difficile avec les autres, toi ou moi ?",
+      "de": "Wer sollte ein schwieriges Gespräch mit anderen anfangen, du oder ich?",
+      "it": "Chi dovrebbe iniziare una conversazione difficile con altri, tu o io?"
+    }
+  },
+  {
+    "id": "q0971",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you need more of when everything is going well?",
+      "es": "¿De qué necesitas más cuando todo va bien?",
+      "fr": "De quoi as-tu davantage besoin quand tout va bien ?",
+      "de": "Wovon brauchst du mehr, wenn alles gut läuft?",
+      "it": "Di cosa hai più bisogno quando tutto va bene?"
+    }
+  },
+  {
+    "id": "q0972",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which part of a trip do you want to plan yourself?",
+      "es": "¿Qué parte de un viaje quieres planear tú?",
+      "fr": "Quelle partie d'un voyage veux-tu planifier toi-même ?",
+      "de": "Welchen Teil einer Reise willst du selbst planen?",
+      "it": "Quale parte di un viaggio vuoi organizzare tu?"
+    }
+  },
+  {
+    "id": "q0973",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my jobs do you think is easier than it is?",
+      "es": "¿Qué tarea mía crees que es más fácil de lo que es?",
+      "fr": "Laquelle de mes tâches crois-tu plus simple qu'elle ne l'est ?",
+      "de": "Welche meiner Aufgaben hältst du für leichter, als sie ist?",
+      "it": "Quale mio compito credi sia più facile di quanto sia?"
+    }
+  },
+  {
+    "id": "q0974",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want us to say no to more often?",
+      "es": "¿A qué quieres que digamos que no más a menudo?",
+      "fr": "À quoi veux-tu qu'on dise non plus souvent ?",
+      "de": "Wozu sollen wir öfter Nein sagen?",
+      "it": "A cosa vuoi che diciamo di no più spesso?"
+    }
+  },
+  {
+    "id": "q0975",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which decision would you like taken off your hands this month?",
+      "es": "¿Qué decisión te gustaría quitarte de encima este mes?",
+      "fr": "Quelle décision aimerais-tu qu'on te retire des mains ce mois-ci ?",
+      "de": "Welche Entscheidung würdest du diesen Monat gern abgeben?",
+      "it": "Quale decisione vorresti toglierti di mano questo mese?"
+    }
+  },
+  {
+    "id": "q0976",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What have we stopped needing to say to each other?",
+      "es": "¿Qué hemos dejado de necesitar decirnos?",
+      "fr": "Qu'avons-nous cessé d'avoir besoin de nous dire ?",
+      "de": "Was müssen wir uns nicht mehr sagen?",
+      "it": "Cosa abbiamo smesso di aver bisogno di dirci?"
+    }
+  },
+  {
+    "id": "q0977",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do first when a day falls apart?",
+      "es": "¿Qué haces primero cuando un día se desmorona?",
+      "fr": "Que fais-tu en premier quand une journée part en vrille ?",
+      "de": "Was machst du zuerst, wenn ein Tag auseinanderfällt?",
+      "it": "Cosa fai per prima cosa quando una giornata va a rotoli?"
+    }
+  },
+  {
+    "id": "q0978",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our shared jobs would you swap with me?",
+      "es": "¿Qué tarea compartida cambiarías conmigo?",
+      "fr": "Laquelle de nos tâches communes échangerais-tu avec moi ?",
+      "de": "Welche unserer gemeinsamen Aufgaben würdest du mit mir tauschen?",
+      "it": "Quale nostro compito condiviso scambieresti con me?"
+    }
+  },
+  {
+    "id": "q0979",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of pressure do you actually work well under?",
+      "es": "¿Bajo qué tipo de presión rindes de verdad bien?",
+      "fr": "Sous quel genre de pression travailles-tu vraiment bien ?",
+      "de": "Unter welcher Art von Druck arbeitest du wirklich gut?",
+      "it": "Sotto che tipo di pressione rendi davvero bene?"
+    }
+  },
+  {
+    "id": "q0980",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If we ran a shop together, who would face the customers?",
+      "es": "Si tuviéramos una tienda juntos, ¿quién atendería al público?",
+      "fr": "Si on tenait une boutique ensemble, qui serait face aux clients ?",
+      "de": "Wenn wir zusammen einen Laden hätten, wer stünde vor den Kunden?",
+      "it": "Se avessimo un negozio insieme, chi starebbe davanti ai clienti?"
+    }
+  },
+  {
+    "id": "q0981",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which small thing would make your week easier if someone just did it?",
+      "es": "¿Qué cosa pequeña te haría la semana más fácil si alguien la hiciera?",
+      "fr": "Quelle petite chose te faciliterait la semaine si quelqu'un la faisait ?",
+      "de": "Welche Kleinigkeit würde deine Woche leichter machen, wenn jemand sie erledigt?",
+      "it": "Quale piccola cosa ti renderebbe la settimana più facile se qualcuno la facesse?"
+    }
+  },
+  {
+    "id": "q0982",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you assume I know that I might not?",
+      "es": "¿Qué das por hecho que yo sé y quizá no sepa?",
+      "fr": "Que supposes-tu que je sais alors que ce n'est peut-être pas le cas ?",
+      "de": "Was setzt du bei mir als bekannt voraus, obwohl ich es vielleicht nicht weiß?",
+      "it": "Cosa dai per scontato che io sappia e forse non so?"
+    }
+  },
+  {
+    "id": "q0983",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your plans do you want me to protect?",
+      "es": "¿Qué plan tuyo quieres que proteja yo?",
+      "fr": "Lequel de tes projets veux-tu que je protège ?",
+      "de": "Welchen deiner Pläne soll ich schützen?",
+      "it": "Quale tuo piano vuoi che protegga io?"
+    }
+  },
+  {
+    "id": "q0984",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do to recover after a long day with people?",
+      "es": "¿Qué haces para recuperarte tras un día largo entre gente?",
+      "fr": "Que fais-tu pour récupérer après une longue journée entourée de monde ?",
+      "de": "Was machst du, um dich nach einem langen Tag unter Menschen zu erholen?",
+      "it": "Cosa fai per riprenderti dopo una lunga giornata tra la gente?"
+    }
+  },
+  {
+    "id": "q0985",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our habits started as a one-off?",
+      "es": "¿Qué costumbre nuestra empezó siendo algo de una sola vez?",
+      "fr": "Laquelle de nos habitudes a commencé comme une exception ?",
+      "de": "Welche unserer Gewohnheiten begann als einmalige Sache?",
+      "it": "Quale nostra abitudine è nata come una cosa una tantum?"
+    }
+  },
+  {
+    "id": "q0986",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which task should we never attempt at the same time?",
+      "es": "¿Qué tarea no deberíamos intentar nunca a la vez?",
+      "fr": "Quelle tâche ne devrions-nous jamais tenter en même temps ?",
+      "de": "Welche Aufgabe sollten wir nie gleichzeitig angehen?",
+      "it": "Quale compito non dovremmo mai affrontare nello stesso momento?"
+    }
+  },
+  {
+    "id": "q0987",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What should I never do while you are still waking up?",
+      "es": "¿Qué no debería hacer nunca mientras te estás despertando?",
+      "fr": "Que ne devrais-je jamais faire pendant que tu émerges ?",
+      "de": "Was sollte ich nie tun, während du gerade erst wach wirst?",
+      "it": "Cosa non dovrei mai fare mentre ti stai svegliando?"
+    }
+  },
+  {
+    "id": "q0988",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you keep to yourself until it is solved?",
+      "es": "¿Qué te guardas para ti hasta tenerlo resuelto?",
+      "fr": "Que gardes-tu pour toi jusqu'à ce que ce soit réglé ?",
+      "de": "Was behältst du für dich, bis es gelöst ist?",
+      "it": "Cosa tieni per te finché non è risolto?"
+    }
+  },
+  {
+    "id": "q0989",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of our plans have you already half-arranged in your head?",
+      "es": "¿Qué plan nuestro ya tienes medio montado en la cabeza?",
+      "fr": "Lequel de nos projets as-tu déjà à moitié organisé dans ta tête ?",
+      "de": "Welchen unserer Pläne hast du im Kopf schon halb organisiert?",
+      "it": "Quale nostro piano hai già mezzo organizzato in testa?"
+    }
+  },
+  {
+    "id": "q0990",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What have I misread about how you handle stress?",
+      "es": "¿Qué he entendido mal sobre cómo llevas el estrés?",
+      "fr": "Qu'ai-je mal compris dans ta façon de gérer la tension ?",
+      "de": "Was habe ich falsch verstanden, wie du mit Druck umgehst?",
+      "it": "Cosa ho frainteso di come gestisci la tensione?"
+    }
+  },
+  {
+    "id": "q0991",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you rather I taught you than did for you?",
+      "es": "¿Qué prefieres que te enseñe en vez de hacértelo yo?",
+      "fr": "Qu'aimerais-tu que je t'apprenne au lieu de le faire à ta place ?",
+      "de": "Was soll ich dir lieber beibringen, statt es für dich zu tun?",
+      "it": "Cosa preferisci che ti insegni invece di fartelo io?"
+    }
+  },
+  {
+    "id": "q0992",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which imaginary crisis would you enjoy handling?",
+      "es": "¿Qué crisis imaginaria disfrutarías resolviendo?",
+      "fr": "Quelle crise imaginaire prendrais-tu plaisir à gérer ?",
+      "de": "Welche erfundene Krise würdest du gern managen?",
+      "it": "Quale crisi immaginaria ti divertirebbe gestire?"
+    }
+  },
+  {
+    "id": "q0993",
+    "theme": "team",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "What have we been meaning to fix for over a year?",
+      "es": "¿Qué llevamos más de un año queriendo arreglar?",
+      "fr": "Qu'avons-nous l'intention de réparer depuis plus d'un an ?",
+      "de": "Was wollen wir seit über einem Jahr in Ordnung bringen?",
+      "it": "Cosa ci ripromettiamo di sistemare da più di un anno?"
+    }
+  },
+  {
+    "id": "q0994",
+    "theme": "team",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What makes you feel like we are on the same side?",
+      "es": "¿Qué te hace sentir que estamos del mismo lado?",
+      "fr": "Qu'est-ce qui te fait sentir qu'on est du même côté ?",
+      "de": "Woran merkst du, dass wir auf derselben Seite stehen?",
+      "it": "Cosa ti fa sentire che siamo dalla stessa parte?"
+    }
+  },
+  {
+    "id": "q0995",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which part of a busy week do you want to keep for yourself?",
+      "es": "¿Qué parte de una semana cargada quieres guardarte para ti?",
+      "fr": "Quelle partie d'une semaine chargée veux-tu garder pour toi ?",
+      "de": "Welchen Teil einer vollen Woche willst du für dich behalten?",
+      "it": "Quale parte di una settimana piena vuoi tenere per te?"
+    }
+  },
+  {
+    "id": "q0996",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to be asked more often about your day?",
+      "es": "¿Qué te gustaría que te preguntaran más a menudo sobre tu día?",
+      "fr": "Que voudrais-tu qu'on te demande plus souvent sur ta journée ?",
+      "de": "Was sollte man dich öfter über deinen Tag fragen?",
+      "it": "Cosa vorresti che ti chiedessero più spesso della tua giornata?"
+    }
+  },
+  {
+    "id": "q0997",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which job do you want done properly rather than quickly?",
+      "es": "¿Qué tarea prefieres bien hecha antes que rápida?",
+      "fr": "Quelle tâche préfères-tu bien faite plutôt que vite faite ?",
+      "de": "Welche Aufgabe soll lieber gründlich als schnell erledigt sein?",
+      "it": "Quale compito preferisci fatto bene invece che in fretta?"
+    }
+  },
+  {
+    "id": "q0998",
+    "theme": "team",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our disagreements could be settled by a game?",
+      "es": "¿Qué desacuerdo nuestro podría resolverse con un juego?",
+      "fr": "Lequel de nos désaccords pourrait se régler par un jeu ?",
+      "de": "Welche unserer Uneinigkeiten ließe sich mit einem Spiel klären?",
+      "it": "Quale nostro disaccordo si potrebbe risolvere con un gioco?"
+    }
+  },
+  {
+    "id": "q0999",
+    "theme": "team",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What could we do once that would make a month easier?",
+      "es": "¿Qué podríamos hacer una sola vez que nos aliviara todo un mes?",
+      "fr": "Que pourrions-nous faire une seule fois pour alléger tout un mois ?",
+      "de": "Was könnten wir einmal tun, das einen ganzen Monat leichter macht?",
+      "it": "Cosa potremmo fare una sola volta per rendere più facile un mese?"
+    }
+  },
+  {
+    "id": "q1000",
+    "theme": "team",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What should the two of us start doing on purpose?",
+      "es": "¿Qué deberíamos empezar a hacer a propósito los dos?",
+      "fr": "Que devrions-nous commencer à faire exprès tous les deux ?",
+      "de": "Was sollten wir beide bewusst anfangen zu tun?",
+      "it": "Cosa dovremmo iniziare a fare di proposito noi due?"
+    }
+  }
+]
