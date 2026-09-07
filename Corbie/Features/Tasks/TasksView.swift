@@ -28,10 +28,9 @@ struct TasksView: View {
                 list(model)
             }
         }
-        .navigationTitle(Text("tab.tasks.title"))
-        .toolbar {
-            AddToolbarItem(action: startCreating)
-            UsPillToolbarItem()
+        .screenHeader(String(localized: "tab.tasks.title")) {
+            AddButton(action: startCreating)
+            UsPillButton()
         }
         .sheet(item: $editorRequest) { request in
             TaskEditorView(model: editorModel(for: request))

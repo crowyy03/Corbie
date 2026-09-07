@@ -18,9 +18,8 @@ struct TodayView: View {
                 content(model)
             }
         }
-        .navigationTitle(Text("tab.today.title"))
-        .toolbar {
-            UsPillToolbarItem()
+        .screenHeader(String(localized: "tab.today.title")) {
+            UsPillButton()
         }
         .sheet(item: $quickAction) { action in
             quickActionSheet(action)

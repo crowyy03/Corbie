@@ -16,10 +16,9 @@ struct WishesView: View {
             content
         }
         .background(CorbieColorPalette.bg.ignoresSafeArea())
-        .navigationTitle(String(localized: "tab.wishes.title"))
-        .toolbar {
-            AddToolbarItem { startCreating(link: nil) }
-            UsPillToolbarItem()
+        .screenHeader(String(localized: "tab.wishes.title")) {
+            AddButton { startCreating(link: nil) }
+            UsPillButton()
         }
         .sheet(item: $editor) { request in
             WishEditorView(request: request) {

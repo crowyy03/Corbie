@@ -16,9 +16,6 @@ struct CalendarView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
-                Text("tab.calendar.title")
-                    .corbieScreenTitle()
-                    .foregroundStyle(CorbieColorPalette.text)
                 Card {
                     CalendarMonthView(model: model) { day in
                         model.select(day)
@@ -30,32 +27,33 @@ struct CalendarView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(CorbieColorPalette.bg)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Button(String(localized: "calendar.import.action")) {
-                        isImporting = true
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
+        .screenHeader(String(localized: "tab.calendar.title")) {
+            Menu {
+                Button(String(localized: "calendar.import.action")) {
+                    isImporting = true
                 }
-                .accessibilityLabel(Text("calendar.actions.label"))
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .font(.system(size: 22, weight: .medium))
+                    .foregroundStyle(CorbieColorPalette.text)
+                    .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
+                    .contentShape(Rectangle())
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    openFreeTime()
-                } label: {
-                    Image(systemName: "clock.badge.checkmark")
-                        .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
-                        .contentShape(Rectangle())
-                }
-                .accessibilityLabel(Text("freetime.title"))
+            .accessibilityLabel(Text("calendar.actions.label"))
+            Button {
+                openFreeTime()
+            } label: {
+                Image(systemName: "clock.badge.checkmark")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(CorbieColorPalette.text)
+                    .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
+                    .contentShape(Rectangle())
             }
-            AddToolbarItem {
+            .accessibilityLabel(Text("freetime.title"))
+            AddButton {
                 editorTarget = .create(model.draftStart())
             }
-            UsPillToolbarItem()
+            UsPillButton()
         }
         .task {
             await model.load(environment)
@@ -103,13 +101,6 @@ struct CalendarView: View {
                 .foregroundStyle(CorbieColorPalette.text2)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             }
-            Button(String(localized: "common.action.add")) {
-                editorTarget = .create(model.draftStart())
-            }
-            .buttonStyle(.plain)
-            .corbieMono()
-            .foregroundStyle(CorbieColorPalette.ice)
-            .frame(minHeight: CorbieMetrics.minimumTapTarget)
         }
     }
 

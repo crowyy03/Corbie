@@ -18,10 +18,8 @@ public struct UsPill: View {
             circle(colorA)
             circle(colorB)
         }
-        .padding(.horizontal, CorbieSpacing.s)
+        .padding(.horizontal, CorbieSpacing.xs)
         .frame(minWidth: CorbieMetrics.minimumTapTarget, minHeight: CorbieMetrics.minimumTapTarget)
-        .background(Capsule(style: .continuous).fill(CorbieColorPalette.elevated))
-        .overlay(Capsule(style: .continuous).strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline))
         .contentShape(Capsule(style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityHidden(accessibilityLabel == nil)
@@ -32,7 +30,7 @@ public struct UsPill: View {
         Circle()
             .fill(color)
             .frame(width: circleSize, height: circleSize)
-            .overlay(Circle().strokeBorder(CorbieColorPalette.elevated, lineWidth: 2))
+            .overlay(Circle().strokeBorder(CorbieColorPalette.bg, lineWidth: 2))
     }
 }
 

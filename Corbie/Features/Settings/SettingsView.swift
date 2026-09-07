@@ -48,12 +48,14 @@ struct SettingsView: View {
 
     private var youSection: some View {
         Section {
-            TextField(String(localized: "settings.you.name.placeholder"), text: $model.profile.displayName)
-                .textInputAutocapitalization(.words)
-                .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
-                .frame(minHeight: CorbieMetrics.minimumTapTarget)
-                .accessibilityLabel(Text("settings.you.name"))
+            TextFieldRow(
+                label: String(localized: "settings.you.name"),
+                placeholder: String(localized: "settings.you.name.placeholder"),
+                hint: String(localized: "settings.you.name.hint"),
+                text: $model.profile.displayName
+            )
+            .textInputAutocapitalization(.words)
+            .accessibilityLabel(Text("settings.you.name"))
             colorRow
             birthdayRow
             Button(String(localized: "settings.you.save")) {

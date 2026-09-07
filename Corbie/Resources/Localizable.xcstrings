@@ -21391,6 +21391,40 @@
         }
       }
     },
+    "settings.you.name.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "how your partner sees you"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "so sieht dich dein Partner"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "así te ve tu pareja"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "c'est ainsi que ton partenaire te voit"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "così ti vede il tuo partner"
+          }
+        }
+      }
+    },
     "settings.you.name.placeholder": {
       "localizations": {
         "de": {
