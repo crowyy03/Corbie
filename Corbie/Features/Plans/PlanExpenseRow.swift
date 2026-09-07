@@ -2,37 +2,39 @@ import CorbieCore
 import SwiftUI
 
 struct PlanExpenseRow: View {
+    @Environment(\.palette) private var palette
+
     let expense: PlanExpenseDTO
     let planCurrency: String
-    let memberColor: Color
+    let memberSlot: MemberColorSlot?
     let memberName: String
 
     var body: some View {
         Card {
             HStack(alignment: .top, spacing: CorbieSpacing.s) {
-                MemberDot(color: memberColor, accessibilityLabel: memberName)
+                MemberDot(slot: memberSlot, accessibilityLabel: memberName)
                     .padding(.top, CorbieSpacing.xxs)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
                         Text(Money(amount: expense.amount, currency: expense.currency).formatted())
                             .corbieBody()
                             .fontWeight(.semibold)
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                         if expense.isConverted {
                             Text(Money(amount: expense.amountInPlanCurrency, currency: planCurrency).approximate())
                                 .corbieMono()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                         }
                     }
                     if let note = expense.note, note.isEmpty == false {
                         Text(note)
                             .corbieCaption()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                     if let date = expense.date {
                         Text(date.formatted(date: .abbreviated, time: .omitted))
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                 }
                 Spacer(minLength: 0)
@@ -56,7 +58,7 @@ struct PlanExpenseRow: View {
                 date: Date()
             ),
             planCurrency: "USD",
-            memberColor: MemberColorKey.p2.color,
+            memberSlot: MemberColorSlot.rose,
             memberName: "Sofia"
         )
         PlanExpenseRow(
@@ -69,12 +71,12 @@ struct PlanExpenseRow: View {
                 date: Date()
             ),
             planCurrency: "USD",
-            memberColor: MemberColorKey.p1.color,
+            memberSlot: MemberColorSlot.teal,
             memberName: "you"
         )
     }
     .padding(CorbieSpacing.l)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(CorbieColorPalette.bg)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

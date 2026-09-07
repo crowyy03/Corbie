@@ -9,12 +9,52 @@ import Testing
         let again = try await repository.upsertCurrentMember(
             appleUserId: "apple-me",
             spaceId: world.space.id,
-            draft: MemberDraft(displayName: "Ilya V", colorKey: "fog")
-        )
+            draft: MemberDraft(displayName: "Ilya V", colorKey: MemberColorSlot.blue.rawValue),
+            theme: .sand
+        ).member
         #expect(again.id == world.me.id)
         #expect(again.displayName == "Ilya V")
-        #expect(again.colorKey == "fog")
+        #expect(again.colorSlot == .blue)
         #expect(try await repository.members(spaceId: world.space.id).count == 2)
+    }
+
+    @Test func aColourThatClashesWithThePartnerIsShiftedOnWrite() async throws {
+        let world = try await TestWorld.make()
+        var member = world.me
+        member.colorKey = MemberColorSlot.clay.rawValue
+        let saved = try await world.repositories.members.update(member, theme: .sand)
+        #expect(saved.shiftedColorFrom == .clay)
+        #expect(saved.member.colorSlot == .green)
+    }
+
+    @Test func aColourThatIsFreeIsKeptAsAskedOnWrite() async throws {
+        let world = try await TestWorld.make()
+        var member = world.me
+        member.colorKey = MemberColorSlot.blue.rawValue
+        let saved = try await world.repositories.members.update(member, theme: .sand)
+        #expect(saved.shiftedColorFrom == nil)
+        #expect(saved.member.colorSlot == .blue)
+    }
+
+    @Test func tealAndGreenAreOnlySplitApartInDeep() async throws {
+        let world = try await TestWorld.make()
+        var partner = world.partner
+        partner.colorKey = MemberColorSlot.green.rawValue
+        _ = try await world.repositories.members.update(partner, theme: .sand)
+
+        var member = world.me
+        member.colorKey = MemberColorSlot.teal.rawValue
+        #expect(try await world.repositories.members.update(member, theme: .sand).shiftedColorFrom == nil)
+        #expect(try await world.repositories.members.update(member, theme: .deep).shiftedColorFrom == .teal)
+    }
+
+    @Test func aLegacyColourKeyIsReadBackAsASlot() async throws {
+        let world = try await TestWorld.make()
+        var member = world.me
+        member.colorKey = "p3"
+        let saved = try await world.repositories.members.update(member, theme: .sand)
+        #expect(saved.member.colorSlot == .blue)
+        #expect(saved.member.colorKey == MemberColorSlot.blue.rawValue)
     }
 
     @Test func partnerIsTheOtherMember() async throws {
@@ -43,7 +83,7 @@ import Testing
         member.displayName = "Ilya"
         member.birthdayMonth = 6
         member.birthdayDay = 20
-        let saved = try await world.repositories.members.update(member)
+        let saved = try await world.repositories.members.update(member, theme: .sand).member
         #expect(saved.hasBirthday)
         #expect(saved.birthdayMonth == 6)
         #expect(saved.birthdayDay == 20)

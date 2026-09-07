@@ -2,9 +2,11 @@ import CorbieCore
 import SwiftUI
 
 struct PlanStepRow: View {
+    @Environment(\.palette) private var palette
+
     let step: PlanStepDTO
     let due: PlanStepDue?
-    let assigneeColor: Color?
+    let assigneeSlot: MemberColorSlot?
     let assigneeName: String?
     let isReadOnly: Bool
     let toggle: () -> Void
@@ -39,7 +41,7 @@ struct PlanStepRow: View {
         Button(action: toggle) {
             Image(systemName: step.isDone ? "checkmark.circle.fill" : "circle")
                 .font(.title3)
-                .foregroundStyle(step.isDone ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+                .foregroundStyle(step.isDone ? palette.accent : palette.text2)
                 .frame(minWidth: CorbieMetrics.minimumTapTarget, minHeight: CorbieMetrics.minimumTapTarget)
                 .contentShape(Rectangle())
         }
@@ -55,15 +57,15 @@ struct PlanStepRow: View {
                 Text(step.title)
                     .corbieBody()
                     .strikethrough(step.isDone)
-                    .foregroundStyle(step.isDone ? CorbieColorPalette.text2 : CorbieColorPalette.text)
+                    .foregroundStyle(step.isDone ? palette.text2 : palette.text)
                     .multilineTextAlignment(.leading)
-                if assigneeColor != nil || due != nil {
+                if assigneeSlot != nil || due != nil {
                     meta
                 }
                 if isNoteShown, let note {
                     Text(note)
                         .corbieCaption()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                 }
             }
@@ -77,13 +79,13 @@ struct PlanStepRow: View {
 
     private var meta: some View {
         HStack(spacing: CorbieSpacing.xs) {
-            if let assigneeColor {
-                MemberDot(color: assigneeColor)
+            if let assigneeSlot {
+                MemberDot(slot: assigneeSlot)
             }
             if let due {
                 Text(due.text)
                     .corbieMono()
-                    .foregroundStyle(due.isOverdue ? CorbieColorPalette.warn : CorbieColorPalette.text2)
+                    .foregroundStyle(due.isOverdue ? palette.warn : palette.text2)
             }
         }
     }
@@ -94,7 +96,7 @@ struct PlanStepRow: View {
         } label: {
             Image(systemName: isNoteShown ? "chevron.up" : "chevron.down")
                 .font(.footnote)
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .frame(minWidth: CorbieMetrics.minimumTapTarget, minHeight: CorbieMetrics.minimumTapTarget)
                 .contentShape(Rectangle())
         }
@@ -121,7 +123,7 @@ struct PlanStepRow: View {
         PlanStepRow(
             step: dated,
             due: planStepDue(for: dated, now: Date()),
-            assigneeColor: MemberColorKey.p2.color,
+            assigneeSlot: MemberColorSlot.rose,
             assigneeName: "Sofia",
             isReadOnly: false,
             toggle: {},
@@ -130,7 +132,7 @@ struct PlanStepRow: View {
         PlanStepRow(
             step: PlanStepDTO(id: UUID(), title: "Drop the suit at the cleaner", isDone: true),
             due: nil,
-            assigneeColor: nil,
+            assigneeSlot: nil,
             assigneeName: nil,
             isReadOnly: false,
             toggle: {},
@@ -139,6 +141,6 @@ struct PlanStepRow: View {
     }
     .padding(CorbieSpacing.l)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-    .background(CorbieColorPalette.bg)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

@@ -19,6 +19,8 @@ public struct EmptyState: View {
     private let monoNote: String?
     private let cta: EmptyStateAction?
 
+    @Environment(\.palette) private var palette
+
     public init(
         systemImage: String,
         title: String,
@@ -37,27 +39,27 @@ public struct EmptyState: View {
         VStack(spacing: CorbieSpacing.s) {
             Image(systemName: systemImage)
                 .font(.system(size: CorbieMetrics.emptyStateIconSize, weight: .light))
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .accessibilityHidden(true)
                 .padding(.bottom, CorbieSpacing.xxs)
 
             Text(title)
                 .corbieBody()
                 .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .multilineTextAlignment(.center)
 
             if let subtitle {
                 Text(subtitle)
                     .corbieCaption()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .multilineTextAlignment(.center)
             }
 
             if let monoNote {
                 Text(monoNote)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .multilineTextAlignment(.center)
                     .padding(.top, CorbieSpacing.xxs)
             }
@@ -73,8 +75,9 @@ public struct EmptyState: View {
 }
 
 #if DEBUG
-struct EmptyStateGallery: View {
-    var body: some View {
+#if canImport(UIKit)
+#Preview("EmptyState") {
+    PreviewThemes {
         EmptyState(
             systemImage: "checklist",
             title: "A to-do list for two. Anyone can take a task, or hand it over.",
@@ -82,18 +85,7 @@ struct EmptyStateGallery: View {
             monoNote: "nobody's the boss here",
             cta: EmptyStateAction(title: "Add a task") {}
         )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
     }
-}
-
-#if canImport(UIKit)
-#Preview("EmptyState light") {
-    EmptyStateGallery().preferredColorScheme(.light)
-}
-
-#Preview("EmptyState dark") {
-    EmptyStateGallery().preferredColorScheme(.dark)
 }
 #endif
 #endif

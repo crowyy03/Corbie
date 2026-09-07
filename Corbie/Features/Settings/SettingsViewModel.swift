@@ -60,13 +60,17 @@ final class SettingsViewModel {
         savedWedding = weddingDate
     }
 
-    func saveProfile() async {
+    func saveProfile(theme: CorbieTheme) async {
         guard let environment, let member = environment.currentMember, canSaveProfile else { return }
         isWorking = true
         defer { isWorking = false }
         do {
-            let updated = try await environment.repositories.members.update(profile.applied(to: member))
-            environment.apply(member: updated)
+            let saved = try await environment.repositories.members.update(profile.applied(to: member), theme: theme)
+            environment.apply(member: saved.member)
+            profile.colorSlot = saved.member.colorSlot
+            if let shifted = saved.shiftedColorFrom {
+                environment.toasts.show(message: colorShiftedMessage(from: shifted, to: saved.member.colorSlot))
+            }
             if let space = environment.space {
                 var changed = profile.applied(to: space)
                 changed.weddingDate = weddingDate
@@ -77,6 +81,14 @@ final class SettingsViewModel {
         } catch {
             environment.report(error)
         }
+    }
+
+    private func colorShiftedMessage(from: MemberColorSlot, to: MemberColorSlot) -> String {
+        String(
+            format: String(localized: "settings.you.color.shifted"),
+            String(localized: String.LocalizationValue(from.displayNameKey)),
+            String(localized: String.LocalizationValue(to.displayNameKey))
+        )
     }
 
     func setCurrency(_ code: String) async {

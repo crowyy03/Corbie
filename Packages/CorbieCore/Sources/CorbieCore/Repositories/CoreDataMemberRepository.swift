@@ -8,7 +8,12 @@ public struct CoreDataMemberRepository: MemberRepository {
         access = CoreDataAccess(stack: stack)
     }
 
-    public func upsertCurrentMember(appleUserId: String, spaceId: UUID, draft: MemberDraft) async throws -> MemberDTO {
+    public func upsertCurrentMember(
+        appleUserId: String,
+        spaceId: UUID,
+        draft: MemberDraft,
+        theme: CorbieTheme
+    ) async throws -> MemberSaveResult {
         let hash = AppleUserHash.value(appleUserId)
         return try await access.write { context in
             let space: Space = try ManagedFetch.require(Space.entityName, id: spaceId, in: context)
@@ -27,11 +32,11 @@ public struct CoreDataMemberRepository: MemberRepository {
             member.appleUserHash = hash
             member.space = space
             if let displayName = draft.displayName { member.displayName = displayName }
-            if let colorKey = draft.colorKey { member.colorKey = colorKey }
             if let month = draft.birthdayMonth { member.birthdayMonth = NSNumber(value: month) }
             if let day = draft.birthdayDay { member.birthdayDay = NSNumber(value: day) }
             if member.joinedAt == nil { member.joinedAt = Date() }
-            return MemberDTO(member)
+            let requested = draft.colorKey ?? member.colorKey
+            return try MemberColorAssignment.apply(requested: requested, to: member, theme: theme, in: context)
         }
     }
 
@@ -70,15 +75,14 @@ public struct CoreDataMemberRepository: MemberRepository {
         try await members(spaceId: spaceId).first { $0.id != memberId }
     }
 
-    public func update(_ member: MemberDTO) async throws -> MemberDTO {
+    public func update(_ member: MemberDTO, theme: CorbieTheme) async throws -> MemberSaveResult {
         try await access.write { context in
             let entity: Member = try ManagedFetch.require(Member.entityName, id: member.id, in: context)
             entity.displayName = member.displayName
-            entity.colorKey = member.colorKey
             entity.birthdayMonth = member.birthdayMonth.map(NSNumber.init(value:))
             entity.birthdayDay = member.birthdayDay.map(NSNumber.init(value:))
             entity.notificationPrefs = member.notificationPrefs
-            return MemberDTO(entity)
+            return try MemberColorAssignment.apply(requested: member.colorKey, to: entity, theme: theme, in: context)
         }
     }
 
@@ -126,5 +130,41 @@ public struct CoreDataMemberRepository: MemberRepository {
             guard let member: Member = try ManagedFetch.first(Member.entityName, id: id, in: context) else { return }
             context.delete(member)
         }
+    }
+}
+
+enum MemberColorAssignment {
+    static func apply(
+        requested: String?,
+        to member: Member,
+        theme: CorbieTheme,
+        in context: NSManagedObjectContext
+    ) throws -> MemberSaveResult {
+        guard let requested else { return MemberSaveResult(member: MemberDTO(member)) }
+        let wanted = MemberColorSlot.stored(requested)
+        guard let taken = try partnerSlot(of: member, in: context) else {
+            member.colorKey = wanted.rawValue
+            return MemberSaveResult(member: MemberDTO(member))
+        }
+        guard wanted.conflicts(with: taken, in: theme) else {
+            member.colorKey = wanted.rawValue
+            return MemberSaveResult(member: MemberDTO(member))
+        }
+        let free = wanted.nearestFreeSlot(against: taken, in: theme)
+        member.colorKey = free.rawValue
+        return MemberSaveResult(member: MemberDTO(member), shiftedColorFrom: wanted)
+    }
+
+    private static func partnerSlot(of member: Member, in context: NSManagedObjectContext) throws -> MemberColorSlot? {
+        guard let spaceId = member.space?.id else { return nil }
+        let members: [Member] = try ManagedFetch.all(
+            Member.entityName,
+            predicate: ManagedFetch.spaceRelation(spaceId),
+            sort: [NSSortDescriptor(key: "joinedAt", ascending: true)],
+            in: context
+        )
+        guard let partner = members.first(where: { $0.id != member.id }) else { return nil }
+        guard let key = partner.colorKey else { return nil }
+        return MemberColorSlot.stored(key)
     }
 }

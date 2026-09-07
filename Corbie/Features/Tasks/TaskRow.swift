@@ -58,24 +58,26 @@ struct TaskSubtitleFormatter {
 }
 
 struct TaskRow: View {
+    @Environment(\.palette) private var palette
+
     let task: TaskDTO
-    let dotColor: Color
+    let dotSlot: MemberColorSlot?
     let subtitle: String
     let take: (() -> Void)?
 
     var body: some View {
         Card {
             HStack(alignment: .top, spacing: CorbieSpacing.s) {
-                MemberDot(color: dotColor)
+                MemberDot(slot: dotSlot)
                     .padding(.top, CorbieSpacing.xxs)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(task.title)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                     Text(subtitle)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -90,6 +92,8 @@ struct TaskRow: View {
 
 #if DEBUG
 private struct TaskRowGallery: View {
+    @Environment(\.palette) private var palette
+
     private let now = Date()
     private let formatter = TaskSubtitleFormatter()
     private let mine = TaskDTO(
@@ -111,20 +115,20 @@ private struct TaskRowGallery: View {
         VStack(spacing: CorbieSpacing.s) {
             TaskRow(
                 task: mine,
-                dotColor: MemberColorKey.p1.color,
+                dotSlot: MemberColorSlot.teal,
                 subtitle: formatter.text(for: mine, viewerMemberId: mine.assigneeMemberId, partnerName: nil, now: now),
                 take: nil
             )
             TaskRow(
                 task: free,
-                dotColor: CorbieColorPalette.text2,
+                dotSlot: nil,
                 subtitle: formatter.text(for: free, viewerMemberId: nil, partnerName: "Sofia", now: now),
                 take: {}
             )
         }
         .padding(CorbieSpacing.l)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
     }
 }
 

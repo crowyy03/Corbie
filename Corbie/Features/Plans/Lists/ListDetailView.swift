@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct ListDetailView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: ListDetailViewModel
@@ -12,7 +14,7 @@ struct ListDetailView: View {
 
     var body: some View {
         content
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(model.list?.title ?? "")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -64,7 +66,7 @@ struct ListDetailView: View {
         case .map:
             ListMapView(
                 items: model.placedItems,
-                color: { environment.memberColor(id: $0) },
+                slot: { environment.memberSlot(id: $0) },
                 name: { environment.memberName(id: $0) }
             )
         }
@@ -95,7 +97,7 @@ struct ListDetailView: View {
                 if let subtitle = model.list?.subtitle, subtitle.isEmpty == false {
                     Text(subtitle)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .textCase(nil)
                         .plansListRow()
                 }
@@ -142,12 +144,12 @@ struct ListDetailView: View {
     private var addRow: some View {
         HStack(spacing: CorbieSpacing.s) {
             Image(systemName: "plus")
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .accessibilityHidden(true)
             TextField(String(localized: "lists.detail.additem.placeholder"), text: $model.draftTitle)
                 .textFieldStyle(.plain)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .submitLabel(.done)
                 .onSubmit {
                     Task { await model.addDraftItem() }
@@ -160,9 +162,9 @@ struct ListDetailView: View {
     private func row(for item: ListItemDTO) -> some View {
         ListItemRow(
             item: item,
-            addedByColor: environment.memberColor(id: item.addedByMemberId),
+            addedBySlot: environment.memberSlot(id: item.addedByMemberId),
             addedByName: environment.memberName(id: item.addedByMemberId),
-            checkedByColor: environment.memberColor(id: item.checkedByMemberId),
+            checkedBySlot: environment.memberSlot(id: item.checkedByMemberId),
             checkedByName: item.checkedByMemberId.map { environment.memberName(id: $0) },
             onToggle: {
                 Task { await model.toggle(item) }

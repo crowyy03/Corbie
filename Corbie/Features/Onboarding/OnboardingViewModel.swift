@@ -39,6 +39,10 @@ final class OnboardingViewModel {
         self.appState = appState
     }
 
+    var partnerSlot: MemberColorSlot? { environment.partner?.colorSlot }
+
+    var partnerName: String { environment.partnerName }
+
     func adopt(joinCode raw: String?) {
         guard let raw, InviteCodeFormat.isComplete(raw) else { return }
         joinCode = InviteCodeFormat.sanitize(raw)
@@ -193,9 +197,11 @@ final class OnboardingViewModel {
         let created = try await environment.repositories.members.upsertCurrentMember(
             appleUserId: appleUserID,
             spaceId: base.id,
-            draft: profile.memberDraft
-        )
+            draft: profile.memberDraft,
+            theme: environment.theme.settings.theme
+        ).member
         member = created
+        profile.colorSlot = created.colorSlot
         if base.creatorMemberId == nil {
             var updated = base
             updated.creatorMemberId = created.id
@@ -208,7 +214,12 @@ final class OnboardingViewModel {
     private func saveProfile() async throws {
         try await ensureSpaceAndMember()
         guard let member, let space else { return }
-        self.member = try await environment.repositories.members.update(profile.applied(to: member))
+        let saved = try await environment.repositories.members.update(
+            profile.applied(to: member),
+            theme: environment.theme.settings.theme
+        )
+        self.member = saved.member
+        profile.colorSlot = saved.member.colorSlot
         self.space = try await environment.repositories.spaces.update(profile.applied(to: space))
     }
 

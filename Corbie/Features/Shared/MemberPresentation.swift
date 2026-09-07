@@ -14,9 +14,8 @@ extension AppEnvironment {
         return currentMember.id == id
     }
 
-    func memberColor(id: UUID?) -> Color {
-        guard let member = member(id: id) else { return CorbieColorPalette.text2 }
-        return MemberColor(key: member.colorKey).color
+    func memberSlot(id: UUID?) -> MemberColorSlot? {
+        member(id: id)?.colorSlot
     }
 
     func memberName(id: UUID?) -> String {

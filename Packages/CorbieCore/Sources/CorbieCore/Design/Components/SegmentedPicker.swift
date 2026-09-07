@@ -6,6 +6,8 @@ public struct SegmentedPicker<Option: Hashable>: View {
     private let options: [Option]
     private let label: (Option) -> String
 
+    @Environment(\.palette) private var palette
+
     public init(selection: Binding<Option>, options: [Option], label: @escaping (Option) -> String) {
         _selection = selection
         self.options = options
@@ -19,8 +21,8 @@ public struct SegmentedPicker<Option: Hashable>: View {
             }
         }
         .padding(CorbieSpacing.xxs)
-        .background(Capsule(style: .continuous).fill(CorbieColorPalette.surface))
-        .overlay(Capsule(style: .continuous).strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline))
+        .background(Capsule(style: .continuous).fill(palette.surface))
+        .overlay(Capsule(style: .continuous).strokeBorder(palette.border, lineWidth: CorbieMetrics.hairline))
     }
 
     private func segment(_ option: Option) -> some View {
@@ -31,11 +33,11 @@ public struct SegmentedPicker<Option: Hashable>: View {
             Text(label(option))
                 .corbieCaption()
                 .fontWeight(.semibold)
-                .foregroundStyle(isSelected ? CorbieColorPalette.accentInk : CorbieColorPalette.text2)
+                .foregroundStyle(isSelected ? palette.ctaText : palette.text2)
                 .lineLimit(1)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: CorbieMetrics.segmentHeight)
-                .background(Capsule(style: .continuous).fill(isSelected ? CorbieColorPalette.ice : .clear))
+                .background(Capsule(style: .continuous).fill(isSelected ? palette.accent : .clear))
                 .contentShape(Capsule(style: .continuous))
         }
         .buttonStyle(.plain)
@@ -45,26 +47,21 @@ public struct SegmentedPicker<Option: Hashable>: View {
 }
 
 #if DEBUG
-struct SegmentedPickerGallery: View {
+private struct SegmentedPickerPreview: View {
     @State private var selection = "all"
 
     var body: some View {
         SegmentedPicker(selection: $selection, options: ["all", "mine", "free"]) { option in
             option.capitalized
         }
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
     }
 }
 
 #if canImport(UIKit)
-#Preview("SegmentedPicker light") {
-    SegmentedPickerGallery().preferredColorScheme(.light)
-}
-
-#Preview("SegmentedPicker dark") {
-    SegmentedPickerGallery().preferredColorScheme(.dark)
+#Preview("SegmentedPicker") {
+    PreviewThemes {
+        SegmentedPickerPreview()
+    }
 }
 #endif
 #endif

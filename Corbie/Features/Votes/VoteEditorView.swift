@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct VoteEditorView: View {
+    @Environment(\.palette) private var palette
+
     private let onFinish: () async -> Void
 
     @Environment(AppEnvironment.self) private var environment
@@ -28,7 +30,7 @@ struct VoteEditorView: View {
                 }
                 .padding(CorbieSpacing.l)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(String(localized: "votes.action.new"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -87,7 +89,7 @@ struct VoteEditorView: View {
                         )
                         .textFieldStyle(.plain)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .padding(.horizontal, CorbieSpacing.s)
                         .frame(minHeight: CorbieMetrics.minimumTapTarget)
                         .corbieFieldBox()
@@ -96,7 +98,7 @@ struct VoteEditorView: View {
                                 model.removeOption(at: index)
                             } label: {
                                 Image(systemName: "minus.circle")
-                                    .foregroundStyle(CorbieColorPalette.text2)
+                                    .foregroundStyle(palette.text2)
                                     .frame(
                                         width: CorbieMetrics.minimumTapTarget,
                                         height: CorbieMetrics.minimumTapTarget
@@ -134,13 +136,13 @@ struct VoteEditorView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                 Text("votes.editor.reveal")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Text("votes.editor.reveal.hint")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         }
-        .tint(CorbieColorPalette.ice)
+        .tint(palette.accent)
         .frame(minHeight: CorbieMetrics.minimumTapTarget)
     }
 

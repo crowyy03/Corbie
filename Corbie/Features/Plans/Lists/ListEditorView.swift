@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct ListEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: ListEditorViewModel
@@ -42,13 +44,13 @@ struct ListEditorView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text("lists.editor.field.anyone")
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     Text("lists.editor.field.anyone.hint")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
         }
         .task {

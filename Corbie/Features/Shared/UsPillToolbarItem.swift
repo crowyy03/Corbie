@@ -22,17 +22,10 @@ private struct UsPillButton: View {
             appState.isUsHubPresented = true
         } label: {
             UsPill(
-                colorA: environment.memberColor(id: environment.currentMember?.id),
-                colorB: environment.memberColor(id: environment.partner?.id)
+                slotA: environment.memberSlot(id: environment.currentMember?.id),
+                slotB: environment.memberSlot(id: environment.partner?.id),
+                badge: environment.usBadge.showsDot
             )
-            .overlay(alignment: .topTrailing) {
-                if environment.usBadge.showsDot {
-                    Circle()
-                        .fill(CorbieColorPalette.ice)
-                        .frame(width: CorbieSpacing.xs, height: CorbieSpacing.xs)
-                        .padding(CorbieSpacing.xxs)
-                }
-            }
         }
         .accessibilityLabel(Text(label))
         .task(id: environment.session) {

@@ -74,19 +74,21 @@ struct PartnerWishesWidgetView: View {
 }
 
 struct WishRow: View {
+    @Environment(\.palette) private var palette
+
     let wish: WidgetWish
 
     var body: some View {
         HStack(spacing: CorbieSpacing.xs) {
             Text(wish.title)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(1)
             Spacer(minLength: CorbieSpacing.xs)
             if let priceText = wish.priceText {
                 Text(priceText)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.ice)
+                    .foregroundStyle(palette.accent)
                     .lineLimit(1)
             }
         }

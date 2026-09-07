@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct TaskEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(\.dismiss) private var dismiss
     @State private var model: TaskEditorViewModel
 
@@ -35,11 +37,11 @@ struct TaskEditorView: View {
                             HStack(spacing: CorbieSpacing.s) {
                                 Text("tasks.editor.due.toggle")
                                     .corbieBody()
-                                    .foregroundStyle(CorbieColorPalette.text)
+                                    .foregroundStyle(palette.text)
                                 Spacer(minLength: 0)
                                 Toggle(isOn: $model.hasDueDate) { EmptyView() }
                                     .labelsHidden()
-                                    .tint(CorbieColorPalette.ice)
+                                    .tint(palette.accent)
                             }
                             .frame(minHeight: CorbieMetrics.minimumTapTarget)
                             .contentShape(Rectangle())
@@ -52,10 +54,10 @@ struct TaskEditorView: View {
                                 ) {
                                     Text("tasks.editor.due.date")
                                         .corbieBody()
-                                        .foregroundStyle(CorbieColorPalette.text)
+                                        .foregroundStyle(palette.text)
                                 }
                                 .datePickerStyle(.compact)
-                                .tint(CorbieColorPalette.ice)
+                                .tint(palette.accent)
                                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
                             }
                         }
@@ -76,7 +78,7 @@ struct TaskEditorView: View {
                                 Text("tasks.editor.field.repeat")
                             }
                             .pickerStyle(.menu)
-                            .tint(CorbieColorPalette.text)
+                            .tint(palette.text)
                             if model.repeatOption == .weekdays {
                                 weekdayPicker
                             }
@@ -92,7 +94,7 @@ struct TaskEditorView: View {
                         .textFieldStyle(.plain)
                         .lineLimit(3...6)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .padding(CorbieSpacing.s)
                         .frame(minHeight: CorbieMetrics.controlHeight, alignment: .top)
                         .corbieFieldBox()
@@ -102,13 +104,13 @@ struct TaskEditorView: View {
                     Card {
                         Text("tasks.editor.info")
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .multilineTextAlignment(.leading)
                     }
                 }
                 .padding(CorbieSpacing.l)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .scrollDismissesKeyboard(.interactively)
             .navigationTitle(Text(model.isEditing ? "tasks.editor.title.edit" : "tasks.editor.title.new"))
             .navigationBarTitleDisplayMode(.inline)

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct VoteView: View {
+    @Environment(\.palette) private var palette
+
     private let onAnswered: (VoteDTO) -> Void
 
     @Environment(AppEnvironment.self) private var environment
@@ -17,7 +19,7 @@ struct VoteView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                 Text(model.vote.question)
                     .corbieScreenTitle()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .fixedSize(horizontal: false, vertical: true)
                 options
                 outcome
@@ -34,7 +36,7 @@ struct VoteView: View {
             }
             .padding(CorbieSpacing.l)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationTitle(String(localized: "votes.title"))
         .navigationBarTitleDisplayMode(.inline)
         .task {
@@ -64,25 +66,25 @@ struct VoteView: View {
     private func optionCard(index: Int, option: String) -> some View {
         let isPicked = model.selection.contains(index)
         let isShared = model.partnerVisibleOptions.contains(index)
-        return Card(showsChromeGradient: isPicked && isShared) {
+        return Card(isHighlighted: isPicked && isShared) {
             HStack(spacing: CorbieSpacing.s) {
                 Image(systemName: indicator(isPicked: isPicked))
-                    .foregroundStyle(isPicked ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+                    .foregroundStyle(isPicked ? palette.accent : palette.text2)
                     .accessibilityHidden(true)
                 Text(option)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .multilineTextAlignment(.leading)
                 Spacer(minLength: 0)
                 if isPicked {
                     MemberDot(
-                        color: environment.memberColor(id: environment.currentMember?.id),
+                        slot: environment.memberSlot(id: environment.currentMember?.id),
                         accessibilityLabel: String(localized: "votes.detail.yours")
                     )
                 }
                 if isShared {
                     MemberDot(
-                        color: environment.memberColor(id: environment.partner?.id),
+                        slot: environment.memberSlot(id: environment.partner?.id),
                         accessibilityLabel: environment.partnerName
                     )
                 }
@@ -97,10 +99,10 @@ struct VoteView: View {
                 Text(outcomeTitle)
                     .corbieBody()
                     .fontWeight(.semibold)
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Text(outcomeNote)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .multilineTextAlignment(.leading)
             }
         }

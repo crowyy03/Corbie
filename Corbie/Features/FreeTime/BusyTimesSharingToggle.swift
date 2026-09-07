@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct BusyTimesSharingToggle: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @State private var isSaving = false
 
@@ -10,15 +12,15 @@ struct BusyTimesSharingToggle: View {
             Toggle(isOn: sharing) {
                 Text("freetime.sharing.toggle")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .disabled(isSaving)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
 
             Text("freetime.sharing.hint")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
         .padding(.vertical, CorbieSpacing.xxs)
     }
@@ -41,7 +43,7 @@ struct BusyTimesSharingToggle: View {
 #Preview {
     BusyTimesSharingToggle()
         .padding(CorbieSpacing.l)
-        .background(CorbieColorPalette.bg)
+        .background(CorbieTheme.sand.palette.bg)
         .environment(AppEnvironment.previewSignedIn())
 }
 #endif

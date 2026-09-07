@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct FreeTimePrivacySheet: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
 
@@ -9,11 +11,11 @@ struct FreeTimePrivacySheet: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.l) {
             Text("freetime.privacy.title")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
 
             Text("freetime.privacy.body")
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .fixedSize(horizontal: false, vertical: true)
 
             Spacer(minLength: CorbieSpacing.l)
@@ -29,7 +31,7 @@ struct FreeTimePrivacySheet: View {
         }
         .padding(CorbieSpacing.l)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .presentationDetents([.medium])
         .interactiveDismissDisabled()
     }

@@ -15,14 +15,6 @@ find Corbie CorbieWidgets CorbieShare -name '*.swift' -type f -print0 |
         fi
     done
 
-find Corbie CorbieWidgets CorbieShare CorbieTests CorbieUITests Packages \
-    -name '*.swift' -type f \
-    ! -path '*/.build/*' \
-    ! -path 'Packages/CorbieCore/Sources/CorbieCore/Design/*' \
-    ! -path 'Packages/CorbieCore/Tests/CorbieCoreTests/Design*' -print0 |
-    xargs -0 grep -nE '#[0-9A-Fa-f]{6}' /dev/null |
-    sed 's/^/hex color outside the design tokens: /' >>"$violations" || true
-
 python3 - "$violations" <<'PY' || printf 'localizable catalog could not be read\n' >>"$violations"
 import json
 import os

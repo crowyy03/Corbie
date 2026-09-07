@@ -16,13 +16,15 @@ enum LegalPage: String, Identifiable, CaseIterable {
 }
 
 struct LegalPageView: UIViewControllerRepresentable {
+    @Environment(\.palette) private var palette
+
     let url: URL
 
     func makeUIViewController(context: Context) -> SFSafariViewController {
         let configuration = SFSafariViewController.Configuration()
         configuration.entersReaderIfAvailable = false
         let controller = SFSafariViewController(url: url, configuration: configuration)
-        controller.preferredControlTintColor = UIColor(CorbieColorPalette.ice)
+        controller.preferredControlTintColor = UIColor(palette.accent)
         controller.dismissButtonStyle = .close
         return controller
     }

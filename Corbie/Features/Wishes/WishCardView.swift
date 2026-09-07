@@ -3,6 +3,8 @@ import SwiftUI
 import UIKit
 
 struct WishThumbnail: View {
+    @Environment(\.palette) private var palette
+
     static let side: CGFloat = 64
 
     let localImage: Data?
@@ -14,7 +16,7 @@ struct WishThumbnail: View {
 
     var body: some View {
         shape
-            .fill(CorbieColorPalette.elevated)
+            .fill(palette.elevated)
             .overlay {
                 if let localImage, let image = UIImage(data: localImage) {
                     Image(uiImage: image)
@@ -32,18 +34,20 @@ struct WishThumbnail: View {
             }
             .frame(width: WishThumbnail.side, height: WishThumbnail.side)
             .clipShape(shape)
-            .overlay(shape.strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline))
+            .overlay(shape.strokeBorder(palette.border, lineWidth: CorbieMetrics.hairline))
             .accessibilityHidden(true)
     }
 
     private var fallback: some View {
         Image(systemName: "link")
             .font(.system(size: CorbieSpacing.l, weight: .light))
-            .foregroundStyle(CorbieColorPalette.text2)
+            .foregroundStyle(palette.text2)
     }
 }
 
 struct WishPriorityBadge: View {
+    @Environment(\.palette) private var palette
+
     let priority: WishPriority
 
     private var isTinted: Bool { priority == .must }
@@ -51,20 +55,22 @@ struct WishPriorityBadge: View {
     var body: some View {
         Text(priority.title)
             .corbieSectionCaps()
-            .foregroundStyle(isTinted ? CorbieColorPalette.accentInk : CorbieColorPalette.text2)
+            .foregroundStyle(isTinted ? palette.ctaText : palette.text2)
             .padding(.horizontal, CorbieSpacing.xs)
             .padding(.vertical, CorbieSpacing.xxs)
             .background(
                 Capsule(style: .continuous)
-                    .fill(isTinted ? CorbieColorPalette.ice : CorbieColorPalette.elevated)
+                    .fill(isTinted ? palette.accent : palette.elevated)
             )
     }
 }
 
 struct WishCardView: View {
+    @Environment(\.palette) private var palette
+
     let wish: WishDTO
     let approximate: Money?
-    let ownerColor: Color
+    let ownerSlot: MemberColorSlot?
     let ownerName: String
 
     private var money: Money? { WishPricing.money(for: wish) }
@@ -75,10 +81,10 @@ struct WishCardView: View {
                 WishThumbnail(localImage: wish.localImage, imageURL: wish.imageURL)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     HStack(spacing: CorbieSpacing.xs) {
-                        MemberDot(color: ownerColor)
+                        MemberDot(slot: ownerSlot)
                         Text(wish.title)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                             .lineLimit(2)
                             .multilineTextAlignment(.leading)
                     }
@@ -98,11 +104,11 @@ struct WishCardView: View {
         HStack(spacing: CorbieSpacing.xs) {
             Text(money.formatted())
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             if let approximate {
                 Text(approximate.approximate())
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         }
         .lineLimit(1)
@@ -114,7 +120,7 @@ struct WishCardView: View {
             if let tag = wish.source.tag(url: wish.url) {
                 Text(tag)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .lineLimit(1)
             }
         }
@@ -144,18 +150,18 @@ struct WishCardView: View {
                 source: .etsy
             ),
             approximate: Money(amount: Decimal(44), currency: "EUR"),
-            ownerColor: MemberColorKey.p2.color,
+            ownerSlot: MemberColorSlot.rose,
             ownerName: "Sofia"
         )
         WishCardView(
             wish: WishDTO(id: UUID(), title: "Chemex filters", priority: .someday, source: .manual),
             approximate: nil,
-            ownerColor: MemberColorKey.p1.color,
+            ownerSlot: MemberColorSlot.teal,
             ownerName: "you"
         )
     }
     .padding(CorbieSpacing.m)
     .frame(maxHeight: .infinity)
-    .background(CorbieColorPalette.bg)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

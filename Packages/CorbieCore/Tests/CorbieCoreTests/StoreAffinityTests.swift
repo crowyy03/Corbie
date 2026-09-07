@@ -22,8 +22,9 @@ import Testing
         let member = try await repositories.members.upsertCurrentMember(
             appleUserId: "apple-partner",
             spaceId: spaceId,
-            draft: MemberDraft(displayName: "Sofia")
-        )
+            draft: MemberDraft(displayName: "Sofia"),
+            theme: .sand
+        ).member
         let task = try await repositories.tasks.create(TaskDraft(spaceId: spaceId, title: "Book the table"))
         let event = try await repositories.events.create(
             EventDraft(spaceId: spaceId, title: "Dinner", startAt: Date())

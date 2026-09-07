@@ -3,6 +3,8 @@ import SwiftUI
 import UIKit
 
 struct FreeTimeView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
@@ -21,7 +23,7 @@ struct FreeTimeView: View {
                 .padding(CorbieSpacing.l)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(String(localized: "freetime.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -95,7 +97,7 @@ struct FreeTimeView: View {
         switch model.state {
         case .loading:
             ProgressView()
-                .tint(CorbieColorPalette.ice)
+                .tint(palette.accent)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, CorbieSpacing.xxl)
         case .notPaired:
@@ -136,10 +138,10 @@ struct FreeTimeView: View {
                 Text("freetime.you.title")
                     .corbieBody()
                     .fontWeight(.semibold)
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Text("freetime.you.note")
                     .corbieCaption()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                 BusyTimesSharingToggle()
             }
         }
@@ -156,10 +158,10 @@ struct FreeTimeView: View {
                 )
                 .corbieBody()
                 .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 Text("freetime.partner.note")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                 SecondaryButton(title: String(localized: "freetime.partner.ask")) {
                     model.nudgePartner()
                 }
@@ -173,10 +175,10 @@ struct FreeTimeView: View {
                 Text("calendar.import.denied.title")
                     .corbieBody()
                     .fontWeight(.semibold)
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Text("calendar.import.denied.note")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                 if let url = URL(string: UIApplication.openSettingsURLString) {
                     SecondaryButton(title: String(localized: "settings.notifications.permission.open")) {
                         openURL(url)
@@ -211,7 +213,7 @@ struct FreeTimeView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(verbatim: model.rowText.title(for: slot))
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                     if let partnerTime = model.rowText.partnerTime(
                         for: slot,
@@ -219,13 +221,13 @@ struct FreeTimeView: View {
                     ) {
                         Text(verbatim: partnerTime)
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                 }
                 Spacer(minLength: CorbieSpacing.xs)
                 Text(verbatim: model.rowText.duration(for: slot))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
             .contentShape(Rectangle())

@@ -4,9 +4,11 @@ public struct Chip: View {
     private let label: String
     private let count: Int?
     private let isSelected: Bool
-    private let tint: Color?
+    private let tint: MemberColorSlot?
 
-    public init(label: String, count: Int? = nil, isSelected: Bool = false, tint: Color? = nil) {
+    @Environment(\.palette) private var palette
+
+    public init(label: String, count: Int? = nil, isSelected: Bool = false, tint: MemberColorSlot? = nil) {
         self.label = label
         self.count = count
         self.isSelected = isSelected
@@ -14,11 +16,13 @@ public struct Chip: View {
     }
 
     private var fill: Color {
-        isSelected ? (tint ?? CorbieColorPalette.ice) : CorbieColorPalette.surface
+        guard isSelected else { return palette.surface }
+        guard let tint else { return palette.accent }
+        return palette.member(tint)
     }
 
     private var foreground: Color {
-        isSelected ? CorbieColorPalette.accentInk : CorbieColorPalette.text2
+        isSelected ? palette.ctaText : palette.text2
     }
 
     public var body: some View {
@@ -39,7 +43,7 @@ public struct Chip: View {
         .background(Capsule(style: .continuous).fill(fill))
         .overlay(
             Capsule(style: .continuous)
-                .strokeBorder(isSelected ? .clear : CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
+                .strokeBorder(isSelected ? .clear : palette.border, lineWidth: CorbieMetrics.hairline)
         )
         .frame(minHeight: CorbieMetrics.minimumTapTarget)
         .contentShape(Rectangle())
@@ -49,26 +53,15 @@ public struct Chip: View {
 }
 
 #if DEBUG
-struct ChipGallery: View {
-    var body: some View {
+#if canImport(UIKit)
+#Preview("Chip") {
+    PreviewThemes {
         HStack(spacing: CorbieSpacing.xs) {
             Chip(label: "All", count: 12, isSelected: true)
             Chip(label: "Mine", count: 3)
-            Chip(label: "Free", tint: MemberColorKey.p3.color)
+            Chip(label: "Free", isSelected: true, tint: .rose)
         }
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
     }
-}
-
-#if canImport(UIKit)
-#Preview("Chip light") {
-    ChipGallery().preferredColorScheme(.light)
-}
-
-#Preview("Chip dark") {
-    ChipGallery().preferredColorScheme(.dark)
 }
 #endif
 #endif

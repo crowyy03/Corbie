@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct GiftIdeaEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isEditingLink: Bool
@@ -36,7 +38,7 @@ struct GiftIdeaEditorView: View {
                 .padding(.vertical, CorbieSpacing.m)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(Text(titleKey))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -77,7 +79,7 @@ struct GiftIdeaEditorView: View {
                 TextField(String(localized: "people.gift.link.placeholder"), text: $model.link)
                     .textFieldStyle(.plain)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .keyboardType(.URL)
@@ -110,7 +112,7 @@ struct GiftIdeaEditorView: View {
                 TextField(String(localized: "people.gift.price.placeholder"), text: $model.priceText)
                     .textFieldStyle(.plain)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .keyboardType(.decimalPad)
                     .padding(.horizontal, CorbieSpacing.s)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)

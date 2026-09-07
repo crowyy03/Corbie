@@ -3,6 +3,8 @@ import SwiftUI
 import UIKit
 
 struct SettingsNotificationsView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
@@ -15,7 +17,7 @@ struct SettingsNotificationsView: View {
             } header: {
                 SectionCaps(text: String(localized: "settings.notifications.permission.header"))
             }
-            .listRowBackground(CorbieColorPalette.surface)
+            .listRowBackground(palette.surface)
 
             Section {
                 ForEach(SettingsNotificationToggle.allCases) { toggle in
@@ -26,13 +28,13 @@ struct SettingsNotificationsView: View {
             } footer: {
                 Text("settings.notifications.footer")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
-            .listRowBackground(CorbieColorPalette.surface)
+            .listRowBackground(palette.surface)
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationTitle(String(localized: "settings.notifications.title"))
         .navigationBarTitleDisplayMode(.inline)
         .task { await model.load(environment) }
@@ -46,9 +48,9 @@ struct SettingsNotificationsView: View {
         Toggle(isOn: binding(for: toggle)) {
             Text(String(localized: String.LocalizationValue(toggle.titleKey)))
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
         }
-        .tint(CorbieColorPalette.ice)
+        .tint(palette.accent)
         .frame(minHeight: CorbieMetrics.minimumTapTarget)
     }
 
@@ -63,16 +65,16 @@ struct SettingsNotificationsView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
             Text(statusKey)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             Text("settings.notifications.permission.note")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
             if model.isDenied, let url = URL(string: UIApplication.openSettingsURLString) {
                 Button(String(localized: "settings.notifications.permission.open")) {
                     openURL(url)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(CorbieColorPalette.ice)
+                .foregroundStyle(palette.accent)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             }
         }

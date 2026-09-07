@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct CapsuleEditorView: View {
+    @Environment(\.palette) private var palette
+
     private let onFinish: () async -> Void
 
     @Environment(AppEnvironment.self) private var environment
@@ -35,7 +37,7 @@ struct CapsuleEditorView: View {
                 }
                 .padding(CorbieSpacing.l)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(
                 model.isExisting
                     ? String(localized: "capsules.editor.edit")
@@ -83,10 +85,10 @@ struct CapsuleEditorView: View {
             hint: String(localized: "capsules.editor.to.hint")
         ) {
             HStack(spacing: CorbieSpacing.xs) {
-                MemberDot(color: environment.memberColor(id: environment.partner?.id))
+                MemberDot(slot: environment.memberSlot(id: environment.partner?.id))
                 Text(environment.partnerName)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
             .frame(minHeight: CorbieMetrics.minimumTapTarget, alignment: .leading)
             .accessibilityElement(children: .combine)
@@ -100,7 +102,7 @@ struct CapsuleEditorView: View {
         ) {
             TextEditor(text: $model.letter)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .scrollContentBackground(.hidden)
                 .frame(minHeight: 180)
                 .padding(CorbieSpacing.xs)

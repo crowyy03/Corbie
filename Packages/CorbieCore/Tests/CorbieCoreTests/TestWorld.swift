@@ -17,15 +17,17 @@ struct TestWorld {
         let me = try await repositories.members.upsertCurrentMember(
             appleUserId: "apple-me",
             spaceId: space.id,
-            draft: MemberDraft(displayName: "Ilya", colorKey: "ice")
-        )
+            draft: MemberDraft(displayName: "Ilya", colorKey: MemberColorSlot.creatorDefault.rawValue),
+            theme: .sand
+        ).member
         let partner: MemberDTO
         if withPartner {
             partner = try await repositories.members.upsertCurrentMember(
                 appleUserId: "apple-partner",
                 spaceId: space.id,
-                draft: MemberDraft(displayName: "Sofia", colorKey: "slate")
-            )
+                draft: MemberDraft(displayName: "Sofia", colorKey: MemberColorSlot.partnerDefault.rawValue),
+                theme: .sand
+            ).member
         } else {
             partner = me
         }

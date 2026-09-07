@@ -2,30 +2,60 @@ import CorbieCore
 import SwiftUI
 
 struct MemberColorPicker: View {
-    @Binding var selection: MemberColorKey
+    @Binding var selection: MemberColorSlot
+    let partnerSlot: MemberColorSlot?
+    let partnerName: String
+
+    @Environment(\.palette) private var palette
+    @Environment(\.theme) private var theme
 
     private let swatchSize: CGFloat = 28
 
     var body: some View {
         HStack(spacing: CorbieSpacing.xs) {
-            ForEach(CorbieColorPalette.partnerPalette) { key in
-                swatch(key)
+            ForEach(MemberColorSlot.allCases) { slot in
+                swatch(slot)
             }
         }
     }
 
-    private func swatch(_ key: MemberColorKey) -> some View {
-        let isSelected = selection == key
+    private func isBlocked(_ slot: MemberColorSlot) -> Bool {
+        guard let partnerSlot else { return false }
+        return slot.conflicts(with: partnerSlot, in: theme)
+    }
+
+    private func label(_ slot: MemberColorSlot) -> String {
+        let name = String(localized: String.LocalizationValue(slot.displayNameKey))
+        if slot == partnerSlot {
+            return String(format: String(localized: "member.color.theirs"), name, partnerName)
+        }
+        if isBlocked(slot) {
+            return String(format: String(localized: "member.color.tooclose"), name, partnerName)
+        }
+        return name
+    }
+
+    private func swatch(_ slot: MemberColorSlot) -> some View {
+        let isSelected = selection == slot
+        let blocked = isBlocked(slot)
         return Button {
-            selection = key
+            selection = slot
         } label: {
             Circle()
-                .fill(key.color)
+                .fill(palette.member(slot))
                 .frame(width: swatchSize, height: swatchSize)
+                .opacity(blocked ? 0.35 : 1)
+                .overlay {
+                    if slot == partnerSlot {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: CorbieSpacing.s, weight: .bold))
+                            .foregroundStyle(palette.bg)
+                    }
+                }
                 .overlay {
                     Circle()
                         .strokeBorder(
-                            isSelected ? CorbieColorPalette.ice : .clear,
+                            isSelected ? palette.accent : .clear,
                             lineWidth: CorbieMetrics.hairline * 2
                         )
                         .padding(-CorbieSpacing.xxs)
@@ -34,18 +64,8 @@ struct MemberColorPicker: View {
                 .contentShape(Circle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(MemberColorPicker.name(key))
+        .disabled(blocked)
+        .accessibilityLabel(label(slot))
         .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
-    }
-
-    static func name(_ key: MemberColorKey) -> String {
-        switch key {
-        case .p1: return String(localized: "onboarding.profile.color.p1")
-        case .p2: return String(localized: "onboarding.profile.color.p2")
-        case .p3: return String(localized: "onboarding.profile.color.p3")
-        case .p4: return String(localized: "onboarding.profile.color.p4")
-        case .p5: return String(localized: "onboarding.profile.color.p5")
-        case .p6: return String(localized: "onboarding.profile.color.p6")
-        }
     }
 }

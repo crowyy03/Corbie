@@ -6,6 +6,8 @@ public struct TrialBanner: View {
     private let actionTitle: String
     private let action: () -> Void
 
+    @Environment(\.palette) private var palette
+
     public init(daysLeft: Int?, message: String, actionTitle: String, action: @escaping () -> Void) {
         self.daysLeft = daysLeft
         self.message = message
@@ -19,16 +21,16 @@ public struct TrialBanner: View {
                 Text(daysLeft.formatted())
                     .corbieMono()
                     .fontWeight(.bold)
-                    .foregroundStyle(CorbieColorPalette.accentInk)
+                    .foregroundStyle(palette.ctaText)
                     .padding(.horizontal, CorbieSpacing.xs)
                     .frame(minHeight: CorbieSpacing.xl)
-                    .background(Capsule(style: .continuous).fill(CorbieColorPalette.ice))
+                    .background(Capsule(style: .continuous).fill(palette.accent))
                     .accessibilityHidden(true)
             }
 
             Text(message)
                 .corbieCaption()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(2)
 
             Spacer(minLength: CorbieSpacing.xs)
@@ -37,7 +39,7 @@ public struct TrialBanner: View {
                 Text(actionTitle)
                     .corbieCaption()
                     .fontWeight(.semibold)
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .padding(.horizontal, CorbieSpacing.s)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)
                     .contentShape(Rectangle())
@@ -49,32 +51,21 @@ public struct TrialBanner: View {
         .padding(.vertical, CorbieSpacing.xs)
         .background(
             RoundedRectangle(cornerRadius: CorbieRadius.card, style: .continuous)
-                .fill(CorbieColorPalette.elevated)
+                .fill(palette.elevated)
         )
         .overlay(
             RoundedRectangle(cornerRadius: CorbieRadius.card, style: .continuous)
-                .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
+                .strokeBorder(palette.border, lineWidth: CorbieMetrics.hairline)
         )
     }
 }
 
 #if DEBUG
-struct TrialBannerGallery: View {
-    var body: some View {
-        TrialBanner(daysLeft: 2, message: "Trial ends in 2 days", actionTitle: "See plans") {}
-            .padding(CorbieSpacing.l)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(CorbieColorPalette.bg)
-    }
-}
-
 #if canImport(UIKit)
-#Preview("TrialBanner light") {
-    TrialBannerGallery().preferredColorScheme(.light)
-}
-
-#Preview("TrialBanner dark") {
-    TrialBannerGallery().preferredColorScheme(.dark)
+#Preview("TrialBanner") {
+    PreviewThemes {
+        TrialBanner(daysLeft: 2, message: "Trial ends in 2 days", actionTitle: "See plans") {}
+    }
 }
 #endif
 #endif

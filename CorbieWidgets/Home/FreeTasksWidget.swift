@@ -64,21 +64,23 @@ struct FreeTasksWidgetView: View {
 }
 
 struct FreeTaskRow: View {
+    @Environment(\.palette) private var palette
+
     let task: WidgetTask
     let now: Date
 
     var body: some View {
         HStack(spacing: CorbieSpacing.xs) {
-            MemberDot(color: CorbieColorPalette.text2)
+            MemberDot(slot: nil)
             WidgetTaskText(task: task, now: now)
             Spacer(minLength: CorbieSpacing.xs)
             Button(intent: TakeTaskIntent(taskID: task.id)) {
                 Text("widget.freetasks.take")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.accentInk)
+                    .foregroundStyle(palette.ctaText)
                     .padding(.horizontal, CorbieSpacing.s)
                     .frame(height: CorbieMetrics.chipHeight)
-                    .background(CorbieColorPalette.ice, in: Capsule(style: .continuous))
+                    .background(palette.accent, in: Capsule(style: .continuous))
                     .frame(height: WidgetLayout.rowHeight)
                     .contentShape(Rectangle())
             }

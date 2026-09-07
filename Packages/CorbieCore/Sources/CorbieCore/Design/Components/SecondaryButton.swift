@@ -21,26 +21,15 @@ public struct SecondaryButton: View {
 }
 
 #if DEBUG
-struct SecondaryButtonGallery: View {
-    var body: some View {
+#if canImport(UIKit)
+#Preview("SecondaryButton") {
+    PreviewThemes {
         VStack(spacing: CorbieSpacing.m) {
             SecondaryButton(title: "Not now") {}
             SecondaryButton(title: "Not now") {}
                 .disabled(true)
         }
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
     }
-}
-
-#if canImport(UIKit)
-#Preview("SecondaryButton light") {
-    SecondaryButtonGallery().preferredColorScheme(.light)
-}
-
-#Preview("SecondaryButton dark") {
-    SecondaryButtonGallery().preferredColorScheme(.dark)
 }
 #endif
 #endif

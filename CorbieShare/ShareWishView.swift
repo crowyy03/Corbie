@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct ShareWishView: View {
+    @Environment(\.palette) private var palette
+
     let items: [NSExtensionItem]
     let onFinish: () -> Void
 
@@ -16,15 +18,15 @@ struct ShareWishView: View {
                     case .loading:
                         Text("share.stage.loading")
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     case .noSession:
                         Text("share.stage.nosession")
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     case .readOnly:
                         Text("share.stage.readonly")
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     case .ready:
                         form
                     }
@@ -33,7 +35,7 @@ struct ShareWishView: View {
                 .padding(CorbieSpacing.m)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .background(CorbieColorPalette.bg.ignoresSafeArea())
+            .background(palette.bg.ignoresSafeArea())
             .navigationTitle(String(localized: "share.screen.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -53,13 +55,13 @@ struct ShareWishView: View {
         if let link = viewModel.link {
             Text(link.absoluteString)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .lineLimit(2)
                 .truncationMode(.middle)
         } else if viewModel.hasNothingShared {
             Text("share.preview.empty")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
     }
 
@@ -68,11 +70,11 @@ struct ShareWishView: View {
             if viewModel.isParsing {
                 Text("share.stage.parsing")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             } else if viewModel.didParseFail {
                 Text("share.stage.parsefailed")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
             TextFieldRow(
                 label: String(localized: "wishes.editor.name"),
@@ -87,14 +89,14 @@ struct ShareWishView: View {
             Toggle(isOn: $viewModel.isForMe) {
                 Text("wishes.editor.forme")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
             if viewModel.didSaveFail {
                 Text("share.stage.savefailed")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.warn)
+                    .foregroundStyle(palette.warn)
             }
             PrimaryButton(title: String(localized: "share.action.save")) {
                 Task {

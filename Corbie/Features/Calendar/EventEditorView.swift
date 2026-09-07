@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct EventEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: EventEditorViewModel
@@ -27,9 +29,9 @@ struct EventEditorView: View {
                     Toggle(isOn: $model.isAllDay) {
                         Text("calendar.editor.allday")
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     }
-                    .tint(CorbieColorPalette.ice)
+                    .tint(palette.accent)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)
 
                     datePicker(
@@ -53,11 +55,11 @@ struct EventEditorView: View {
 
                     Text("calendar.editor.info")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
                 .padding(CorbieSpacing.l)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(
                 model.isEditing
                     ? String(localized: "calendar.editor.title.edit")
@@ -97,7 +99,7 @@ struct EventEditorView: View {
             )
             .labelsHidden()
             .datePickerStyle(.compact)
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .accessibilityLabel(Text(label))
             .onChange(of: selection.wrappedValue) {
                 onChange()
@@ -118,7 +120,7 @@ struct EventEditorView: View {
             }
             .pickerStyle(.menu)
             .labelsHidden()
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityLabel(Text("calendar.editor.kind"))
         }
@@ -135,7 +137,7 @@ struct EventEditorView: View {
             ) {
                 Text("calendar.person.none")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         } else {
             FieldRow(label: String(localized: "calendar.editor.person")) {
@@ -149,7 +151,7 @@ struct EventEditorView: View {
                 }
                 .pickerStyle(.menu)
                 .labelsHidden()
-                .tint(CorbieColorPalette.ice)
+                .tint(palette.accent)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityLabel(Text("calendar.editor.person"))
             }
@@ -166,13 +168,13 @@ struct EventEditorView: View {
                         Text(model.place?.name ?? String(localized: "calendar.location.add"))
                             .corbieBody()
                             .foregroundStyle(
-                                model.place == nil ? CorbieColorPalette.text2 : CorbieColorPalette.text
+                                model.place == nil ? palette.text2 : palette.text
                             )
                             .multilineTextAlignment(.leading)
                         if let address = model.place?.address {
                             Text(address)
                                 .corbieMono()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                                 .multilineTextAlignment(.leading)
                         }
                     }
@@ -186,7 +188,7 @@ struct EventEditorView: View {
                         model.place = nil
                     } label: {
                         Image(systemName: "xmark.circle")
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .frame(
                                 width: CorbieMetrics.minimumTapTarget,
                                 height: CorbieMetrics.minimumTapTarget
@@ -214,7 +216,7 @@ struct EventEditorView: View {
             )
             .textFieldStyle(.plain)
             .corbieBody()
-            .foregroundStyle(CorbieColorPalette.text)
+            .foregroundStyle(palette.text)
             .lineLimit(3...6)
             .padding(CorbieSpacing.s)
             .corbieFieldBox()

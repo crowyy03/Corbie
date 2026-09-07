@@ -4,6 +4,8 @@ import SwiftUI
 import UIKit
 
 struct WishesView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @State private var viewModel = WishesViewModel()
@@ -15,7 +17,7 @@ struct WishesView: View {
             chips
             content
         }
-        .background(CorbieColorPalette.bg.ignoresSafeArea())
+        .background(palette.bg.ignoresSafeArea())
         .navigationTitle(String(localized: "tab.wishes.title"))
         .toolbar {
             AddToolbarItem { startCreating(link: nil) }
@@ -83,13 +85,13 @@ struct WishesView: View {
                         } label: {
                             Label("wishes.action.gifted", systemImage: "gift")
                         }
-                        .tint(CorbieColorPalette.ice)
+                        .tint(palette.accent)
                         Button {
                             Task { await viewModel.delete(wish) }
                         } label: {
                             Label("wishes.action.delete", systemImage: "trash")
                         }
-                        .tint(CorbieColorPalette.warn)
+                        .tint(palette.warn)
                     }
             }
             if viewModel.visibleFulfilled.isEmpty == false {
@@ -115,7 +117,7 @@ struct WishesView: View {
                             } label: {
                                 Label("wishes.action.delete", systemImage: "trash")
                             }
-                            .tint(CorbieColorPalette.warn)
+                            .tint(palette.warn)
                         }
                 }
             }
@@ -127,10 +129,10 @@ struct WishesView: View {
                     SectionCaps(text: String(localized: "wishes.section.fulfilled"))
                     Text(viewModel.visibleFulfilled.count.formatted())
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                     Spacer(minLength: 0)
                     Image(systemName: viewModel.isFulfilledExpanded ? "chevron.up" : "chevron.down")
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
                 .contentShape(Rectangle())
@@ -148,7 +150,7 @@ struct WishesView: View {
             WishCardView(
                 wish: wish,
                 approximate: viewModel.approximate(for: wish),
-                ownerColor: environment.memberColor(id: wish.ownerMemberId),
+                ownerSlot: environment.memberSlot(id: wish.ownerMemberId),
                 ownerName: environment.memberName(id: wish.ownerMemberId)
             )
         }
@@ -177,7 +179,7 @@ struct WishesView: View {
             } label: {
                 Text("wishes.empty.paste")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.ice)
+                    .foregroundStyle(palette.accent)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)
                     .contentShape(Rectangle())
             }
@@ -185,10 +187,10 @@ struct WishesView: View {
         }
     }
 
-    private func tint(for filter: WishesFilter) -> Color? {
+    private func tint(for filter: WishesFilter) -> MemberColorSlot? {
         switch filter {
-        case .partner: return environment.memberColor(id: environment.partner?.id)
-        case .me: return environment.memberColor(id: environment.currentMember?.id)
+        case .partner: return environment.memberSlot(id: environment.partner?.id)
+        case .me: return environment.memberSlot(id: environment.currentMember?.id)
         case .all: return nil
         }
     }

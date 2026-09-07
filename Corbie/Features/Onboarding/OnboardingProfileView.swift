@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct OnboardingProfileView: View {
+    @Environment(\.palette) private var palette
+
     @Bindable var model: OnboardingViewModel
 
     var body: some View {
@@ -9,7 +11,7 @@ struct OnboardingProfileView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.xl) {
                 Text("onboarding.profile.title")
                     .corbieScreenTitle()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
 
                 TextFieldRow(
                     label: String(localized: "onboarding.profile.name.label"),
@@ -39,7 +41,11 @@ struct OnboardingProfileView: View {
             label: String(localized: "onboarding.profile.color.label"),
             hint: String(localized: "onboarding.profile.color.hint")
         ) {
-            MemberColorPicker(selection: $model.profile.colorKey)
+            MemberColorPicker(
+                selection: $model.profile.colorSlot,
+                partnerSlot: model.partnerSlot,
+                partnerName: model.partnerName
+            )
         }
     }
 
@@ -52,9 +58,9 @@ struct OnboardingProfileView: View {
                 Toggle(isOn: togetherEnabled) {
                     Text("onboarding.profile.together.toggle")
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                 }
-                .tint(CorbieColorPalette.ice)
+                .tint(palette.accent)
 
                 if model.profile.togetherSince != nil {
                     DatePicker(
@@ -64,10 +70,10 @@ struct OnboardingProfileView: View {
                     ) {
                         Text("onboarding.profile.together.label")
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     }
                     .datePickerStyle(.compact)
-                    .tint(CorbieColorPalette.ice)
+                    .tint(palette.accent)
                 }
             }
         }
@@ -107,6 +113,6 @@ struct OnboardingProfileView: View {
 #if DEBUG
 #Preview {
     OnboardingProfileView(model: OnboardingViewModel(environment: .preview(), appState: AppState()))
-        .background(CorbieColorPalette.bg)
+        .background(CorbieTheme.sand.palette.bg)
 }
 #endif

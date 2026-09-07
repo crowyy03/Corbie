@@ -151,7 +151,7 @@ import Testing
         var partner = world.partner
         partner.birthdayMonth = 9
         partner.birthdayDay = 8
-        _ = try await world.repositories.members.update(partner)
+        _ = try await world.repositories.members.update(partner, theme: .sand)
         _ = try await world.repositories.wishes.create(
             WishDraft(
                 spaceId: world.space.id,
@@ -173,7 +173,7 @@ import Testing
         var partner = world.partner
         partner.birthdayMonth = 12
         partner.birthdayDay = 1
-        _ = try await world.repositories.members.update(partner)
+        _ = try await world.repositories.members.update(partner, theme: .sand)
         let result = try await feed(world)
         let birthday = try #require(result.comingUp.first { $0.kind == .memberBirthday })
         #expect(birthday.radar == nil)

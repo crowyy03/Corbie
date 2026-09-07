@@ -1,3 +1,4 @@
+import CorbieCore
 import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
@@ -7,7 +8,7 @@ final class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let items = (extensionContext?.inputItems as? [NSExtensionItem]) ?? []
-        embed(ShareWishView(items: items) { [weak self] in
+        embed(ThemedShareRoot(items: items) { [weak self] in
             self?.completeRequest()
         })
     }
@@ -28,6 +29,18 @@ final class ShareViewController: UIViewController {
 
     private func completeRequest() {
         extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+    }
+}
+
+private struct ThemedShareRoot: View {
+    let items: [NSExtensionItem]
+    let onFinish: () -> Void
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        ShareWishView(items: items, onFinish: onFinish)
+            .corbieTheme(ThemeStore().settings.resolved(for: colorScheme))
     }
 }
 

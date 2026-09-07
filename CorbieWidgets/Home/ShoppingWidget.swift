@@ -69,11 +69,13 @@ struct ShoppingWidgetView: View {
 }
 
 struct ShoppingRow: View {
+    @Environment(\.palette) private var palette
+
     let item: WidgetShoppingItem
 
     private var markColor: Color {
-        guard let colorKey = item.colorKey else { return CorbieColorPalette.text2 }
-        return MemberColor(key: colorKey).color
+        guard let colorKey = item.colorKey else { return palette.text2 }
+        return palette.member(storedKey: colorKey)
     }
 
     var body: some View {
@@ -93,8 +95,8 @@ struct ShoppingRow: View {
             .accessibilityValue(Text(item.isChecked ? "tasks.item.checked" : "tasks.item.unchecked"))
             Text(item.title)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
-                .strikethrough(item.isChecked, color: CorbieColorPalette.text2)
+                .foregroundStyle(palette.text)
+                .strikethrough(item.isChecked, color: palette.text2)
                 .lineLimit(1)
             Spacer(minLength: CorbieSpacing.xs)
         }

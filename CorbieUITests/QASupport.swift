@@ -118,7 +118,6 @@ enum QAText {
 }
 
 extension XCUIApplication {
-    static let themePreferenceDefaultsKey = "corbie.design.themePreference"
     static let resetStoreArgument = "-corbie-reset-store"
 
     static func corbie(
@@ -128,7 +127,7 @@ extension XCUIApplication {
     ) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += ["-AppleLanguages", "(\(language))", "-AppleLocale", QARun.locale(for: language)]
-        app.launchArguments += ["-" + themePreferenceDefaultsKey, appearance]
+        app.launchArguments += XCUIApplication.themeArguments(for: appearance)
         app.launchArguments += [resetStoreArgument]
         app.launchArguments += extraArguments
         if QARun.usesLargeText {
@@ -138,6 +137,30 @@ extension XCUIApplication {
             ]
         }
         return app
+    }
+
+    private static let themeArgumentNames = ["-autoTheme", "-theme"]
+
+    private static func themeArguments(for appearance: String) -> [String] {
+        switch appearance {
+        case "light": return ["-autoTheme", "NO", "-theme", "sand"]
+        case "dark": return ["-autoTheme", "NO", "-theme", "deep"]
+        default: return []
+        }
+    }
+
+    func dropThemeLaunchArguments() {
+        var kept: [String] = []
+        var index = 0
+        while index < launchArguments.count {
+            if XCUIApplication.themeArgumentNames.contains(launchArguments[index]) {
+                index += 2
+                continue
+            }
+            kept.append(launchArguments[index])
+            index += 1
+        }
+        launchArguments = kept
     }
 
     func anyElement(labelContaining text: String) -> XCUIElement {

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct UsHubView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @State private var model = UsHubViewModel()
@@ -37,7 +39,7 @@ struct UsHubView: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.bottom, CorbieSpacing.xxl)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .task {
             await model.load(environment)
         }
@@ -63,11 +65,11 @@ struct UsHubView: View {
         HStack(alignment: .firstTextBaseline) {
             Text("us.hub.header")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             Spacer(minLength: CorbieSpacing.s)
             UsPill(
-                colorA: environment.memberColor(id: environment.currentMember?.id),
-                colorB: environment.memberColor(id: environment.partner?.id)
+                slotA: environment.memberSlot(id: environment.currentMember?.id),
+                slotB: environment.memberSlot(id: environment.partner?.id)
             )
         }
         .padding(.top, CorbieSpacing.s)
@@ -83,14 +85,14 @@ struct UsHubView: View {
     }
 
     private var counters: some View {
-        Card(showsChromeGradient: true) {
+        Card(isHighlighted: true) {
             HStack(alignment: .top, spacing: CorbieSpacing.m) {
                 counterColumn(
                     value: model.counters.daysTogether,
                     caption: String(localized: "us.counters.days")
                 )
                 Rectangle()
-                    .fill(CorbieColorPalette.border)
+                    .fill(palette.border)
                     .frame(width: CorbieMetrics.hairline)
                     .frame(maxHeight: .infinity)
                     .accessibilityHidden(true)
@@ -107,12 +109,12 @@ struct UsHubView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             Text(value.map { $0.formatted() } ?? "-")
                 .corbieCounter()
-                .foregroundStyle(value == nil ? CorbieColorPalette.text2 : CorbieColorPalette.text)
+                .foregroundStyle(value == nil ? palette.text2 : palette.text)
                 .lineLimit(1)
                 .minimumScaleFactor(0.4)
             Text(caption)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .lineLimit(2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -124,20 +126,20 @@ struct UsHubView: View {
             Card {
                 HStack(spacing: CorbieSpacing.s) {
                     Image(systemName: "gearshape")
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                         Text("us.hub.settings")
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                         Text("us.settings.note")
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.right")
                         .font(.footnote)
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .accessibilityHidden(true)
                 }
             }
@@ -149,6 +151,8 @@ struct UsHubView: View {
 }
 
 private struct UsTile: View {
+    @Environment(\.palette) private var palette
+
     let systemImage: String
     let title: String
     let line: String
@@ -161,25 +165,25 @@ private struct UsTile: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
                     HStack(spacing: CorbieSpacing.xs) {
                         Image(systemName: systemImage)
-                            .foregroundStyle(CorbieColorPalette.ice)
+                            .foregroundStyle(palette.accent)
                             .accessibilityHidden(true)
                         Text(title)
                             .corbieBody()
                             .fontWeight(.semibold)
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                         Spacer(minLength: 0)
                         Image(systemName: "chevron.right")
                             .font(.footnote)
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .accessibilityHidden(true)
                     }
                     Text(line)
                         .corbieCaption()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                     Text(countText)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
         }

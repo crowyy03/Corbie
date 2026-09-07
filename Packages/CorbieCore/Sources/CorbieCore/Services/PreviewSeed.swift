@@ -37,13 +37,25 @@ public enum PreviewSeed {
         let me = try await repositories.members.upsertCurrentMember(
             appleUserId: "preview.me",
             spaceId: created.id,
-            draft: MemberDraft(displayName: "Ilya", colorKey: MemberColorKey.p1.rawValue, birthdayMonth: 3, birthdayDay: 14)
-        )
+            draft: MemberDraft(
+                displayName: "Ilya",
+                colorKey: MemberColorSlot.creatorDefault.rawValue,
+                birthdayMonth: 3,
+                birthdayDay: 14
+            ),
+            theme: .sand
+        ).member
         let partner = try await repositories.members.upsertCurrentMember(
             appleUserId: "preview.partner",
             spaceId: created.id,
-            draft: MemberDraft(displayName: "Sofia", colorKey: MemberColorKey.p2.rawValue, birthdayMonth: 9, birthdayDay: 21)
-        )
+            draft: MemberDraft(
+                displayName: "Sofia",
+                colorKey: MemberColorSlot.partnerDefault.rawValue,
+                birthdayMonth: 9,
+                birthdayDay: 21
+            ),
+            theme: .sand
+        ).member
         var space = try await repositories.spaces.space(id: created.id) ?? created
         space.togetherSince = day(offset: -460, from: now, calendar: calendar)
         space.weddingDate = day(offset: -120, from: now, calendar: calendar)

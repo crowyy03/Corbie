@@ -2,8 +2,10 @@ import CorbieCore
 import SwiftUI
 
 struct TodayEntryRow: View {
+    @Environment(\.palette) private var palette
+
     let entry: TodayEntry
-    let dotColor: Color
+    let dotSlot: MemberColorSlot?
     let time: String
     let fromPlan: String?
     let checkboxLabel: String
@@ -14,18 +16,18 @@ struct TodayEntryRow: View {
     var body: some View {
         Card {
             HStack(alignment: .top, spacing: CorbieSpacing.s) {
-                MemberDot(color: dotColor)
+                MemberDot(slot: dotSlot)
                     .padding(.top, CorbieSpacing.xs)
                 Button(action: open) {
                     VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                         Text(entry.title)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                             .strikethrough(entry.isDone)
                             .multilineTextAlignment(.leading)
                         Text(caption)
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .multilineTextAlignment(.leading)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -55,7 +57,7 @@ struct TodayEntryRow: View {
         Button(action: action) {
             Image(systemName: entry.isDone ? "checkmark.circle.fill" : "circle")
                 .font(.system(size: CorbieSpacing.l))
-                .foregroundStyle(entry.isDone ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+                .foregroundStyle(entry.isDone ? palette.accent : palette.text2)
                 .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
                 .contentShape(Rectangle())
         }
@@ -66,6 +68,8 @@ struct TodayEntryRow: View {
 }
 
 struct TodayFreeTaskRow: View {
+    @Environment(\.palette) private var palette
+
     let title: String
     let take: () -> Void
     let open: () -> Void
@@ -73,11 +77,11 @@ struct TodayFreeTaskRow: View {
     var body: some View {
         Card {
             HStack(alignment: .center, spacing: CorbieSpacing.s) {
-                MemberDot(color: CorbieColorPalette.text2)
+                MemberDot(slot: nil)
                 Button(action: open) {
                     Text(title)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
@@ -91,26 +95,28 @@ struct TodayFreeTaskRow: View {
 }
 
 struct TodayDateRow: View {
+    @Environment(\.palette) private var palette
+
     let title: String
     let caption: String
     let giftLine: String?
-    let dotColor: Color
+    let dotSlot: MemberColorSlot?
     let open: () -> Void
 
     var body: some View {
         Button(action: open) {
             Card {
                 HStack(alignment: .top, spacing: CorbieSpacing.s) {
-                    MemberDot(color: dotColor)
+                    MemberDot(slot: dotSlot)
                         .padding(.top, CorbieSpacing.xs)
                     VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                         Text(title)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                             .multilineTextAlignment(.leading)
                         Text(giftLine ?? caption)
                             .corbieMono()
-                            .foregroundStyle(giftLine == nil ? CorbieColorPalette.text2 : CorbieColorPalette.ice)
+                            .foregroundStyle(giftLine == nil ? palette.text2 : palette.accent)
                             .multilineTextAlignment(.leading)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -125,21 +131,23 @@ struct TodayDateRow: View {
 }
 
 struct TodayWaitingRow: View {
+    @Environment(\.palette) private var palette
+
     let title: String
     let caption: String
     let open: () -> Void
 
     var body: some View {
         Button(action: open) {
-            Card(showsChromeGradient: true) {
+            Card(isHighlighted: true) {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(title)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                     Text(caption)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -179,6 +187,8 @@ struct TodayPlansCarousel: View {
 }
 
 struct AddPlanCard: View {
+    @Environment(\.palette) private var palette
+
     let action: () -> Void
 
     var body: some View {
@@ -187,11 +197,11 @@ struct AddPlanCard: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                     Image(systemName: "plus")
                         .font(.system(size: CorbieSpacing.l))
-                        .foregroundStyle(CorbieColorPalette.ice)
+                        .foregroundStyle(palette.accent)
                         .accessibilityHidden(true)
                     Text("plans.empty.action")
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

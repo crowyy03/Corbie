@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct OnboardingView: View {
+    @Environment(\.palette) private var palette
+
     @State private var model: OnboardingViewModel
     private let environment: AppEnvironment
     private let appState: AppState
@@ -16,7 +18,7 @@ struct OnboardingView: View {
 
     var body: some View {
         ZStack {
-            CorbieColorPalette.bg
+            palette.bg
                 .ignoresSafeArea()
             content
         }
@@ -48,7 +50,7 @@ struct OnboardingView: View {
             )
         } else {
             ProgressView()
-                .tint(CorbieColorPalette.ice)
+                .tint(palette.accent)
         }
     }
 

@@ -6,6 +6,8 @@ struct CalendarEventRoute: Hashable {
 }
 
 struct CalendarView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @State private var model = CalendarViewModel()
@@ -18,7 +20,7 @@ struct CalendarView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                 Text("tab.calendar.title")
                     .corbieScreenTitle()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Card {
                     CalendarMonthView(model: model) { day in
                         model.select(day)
@@ -29,7 +31,7 @@ struct CalendarView: View {
             .padding(CorbieSpacing.l)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -100,7 +102,7 @@ struct CalendarView: View {
                 }
                 .buttonStyle(.plain)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             }
             Button(String(localized: "common.action.add")) {
@@ -108,7 +110,7 @@ struct CalendarView: View {
             }
             .buttonStyle(.plain)
             .corbieMono()
-            .foregroundStyle(CorbieColorPalette.ice)
+            .foregroundStyle(palette.accent)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
         }
     }
@@ -119,7 +121,7 @@ struct CalendarView: View {
         if entries.isEmpty {
             if model.isLoading {
                 ProgressView()
-                    .tint(CorbieColorPalette.ice)
+                    .tint(palette.accent)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, CorbieSpacing.l)
             } else if model.selectedDay == nil {
@@ -135,7 +137,7 @@ struct CalendarView: View {
             } else {
                 Text("calendar.day.empty")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         } else {
             LazyVStack(spacing: CorbieSpacing.xs) {

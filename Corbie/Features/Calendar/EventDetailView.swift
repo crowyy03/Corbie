@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct EventDetailView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: EventDetailViewModel
@@ -25,13 +27,13 @@ struct EventDetailView: View {
                 } else {
                     Text("calendar.detail.missing")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
             .padding(CorbieSpacing.l)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -86,13 +88,13 @@ struct EventDetailView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
             Text(event.title)
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .multilineTextAlignment(.leading)
             HStack(spacing: CorbieSpacing.xs) {
-                MemberDot(color: environment.memberColor(id: event.createdByMemberId))
+                MemberDot(slot: environment.memberSlot(id: event.createdByMemberId))
                 Text(model.formatting.kindLabel(event.kind))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         }
     }
@@ -106,10 +108,10 @@ struct EventDetailView: View {
                         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                             Text(model.formatting.longDate(entry.startDay))
                                 .corbieBody()
-                                .foregroundStyle(CorbieColorPalette.text)
+                                .foregroundStyle(palette.text)
                             Text(model.formatting.schedule(for: entry))
                                 .corbieMono()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                         }
                     }
                 }
@@ -117,7 +119,7 @@ struct EventDetailView: View {
                     FieldRow(label: String(localized: "calendar.detail.person")) {
                         Text(person.name)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     }
                 }
                 if let locationName = event.locationName {
@@ -125,11 +127,11 @@ struct EventDetailView: View {
                         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                             Text(locationName)
                                 .corbieBody()
-                                .foregroundStyle(CorbieColorPalette.text)
+                                .foregroundStyle(palette.text)
                             if let address = event.address {
                                 Text(address)
                                     .corbieMono()
-                                    .foregroundStyle(CorbieColorPalette.text2)
+                                    .foregroundStyle(palette.text2)
                             }
                         }
                     }
@@ -138,14 +140,14 @@ struct EventDetailView: View {
                     FieldRow(label: String(localized: "calendar.detail.note")) {
                         Text(note)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     }
                 }
                 if event.reminderOffsets.isEmpty == false {
                     FieldRow(label: String(localized: "calendar.detail.reminders")) {
                         Text(reminderSummary(event))
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                 }
             }
@@ -170,7 +172,7 @@ struct EventDetailView: View {
             if model.comments.isEmpty {
                 Text("calendar.comments.empty")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             } else {
                 ForEach(model.comments) { comment in
                     commentCard(comment)
@@ -184,20 +186,20 @@ struct EventDetailView: View {
         Card {
             VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
                 HStack(spacing: CorbieSpacing.xs) {
-                    MemberDot(color: environment.memberColor(id: comment.memberId))
+                    MemberDot(slot: environment.memberSlot(id: comment.memberId))
                     Text(environment.memberName(id: comment.memberId))
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                     Spacer(minLength: CorbieSpacing.xs)
                     if let createdAt = comment.createdAt {
                         Text(model.formatting.commentTimestamp(createdAt))
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                 }
                 Text(comment.text)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .multilineTextAlignment(.leading)
             }
         }
@@ -215,7 +217,7 @@ struct EventDetailView: View {
             )
             .textFieldStyle(.plain)
             .corbieBody()
-            .foregroundStyle(CorbieColorPalette.text)
+            .foregroundStyle(palette.text)
             .lineLimit(2...4)
             .padding(CorbieSpacing.s)
             .corbieFieldBox()
@@ -225,7 +227,7 @@ struct EventDetailView: View {
                 Text(remainingText)
                     .corbieMono()
                     .foregroundStyle(
-                        model.remainingCharacters < 0 ? CorbieColorPalette.warn : CorbieColorPalette.text2
+                        model.remainingCharacters < 0 ? palette.warn : palette.text2
                     )
                 Spacer(minLength: CorbieSpacing.xs)
                 PrimaryButton(title: String(localized: "calendar.comments.send")) {

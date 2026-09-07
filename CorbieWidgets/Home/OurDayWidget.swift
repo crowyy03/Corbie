@@ -37,6 +37,8 @@ struct OurDayWidget: Widget {
 }
 
 struct OurDayWidgetView: View {
+    @Environment(\.palette) private var palette
+
     let entry: OurDayEntry
 
     private var isEmpty: Bool {
@@ -61,7 +63,7 @@ struct OurDayWidgetView: View {
                                 WidgetCounter(value: days, compact: true)
                                 Text("widget.daystogether.caption")
                                     .corbieMono()
-                                    .foregroundStyle(CorbieColorPalette.text2)
+                                    .foregroundStyle(palette.text2)
                                     .lineLimit(1)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)

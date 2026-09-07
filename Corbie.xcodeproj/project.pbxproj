@@ -47,12 +47,14 @@
 		2748DF03DD300DFC353134D7 /* WidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C971CF39C497D79B0D77091 /* WidgetStore.swift */; };
 		27FFEBF0A4E61CBD039BFFA2 /* CalendarFormattingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1887E200B5028498E21C49 /* CalendarFormattingTests.swift */; };
 		2A157864E0656E4C66E3173C /* OnboardingProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3EE6CAC5B63264B789ED48 /* OnboardingProfileTests.swift */; };
+		2DA7EB9F7EE6B7F0F2694128 /* ThemeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C8C67D6DEC89A0B89753D9 /* ThemeUITests.swift */; };
 		2F9A4308DE5B03AFFC9879CB /* TaskEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEC33DB56FB832D8B4FBA5E /* TaskEditorView.swift */; };
 		30408DE5B9DFF45A0CF2F91C /* QASettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833DE92EF338706B8E2DAA59 /* QASettingsUITests.swift */; };
 		31B1805E34395ACEE0855767 /* SettingsStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AB371691F42D784DFEFA95 /* SettingsStatusTests.swift */; };
 		31E9B11E8CBE901C6DA8CE29 /* QAReadOnlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622674653C140150FE22DDCD /* QAReadOnlyUITests.swift */; };
 		32379CC93B091A54D77E977A /* PeopleRelationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACECF1088DB58F38F21410 /* PeopleRelationTests.swift */; };
 		324A1E9662CDFAA4276872D4 /* ShoppingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE71CABD334FC698572CC4B2 /* ShoppingWidget.swift */; };
+		335B3DCA040E743055659950 /* ThemePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B2828C25F40A3E5AAADB5 /* ThemePickerTests.swift */; };
 		348435E9BB1F704E88F9B5B8 /* CorbieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9FDF78C8AFE2EB5AA5274C43 /* CorbieCore */; };
 		358DCF982FFB7A27EEC382CC /* PersonDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25FDDCFCDB4065BE38E805F /* PersonDates.swift */; };
 		35CFA4A8EB05DEFD286CECE2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
@@ -377,6 +379,7 @@
 		4A16CEF65DD23A474B459F8F /* CorbieWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieWidgetsBundle.swift; sourceTree = "<group>"; };
 		4C56FA84A09B7E953BB7C115 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CorbieShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E2B2828C25F40A3E5AAADB5 /* ThemePickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerTests.swift; sourceTree = "<group>"; };
 		55A2E5EDAD4EDC91BA498D3E /* ListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailView.swift; sourceTree = "<group>"; };
 		5759A0DB836C724CCDD7F406 /* CapsulesStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsulesStateTests.swift; sourceTree = "<group>"; };
 		5BD088A33E2CAFF8EEB22704 /* CorbieTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CorbieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -456,6 +459,7 @@
 		A7C36C9A264C0339C4B2A9EF /* InviteLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteLink.swift; sourceTree = "<group>"; };
 		A7F8D29552EB2C06EC982331 /* QATapTargetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QATapTargetUITests.swift; sourceTree = "<group>"; };
 		A8648E82FBB81AC50FDAB304 /* PeopleRadar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRadar.swift; sourceTree = "<group>"; };
+		A8C8C67D6DEC89A0B89753D9 /* ThemeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeUITests.swift; sourceTree = "<group>"; };
 		A9B806BD1D2033FFE255DBCE /* DebugLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLaunch.swift; sourceTree = "<group>"; };
 		AAAC0D46F35A085E5A41767B /* UsDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsDestination.swift; sourceTree = "<group>"; };
 		AD3F3588DADB072F39C78141 /* UsCountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsCountersTests.swift; sourceTree = "<group>"; };
@@ -762,6 +766,7 @@
 				A7F8D29552EB2C06EC982331 /* QATapTargetUITests.swift */,
 				03F04166F84B0D8BDB60B7D6 /* QAUsBadgeUITests.swift */,
 				36E0E59CAC219D930E70B512 /* SmokeTabsUITests.swift */,
+				A8C8C67D6DEC89A0B89753D9 /* ThemeUITests.swift */,
 				F43BC912363D3C11DCD49E3C /* TodayUITests.swift */,
 				7309746559FE07E6BF77E847 /* UsBadgeUITests.swift */,
 			);
@@ -852,6 +857,7 @@
 				09AB371691F42D784DFEFA95 /* SettingsStatusTests.swift */,
 				2D923BE0154ECDD8036DCC4D /* TasksSubtitleFormatterTests.swift */,
 				D5BAE6C658C5951759EDF1FC /* TasksViewModelTests.swift */,
+				4E2B2828C25F40A3E5AAADB5 /* ThemePickerTests.swift */,
 				959EE65EBD753A48BAF1BA0D /* TodayPresentationTests.swift */,
 				EDA4FC3EDEC869BE8B899C99 /* TodayViewModelTests.swift */,
 				AD3F3588DADB072F39C78141 /* UsCountersTests.swift */,
@@ -1084,6 +1090,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6210839FAD2CD5D9EE23FB8A /* Build configuration list for PBXNativeTarget "Corbie" */;
 			buildPhases = (
+				358FD794ACB62EBB77F991D6 /* Check colors */,
 				A0F92323FC5DB1501A57B2C2 /* Sources */,
 				B795DEAD577A22D8C2D3B719 /* Resources */,
 				D660C6E7A89F9F6A3C715A02 /* Frameworks */,
@@ -1279,6 +1286,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		358FD794ACB62EBB77F991D6 /* Check colors */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Check colors";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PROJECT_DIR/scripts/check_colors.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		74EC5AD79E625CC3B483CC03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1312,6 +1341,7 @@
 				31B1805E34395ACEE0855767 /* SettingsStatusTests.swift in Sources */,
 				B65C5E297D2BD2BA85E0EEBB /* TasksSubtitleFormatterTests.swift in Sources */,
 				DF00BF1979A39EA45E30F329 /* TasksViewModelTests.swift in Sources */,
+				335B3DCA040E743055659950 /* ThemePickerTests.swift in Sources */,
 				0D13902DCBC1C88407730242 /* TodayPresentationTests.swift in Sources */,
 				9B91ECF25CC8483DF5BA9429 /* TodayViewModelTests.swift in Sources */,
 				520DDDC5055C292630F7FFA9 /* UsCountersTests.swift in Sources */,
@@ -1540,6 +1570,7 @@
 				996F45CA4A8CC2FE6F38E264 /* QATapTargetUITests.swift in Sources */,
 				B21AE6FCD08FA4606B825AC7 /* QAUsBadgeUITests.swift in Sources */,
 				F0EF350F0551F4CF959D1FF7 /* SmokeTabsUITests.swift in Sources */,
+				2DA7EB9F7EE6B7F0F2694128 /* ThemeUITests.swift in Sources */,
 				7B0C362CE3FFA9D19C70E613 /* TodayUITests.swift in Sources */,
 				5191F20E78FE58DF442EAB00 /* UsBadgeUITests.swift in Sources */,
 			);
@@ -1796,6 +1827,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Configs/Corbie.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Configs/Corbie-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1849,6 +1881,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Configs/Corbie.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Configs/Corbie-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

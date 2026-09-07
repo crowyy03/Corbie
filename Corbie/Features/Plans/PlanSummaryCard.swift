@@ -2,11 +2,13 @@ import CorbieCore
 import SwiftUI
 
 struct PlanSummaryCard: View {
+    @Environment(\.palette) private var palette
+
     let plan: PlanDTO
     let totals: PlanTotals
 
     var body: some View {
-        Card(showsChromeGradient: true) {
+        Card(isHighlighted: true) {
             VStack(alignment: .leading, spacing: CorbieSpacing.m) {
                 header
                 ProgressBar(
@@ -19,12 +21,12 @@ struct PlanSummaryCard: View {
                 if totals.isOverspent {
                     Text(overspendText)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.warn)
+                        .foregroundStyle(palette.warn)
                 }
                 if let dates = planDateRange(start: plan.startAt, end: plan.endAt) {
                     Text(dates)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
         }
@@ -33,16 +35,16 @@ struct PlanSummaryCard: View {
     private var header: some View {
         HStack(spacing: CorbieSpacing.xs) {
             Image(systemName: plan.type.systemImage)
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .accessibilityHidden(true)
             Text(PlansCopy.text(plan.type.titleKey))
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
             Spacer(minLength: CorbieSpacing.xs)
             if plan.status != .active {
                 Text(PlansCopy.text(plan.status.titleKey))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         }
     }
@@ -61,7 +63,7 @@ struct PlanSummaryCard: View {
             Text(totals.money(amount).formatted())
                 .corbieBody()
                 .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
         }
@@ -93,6 +95,6 @@ struct PlanSummaryCard: View {
     return PlanSummaryCard(plan: plan, totals: PlanTotals(plan: plan))
         .padding(CorbieSpacing.l)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
+        .background(CorbieTheme.sand.palette.bg)
 }
 #endif

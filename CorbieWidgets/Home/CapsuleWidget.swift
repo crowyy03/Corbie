@@ -51,6 +51,8 @@ struct CapsuleWidget: Widget {
 }
 
 struct CapsuleWidgetView: View {
+    @Environment(\.palette) private var palette
+
     let entry: CapsuleEntry
 
     private var caption: String {
@@ -72,7 +74,7 @@ struct CapsuleWidgetView: View {
                     WidgetCaption(text: caption)
                     Text(WidgetDateLabel.shortDate(opensAt, now: entry.date))
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.ice)
+                        .foregroundStyle(palette.accent)
                         .lineLimit(1)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

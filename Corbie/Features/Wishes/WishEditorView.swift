@@ -3,6 +3,8 @@ import PhotosUI
 import SwiftUI
 
 struct WishEditorView: View {
+    @Environment(\.palette) private var palette
+
     let request: WishEditorRequest
     let onSaved: () async -> Void
 
@@ -38,7 +40,7 @@ struct WishEditorView: View {
                 }
                 .padding(CorbieSpacing.m)
             }
-            .background(CorbieColorPalette.bg.ignoresSafeArea())
+            .background(palette.bg.ignoresSafeArea())
             .navigationTitle(viewModel.screenTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -70,7 +72,7 @@ struct WishEditorView: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .modifier(WishFieldBox())
                     .accessibilityLabel(Text("wishes.editor.link"))
                     .onChange(of: viewModel.link) { _, _ in
@@ -99,7 +101,7 @@ struct WishEditorView: View {
                     PhotosPicker(selection: $photo, matching: .images, photoLibrary: .shared()) {
                         Text("wishes.editor.photo.pick")
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.ice)
+                            .foregroundStyle(palette.accent)
                             .frame(minHeight: CorbieMetrics.minimumTapTarget, alignment: .leading)
                             .contentShape(Rectangle())
                     }
@@ -110,7 +112,7 @@ struct WishEditorView: View {
                         } label: {
                             Text("wishes.editor.photo.remove")
                                 .corbieMono()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                                 .frame(minHeight: CorbieMetrics.minimumTapTarget, alignment: .leading)
                                 .contentShape(Rectangle())
                         }
@@ -129,7 +131,7 @@ struct WishEditorView: View {
                     .textFieldStyle(.plain)
                     .keyboardType(.decimalPad)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .modifier(WishFieldBox())
                     .accessibilityLabel(Text("wishes.editor.price"))
                 Menu {
@@ -141,7 +143,7 @@ struct WishEditorView: View {
                 } label: {
                     Text(viewModel.currency)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .frame(minWidth: CorbieSpacing.xxl)
                         .modifier(WishFieldBox())
                 }
@@ -163,13 +165,13 @@ struct WishEditorView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                 Text("wishes.editor.forme")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Text("wishes.editor.forme.hint")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         }
-        .tint(CorbieColorPalette.ice)
+        .tint(palette.accent)
         .frame(minHeight: CorbieMetrics.minimumTapTarget)
     }
 
@@ -199,17 +201,19 @@ struct WishFieldBox: ViewModifier {
 }
 
 struct WishParseSkeleton: View {
+    @Environment(\.palette) private var palette
+
     var body: some View {
         HStack(spacing: CorbieSpacing.s) {
             RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                .fill(CorbieColorPalette.elevated)
+                .fill(palette.elevated)
                 .frame(width: WishThumbnail.side, height: WishThumbnail.side)
             VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
                 RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.elevated)
+                    .fill(palette.elevated)
                     .frame(height: CorbieSpacing.m)
                 RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.elevated)
+                    .fill(palette.elevated)
                     .frame(width: CorbieMetrics.controlHeight * 2, height: CorbieSpacing.s)
             }
         }

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PlanEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: PlanEditorViewModel
@@ -50,9 +52,9 @@ struct PlanEditorView: View {
             Toggle(isOn: $model.hasDates) {
                 Text("plans.editor.field.dates")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
             if model.hasDates {
                 PlansDateField(

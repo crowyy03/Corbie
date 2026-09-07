@@ -21,26 +21,15 @@ public struct PrimaryButton: View {
 }
 
 #if DEBUG
-struct PrimaryButtonGallery: View {
-    var body: some View {
+#if canImport(UIKit)
+#Preview("PrimaryButton") {
+    PreviewThemes {
         VStack(spacing: CorbieSpacing.m) {
             PrimaryButton(title: "Continue") {}
             PrimaryButton(title: "Continue") {}
                 .disabled(true)
         }
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
     }
-}
-
-#if canImport(UIKit)
-#Preview("PrimaryButton light") {
-    PrimaryButtonGallery().preferredColorScheme(.light)
-}
-
-#Preview("PrimaryButton dark") {
-    PrimaryButtonGallery().preferredColorScheme(.dark)
 }
 #endif
 #endif

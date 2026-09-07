@@ -10,8 +10,10 @@ extension ListItemDTO {
 }
 
 struct ListMapView: View {
+    @Environment(\.palette) private var palette
+
     let items: [ListItemDTO]
-    let color: (UUID?) -> Color
+    let slot: (UUID?) -> MemberColorSlot?
     let name: (UUID?) -> String
 
     @State private var camera: MapCameraPosition = .automatic
@@ -33,7 +35,7 @@ struct ListMapView: View {
                 monoNote: String(localized: "lists.map.empty.note")
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
         } else {
             Map(position: $camera) {
                 ForEach(items) { item in
@@ -59,10 +61,10 @@ struct ListMapView: View {
 
     private func pin(for item: ListItemDTO) -> some View {
         Circle()
-            .fill(color(item.addedByMemberId))
+            .fill(slot(item.addedByMemberId).map(palette.member) ?? palette.accent)
             .frame(width: CorbieSpacing.m, height: CorbieSpacing.m)
             .overlay(
-                Circle().strokeBorder(CorbieColorPalette.surface, lineWidth: CorbieSpacing.xxs / 2)
+                Circle().strokeBorder(palette.surface, lineWidth: CorbieSpacing.xxs / 2)
             )
             .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
             .contentShape(Circle())
@@ -70,6 +72,8 @@ struct ListMapView: View {
 }
 
 struct ListPlaceSheet: View {
+    @Environment(\.palette) private var palette
+
     let item: ListItemDTO
     let memberName: String
     @Environment(\.dismiss) private var dismiss
@@ -80,25 +84,25 @@ struct ListPlaceSheet: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.m) {
                     Text(item.title)
                         .corbieScreenTitle()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     if let placeName = item.placeName, placeName.isEmpty == false, placeName != item.title {
                         Text(placeName)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     }
                     if let address = item.address, address.isEmpty == false {
                         Text(address)
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                     if let note = item.note, note.isEmpty == false {
                         Text(note)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                     }
                     Text(String(format: PlansCopy.text("lists.map.addedby"), memberName))
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                     PrimaryButton(title: String(localized: "lists.map.openinmaps")) {
                         openInMaps()
                     }
@@ -107,7 +111,7 @@ struct ListPlaceSheet: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(CorbieSpacing.l)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(String(localized: "common.action.done")) {
@@ -140,7 +144,7 @@ struct ListPlaceSheet: View {
                 longitude: -9.1459
             )
         ],
-        color: { _ in MemberColorKey.p1.color },
+        slot: { _ in MemberColorSlot.teal },
         name: { _ in "you" }
     )
 }
