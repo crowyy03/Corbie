@@ -19,10 +19,9 @@ struct PlansView: View {
             .padding(.bottom, CorbieSpacing.xxl)
         }
         .background(CorbieColorPalette.bg)
-        .navigationTitle(String(localized: "tab.plans.title"))
-        .toolbar {
-            AddToolbarItem { model.startCreate() }
-            UsPillToolbarItem()
+        .screenHeader(String(localized: "tab.plans.title")) {
+            AddButton { model.startCreate() }
+            UsPillButton()
         }
         .refreshable {
             await model.load()

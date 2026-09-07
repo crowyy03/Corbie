@@ -178,8 +178,12 @@ struct TaskEditorView: View {
             return String(localized: "tasks.editor.repeat.daily")
         case .weekly:
             return String(localized: "tasks.editor.repeat.weekly")
+        case .everyTwoWeeks:
+            return String(localized: "tasks.editor.repeat.everytwoweeks")
         case .monthly:
             return String(localized: "tasks.editor.repeat.monthly")
+        case .quarterly:
+            return String(localized: "tasks.editor.repeat.quarterly")
         case .weekdays:
             return String(localized: "tasks.editor.repeat.weekdays")
         }

@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0701",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which opinion of yours changed this year without an argument?",
+      "es": "¿Qué opinión tuya cambió este año sin ninguna discusión?",
+      "fr": "Quelle opinion as-tu changée cette année sans la moindre dispute ?",
+      "de": "Welche deiner Meinungen hat sich dieses Jahr ohne Streit geändert?",
+      "it": "Quale tua opinione è cambiata quest'anno senza nessuna discussione?"
+    }
+  },
+  {
+    "id": "q0702",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What have you stopped apologising for?",
+      "es": "¿Por qué cosa has dejado de pedir perdón?",
+      "fr": "Pour quoi as-tu arrêté de t'excuser ?",
+      "de": "Wofür entschuldigst du dich nicht mehr?",
+      "it": "Per cosa hai smesso di scusarti?"
+    }
+  },
+  {
+    "id": "q0703",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my habits have you picked up without deciding to?",
+      "es": "¿Qué costumbre mía se te ha pegado sin quererlo?",
+      "fr": "Laquelle de mes habitudes as-tu prise sans l'avoir décidé ?",
+      "de": "Welche meiner Gewohnheiten hast du übernommen, ohne es zu wollen?",
+      "it": "Quale mia abitudine hai preso senza deciderlo?"
+    }
+  },
+  {
+    "id": "q0704",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which certainty from your twenties would you argue against today?",
+      "es": "¿Qué certeza de tus veinte años rebatirías hoy?",
+      "fr": "Quelle certitude de tes vingt ans contesterais-tu aujourd'hui ?",
+      "de": "Welche Gewissheit aus deinen Zwanzigern würdest du heute bestreiten?",
+      "it": "Quale certezza dei tuoi vent'anni contesteresti oggi?"
+    }
+  },
+  {
+    "id": "q0705",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which skill did you give up on and never miss?",
+      "es": "¿Qué habilidad abandonaste sin echarla nunca de menos?",
+      "fr": "Quelle compétence as-tu abandonnée sans jamais la regretter ?",
+      "de": "Welche Fähigkeit hast du aufgegeben und nie vermisst?",
+      "it": "Quale capacità hai abbandonato senza mai rimpiangerla?"
+    }
+  },
+  {
+    "id": "q0706",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What takes you ten minutes now and once took a whole day?",
+      "es": "¿Qué te lleva diez minutos ahora y antes te ocupaba un día entero?",
+      "fr": "Qu'est-ce qui te prend dix minutes aujourd'hui et te prenait une journée ?",
+      "de": "Wofür brauchst du heute zehn Minuten und früher einen ganzen Tag?",
+      "it": "Cosa ti richiede dieci minuti oggi e prima ti prendeva un giorno intero?"
+    }
+  },
+  {
+    "id": "q0707",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which fear of yours disappeared without you noticing?",
+      "es": "¿Qué miedo tuyo desapareció sin que te dieras cuenta?",
+      "fr": "Quelle peur a disparu chez toi sans que tu t'en aperçoives ?",
+      "de": "Welche deiner Ängste ist verschwunden, ohne dass du es gemerkt hast?",
+      "it": "Quale tua paura è sparita senza che te ne accorgessi?"
+    }
+  },
+  {
+    "id": "q0708",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What are you still deciding about, years after the deadline?",
+      "es": "¿Sobre qué sigues decidiendo años después de acabarse el plazo?",
+      "fr": "Sur quoi hésites-tu encore, des années après l'échéance ?",
+      "de": "Worüber entscheidest du noch, Jahre nach der Frist?",
+      "it": "Su cosa stai ancora decidendo, anni dopo la scadenza?"
+    }
+  },
+  {
+    "id": "q0709",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which advice you once gave would you take back?",
+      "es": "¿Qué consejo que diste una vez retirarías?",
+      "fr": "Quel conseil que tu as donné retirerais-tu aujourd'hui ?",
+      "de": "Welchen Rat, den du mal gegeben hast, würdest du zurücknehmen?",
+      "it": "Quale consiglio che hai dato ritireresti oggi?"
+    }
+  },
+  {
+    "id": "q0710",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which skill of yours peaked years ago?",
+      "es": "¿Qué habilidad tuya tocó techo hace años?",
+      "fr": "Laquelle de tes compétences a atteint son sommet il y a des années ?",
+      "de": "Welche deiner Fähigkeiten hatte ihren Höhepunkt vor Jahren?",
+      "it": "Quale tua capacità ha toccato il massimo anni fa?"
+    }
+  },
+  {
+    "id": "q0711",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which part of you has never changed in front of me?",
+      "es": "¿Qué parte de ti no ha cambiado nunca delante de mí?",
+      "fr": "Quelle part de toi n'a jamais changé sous mes yeux ?",
+      "de": "Welcher Teil von dir hat sich vor meinen Augen nie verändert?",
+      "it": "Quale parte di te non è mai cambiata davanti a me?"
+    }
+  },
+  {
+    "id": "q0712",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you learn the slow way while others got it fast?",
+      "es": "¿Qué aprendiste despacio mientras otros lo pillaban rápido?",
+      "fr": "Qu'as-tu appris lentement alors que les autres ont compris vite ?",
+      "de": "Was hast du langsam gelernt, während andere es sofort begriffen?",
+      "it": "Cosa hai imparato lentamente mentre gli altri capivano subito?"
+    }
+  },
+  {
+    "id": "q0713",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which shortcut did you resist for years before taking it?",
+      "es": "¿Qué atajo rechazaste durante años antes de tomarlo?",
+      "fr": "Quel raccourci as-tu refusé pendant des années avant de le prendre ?",
+      "de": "Welche Abkürzung hast du jahrelang verweigert und dann genommen?",
+      "it": "Quale scorciatoia hai rifiutato per anni prima di prenderla?"
+    }
+  },
+  {
+    "id": "q0714",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What have you stopped explaining to people?",
+      "es": "¿Qué has dejado de explicarle a la gente?",
+      "fr": "Qu'as-tu arrêté d'expliquer aux autres ?",
+      "de": "Was erklärst du anderen nicht mehr?",
+      "it": "Cosa hai smesso di spiegare agli altri?"
+    }
+  },
+  {
+    "id": "q0715",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my reactions do you handle better than a year ago?",
+      "es": "¿Qué reacción mía llevas mejor que hace un año?",
+      "fr": "Quelle réaction de ma part gères-tu mieux qu'il y a un an ?",
+      "de": "Mit welcher meiner Reaktionen kommst du besser klar als vor einem Jahr?",
+      "it": "Quale mia reazione gestisci meglio di un anno fa?"
+    }
+  },
+  {
+    "id": "q0716",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you want at eighteen that you would turn down now?",
+      "es": "¿Qué querías a los dieciocho y hoy rechazarías?",
+      "fr": "Que voulais-tu à dix-huit ans et que tu refuserais aujourd'hui ?",
+      "de": "Was wolltest du mit achtzehn, was du heute ablehnen würdest?",
+      "it": "Cosa volevi a diciott'anni e oggi rifiuteresti?"
+    }
+  },
+  {
+    "id": "q0717",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which habit took you three tries to keep?",
+      "es": "¿Qué costumbre te costó tres intentos mantener?",
+      "fr": "Quelle habitude t'a demandé trois tentatives pour tenir ?",
+      "de": "Welche Gewohnheit hat drei Anläufe gebraucht, bis sie blieb?",
+      "it": "Quale abitudine ha richiesto tre tentativi prima di restare?"
+    }
+  },
+  {
+    "id": "q0718",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you spend money on now that you once found absurd?",
+      "es": "¿En qué gastas dinero ahora que antes te parecía absurdo?",
+      "fr": "Dans quoi mets-tu de l'argent alors que tu trouvais ça absurde avant ?",
+      "de": "Wofür gibst du heute Geld aus, was du früher absurd fandest?",
+      "it": "Su cosa spendi soldi oggi che prima ti sembrava assurdo?"
+    }
+  },
+  {
+    "id": "q0719",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which compliment would have meant nothing to you five years ago?",
+      "es": "¿Qué elogio no te habría dicho nada hace cinco años?",
+      "fr": "Quel compliment ne t'aurait rien fait il y a cinq ans ?",
+      "de": "Welches Kompliment hätte dir vor fünf Jahren nichts bedeutet?",
+      "it": "Quale complimento non ti avrebbe detto nulla cinque anni fa?"
+    }
+  },
+  {
+    "id": "q0720",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which task you once dreaded do you now do without thinking?",
+      "es": "¿Qué tarea que antes temías haces ahora sin pensarlo?",
+      "fr": "Quelle tâche que tu redoutais fais-tu maintenant sans y penser ?",
+      "de": "Welche Aufgabe, vor der dir graute, machst du heute nebenbei?",
+      "it": "Quale compito che temevi ora fai senza pensarci?"
+    }
+  },
+  {
+    "id": "q0721",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which place changed the way you talk to strangers?",
+      "es": "¿Qué lugar cambió tu forma de hablar con desconocidos?",
+      "fr": "Quel endroit a changé ta façon de parler aux inconnus ?",
+      "de": "Welcher Ort hat verändert, wie du mit Fremden redest?",
+      "it": "Quale luogo ha cambiato il tuo modo di parlare con gli sconosciuti?"
+    }
+  },
+  {
+    "id": "q0722",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which argument do you no longer bother winning?",
+      "es": "¿Qué discusión ya no te molestas en ganar?",
+      "fr": "Quelle discussion ne cherches-tu plus à gagner ?",
+      "de": "Welche Diskussion willst du gar nicht mehr gewinnen?",
+      "it": "Quale discussione non ti interessa più vincere?"
+    }
+  },
+  {
+    "id": "q0723",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which part of your morning did not exist two years ago?",
+      "es": "¿Qué parte de tu mañana no existía hace dos años?",
+      "fr": "Quelle partie de ta matinée n'existait pas il y a deux ans ?",
+      "de": "Welchen Teil deines Morgens gab es vor zwei Jahren noch nicht?",
+      "it": "Quale parte della tua mattina non esisteva due anni fa?"
+    }
+  },
+  {
+    "id": "q0724",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you like now that you had to grow into?",
+      "es": "¿Qué te gusta ahora que te costó llegar a apreciar?",
+      "fr": "Qu'aimes-tu aujourd'hui après avoir mis du temps à l'apprécier ?",
+      "de": "Was magst du heute, wozu du erst hineinwachsen musstest?",
+      "it": "Cosa ti piace oggi che hai dovuto imparare ad apprezzare?"
+    }
+  },
+  {
+    "id": "q0725",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you get wrong about being an adult?",
+      "es": "¿En qué te equivocaste sobre lo que es ser adulto?",
+      "fr": "Que t'imaginais-tu à tort sur le fait d'être adulte ?",
+      "de": "Was hast du dir am Erwachsensein falsch vorgestellt?",
+      "it": "Cosa avevi capito male sull'essere adulto?"
+    }
+  },
+  {
+    "id": "q0726",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your standards dropped and made life better?",
+      "es": "¿Qué exigencia tuya bajó y te mejoró la vida?",
+      "fr": "Quelle exigence as-tu baissée, et ta vie s'en porte mieux ?",
+      "de": "Welchen deiner Ansprüche hast du gesenkt, und es wurde besser?",
+      "it": "Quale tua pretesa hai abbassato, e la vita è migliorata?"
+    }
+  },
+  {
+    "id": "q0727",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What have you learned from me that you would not admit to my face?",
+      "es": "¿Qué has aprendido de mí que no admitirías en mi cara?",
+      "fr": "Qu'as-tu appris de moi que tu n'admettrais pas en face ?",
+      "de": "Was hast du von mir gelernt, was du mir nie ins Gesicht sagen würdest?",
+      "it": "Cosa hai imparato da me che non ammetteresti in faccia?"
+    }
+  },
+  {
+    "id": "q0728",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which rule from your childhood do you still obey?",
+      "es": "¿Qué norma de tu infancia sigues cumpliendo?",
+      "fr": "Quelle règle de ton enfance respectes-tu encore ?",
+      "de": "Welche Regel aus deiner Kindheit befolgst du immer noch?",
+      "it": "Quale regola della tua infanzia rispetti ancora?"
+    }
+  },
+  {
+    "id": "q0729",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What changed the way you get through a bad morning?",
+      "es": "¿Qué cambió tu manera de superar una mala mañana?",
+      "fr": "Qu'est-ce qui a changé ta façon de traverser une mauvaise matinée ?",
+      "de": "Was hat verändert, wie du einen schlechten Morgen überstehst?",
+      "it": "Cosa ha cambiato il tuo modo di superare una brutta mattina?"
+    }
+  },
+  {
+    "id": "q0730",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your old goals has aged badly?",
+      "es": "¿Qué meta tuya de antes ha envejecido mal?",
+      "fr": "Lequel de tes anciens objectifs a mal vieilli ?",
+      "de": "Welches deiner alten Ziele ist schlecht gealtert?",
+      "it": "Quale dei tuoi vecchi obiettivi è invecchiato male?"
+    }
+  },
+  {
+    "id": "q0731",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you know about yourself only because someone said it?",
+      "es": "¿Qué sabes de ti solo porque alguien te lo dijo?",
+      "fr": "Que sais-tu de toi uniquement parce que quelqu'un te l'a dit ?",
+      "de": "Was weißt du über dich nur, weil es jemand ausgesprochen hat?",
+      "it": "Cosa sai di te solo perché qualcuno te l'ha detto?"
+    }
+  },
+  {
+    "id": "q0732",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which decision of yours looked reckless and turned out right?",
+      "es": "¿Qué decisión tuya pareció imprudente y salió bien?",
+      "fr": "Quelle décision paraissait imprudente et s'est révélée juste ?",
+      "de": "Welche deiner Entscheidungen wirkte leichtsinnig und war richtig?",
+      "it": "Quale tua decisione sembrava avventata e si è rivelata giusta?"
+    }
+  },
+  {
+    "id": "q0733",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which warning about yourself do you give people early?",
+      "es": "¿Qué advertencia sobre ti le das a la gente desde el principio?",
+      "fr": "Quel avertissement sur toi donnes-tu aux gens dès le début ?",
+      "de": "Welche Warnung über dich gibst du Leuten gleich am Anfang?",
+      "it": "Quale avvertimento su di te dai alle persone fin dall'inizio?"
+    }
+  },
+  {
+    "id": "q0734",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your talents took ten years to become useful?",
+      "es": "¿Qué talento tuyo tardó diez años en servir de algo?",
+      "fr": "Quel talent chez toi a mis dix ans à devenir utile ?",
+      "de": "Welches deiner Talente hat zehn Jahre gebraucht, um nützlich zu sein?",
+      "it": "Quale tuo talento ci ha messo dieci anni a diventare utile?"
+    }
+  },
+  {
+    "id": "q0735",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What started to matter to you only after you nearly lost it?",
+      "es": "¿Qué empezó a importarte solo cuando estuviste a punto de perderlo?",
+      "fr": "Qu'as-tu commencé à apprécier seulement après avoir failli le perdre ?",
+      "de": "Was wurde dir erst wichtig, als du es fast verloren hättest?",
+      "it": "Cosa ha iniziato a contare per te solo quando stavi per perderlo?"
+    }
+  },
+  {
+    "id": "q0736",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which question of mine made you rethink something?",
+      "es": "¿Qué pregunta mía te hizo replantearte algo?",
+      "fr": "Quelle question de ma part t'a fait revoir quelque chose ?",
+      "de": "Welche meiner Fragen hat dich etwas überdenken lassen?",
+      "it": "Quale mia domanda ti ha fatto ripensare a qualcosa?"
+    }
+  },
+  {
+    "id": "q0737",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What bores you now that you once found thrilling?",
+      "es": "¿Qué se te ha vuelto aburrido y antes te apasionaba?",
+      "fr": "Qu'est-ce qui t'ennuie maintenant et te passionnait avant ?",
+      "de": "Was langweilt dich heute, was dich früher begeistert hat?",
+      "it": "Cosa ti annoia oggi che prima ti entusiasmava?"
+    }
+  },
+  {
+    "id": "q0738",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What did you learn purely out of stubbornness?",
+      "es": "¿Qué aprendiste solo por pura cabezonería?",
+      "fr": "Qu'as-tu appris uniquement par pure obstination ?",
+      "de": "Was hast du nur aus reiner Sturheit gelernt?",
+      "it": "Cosa hai imparato solo per pura testardaggine?"
+    }
+  },
+  {
+    "id": "q0739",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you keep doing because it works, not because you like it?",
+      "es": "¿Qué sigues haciendo porque funciona y no porque te guste?",
+      "fr": "Que continues-tu à faire parce que ça marche, pas parce que ça te plaît ?",
+      "de": "Was machst du weiter, weil es funktioniert, nicht weil es dir gefällt?",
+      "it": "Cosa continui a fare perché funziona e non perché ti piace?"
+    }
+  },
+  {
+    "id": "q0740",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your beliefs survived every attempt to shake it?",
+      "es": "¿Qué convicción tuya ha resistido todos los intentos de tumbarla?",
+      "fr": "Quelle conviction chez toi a résisté à toutes les remises en cause ?",
+      "de": "Welche deiner Überzeugungen hat jeden Angriff überstanden?",
+      "it": "Quale tua convinzione ha resistito a ogni tentativo di scalfirla?"
+    }
+  },
+  {
+    "id": "q0741",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you copy from a friend and keep for good?",
+      "es": "¿Qué le copiaste a un amigo y te quedó para siempre?",
+      "fr": "Qu'as-tu copié à un ami et gardé pour de bon ?",
+      "de": "Was hast du dir bei Freunden abgeschaut und behalten?",
+      "it": "Cosa hai copiato da un amico e tenuto per sempre?"
+    }
+  },
+  {
+    "id": "q0742",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you now say no to that you always used to accept?",
+      "es": "¿A qué dirías que no ahora y antes siempre aceptabas?",
+      "fr": "À quoi dirais-tu non aujourd'hui alors que tu acceptais toujours ?",
+      "de": "Wozu würdest du heute Nein sagen, was du früher immer angenommen hast?",
+      "it": "A cosa diresti di no oggi che prima accettavi sempre?"
+    }
+  },
+  {
+    "id": "q0743",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you fail at often enough to finally get good at it?",
+      "es": "¿En qué fallaste tantas veces que al final se te da bien?",
+      "fr": "Dans quoi as-tu assez échoué pour finir par y exceller ?",
+      "de": "Worin bist du oft genug gescheitert, bis du gut darin wurdest?",
+      "it": "In cosa hai fallito abbastanza da riuscirci davvero?"
+    }
+  },
+  {
+    "id": "q0744",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your current interests would horrify you at fifteen?",
+      "es": "¿Qué afición tuya de ahora horrorizaría al tú de quince años?",
+      "fr": "Quelle passion actuelle horrifierait le toi de quinze ans ?",
+      "de": "Welches deiner heutigen Hobbys würde dich mit fünfzehn entsetzen?",
+      "it": "Quale tua passione di oggi sconvolgerebbe il te di quindici anni?"
+    }
+  },
+  {
+    "id": "q0745",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do more slowly now, and are glad about it?",
+      "es": "¿Qué haces ahora más despacio y te alegras de ello?",
+      "fr": "Qu'est-ce que tu fais plus lentement aujourd'hui, et tant mieux ?",
+      "de": "Was machst du heute langsamer und bist froh darüber?",
+      "it": "Cosa fai più lentamente oggi, e per fortuna?"
+    }
+  },
+  {
+    "id": "q0746",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which risk feels smaller to you now than it used to?",
+      "es": "¿Qué riesgo te parece ahora más pequeño que antes?",
+      "fr": "Quel risque te paraît plus petit aujourd'hui qu'avant ?",
+      "de": "Welches Risiko wirkt heute kleiner auf dich als früher?",
+      "it": "Quale rischio ti sembra più piccolo oggi rispetto a prima?"
+    }
+  },
+  {
+    "id": "q0747",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which advice did you follow for years before questioning it?",
+      "es": "¿Qué consejo seguiste durante años antes de cuestionarlo?",
+      "fr": "Quel conseil as-tu suivi des années avant de le remettre en cause ?",
+      "de": "Welchen Rat hast du jahrelang befolgt, bevor du ihn hinterfragt hast?",
+      "it": "Quale consiglio hai seguito per anni prima di metterlo in dubbio?"
+    }
+  },
+  {
+    "id": "q0748",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which change in me happened so slowly that I missed it?",
+      "es": "¿Qué cambio en mí ocurrió tan despacio que ni lo noté?",
+      "fr": "Quel changement chez moi s'est fait si lentement que je ne l'ai pas vu ?",
+      "de": "Welche Veränderung an mir kam so langsam, dass ich sie übersehen habe?",
+      "it": "Quale cambiamento in me è arrivato così piano che non l'ho notato?"
+    }
+  },
+  {
+    "id": "q0749",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you only learn once you had to teach it?",
+      "es": "¿Qué aprendiste de verdad solo cuando tuviste que enseñarlo?",
+      "fr": "Qu'as-tu vraiment appris seulement en devant l'enseigner ?",
+      "de": "Was hast du erst richtig gelernt, als du es erklären musstest?",
+      "it": "Cosa hai imparato davvero solo dovendolo insegnare?"
+    }
+  },
+  {
+    "id": "q0750",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your old routines would you struggle to keep up today?",
+      "es": "¿Qué rutina tuya de antes te costaría mantener hoy?",
+      "fr": "Quelle ancienne routine aurais-tu du mal à tenir aujourd'hui ?",
+      "de": "Welche deiner alten Routinen würdest du heute kaum durchhalten?",
+      "it": "Quale tua vecchia routine faresti fatica a mantenere oggi?"
+    }
+  },
+  {
+    "id": "q0751",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of your opinions have I changed without trying?",
+      "es": "¿Qué opinión tuya te he cambiado sin proponérmelo?",
+      "fr": "Quelle opinion t'ai-je fait changer sans le vouloir ?",
+      "de": "Welche deiner Meinungen habe ich geändert, ohne es zu versuchen?",
+      "it": "Quale tua opinione ti ho cambiato senza volerlo?"
+    }
+  },
+  {
+    "id": "q0752",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What do the two of us handle better now than at the start?",
+      "es": "¿Qué llevamos mejor los dos ahora que al principio?",
+      "fr": "Qu'est-ce qu'on gère mieux tous les deux qu'au début ?",
+      "de": "Was schaffen wir beide heute besser als am Anfang?",
+      "it": "Cosa gestiamo meglio noi due adesso rispetto all'inizio?"
+    }
+  },
+  {
+    "id": "q0753",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What did you have to teach me twice?",
+      "es": "¿Qué tuviste que enseñarme dos veces?",
+      "fr": "Qu'as-tu dû m'apprendre deux fois ?",
+      "de": "Was musstest du mir zweimal beibringen?",
+      "it": "Cosa hai dovuto insegnarmi due volte?"
+    }
+  },
+  {
+    "id": "q0754",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my questions do you now ask yourself?",
+      "es": "¿Qué pregunta mía te haces ahora por tu cuenta?",
+      "fr": "Quelle question de ma part te poses-tu maintenant de toi-même ?",
+      "de": "Welche meiner Fragen stellst du dir inzwischen selbst?",
+      "it": "Quale mia domanda ti fai ormai per conto tuo?"
+    }
+  },
+  {
+    "id": "q0755",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What have you outgrown that people still expect from you?",
+      "es": "¿Qué has dejado atrás y la gente sigue esperando de ti?",
+      "fr": "Qu'as-tu dépassé alors que les gens l'attendent encore de toi ?",
+      "de": "Was hast du hinter dir gelassen, was Leute noch von dir erwarten?",
+      "it": "Cosa hai superato e gli altri si aspettano ancora da te?"
+    }
+  },
+  {
+    "id": "q0756",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which word of mine has crept into your vocabulary?",
+      "es": "¿Qué palabra mía se te ha colado en el vocabulario?",
+      "fr": "Lequel de mes mots s'est glissé dans ton vocabulaire ?",
+      "de": "Welches meiner Wörter hat sich in deinen Wortschatz geschlichen?",
+      "it": "Quale mia parola si è infilata nel tuo vocabolario?"
+    }
+  },
+  {
+    "id": "q0757",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of our early rules quietly stopped applying?",
+      "es": "¿Qué norma nuestra del principio dejó de valer sin más?",
+      "fr": "Quelle règle de nos débuts a cessé de s'appliquer sans bruit ?",
+      "de": "Welche unserer frühen Regeln gilt einfach nicht mehr?",
+      "it": "Quale nostra regola dell'inizio ha smesso di valere in silenzio?"
+    }
+  },
+  {
+    "id": "q0758",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What have you stopped rehearsing before you say it to me?",
+      "es": "¿Qué has dejado de ensayar antes de decírmelo?",
+      "fr": "Qu'as-tu arrêté de répéter dans ta tête avant de me le dire ?",
+      "de": "Was probst du nicht mehr, bevor du es mir sagst?",
+      "it": "Cosa hai smesso di provare in testa prima di dirmelo?"
+    }
+  },
+  {
+    "id": "q0759",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you learn only because you had no one to do it for you?",
+      "es": "¿Qué aprendiste solo porque no tenías a nadie que lo hiciera por ti?",
+      "fr": "Qu'as-tu appris parce que personne ne pouvait le faire pour toi ?",
+      "de": "Was hast du gelernt, weil es niemand für dich erledigt hat?",
+      "it": "Cosa hai imparato solo perché nessuno lo faceva per te?"
+    }
+  },
+  {
+    "id": "q0760",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What did you start eating because of me?",
+      "es": "¿Qué has empezado a comer por mi culpa?",
+      "fr": "Qu'as-tu commencé à manger à cause de moi ?",
+      "de": "Was isst du erst, seit du mich kennst?",
+      "it": "Cosa hai iniziato a mangiare per colpa mia?"
+    }
+  },
+  {
+    "id": "q0761",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to be better at that nobody would guess?",
+      "es": "¿En qué quieres mejorar y nadie se lo imaginaría?",
+      "fr": "Dans quoi veux-tu progresser sans que personne s'en doute ?",
+      "de": "Worin willst du besser werden, was niemand vermuten würde?",
+      "it": "In cosa vuoi migliorare senza che nessuno lo immagini?"
+    }
+  },
+  {
+    "id": "q0762",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which task did we swap because one of us got better at it?",
+      "es": "¿Qué tarea nos intercambiamos porque a uno se le daba mejor?",
+      "fr": "Quelle tâche a-t-on échangée parce que l'un de nous s'améliorait ?",
+      "de": "Welche Aufgabe haben wir getauscht, weil einer von uns besser darin wurde?",
+      "it": "Quale compito ci siamo scambiati perché uno di noi era diventato più bravo?"
+    }
+  },
+  {
+    "id": "q0763",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What did the two of us get through that changed how we plan?",
+      "es": "¿Qué superamos los dos que cambió nuestra forma de planear?",
+      "fr": "Qu'avons-nous traversé qui a changé notre façon de prévoir ?",
+      "de": "Was haben wir beide überstanden, das unser Planen verändert hat?",
+      "it": "Cosa abbiamo superato noi due che ha cambiato come pianifichiamo?"
+    }
+  },
+  {
+    "id": "q0764",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What are you good enough at to stop practising?",
+      "es": "¿En qué se te da ya bastante bien como para dejar de practicar?",
+      "fr": "Qu'est-ce que tu maîtrises assez pour arrêter de t'entraîner ?",
+      "de": "Worin bist du gut genug, um nicht mehr zu üben?",
+      "it": "Cosa padroneggi abbastanza da smettere di allenarti?"
+    }
+  },
+  {
+    "id": "q0765",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my plans do you take more seriously than I do?",
+      "es": "¿Qué plan mío te tomas más en serio que yo?",
+      "fr": "Lequel de mes projets prends-tu plus au sérieux que moi ?",
+      "de": "Welchen meiner Pläne nimmst du ernster als ich?",
+      "it": "Quale mio piano prendi più sul serio di me?"
+    }
+  },
+  {
+    "id": "q0766",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you like to be unlearning right now?",
+      "es": "¿Qué te gustaría estar desaprendiendo ahora mismo?",
+      "fr": "Qu'aimerais-tu être en train de désapprendre en ce moment ?",
+      "de": "Was würdest du dir gerade gern abgewöhnen?",
+      "it": "Cosa vorresti disimparare in questo periodo?"
+    }
+  },
+  {
+    "id": "q0767",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do we do now that we would not have done at first?",
+      "es": "¿Qué hacemos ahora que no habríamos hecho al principio?",
+      "fr": "Que fait-on aujourd'hui qu'on n'aurait pas fait au début ?",
+      "de": "Was machen wir heute, was wir am Anfang nicht gemacht hätten?",
+      "it": "Cosa facciamo oggi che all'inizio non avremmo fatto?"
+    }
+  },
+  {
+    "id": "q0768",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your old phases would you happily revisit for a week?",
+      "es": "¿A qué etapa tuya de antes volverías una semana sin dudarlo?",
+      "fr": "Dans quelle période de ta vie retournerais-tu une semaine ?",
+      "de": "In welche deiner alten Phasen würdest du für eine Woche zurück?",
+      "it": "In quale tua vecchia fase torneresti volentieri per una settimana?"
+    }
+  },
+  {
+    "id": "q0769",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What did you see in me early that I took longer to see?",
+      "es": "¿Qué viste en mí desde el principio y a mí me costó ver?",
+      "fr": "Qu'as-tu vu en moi tout de suite et que j'ai mis du temps à voir ?",
+      "de": "Was hast du früh an mir gesehen, wofür ich länger gebraucht habe?",
+      "it": "Cosa hai visto in me subito e io ho impiegato più tempo a vedere?"
+    }
+  },
+  {
+    "id": "q0770",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which everyday thing did you only learn as an adult?",
+      "es": "¿Qué cosa cotidiana aprendiste solo de mayor?",
+      "fr": "Quelle chose du quotidien n'as-tu apprise qu'à l'âge adulte ?",
+      "de": "Welche Alltagssache hast du erst spät im Leben gelernt?",
+      "it": "Quale cosa di tutti i giorni hai imparato solo da grande?"
+    }
+  },
+  {
+    "id": "q0771",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What have I made you less afraid of?",
+      "es": "¿A qué le tienes menos miedo gracias a mí?",
+      "fr": "De quoi as-tu moins peur grâce à moi ?",
+      "de": "Wovor hast du dank mir weniger Angst?",
+      "it": "Di cosa hai meno paura grazie a me?"
+    }
+  },
+  {
+    "id": "q0772",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your habits do you expect to lose in five years?",
+      "es": "¿Qué costumbre tuya crees que perderás en cinco años?",
+      "fr": "Quelle habitude penses-tu avoir perdue d'ici cinq ans ?",
+      "de": "Welche deiner Gewohnheiten wirst du in fünf Jahren los sein?",
+      "it": "Quale tua abitudine pensi di perdere entro cinque anni?"
+    }
+  },
+  {
+    "id": "q0773",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my ideas did you resist and then adopt?",
+      "es": "¿Qué idea mía rechazaste y luego hiciste tuya?",
+      "fr": "Laquelle de mes idées as-tu rejetée avant de l'adopter ?",
+      "de": "Welche meiner Ideen hast du abgelehnt und dann übernommen?",
+      "it": "Quale mia idea hai respinto e poi fatto tua?"
+    }
+  },
+  {
+    "id": "q0774",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our weekends from the early days would bore us now?",
+      "es": "¿Qué fin de semana de los primeros tiempos nos aburriría hoy?",
+      "fr": "Lequel de nos week-ends du début nous ennuierait aujourd'hui ?",
+      "de": "Welches unserer Wochenenden von früher würde uns heute langweilen?",
+      "it": "Quale nostro fine settimana dei primi tempi ci annoierebbe oggi?"
+    }
+  },
+  {
+    "id": "q0775",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you need less of now than a year ago?",
+      "es": "¿Qué necesitas menos ahora que hace un año?",
+      "fr": "De quoi as-tu moins besoin qu'il y a un an ?",
+      "de": "Wovon brauchst du heute weniger als vor einem Jahr?",
+      "it": "Di cosa hai meno bisogno rispetto a un anno fa?"
+    }
+  },
+  {
+    "id": "q0776",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What have you learned to say to me directly?",
+      "es": "¿Qué has aprendido a decirme sin rodeos?",
+      "fr": "Qu'as-tu appris à me dire sans détour ?",
+      "de": "Was hast du gelernt, mir direkt zu sagen?",
+      "it": "Cosa hai imparato a dirmi senza giri di parole?"
+    }
+  },
+  {
+    "id": "q0777",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your rules did you make after getting it wrong once?",
+      "es": "¿Qué norma tuya nació de haberla fastidiado una sola vez?",
+      "fr": "Quelle règle t'es-tu fixée après une seule erreur ?",
+      "de": "Welche deiner Regeln entstand aus einem einzigen Fehler?",
+      "it": "Quale tua regola è nata da un errore fatto una volta sola?"
+    }
+  },
+  {
+    "id": "q0778",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What did we start by accident and keep on purpose?",
+      "es": "¿Qué empezamos por casualidad y mantenemos a propósito?",
+      "fr": "Qu'a-t-on commencé par hasard et gardé exprès ?",
+      "de": "Was haben wir zufällig angefangen und absichtlich behalten?",
+      "it": "Cosa abbiamo iniziato per caso e teniamo di proposito?"
+    }
+  },
+  {
+    "id": "q0779",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your standards for other people have you loosened?",
+      "es": "¿Qué exigencia hacia los demás has relajado?",
+      "fr": "Quelle exigence envers les autres as-tu assouplie ?",
+      "de": "Welchen Anspruch an andere hast du gelockert?",
+      "it": "Quale pretesa verso gli altri hai allentato?"
+    }
+  },
+  {
+    "id": "q0780",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which conversation would have been impossible for us two years ago?",
+      "es": "¿Qué conversación habría sido imposible entre nosotros hace dos años?",
+      "fr": "Quelle conversation aurait été impossible entre nous il y a deux ans ?",
+      "de": "Welches Gespräch wäre für uns vor zwei Jahren unmöglich gewesen?",
+      "it": "Quale conversazione sarebbe stata impossibile tra noi due anni fa?"
+    }
+  },
+  {
+    "id": "q0781",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which childhood ambition are you secretly still working on?",
+      "es": "¿Qué sueño de la infancia sigues persiguiendo en secreto?",
+      "fr": "Quelle ambition d'enfance poursuis-tu encore en secret ?",
+      "de": "An welchem Kindheitstraum arbeitest du heimlich noch?",
+      "it": "Quale sogno d'infanzia stai ancora inseguendo di nascosto?"
+    }
+  },
+  {
+    "id": "q0782",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do I do now that I clearly learned from you?",
+      "es": "¿Qué hago ahora que está claro que aprendí de ti?",
+      "fr": "Que fais-je aujourd'hui que j'ai clairement appris de toi ?",
+      "de": "Was mache ich heute, das ich eindeutig von dir gelernt habe?",
+      "it": "Cosa faccio adesso che ho chiaramente imparato da te?"
+    }
+  },
+  {
+    "id": "q0783",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What are you deliberately not good at?",
+      "es": "¿En qué eliges no destacar?",
+      "fr": "Dans quoi choisis-tu de ne pas exceller ?",
+      "de": "Worin bist du absichtlich nicht gut?",
+      "it": "In cosa scegli di non eccellere?"
+    }
+  },
+  {
+    "id": "q0784",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What did you make room for in your life after we met?",
+      "es": "¿A qué le hiciste sitio en tu vida después de conocernos?",
+      "fr": "À quoi as-tu fait de la place dans ta vie après notre rencontre ?",
+      "de": "Wofür hast du in deinem Leben Platz gemacht, seit wir uns kennen?",
+      "it": "A cosa hai fatto spazio nella tua vita dopo che ci siamo conosciuti?"
+    }
+  },
+  {
+    "id": "q0785",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which skill would you start if nobody could watch you learn it?",
+      "es": "¿Qué aprenderías si nadie pudiera verte mientras aprendes?",
+      "fr": "Qu'apprendrais-tu si personne ne pouvait te voir débuter ?",
+      "de": "Was würdest du lernen, wenn dir dabei niemand zusehen könnte?",
+      "it": "Cosa impareresti se nessuno potesse vederti mentre impari?"
+    }
+  },
+  {
+    "id": "q0786",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our routines did you have to get used to?",
+      "es": "¿A qué rutina nuestra tuviste que acostumbrarte?",
+      "fr": "À laquelle de nos routines as-tu dû t'habituer ?",
+      "de": "An welche unserer Routinen musstest du dich erst gewöhnen?",
+      "it": "A quale nostra abitudine hai dovuto abituarti?"
+    }
+  },
+  {
+    "id": "q0787",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your reactions do you now catch and stop halfway?",
+      "es": "¿Qué reacción tuya pillas y frenas a mitad de camino?",
+      "fr": "Quelle réaction arrives-tu maintenant à stopper en cours de route ?",
+      "de": "Welche deiner Reaktionen bremst du heute mittendrin ab?",
+      "it": "Quale tua reazione ora blocchi a metà strada?"
+    }
+  },
+  {
+    "id": "q0788",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What did we both worry about that neither of us mentions now?",
+      "es": "¿Qué nos preocupaba a los dos y ya ninguno menciona?",
+      "fr": "Qu'est-ce qui nous inquiétait tous les deux et dont on ne parle plus ?",
+      "de": "Was hat uns beide beschäftigt, und keiner erwähnt es mehr?",
+      "it": "Cosa preoccupava entrambi e ora nessuno dei due nomina più?"
+    }
+  },
+  {
+    "id": "q0789",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my improvements would you quietly undo?",
+      "es": "¿Qué mejora mía deshacerías sin decir nada?",
+      "fr": "Lequel de mes progrès annulerais-tu discrètement ?",
+      "de": "Welche meiner Verbesserungen würdest du heimlich rückgängig machen?",
+      "it": "Quale mio miglioramento annulleresti di nascosto?"
+    }
+  },
+  {
+    "id": "q0790",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What can you fix yourself now that you once paid someone for?",
+      "es": "¿Qué arreglas ahora tú y antes pagabas a alguien por hacerlo?",
+      "fr": "Que répares-tu toi-même alors que tu payais quelqu'un avant ?",
+      "de": "Was reparierst du heute selbst, wofür du früher jemanden bezahlt hast?",
+      "it": "Cosa ripari da te oggi e prima pagavi qualcuno per farlo?"
+    }
+  },
+  {
+    "id": "q0791",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which decision of ours changed how you plan your own life?",
+      "es": "¿Qué decisión nuestra cambió cómo planeas tu propia vida?",
+      "fr": "Laquelle de nos décisions a changé ta façon de prévoir ta vie ?",
+      "de": "Welche unserer Entscheidungen hat dein eigenes Planen verändert?",
+      "it": "Quale nostra decisione ha cambiato come pianifichi la tua vita?"
+    }
+  },
+  {
+    "id": "q0792",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which thing you own says most about who you used to be?",
+      "es": "¿Qué cosa tuya habla más de quien eras que de quien eres?",
+      "fr": "Lequel de tes objets parle le plus de qui tu étais avant ?",
+      "de": "Welcher deiner Gegenstände sagt am meisten über dein früheres Ich?",
+      "it": "Quale tuo oggetto racconta di più chi eri prima?"
+    }
+  },
+  {
+    "id": "q0793",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What did you assume about me that turned out to be wrong?",
+      "es": "¿Qué diste por hecho sobre mí y resultó ser falso?",
+      "fr": "Qu'as-tu supposé de moi qui s'est avéré faux ?",
+      "de": "Was hast du über mich angenommen, was sich als falsch herausstellte?",
+      "it": "Cosa hai dato per scontato su di me che si è rivelato falso?"
+    }
+  },
+  {
+    "id": "q0794",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What has become harder for you as you got better at it?",
+      "es": "¿Qué se te ha vuelto más difícil justo al mejorar en ello?",
+      "fr": "Qu'est-ce qui est devenu plus dur à mesure que tu progressais ?",
+      "de": "Was ist schwerer geworden, je besser du darin wurdest?",
+      "it": "Cosa è diventato più difficile man mano che miglioravi?"
+    }
+  },
+  {
+    "id": "q0795",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our habits from the first months is still alive?",
+      "es": "¿Qué costumbre nuestra de los primeros meses sigue viva?",
+      "fr": "Quelle habitude de nos premiers mois est encore vivante ?",
+      "de": "Welche unserer Gewohnheiten aus den ersten Monaten lebt noch?",
+      "it": "Quale nostra abitudine dei primi mesi è ancora viva?"
+    }
+  },
+  {
+    "id": "q0796",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you understand about your family better than before?",
+      "es": "¿Qué entiendes ahora mejor de tu familia que antes?",
+      "fr": "Que comprends-tu mieux de ta famille qu'avant ?",
+      "de": "Was verstehst du an deiner Familie heute besser als früher?",
+      "it": "Cosa capisci della tua famiglia meglio di prima?"
+    }
+  },
+  {
+    "id": "q0797",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your bad habits would you keep on purpose?",
+      "es": "¿Qué mala costumbre tuya conservarías a propósito?",
+      "fr": "Lequel de tes mauvais penchants garderais-tu exprès ?",
+      "de": "Welche deiner schlechten Angewohnheiten würdest du absichtlich behalten?",
+      "it": "Quale tuo brutto vizio terresti di proposito?"
+    }
+  },
+  {
+    "id": "q0798",
+    "theme": "growth",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What have you stopped doing alone since we met?",
+      "es": "¿Qué has dejado de hacer en solitario desde que nos conocimos?",
+      "fr": "Que ne fais-tu plus en solo depuis qu'on se connaît ?",
+      "de": "Was machst du nicht mehr allein, seit wir uns kennen?",
+      "it": "Cosa non fai più in solitaria da quando ci conosciamo?"
+    }
+  },
+  {
+    "id": "q0799",
+    "theme": "growth",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you like to have stopped caring about by next year?",
+      "es": "¿Qué te gustaría que ya no te importara el año que viene?",
+      "fr": "De quoi aimerais-tu ne plus te soucier l'an prochain ?",
+      "de": "Was soll dir bis nächstes Jahr egal geworden sein?",
+      "it": "Cosa vorresti che l'anno prossimo non ti importasse più?"
+    }
+  },
+  {
+    "id": "q0800",
+    "theme": "growth",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which version of the two of us would you want back for a day?",
+      "es": "¿A qué versión de nosotros dos volverías por un día?",
+      "fr": "Quelle version de nous deux voudrais-tu retrouver une journée ?",
+      "de": "Welche Version von uns beiden hättest du gern einen Tag zurück?",
+      "it": "Quale versione di noi due vorresti indietro per un giorno?"
+    }
+  }
+]

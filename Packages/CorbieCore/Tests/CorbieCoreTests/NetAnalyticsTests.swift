@@ -16,11 +16,11 @@ import Testing
         .eventCreated(kind: .birthday),
         .wishCreated(source: .amazon),
         .wishFulfilled,
-        .planCreated(type: .trip),
+        .planCreated(type: .trip, isOpenEnded: false),
         .planCompleted,
         .planStepCreated(hasDue: true),
         .planStepDone,
-        .expenseAdded,
+        .expenseAdded(isNegative: false),
         .listCreated(template: .shopping),
         .listItemChecked,
         .listMapOpened,
@@ -34,6 +34,17 @@ import Testing
         .voteCreated,
         .voteAnswered,
         .voteRevealed,
+        .questionShown,
+        .questionAnswered,
+        .questionRevealed,
+        .questionNudgeSent,
+        .questionHistoryOpened,
+        .choreFlowStarted,
+        .choreListBuilt(itemCount: 18, customCount: 2),
+        .choreRatingDone,
+        .choreRevealed(tradeCount: 4, rotateCount: 2),
+        .choreApplied(taskCount: 18),
+        .choreResplit,
         .todayOpened,
         .todayBlockTapped(block: .comingUp),
         .todayQuickAction(kind: .invite),
@@ -116,6 +127,21 @@ import Testing
         #expect(AnalyticsEvent.comparisonShown(reason: .trialEnded).props == ["reason": .string("trial_ended")])
         #expect(AnalyticsEvent.onboardingStep(3).props == ["step": .number(3)])
         #expect(AnalyticsEvent.appOpen.props.isEmpty)
+        #expect(
+            AnalyticsEvent.planCreated(type: .purchase, isOpenEnded: true).props
+                == ["type": .string("purchase"), "is_open_ended": .flag(true)]
+        )
+        #expect(AnalyticsEvent.expenseAdded(isNegative: true).props == ["is_negative": .flag(true)])
+        #expect(
+            AnalyticsEvent.choreListBuilt(itemCount: 18, customCount: 2).props
+                == ["item_count": .number(18), "custom_count": .number(2)]
+        )
+        #expect(
+            AnalyticsEvent.choreRevealed(tradeCount: 4, rotateCount: 2).props
+                == ["trade_count": .number(4), "rotate_count": .number(2)]
+        )
+        #expect(AnalyticsEvent.choreApplied(taskCount: 18).props == ["task_count": .number(18)])
+        #expect(AnalyticsEvent.questionAnswered.props.isEmpty)
     }
 }
 

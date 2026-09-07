@@ -13,6 +13,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
     public var sharesBusyTimes: Bool
     public var lastRecapSeenAt: Date?
     public var lastUsVisitAt: Date?
+    public var lastQuestionSeenDayKey: String?
     public var notificationPrefs: NotificationPrefs
 
     public init(
@@ -28,6 +29,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
         sharesBusyTimes: Bool = false,
         lastRecapSeenAt: Date? = nil,
         lastUsVisitAt: Date? = nil,
+        lastQuestionSeenDayKey: String? = nil,
         notificationPrefs: NotificationPrefs = .allEnabled
     ) {
         self.id = id
@@ -42,6 +44,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
         self.sharesBusyTimes = sharesBusyTimes
         self.lastRecapSeenAt = lastRecapSeenAt
         self.lastUsVisitAt = lastUsVisitAt
+        self.lastQuestionSeenDayKey = lastQuestionSeenDayKey
         self.notificationPrefs = notificationPrefs
     }
 
@@ -59,6 +62,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
             sharesBusyTimes: member.sharesBusyTimes,
             lastRecapSeenAt: member.lastRecapSeenAt,
             lastUsVisitAt: member.lastUsVisitAt,
+            lastQuestionSeenDayKey: member.lastQuestionSeenDayKey,
             notificationPrefs: member.notificationPrefs
         )
     }

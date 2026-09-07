@@ -12,6 +12,8 @@ public struct Repositories: Sendable {
     public let capsules: any CapsuleRepository
     public let votes: any VoteRepository
     public let people: any PeopleRepository
+    public let questions: any QuestionRepository
+    public let chores: any ChoreRepository
 
     public init(stack: CoreDataStack) {
         spaces = CoreDataSpaceRepository(stack: stack)
@@ -25,5 +27,7 @@ public struct Repositories: Sendable {
         capsules = CoreDataCapsuleRepository(stack: stack)
         votes = CoreDataVoteRepository(stack: stack)
         people = CoreDataPeopleRepository(stack: stack)
+        questions = CoreDataQuestionRepository(stack: stack)
+        chores = CoreDataChoreRepository(stack: stack)
     }
 }

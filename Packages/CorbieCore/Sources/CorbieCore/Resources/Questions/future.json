@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0201",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to be better at in a year that is not about work?",
+      "es": "¿En qué quieres ser mejor dentro de un año, sin que tenga que ver con el trabajo?",
+      "fr": "Dans quoi veux-tu progresser d'ici un an, en dehors du travail ?",
+      "de": "Worin willst du in einem Jahr besser sein, ohne dass es um Arbeit geht?",
+      "it": "In cosa vuoi essere migliore fra un anno, senza che c'entri il lavoro?"
+    }
+  },
+  {
+    "id": "q0202",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which skill would you learn if it took exactly one month?",
+      "es": "¿Qué habilidad aprenderías si costara exactamente un mes?",
+      "fr": "Quelle compétence apprendrais-tu si cela prenait exactement un mois ?",
+      "de": "Welche Fähigkeit würdest du lernen, wenn sie genau einen Monat dauerte?",
+      "it": "Quale abilità impareresti se richiedesse esattamente un mese?"
+    }
+  },
+  {
+    "id": "q0203",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Where would you go if you had to leave tomorrow for a month?",
+      "es": "¿Adónde irías si tuvieras que marcharte mañana por un mes?",
+      "fr": "Où irais-tu si tu devais partir demain pour un mois ?",
+      "de": "Wohin würdest du fahren, wenn du morgen für einen Monat weg müsstest?",
+      "it": "Dove andresti se dovessi partire domani per un mese?"
+    }
+  },
+  {
+    "id": "q0204",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want us to still be doing in ten years?",
+      "es": "¿Qué quieres que sigamos haciendo dentro de diez años?",
+      "fr": "Que veux-tu que nous fassions encore dans dix ans ?",
+      "de": "Was sollen wir in zehn Jahren immer noch machen?",
+      "it": "Cosa vuoi che facciamo ancora tra dieci anni?"
+    }
+  },
+  {
+    "id": "q0205",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which thing on your list would take one afternoon and never gets one?",
+      "es": "¿Qué cosa de tu lista se haría en una tarde y nunca tiene esa tarde?",
+      "fr": "Quelle chose de ta liste tiendrait en un après-midi et ne l'obtient jamais ?",
+      "de": "Welche Sache auf deiner Liste bräuchte einen Nachmittag und bekommt ihn nie?",
+      "it": "Quale cosa della tua lista richiederebbe un pomeriggio che non arriva mai?"
+    }
+  },
+  {
+    "id": "q0206",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you have to stop doing to get what you say you want?",
+      "es": "¿Qué tendrías que dejar de hacer para conseguir lo que dices querer?",
+      "fr": "Que devrais-tu arrêter de faire pour obtenir ce que tu dis vouloir ?",
+      "de": "Was müsstest du lassen, um zu bekommen, was du zu wollen sagst?",
+      "it": "Cosa dovresti smettere di fare per ottenere ciò che dici di volere?"
+    }
+  },
+  {
+    "id": "q0207",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which job would you try for one week with no consequences?",
+      "es": "¿Qué trabajo probarías durante una semana sin ninguna consecuencia?",
+      "fr": "Quel métier essaierais-tu une semaine sans aucune conséquence ?",
+      "de": "Welchen Beruf würdest du eine Woche lang folgenlos ausprobieren?",
+      "it": "Quale lavoro proveresti per una settimana senza conseguenze?"
+    }
+  },
+  {
+    "id": "q0208",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which city would you like to live in for one season?",
+      "es": "¿En qué ciudad te gustaría vivir durante una estación?",
+      "fr": "Dans quelle ville aimerais-tu vivre le temps d'une saison ?",
+      "de": "In welcher Stadt würdest du gern eine Jahreszeit lang leben?",
+      "it": "In quale città ti piacerebbe vivere per una stagione?"
+    }
+  },
+  {
+    "id": "q0209",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What should the two of us do before this year ends?",
+      "es": "¿Qué deberíamos hacer los dos antes de que acabe el año?",
+      "fr": "Que devrions-nous faire tous les deux avant la fin de l'année ?",
+      "de": "Was sollten wir beide noch vor Jahresende machen?",
+      "it": "Cosa dovremmo fare noi due prima che finisca l'anno?"
+    }
+  },
+  {
+    "id": "q0210",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What are you waiting for permission to do?",
+      "es": "¿Para qué estás esperando que alguien te dé permiso?",
+      "fr": "Pour quoi attends-tu qu'on te donne la permission ?",
+      "de": "Wofür wartest du auf eine Erlaubnis?",
+      "it": "Per cosa stai aspettando il permesso di qualcuno?"
+    }
+  },
+  {
+    "id": "q0211",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you spend an unexpected windfall on first?",
+      "es": "¿En qué gastarías primero un dinero caído del cielo?",
+      "fr": "Dans quoi dépenserais-tu en premier une rentrée d'argent inattendue ?",
+      "de": "Wofür würdest du unerwartetes Geld als Erstes ausgeben?",
+      "it": "In cosa spenderesti per primo un guadagno inaspettato?"
+    }
+  },
+  {
+    "id": "q0212",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you want us to make time for that we never do?",
+      "es": "¿Para qué quieres que saquemos tiempo y nunca lo hacemos?",
+      "fr": "Pour quoi veux-tu qu'on prenne le temps sans jamais le faire ?",
+      "de": "Wofür sollen wir uns Zeit nehmen, was wir nie tun?",
+      "it": "Per cosa vuoi che troviamo il tempo e non lo facciamo mai?"
+    }
+  },
+  {
+    "id": "q0213",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What should a normal weekday of ours look like in five years?",
+      "es": "¿Cómo debería ser un martes cualquiera nuestro dentro de cinco años?",
+      "fr": "À quoi devrait ressembler une journée ordinaire à nous dans cinq ans ?",
+      "de": "Wie sollte ein ganz normaler Wochentag von uns in fünf Jahren aussehen?",
+      "it": "Come dovrebbe essere una nostra giornata feriale normale fra cinque anni?"
+    }
+  },
+  {
+    "id": "q0214",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you want to have read or watched by the end of the year?",
+      "es": "¿Qué quieres haber leído o visto antes de que termine el año?",
+      "fr": "Qu'aimerais-tu avoir lu ou vu d'ici la fin de l'année ?",
+      "de": "Was willst du bis zum Jahresende gelesen oder gesehen haben?",
+      "it": "Cosa vuoi aver letto o visto entro la fine dell'anno?"
+    }
+  },
+  {
+    "id": "q0215",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of person are you afraid of becoming?",
+      "es": "¿En qué clase de persona te da miedo convertirte?",
+      "fr": "Quel genre de personne as-tu peur de devenir ?",
+      "de": "Was für ein Mensch möchtest du auf keinen Fall werden?",
+      "it": "Che tipo di persona hai paura di diventare?"
+    }
+  },
+  {
+    "id": "q0216",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which language would you take if you woke up fluent tomorrow?",
+      "es": "¿Qué idioma elegirías si mañana despertaras hablándolo con fluidez?",
+      "fr": "Quelle langue prendrais-tu si tu te réveillais demain en la parlant ?",
+      "de": "Welche Sprache nähmest du, wenn du morgen fließend aufwachtest?",
+      "it": "Quale lingua sceglieresti se domani ti svegliassi parlandola bene?"
+    }
+  },
+  {
+    "id": "q0217",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which trip do we keep talking about and never book?",
+      "es": "¿Qué viaje mencionamos siempre y no reservamos nunca?",
+      "fr": "De quel voyage parlons-nous sans cesse sans jamais le réserver ?",
+      "de": "Über welche Reise reden wir ständig und buchen sie nie?",
+      "it": "Di quale viaggio parliamo sempre senza mai prenotarlo?"
+    }
+  },
+  {
+    "id": "q0218",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to be known for by the people who know you?",
+      "es": "¿Por qué quieres que te reconozcan las personas que te conocen?",
+      "fr": "Pour quoi veux-tu être reconnu par les gens qui te connaissent ?",
+      "de": "Wofür willst du bei den Menschen bekannt sein, die dich kennen?",
+      "it": "Per cosa vuoi essere riconosciuto dalle persone che ti conoscono?"
+    }
+  },
+  {
+    "id": "q0219",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you like to try that you have never mentioned to anyone?",
+      "es": "¿Qué te gustaría probar y no le has mencionado nunca a nadie?",
+      "fr": "Qu'aimerais-tu essayer sans jamais en avoir parlé à personne ?",
+      "de": "Was würdest du gern ausprobieren, ohne es je jemandem gesagt zu haben?",
+      "it": "Cosa vorresti provare senza averlo mai detto a nessuno?"
+    }
+  },
+  {
+    "id": "q0220",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which ridiculous project would you start with me if cost did not matter?",
+      "es": "¿Qué proyecto absurdo empezarías conmigo si el coste diera igual?",
+      "fr": "Quel projet ridicule lancerais-tu avec moi si le coût n'importait pas ?",
+      "de": "Welches absurde Projekt würdest du mit mir starten, wenn Geld egal wäre?",
+      "it": "Quale progetto assurdo inizieresti con me se il costo non contasse?"
+    }
+  },
+  {
+    "id": "q0221",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would make the next five years feel worth it to you?",
+      "es": "¿Qué haría que los próximos cinco años te merecieran la pena?",
+      "fr": "Qu'est-ce qui rendrait les cinq prochaines années valables pour toi ?",
+      "de": "Was würde die nächsten fünf Jahre für dich wertvoll machen?",
+      "it": "Cosa renderebbe i prossimi cinque anni degni di essere vissuti?"
+    }
+  },
+  {
+    "id": "q0222",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Where do you actually want to be living in five years?",
+      "es": "¿Dónde quieres estar viviendo de verdad dentro de cinco años?",
+      "fr": "Où veux-tu vraiment habiter dans cinq ans ?",
+      "de": "Wo willst du in fünf Jahren wirklich wohnen?",
+      "it": "Dove vuoi davvero vivere fra cinque anni?"
+    }
+  },
+  {
+    "id": "q0223",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which decision are we both quietly avoiding?",
+      "es": "¿Qué decisión estamos evitando los dos en silencio?",
+      "fr": "Quelle décision évitons-nous tous les deux en silence ?",
+      "de": "Welche Entscheidung schieben wir beide stillschweigend vor uns her?",
+      "it": "Quale decisione stiamo evitando entrambi in silenzio?"
+    }
+  },
+  {
+    "id": "q0224",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you buy first if you had to empty a budget in a day?",
+      "es": "¿Qué comprarías primero si tuvieras que gastar un presupuesto en un día?",
+      "fr": "Qu'achèterais-tu en premier si tu devais vider un budget en un jour ?",
+      "de": "Was würdest du zuerst kaufen, wenn du ein Budget an einem Tag leeren müsstest?",
+      "it": "Cosa compreresti per primo se dovessi svuotare un budget in un giorno?"
+    }
+  },
+  {
+    "id": "q0225",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which habit do you want to have firmly in place by next winter?",
+      "es": "¿Qué costumbre quieres tener bien asentada para el próximo invierno?",
+      "fr": "Quelle habitude veux-tu avoir bien installée d'ici l'hiver prochain ?",
+      "de": "Welche Gewohnheit willst du bis zum nächsten Winter fest haben?",
+      "it": "Quale abitudine vuoi avere ben salda entro il prossimo inverno?"
+    }
+  },
+  {
+    "id": "q0226",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of older person do you want to be?",
+      "es": "¿Qué clase de persona mayor quieres ser?",
+      "fr": "Quel genre de vieille personne veux-tu devenir ?",
+      "de": "Was für ein alter Mensch willst du werden?",
+      "it": "Che tipo di persona anziana vuoi diventare?"
+    }
+  },
+  {
+    "id": "q0227",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your plans depends on someone else saying yes?",
+      "es": "¿Qué plan tuyo depende de que otra persona diga que sí?",
+      "fr": "Lequel de tes projets dépend du oui de quelqu'un d'autre ?",
+      "de": "Welcher deiner Pläne hängt davon ab, dass jemand anderes ja sagt?",
+      "it": "Quale tuo piano dipende dal sì di qualcun altro?"
+    }
+  },
+  {
+    "id": "q0228",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you want the two of us to get better at?",
+      "es": "¿En qué quieres que mejoremos los dos?",
+      "fr": "Dans quoi veux-tu qu'on progresse tous les deux ?",
+      "de": "Worin sollen wir beide besser werden?",
+      "it": "In cosa vuoi che miglioriamo noi due?"
+    }
+  },
+  {
+    "id": "q0229",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you attempt if failing at it stayed completely private?",
+      "es": "¿Qué intentarías si fracasar quedara completamente en privado?",
+      "fr": "Qu'essaierais-tu si échouer restait totalement privé ?",
+      "de": "Was würdest du versuchen, wenn ein Scheitern völlig privat bliebe?",
+      "it": "Cosa proveresti se fallire restasse del tutto privato?"
+    }
+  },
+  {
+    "id": "q0230",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to have stopped worrying about in a year?",
+      "es": "¿Por qué quieres haber dejado de preocuparte dentro de un año?",
+      "fr": "De quoi veux-tu avoir cessé de t'inquiéter d'ici un an ?",
+      "de": "Worüber willst du dir in einem Jahr keine Sorgen mehr machen?",
+      "it": "Di cosa vuoi aver smesso di preoccuparti fra un anno?"
+    }
+  },
+  {
+    "id": "q0231",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you like to be doing on your next birthday?",
+      "es": "¿Qué te gustaría estar haciendo en tu próximo cumpleaños?",
+      "fr": "Que voudrais-tu être en train de faire à ton prochain anniversaire ?",
+      "de": "Was möchtest du an deinem nächsten Geburtstag gerade tun?",
+      "it": "Cosa vorresti stare facendo al tuo prossimo compleanno?"
+    }
+  },
+  {
+    "id": "q0232",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What have we been putting off that has a real deadline?",
+      "es": "¿Qué estamos aplazando que tiene una fecha límite real?",
+      "fr": "Que repoussons-nous alors qu'il y a une vraie date limite ?",
+      "de": "Was schieben wir auf, obwohl es eine echte Frist hat?",
+      "it": "Cosa stiamo rimandando pur avendo una scadenza vera?"
+    }
+  },
+  {
+    "id": "q0233",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the most impractical place you still want to see?",
+      "es": "¿Cuál es el sitio más impráctico que sigues queriendo ver?",
+      "fr": "Quel est l'endroit le plus impraticable que tu veux encore voir ?",
+      "de": "Was ist der unpraktischste Ort, den du noch sehen willst?",
+      "it": "Qual è il posto più scomodo che vuoi ancora vedere?"
+    }
+  },
+  {
+    "id": "q0234",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which season of next year are you already planning around?",
+      "es": "¿Alrededor de qué estación del año que viene ya estás planificando?",
+      "fr": "Autour de quelle saison de l'an prochain t'organises-tu déjà ?",
+      "de": "Um welche Jahreszeit des nächsten Jahres planst du schon herum?",
+      "it": "Attorno a quale stagione dell'anno prossimo stai già pianificando?"
+    }
+  },
+  {
+    "id": "q0235",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What will you be too old for sooner than you think?",
+      "es": "¿Para qué serás demasiado mayor antes de lo que crees?",
+      "fr": "Qu'est-ce que tu ne pourras plus faire bien plus tôt que tu ne le crois ?",
+      "de": "Wofür wirst du früher zu alt sein, als du denkst?",
+      "it": "Per cosa sarai troppo grande prima di quanto pensi?"
+    }
+  },
+  {
+    "id": "q0236",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What is the first big thing you want us to plan for?",
+      "es": "¿Cuál es la primera cosa grande que quieres que planifiquemos?",
+      "fr": "Quelle est la première grande chose que tu veux qu'on prépare ?",
+      "de": "Was ist die erste große Sache, die wir planen sollen?",
+      "it": "Qual è la prima cosa grande che vuoi che pianifichiamo?"
+    }
+  },
+  {
+    "id": "q0237",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you do with a whole month off and nowhere to be?",
+      "es": "¿Qué harías con un mes libre entero y ningún sitio al que ir?",
+      "fr": "Que ferais-tu d'un mois entier de libre sans rien à honorer ?",
+      "de": "Was würdest du mit einem ganzen freien Monat ohne Termine machen?",
+      "it": "Cosa faresti con un mese intero libero e nessun impegno?"
+    }
+  },
+  {
+    "id": "q0238",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who do you want to be closer to a year from now?",
+      "es": "¿A quién quieres tener más cerca dentro de un año?",
+      "fr": "De qui veux-tu être plus proche dans un an ?",
+      "de": "Wem willst du in einem Jahr näher sein?",
+      "it": "A chi vuoi essere più vicino fra un anno?"
+    }
+  },
+  {
+    "id": "q0239",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What would you like to learn from me?",
+      "es": "¿Qué te gustaría aprender de mí?",
+      "fr": "Qu'aimerais-tu apprendre de moi ?",
+      "de": "Was würdest du gern von mir lernen?",
+      "it": "Cosa vorresti imparare da me?"
+    }
+  },
+  {
+    "id": "q0240",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to still be able to surprise me with?",
+      "es": "¿Con qué quieres poder seguir sorprendiéndome?",
+      "fr": "Avec quoi veux-tu pouvoir encore me surprendre ?",
+      "de": "Womit willst du mich weiterhin überraschen können?",
+      "it": "Con cosa vuoi poter continuare a sorprendermi?"
+    }
+  },
+  {
+    "id": "q0241",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our old plans deserves a second attempt?",
+      "es": "¿Cuál de nuestros viejos planes merece un segundo intento?",
+      "fr": "Lequel de nos anciens projets mérite une seconde tentative ?",
+      "de": "Welcher unserer alten Pläne verdient einen zweiten Versuch?",
+      "it": "Quale dei nostri vecchi progetti merita un secondo tentativo?"
+    }
+  },
+  {
+    "id": "q0242",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which machine or tool would you want to be able to fix yourself?",
+      "es": "¿Qué máquina o herramienta te gustaría saber arreglar tú?",
+      "fr": "Quelle machine ou quel outil aimerais-tu savoir réparer toi-même ?",
+      "de": "Welche Maschine oder welches Werkzeug würdest du gern selbst reparieren können?",
+      "it": "Quale macchina o attrezzo ti piacerebbe saper riparare in autonomia?"
+    }
+  },
+  {
+    "id": "q0243",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What is the next thing you want to face that scares you?",
+      "es": "¿Cuál es lo siguiente que quieres afrontar y te da miedo?",
+      "fr": "Quelle est la prochaine chose que tu veux affronter et qui te fait peur ?",
+      "de": "Was ist das Nächste, dem du dich stellen willst und das dir Angst macht?",
+      "it": "Qual è la prossima cosa che vuoi affrontare e che ti spaventa?"
+    }
+  },
+  {
+    "id": "q0244",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you like your home to have that it does not?",
+      "es": "¿Qué te gustaría que tuviera tu casa y no tiene?",
+      "fr": "Qu'aimerais-tu que ton logement ait et qu'il n'a pas ?",
+      "de": "Was hättest du gern in deinem Zuhause, das es nicht hat?",
+      "it": "Cosa vorresti che avesse casa tua e non ha?"
+    }
+  },
+  {
+    "id": "q0245",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to let go of before next year starts?",
+      "es": "¿De qué quieres desprenderte antes de que empiece el año que viene?",
+      "fr": "De quoi veux-tu te défaire avant le début de l'année prochaine ?",
+      "de": "Wovon willst du dich trennen, bevor das nächste Jahr beginnt?",
+      "it": "Di cosa vuoi liberarti prima che inizi l'anno prossimo?"
+    }
+  },
+  {
+    "id": "q0246",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you call a business you had to start tomorrow?",
+      "es": "¿Cómo llamarías a un negocio que tuvieras que abrir mañana?",
+      "fr": "Comment appellerais-tu une entreprise que tu devrais lancer demain ?",
+      "de": "Wie würdest du eine Firma nennen, die du morgen gründen müsstest?",
+      "it": "Come chiameresti un'attività che dovessi aprire domani?"
+    }
+  },
+  {
+    "id": "q0247",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What should we do differently the next time we plan something?",
+      "es": "¿Qué deberíamos hacer distinto la próxima vez que planeemos algo?",
+      "fr": "Que devrions-nous faire autrement la prochaine fois qu'on prévoit un truc ?",
+      "de": "Was sollten wir beim nächsten Planen anders machen?",
+      "it": "Cosa dovremmo fare diversamente la prossima volta che organizziamo qualcosa?"
+    }
+  },
+  {
+    "id": "q0248",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which promise to yourself do you keep renewing?",
+      "es": "¿Qué promesa que te hiciste sigues renovando?",
+      "fr": "Quelle promesse faite à toi-même renouvelles-tu sans cesse ?",
+      "de": "Welches Versprechen an dich selbst erneuerst du immer wieder?",
+      "it": "Quale promessa fatta a te stesso continui a rinnovare?"
+    }
+  },
+  {
+    "id": "q0249",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "What would you call the next chapter of us?",
+      "es": "¿Cómo titularías el próximo capítulo de lo nuestro?",
+      "fr": "Comment appellerais-tu le prochain chapitre de nous deux ?",
+      "de": "Wie würdest du das nächste Kapitel von uns nennen?",
+      "it": "Come chiameresti il prossimo capitolo di noi due?"
+    }
+  },
+  {
+    "id": "q0250",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want more of that you cannot simply schedule?",
+      "es": "¿De qué quieres más y no puedes sencillamente agendar?",
+      "fr": "De quoi veux-tu davantage sans pouvoir simplement le planifier ?",
+      "de": "Wovon willst du mehr, das du nicht einfach einplanen kannst?",
+      "it": "Di cosa vuoi di più e non puoi semplicemente mettere in agenda?"
+    }
+  },
+  {
+    "id": "q0251",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you want said about you at a party you were not at?",
+      "es": "¿Qué te gustaría que dijeran de ti en una fiesta a la que no fuiste?",
+      "fr": "Que voudrais-tu qu'on dise de toi à une soirée où tu n'es pas ?",
+      "de": "Was sollte man auf einer Feier über dich sagen, auf der du nicht bist?",
+      "it": "Cosa vorresti che dicessero di te a una festa in cui non ci sei?"
+    }
+  },
+  {
+    "id": "q0252",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the next small thing you are looking forward to?",
+      "es": "¿Cuál es la próxima cosa pequeña que esperas con ganas?",
+      "fr": "Quelle est la prochaine petite chose que tu attends avec impatience ?",
+      "de": "Auf welche nächste Kleinigkeit freust du dich?",
+      "it": "Qual è la prossima piccola cosa che aspetti con piacere?"
+    }
+  },
+  {
+    "id": "q0253",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What rule would you introduce if you ran your city for a week?",
+      "es": "¿Qué norma impondrías si mandaras en tu ciudad una semana?",
+      "fr": "Quelle règle instaurerais-tu si tu dirigeais ta ville une semaine ?",
+      "de": "Welche Regel würdest du einführen, wenn du eine Woche deine Stadt leitest?",
+      "it": "Quale regola introdurresti se comandassi la tua città per una settimana?"
+    }
+  },
+  {
+    "id": "q0254",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What would you like the two of us to be halfway through by summer?",
+      "es": "¿Qué te gustaría que los dos tuviéramos ya empezado para el verano?",
+      "fr": "Qu'aimerais-tu que nous deux ayons déjà bien entamé d'ici l'été ?",
+      "de": "Was hätten wir beide bis zum Sommer gern schon halb geschafft?",
+      "it": "Cosa ti piacerebbe che noi due avessimo già a metà entro l'estate?"
+    }
+  },
+  {
+    "id": "q0255",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What are you not ready to admit you have outgrown?",
+      "es": "¿Qué no estás listo para admitir que se te ha quedado pequeño?",
+      "fr": "Qu'est-ce que tu n'es pas prêt à admettre avoir dépassé ?",
+      "de": "Was willst du dir nicht eingestehen, dass du darüber hinaus bist?",
+      "it": "Cosa non sei pronto ad ammettere di aver superato?"
+    }
+  },
+  {
+    "id": "q0256",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which part of your life would you simplify first?",
+      "es": "¿Qué parte de tu vida simplificarías primero?",
+      "fr": "Quelle partie de ta vie simplifierais-tu en premier ?",
+      "de": "Welchen Teil deines Lebens würdest du zuerst vereinfachen?",
+      "it": "Quale parte della tua vita semplificheresti per prima?"
+    }
+  },
+  {
+    "id": "q0257",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would future you thank you for doing this month?",
+      "es": "¿Por qué te daría las gracias tu yo futuro si lo hicieras este mes?",
+      "fr": "Pour quoi ton toi futur te remercierait-il si tu le faisais ce mois-ci ?",
+      "de": "Wofür würde dein zukünftiges Ich dir danken, wenn du es diesen Monat tust?",
+      "it": "Per cosa ti ringrazierebbe il tuo io futuro se lo facessi questo mese?"
+    }
+  },
+  {
+    "id": "q0258",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to have said out loud before the year ends?",
+      "es": "¿Qué quieres haber dicho en voz alta antes de que acabe el año?",
+      "fr": "Qu'aimerais-tu avoir dit à voix haute avant la fin de l'année ?",
+      "de": "Was willst du bis zum Jahresende laut ausgesprochen haben?",
+      "it": "Cosa vuoi aver detto ad alta voce prima che finisca l'anno?"
+    }
+  },
+  {
+    "id": "q0259",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What should I remind you of when you forget it yourself?",
+      "es": "¿De qué debería recordarte cuando tú mismo lo olvides?",
+      "fr": "De quoi devrais-je te rappeler quand tu l'oublies toi-même ?",
+      "de": "Woran soll ich dich erinnern, wenn du es selbst vergisst?",
+      "it": "Di cosa dovrei ricordarti quando te ne dimentichi?"
+    }
+  },
+  {
+    "id": "q0260",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your current problems will not matter in two years?",
+      "es": "¿Cuál de tus problemas de ahora dará igual dentro de dos años?",
+      "fr": "Lequel de tes soucis actuels n'aura plus d'importance dans deux ans ?",
+      "de": "Welches deiner jetzigen Probleme wird in zwei Jahren egal sein?",
+      "it": "Quale dei tuoi problemi di adesso non conterà nulla fra due anni?"
+    }
+  },
+  {
+    "id": "q0261",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What would you keep about us if everything else had to change?",
+      "es": "¿Qué conservarías de nosotros si todo lo demás tuviera que cambiar?",
+      "fr": "Que garderais-tu de nous s'il fallait changer tout le reste ?",
+      "de": "Was würdest du an uns behalten, wenn sich alles andere ändern müsste?",
+      "it": "Cosa terresti di noi se tutto il resto dovesse cambiare?"
+    }
+  },
+  {
+    "id": "q0262",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you name the version of you that arrives in ten years?",
+      "es": "¿Cómo llamarías a la versión de ti que llegue dentro de diez años?",
+      "fr": "Comment appellerais-tu la version de toi qui arrivera dans dix ans ?",
+      "de": "Wie würdest du die Version von dir nennen, die in zehn Jahren kommt?",
+      "it": "Come chiameresti la versione di te che arriverà fra dieci anni?"
+    }
+  },
+  {
+    "id": "q0263",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you want to buy next that should last for decades?",
+      "es": "¿Qué quieres comprar ahora que debería durarte décadas?",
+      "fr": "Que veux-tu acheter ensuite qui devrait durer des décennies ?",
+      "de": "Was willst du als Nächstes kaufen, das Jahrzehnte halten soll?",
+      "it": "Cosa vuoi comprare adesso che dovrebbe durare decenni?"
+    }
+  },
+  {
+    "id": "q0264",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What are you building that nobody can see yet?",
+      "es": "¿Qué estás construyendo que todavía nadie puede ver?",
+      "fr": "Que construis-tu que personne ne peut encore voir ?",
+      "de": "Woran baust du, das noch niemand sehen kann?",
+      "it": "Cosa stai costruendo che ancora nessuno può vedere?"
+    }
+  },
+  {
+    "id": "q0265",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you want me to ask you about more often?",
+      "es": "¿Sobre qué quieres que te pregunte más a menudo?",
+      "fr": "Sur quoi veux-tu que je te pose plus souvent des questions ?",
+      "de": "Wonach soll ich dich öfter fragen?",
+      "it": "Di cosa vuoi che ti chieda più spesso?"
+    }
+  },
+  {
+    "id": "q0266",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which invention do you want to exist before you get old?",
+      "es": "¿Qué invento quieres que exista antes de que te hagas mayor?",
+      "fr": "Quelle invention veux-tu voir exister avant d'être vieux ?",
+      "de": "Welche Erfindung soll es geben, bevor du alt wirst?",
+      "it": "Quale invenzione vuoi che esista prima che tu diventi vecchio?"
+    }
+  },
+  {
+    "id": "q0267",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to leave behind that is not an object?",
+      "es": "¿Qué quieres dejar detrás que no sea un objeto?",
+      "fr": "Que veux-tu laisser derrière toi qui ne soit pas un objet ?",
+      "de": "Was willst du hinterlassen, das kein Gegenstand ist?",
+      "it": "Cosa vuoi lasciare dietro di te che non sia un oggetto?"
+    }
+  },
+  {
+    "id": "q0268",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which place do you want to return to in a different season?",
+      "es": "¿A qué lugar quieres volver en otra estación del año?",
+      "fr": "Dans quel endroit veux-tu revenir à une autre saison ?",
+      "de": "An welchen Ort willst du in einer anderen Jahreszeit zurück?",
+      "it": "In quale posto vuoi tornare in un'altra stagione?"
+    }
+  },
+  {
+    "id": "q0269",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which tradition do you want the two of us to start this year?",
+      "es": "¿Qué tradición quieres que empecemos los dos este año?",
+      "fr": "Quelle tradition veux-tu qu'on lance tous les deux cette année ?",
+      "de": "Welche Tradition sollen wir beide dieses Jahr beginnen?",
+      "it": "Quale tradizione vuoi che iniziamo noi due quest'anno?"
+    }
+  },
+  {
+    "id": "q0270",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you do differently if nobody would judge it?",
+      "es": "¿Qué harías de otra manera si nadie fuera a juzgarlo?",
+      "fr": "Que ferais-tu autrement si personne ne devait le juger ?",
+      "de": "Was würdest du anders machen, wenn es niemand beurteilen würde?",
+      "it": "Cosa faresti diversamente se nessuno lo giudicasse?"
+    }
+  },
+  {
+    "id": "q0271",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the one thing you want fixed in your home this year?",
+      "es": "¿Qué es lo único que quieres arreglar en tu casa este año?",
+      "fr": "Quelle est la seule chose que tu veux réparer chez toi cette année ?",
+      "de": "Was ist die eine Sache, die du dieses Jahr zu Hause repariert haben willst?",
+      "it": "Qual è l'unica cosa che vuoi sistemare in casa tua quest'anno?"
+    }
+  },
+  {
+    "id": "q0272",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would adapt faster to somewhere completely new?",
+      "es": "¿Quién de los dos se adaptaría antes a un sitio totalmente nuevo?",
+      "fr": "Lequel de nous deux s'adapterait plus vite à un lieu totalement nouveau ?",
+      "de": "Wer von uns beiden käme schneller an einem völlig neuen Ort zurecht?",
+      "it": "Chi di noi due si adatterebbe prima a un posto del tutto nuovo?"
+    }
+  },
+  {
+    "id": "q0273",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you give up a year of comfort for?",
+      "es": "¿Por qué renunciarías a un año de comodidad?",
+      "fr": "Pour quoi renoncerais-tu à une année de confort ?",
+      "de": "Wofür würdest du ein Jahr Bequemlichkeit aufgeben?",
+      "it": "Per cosa rinunceresti a un anno di comodità?"
+    }
+  },
+  {
+    "id": "q0274",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you do with one extra hour every single day?",
+      "es": "¿Qué harías con una hora extra absolutamente cada día?",
+      "fr": "Que ferais-tu d'une heure supplémentaire chaque jour ?",
+      "de": "Was würdest du mit einer zusätzlichen Stunde jeden Tag machen?",
+      "it": "Cosa faresti con un'ora in più ogni singolo giorno?"
+    }
+  },
+  {
+    "id": "q0275",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your plans would surprise your younger self most?",
+      "es": "¿Qué plan tuyo sorprendería más a tu yo más joven?",
+      "fr": "Lequel de tes projets étonnerait le plus ton toi plus jeune ?",
+      "de": "Welcher deiner Pläne würde dein jüngeres Ich am meisten überraschen?",
+      "it": "Quale tuo piano sorprenderebbe di più il tuo io più giovane?"
+    }
+  },
+  {
+    "id": "q0276",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you hope the two of us never become?",
+      "es": "¿En qué esperas que no nos convirtamos nunca los dos?",
+      "fr": "Que espères-tu que nous deux ne devenions jamais ?",
+      "de": "Was hoffst du, dass wir beide nie werden?",
+      "it": "Cosa speri che noi due non diventiamo mai?"
+    }
+  },
+  {
+    "id": "q0277",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you want me to be doing more of by next year?",
+      "es": "¿Qué quieres que yo haga más para el año que viene?",
+      "fr": "Que veux-tu que je fasse davantage d'ici l'an prochain ?",
+      "de": "Was soll ich bis nächstes Jahr öfter tun?",
+      "it": "Cosa vuoi che io faccia di più entro l'anno prossimo?"
+    }
+  },
+  {
+    "id": "q0278",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What have you started that you are afraid of finishing?",
+      "es": "¿Qué has empezado y te da miedo terminar?",
+      "fr": "Qu'as-tu commencé et as-tu peur de terminer ?",
+      "de": "Was hast du angefangen und hast Angst, es zu beenden?",
+      "it": "Cosa hai iniziato e hai paura di finire?"
+    }
+  },
+  {
+    "id": "q0279",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "What would we call something the two of us owned together?",
+      "es": "¿Cómo llamaríamos a algo que tuviéramos los dos en común?",
+      "fr": "Comment appellerions-nous une chose qui nous appartiendrait à deux ?",
+      "de": "Wie würden wir etwas nennen, das uns beiden gemeinsam gehört?",
+      "it": "Come chiameremmo una cosa che appartenesse a noi due?"
+    }
+  },
+  {
+    "id": "q0280",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which place should become our place by the time we are old?",
+      "es": "¿Qué sitio debería ser el nuestro para cuando seamos mayores?",
+      "fr": "Quel endroit devrait devenir le nôtre quand nous serons vieux ?",
+      "de": "Welcher Ort soll unserer sein, wenn wir alt sind?",
+      "it": "Quale posto dovrebbe diventare il nostro quando saremo vecchi?"
+    }
+  },
+  {
+    "id": "q0281",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you want to be doing on an ordinary day at seventy?",
+      "es": "¿Qué te gustaría estar haciendo un día cualquiera a los setenta?",
+      "fr": "Que voudrais-tu être en train de faire un jour banal à soixante-dix ans ?",
+      "de": "Was möchtest du an einem gewöhnlichen Tag mit siebzig tun?",
+      "it": "Cosa vorresti stare facendo in un giorno qualsiasi a settant'anni?"
+    }
+  },
+  {
+    "id": "q0282",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do you want the two of us to spend less time on?",
+      "es": "¿En qué quieres que gastemos menos tiempo los dos?",
+      "fr": "À quoi veux-tu qu'on consacre moins de temps tous les deux ?",
+      "de": "Womit sollen wir beide weniger Zeit verbringen?",
+      "it": "A cosa vuoi che dedichiamo meno tempo noi due?"
+    }
+  },
+  {
+    "id": "q0283",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the least useful thing you would like to be excellent at?",
+      "es": "¿Cuál es la cosa más inútil en la que te gustaría ser excelente?",
+      "fr": "Quelle est la chose la plus inutile dans laquelle tu voudrais exceller ?",
+      "de": "Worin, das völlig nutzlos ist, wärst du gern hervorragend?",
+      "it": "Qual è la cosa più inutile in cui vorresti essere eccellente?"
+    }
+  },
+  {
+    "id": "q0284",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What are you preparing for that you have told nobody about?",
+      "es": "¿Para qué te estás preparando sin habérselo contado a nadie?",
+      "fr": "À quoi te prépares-tu sans en avoir parlé à personne ?",
+      "de": "Worauf bereitest du dich vor, ohne es jemandem gesagt zu haben?",
+      "it": "A cosa ti stai preparando senza averlo detto a nessuno?"
+    }
+  },
+  {
+    "id": "q0285",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which piece of paperwork will you finally deal with this year?",
+      "es": "¿Qué papeleo vas a resolver por fin este año?",
+      "fr": "Quelle paperasse vas-tu enfin régler cette année ?",
+      "de": "Welchen Papierkram erledigst du dieses Jahr endlich?",
+      "it": "Quale scartoffia sistemerai finalmente quest'anno?"
+    }
+  },
+  {
+    "id": "q0286",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What part of our beginning do you want to keep for the rest of it?",
+      "es": "¿Qué parte de nuestro principio quieres conservar para todo lo demás?",
+      "fr": "Quelle partie de nos débuts veux-tu garder pour toute la suite ?",
+      "de": "Welchen Teil unseres Anfangs willst du für den ganzen Rest behalten?",
+      "it": "Quale parte del nostro inizio vuoi conservare per tutto il resto?"
+    }
+  },
+  {
+    "id": "q0287",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which skill of yours do you want to actually use again?",
+      "es": "¿Qué habilidad tuya quieres volver a usar de verdad?",
+      "fr": "Laquelle de tes compétences veux-tu vraiment réutiliser ?",
+      "de": "Welche deiner Fähigkeiten willst du wirklich wieder einsetzen?",
+      "it": "Quale tua abilità vuoi tornare davvero a usare?"
+    }
+  },
+  {
+    "id": "q0288",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Where would we end up if the choice were made by dice?",
+      "es": "¿Dónde acabaríamos si la decisión la tomara un dado?",
+      "fr": "Où finirions-nous si le choix était fait par un dé ?",
+      "de": "Wo würden wir landen, wenn ein Würfel entscheidet?",
+      "it": "Dove finiremmo se a scegliere fosse un dado?"
+    }
+  },
+  {
+    "id": "q0289",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to have made peace with within five years?",
+      "es": "¿Con qué quieres haber hecho las paces dentro de cinco años?",
+      "fr": "Avec quoi veux-tu avoir fait la paix d'ici cinq ans ?",
+      "de": "Womit willst du in fünf Jahren deinen Frieden gemacht haben?",
+      "it": "Con cosa vuoi aver fatto pace entro cinque anni?"
+    }
+  },
+  {
+    "id": "q0290",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first thing you will do when the weather turns?",
+      "es": "¿Qué es lo primero que harás cuando cambie el tiempo?",
+      "fr": "Quelle est la première chose que tu feras quand le temps changera ?",
+      "de": "Was machst du als Erstes, wenn das Wetter umschlägt?",
+      "it": "Qual è la prima cosa che farai quando cambierà il tempo?"
+    }
+  },
+  {
+    "id": "q0291",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which imagined future would you actually want to live in?",
+      "es": "¿En qué futuro imaginado querrías vivir de verdad?",
+      "fr": "Dans quel futur imaginé voudrais-tu réellement vivre ?",
+      "de": "In welcher erdachten Zukunft würdest du wirklich leben wollen?",
+      "it": "In quale futuro immaginato vorresti vivere davvero?"
+    }
+  },
+  {
+    "id": "q0292",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to be able to tell me without preparing first?",
+      "es": "¿Qué quieres poder contarme sin tener que prepararlo antes?",
+      "fr": "Que veux-tu pouvoir me dire sans l'avoir préparé avant ?",
+      "de": "Was willst du mir sagen können, ohne es vorher vorzubereiten?",
+      "it": "Cosa vuoi potermi dire senza doverlo preparare prima?"
+    }
+  },
+  {
+    "id": "q0293",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you want to spend more money on than you do now?",
+      "es": "¿En qué quieres gastar más dinero del que gastas ahora?",
+      "fr": "Dans quoi veux-tu dépenser plus d'argent qu'aujourd'hui ?",
+      "de": "Wofür willst du mehr Geld ausgeben als jetzt?",
+      "it": "In cosa vuoi spendere più soldi di quanto fai ora?"
+    }
+  },
+  {
+    "id": "q0294",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want to feel certain about that you are not yet?",
+      "es": "¿Sobre qué quieres tener certeza y todavía no la tienes?",
+      "fr": "De quoi veux-tu être certain sans l'être encore ?",
+      "de": "Worüber willst du sicher sein, was du noch nicht bist?",
+      "it": "Su cosa vuoi essere certo e ancora non lo sei?"
+    }
+  },
+  {
+    "id": "q0295",
+    "theme": "future",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "What should the two of us do for our next big anniversary?",
+      "es": "¿Qué deberíamos hacer los dos en nuestro próximo gran aniversario?",
+      "fr": "Que devrions-nous faire tous les deux pour notre prochain anniversaire ?",
+      "de": "Was sollten wir beide zu unserem nächsten großen Jahrestag machen?",
+      "it": "Cosa dovremmo fare noi due per il nostro prossimo grande anniversario?"
+    }
+  },
+  {
+    "id": "q0296",
+    "theme": "future",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you enter a competition for if you had to enter one?",
+      "es": "¿A qué concurso te presentarías si tuvieras que presentarte a uno?",
+      "fr": "À quel concours t'inscrirais-tu si tu devais absolument en faire un ?",
+      "de": "An welchem Wettbewerb würdest du teilnehmen, wenn du müsstest?",
+      "it": "A quale gara ti iscriveresti se dovessi per forza iscriverti?"
+    }
+  },
+  {
+    "id": "q0297",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What is the future you are quietly working towards?",
+      "es": "¿Cuál es el futuro hacia el que trabajas en silencio?",
+      "fr": "Vers quel avenir travailles-tu en silence ?",
+      "de": "Auf welche Zukunft arbeitest du still hin?",
+      "it": "Verso quale futuro stai lavorando in silenzio?"
+    }
+  },
+  {
+    "id": "q0298",
+    "theme": "future",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What is the next thing you want the two of us to say yes to?",
+      "es": "¿A qué es lo siguiente que quieres que digamos que sí los dos?",
+      "fr": "À quoi veux-tu qu'on dise oui tous les deux la prochaine fois ?",
+      "de": "Wozu sollen wir beide als Nächstes ja sagen?",
+      "it": "A cosa vuoi che diciamo di sì noi due la prossima volta?"
+    }
+  },
+  {
+    "id": "q0299",
+    "theme": "future",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which small change would improve your next month the most?",
+      "es": "¿Qué cambio pequeño mejoraría más tu próximo mes?",
+      "fr": "Quel petit changement améliorerait le plus ton mois à venir ?",
+      "de": "Welche kleine Änderung würde deinen nächsten Monat am meisten verbessern?",
+      "it": "Quale piccolo cambiamento migliorerebbe di più il tuo prossimo mese?"
+    }
+  },
+  {
+    "id": "q0300",
+    "theme": "future",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your beliefs do you expect to survive the next decade?",
+      "es": "¿Cuál de tus convicciones crees que sobrevivirá a la próxima década?",
+      "fr": "Laquelle de tes convictions penses-tu voir survivre à la décennie à venir ?",
+      "de": "Welche deiner Überzeugungen wird das nächste Jahrzehnt überstehen?",
+      "it": "Quale delle tue convinzioni pensi che sopravvivrà al prossimo decennio?"
+    }
+  }
+]

@@ -104,7 +104,7 @@ final class TodayUITests: XCTestCase {
 
     private func addEventToday(_ app: XCUIApplication, tabs: XCUIElement, title: String) {
         tabs.buttons["Calendar"].tap()
-        app.navigationBars.buttons["Add"].firstMatch.tap()
+        app.buttons["Add"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New date"].waitForExistence(timeout: 15))
         type(title, into: app.textFields["Title"])
         app.buttons["Save"].tap()

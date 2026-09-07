@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0501",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If we swapped phones for a day, what would you open first?",
+      "es": "Si intercambiáramos los móviles un día, ¿qué abrirías primero?",
+      "fr": "Si on échangeait nos téléphones une journée, qu'ouvrirais-tu en premier ?",
+      "de": "Wenn wir für einen Tag die Handys tauschen, was öffnest du zuerst?",
+      "it": "Se ci scambiassimo i telefoni per un giorno, cosa apriresti per prima cosa?"
+    }
+  },
+  {
+    "id": "q0502",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which chore would you keep forever if all the others vanished?",
+      "es": "¿Qué tarea de casa conservarías para siempre si el resto desapareciera?",
+      "fr": "Quelle corvée garderais-tu à vie si toutes les autres disparaissaient ?",
+      "de": "Welche Hausarbeit würdest du für immer behalten, wenn alle anderen wegfielen?",
+      "it": "Quale faccenda di casa terresti per sempre se sparissero tutte le altre?"
+    }
+  },
+  {
+    "id": "q0503",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which useless talent of mine deserves a poster?",
+      "es": "¿Qué talento inútil mío merece un póster?",
+      "fr": "Quel talent inutile chez moi mériterait une affiche ?",
+      "de": "Welches nutzlose Talent von mir hätte ein Poster verdient?",
+      "it": "Quale mio talento inutile meriterebbe un poster?"
+    }
+  },
+  {
+    "id": "q0504",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which joke of ours would confuse a stranger the most?",
+      "es": "¿Cuál de nuestras bromas confundiría más a un desconocido?",
+      "fr": "Laquelle de nos blagues déroute le plus un inconnu ?",
+      "de": "Welcher unserer Witze würde Fremde am meisten verwirren?",
+      "it": "Quale delle nostre battute confonderebbe di più un estraneo?"
+    }
+  },
+  {
+    "id": "q0505",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my sentences could you finish before I do?",
+      "es": "¿Qué frase mía podrías terminar antes que yo?",
+      "fr": "Laquelle de mes phrases pourrais-tu finir avant moi ?",
+      "de": "Welchen meiner Sätze könntest du beenden, bevor ich fertig bin?",
+      "it": "Quale mia frase potresti finire prima di me?"
+    }
+  },
+  {
+    "id": "q0506",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would a country made of us two ban on day one?",
+      "es": "¿Qué prohibiría el primer día un país formado solo por nosotros dos?",
+      "fr": "Qu'interdirait dès le premier jour un pays composé de nous deux ?",
+      "de": "Was würde ein Land aus uns beiden am ersten Tag verbieten?",
+      "it": "Cosa vieterebbe il primo giorno un paese fatto solo da noi due?"
+    }
+  },
+  {
+    "id": "q0507",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which animal belongs on a crest made for the two of us?",
+      "es": "¿Qué animal iría en un escudo hecho para nosotros dos?",
+      "fr": "Quel animal figurerait sur un blason fait pour nous deux ?",
+      "de": "Welches Tier gehört auf ein Wappen für uns beide?",
+      "it": "Quale animale starebbe su uno stemma fatto per noi due?"
+    }
+  },
+  {
+    "id": "q0508",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which object at your place has earned its own name?",
+      "es": "¿Qué objeto de tu casa se ha ganado un nombre propio?",
+      "fr": "Quel objet chez toi a mérité d'avoir un prénom ?",
+      "de": "Welcher Gegenstand bei dir zu Hause hat einen eigenen Namen verdient?",
+      "it": "Quale oggetto a casa tua si è guadagnato un nome tutto suo?"
+    }
+  },
+  {
+    "id": "q0509",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which contest could the two of us win tomorrow?",
+      "es": "¿Qué concurso podríamos ganar nosotros dos mañana?",
+      "fr": "Quel concours pourrions-nous gagner tous les deux demain ?",
+      "de": "Welchen Wettbewerb könnten wir beide morgen gewinnen?",
+      "it": "Quale gara potremmo vincere noi due domani?"
+    }
+  },
+  {
+    "id": "q0510",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What would a documentary about our last month be called?",
+      "es": "¿Cómo se llamaría un documental sobre nuestro último mes?",
+      "fr": "Comment s'appellerait un documentaire sur notre dernier mois ?",
+      "de": "Wie hieße eine Doku über unseren letzten Monat?",
+      "it": "Come si chiamerebbe un documentario sul nostro ultimo mese?"
+    }
+  },
+  {
+    "id": "q0511",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If you could watch one hour of my day unseen, which hour?",
+      "es": "Si pudieras ver una hora de mi día sin que yo lo sepa, ¿cuál sería?",
+      "fr": "Si tu pouvais observer une heure de ma journée en douce, laquelle ?",
+      "de": "Wenn du eine Stunde meines Tages unbemerkt sehen könntest, welche?",
+      "it": "Se potessi guardare un'ora della mia giornata di nascosto, quale?"
+    }
+  },
+  {
+    "id": "q0512",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What goes into a secret room only the two of us know about?",
+      "es": "¿Qué pondrías en un cuarto secreto que solo conociéramos nosotros dos?",
+      "fr": "Que mettrais-tu dans une pièce secrète connue de nous deux seuls ?",
+      "de": "Was käme in einen geheimen Raum, von dem nur wir beide wissen?",
+      "it": "Cosa metteresti in una stanza segreta che conosciamo solo noi due?"
+    }
+  },
+  {
+    "id": "q0513",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which everyday errand would you turn into a contest with me?",
+      "es": "¿Qué recado cotidiano convertirías en una competición conmigo?",
+      "fr": "Quelle course du quotidien transformerais-tu en compétition avec moi ?",
+      "de": "Welche Alltagsbesorgung würdest du mit mir zum Wettkampf machen?",
+      "it": "Quale commissione di tutti i giorni trasformeresti in una gara con me?"
+    }
+  },
+  {
+    "id": "q0514",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "If a stranger followed us all day, what would they notice first?",
+      "es": "Si un desconocido nos siguiera todo el día, ¿qué notaría primero?",
+      "fr": "Si un inconnu nous suivait toute la journée, que remarquerait-il en premier ?",
+      "de": "Wenn uns jemand einen Tag lang folgt, was fällt ihm zuerst auf?",
+      "it": "Se uno sconosciuto ci seguisse tutto il giorno, cosa noterebbe per primo?"
+    }
+  },
+  {
+    "id": "q0515",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of us would last longer without the internet?",
+      "es": "¿Quién de los dos aguantaría más sin internet?",
+      "fr": "Lequel de nous deux tiendrait le plus longtemps sans internet ?",
+      "de": "Wer von uns würde es länger ohne Internet aushalten?",
+      "it": "Chi di noi due resisterebbe di più senza internet?"
+    }
+  },
+  {
+    "id": "q0516",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If we opened a tiny shop tomorrow, what would it sell?",
+      "es": "Si abriéramos una tienda pequeña mañana, ¿qué vendería?",
+      "fr": "Si on ouvrait une petite boutique demain, que vendrait-elle ?",
+      "de": "Wenn wir morgen einen kleinen Laden aufmachen, was verkauft er?",
+      "it": "Se aprissimo un piccolo negozio domani, cosa venderebbe?"
+    }
+  },
+  {
+    "id": "q0517",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my predictions do you quietly bet against?",
+      "es": "¿Contra qué predicción mía apuestas en silencio?",
+      "fr": "Contre laquelle de mes prédictions paries-tu en silence ?",
+      "de": "Gegen welche meiner Vorhersagen wettest du insgeheim?",
+      "it": "Contro quale mia previsione scommetti in silenzio?"
+    }
+  },
+  {
+    "id": "q0518",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which superpower would wreck my life the fastest?",
+      "es": "¿Qué superpoder me arruinaría la vida más rápido?",
+      "fr": "Quel superpouvoir bousillerait ma vie le plus vite ?",
+      "de": "Welche Superkraft würde mein Leben am schnellsten ruinieren?",
+      "it": "Quale superpotere mi rovinerebbe la vita più in fretta?"
+    }
+  },
+  {
+    "id": "q0519",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would your fridge say about the week you just had?",
+      "es": "¿Qué diría tu nevera sobre la semana que acabas de pasar?",
+      "fr": "Que dirait ton frigo de la semaine que tu viens de passer ?",
+      "de": "Was würde dein Kühlschrank über deine letzte Woche sagen?",
+      "it": "Cosa direbbe il tuo frigo della settimana che hai appena passato?"
+    }
+  },
+  {
+    "id": "q0520",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "In which film world would you survive a month with me?",
+      "es": "¿En qué mundo de película sobrevivirías un mes conmigo?",
+      "fr": "Dans quel univers de film survivrais-tu un mois avec moi ?",
+      "de": "In welcher Filmwelt würdest du einen Monat mit mir überstehen?",
+      "it": "In quale mondo di un film sopravvivresti un mese con me?"
+    }
+  },
+  {
+    "id": "q0521",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you sneak into an island bag without telling me?",
+      "es": "¿Qué colarías en la mochila para una isla sin decírmelo?",
+      "fr": "Que glisserais-tu en douce dans le sac pour une île sans me le dire ?",
+      "de": "Was würdest du heimlich in den Inselrucksack packen, ohne es mir zu sagen?",
+      "it": "Cosa infileresti di nascosto nello zaino per un'isola senza dirmelo?"
+    }
+  },
+  {
+    "id": "q0522",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "If I wore one outfit all year, which would you pick for me?",
+      "es": "Si llevara la misma ropa todo el año, ¿cuál elegirías para mí?",
+      "fr": "Si je portais une seule tenue toute l'année, laquelle choisirais-tu ?",
+      "de": "Wenn ich ein Jahr lang ein Outfit trage, welches suchst du mir aus?",
+      "it": "Se indossassi un solo vestito per un anno, quale sceglieresti per me?"
+    }
+  },
+  {
+    "id": "q0523",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would your specialist subject be at a quiz night?",
+      "es": "¿Cuál sería tu tema de especialista en una noche de preguntas?",
+      "fr": "Quel serait ton sujet de spécialité dans un quiz ?",
+      "de": "Was wäre bei einem Quizabend dein Spezialgebiet?",
+      "it": "Quale sarebbe la tua materia da campione a una serata quiz?"
+    }
+  },
+  {
+    "id": "q0524",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "If we could hire someone for one hour a week, for what?",
+      "es": "Si pudiéramos contratar a alguien una hora a la semana, ¿para qué?",
+      "fr": "Si on pouvait engager quelqu'un une heure par semaine, pour quoi faire ?",
+      "de": "Wenn wir jemanden für eine Stunde pro Woche anheuern könnten, wofür?",
+      "it": "Se potessimo assumere qualcuno per un'ora a settimana, per fare cosa?"
+    }
+  },
+  {
+    "id": "q0525",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "On a menu of our week, which dish would nobody order?",
+      "es": "En un menú de nuestra semana, ¿qué plato no pediría nadie?",
+      "fr": "Sur le menu de notre semaine, quel plat personne ne commanderait ?",
+      "de": "Welches Gericht auf der Karte unserer Woche bestellt niemand?",
+      "it": "Nel menù della nostra settimana, quale piatto non ordinerebbe nessuno?"
+    }
+  },
+  {
+    "id": "q0526",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you bet money on me doing tomorrow?",
+      "es": "¿Qué apostarías dinero a que hago mañana?",
+      "fr": "Sur quoi parierais-tu de l'argent que je ferai demain ?",
+      "de": "Worauf würdest du Geld setzen, dass ich es morgen tue?",
+      "it": "Su cosa scommetteresti dei soldi che farò domani?"
+    }
+  },
+  {
+    "id": "q0527",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you buy me for the price of a coffee?",
+      "es": "¿Qué me comprarías por el precio de un café?",
+      "fr": "Que m'achèterais-tu pour le prix d'un café ?",
+      "de": "Was würdest du mir für den Preis eines Kaffees kaufen?",
+      "it": "Cosa mi compreresti al prezzo di un caffè?"
+    }
+  },
+  {
+    "id": "q0528",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Given three wishes, which one would we obviously waste?",
+      "es": "Con tres deseos, ¿cuál desperdiciaríamos sin duda?",
+      "fr": "Avec trois vœux, lequel gâcherions-nous à coup sûr ?",
+      "de": "Bei drei Wünschen, welchen würden wir garantiert verschwenden?",
+      "it": "Con tre desideri, quale sprecheremmo di sicuro?"
+    }
+  },
+  {
+    "id": "q0529",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my belongings would you upgrade behind my back?",
+      "es": "¿Qué cosa mía mejorarías a mis espaldas?",
+      "fr": "Lequel de mes objets remplacerais-tu par mieux dans mon dos ?",
+      "de": "Welchen meiner Gegenstände würdest du hinter meinem Rücken aufrüsten?",
+      "it": "Quale mio oggetto miglioreresti alle mie spalle?"
+    }
+  },
+  {
+    "id": "q0530",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is stocked in a vending machine built only for me?",
+      "es": "¿Qué hay en una máquina expendedora hecha solo para mí?",
+      "fr": "Que trouve-t-on dans un distributeur rempli rien que pour moi ?",
+      "de": "Was steht in einem Automaten, der nur für mich bestückt ist?",
+      "it": "Cosa c'è in un distributore riempito solo per me?"
+    }
+  },
+  {
+    "id": "q0531",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which noise of mine would you recognise through a wall?",
+      "es": "¿Qué ruido mío reconocerías a través de una pared?",
+      "fr": "Quel bruit que je fais reconnaîtrais-tu à travers un mur ?",
+      "de": "Welches Geräusch von mir würdest du durch eine Wand erkennen?",
+      "it": "Quale mio rumore riconosceresti attraverso un muro?"
+    }
+  },
+  {
+    "id": "q0532",
+    "theme": "playful",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our shared things would you never lend to anyone?",
+      "es": "¿Qué cosa nuestra no le prestarías nunca a nadie?",
+      "fr": "Lequel de nos objets communs ne prêterais-tu jamais à personne ?",
+      "de": "Welche unserer gemeinsamen Sachen würdest du nie verleihen?",
+      "it": "Quale nostra cosa in comune non presteresti mai a nessuno?"
+    }
+  },
+  {
+    "id": "q0533",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which conspiracy theory could you sell me by Friday?",
+      "es": "¿Qué teoría conspirativa podrías venderme antes del viernes?",
+      "fr": "Quelle théorie du complot pourrais-tu me vendre d'ici vendredi ?",
+      "de": "Welche Verschwörungstheorie könntest du mir bis Freitag verkaufen?",
+      "it": "Quale teoria del complotto potresti vendermi entro venerdì?"
+    }
+  },
+  {
+    "id": "q0534",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "If we were only flatmates, what would change first?",
+      "es": "Si solo fuéramos compañeros de piso, ¿qué cambiaría primero?",
+      "fr": "Si on était seulement colocataires, qu'est-ce qui changerait en premier ?",
+      "de": "Wenn wir nur Mitbewohner wären, was würde sich zuerst ändern?",
+      "it": "Se fossimo solo coinquilini, cosa cambierebbe per primo?"
+    }
+  },
+  {
+    "id": "q0535",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which week of this year would you put on repeat?",
+      "es": "¿Qué semana de este año pondrías en bucle?",
+      "fr": "Quelle semaine de cette année mettrais-tu en boucle ?",
+      "de": "Welche Woche dieses Jahres würdest du auf Wiederholung stellen?",
+      "it": "Quale settimana di quest'anno metteresti a ripetizione?"
+    }
+  },
+  {
+    "id": "q0536",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would a warning label stuck on me say?",
+      "es": "¿Qué diría una etiqueta de advertencia pegada a mí?",
+      "fr": "Que dirait une étiquette d'avertissement collée sur moi ?",
+      "de": "Was stünde auf einem Warnhinweis, der an mir klebt?",
+      "it": "Cosa direbbe un'etichetta di avvertenza attaccata a me?"
+    }
+  },
+  {
+    "id": "q0537",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which decade would have suited the two of us more than this one?",
+      "es": "¿Qué década nos habría quedado mejor a nosotros dos que esta?",
+      "fr": "Quelle décennie nous aurait mieux convenu à tous les deux que celle-ci ?",
+      "de": "Welches Jahrzehnt hätte besser zu uns beiden gepasst als dieses?",
+      "it": "Quale decennio sarebbe stato più adatto a noi due di questo?"
+    }
+  },
+  {
+    "id": "q0538",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you do with one extra hour every night?",
+      "es": "¿Qué harías con una hora más cada noche?",
+      "fr": "Que ferais-tu d'une heure de plus chaque soir ?",
+      "de": "Was würdest du mit einer zusätzlichen Stunde jeden Abend machen?",
+      "it": "Cosa faresti con un'ora in più ogni sera?"
+    }
+  },
+  {
+    "id": "q0539",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my rules would you break first if I left for a week?",
+      "es": "¿Qué norma mía romperías primero si yo me fuera una semana?",
+      "fr": "Laquelle de mes règles enfreindrais-tu en premier si je partais une semaine ?",
+      "de": "Welche meiner Regeln würdest du zuerst brechen, wenn ich eine Woche weg wäre?",
+      "it": "Quale mia regola infrangeresti per prima se io sparissi per una settimana?"
+    }
+  },
+  {
+    "id": "q0540",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If our life were a board game, how would a player lose it?",
+      "es": "Si nuestra vida fuera un juego de mesa, ¿cómo perdería un jugador?",
+      "fr": "Si notre vie était un jeu de société, comment un joueur perdrait-il ?",
+      "de": "Wenn unser Leben ein Brettspiel wäre, wie verliert man darin?",
+      "it": "Se la nostra vita fosse un gioco da tavolo, come si perderebbe?"
+    }
+  },
+  {
+    "id": "q0541",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my stories have you heard often enough to tell yourself?",
+      "es": "¿Qué historia mía has oído tantas veces que podrías contarla tú?",
+      "fr": "Laquelle de mes histoires as-tu entendue assez souvent pour la raconter ?",
+      "de": "Welche meiner Geschichten kennst du gut genug, um sie selbst zu erzählen?",
+      "it": "Quale mia storia hai sentito abbastanza volte da poterla raccontare tu?"
+    }
+  },
+  {
+    "id": "q0542",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which animal would you trust to plan our week?",
+      "es": "¿A qué animal le confiarías planificar nuestra semana?",
+      "fr": "À quel animal confierais-tu la planification de notre semaine ?",
+      "de": "Welchem Tier würdest du unsere Wochenplanung anvertrauen?",
+      "it": "A quale animale affideresti la pianificazione della nostra settimana?"
+    }
+  },
+  {
+    "id": "q0543",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What could I say tomorrow that would genuinely surprise you?",
+      "es": "¿Qué podría decirte mañana que te sorprendiera de verdad?",
+      "fr": "Que pourrais-je dire demain qui te surprendrait vraiment ?",
+      "de": "Was könnte ich morgen sagen, das dich wirklich überrascht?",
+      "it": "Cosa potrei dirti domani che ti sorprenderebbe davvero?"
+    }
+  },
+  {
+    "id": "q0544",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which invented holiday should the two of us celebrate?",
+      "es": "¿Qué fiesta inventada deberíamos celebrar nosotros dos?",
+      "fr": "Quelle fête inventée devrions-nous célébrer tous les deux ?",
+      "de": "Welchen erfundenen Feiertag sollten wir zwei feiern?",
+      "it": "Quale festa inventata dovremmo festeggiare noi due?"
+    }
+  },
+  {
+    "id": "q0545",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If you billed me by the hour, what would you charge for?",
+      "es": "Si me cobraras por horas, ¿por qué me pasarías factura?",
+      "fr": "Si tu me facturais à l'heure, pour quoi me ferais-tu payer ?",
+      "de": "Wenn du mir Stunden berechnest, wofür verlangst du Geld?",
+      "it": "Se mi fatturassi a ore, per cosa mi faresti pagare?"
+    }
+  },
+  {
+    "id": "q0546",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our habits would look strangest on a hidden camera?",
+      "es": "¿Qué costumbre nuestra sería la más rara en una cámara oculta?",
+      "fr": "Laquelle de nos habitudes serait la plus étrange sur une caméra cachée ?",
+      "de": "Welche unserer Gewohnheiten wäre auf einer versteckten Kamera am seltsamsten?",
+      "it": "Quale nostra abitudine sembrerebbe più strana in una telecamera nascosta?"
+    }
+  },
+  {
+    "id": "q0547",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you name a group chat with only the two of us?",
+      "es": "¿Cómo llamarías a un chat de grupo solo con nosotros dos?",
+      "fr": "Comment appellerais-tu une conversation de groupe rien qu'à nous deux ?",
+      "de": "Wie würdest du einen Gruppenchat nur mit uns beiden nennen?",
+      "it": "Come chiameresti una chat di gruppo solo con noi due?"
+    }
+  },
+  {
+    "id": "q0548",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would you happily let people get wrong about us?",
+      "es": "¿Qué dejarías que la gente entendiera mal sobre nosotros?",
+      "fr": "Qu'accepterais-tu que les gens comprennent de travers sur nous ?",
+      "de": "Was dürfen die Leute über uns ruhig falsch verstehen?",
+      "it": "Cosa lasceresti che la gente fraintendesse di noi?"
+    }
+  },
+  {
+    "id": "q0549",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my opinions would you defend if I were not in the room?",
+      "es": "¿Qué opinión mía defenderías si yo no estuviera en la sala?",
+      "fr": "Laquelle de mes opinions défendrais-tu si je n'étais pas là ?",
+      "de": "Welche meiner Meinungen würdest du verteidigen, wenn ich nicht dabei bin?",
+      "it": "Quale mia opinione difenderesti se io non fossi nella stanza?"
+    }
+  },
+  {
+    "id": "q0550",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If we had to hide for a month, where would you take us?",
+      "es": "Si tuviéramos que escondernos un mes, ¿adónde nos llevarías?",
+      "fr": "Si on devait se cacher un mois, où nous emmènerais-tu ?",
+      "de": "Wenn wir uns einen Monat verstecken müssten, wohin bringst du uns?",
+      "it": "Se dovessimo nasconderci per un mese, dove ci porteresti?"
+    }
+  },
+  {
+    "id": "q0551",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my plans would you sabotage just for a laugh?",
+      "es": "¿Qué plan mío sabotearías solo por diversión?",
+      "fr": "Lequel de mes plans saboterais-tu juste pour rire ?",
+      "de": "Welchen meiner Pläne würdest du nur zum Spaß sabotieren?",
+      "it": "Quale mio piano saboteresti solo per ridere?"
+    }
+  },
+  {
+    "id": "q0552",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you do with a Saturday I had to spend elsewhere?",
+      "es": "¿Qué harías con un sábado que yo tuviera que pasar en otro sitio?",
+      "fr": "Que ferais-tu d'un samedi que je devrais passer ailleurs ?",
+      "de": "Was machst du mit einem Samstag, den ich woanders verbringen muss?",
+      "it": "Cosa faresti di un sabato che io dovessi passare altrove?"
+    }
+  },
+  {
+    "id": "q0553",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my routines would you fail at within a day?",
+      "es": "¿En qué rutina mía fracasarías en menos de un día?",
+      "fr": "Dans laquelle de mes routines échouerais-tu en un jour ?",
+      "de": "An welcher meiner Routinen würdest du binnen eines Tages scheitern?",
+      "it": "In quale mia routine falliresti nel giro di un giorno?"
+    }
+  },
+  {
+    "id": "q0554",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which kitchen appliance are you most like before noon?",
+      "es": "¿A qué electrodoméstico te pareces más antes del mediodía?",
+      "fr": "À quel appareil de cuisine ressembles-tu le plus avant midi ?",
+      "de": "Welchem Küchengerät ähnelst du vor Mittag am meisten?",
+      "it": "A quale elettrodomestico assomigli di più prima di mezzogiorno?"
+    }
+  },
+  {
+    "id": "q0555",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you buy in bulk if storing it were free?",
+      "es": "¿Qué comprarías en grandes cantidades si guardarlo fuera gratis?",
+      "fr": "Qu'achèterais-tu en grande quantité si le stockage était gratuit ?",
+      "de": "Was würdest du in Massen kaufen, wenn Lagern nichts kostet?",
+      "it": "Cosa compreresti in grandi quantità se conservarlo fosse gratis?"
+    }
+  },
+  {
+    "id": "q0556",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my hobbies would you take over if I dropped it?",
+      "es": "¿Qué afición mía adoptarías si yo la dejara?",
+      "fr": "Lequel de mes loisirs reprendrais-tu si je l'abandonnais ?",
+      "de": "Welches meiner Hobbys würdest du übernehmen, wenn ich aufhöre?",
+      "it": "Quale mio passatempo prenderesti tu se lo lasciassi?"
+    }
+  },
+  {
+    "id": "q0557",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you spend a free day learning even if it stayed useless?",
+      "es": "¿Qué aprenderías en un día libre aunque no sirviera para nada?",
+      "fr": "Qu'apprendrais-tu pendant un jour libre même si ça restait inutile ?",
+      "de": "Was würdest du an einem freien Tag lernen, auch wenn es nutzlos bleibt?",
+      "it": "Cosa impareresti in un giorno libero anche se restasse inutile?"
+    }
+  },
+  {
+    "id": "q0558",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If you had a stunt double for one task, which task?",
+      "es": "Si tuvieras un doble para una sola tarea, ¿cuál sería?",
+      "fr": "Si tu avais une doublure pour une seule tâche, laquelle ?",
+      "de": "Wenn du für eine Aufgabe ein Double hättest, für welche?",
+      "it": "Se avessi una controfigura per un solo compito, quale?"
+    }
+  },
+  {
+    "id": "q0559",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which photo of us belongs on a wanted poster?",
+      "es": "¿Qué foto nuestra iría en un cartel de se busca?",
+      "fr": "Quelle photo de nous mériterait un avis de recherche ?",
+      "de": "Welches Foto von uns gehört auf einen Steckbrief?",
+      "it": "Quale nostra foto starebbe bene su un manifesto da ricercati?"
+    }
+  },
+  {
+    "id": "q0560",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would the two of us be terrible at as business partners?",
+      "es": "¿En qué fallaríamos los dos como socios de negocio?",
+      "fr": "En quoi serions-nous nuls tous les deux comme associés ?",
+      "de": "Worin wären wir beide als Geschäftspartner richtig schlecht?",
+      "it": "In cosa saremmo pessimi noi due come soci in affari?"
+    }
+  },
+  {
+    "id": "q0561",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which smell puts you in a good mood instantly?",
+      "es": "¿Qué olor te pone de buen humor al instante?",
+      "fr": "Quelle odeur te met de bonne humeur instantanément ?",
+      "de": "Welcher Geruch bringt dich sofort in gute Laune?",
+      "it": "Quale odore ti mette di buon umore all'istante?"
+    }
+  },
+  {
+    "id": "q0562",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If we were locked in an escape room, who reads the clues?",
+      "es": "Si nos encerraran en una sala de escape, ¿quién lee las pistas?",
+      "fr": "Si on était enfermés dans une escape room, qui lit les indices ?",
+      "de": "Wenn wir in einem Escape Room säßen, wer liest die Hinweise?",
+      "it": "Se ci chiudessero in una escape room, chi legge gli indizi?"
+    }
+  },
+  {
+    "id": "q0563",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you order for me if I let you choose blindly?",
+      "es": "¿Qué pedirías para mí si te dejara elegir a ciegas?",
+      "fr": "Que commanderais-tu pour moi si je te laissais choisir à l'aveugle ?",
+      "de": "Was bestellst du für mich, wenn ich dich blind wählen lasse?",
+      "it": "Cosa ordineresti per me se ti lasciassi scegliere alla cieca?"
+    }
+  },
+  {
+    "id": "q0564",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What could you change in my room before I noticed?",
+      "es": "¿Qué podrías cambiar en mi habitación antes de que yo lo notara?",
+      "fr": "Que pourrais-tu changer dans ma chambre avant que je le remarque ?",
+      "de": "Was könntest du in meinem Zimmer ändern, bevor es mir auffällt?",
+      "it": "Cosa potresti cambiare nella mia stanza prima che me ne accorga?"
+    }
+  },
+  {
+    "id": "q0565",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which harmless thing do we both take far too seriously?",
+      "es": "¿Qué cosa inofensiva nos tomamos los dos demasiado en serio?",
+      "fr": "Quelle chose anodine prenons-nous tous les deux bien trop au sérieux ?",
+      "de": "Welche harmlose Sache nehmen wir beide viel zu ernst?",
+      "it": "Quale cosa innocua prendiamo entrambi troppo sul serio?"
+    }
+  },
+  {
+    "id": "q0566",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If our week had a soundtrack, which song plays on Wednesday?",
+      "es": "Si nuestra semana tuviera banda sonora, ¿qué sonaría el miércoles?",
+      "fr": "Si notre semaine avait une bande-son, quel morceau passe le mercredi ?",
+      "de": "Wenn unsere Woche einen Soundtrack hätte, was läuft am Mittwoch?",
+      "it": "Se la nostra settimana avesse una colonna sonora, cosa suona il mercoledì?"
+    }
+  },
+  {
+    "id": "q0567",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the worst gift you could give me that I would still use?",
+      "es": "¿Cuál es el peor regalo que podrías hacerme y que yo usaría igual?",
+      "fr": "Quel est le pire cadeau que tu pourrais m'offrir et que j'utiliserais ?",
+      "de": "Was wäre das schlechteste Geschenk von dir, das ich trotzdem nutze?",
+      "it": "Qual è il regalo peggiore che potresti farmi e che userei comunque?"
+    }
+  },
+  {
+    "id": "q0568",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would we do at 3am if we both woke up wide awake?",
+      "es": "¿Qué haríamos a las tres de la mañana si nos despertáramos del todo?",
+      "fr": "Que ferions-nous à trois heures du matin si on était bien réveillés ?",
+      "de": "Was machen wir um drei Uhr nachts, wenn wir beide hellwach sind?",
+      "it": "Cosa faremmo alle tre di notte se ci svegliassimo del tutto?"
+    }
+  },
+  {
+    "id": "q0569",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which lost object of yours would you still like to find?",
+      "es": "¿Qué objeto perdido tuyo te gustaría encontrar todavía?",
+      "fr": "Lequel de tes objets perdus aimerais-tu encore retrouver ?",
+      "de": "Welchen verlorenen Gegenstand von dir würdest du gern wiederfinden?",
+      "it": "Quale tuo oggetto perduto ti piacerebbe ancora ritrovare?"
+    }
+  },
+  {
+    "id": "q0570",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If I had to follow one rule of yours for a week, which one?",
+      "es": "Si tuviera que seguir una norma tuya durante una semana, ¿cuál?",
+      "fr": "Si je devais suivre une de tes règles pendant une semaine, laquelle ?",
+      "de": "Wenn ich eine Woche eine Regel von dir befolgen müsste, welche?",
+      "it": "Se dovessi seguire una tua regola per una settimana, quale?"
+    }
+  },
+  {
+    "id": "q0571",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which job from a film would you actually be good at?",
+      "es": "¿En qué trabajo de película se te daría realmente bien?",
+      "fr": "Quel métier vu au cinéma ferais-tu vraiment bien ?",
+      "de": "In welchem Beruf aus einem Film wärst du wirklich gut?",
+      "it": "In quale lavoro visto in un film te la caveresti davvero bene?"
+    }
+  },
+  {
+    "id": "q0572",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you check twice even though you know the answer?",
+      "es": "¿Qué compruebas dos veces aunque ya sepas la respuesta?",
+      "fr": "Que vérifies-tu deux fois même en connaissant la réponse ?",
+      "de": "Was prüfst du zweimal, obwohl du die Antwort kennst?",
+      "it": "Cosa controlli due volte anche se sai già la risposta?"
+    }
+  },
+  {
+    "id": "q0573",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my traits would survive if I came back as a dog?",
+      "es": "¿Qué rasgo mío sobreviviría si volviera como perro?",
+      "fr": "Lequel de mes traits survivrait si je revenais en chien ?",
+      "de": "Welche meiner Eigenschaften überlebt, wenn ich als Hund zurückkomme?",
+      "it": "Quale mio tratto sopravvivrebbe se tornassi come cane?"
+    }
+  },
+  {
+    "id": "q0574",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you do with a copy of me for one day?",
+      "es": "¿Qué harías con una copia mía durante un día?",
+      "fr": "Que ferais-tu d'une copie de moi pendant une journée ?",
+      "de": "Was würdest du einen Tag lang mit einer Kopie von mir machen?",
+      "it": "Cosa faresti con una copia di me per un giorno?"
+    }
+  },
+  {
+    "id": "q0575",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you do with an empty room that had no purpose?",
+      "es": "¿Qué harías con una habitación vacía que no sirviera para nada?",
+      "fr": "Que ferais-tu d'une pièce vide sans aucune fonction ?",
+      "de": "Was machst du mit einem leeren Raum, der keinen Zweck hat?",
+      "it": "Cosa faresti con una stanza vuota senza alcuno scopo?"
+    }
+  },
+  {
+    "id": "q0576",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What could you talk me out of in under ten minutes?",
+      "es": "¿De qué podrías disuadirme en menos de diez minutos?",
+      "fr": "De quoi pourrais-tu me dissuader en moins de dix minutes ?",
+      "de": "Wovon könntest du mich in unter zehn Minuten abbringen?",
+      "it": "Da cosa potresti dissuadermi in meno di dieci minuti?"
+    }
+  },
+  {
+    "id": "q0577",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which skill of mine would you move into your own head?",
+      "es": "¿Qué habilidad mía te pasarías a tu propia cabeza?",
+      "fr": "Laquelle de mes compétences transférerais-tu dans ta tête ?",
+      "de": "Welche Fähigkeit von mir würdest du in deinen Kopf verpflanzen?",
+      "it": "Quale mia abilità sposteresti nella tua testa?"
+    }
+  },
+  {
+    "id": "q0578",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If we gave a speech together tomorrow, who would write it?",
+      "es": "Si diéramos un discurso juntos mañana, ¿quién lo escribiría?",
+      "fr": "Si on faisait un discours ensemble demain, qui l'écrirait ?",
+      "de": "Wenn wir morgen zusammen eine Rede halten, wer schreibt sie?",
+      "it": "Se facessimo un discorso insieme domani, chi lo scriverebbe?"
+    }
+  },
+  {
+    "id": "q0579",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you put in a box for us to open in ten years?",
+      "es": "¿Qué meterías en una caja para abrirla dentro de diez años?",
+      "fr": "Que mettrais-tu dans une boîte à ouvrir dans dix ans ?",
+      "de": "Was legst du in eine Kiste, die wir in zehn Jahren öffnen?",
+      "it": "Cosa metteresti in una scatola da aprire fra dieci anni?"
+    }
+  },
+  {
+    "id": "q0580",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "How would we spend a prize too small to change anything?",
+      "es": "¿Cómo gastaríamos un premio demasiado pequeño para cambiar nada?",
+      "fr": "Comment dépenserions-nous un prix trop petit pour changer quoi que ce soit ?",
+      "de": "Wie geben wir einen Gewinn aus, der zu klein ist, um etwas zu ändern?",
+      "it": "Come spenderemmo un premio troppo piccolo per cambiare qualcosa?"
+    }
+  },
+  {
+    "id": "q0581",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which game from your childhood would you teach me tonight?",
+      "es": "¿Qué juego de tu infancia me enseñarías esta noche?",
+      "fr": "Quel jeu de ton enfance m'apprendrais-tu ce soir ?",
+      "de": "Welches Spiel aus deiner Kindheit bringst du mir heute Abend bei?",
+      "it": "Quale gioco della tua infanzia mi insegneresti stasera?"
+    }
+  },
+  {
+    "id": "q0582",
+    "theme": "playful",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which story about us do you tell strangers most often?",
+      "es": "¿Qué historia sobre nosotros cuentas más a menudo a desconocidos?",
+      "fr": "Quelle histoire sur nous racontes-tu le plus souvent aux inconnus ?",
+      "de": "Welche Geschichte über uns erzählst du Fremden am häufigsten?",
+      "it": "Quale storia su di noi racconti più spesso agli sconosciuti?"
+    }
+  },
+  {
+    "id": "q0583",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which room anywhere in the world would you copy exactly?",
+      "es": "¿Qué habitación del mundo copiarías tal cual?",
+      "fr": "Quelle pièce dans le monde copierais-tu à l'identique ?",
+      "de": "Welchen Raum auf der Welt würdest du exakt kopieren?",
+      "it": "Quale stanza al mondo copieresti identica?"
+    }
+  },
+  {
+    "id": "q0584",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you do differently if today were being filmed?",
+      "es": "¿Qué harías distinto si hoy te estuvieran grabando?",
+      "fr": "Que ferais-tu autrement si on filmait ta journée ?",
+      "de": "Was machst du anders, wenn der heutige Tag gefilmt wird?",
+      "it": "Cosa faresti diversamente se oggi ti stessero filmando?"
+    }
+  },
+  {
+    "id": "q0585",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What would you write on a note left in my coat pocket?",
+      "es": "¿Qué escribirías en una nota metida en el bolsillo de mi abrigo?",
+      "fr": "Qu'écrirais-tu sur un mot glissé dans la poche de mon manteau ?",
+      "de": "Was schreibst du auf einen Zettel in meiner Manteltasche?",
+      "it": "Cosa scriveresti su un biglietto lasciato nella tasca del mio cappotto?"
+    }
+  },
+  {
+    "id": "q0586",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would a strange cat walk towards first?",
+      "es": "¿Hacia quién de los dos iría primero un gato desconocido?",
+      "fr": "Vers lequel de nous deux irait d'abord un chat inconnu ?",
+      "de": "Auf wen von uns beiden läuft eine fremde Katze zuerst zu?",
+      "it": "Verso chi di noi due andrebbe per primo un gatto sconosciuto?"
+    }
+  },
+  {
+    "id": "q0587",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you cook for a dinner where you had to impress no one?",
+      "es": "¿Qué cocinarías para una cena en la que no tuvieras que impresionar a nadie?",
+      "fr": "Que cuisinerais-tu pour un dîner où tu n'aurais personne à impressionner ?",
+      "de": "Was kochst du für ein Essen, bei dem du niemanden beeindrucken musst?",
+      "it": "Cosa cucineresti per una cena in cui non devi impressionare nessuno?"
+    }
+  },
+  {
+    "id": "q0588",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which everyday rule would you break if nothing came of it?",
+      "es": "¿Qué norma cotidiana romperías si no pasara nada?",
+      "fr": "Quelle règle du quotidien enfreindrais-tu s'il n'arrivait rien ?",
+      "de": "Welche Alltagsregel brichst du, wenn es keine Folgen hat?",
+      "it": "Quale regola quotidiana infrangeresti se non succedesse nulla?"
+    }
+  },
+  {
+    "id": "q0589",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which sport would we invent to settle small disagreements?",
+      "es": "¿Qué deporte inventaríamos para resolver desacuerdos pequeños?",
+      "fr": "Quel sport inventerions-nous pour trancher les petits désaccords ?",
+      "de": "Welchen Sport erfinden wir, um kleine Uneinigkeiten zu klären?",
+      "it": "Quale sport inventeremmo per risolvere i piccoli disaccordi?"
+    }
+  },
+  {
+    "id": "q0590",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my ideas surprised you by actually working?",
+      "es": "¿Qué idea mía te sorprendió por funcionar de verdad?",
+      "fr": "Laquelle de mes idées a marché à ta grande surprise ?",
+      "de": "Welche meiner Ideen hat dich überrascht, weil sie klappte?",
+      "it": "Quale mia idea ha funzionato davvero, con tua sorpresa?"
+    }
+  },
+  {
+    "id": "q0591",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which two objects near you explain your whole week?",
+      "es": "¿Qué dos objetos cerca de ti explican toda tu semana?",
+      "fr": "Quels deux objets près de toi résument toute ta semaine ?",
+      "de": "Welche zwei Gegenstände neben dir erklären deine ganze Woche?",
+      "it": "Quali due oggetti vicino a te spiegano tutta la tua settimana?"
+    }
+  },
+  {
+    "id": "q0592",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What would you pack for me if I had ten minutes to leave?",
+      "es": "¿Qué me meterías en la maleta si tuviera diez minutos para irme?",
+      "fr": "Que mettrais-tu dans mon sac si j'avais dix minutes pour partir ?",
+      "de": "Was packst du mir ein, wenn ich zehn Minuten zum Aufbruch habe?",
+      "it": "Cosa mi metteresti in valigia se avessi dieci minuti per partire?"
+    }
+  },
+  {
+    "id": "q0593",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my faces do you imitate when I am not around?",
+      "es": "¿Qué gesto mío imitas cuando no estoy delante?",
+      "fr": "Laquelle de mes têtes imites-tu quand je ne suis pas là ?",
+      "de": "Welchen meiner Gesichtsausdrücke machst du nach, wenn ich weg bin?",
+      "it": "Quale mia espressione imiti quando non ci sono?"
+    }
+  },
+  {
+    "id": "q0594",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would the two of us be a terrible example of?",
+      "es": "¿De qué seríamos nosotros dos un pésimo ejemplo?",
+      "fr": "De quoi serions-nous tous les deux un très mauvais exemple ?",
+      "de": "Wofür wären wir beide ein richtig schlechtes Beispiel?",
+      "it": "Di cosa saremmo noi due un pessimo esempio?"
+    }
+  },
+  {
+    "id": "q0595",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which chore do you deliberately do slowly?",
+      "es": "¿Qué tarea de casa haces despacio a propósito?",
+      "fr": "Quelle corvée fais-tu lentement exprès ?",
+      "de": "Welche Hausarbeit machst du absichtlich langsam?",
+      "it": "Quale faccenda di casa fai lentamente apposta?"
+    }
+  },
+  {
+    "id": "q0596",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If you could plant one false memory in my head, which one?",
+      "es": "Si pudieras plantar un recuerdo falso en mi cabeza, ¿cuál sería?",
+      "fr": "Si tu pouvais planter un faux souvenir dans ma tête, lequel ?",
+      "de": "Wenn du mir eine falsche Erinnerung einpflanzen könntest, welche?",
+      "it": "Se potessi piantarmi in testa un ricordo falso, quale?"
+    }
+  },
+  {
+    "id": "q0597",
+    "theme": "playful",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our plans would you happily cancel for a nap?",
+      "es": "¿Qué plan nuestro cancelarías encantado por una siesta?",
+      "fr": "Lequel de nos plans annulerais-tu volontiers pour une sieste ?",
+      "de": "Welchen unserer Pläne sagst du für ein Nickerchen gern ab?",
+      "it": "Quale nostro programma cancelleresti volentieri per un pisolino?"
+    }
+  },
+  {
+    "id": "q0598",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Where would you take me if I gave you my next free day?",
+      "es": "¿Adónde me llevarías si te diera mi próximo día libre?",
+      "fr": "Où m'emmènerais-tu si je te donnais mon prochain jour libre ?",
+      "de": "Wohin nimmst du mich mit, wenn ich dir meinen freien Tag schenke?",
+      "it": "Dove mi porteresti se ti regalassi il mio prossimo giorno libero?"
+    }
+  },
+  {
+    "id": "q0599",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which part of your day would you never put online?",
+      "es": "¿Qué parte de tu día no publicarías nunca en internet?",
+      "fr": "Quelle partie de ta journée ne mettrais-tu jamais en ligne ?",
+      "de": "Welchen Teil deines Tages würdest du nie ins Netz stellen?",
+      "it": "Quale parte della tua giornata non metteresti mai online?"
+    }
+  },
+  {
+    "id": "q0600",
+    "theme": "playful",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which ordinary thing should become a tradition for the two of us?",
+      "es": "¿Qué cosa corriente debería convertirse en tradición nuestra?",
+      "fr": "Quelle chose ordinaire devrait devenir une tradition pour nous deux ?",
+      "de": "Welche gewöhnliche Sache sollte für uns beide Tradition werden?",
+      "it": "Quale cosa normale dovrebbe diventare una tradizione per noi due?"
+    }
+  }
+]

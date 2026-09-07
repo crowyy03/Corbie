@@ -22,7 +22,9 @@ enum TaskRepeatOption: String, CaseIterable, Identifiable, Hashable, Sendable {
     case none
     case daily
     case weekly
+    case everyTwoWeeks
     case monthly
+    case quarterly
     case weekdays
 
     var id: String { rawValue }
@@ -32,7 +34,9 @@ enum TaskRepeatOption: String, CaseIterable, Identifiable, Hashable, Sendable {
         case .none: self = .none
         case .daily: self = .daily
         case .weekly: self = .weekly
+        case .everyTwoWeeks: self = .everyTwoWeeks
         case .monthly: self = .monthly
+        case .quarterly: self = .quarterly
         case .weekdays: self = .weekdays
         }
     }
@@ -122,8 +126,12 @@ final class TaskEditorViewModel {
             return .daily
         case .weekly:
             return .weekly
+        case .everyTwoWeeks:
+            return .everyTwoWeeks
         case .monthly:
             return .monthly
+        case .quarterly:
+            return .quarterly
         case .weekdays:
             return weekdays.isEmpty ? .none : .weekdays(weekdays.sorted())
         }

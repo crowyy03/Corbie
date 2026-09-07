@@ -4,7 +4,9 @@ public enum Recurrence: Sendable, Equatable, Hashable {
     case none
     case daily
     case weekly
+    case everyTwoWeeks
     case monthly
+    case quarterly
     case weekdays([Int])
 
     public static let weekdaysPrefix = "weekdays:"
@@ -19,8 +21,12 @@ extension Recurrence: RawRepresentable {
             self = .daily
         case "weekly":
             self = .weekly
+        case "everyTwoWeeks":
+            self = .everyTwoWeeks
         case "monthly":
             self = .monthly
+        case "quarterly":
+            self = .quarterly
         default:
             guard rawValue.hasPrefix(Recurrence.weekdaysPrefix) else { return nil }
             let list = rawValue.dropFirst(Recurrence.weekdaysPrefix.count)
@@ -40,8 +46,12 @@ extension Recurrence: RawRepresentable {
             return "daily"
         case .weekly:
             return "weekly"
+        case .everyTwoWeeks:
+            return "everyTwoWeeks"
         case .monthly:
             return "monthly"
+        case .quarterly:
+            return "quarterly"
         case let .weekdays(days):
             let sorted = Array(Set(days)).sorted()
             return Recurrence.weekdaysPrefix + sorted.map(String.init).joined(separator: ",")
@@ -85,8 +95,12 @@ extension Recurrence {
             return calendar.date(byAdding: .day, value: 1, to: date)
         case .weekly:
             return calendar.date(byAdding: .weekOfYear, value: 1, to: date)
+        case .everyTwoWeeks:
+            return calendar.date(byAdding: .weekOfYear, value: 2, to: date)
         case .monthly:
             return calendar.date(byAdding: .month, value: 1, to: date)
+        case .quarterly:
+            return calendar.date(byAdding: .month, value: 3, to: date)
         case let .weekdays(days):
             let wanted = Set(days.filter { (1...7).contains($0) })
             guard wanted.isEmpty == false else { return nil }

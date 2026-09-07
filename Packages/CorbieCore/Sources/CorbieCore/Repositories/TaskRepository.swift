@@ -7,6 +7,8 @@ public struct TaskDraft: Sendable, Equatable {
     public var assigneeMemberId: UUID?
     public var dueAt: Date?
     public var recurrence: Recurrence
+    public var rotatesBetweenMembers: Bool
+    public var choreItemId: UUID?
     public var createdByMemberId: UUID?
 
     public init(
@@ -16,6 +18,8 @@ public struct TaskDraft: Sendable, Equatable {
         assigneeMemberId: UUID? = nil,
         dueAt: Date? = nil,
         recurrence: Recurrence = .none,
+        rotatesBetweenMembers: Bool = false,
+        choreItemId: UUID? = nil,
         createdByMemberId: UUID? = nil
     ) {
         self.spaceId = spaceId
@@ -24,6 +28,8 @@ public struct TaskDraft: Sendable, Equatable {
         self.assigneeMemberId = assigneeMemberId
         self.dueAt = dueAt
         self.recurrence = recurrence
+        self.rotatesBetweenMembers = rotatesBetweenMembers
+        self.choreItemId = choreItemId
         self.createdByMemberId = createdByMemberId
     }
 }

@@ -15,6 +15,8 @@ public final class TaskItem: NSManagedObject {
     @NSManaged public var createdByMemberId: UUID?
     @NSManaged public var takenAt: Date?
     @NSManaged public var recurrenceRaw: String?
+    @NSManaged public var rotatesBetweenMembers: Bool
+    @NSManaged public var choreItemId: UUID?
     @NSManaged public var archivedAt: Date?
     @NSManaged public var createdAt: Date?
     @NSManaged public var space: Space?

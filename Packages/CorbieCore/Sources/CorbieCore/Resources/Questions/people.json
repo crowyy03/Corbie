@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0801",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which friend of yours knows a version of you I have never met?",
+      "es": "¿Qué amigo tuyo conoce una versión tuya que yo no he visto nunca?",
+      "fr": "Lequel de tes amis connaît une version de toi que je n'ai jamais vue ?",
+      "de": "Welcher deiner Freunde kennt eine Seite von dir, die ich nie gesehen habe?",
+      "it": "Quale tuo amico conosce una versione di te che io non ho mai visto?"
+    }
+  },
+  {
+    "id": "q0802",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who taught you how to argue?",
+      "es": "¿Quién te enseñó a discutir?",
+      "fr": "Qui t'a appris à te disputer ?",
+      "de": "Wer hat dir beigebracht, wie man streitet?",
+      "it": "Chi ti ha insegnato a discutere?"
+    }
+  },
+  {
+    "id": "q0803",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Whose house did you feel most at home in as a child?",
+      "es": "¿En qué casa ajena te sentías más a gusto en la infancia?",
+      "fr": "Chez qui te sentais-tu le plus à l'aise pendant ton enfance ?",
+      "de": "Bei wem hast du dich als Kind am meisten zu Hause gefühlt?",
+      "it": "In quale casa non tua ti sentivi più a tuo agio nell'infanzia?"
+    }
+  },
+  {
+    "id": "q0804",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends would survive a week living with me?",
+      "es": "¿Qué amigo tuyo sobreviviría una semana viviendo conmigo?",
+      "fr": "Lequel de tes amis survivrait à une semaine de vie avec moi ?",
+      "de": "Welcher deiner Freunde würde eine Woche mit mir überleben?",
+      "it": "Quale tuo amico sopravvivrebbe a una settimana di convivenza con me?"
+    }
+  },
+  {
+    "id": "q0805",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my family stories do you remember better than I do?",
+      "es": "¿Qué historia de mi familia recuerdas mejor que yo?",
+      "fr": "Quelle histoire de ma famille retiens-tu mieux que moi ?",
+      "de": "Welche Geschichte aus meiner Familie weißt du besser als ich?",
+      "it": "Quale storia della mia famiglia ricordi meglio di me?"
+    }
+  },
+  {
+    "id": "q0806",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who in your family do you understand the least?",
+      "es": "¿A quién de tu familia entiendes menos?",
+      "fr": "Qui, dans ta famille, comprends-tu le moins ?",
+      "de": "Wen in deiner Familie verstehst du am wenigsten?",
+      "it": "Chi della tua famiglia capisci di meno?"
+    }
+  },
+  {
+    "id": "q0807",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Whose calls do you always let ring out?",
+      "es": "¿A quién dejas siempre que suene el teléfono sin contestar?",
+      "fr": "Les appels de qui laisses-tu toujours sonner dans le vide ?",
+      "de": "Wessen Anrufe lässt du immer durchklingeln?",
+      "it": "Le chiamate di chi lasci sempre squillare a vuoto?"
+    }
+  },
+  {
+    "id": "q0808",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which friendship of yours ended without a reason?",
+      "es": "¿Qué amistad tuya se acabó sin ningún motivo?",
+      "fr": "Laquelle de tes amitiés s'est terminée sans raison ?",
+      "de": "Welche deiner Freundschaften endete ohne jeden Grund?",
+      "it": "Quale tua amicizia è finita senza un motivo?"
+    }
+  },
+  {
+    "id": "q0809",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Who did you tell about me first?",
+      "es": "¿A quién le hablaste de mí antes que a nadie?",
+      "fr": "À qui as-tu parlé de moi en premier ?",
+      "de": "Wem hast du zuerst von mir erzählt?",
+      "it": "A chi hai parlato di me prima che a chiunque altro?"
+    }
+  },
+  {
+    "id": "q0810",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your relatives would enjoy me the most?",
+      "es": "¿Qué pariente tuyo disfrutaría más conmigo?",
+      "fr": "Lequel de tes proches m'apprécierait le plus ?",
+      "de": "Wer aus deiner Verwandtschaft hätte an mir die meiste Freude?",
+      "it": "Quale tuo parente si divertirebbe di più con me?"
+    }
+  },
+  {
+    "id": "q0811",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do differently around your family?",
+      "es": "¿Qué haces distinto cuando estás con tu familia?",
+      "fr": "Que fais-tu différemment quand tu es avec ta famille ?",
+      "de": "Was machst du anders, wenn du bei deiner Familie bist?",
+      "it": "Cosa fai in modo diverso quando sei con la tua famiglia?"
+    }
+  },
+  {
+    "id": "q0812",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Whose opinion changed your mind most recently?",
+      "es": "¿La opinión de quién te ha hecho cambiar de idea hace poco?",
+      "fr": "L'avis de qui t'a fait changer d'idée récemment ?",
+      "de": "Wessen Meinung hat dich zuletzt umgestimmt?",
+      "it": "Il parere di chi ti ha fatto cambiare idea di recente?"
+    }
+  },
+  {
+    "id": "q0813",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which friend of yours would you send in to negotiate for you?",
+      "es": "¿Qué amigo tuyo mandarías a negociar en tu lugar?",
+      "fr": "Lequel de tes amis enverrais-tu négocier à ta place ?",
+      "de": "Welchen deiner Freunde würdest du für dich verhandeln lassen?",
+      "it": "Quale tuo amico manderesti a trattare al posto tuo?"
+    }
+  },
+  {
+    "id": "q0814",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my friends did you understand fastest?",
+      "es": "¿A qué amigo mío entendiste más rápido?",
+      "fr": "Lequel de mes amis as-tu compris le plus vite ?",
+      "de": "Welchen meiner Freunde hast du am schnellsten durchschaut?",
+      "it": "Quale mio amico hai capito più in fretta?"
+    }
+  },
+  {
+    "id": "q0815",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who from your past would you want back for one hour?",
+      "es": "¿A quién de tu pasado querrías recuperar durante una hora?",
+      "fr": "Qui, dans ton passé, voudrais-tu revoir une heure ?",
+      "de": "Wen aus deiner Vergangenheit hättest du gern eine Stunde zurück?",
+      "it": "Chi del tuo passato vorresti indietro per un'ora?"
+    }
+  },
+  {
+    "id": "q0816",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who did you become friends with by accident?",
+      "es": "¿Con quién nació una amistad por pura casualidad?",
+      "fr": "Avec qui l'amitié est-elle née complètement par hasard ?",
+      "de": "Mit wem bist du rein zufällig befreundet geworden?",
+      "it": "Con chi è nata un'amicizia per puro caso?"
+    }
+  },
+  {
+    "id": "q0817",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which family habit did you decide not to keep?",
+      "es": "¿Qué costumbre familiar decidiste no conservar?",
+      "fr": "Quelle habitude familiale as-tu décidé de ne pas garder ?",
+      "de": "Welche Familiengewohnheit hast du bewusst nicht übernommen?",
+      "it": "Quale abitudine di famiglia hai deciso di non tenere?"
+    }
+  },
+  {
+    "id": "q0818",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends would pick my birthday present best?",
+      "es": "¿Qué amigo tuyo elegiría mejor mi regalo de cumpleaños?",
+      "fr": "Lequel de tes amis choisirait le mieux mon cadeau d'anniversaire ?",
+      "de": "Welcher deiner Freunde würde mein Geburtstagsgeschenk am besten aussuchen?",
+      "it": "Quale tuo amico sceglierebbe meglio il mio regalo di compleanno?"
+    }
+  },
+  {
+    "id": "q0819",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who else gets the version of your day that I get?",
+      "es": "¿Quién más recibe la versión de tu día que recibo yo?",
+      "fr": "Qui d'autre a droit à la version de ta journée que j'ai ?",
+      "de": "Wer bekommt sonst noch die Version deines Tages, die ich bekomme?",
+      "it": "Chi altro riceve la versione della tua giornata che ricevo io?"
+    }
+  },
+  {
+    "id": "q0820",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which neighbour do you know the most about?",
+      "es": "¿De qué vecino sabes más cosas?",
+      "fr": "De quel voisin en sais-tu le plus ?",
+      "de": "Über welchen Nachbarn weißt du am meisten?",
+      "it": "Di quale vicino sai più cose?"
+    }
+  },
+  {
+    "id": "q0821",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your relatives would fit right into my family?",
+      "es": "¿Qué pariente tuyo encajaría perfectamente en mi familia?",
+      "fr": "Lequel de tes proches s'intégrerait parfaitement dans ma famille ?",
+      "de": "Wer aus deiner Verwandtschaft würde perfekt in meine Familie passen?",
+      "it": "Quale tuo parente si integrerebbe alla perfezione nella mia famiglia?"
+    }
+  },
+  {
+    "id": "q0822",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my relatives do you wish you had met earlier?",
+      "es": "¿A qué pariente mío te habría gustado conocer antes?",
+      "fr": "Lequel de mes proches aurais-tu aimé rencontrer plus tôt ?",
+      "de": "Wen aus meiner Verwandtschaft hättest du gern früher kennengelernt?",
+      "it": "Quale mio parente avresti voluto conoscere prima?"
+    }
+  },
+  {
+    "id": "q0823",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who do you copy without noticing?",
+      "es": "¿A quién copias sin darte cuenta?",
+      "fr": "Qui imites-tu sans t'en rendre compte ?",
+      "de": "Wen ahmst du nach, ohne es zu merken?",
+      "it": "Chi imiti senza accorgertene?"
+    }
+  },
+  {
+    "id": "q0824",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which friendship of yours survives on the least effort?",
+      "es": "¿Qué amistad tuya sobrevive con el mínimo esfuerzo?",
+      "fr": "Laquelle de tes amitiés tient avec le moins d'efforts ?",
+      "de": "Welche deiner Freundschaften hält mit dem geringsten Aufwand?",
+      "it": "Quale tua amicizia regge con il minimo sforzo?"
+    }
+  },
+  {
+    "id": "q0825",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who do you always text and never call?",
+      "es": "¿A quién le escribes siempre y nunca le llamas?",
+      "fr": "À qui écris-tu toujours sans jamais appeler ?",
+      "de": "Wem schreibst du immer, statt anzurufen?",
+      "it": "A chi scrivi sempre senza mai telefonare?"
+    }
+  },
+  {
+    "id": "q0826",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Whose friends would win a quiz night, yours or mine?",
+      "es": "¿Qué amigos ganarían una noche de preguntas, los tuyos o los míos?",
+      "fr": "Quels amis gagneraient un quiz, les tiens ou les miens ?",
+      "de": "Wessen Freunde gewinnen einen Quizabend, deine oder meine?",
+      "it": "Quali amici vincerebbero una serata quiz, i tuoi o i miei?"
+    }
+  },
+  {
+    "id": "q0827",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do people ask you for that they should ask someone else?",
+      "es": "¿Qué te pide la gente que debería pedirle a otra persona?",
+      "fr": "Que te demandent les gens alors qu'ils devraient demander ailleurs ?",
+      "de": "Worum bitten dich Leute, obwohl sie jemand anderen fragen sollten?",
+      "it": "Cosa ti chiede la gente che dovrebbe chiedere a qualcun altro?"
+    }
+  },
+  {
+    "id": "q0828",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which person outside the two of us do we both quote?",
+      "es": "¿A qué persona ajena a nosotros dos citamos los dos?",
+      "fr": "Quelle personne extérieure à nous deux citons-nous tous les deux ?",
+      "de": "Welche Person außer uns beiden zitieren wir beide?",
+      "it": "Quale persona fuori da noi due citiamo entrambi?"
+    }
+  },
+  {
+    "id": "q0829",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who did you want to be like at fifteen?",
+      "es": "¿A quién querías parecerte a los quince?",
+      "fr": "À qui voulais-tu ressembler à quinze ans ?",
+      "de": "Wem wolltest du mit fünfzehn ähnlich sein?",
+      "it": "A chi volevi assomigliare a quindici anni?"
+    }
+  },
+  {
+    "id": "q0830",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which trick from your family do you still use?",
+      "es": "¿Qué truco de tu familia sigues usando?",
+      "fr": "Quelle astuce de ta famille utilises-tu encore ?",
+      "de": "Welchen Trick aus deiner Familie benutzt du noch?",
+      "it": "Quale trucco della tua famiglia usi ancora?"
+    }
+  },
+  {
+    "id": "q0831",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends should never be given a microphone?",
+      "es": "¿A qué amigo tuyo no habría que darle nunca un micrófono?",
+      "fr": "Auquel de tes amis ne faut-il jamais donner un micro ?",
+      "de": "Welchem deiner Freunde sollte man nie ein Mikrofon geben?",
+      "it": "A quale tuo amico non andrebbe mai dato un microfono?"
+    }
+  },
+  {
+    "id": "q0832",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who have you forgiven without ever telling them?",
+      "es": "¿A quién has perdonado sin decírselo nunca?",
+      "fr": "Qui as-tu pardonné sans jamais le lui dire ?",
+      "de": "Wem hast du verziehen, ohne es ihm je zu sagen?",
+      "it": "Chi hai perdonato senza mai dirglielo?"
+    }
+  },
+  {
+    "id": "q0833",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Who among our friends would notice first if we vanished?",
+      "es": "¿Quién de nuestros amigos notaría primero que hemos desaparecido?",
+      "fr": "Lequel de nos amis remarquerait en premier notre disparition ?",
+      "de": "Wer aus unserem Umfeld würde zuerst merken, dass wir weg sind?",
+      "it": "Chi dei nostri amici noterebbe per primo la nostra sparizione?"
+    }
+  },
+  {
+    "id": "q0834",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which stranger's face do you still remember?",
+      "es": "¿La cara de qué desconocido sigues recordando?",
+      "fr": "Le visage de quel inconnu te revient encore ?",
+      "de": "An wessen fremdes Gesicht erinnerst du dich noch?",
+      "it": "Il volto di quale sconosciuto ricordi ancora?"
+    }
+  },
+  {
+    "id": "q0835",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Who gives you advice about things they know nothing about?",
+      "es": "¿Quién te da consejos sobre cosas de las que no sabe nada?",
+      "fr": "Qui te donne des conseils sur des sujets qu'il ne connaît pas ?",
+      "de": "Wer gibt dir Ratschläge zu Dingen, von denen er nichts versteht?",
+      "it": "Chi ti dà consigli su cose di cui non sa nulla?"
+    }
+  },
+  {
+    "id": "q0836",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which person in your life deserves more of your time?",
+      "es": "¿Qué persona de tu vida merece más tiempo tuyo?",
+      "fr": "Quelle personne de ta vie mérite plus de ton temps ?",
+      "de": "Welche Person in deinem Leben verdient mehr deiner Zeit?",
+      "it": "Quale persona della tua vita merita più tempo tuo?"
+    }
+  },
+  {
+    "id": "q0837",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who would you take to a party where you knew nobody?",
+      "es": "¿A quién te llevarías a una fiesta donde no conocieras a nadie?",
+      "fr": "Qui emmènerais-tu à une fête où tu ne connais personne ?",
+      "de": "Wen würdest du auf eine Party mitnehmen, wo du niemanden kennst?",
+      "it": "Chi porteresti a una festa dove non conosci nessuno?"
+    }
+  },
+  {
+    "id": "q0838",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends would win an argument with both of us?",
+      "es": "¿Qué amigo tuyo nos ganaría una discusión a los dos?",
+      "fr": "Lequel de tes amis gagnerait une discussion contre nous deux ?",
+      "de": "Welcher deiner Freunde würde eine Diskussion gegen uns beide gewinnen?",
+      "it": "Quale tuo amico vincerebbe una discussione contro noi due?"
+    }
+  },
+  {
+    "id": "q0839",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you learn about people the hard way?",
+      "es": "¿Qué aprendiste sobre la gente por las malas?",
+      "fr": "Qu'as-tu appris sur les gens à la dure ?",
+      "de": "Was hast du über Menschen auf die harte Tour gelernt?",
+      "it": "Cosa hai imparato sulle persone nel modo più duro?"
+    }
+  },
+  {
+    "id": "q0840",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who in your life is the easiest to buy a gift for?",
+      "es": "¿Para quién de tu vida es más fácil comprar un regalo?",
+      "fr": "Pour qui dans ta vie est-il le plus facile de choisir un cadeau ?",
+      "de": "Für wen in deinem Leben ist ein Geschenk am leichtesten zu finden?",
+      "it": "Per chi nella tua vita è più facile scegliere un regalo?"
+    }
+  },
+  {
+    "id": "q0841",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which two people you know should never meet?",
+      "es": "¿Qué dos personas que conoces no deberían conocerse nunca?",
+      "fr": "Quelles deux personnes que tu connais ne devraient jamais se croiser ?",
+      "de": "Welche zwei Menschen, die du kennst, sollten sich nie begegnen?",
+      "it": "Quali due persone che conosci non dovrebbero mai incontrarsi?"
+    }
+  },
+  {
+    "id": "q0842",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my friendships do you find surprising?",
+      "es": "¿Qué amistad mía te resulta sorprendente?",
+      "fr": "Laquelle de mes amitiés te surprend ?",
+      "de": "Welche meiner Freundschaften überrascht dich?",
+      "it": "Quale mia amicizia ti sorprende?"
+    }
+  },
+  {
+    "id": "q0843",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Whose message do you always answer immediately?",
+      "es": "¿A qué persona le contestas siempre al instante?",
+      "fr": "À qui réponds-tu toujours dans la seconde ?",
+      "de": "Wem antwortest du immer sofort?",
+      "it": "A chi rispondi sempre all'istante?"
+    }
+  },
+  {
+    "id": "q0844",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who in your family would you ask one more question?",
+      "es": "¿A quién de tu familia le harías una pregunta más?",
+      "fr": "À qui dans ta famille poserais-tu une dernière question ?",
+      "de": "Wem in deiner Familie würdest du gern eine Frage mehr stellen?",
+      "it": "A chi della tua famiglia faresti un'ultima domanda?"
+    }
+  },
+  {
+    "id": "q0845",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Where do you end up standing at a party?",
+      "es": "¿En qué rincón acabas siempre en una fiesta?",
+      "fr": "Où finis-tu toujours par te tenir dans une fête ?",
+      "de": "Wo stehst du auf einer Party am Ende immer?",
+      "it": "In quale angolo finisci sempre a una festa?"
+    }
+  },
+  {
+    "id": "q0846",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Around which friend do you become a different person?",
+      "es": "¿Con qué amigo te conviertes en otra persona?",
+      "fr": "Avec quel ami deviens-tu quelqu'un d'autre ?",
+      "de": "Bei welchem Freund wirst du zu einem anderen Menschen?",
+      "it": "Con quale amico diventi un'altra persona?"
+    }
+  },
+  {
+    "id": "q0847",
+    "theme": "people",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Who in our shared circle has changed the most since we met?",
+      "es": "¿Quién de nuestro entorno común ha cambiado más desde que nos conocimos?",
+      "fr": "Qui, dans notre entourage commun, a le plus changé depuis notre rencontre ?",
+      "de": "Wer in unserem gemeinsamen Umfeld hat sich seit unserem Kennenlernen am meisten verändert?",
+      "it": "Chi nella nostra cerchia comune è cambiato di più da quando ci siamo conosciuti?"
+    }
+  },
+  {
+    "id": "q0848",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who still calls you by an old nickname?",
+      "es": "¿Quién sigue llamándote por un apodo antiguo?",
+      "fr": "Qui t'appelle encore par un vieux surnom ?",
+      "de": "Wer nennt dich noch bei einem alten Spitznamen?",
+      "it": "Chi ti chiama ancora con un vecchio soprannome?"
+    }
+  },
+  {
+    "id": "q0849",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What kind of person takes you longest to trust?",
+      "es": "¿En qué tipo de persona tardas más en confiar?",
+      "fr": "Dans quel genre de personne mets-tu le plus de temps à avoir confiance ?",
+      "de": "Welcher Art von Mensch vertraust du am langsamsten?",
+      "it": "In che tipo di persona ci metti più tempo a fidarti?"
+    }
+  },
+  {
+    "id": "q0850",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which old friend would recognise you instantly today?",
+      "es": "¿Qué amigo de antes te reconocería hoy al instante?",
+      "fr": "Quel ami d'avant te reconnaîtrait tout de suite aujourd'hui ?",
+      "de": "Welcher alte Freund würde dich heute sofort wiedererkennen?",
+      "it": "Quale vecchio amico ti riconoscerebbe subito oggi?"
+    }
+  },
+  {
+    "id": "q0851",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which invitation do we always say yes to?",
+      "es": "¿A qué invitación decimos siempre que sí?",
+      "fr": "À quelle invitation disons-nous toujours oui ?",
+      "de": "Zu welcher Einladung sagen wir immer Ja?",
+      "it": "A quale invito diciamo sempre di sì?"
+    }
+  },
+  {
+    "id": "q0852",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "How did you describe me to your friends at the start?",
+      "es": "¿Cómo me describías a tus amigos al principio?",
+      "fr": "Comment me décrivais-tu à tes amis au début ?",
+      "de": "Wie hast du mich am Anfang deinen Freunden beschrieben?",
+      "it": "Come mi descrivevi ai tuoi amici all'inizio?"
+    }
+  },
+  {
+    "id": "q0853",
+    "theme": "people",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Who did we stop seeing without ever deciding to?",
+      "es": "¿A quién dejamos de ver sin haberlo decidido nunca?",
+      "fr": "Qui avons-nous cessé de voir sans jamais l'avoir décidé ?",
+      "de": "Wen haben wir aus den Augen verloren, ohne es je zu beschließen?",
+      "it": "Chi abbiamo smesso di vedere senza mai deciderlo?"
+    }
+  },
+  {
+    "id": "q0854",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of us is better with other people's families?",
+      "es": "¿Quién de los dos se maneja mejor con las familias ajenas?",
+      "fr": "Lequel de nous deux s'en sort le mieux avec les familles des autres ?",
+      "de": "Wer von uns kommt mit fremden Familien besser klar?",
+      "it": "Chi di noi due se la cava meglio con le famiglie degli altri?"
+    }
+  },
+  {
+    "id": "q0855",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Who do we always end up talking about on the way home?",
+      "es": "¿De quién acabamos hablando siempre de camino a casa?",
+      "fr": "De qui finissons-nous toujours par parler sur le chemin du retour ?",
+      "de": "Über wen reden wir auf dem Heimweg immer?",
+      "it": "Di chi finiamo sempre per parlare tornando a casa?"
+    }
+  },
+  {
+    "id": "q0856",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you want people to say about you when you leave a room?",
+      "es": "¿Qué quieres que diga la gente de ti cuando sales de una sala?",
+      "fr": "Que veux-tu qu'on dise de toi quand tu quittes une pièce ?",
+      "de": "Was sollen Leute über dich sagen, wenn du den Raum verlässt?",
+      "it": "Cosa vuoi che dicano di te quando esci da una stanza?"
+    }
+  },
+  {
+    "id": "q0857",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which friend of yours would I get along with instantly?",
+      "es": "¿Con qué amigo tuyo congeniaría yo al instante?",
+      "fr": "Avec lequel de tes amis m'entendrais-je tout de suite ?",
+      "de": "Mit welchem deiner Freunde käme ich sofort klar?",
+      "it": "Con quale tuo amico andrei d'accordo all'istante?"
+    }
+  },
+  {
+    "id": "q0858",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who in your life do you protect from bad news?",
+      "es": "¿A quién de tu vida le ahorras las malas noticias?",
+      "fr": "Qui, dans ta vie, protèges-tu des mauvaises nouvelles ?",
+      "de": "Wen in deinem Leben hältst du von schlechten Nachrichten fern?",
+      "it": "Chi nella tua vita proteggi dalle brutte notizie?"
+    }
+  },
+  {
+    "id": "q0859",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which dish do you cook exactly the way someone else did?",
+      "es": "¿Qué plato cocinas exactamente como lo hacía otra persona?",
+      "fr": "Quel plat cuisines-tu exactement comme quelqu'un d'autre le faisait ?",
+      "de": "Welches Gericht kochst du genau so, wie es jemand anderes gemacht hat?",
+      "it": "Quale piatto cucini esattamente come lo faceva un altro?"
+    }
+  },
+  {
+    "id": "q0860",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends would be the worst travel companion?",
+      "es": "¿Qué amigo tuyo sería el peor compañero de viaje?",
+      "fr": "Lequel de tes amis serait le pire compagnon de voyage ?",
+      "de": "Welcher deiner Freunde wäre der schlechteste Reisebegleiter?",
+      "it": "Quale tuo amico sarebbe il peggior compagno di viaggio?"
+    }
+  },
+  {
+    "id": "q0861",
+    "theme": "people",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Who in my family have you got closer to than I expected?",
+      "es": "¿Con quién de mi familia has intimado más de lo que yo esperaba?",
+      "fr": "Avec qui dans ma famille as-tu créé un lien plus fort que prévu ?",
+      "de": "Wem aus meiner Familie bist du näher gekommen, als ich dachte?",
+      "it": "Con chi della mia famiglia hai legato più di quanto immaginassi?"
+    }
+  },
+  {
+    "id": "q0862",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which person opened their door to you when you needed it?",
+      "es": "¿Qué persona te acogió justo cuando lo necesitabas?",
+      "fr": "Quelle personne t'a ouvert sa porte au moment où tu en avais besoin ?",
+      "de": "Welcher Mensch hat dich aufgenommen, als du es gebraucht hast?",
+      "it": "Quale persona ti ha aperto la porta proprio quando ne avevi bisogno?"
+    }
+  },
+  {
+    "id": "q0863",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who do you compare yourself to most often?",
+      "es": "¿Con quién te comparas más a menudo?",
+      "fr": "À qui te compares-tu le plus souvent ?",
+      "de": "Mit wem vergleichst du dich am häufigsten?",
+      "it": "Con chi ti confronti più spesso?"
+    }
+  },
+  {
+    "id": "q0864",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of my friends do you think knows me best?",
+      "es": "¿Qué amigo mío crees que me conoce mejor?",
+      "fr": "Lequel de mes amis me connaît le mieux, à ton avis ?",
+      "de": "Welcher meiner Freunde kennt mich deiner Meinung nach am besten?",
+      "it": "Quale mio amico pensi che mi conosca meglio?"
+    }
+  },
+  {
+    "id": "q0865",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which gathering do you actually look forward to every year?",
+      "es": "¿A qué reunión esperas de verdad con ganas cada año?",
+      "fr": "Quelle réunion attends-tu vraiment avec impatience chaque année ?",
+      "de": "Auf welches Treffen freust du dich jedes Jahr wirklich?",
+      "it": "Quale ritrovo aspetti davvero con piacere ogni anno?"
+    }
+  },
+  {
+    "id": "q0866",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who do you have an unfinished conversation with?",
+      "es": "¿Con quién tienes pendiente una conversación de verdad?",
+      "fr": "Avec qui as-tu une vraie conversation en suspens ?",
+      "de": "Mit wem hast du ein unerledigtes Gespräch offen?",
+      "it": "Con chi hai in sospeso una conversazione vera?"
+    }
+  },
+  {
+    "id": "q0867",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends would you cast as the villain in a film?",
+      "es": "¿A qué amigo tuyo elegirías como villano de una película?",
+      "fr": "Lequel de tes amis choisirais-tu comme méchant dans un film ?",
+      "de": "Welchen deiner Freunde würdest du als Bösewicht besetzen?",
+      "it": "Quale tuo amico sceglieresti come cattivo di un film?"
+    }
+  },
+  {
+    "id": "q0868",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who introduced you to something you now love?",
+      "es": "¿Quién te descubrió algo que ahora te encanta?",
+      "fr": "Qui t'a fait découvrir une chose que tu adores aujourd'hui ?",
+      "de": "Wer hat dir etwas gezeigt, das du heute liebst?",
+      "it": "Chi ti ha fatto scoprire qualcosa che oggi ami?"
+    }
+  },
+  {
+    "id": "q0869",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do my friends see in me that you had to learn?",
+      "es": "¿Qué ven mis amigos en mí que tú tuviste que aprender a ver?",
+      "fr": "Que voient mes amis en moi que tu as dû apprendre à voir ?",
+      "de": "Was sehen meine Freunde an mir, das du erst lernen musstest?",
+      "it": "Cosa vedono in me i miei amici che tu hai dovuto imparare a vedere?"
+    }
+  },
+  {
+    "id": "q0870",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Whose home do you always leave in a better mood?",
+      "es": "¿De qué casa sales siempre de mejor humor?",
+      "fr": "De chez qui repars-tu toujours de meilleure humeur ?",
+      "de": "Von wem gehst du immer besser gelaunt weg?",
+      "it": "Da casa di chi esci sempre di umore migliore?"
+    }
+  },
+  {
+    "id": "q0871",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which person do you keep at a distance on purpose?",
+      "es": "¿A qué persona mantienes a distancia a propósito?",
+      "fr": "Quelle personne tiens-tu à distance exprès ?",
+      "de": "Welche Person hältst du absichtlich auf Abstand?",
+      "it": "Quale persona tieni a distanza di proposito?"
+    }
+  },
+  {
+    "id": "q0872",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who in your life is impossible to surprise?",
+      "es": "¿A quién de tu vida es imposible sorprender?",
+      "fr": "Qui, dans ta vie, est impossible à surprendre ?",
+      "de": "Wen in deinem Leben kann man unmöglich überraschen?",
+      "it": "Chi nella tua vita è impossibile da sorprendere?"
+    }
+  },
+  {
+    "id": "q0873",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Who would we both call first in a small emergency?",
+      "es": "¿A quién llamaríamos los dos primero en un apuro pequeño?",
+      "fr": "Qui appellerions-nous en premier pour un petit pépin ?",
+      "de": "Wen würden wir beide bei einer kleinen Notlage zuerst anrufen?",
+      "it": "Chi chiameremmo per primo noi due in un piccolo guaio?"
+    }
+  },
+  {
+    "id": "q0874",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which relative do you sound most like on the phone?",
+      "es": "¿A qué pariente te pareces más hablando por teléfono?",
+      "fr": "À quel proche ressembles-tu le plus au téléphone ?",
+      "de": "Welchem Verwandten klingst du am Telefon am ähnlichsten?",
+      "it": "A quale parente assomigli di più al telefono?"
+    }
+  },
+  {
+    "id": "q0875",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who do you still want approval from?",
+      "es": "¿De quién sigues queriendo aprobación?",
+      "fr": "De qui cherches-tu encore l'approbation ?",
+      "de": "Von wem willst du immer noch Anerkennung?",
+      "it": "Da chi vuoi ancora approvazione?"
+    }
+  },
+  {
+    "id": "q0876",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your friendships would surprise everyone else you know?",
+      "es": "¿Qué amistad tuya sorprendería a todos los demás que conoces?",
+      "fr": "Laquelle de tes amitiés surprendrait tous les autres autour de toi ?",
+      "de": "Welche deiner Freundschaften würde alle anderen überraschen?",
+      "it": "Quale tua amicizia sorprenderebbe tutti gli altri che conosci?"
+    }
+  },
+  {
+    "id": "q0877",
+    "theme": "people",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my habits does your family notice?",
+      "es": "¿Qué costumbre mía nota tu familia?",
+      "fr": "Laquelle de mes habitudes ta famille remarque-t-elle ?",
+      "de": "Welche meiner Gewohnheiten fällt deiner Familie auf?",
+      "it": "Quale mia abitudine nota la tua famiglia?"
+    }
+  },
+  {
+    "id": "q0878",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who do you think about more than you talk about?",
+      "es": "¿En quién piensas mucho más de lo que lo mencionas?",
+      "fr": "À qui penses-tu bien plus souvent que tu n'en parles ?",
+      "de": "An wen denkst du viel öfter, als du von ihm sprichst?",
+      "it": "A chi pensi molto più di quanto ne parli?"
+    }
+  },
+  {
+    "id": "q0879",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which person can change your mood in one sentence?",
+      "es": "¿Qué persona te cambia el ánimo con una sola frase?",
+      "fr": "Quelle personne peut changer ton humeur en une phrase ?",
+      "de": "Welche Person kann deine Stimmung mit einem Satz drehen?",
+      "it": "Quale persona ti cambia l'umore con una sola frase?"
+    }
+  },
+  {
+    "id": "q0880",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of your friends should plan our next night out?",
+      "es": "¿Qué amigo tuyo debería organizar nuestra próxima salida?",
+      "fr": "Lequel de tes amis devrait organiser notre prochaine sortie ?",
+      "de": "Welcher deiner Freunde sollte unseren nächsten Abend planen?",
+      "it": "Quale tuo amico dovrebbe organizzare la nostra prossima serata?"
+    }
+  },
+  {
+    "id": "q0881",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did the oldest person you knew well teach you?",
+      "es": "¿Qué te enseñó la persona más mayor a la que conociste bien?",
+      "fr": "Que t'a appris la personne la plus âgée que tu aies bien connue ?",
+      "de": "Was hat dir der älteste Mensch beigebracht, den du gut kanntest?",
+      "it": "Cosa ti ha insegnato la persona più anziana che hai conosciuto bene?"
+    }
+  },
+  {
+    "id": "q0882",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who owes you a favour and has forgotten?",
+      "es": "¿Quién te debe un favor y ya se le ha olvidado?",
+      "fr": "Qui te doit un service et l'a oublié ?",
+      "de": "Wer schuldet dir einen Gefallen und hat es vergessen?",
+      "it": "Chi ti deve un favore e se n'è dimenticato?"
+    }
+  },
+  {
+    "id": "q0883",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of us do people underestimate?",
+      "es": "¿A quién de los dos subestima la gente?",
+      "fr": "Lequel de nous deux les gens sous-estiment-ils ?",
+      "de": "Wen von uns beiden unterschätzen die Leute?",
+      "it": "Chi di noi due viene sottovalutato dagli altri?"
+    }
+  },
+  {
+    "id": "q0884",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your friends do you only see one to one?",
+      "es": "¿A qué amigo tuyo ves siempre a solas?",
+      "fr": "Lequel de tes amis ne vois-tu qu'en tête-à-tête ?",
+      "de": "Welchen deiner Freunde triffst du nur unter vier Augen?",
+      "it": "Quale tuo amico vedi solo a quattr'occhi?"
+    }
+  },
+  {
+    "id": "q0885",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you find hardest to say to your family?",
+      "es": "¿Qué es lo que más te cuesta decirle a tu familia?",
+      "fr": "Qu'est-ce qui est le plus difficile à dire à ta famille ?",
+      "de": "Was fällt dir am schwersten, deiner Familie zu sagen?",
+      "it": "Cosa fai più fatica a dire alla tua famiglia?"
+    }
+  },
+  {
+    "id": "q0886",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Who do you keep meaning to introduce me to?",
+      "es": "¿A quién llevas tiempo queriendo presentarme?",
+      "fr": "À qui comptes-tu me présenter sans jamais le faire ?",
+      "de": "Wem willst du mich schon lange vorstellen?",
+      "it": "A chi vuoi presentarmi da tempo senza mai farlo?"
+    }
+  },
+  {
+    "id": "q0887",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends would spot a lie first?",
+      "es": "¿Qué amigo tuyo pillaría antes una mentira?",
+      "fr": "Lequel de tes amis repérerait un mensonge en premier ?",
+      "de": "Welcher deiner Freunde würde eine Lüge zuerst bemerken?",
+      "it": "Quale tuo amico scoprirebbe per primo una bugia?"
+    }
+  },
+  {
+    "id": "q0888",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who has never once let you down on something small?",
+      "es": "¿Quién no te ha fallado ni una vez en algo pequeño?",
+      "fr": "Qui ne t'a jamais fait défaut, même sur une petite chose ?",
+      "de": "Wer hat dich nicht ein einziges Mal bei einer Kleinigkeit hängen lassen?",
+      "it": "Chi non ti ha mai deluso nemmeno in una cosa piccola?"
+    }
+  },
+  {
+    "id": "q0889",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Whose animal do you like more than its owner?",
+      "es": "¿De quién te gusta más el animal que su dueño?",
+      "fr": "De qui préfères-tu l'animal au maître ?",
+      "de": "Wessen Tier magst du lieber als seinen Besitzer?",
+      "it": "Di chi ti piace più l'animale che il padrone?"
+    }
+  },
+  {
+    "id": "q0890",
+    "theme": "people",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our friends has changed how we spend our weekends?",
+      "es": "¿Qué amigo nuestro ha cambiado cómo pasamos los fines de semana?",
+      "fr": "Lequel de nos amis a changé notre façon de passer le week-end ?",
+      "de": "Welcher unserer Freunde hat unsere Wochenenden verändert?",
+      "it": "Quale nostro amico ha cambiato come passiamo i fine settimana?"
+    }
+  },
+  {
+    "id": "q0891",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who do you become the calm one for?",
+      "es": "¿Con quién te toca ser tú quien mantiene la calma?",
+      "fr": "Pour qui es-tu la personne qui garde son calme ?",
+      "de": "Für wen bist du derjenige, der ruhig bleibt?",
+      "it": "Con chi tocca a te tenere la calma?"
+    }
+  },
+  {
+    "id": "q0892",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who always gets the last word with you?",
+      "es": "¿Quién se queda siempre con la última palabra contigo?",
+      "fr": "Qui a toujours le dernier mot avec toi ?",
+      "de": "Wer hat bei dir immer das letzte Wort?",
+      "it": "Chi ha sempre l'ultima parola con te?"
+    }
+  },
+  {
+    "id": "q0893",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which word does only your family use?",
+      "es": "¿Qué palabra usa solo tu familia?",
+      "fr": "Quel mot n'est utilisé que par ta famille ?",
+      "de": "Welches Wort benutzt nur deine Familie?",
+      "it": "Quale parola usa solo la tua famiglia?"
+    }
+  },
+  {
+    "id": "q0894",
+    "theme": "people",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you notice about me when my family is around?",
+      "es": "¿Qué notas en mí cuando está mi familia delante?",
+      "fr": "Que remarques-tu chez moi quand ma famille est là ?",
+      "de": "Was fällt dir an mir auf, wenn meine Familie dabei ist?",
+      "it": "Cosa noti in me quando c'è la mia famiglia?"
+    }
+  },
+  {
+    "id": "q0895",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who would you want to sit next to at a long dinner?",
+      "es": "¿Al lado de quién te sentarías en una cena larga?",
+      "fr": "À côté de qui voudrais-tu t'asseoir lors d'un long dîner ?",
+      "de": "Neben wem würdest du bei einem langen Essen sitzen wollen?",
+      "it": "Accanto a chi vorresti sederti a una cena lunga?"
+    }
+  },
+  {
+    "id": "q0896",
+    "theme": "people",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who told you the truth when it was not their job?",
+      "es": "¿Quién te dijo la verdad cuando no le tocaba?",
+      "fr": "Qui t'a dit la vérité alors que ce n'était pas son rôle ?",
+      "de": "Wer hat dir die Wahrheit gesagt, obwohl es nicht seine Aufgabe war?",
+      "it": "Chi ti ha detto la verità quando non toccava a lui?"
+    }
+  },
+  {
+    "id": "q0897",
+    "theme": "people",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your friends should take charge if the power goes out?",
+      "es": "¿Qué amigo tuyo debería tomar el mando si se va la luz?",
+      "fr": "Lequel de tes amis devrait prendre les commandes en cas de panne ?",
+      "de": "Wer aus deinem Freundeskreis sollte übernehmen, wenn der Strom ausfällt?",
+      "it": "Quale tuo amico dovrebbe prendere il comando se va via la corrente?"
+    }
+  },
+  {
+    "id": "q0898",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Whose taste do you trust more than your own?",
+      "es": "¿En el gusto de quién confías más que en el tuyo?",
+      "fr": "Au goût de qui te fies-tu plus qu'au tien ?",
+      "de": "Wessen Geschmack vertraust du mehr als deinem eigenen?",
+      "it": "Del gusto di chi ti fidi più che del tuo?"
+    }
+  },
+  {
+    "id": "q0899",
+    "theme": "people",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which person in my life would you like to understand better?",
+      "es": "¿A qué persona de mi vida te gustaría entender mejor?",
+      "fr": "Quelle personne de ma vie aimerais-tu mieux comprendre ?",
+      "de": "Welche Person aus meinem Leben würdest du gern besser verstehen?",
+      "it": "Quale persona della mia vita ti piacerebbe capire meglio?"
+    }
+  },
+  {
+    "id": "q0900",
+    "theme": "people",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who did you meet this year and misjudge at first?",
+      "es": "¿A quién conociste este año y juzgaste mal al principio?",
+      "fr": "Qui as-tu rencontré cette année en te trompant sur son compte ?",
+      "de": "Wen hast du dieses Jahr kennengelernt und zuerst falsch eingeschätzt?",
+      "it": "Chi hai conosciuto quest'anno giudicandolo male all'inizio?"
+    }
+  }
+]

@@ -23,7 +23,7 @@ let package = Package(
         .target(
             name: "CorbieCore",
             path: "Sources/CorbieCore",
-            resources: [.process("Resources")],
+            resources: [.process("Resources/Chores.json"), .copy("Resources/Questions")],
             swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]
         ),
         .testTarget(

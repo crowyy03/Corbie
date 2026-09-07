@@ -151,7 +151,7 @@ extension XCUIApplication {
     }
 
     var navigationAdd: XCUIElement {
-        navigationBars.buttons[QAText.add].firstMatch
+        buttons[QAText.add].firstMatch
     }
 
     var usPill: XCUIElement {

@@ -322,3 +322,17 @@ period on the paywall are a manual check until a test plan carries the configura
   (Settings, Apple ID, Password and Security, Apps using your Apple ID, Corbie, Stop using).
 - Dynamic Type at the largest accessibility size on a 4.7 inch device.
 - VoiceOver on the Tasks list, the paywall and the vote screen.
+
+## Server side of pairing, verified live on 2026-09-07
+
+Local stack (`supabase start`, `supabase functions serve` with a local `SESSION_SECRET`), a Corbie session token minted for a test subject, then:
+
+| Step | Request | Result |
+|---|---|---|
+| Create a code | `POST /invite` with the space id and a share URL | `201 {"code":"QCN46W","expiresAt":...}` |
+| Redeem it | `GET /invite-redeem/QCN46W` | `200 {"shareURL":...,"spaceId":...}` |
+| Redeem again | same | `410 redeemed` |
+| Unknown code | `GET /invite-redeem/ZZZZZZ` | `404 not_found` |
+| Newer code replaces the older | two more `POST /invite` for the same space, redeem both | first `410 expired`, second `200` |
+
+The client half (creating the `CKShare`, accepting it on the partner's device) cannot run on a simulator without an iCloud account; it is the two-device scenario in section 5.

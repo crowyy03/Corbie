@@ -11,6 +11,8 @@ public struct NotificationPrefs: Codable, Sendable, Equatable, Hashable {
     public var capsuleUpdates: Bool
     public var voteUpdates: Bool
     public var weeklyRecap: Bool
+    public var questionOfTheDay: Bool
+    public var choreSplitReady: Bool
 
     public init(
         taskAssigned: Bool = true,
@@ -22,7 +24,9 @@ public struct NotificationPrefs: Codable, Sendable, Equatable, Hashable {
         planUpdates: Bool = true,
         capsuleUpdates: Bool = true,
         voteUpdates: Bool = true,
-        weeklyRecap: Bool = true
+        weeklyRecap: Bool = true,
+        questionOfTheDay: Bool = true,
+        choreSplitReady: Bool = true
     ) {
         self.taskAssigned = taskAssigned
         self.taskTakenOrHandedBack = taskTakenOrHandedBack
@@ -34,6 +38,8 @@ public struct NotificationPrefs: Codable, Sendable, Equatable, Hashable {
         self.capsuleUpdates = capsuleUpdates
         self.voteUpdates = voteUpdates
         self.weeklyRecap = weeklyRecap
+        self.questionOfTheDay = questionOfTheDay
+        self.choreSplitReady = choreSplitReady
     }
 
     public init(from decoder: any Decoder) throws {
@@ -51,7 +57,9 @@ public struct NotificationPrefs: Codable, Sendable, Equatable, Hashable {
             planUpdates: try flag(.planUpdates),
             capsuleUpdates: try flag(.capsuleUpdates),
             voteUpdates: try flag(.voteUpdates),
-            weeklyRecap: try flag(.weeklyRecap)
+            weeklyRecap: try flag(.weeklyRecap),
+            questionOfTheDay: try flag(.questionOfTheDay),
+            choreSplitReady: try flag(.choreSplitReady)
         )
     }
 

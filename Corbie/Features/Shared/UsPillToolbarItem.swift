@@ -9,7 +9,7 @@ struct UsPillToolbarItem: ToolbarContent {
     }
 }
 
-private struct UsPillButton: View {
+struct UsPillButton: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
 

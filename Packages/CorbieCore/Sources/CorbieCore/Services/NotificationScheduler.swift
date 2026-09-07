@@ -8,6 +8,8 @@ public enum NotificationKind: String, Sendable, Equatable, CaseIterable {
     case eventDigest
     case weeklyRecap
     case trialEnding
+    case questionOfTheDay
+    case choreSplitReady
 
     public var prefix: String { "corbie." + rawValue + "." }
 
@@ -25,6 +27,10 @@ public enum NotificationKind: String, Sendable, Equatable, CaseIterable {
             return prefs.weeklyRecap
         case .trialEnding:
             return true
+        case .questionOfTheDay:
+            return prefs.questionOfTheDay
+        case .choreSplitReady:
+            return prefs.choreSplitReady
         }
     }
 }
@@ -32,6 +38,18 @@ public enum NotificationKind: String, Sendable, Equatable, CaseIterable {
 public enum EventDigestSlot: String, Sendable, Equatable, CaseIterable {
     case today
     case tomorrow
+}
+
+public enum QuestionReminderSlot: String, Sendable, Equatable, CaseIterable {
+    case morning
+    case evening
+
+    public var hour: Int {
+        switch self {
+        case .morning: return 10
+        case .evening: return 20
+        }
+    }
 }
 
 public enum NotificationIdentifier {
@@ -53,6 +71,14 @@ public enum NotificationIdentifier {
 
     public static func eventDigest(eventId: UUID, slot: EventDigestSlot) -> String {
         NotificationKind.eventDigest.prefix + eventId.uuidString + "." + slot.rawValue
+    }
+
+    public static func questionOfTheDay(dayKey: String) -> String {
+        NotificationKind.questionOfTheDay.prefix + dayKey
+    }
+
+    public static func choreSplitReady(setId: UUID) -> String {
+        NotificationKind.choreSplitReady.prefix + setId.uuidString
     }
 
     public static let weeklyRecap = NotificationKind.weeklyRecap.prefix + "sunday"
@@ -354,6 +380,70 @@ public actor NotificationScheduler {
 
     public func cancelTrialEnding() async {
         await cancel(identifiers: [NotificationIdentifier.trialEnding])
+    }
+
+    @discardableResult
+    public func scheduleQuestionReminder(
+        dayKey: String,
+        on day: Date,
+        partnerName: String?,
+        partnerAnswered: Bool,
+        viewerAnswered: Bool,
+        prefs: NotificationPrefs,
+        now: Date
+    ) async throws -> CorbieNotificationRequest? {
+        await cancelQuestionReminders()
+        guard NotificationKind.questionOfTheDay.isEnabled(in: prefs), viewerAnswered == false else { return nil }
+        let slot: QuestionReminderSlot = partnerAnswered ? .morning : .evening
+        guard let fireDate = date(bySettingHour: slot.hour, on: day), fireDate > now else { return nil }
+        let request = CorbieNotificationRequest(
+            id: NotificationIdentifier.questionOfTheDay(dayKey: dayKey),
+            fireDate: fireDate,
+            content: CorbieNotificationContent(
+                titleKey: NotificationStrings.questionTitle,
+                bodyKey: slot == .morning
+                    ? NotificationStrings.questionBodyPartner
+                    : NotificationStrings.questionBodyNeither,
+                arguments: [partnerName ?? ""],
+                threadIdentifier: NotificationKind.questionOfTheDay.rawValue,
+                userInfo: NotificationPayload.userInfo(kind: .questionOfTheDay, route: .today)
+            )
+        )
+        try await client.add(request)
+        return request
+    }
+
+    public func cancelQuestionReminders() async {
+        await cancel(prefix: NotificationKind.questionOfTheDay.prefix)
+    }
+
+    @discardableResult
+    public func scheduleChoreSplitReady(
+        setId: UUID,
+        partnerName: String?,
+        prefs: NotificationPrefs,
+        now: Date
+    ) async throws -> CorbieNotificationRequest? {
+        await cancelChoreSplitReady(setId: setId)
+        guard NotificationKind.choreSplitReady.isEnabled(in: prefs) else { return nil }
+        let request = CorbieNotificationRequest(
+            id: NotificationIdentifier.choreSplitReady(setId: setId),
+            fireDate: now,
+            content: CorbieNotificationContent(
+                titleKey: NotificationStrings.choreReadyTitle,
+                bodyKey: NotificationStrings.choreReadyBody,
+                arguments: [partnerName ?? ""],
+                threadIdentifier: NotificationKind.choreSplitReady.rawValue,
+                userInfo: NotificationPayload.userInfo(kind: .choreSplitReady, route: .us, objectId: setId)
+            ),
+            isImmediate: true
+        )
+        try await client.add(request)
+        return request
+    }
+
+    public func cancelChoreSplitReady(setId: UUID) async {
+        await cancel(identifiers: [NotificationIdentifier.choreSplitReady(setId: setId)])
     }
 
     private func name(of tally: RecapMemberTally) -> String {

@@ -128,4 +128,44 @@ import Testing
         let next = RecurrenceEngine.nextOccurrence(for: task(.weekly, dueAt: due), completedAt: completedAt, calendar: utc)
         #expect(next == DomainClock.date("2026-09-27 09:00", in: utc))
     }
+
+    @Test func theSlowerPeriodsLandTwoWeeksAndThreeMonthsLater() {
+        let due = DomainClock.date("2026-09-09 09:00", in: utc)
+        let completedAt = DomainClock.date("2026-09-09 10:00", in: utc)
+        let fortnight = RecurrenceEngine.nextOccurrence(
+            for: task(.everyTwoWeeks, dueAt: due),
+            completedAt: completedAt,
+            calendar: utc
+        )
+        #expect(fortnight == DomainClock.date("2026-09-23 09:00", in: utc))
+        let quarter = RecurrenceEngine.nextOccurrence(
+            for: task(.quarterly, dueAt: due),
+            completedAt: completedAt,
+            calendar: utc
+        )
+        #expect(quarter == DomainClock.date("2026-12-09 09:00", in: utc))
+    }
+
+    @Test func everySlowerPeriodSurvivesAStoreRoundTrip() {
+        for recurrence in [Recurrence.everyTwoWeeks, .quarterly] {
+            #expect(Recurrence(rawValue: recurrence.rawValue) == recurrence)
+        }
+        #expect(Recurrence.everyTwoWeeks.rawValue == "everyTwoWeeks")
+        #expect(Recurrence.quarterly.rawValue == "quarterly")
+    }
+
+    @Test func aRotatingChoreChangesHandsOnEveryOccurrence() {
+        let mine = UUID(uuidString: "11111111-1111-4111-8111-111111111111") ?? UUID()
+        let theirs = UUID(uuidString: "22222222-2222-4222-8222-222222222222") ?? UUID()
+        #expect(RecurrenceEngine.nextAssignee(after: mine, among: [mine, theirs]) == theirs)
+        #expect(RecurrenceEngine.nextAssignee(after: theirs, among: [theirs, mine]) == mine)
+        #expect(RecurrenceEngine.nextAssignee(after: nil, among: [theirs, mine]) == mine)
+    }
+
+    @Test func aRotatingChoreOnYourOwnStaysWithYou() {
+        let mine = UUID()
+        #expect(RecurrenceEngine.nextAssignee(after: mine, among: [mine]) == mine)
+        #expect(RecurrenceEngine.nextAssignee(after: mine, among: []) == mine)
+        #expect(RecurrenceEngine.nextAssignee(after: nil, among: []) == nil)
+    }
 }

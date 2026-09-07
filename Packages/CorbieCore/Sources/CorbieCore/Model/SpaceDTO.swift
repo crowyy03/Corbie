@@ -10,6 +10,9 @@ public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
     public var subscriptionStatus: SubscriptionStatus
     public var subscriptionExpiresAt: Date?
     public var subscriptionPayerMemberId: UUID?
+    public var anchorTimeZone: String?
+    public var questionSeed: Int64
+    public var questionIndex: Int
     public var memberCount: Int
 
     public init(
@@ -22,6 +25,9 @@ public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
         subscriptionStatus: SubscriptionStatus = .none,
         subscriptionExpiresAt: Date? = nil,
         subscriptionPayerMemberId: UUID? = nil,
+        anchorTimeZone: String? = nil,
+        questionSeed: Int64 = 0,
+        questionIndex: Int = 0,
         memberCount: Int = 0
     ) {
         self.id = id
@@ -33,6 +39,9 @@ public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
         self.subscriptionStatus = subscriptionStatus
         self.subscriptionExpiresAt = subscriptionExpiresAt
         self.subscriptionPayerMemberId = subscriptionPayerMemberId
+        self.anchorTimeZone = anchorTimeZone
+        self.questionSeed = questionSeed
+        self.questionIndex = questionIndex
         self.memberCount = memberCount
     }
 
@@ -47,9 +56,17 @@ public struct SpaceDTO: Sendable, Codable, Identifiable, Equatable {
             subscriptionStatus: space.subscriptionStatus,
             subscriptionExpiresAt: space.subscriptionExpiresAt,
             subscriptionPayerMemberId: space.subscriptionPayerMemberId,
+            anchorTimeZone: space.anchorTimeZone,
+            questionSeed: space.questionSeed,
+            questionIndex: Int(space.questionIndex),
             memberCount: space.members.count
         )
     }
 
     public var isPaired: Bool { memberCount >= 2 }
+
+    public var anchorCalendarTimeZone: TimeZone {
+        guard let anchorTimeZone, let zone = TimeZone(identifier: anchorTimeZone) else { return .current }
+        return zone
+    }
 }

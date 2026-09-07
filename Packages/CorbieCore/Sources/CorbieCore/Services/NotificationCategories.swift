@@ -79,6 +79,11 @@ public enum NotificationStrings {
     public static let recapTitle = "notification.recap.title"
     public static let recapBody = "notification.recap.body"
     public static let recapBodyDates = "notification.recap.body.dates"
+    public static let questionTitle = "notification.question.title"
+    public static let questionBodyPartner = "notification.question.body.partner"
+    public static let questionBodyNeither = "notification.question.body.neither"
+    public static let choreReadyTitle = "notification.chore.ready.title"
+    public static let choreReadyBody = "notification.chore.ready.body"
     public static let trialEndingTitle = "notification.trial.ending.title"
     public static let trialEndingBody = "notification.trial.ending.body"
     public static let memberFallback = "member.name.partner"
@@ -122,6 +127,11 @@ public enum NotificationStrings {
         recapTitle,
         recapBody,
         recapBodyDates,
+        questionTitle,
+        questionBodyPartner,
+        questionBodyNeither,
+        choreReadyTitle,
+        choreReadyBody,
         trialEndingTitle,
         trialEndingBody,
         memberFallback,

@@ -18,6 +18,8 @@ public struct CoreDataSpaceRepository: SpaceRepository {
             space.displayCurrency = displayCurrency
             space.creatorMemberId = creatorMemberId
             space.subscriptionStatus = .none
+            space.anchorTimeZone = TimeZone.current.identifier
+            space.questionSeed = Int64(bitPattern: QuestionSelector.seed(forSpaceId: space.id ?? UUID()))
             return SpaceDTO(space)
         }
     }
@@ -59,6 +61,7 @@ public struct CoreDataSpaceRepository: SpaceRepository {
         try await access.write { context in
             let entity: Space = try ManagedFetch.require(Space.entityName, id: space.id, in: context)
             entity.togetherSince = space.togetherSince
+            entity.anchorTimeZone = space.anchorTimeZone ?? entity.anchorTimeZone
             entity.weddingDate = space.weddingDate
             entity.displayCurrency = space.displayCurrency
             entity.creatorMemberId = space.creatorMemberId

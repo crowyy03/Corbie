@@ -145,6 +145,7 @@
 		8C5C292B5F37F3B082851DC4 /* WishPricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BFF7F690EB495556EF1DB56 /* WishPricing.swift */; };
 		8E7B44176C71BA64AF1D036E /* VotesOutcomeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D066B9308671413149F5F2F5 /* VotesOutcomeTests.swift */; };
 		8F5D5F145315B1617E4C8FBF /* QAOfflineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D23991CDE098E0C2723CBC /* QAOfflineUITests.swift */; };
+		90103B070233D4D3E6B0F3ED /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A4B6111E158E9CD653B28 /* ScreenHeader.swift */; };
 		90379F44A96C671A4913DD2D /* ListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A2E5EDAD4EDC91BA498D3E /* ListDetailView.swift */; };
 		90B743D106453B897CD44200 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2361B65557E18BCF034FBD97 /* OnboardingViewModel.swift */; };
 		90CEFF8D14AE6152DF7B1CBA /* PersonDateEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAA970C048E64B107AF2DD1 /* PersonDateEditorView.swift */; };
@@ -208,6 +209,7 @@
 		CCC7D593242B10B3C9156366 /* NotificationRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB69CF285B37C709003C7A3 /* NotificationRouting.swift */; };
 		CD6A7A6A8A8018F46B9415FC /* WishCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2297C1D1A45A74F1A7A47D2 /* WishCardView.swift */; };
 		CFD07D0A9F646BDAE1BBF1C9 /* CalendarAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CAF36BE84CF8A3356F426A /* CalendarAccess.swift */; };
+		CFE6EB57670B6FD4C0B3EFEA /* CoreResourceBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C91467F3D6D9CD88D8374D /* CoreResourceBundleTests.swift */; };
 		D0AC2D6C22E53159AC4A207C /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D672F15F7758D6F3D4F9AB8F /* CalendarViewModel.swift */; };
 		D4C3F1CF248245D1B494B406 /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DD3D9757471CF6CFFE5BD9 /* JoinView.swift */; };
 		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
@@ -386,6 +388,7 @@
 		622674653C140150FE22DDCD /* QAReadOnlyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAReadOnlyUITests.swift; sourceTree = "<group>"; };
 		624C4A4DFB30E712E6F0FE71 /* InviteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewModel.swift; sourceTree = "<group>"; };
 		633CBECD9EDEBEA538A579AC /* FreeTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeTimeView.swift; sourceTree = "<group>"; };
+		63C91467F3D6D9CD88D8374D /* CoreResourceBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreResourceBundleTests.swift; sourceTree = "<group>"; };
 		64696C8CF2795812D6DAA940 /* ExpenseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditorView.swift; sourceTree = "<group>"; };
 		64EF6AD9BE26E09713B98D27 /* CapsuleOpenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleOpenView.swift; sourceTree = "<group>"; };
 		65C85DC189940FBBDA9D72D1 /* WidgetChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetChrome.swift; sourceTree = "<group>"; };
@@ -429,6 +432,7 @@
 		87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberPresentation.swift; sourceTree = "<group>"; };
 		8827801FCFEA5A0361B2A7B4 /* MapPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPlace.swift; sourceTree = "<group>"; };
 		89CD0CEBCFAEC7F23AD3CA81 /* RelationSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationSuggestion.swift; sourceTree = "<group>"; };
+		8A1A4B6111E158E9CD653B28 /* ScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		8E3EE6CAC5B63264B789ED48 /* OnboardingProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProfileTests.swift; sourceTree = "<group>"; };
 		8E78157B2B33516F0939FE1A /* InviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteView.swift; sourceTree = "<group>"; };
 		8F8965137EA487DC01422332 /* AddToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToolbarItem.swift; sourceTree = "<group>"; };
@@ -827,6 +831,7 @@
 				84CEC60BF1C006BE472982D2 /* CalendarMergeTests.swift */,
 				60CDB8A105BF8F0EBA528D10 /* CalendarTestSupport.swift */,
 				5759A0DB836C724CCDD7F406 /* CapsulesStateTests.swift */,
+				63C91467F3D6D9CD88D8374D /* CoreResourceBundleTests.swift */,
 				D8A4200AFAA023966D3FBDB4 /* FreeTimeCorbieEventPublisherTests.swift */,
 				025448DC8DE14E31514EAF21 /* FreeTimeCorbieEventTests.swift */,
 				0D3B7467B81283668E794972 /* FreeTimeRowTextTests.swift */,
@@ -869,6 +874,7 @@
 				181B1D94AC808F1F72F025CC /* PlaceSearchView.swift */,
 				394A3AB64293AFEA7FB7A151 /* PlaceSearchViewModel.swift */,
 				5D90A65CC2F5AF0D14CEC7E0 /* ProfileBirthdayPicker.swift */,
+				8A1A4B6111E158E9CD653B28 /* ScreenHeader.swift */,
 				759EB90FA8A572789FBAC889 /* TakeButton.swift */,
 				D2A90FE0B10427DD8B98C8BF /* UsPillToolbarItem.swift */,
 			);
@@ -1287,6 +1293,7 @@
 				574AF0CC3408D1E34B4E597E /* CalendarMergeTests.swift in Sources */,
 				554D9E50F098FF77A99C344D /* CalendarTestSupport.swift in Sources */,
 				C59F6DDCD4B16344C672F04C /* CapsulesStateTests.swift in Sources */,
+				CFE6EB57670B6FD4C0B3EFEA /* CoreResourceBundleTests.swift in Sources */,
 				C00DEB34F11A01C512D2C33F /* FreeTimeCorbieEventPublisherTests.swift in Sources */,
 				209B9A9903E63A502860AA7C /* FreeTimeCorbieEventTests.swift in Sources */,
 				95ABC89B0042E6DD8557F604 /* FreeTimeRowTextTests.swift in Sources */,
@@ -1434,6 +1441,7 @@
 				C840B900431DE85951A27461 /* RelationSuggestion.swift in Sources */,
 				5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */,
 				E32AF678642BF3322E2DDD5A /* Router.swift in Sources */,
+				90103B070233D4D3E6B0F3ED /* ScreenHeader.swift in Sources */,
 				53D9F410106F8721C03DD7C5 /* SessionService.swift in Sources */,
 				DA53838A8B85355980E2A362 /* SettingsNotificationToggle.swift in Sources */,
 				0D79D3921227C182845F66BC /* SettingsNotificationsView.swift in Sources */,

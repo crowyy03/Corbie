@@ -15,6 +15,7 @@ public final class Member: NSManagedObject {
     @NSManaged public var sharesBusyTimes: Bool
     @NSManaged public var lastRecapSeenAt: Date?
     @NSManaged public var lastUsVisitAt: Date?
+    @NSManaged public var lastQuestionSeenDayKey: String?
     @NSManaged public var notificationPrefsData: Data?
     @NSManaged public var space: Space?
 
