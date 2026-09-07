@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0001",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which ordinary day of ours would you live again exactly as it was?",
+      "es": "¿Qué día normal nuestro volverías a vivir exactamente igual?",
+      "fr": "Quelle journée ordinaire à nous revivrais-tu exactement telle quelle ?",
+      "de": "Welchen ganz normalen Tag mit mir würdest du genau so noch einmal erleben?",
+      "it": "Quale nostra giornata normale rivivresti esattamente uguale?"
+    }
+  },
+  {
+    "id": "q0002",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you remember about meeting me that I have never heard?",
+      "es": "¿Qué recuerdas de cuando nos conocimos que yo nunca te haya oído contar?",
+      "fr": "Que gardes-tu de notre rencontre que je ne t'aie jamais entendu raconter ?",
+      "de": "Woran erinnerst du dich bei unserem Kennenlernen, das ich noch nie gehört habe?",
+      "it": "Cosa ricordi del nostro incontro che non mi hai mai raccontato?"
+    }
+  },
+  {
+    "id": "q0003",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which photo of us do you scroll past every time?",
+      "es": "¿Qué foto nuestra pasas de largo siempre?",
+      "fr": "Quelle photo de nous fais-tu défiler sans jamais t'arrêter ?",
+      "de": "Über welches Foto von uns scrollst du jedes Mal hinweg?",
+      "it": "Quale nostra foto scorri via ogni volta?"
+    }
+  },
+  {
+    "id": "q0004",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "At the start, how did you picture us at this point?",
+      "es": "Al principio, ¿cómo nos imaginabas a estas alturas?",
+      "fr": "Au début, comment nous imaginais-tu à ce stade ?",
+      "de": "Wie hast du dir uns am Anfang für heute vorgestellt?",
+      "it": "All'inizio, come ci immaginavi a questo punto?"
+    }
+  },
+  {
+    "id": "q0005",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which trip do you remember by a smell rather than by what you saw?",
+      "es": "¿Qué viaje recuerdas por un olor y no por lo que viste?",
+      "fr": "Quel voyage gardes-tu en mémoire par une odeur plutôt que par ce que tu as vu ?",
+      "de": "An welche Reise erinnerst du dich über einen Geruch statt über das Gesehene?",
+      "it": "Quale viaggio ricordi per un odore invece che per quello che hai visto?"
+    }
+  },
+  {
+    "id": "q0006",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What did we do in our first month that we quietly stopped doing?",
+      "es": "¿Qué hacíamos el primer mes que dejamos de hacer sin darnos cuenta?",
+      "fr": "Que faisions-nous le premier mois et que nous avons arrêté sans le remarquer ?",
+      "de": "Was haben wir im ersten Monat gemacht und irgendwann stillschweigend gelassen?",
+      "it": "Cosa facevamo il primo mese e abbiamo smesso di fare senza accorgercene?"
+    }
+  },
+  {
+    "id": "q0007",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our mix-ups do you now tell other people as a funny story?",
+      "es": "¿Cuál de nuestros líos cuentas ahora a los demás como una anécdota graciosa?",
+      "fr": "Lequel de nos ratés racontes-tu maintenant aux autres comme une anecdote ?",
+      "de": "Welche unserer Pannen erzählst du anderen inzwischen als lustige Geschichte?",
+      "it": "Quale dei nostri pasticci racconti agli altri come una storia divertente?"
+    }
+  },
+  {
+    "id": "q0008",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What was the first thing you told someone else about me?",
+      "es": "¿Qué fue lo primero que le contaste a alguien sobre mí?",
+      "fr": "Quelle est la première chose que tu as dite de moi à quelqu'un ?",
+      "de": "Was hast du als Erstes über mich jemand anderem erzählt?",
+      "it": "Qual è stata la prima cosa che hai detto di me a qualcuno?"
+    }
+  },
+  {
+    "id": "q0009",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which place do you avoid because of what you remember there?",
+      "es": "¿Qué lugar evitas por lo que recuerdas allí?",
+      "fr": "Quel endroit évites-tu à cause de ce que tu y as vécu ?",
+      "de": "Welchen Ort meidest du wegen der Erinnerung, die daran hängt?",
+      "it": "Quale posto eviti per il ricordo che ci è legato?"
+    }
+  },
+  {
+    "id": "q0010",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our days do you think I remember wrong?",
+      "es": "¿Qué día nuestro crees que yo recuerdo mal?",
+      "fr": "Quelle de nos journées crois-tu que je me rappelle de travers ?",
+      "de": "An welchen unserer Tage erinnere ich mich deiner Meinung nach falsch?",
+      "it": "Quale nostra giornata pensi che io ricordi male?"
+    }
+  },
+  {
+    "id": "q0011",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What made you laugh at a moment when you really should not have?",
+      "es": "¿Qué te hizo reír en un momento en el que no debías reírte?",
+      "fr": "Qu'est-ce qui t'a fait rire à un moment où il ne fallait vraiment pas ?",
+      "de": "Was hat dich in einem Moment zum Lachen gebracht, in dem du nicht lachen durftest?",
+      "it": "Cosa ti ha fatto ridere in un momento in cui proprio non dovevi?"
+    }
+  },
+  {
+    "id": "q0012",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which day changed your life without you noticing at the time?",
+      "es": "¿Qué día te cambió la vida sin que te dieras cuenta entonces?",
+      "fr": "Quelle journée a changé ta vie sans que tu t'en rendes compte sur le moment ?",
+      "de": "Welcher Tag hat dein Leben verändert, ohne dass du es damals gemerkt hast?",
+      "it": "Quale giorno ti ha cambiato la vita senza che te ne accorgessi allora?"
+    }
+  },
+  {
+    "id": "q0013",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our traditions started by accident?",
+      "es": "¿Cuál de nuestras tradiciones empezó por casualidad?",
+      "fr": "Laquelle de nos traditions est née par hasard ?",
+      "de": "Welche unserer Traditionen ist aus Versehen entstanden?",
+      "it": "Quale delle nostre tradizioni è nata per caso?"
+    }
+  },
+  {
+    "id": "q0014",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "Which version of you from our early days do you miss?",
+      "es": "¿Qué versión de ti de nuestros comienzos echas de menos?",
+      "fr": "Quelle version de toi de nos débuts te manque ?",
+      "de": "Welche Version von dir aus unserer Anfangszeit fehlt dir?",
+      "it": "Quale versione di te dei nostri inizi ti manca?"
+    }
+  },
+  {
+    "id": "q0015",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which moment of ours would you replay in slow motion?",
+      "es": "¿Qué momento nuestro pondrías a cámara lenta?",
+      "fr": "Quel moment à nous repasserais-tu au ralenti ?",
+      "de": "Welchen unserer Momente würdest du in Zeitlupe noch einmal ansehen?",
+      "it": "Quale nostro momento rivedresti al rallentatore?"
+    }
+  },
+  {
+    "id": "q0016",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you notice about me first that had nothing to do with looks?",
+      "es": "¿Qué notaste de mí primero que no tuviera que ver con mi aspecto?",
+      "fr": "Qu'as-tu remarqué chez moi en premier qui n'avait rien à voir avec l'apparence ?",
+      "de": "Was ist dir an mir zuerst aufgefallen, das nichts mit dem Aussehen zu tun hatte?",
+      "it": "Cosa hai notato di me per primo che non c'entrava con l'aspetto?"
+    }
+  },
+  {
+    "id": "q0017",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our habits from last year already feels like another era?",
+      "es": "¿Qué costumbre nuestra del año pasado ya parece de otra época?",
+      "fr": "Laquelle de nos habitudes de l'an dernier semble déjà d'une autre époque ?",
+      "de": "Welche unserer Gewohnheiten vom letzten Jahr wirkt schon wie aus einer anderen Zeit?",
+      "it": "Quale nostra abitudine dell'anno scorso sembra già di un'altra epoca?"
+    }
+  },
+  {
+    "id": "q0018",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you remember from your childhood home that no longer exists?",
+      "es": "¿Qué recuerdas de la casa de tu infancia que ya no existe?",
+      "fr": "Que gardes-tu en mémoire de ta maison d'enfance qui n'existe plus ?",
+      "de": "Woran aus deinem Elternhaus erinnerst du dich, das es nicht mehr gibt?",
+      "it": "Cosa ricordi della casa della tua infanzia che non esiste più?"
+    }
+  },
+  {
+    "id": "q0019",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If our first week were a film, what would the opening scene be?",
+      "es": "Si nuestra primera semana fuera una película, ¿cuál sería la escena inicial?",
+      "fr": "Si notre première semaine était un film, quelle serait la scène d'ouverture ?",
+      "de": "Wenn unsere erste Woche ein Film wäre, was wäre die Eröffnungsszene?",
+      "it": "Se la nostra prima settimana fosse un film, quale sarebbe la scena iniziale?"
+    }
+  },
+  {
+    "id": "q0020",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the oldest thing you own and still use?",
+      "es": "¿Cuál es el objeto más antiguo que tienes y todavía usas?",
+      "fr": "Quel est l'objet le plus ancien que tu possèdes et que tu utilises encore ?",
+      "de": "Was ist der älteste Gegenstand, den du besitzt und noch benutzt?",
+      "it": "Qual è l'oggetto più vecchio che hai e che usi ancora?"
+    }
+  },
+  {
+    "id": "q0021",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "When did you first feel at home around me?",
+      "es": "¿Cuándo sentiste por primera vez que estabas en casa a mi lado?",
+      "fr": "Quand as-tu eu pour la première fois l'impression d'être chez toi près de moi ?",
+      "de": "Wann hast du dich bei mir zum ersten Mal zu Hause gefühlt?",
+      "it": "Quando hai avuto per la prima volta l'impressione di essere a casa vicino a me?"
+    }
+  },
+  {
+    "id": "q0022",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which habit from your teenage years survived to today?",
+      "es": "¿Qué costumbre de tu adolescencia ha sobrevivido hasta hoy?",
+      "fr": "Quelle habitude de ton adolescence a survécu jusqu'à aujourd'hui ?",
+      "de": "Welche Angewohnheit aus deiner Jugend hat bis heute überlebt?",
+      "it": "Quale abitudine della tua adolescenza è sopravvissuta fino a oggi?"
+    }
+  },
+  {
+    "id": "q0023",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What did you have to unlearn to be with me?",
+      "es": "¿Qué tuviste que desaprender para estar conmigo?",
+      "fr": "Qu'as-tu dû désapprendre pour être avec moi ?",
+      "de": "Was musstest du verlernen, um mit mir zusammen zu sein?",
+      "it": "Cosa hai dovuto disimparare per stare con me?"
+    }
+  },
+  {
+    "id": "q0024",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which meal we shared do you still think about?",
+      "es": "¿Qué comida que compartimos sigues recordando?",
+      "fr": "Quel repas partagé ensemble te revient encore en tête ?",
+      "de": "An welches gemeinsame Essen denkst du immer noch?",
+      "it": "Quale pasto condiviso insieme ti torna ancora in mente?"
+    }
+  },
+  {
+    "id": "q0025",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you name the day we met if it were a holiday?",
+      "es": "¿Cómo llamarías al día en que nos conocimos si fuera una fiesta?",
+      "fr": "Comment appellerais-tu le jour de notre rencontre si c'était une fête ?",
+      "de": "Wie würdest du den Tag unseres Kennenlernens nennen, wäre er ein Feiertag?",
+      "it": "Come chiameresti il giorno in cui ci siamo conosciuti se fosse una festa?"
+    }
+  },
+  {
+    "id": "q0026",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which compliment from years ago do you still repeat to yourself?",
+      "es": "¿Qué elogio de hace años sigues repitiéndote?",
+      "fr": "Quel compliment reçu il y a des années te répètes-tu encore ?",
+      "de": "Welches Kompliment von vor Jahren sagst du dir immer noch vor?",
+      "it": "Quale complimento di anni fa ti ripeti ancora?"
+    }
+  },
+  {
+    "id": "q0027",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What song takes you straight back to one specific week of your life?",
+      "es": "¿Qué canción te devuelve directamente a una semana concreta de tu vida?",
+      "fr": "Quelle chanson te ramène directement à une semaine précise de ta vie ?",
+      "de": "Welches Lied bringt dich sofort in eine bestimmte Woche deines Lebens zurück?",
+      "it": "Quale canzone ti riporta subito a una settimana precisa della tua vita?"
+    }
+  },
+  {
+    "id": "q0028",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which hard stretch of ours do you look back on with something like pride?",
+      "es": "¿Qué etapa difícil nuestra recuerdas ahora con algo parecido al orgullo?",
+      "fr": "Quelle période difficile à nous regardes-tu avec une sorte de fierté ?",
+      "de": "Auf welche schwere Phase von uns schaust du heute mit so etwas wie Stolz zurück?",
+      "it": "Quale nostro periodo difficile ricordi adesso con una specie di orgoglio?"
+    }
+  },
+  {
+    "id": "q0029",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which stranger from your past do you still think about?",
+      "es": "¿En qué desconocido de tu pasado sigues pensando?",
+      "fr": "À quel inconnu croisé autrefois penses-tu encore ?",
+      "de": "An welchen Fremden aus deiner Vergangenheit denkst du noch?",
+      "it": "A quale sconosciuto del tuo passato pensi ancora?"
+    }
+  },
+  {
+    "id": "q0030",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your past looks would you still defend today?",
+      "es": "¿Qué look tuyo del pasado defenderías todavía hoy?",
+      "fr": "Lequel de tes anciens looks défendrais-tu encore aujourd'hui ?",
+      "de": "Welchen deiner früheren Looks würdest du heute noch verteidigen?",
+      "it": "Quale tuo look del passato difenderesti ancora oggi?"
+    }
+  },
+  {
+    "id": "q0031",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What did you think you knew about me in week one that was wrong?",
+      "es": "¿Qué creíste saber de mí la primera semana y resultó ser falso?",
+      "fr": "Qu'as-tu cru comprendre de moi la première semaine et qui s'est révélé faux ?",
+      "de": "Was dachtest du in der ersten Woche über mich, das sich als falsch erwies?",
+      "it": "Cosa hai creduto di capire di me la prima settimana e si è rivelato falso?"
+    }
+  },
+  {
+    "id": "q0032",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which opportunity did you let pass and still think about?",
+      "es": "¿Qué oportunidad dejaste pasar y todavía recuerdas?",
+      "fr": "Quelle occasion as-tu laissée passer et à laquelle tu penses encore ?",
+      "de": "Welche Gelegenheit hast du verstreichen lassen und denkst noch daran?",
+      "it": "Quale occasione hai lasciato passare e ancora ricordi?"
+    }
+  },
+  {
+    "id": "q0033",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What small kindness from a stranger have you never forgotten?",
+      "es": "¿Qué gesto amable de un desconocido no has olvidado nunca?",
+      "fr": "Quel geste gentil d'un inconnu n'as-tu jamais oublié ?",
+      "de": "Welche kleine Freundlichkeit von einem Fremden hast du nie vergessen?",
+      "it": "Quale piccolo gesto gentile di uno sconosciuto non hai mai dimenticato?"
+    }
+  },
+  {
+    "id": "q0034",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our inside jokes has the strangest origin?",
+      "es": "¿Cuál de nuestras bromas privadas tiene el origen más raro?",
+      "fr": "Laquelle de nos blagues à nous a l'origine la plus étrange ?",
+      "de": "Welcher unserer Insiderwitze hat die seltsamste Vorgeschichte?",
+      "it": "Quale delle nostre battute private ha l'origine più strana?"
+    }
+  },
+  {
+    "id": "q0035",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you believe at twenty that you would argue against now?",
+      "es": "¿Qué creías a los veinte que ahora rebatirías?",
+      "fr": "Que croyais-tu à vingt ans que tu contredirais aujourd'hui ?",
+      "de": "Was hast du mit zwanzig geglaubt, dem du heute widersprechen würdest?",
+      "it": "Cosa credevi a vent'anni che oggi contesteresti?"
+    }
+  },
+  {
+    "id": "q0036",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which room from your past could you still draw from memory?",
+      "es": "¿Qué habitación de tu pasado podrías dibujar todavía de memoria?",
+      "fr": "Quelle pièce de ton passé pourrais-tu encore dessiner de mémoire ?",
+      "de": "Welchen Raum aus deiner Vergangenheit könntest du noch aus dem Kopf zeichnen?",
+      "it": "Quale stanza del tuo passato sapresti ancora disegnare a memoria?"
+    }
+  },
+  {
+    "id": "q0037",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which photo of us would you put on a billboard?",
+      "es": "¿Qué foto nuestra pondrías en una valla publicitaria?",
+      "fr": "Quelle photo de nous mettrais-tu sur un panneau publicitaire ?",
+      "de": "Welches Foto von uns würdest du auf ein Werbeplakat setzen?",
+      "it": "Quale nostra foto metteresti su un cartellone pubblicitario?"
+    }
+  },
+  {
+    "id": "q0038",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What did you decide about me before you had any real evidence?",
+      "es": "¿Qué decidiste sobre mí antes de tener ninguna prueba real?",
+      "fr": "Qu'as-tu décidé à mon sujet avant d'en avoir la moindre preuve ?",
+      "de": "Was hast du über mich entschieden, bevor du irgendeinen Beweis hattest?",
+      "it": "Cosa hai deciso su di me prima di averne una prova concreta?"
+    }
+  },
+  {
+    "id": "q0039",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the one purchase you saved up longest for?",
+      "es": "¿Para qué compra ahorraste durante más tiempo?",
+      "fr": "Pour quel achat as-tu économisé le plus longtemps ?",
+      "de": "Wofür hast du am längsten gespart?",
+      "it": "Per quale acquisto hai risparmiato più a lungo?"
+    }
+  },
+  {
+    "id": "q0040",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our old plans do you still bring up as a joke?",
+      "es": "¿Cuál de nuestros viejos planes sigues sacando en broma?",
+      "fr": "Lequel de nos vieux projets ressors-tu encore pour rire ?",
+      "de": "Welchen unserer alten Pläne bringst du immer noch als Witz auf?",
+      "it": "Quale dei nostri vecchi progetti tiri ancora fuori per scherzo?"
+    }
+  },
+  {
+    "id": "q0041",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who taught you something you still use every day?",
+      "es": "¿Quién te enseñó algo que sigues usando cada día?",
+      "fr": "Qui t'a appris quelque chose que tu utilises encore tous les jours ?",
+      "de": "Wer hat dir etwas beigebracht, das du bis heute täglich nutzt?",
+      "it": "Chi ti ha insegnato qualcosa che usi ancora ogni giorno?"
+    }
+  },
+  {
+    "id": "q0042",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did your room look like when you were fifteen?",
+      "es": "¿Cómo era tu habitación cuando tenías quince años?",
+      "fr": "À quoi ressemblait ta chambre quand tu avais quinze ans ?",
+      "de": "Wie sah dein Zimmer aus, als du fünfzehn warst?",
+      "it": "Com'era la tua stanza quando avevi quindici anni?"
+    }
+  },
+  {
+    "id": "q0043",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our first outings would you redo with what you know now?",
+      "es": "¿Cuál de nuestras primeras salidas repetirías sabiendo lo que sabes ahora?",
+      "fr": "Laquelle de nos premières sorties referais-tu avec ce que tu sais maintenant ?",
+      "de": "Welchen unserer ersten Ausflüge würdest du mit heutigem Wissen wiederholen?",
+      "it": "Quale delle nostre prime uscite rifaresti con quello che sai adesso?"
+    }
+  },
+  {
+    "id": "q0044",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the most pointless thing you have ever queued for?",
+      "es": "¿Qué es lo más inútil por lo que has hecho cola?",
+      "fr": "Quelle est la chose la plus inutile pour laquelle tu as fait la queue ?",
+      "de": "Wofür hast du am sinnlosesten in einer Schlange gestanden?",
+      "it": "Qual è la cosa più inutile per cui hai fatto la fila?"
+    }
+  },
+  {
+    "id": "q0045",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which goodbye do you wish you had done differently?",
+      "es": "¿Qué despedida te habría gustado hacer de otra manera?",
+      "fr": "Quel adieu aurais-tu aimé faire autrement ?",
+      "de": "Welchen Abschied hättest du gern anders gestaltet?",
+      "it": "Quale addio avresti voluto affrontare diversamente?"
+    }
+  },
+  {
+    "id": "q0046",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which year of ours went by fastest?",
+      "es": "¿Qué año nuestro pasó más rápido?",
+      "fr": "Laquelle de nos années est passée le plus vite ?",
+      "de": "Welches unserer Jahre ist am schnellsten vergangen?",
+      "it": "Quale nostro anno è passato più in fretta?"
+    }
+  },
+  {
+    "id": "q0047",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What did I do early on that you have never mentioned to me?",
+      "es": "¿Qué hice al principio que nunca me has mencionado?",
+      "fr": "Qu'ai-je fait au début que tu ne m'as jamais raconté ?",
+      "de": "Was habe ich am Anfang getan, das du mir nie erzählt hast?",
+      "it": "Cosa ho fatto all'inizio che non mi hai mai raccontato?"
+    }
+  },
+  {
+    "id": "q0048",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which year of your life would make the best television series?",
+      "es": "¿Qué año de tu vida daría la mejor serie de televisión?",
+      "fr": "Quelle année de ta vie ferait la meilleure série télé ?",
+      "de": "Welches Jahr deines Lebens gäbe die beste Fernsehserie ab?",
+      "it": "Quale anno della tua vita sarebbe la miglior serie tv?"
+    }
+  },
+  {
+    "id": "q0049",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which teacher or boss still lives in your head?",
+      "es": "¿Qué profesor o jefe sigue viviendo en tu cabeza?",
+      "fr": "Quel prof ou quel patron habite encore ta tête ?",
+      "de": "Welche Lehrkraft oder welcher Chef spukt dir noch im Kopf herum?",
+      "it": "Quale insegnante o capo vive ancora nella tua testa?"
+    }
+  },
+  {
+    "id": "q0050",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "Which of our years would you point to as the one that made us?",
+      "es": "¿Qué año nuestro señalarías como el que nos formó?",
+      "fr": "Laquelle de nos années désignerais-tu comme celle qui nous a faits ?",
+      "de": "Welches unserer Jahre würdest du als das bezeichnen, das uns geprägt hat?",
+      "it": "Quale nostro anno indicheresti come quello che ci ha formati?"
+    }
+  },
+  {
+    "id": "q0051",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which smell from your childhood would you buy in a bottle?",
+      "es": "¿Qué olor de tu infancia comprarías embotellado?",
+      "fr": "Quelle odeur de ton enfance achèterais-tu en flacon ?",
+      "de": "Welchen Geruch aus deiner Kindheit würdest du in einer Flasche kaufen?",
+      "it": "Quale odore della tua infanzia compreresti in bottiglia?"
+    }
+  },
+  {
+    "id": "q0052",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first meal you learned to cook on your own?",
+      "es": "¿Cuál es el primer plato que aprendiste a cocinar sin ayuda?",
+      "fr": "Quel est le premier plat que tu as appris à cuisiner tout seul ?",
+      "de": "Welches Gericht hast du als Erstes allein kochen gelernt?",
+      "it": "Qual è il primo piatto che hai imparato a cucinare da solo?"
+    }
+  },
+  {
+    "id": "q0053",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What were you doing an hour before we first met?",
+      "es": "¿Qué estabas haciendo una hora antes de conocernos?",
+      "fr": "Que faisais-tu une heure avant notre première rencontre ?",
+      "de": "Was hast du eine Stunde vor unserem ersten Treffen gemacht?",
+      "it": "Cosa stavi facendo un'ora prima di conoscerci?"
+    }
+  },
+  {
+    "id": "q0054",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which friendship of yours ended without a single argument?",
+      "es": "¿Qué amistad tuya terminó sin una sola discusión?",
+      "fr": "Quelle amitié s'est éteinte chez toi sans la moindre dispute ?",
+      "de": "Welche deiner Freundschaften ist ohne einen einzigen Streit geendet?",
+      "it": "Quale tua amicizia è finita senza una sola discussione?"
+    }
+  },
+  {
+    "id": "q0055",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What have you kept for years that you should have thrown out?",
+      "es": "¿Qué llevas años guardando y deberías haber tirado?",
+      "fr": "Que gardes-tu depuis des années alors que tu aurais dû le jeter ?",
+      "de": "Was hebst du seit Jahren auf, obwohl du es längst hättest wegwerfen sollen?",
+      "it": "Cosa conservi da anni e avresti dovuto buttare?"
+    }
+  },
+  {
+    "id": "q0056",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you know about me now that you could not have guessed then?",
+      "es": "¿Qué sabes de mí ahora que entonces no habrías podido adivinar?",
+      "fr": "Que sais-tu de moi aujourd'hui que tu n'aurais pas pu deviner à l'époque ?",
+      "de": "Was weißt du heute über mich, das du damals nie erraten hättest?",
+      "it": "Cosa sai di me oggi che allora non avresti mai immaginato?"
+    }
+  },
+  {
+    "id": "q0057",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your childhood fears turned out to be reasonable?",
+      "es": "¿Cuál de tus miedos de infancia resultó ser razonable?",
+      "fr": "Laquelle de tes peurs d'enfance s'est avérée justifiée ?",
+      "de": "Welche deiner Kindheitsängste hat sich als berechtigt erwiesen?",
+      "it": "Quale delle tue paure d'infanzia si è rivelata sensata?"
+    }
+  },
+  {
+    "id": "q0058",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Where were you living the year you felt most like yourself?",
+      "es": "¿Dónde vivías el año en que más te sentiste tú?",
+      "fr": "Où habitais-tu l'année où tu t'es senti le plus toi-même ?",
+      "de": "Wo hast du in dem Jahr gewohnt, in dem du am meisten du selbst warst?",
+      "it": "Dove vivevi nell'anno in cui ti sei sentito più te stesso?"
+    }
+  },
+  {
+    "id": "q0059",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What is the most ridiculous thing we have done to save a bit of money?",
+      "es": "¿Qué es lo más ridículo que hemos hecho por ahorrar un poco?",
+      "fr": "Quelle est la chose la plus ridicule qu'on ait faite pour économiser un peu ?",
+      "de": "Was ist das Lächerlichste, das wir getan haben, um etwas Geld zu sparen?",
+      "it": "Qual è la cosa più ridicola che abbiamo fatto per risparmiare un po'?"
+    }
+  },
+  {
+    "id": "q0060",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which conversation with someone else changed how you see yourself?",
+      "es": "¿Qué conversación con otra persona cambió cómo te ves a ti mismo?",
+      "fr": "Quelle conversation avec quelqu'un d'autre a changé le regard sur toi-même ?",
+      "de": "Welches Gespräch mit jemand anderem hat dein Selbstbild verändert?",
+      "it": "Quale conversazione con un'altra persona ha cambiato come ti vedi?"
+    }
+  },
+  {
+    "id": "q0061",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first thing you bought with your own money?",
+      "es": "¿Qué fue lo primero que compraste con tu propio dinero?",
+      "fr": "Quelle est la première chose que tu as achetée avec ton propre argent ?",
+      "de": "Was hast du dir als Erstes von deinem eigenen Geld gekauft?",
+      "it": "Qual è la prima cosa che hai comprato con i tuoi soldi?"
+    }
+  },
+  {
+    "id": "q0062",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my stories have you heard so often you could tell it yourself?",
+      "es": "¿Qué historia mía has oído tantas veces que podrías contarla tú?",
+      "fr": "Laquelle de mes histoires as-tu entendue si souvent que tu pourrais la raconter ?",
+      "de": "Welche meiner Geschichten hast du so oft gehört, dass du sie selbst erzählen könntest?",
+      "it": "Quale mia storia hai sentito così spesso da poterla raccontare tu?"
+    }
+  },
+  {
+    "id": "q0063",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Whose approval did you want most as a kid?",
+      "es": "¿La aprobación de quién querías más de pequeño?",
+      "fr": "De qui voulais-tu le plus l'approbation quand tu étais enfant ?",
+      "de": "Wessen Anerkennung wolltest du als Kind am meisten?",
+      "it": "L'approvazione di chi volevi di più da bambino?"
+    }
+  },
+  {
+    "id": "q0064",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the worst trip you would happily do again?",
+      "es": "¿Cuál es el peor viaje que repetirías encantado?",
+      "fr": "Quel est le pire voyage que tu referais volontiers ?",
+      "de": "Was ist die schlimmste Reise, die du sofort wiederholen würdest?",
+      "it": "Qual è il viaggio peggiore che rifaresti volentieri?"
+    }
+  },
+  {
+    "id": "q0065",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which city have you passed through and never properly seen?",
+      "es": "¿Por qué ciudad has pasado sin llegar a verla de verdad?",
+      "fr": "Par quelle ville es-tu passé sans jamais vraiment la voir ?",
+      "de": "Durch welche Stadt bist du gereist, ohne sie je richtig zu sehen?",
+      "it": "In quale città sei passato senza vederla davvero?"
+    }
+  },
+  {
+    "id": "q0066",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which object of mine has been around since we met?",
+      "es": "¿Qué objeto mío sigue por aquí desde que nos conocimos?",
+      "fr": "Quel objet à moi traîne encore là depuis notre rencontre ?",
+      "de": "Welcher Gegenstand von mir ist seit unserem Kennenlernen noch da?",
+      "it": "Quale mio oggetto è ancora in giro da quando ci siamo conosciuti?"
+    }
+  },
+  {
+    "id": "q0067",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you understand about yourself early and then forget?",
+      "es": "¿Qué entendiste de ti pronto y luego olvidaste?",
+      "fr": "Qu'avais-tu compris de toi très tôt avant de l'oublier ?",
+      "de": "Was hattest du früh über dich verstanden und dann vergessen?",
+      "it": "Cosa avevi capito di te presto e poi hai dimenticato?"
+    }
+  },
+  {
+    "id": "q0068",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which year in history would you spend one week in?",
+      "es": "¿En qué año de la historia pasarías una semana?",
+      "fr": "Dans quelle année de l'histoire passerais-tu une semaine ?",
+      "de": "In welchem Jahr der Geschichte würdest du eine Woche verbringen?",
+      "it": "In quale anno della storia passeresti una settimana?"
+    }
+  },
+  {
+    "id": "q0069",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "When did you last do something that surprised you about yourself?",
+      "es": "¿Cuándo hiciste algo por última vez que te sorprendió de ti?",
+      "fr": "Quand as-tu fait pour la dernière fois un truc qui t'a surpris de toi ?",
+      "de": "Wann hast du zuletzt etwas getan, das dich an dir selbst überrascht hat?",
+      "it": "Quando hai fatto per l'ultima volta qualcosa che ti ha sorpreso di te?"
+    }
+  },
+  {
+    "id": "q0070",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which book or film did you love as a child and never went back to?",
+      "es": "¿Qué libro o película adorabas de pequeño y nunca has vuelto a mirar?",
+      "fr": "Quel livre ou film adorais-tu enfant sans jamais y être revenu ?",
+      "de": "Welches Buch oder welchen Film hast du als Kind geliebt und nie wieder angesehen?",
+      "it": "Quale libro o film amavi da bambino e non hai mai più ripreso?"
+    }
+  },
+  {
+    "id": "q0071",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What was the first thing you had to explain about yourself to me?",
+      "es": "¿Qué fue lo primero que tuviste que explicarme sobre ti?",
+      "fr": "Quelle est la première chose que tu as dû m'expliquer sur toi ?",
+      "de": "Was musstest du mir als Erstes über dich erklären?",
+      "it": "Qual è stata la prima cosa che hai dovuto spiegarmi di te?"
+    }
+  },
+  {
+    "id": "q0072",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which of your old nicknames would you bring back?",
+      "es": "¿Cuál de tus viejos apodos recuperarías?",
+      "fr": "Lequel de tes anciens surnoms remettrais-tu en service ?",
+      "de": "Welchen deiner alten Spitznamen würdest du zurückholen?",
+      "it": "Quale dei tuoi vecchi soprannomi riporteresti in vita?"
+    }
+  },
+  {
+    "id": "q0073",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What did you collect as a kid and where is it now?",
+      "es": "¿Qué coleccionabas de niño y dónde ha acabado?",
+      "fr": "Que collectionnais-tu enfant et où tout cela est-il passé ?",
+      "de": "Was hast du als Kind gesammelt und wo ist es heute?",
+      "it": "Cosa collezionavi da bambino e dov'è finito?"
+    }
+  },
+  {
+    "id": "q0074",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What is the first message from me that you kept?",
+      "es": "¿Cuál es el primer mensaje mío que guardaste?",
+      "fr": "Quel est le premier message de moi que tu as gardé ?",
+      "de": "Welche erste Nachricht von mir hast du aufgehoben?",
+      "it": "Qual è il primo messaggio mio che hai conservato?"
+    }
+  },
+  {
+    "id": "q0075",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which habit of your parents did you swear off and keep anyway?",
+      "es": "¿Qué costumbre de tus padres juraste evitar y conservas igual?",
+      "fr": "Quelle habitude de tes parents t'étais-tu juré d'éviter et gardes quand même ?",
+      "de": "Welche Angewohnheit deiner Eltern wolltest du nie und hast sie trotzdem?",
+      "it": "Quale abitudine dei tuoi genitori avevi giurato di evitare e hai comunque?"
+    }
+  },
+  {
+    "id": "q0076",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which past version of you would be most confused by today?",
+      "es": "¿Qué versión pasada de ti se quedaría más perpleja con tu hoy?",
+      "fr": "Quelle version passée de toi serait la plus perdue devant ta vie actuelle ?",
+      "de": "Welche frühere Version von dir wäre von deinem Heute am meisten verwirrt?",
+      "it": "Quale versione passata di te sarebbe più confusa dal tuo presente?"
+    }
+  },
+  {
+    "id": "q0077",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which place do we return to that has changed since our first time there?",
+      "es": "¿A qué sitio volvemos que ha cambiado desde la primera vez?",
+      "fr": "À quel endroit revenons-nous qui a changé depuis notre première fois ?",
+      "de": "An welchen Ort kehren wir zurück, der sich seit dem ersten Mal verändert hat?",
+      "it": "In quale posto torniamo che è cambiato dalla prima volta?"
+    }
+  },
+  {
+    "id": "q0078",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What is the kindest thing you have done that nobody knows about?",
+      "es": "¿Cuál es la cosa más generosa que has hecho y nadie sabe?",
+      "fr": "Quelle est la chose la plus généreuse que tu aies faite et que personne ne sait ?",
+      "de": "Was ist das Netteste, das du getan hast, ohne dass jemand davon weiß?",
+      "it": "Qual è la cosa più generosa che hai fatto e che nessuno sa?"
+    }
+  },
+  {
+    "id": "q0079",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What did we do together that neither of us had ever done before?",
+      "es": "¿Qué hicimos juntos que ninguno de los dos había hecho antes?",
+      "fr": "Qu'avons-nous fait ensemble que ni toi ni moi n'avions jamais fait ?",
+      "de": "Was haben wir zusammen gemacht, das keiner von uns vorher je gemacht hat?",
+      "it": "Cosa abbiamo fatto insieme che nessuno dei due aveva mai fatto?"
+    }
+  },
+  {
+    "id": "q0080",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "What is the silliest thing the two of us have disagreed about?",
+      "es": "¿Qué es lo más tonto sobre lo que hemos discrepado los dos?",
+      "fr": "Quel est le truc le plus bête sur lequel on ne s'est pas mis d'accord ?",
+      "de": "Was ist das Albernste, worüber wir beide uneinig waren?",
+      "it": "Qual è la cosa più sciocca su cui noi due non siamo stati d'accordo?"
+    }
+  },
+  {
+    "id": "q0081",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Who did you look up to at twelve?",
+      "es": "¿A quién admirabas a los doce años?",
+      "fr": "Qui admirais-tu à douze ans ?",
+      "de": "Zu wem hast du mit zwölf aufgesehen?",
+      "it": "Chi ammiravi a dodici anni?"
+    }
+  },
+  {
+    "id": "q0082",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which of your old dreams quietly disappeared without you noticing?",
+      "es": "¿Qué sueño tuyo desapareció en silencio sin que te dieras cuenta?",
+      "fr": "Lequel de tes rêves a disparu en silence sans que tu le remarques ?",
+      "de": "Welcher deiner alten Träume ist leise verschwunden, ohne dass du es merktest?",
+      "it": "Quale tuo vecchio sogno è sparito in silenzio senza che te ne accorgessi?"
+    }
+  },
+  {
+    "id": "q0083",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What good news did you sit on for a while before telling anyone?",
+      "es": "¿Qué buena noticia te guardaste un tiempo antes de contarla?",
+      "fr": "Quelle bonne nouvelle as-tu gardée un moment avant d'en parler ?",
+      "de": "Welche gute Nachricht hast du eine Weile für dich behalten?",
+      "it": "Quale bella notizia hai tenuto per te un po' prima di dirla?"
+    }
+  },
+  {
+    "id": "q0084",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "When did you realise you wanted to tell me things first?",
+      "es": "¿Cuándo te diste cuenta de que querías contarme las cosas a mí primero?",
+      "fr": "Quand as-tu compris que tu voulais me raconter les choses en premier ?",
+      "de": "Wann hast du gemerkt, dass du mir Dinge zuerst erzählen willst?",
+      "it": "Quando hai capito che volevi raccontare le cose prima a me?"
+    }
+  },
+  {
+    "id": "q0085",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first thing you remember being afraid of?",
+      "es": "¿Cuál es el primer miedo que recuerdas haber tenido?",
+      "fr": "Quelle est la première chose dont tu te souviens avoir eu peur ?",
+      "de": "Wovor hattest du das erste Mal Angst, soweit du dich erinnerst?",
+      "it": "Qual è la prima cosa di cui ricordi di aver avuto paura?"
+    }
+  },
+  {
+    "id": "q0086",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our small disasters makes the best dinner story?",
+      "es": "¿Cuál de nuestros pequeños desastres es la mejor anécdota de cena?",
+      "fr": "Lequel de nos petits désastres fait la meilleure anecdote à table ?",
+      "de": "Welche unserer kleinen Katastrophen gibt die beste Tischgeschichte ab?",
+      "it": "Quale dei nostri piccoli disastri è l'aneddoto migliore a cena?"
+    }
+  },
+  {
+    "id": "q0087",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which task did you once love doing and would never do again?",
+      "es": "¿Qué tarea te encantaba hacer y no volverías a hacer jamás?",
+      "fr": "Quelle tâche adorais-tu faire et ne referais pour rien au monde ?",
+      "de": "Welche Tätigkeit hast du früher geliebt und würdest sie nie wieder machen?",
+      "it": "Quale attività adoravi fare e non rifaresti mai più?"
+    }
+  },
+  {
+    "id": "q0088",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What did you lose that you still catch yourself looking for?",
+      "es": "¿Qué perdiste que todavía te sorprendes buscando?",
+      "fr": "Qu'as-tu perdu que tu te surprends encore à chercher ?",
+      "de": "Was hast du verloren und ertappst dich noch immer beim Suchen danach?",
+      "it": "Cosa hai perso che ti sorprendi ancora a cercare?"
+    }
+  },
+  {
+    "id": "q0089",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What was the first favour I ever asked of you?",
+      "es": "¿Cuál fue el primer favor que te pedí?",
+      "fr": "Quel a été le tout premier service que je t'ai demandé ?",
+      "de": "Was war der erste Gefallen, um den ich dich gebeten habe?",
+      "it": "Qual è stato il primo favore che ti ho chiesto?"
+    }
+  },
+  {
+    "id": "q0090",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our running jokes would confuse someone who joined us late?",
+      "es": "¿Qué broma recurrente nuestra confundiría a alguien que llegara tarde?",
+      "fr": "Laquelle de nos blagues récurrentes perdrait quelqu'un arrivé en cours de route ?",
+      "de": "Welcher unserer Dauerwitze würde jemanden verwirren, der später dazukam?",
+      "it": "Quale nostra battuta ricorrente confonderebbe chi è arrivato dopo?"
+    }
+  },
+  {
+    "id": "q0091",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Who from your past would you most want to update on your life?",
+      "es": "¿A quién de tu pasado querrías contarle cómo te va la vida?",
+      "fr": "À qui de ton passé aimerais-tu le plus raconter ta vie d'aujourd'hui ?",
+      "de": "Wem aus deiner Vergangenheit würdest du am liebsten von deinem Leben erzählen?",
+      "it": "A chi del tuo passato vorresti raccontare com'è la tua vita ora?"
+    }
+  },
+  {
+    "id": "q0092",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the best day you have ever had entirely alone?",
+      "es": "¿Cuál es el mejor día que has pasado completamente a solas?",
+      "fr": "Quelle est la meilleure journée que tu aies passée entièrement seul ?",
+      "de": "Was war der beste Tag, den du ganz allein verbracht hast?",
+      "it": "Qual è la giornata migliore che hai passato completamente da solo?"
+    }
+  },
+  {
+    "id": "q0093",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of our evenings ended in the least likely place?",
+      "es": "¿Cuál de nuestras noches terminó en el sitio más improbable?",
+      "fr": "Laquelle de nos soirées s'est terminée à l'endroit le plus improbable ?",
+      "de": "Welcher unserer Abende endete am unwahrscheinlichsten Ort?",
+      "it": "Quale delle nostre serate è finita nel posto più improbabile?"
+    }
+  },
+  {
+    "id": "q0094",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What did you notice about me that you assumed I already knew?",
+      "es": "¿Qué notaste de mí dando por hecho que yo ya lo sabía?",
+      "fr": "Qu'as-tu remarqué chez moi en supposant que je le savais déjà ?",
+      "de": "Was ist dir an mir aufgefallen, von dem du dachtest, ich wüsste es längst?",
+      "it": "Cosa hai notato di me dando per scontato che io lo sapessi già?"
+    }
+  },
+  {
+    "id": "q0095",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of my routines did you notice before I ever mentioned it?",
+      "es": "¿Qué rutina mía notaste antes de que yo te la mencionara?",
+      "fr": "Laquelle de mes habitudes as-tu repérée avant que je t'en parle ?",
+      "de": "Welche meiner Routinen ist dir aufgefallen, bevor ich sie erwähnt habe?",
+      "it": "Quale mia routine hai notato prima che te ne parlassi?"
+    }
+  },
+  {
+    "id": "q0096",
+    "theme": "memories",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What has stayed exactly the same between us since the first month?",
+      "es": "¿Qué sigue exactamente igual entre nosotros desde el primer mes?",
+      "fr": "Qu'est-ce qui est resté exactement pareil entre nous depuis le premier mois ?",
+      "de": "Was ist zwischen uns seit dem ersten Monat genau gleich geblieben?",
+      "it": "Cosa è rimasto esattamente uguale tra noi dal primo mese?"
+    }
+  },
+  {
+    "id": "q0097",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which meal from your childhood would you order in a restaurant today?",
+      "es": "¿Qué plato de tu infancia pedirías hoy en un restaurante?",
+      "fr": "Quel plat de ton enfance commanderais-tu aujourd'hui au restaurant ?",
+      "de": "Welches Gericht aus deiner Kindheit würdest du heute im Restaurant bestellen?",
+      "it": "Quale piatto della tua infanzia ordineresti oggi al ristorante?"
+    }
+  },
+  {
+    "id": "q0098",
+    "theme": "memories",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our photos does not show what was actually happening?",
+      "es": "¿Qué foto nuestra no muestra lo que estaba pasando de verdad?",
+      "fr": "Quelle photo de nous ne montre pas ce qui se passait vraiment ?",
+      "de": "Welches Foto von uns zeigt nicht, was wirklich los war?",
+      "it": "Quale nostra foto non mostra quello che stava succedendo davvero?"
+    }
+  },
+  {
+    "id": "q0099",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What were you praised for that you never actually felt good at?",
+      "es": "¿Por qué te elogiaban aunque nunca te sentiste bueno en ello?",
+      "fr": "Pour quoi te félicitait-on alors que tu ne t'y sentais jamais bon ?",
+      "de": "Wofür wurdest du gelobt, obwohl du dich nie gut darin gefühlt hast?",
+      "it": "Per cosa ti facevano i complimenti senza che tu ti sentissi bravo?"
+    }
+  },
+  {
+    "id": "q0100",
+    "theme": "memories",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What is the last thing you learned about your own family?",
+      "es": "¿Qué es lo último que has descubierto sobre tu propia familia?",
+      "fr": "Quelle est la dernière chose que tu as apprise sur ta propre famille ?",
+      "de": "Was hast du zuletzt über deine eigene Familie erfahren?",
+      "it": "Qual è l'ultima cosa che hai scoperto sulla tua famiglia?"
+    }
+  }
+]

@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "q0101",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What part of your morning would you protect from any change?",
+      "es": "¿Qué parte de tu mañana protegerías de cualquier cambio?",
+      "fr": "Quelle partie de ta matinée protégerais-tu de tout changement ?",
+      "de": "Welchen Teil deines Morgens würdest du vor jeder Änderung schützen?",
+      "it": "Quale parte della tua mattina proteggeresti da ogni cambiamento?"
+    }
+  },
+  {
+    "id": "q0102",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which chore do you secretly not mind doing?",
+      "es": "¿Qué tarea de casa no te molesta en realidad?",
+      "fr": "Quelle corvée ne te dérange pas vraiment, au fond ?",
+      "de": "Welche Hausarbeit macht dir insgeheim gar nichts aus?",
+      "it": "Quale faccenda di casa in fondo non ti dispiace fare?"
+    }
+  },
+  {
+    "id": "q0103",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What do you do with your hands when you are waiting for something?",
+      "es": "¿Qué haces con las manos mientras esperas algo?",
+      "fr": "Que fais-tu de tes mains quand tu attends quelque chose ?",
+      "de": "Was machst du mit deinen Händen, wenn du auf etwas wartest?",
+      "it": "Cosa fai con le mani quando stai aspettando qualcosa?"
+    }
+  },
+  {
+    "id": "q0104",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do I do every day that you could imitate perfectly?",
+      "es": "¿Qué hago cada día que podrías imitar a la perfección?",
+      "fr": "Que fais-je chaque jour que tu pourrais imiter à la perfection ?",
+      "de": "Was mache ich jeden Tag, das du perfekt nachmachen könntest?",
+      "it": "Cosa faccio ogni giorno che sapresti imitare alla perfezione?"
+    }
+  },
+  {
+    "id": "q0105",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which part of your day is entirely yours and nobody knows about it?",
+      "es": "¿Qué parte de tu día es solo tuya y nadie lo sabe?",
+      "fr": "Quelle partie de ta journée n'appartient qu'à toi sans que personne le sache ?",
+      "de": "Welcher Teil deines Tages gehört nur dir, ohne dass jemand davon weiß?",
+      "it": "Quale parte della tua giornata è solo tua e nessuno lo sa?"
+    }
+  },
+  {
+    "id": "q0106",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How long does it take you to feel like a person after waking up?",
+      "es": "¿Cuánto tardas en sentirte persona después de despertarte?",
+      "fr": "Combien de temps te faut-il pour te sentir humain après le réveil ?",
+      "de": "Wie lange brauchst du nach dem Aufwachen, um dich wie ein Mensch zu fühlen?",
+      "it": "Quanto ci metti a sentirti una persona dopo esserti svegliato?"
+    }
+  },
+  {
+    "id": "q0107",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which object in your home do you talk to?",
+      "es": "¿A qué objeto de tu casa le hablas?",
+      "fr": "À quel objet chez toi parles-tu ?",
+      "de": "Mit welchem Gegenstand bei dir zu Hause redest du?",
+      "it": "A quale oggetto di casa tua parli?"
+    }
+  },
+  {
+    "id": "q0108",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is always in your bag that you never actually use?",
+      "es": "¿Qué llevas siempre en el bolso y no usas nunca?",
+      "fr": "Qu'y a-t-il toujours dans ton sac et que tu n'utilises jamais ?",
+      "de": "Was ist immer in deiner Tasche, das du nie benutzt?",
+      "it": "Cosa hai sempre in borsa e non usi mai?"
+    }
+  },
+  {
+    "id": "q0109",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do we do out of habit that neither of us really chose?",
+      "es": "¿Qué hacemos por costumbre que ninguno de los dos eligió de verdad?",
+      "fr": "Que faisons-nous par habitude sans que ni l'un ni l'autre l'ait choisi ?",
+      "de": "Was machen wir aus Gewohnheit, das keiner von uns wirklich gewählt hat?",
+      "it": "Cosa facciamo per abitudine senza che nessuno dei due l'abbia scelto?"
+    }
+  },
+  {
+    "id": "q0110",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do differently when you are running late?",
+      "es": "¿Qué haces de otra manera cuando vas con retraso?",
+      "fr": "Que fais-tu différemment quand tu es en retard ?",
+      "de": "Was machst du anders, wenn du spät dran bist?",
+      "it": "Cosa fai in modo diverso quando sei in ritardo?"
+    }
+  },
+  {
+    "id": "q0111",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is your least defensible rule about where things belong?",
+      "es": "¿Cuál es tu norma más indefendible sobre dónde va cada cosa?",
+      "fr": "Quelle est ta règle la plus indéfendable sur la place de chaque chose ?",
+      "de": "Was ist deine unhaltbarste Regel darüber, wo Dinge hingehören?",
+      "it": "Qual è la tua regola più indifendibile su dove vanno le cose?"
+    }
+  },
+  {
+    "id": "q0112",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always do right before leaving the house?",
+      "es": "¿Qué haces siempre justo antes de salir de casa?",
+      "fr": "Que fais-tu toujours juste avant de sortir de chez toi ?",
+      "de": "Was machst du immer direkt bevor du das Haus verlässt?",
+      "it": "Cosa fai sempre appena prima di uscire di casa?"
+    }
+  },
+  {
+    "id": "q0113",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What sound do I make that you would recognise anywhere?",
+      "es": "¿Qué sonido hago que reconocerías en cualquier parte?",
+      "fr": "Quel bruit est-ce que je fais que tu reconnaîtrais n'importe où ?",
+      "de": "Welches Geräusch mache ich, das du überall erkennen würdest?",
+      "it": "Quale rumore faccio che riconosceresti ovunque?"
+    }
+  },
+  {
+    "id": "q0114",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do on a bad day that actually works?",
+      "es": "¿Qué haces en un mal día que de verdad funciona?",
+      "fr": "Que fais-tu lors d'une mauvaise journée et qui marche vraiment ?",
+      "de": "Was machst du an einem schlechten Tag, das wirklich hilft?",
+      "it": "Cosa fai in una giornata storta che funziona davvero?"
+    }
+  },
+  {
+    "id": "q0115",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the last thing you look at before you fall asleep?",
+      "es": "¿Qué es lo último que miras antes de dormirte?",
+      "fr": "Quelle est la dernière chose que tu regardes avant de t'endormir ?",
+      "de": "Was ist das Letzte, das du vor dem Einschlafen ansiehst?",
+      "it": "Qual è l'ultima cosa che guardi prima di addormentarti?"
+    }
+  },
+  {
+    "id": "q0116",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which everyday task would you pay someone to do forever?",
+      "es": "¿Qué tarea diaria pagarías por no volver a hacer nunca?",
+      "fr": "Quelle tâche quotidienne paierais-tu quelqu'un pour faire à ta place ?",
+      "de": "Welche Alltagsaufgabe würdest du für immer jemand anderem bezahlen?",
+      "it": "Quale compito quotidiano pagheresti qualcuno per fare al posto tuo?"
+    }
+  },
+  {
+    "id": "q0117",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do I always manage to misplace?",
+      "es": "¿Qué consigo perder siempre de vista?",
+      "fr": "Qu'est-ce que j'arrive toujours à égarer ?",
+      "de": "Was schaffe ich es immer zu verlegen?",
+      "it": "Cosa riesco sempre a perdere di vista?"
+    }
+  },
+  {
+    "id": "q0118",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which small daily thing keeps you steady when the rest is loud?",
+      "es": "¿Qué pequeño gesto diario te mantiene entero cuando todo grita?",
+      "fr": "Quel petit geste quotidien te tient debout quand tout le reste crie ?",
+      "de": "Welche kleine tägliche Sache hält dich fest, wenn der Rest laut wird?",
+      "it": "Quale piccola cosa quotidiana ti tiene in piedi quando il resto urla?"
+    }
+  },
+  {
+    "id": "q0119",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you buy the same brand of every single time?",
+      "es": "¿De qué compras siempre exactamente la misma marca?",
+      "fr": "De quoi achètes-tu systématiquement la même marque ?",
+      "de": "Wovon kaufst du jedes Mal genau dieselbe Marke?",
+      "it": "Di cosa compri sempre esattamente la stessa marca?"
+    }
+  },
+  {
+    "id": "q0120",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our weekly habits would be hardest to give up?",
+      "es": "¿Cuál de nuestras costumbres semanales costaría más dejar?",
+      "fr": "Laquelle de nos habitudes hebdomadaires serait la plus dure à abandonner ?",
+      "de": "Welche unserer wöchentlichen Gewohnheiten wäre am schwersten aufzugeben?",
+      "it": "Quale nostra abitudine settimanale sarebbe più difficile abbandonare?"
+    }
+  },
+  {
+    "id": "q0121",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the pettiest thing that can tilt your whole day?",
+      "es": "¿Cuál es la tontería más pequeña capaz de torcerte el día?",
+      "fr": "Quelle est la broutille la plus insignifiante qui peut gâcher ta journée ?",
+      "de": "Was ist die kleinste Nichtigkeit, die deinen ganzen Tag kippen kann?",
+      "it": "Qual è la sciocchezza più piccola che può storcerti la giornata?"
+    }
+  },
+  {
+    "id": "q0122",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which corner of your home do you spend the most time in?",
+      "es": "¿En qué rincón de tu casa pasas más tiempo?",
+      "fr": "Dans quel coin de chez toi passes-tu le plus de temps ?",
+      "de": "In welcher Ecke deiner Wohnung verbringst du die meiste Zeit?",
+      "it": "In quale angolo di casa tua passi più tempo?"
+    }
+  },
+  {
+    "id": "q0123",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us is better at doing nothing at all?",
+      "es": "¿Quién de los dos es mejor no haciendo absolutamente nada?",
+      "fr": "Lequel de nous deux est le meilleur à ne rien faire du tout ?",
+      "de": "Wer von uns beiden kann besser überhaupt nichts tun?",
+      "it": "Chi di noi due è più bravo a non fare assolutamente nulla?"
+    }
+  },
+  {
+    "id": "q0124",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do every day that you would stop if nobody noticed?",
+      "es": "¿Qué haces cada día que dejarías de hacer si nadie lo notara?",
+      "fr": "Que fais-tu chaque jour et que tu arrêterais si personne ne le remarquait ?",
+      "de": "Was machst du täglich und würdest es lassen, wenn es niemandem auffiele?",
+      "it": "Cosa fai ogni giorno che smetteresti di fare se nessuno se ne accorgesse?"
+    }
+  },
+  {
+    "id": "q0125",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How do you decide what to eat when you are on your own?",
+      "es": "¿Cómo decides qué comer cuando estás solo?",
+      "fr": "Comment décides-tu quoi manger quand tu es seul ?",
+      "de": "Wie entscheidest du, was du isst, wenn du allein bist?",
+      "it": "Come decidi cosa mangiare quando sei da solo?"
+    }
+  },
+  {
+    "id": "q0126",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which kind of message do you always leave for later?",
+      "es": "¿Qué tipo de mensaje dejas siempre para más tarde?",
+      "fr": "Quel genre de message laisses-tu toujours pour plus tard ?",
+      "de": "Welche Art von Nachricht schiebst du immer auf?",
+      "it": "Che tipo di messaggio rimandi sempre a più tardi?"
+    }
+  },
+  {
+    "id": "q0127",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is unnecessarily complicated about how you take your drink?",
+      "es": "¿Qué tiene de innecesariamente complicado cómo tomas tu bebida?",
+      "fr": "Qu'y a-t-il d'inutilement compliqué dans ta façon de prendre ta boisson ?",
+      "de": "Was ist unnötig kompliziert daran, wie du dein Getränk trinkst?",
+      "it": "Cosa c'è di inutilmente complicato nel modo in cui prendi da bere?"
+    }
+  },
+  {
+    "id": "q0128",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you notice about my mood before I say anything?",
+      "es": "¿Qué notas de mi ánimo antes de que yo diga nada?",
+      "fr": "Que remarques-tu de mon humeur avant même que je dise un mot ?",
+      "de": "Was merkst du an meiner Stimmung, bevor ich etwas sage?",
+      "it": "Cosa noti del mio umore prima che io dica una parola?"
+    }
+  },
+  {
+    "id": "q0129",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which errand do you drag out on purpose?",
+      "es": "¿Qué recado alargas a propósito?",
+      "fr": "Quelle course fais-tu traîner exprès ?",
+      "de": "Welche Besorgung ziehst du absichtlich in die Länge?",
+      "it": "Quale commissione fai durare apposta?"
+    }
+  },
+  {
+    "id": "q0130",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "At what time of day do you like yourself most?",
+      "es": "¿A qué hora del día te caes mejor a ti mismo?",
+      "fr": "À quelle heure de la journée t'aimes-tu le plus ?",
+      "de": "Zu welcher Tageszeit magst du dich selbst am meisten?",
+      "it": "In quale momento della giornata ti piaci di più?"
+    }
+  },
+  {
+    "id": "q0131",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your daily habits came from someone you no longer see?",
+      "es": "¿Qué costumbre diaria tuya viene de alguien a quien ya no ves?",
+      "fr": "Laquelle de tes habitudes quotidiennes vient de quelqu'un que tu ne vois plus ?",
+      "de": "Welche deiner täglichen Gewohnheiten stammt von jemandem, den du nicht mehr siehst?",
+      "it": "Quale tua abitudine quotidiana viene da qualcuno che non vedi più?"
+    }
+  },
+  {
+    "id": "q0132",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "What do we always end up doing when a plan falls through?",
+      "es": "¿Qué acabamos haciendo siempre cuando se cae un plan?",
+      "fr": "Que finissons-nous toujours par faire quand un plan tombe à l'eau ?",
+      "de": "Was machen wir immer, wenn ein Plan ins Wasser fällt?",
+      "it": "Cosa finiamo sempre per fare quando un piano salta?"
+    }
+  },
+  {
+    "id": "q0133",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you always say yes to when you are tired?",
+      "es": "¿A qué dices que sí siempre cuando estás cansado?",
+      "fr": "À quoi dis-tu toujours oui quand tu es fatigué ?",
+      "de": "Wozu sagst du immer ja, wenn du müde bist?",
+      "it": "A cosa dici sempre di sì quando sei stanco?"
+    }
+  },
+  {
+    "id": "q0134",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "How many alarms do you set and why exactly that many?",
+      "es": "¿Cuántas alarmas pones y por qué justo ese número?",
+      "fr": "Combien d'alarmes règles-tu et pourquoi ce nombre précis ?",
+      "de": "Wie viele Wecker stellst du und warum genau so viele?",
+      "it": "Quante sveglie metti e perché proprio quel numero?"
+    }
+  },
+  {
+    "id": "q0135",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do I do that makes a space feel like mine?",
+      "es": "¿Qué hago yo que convierte un espacio en mío?",
+      "fr": "Que fais-je qui transforme un espace en quelque chose de mien ?",
+      "de": "Was mache ich, das einen Raum zu meinem macht?",
+      "it": "Cosa faccio io che rende uno spazio mio?"
+    }
+  },
+  {
+    "id": "q0136",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would a week without your phone actually change for you?",
+      "es": "¿Qué te cambiaría de verdad una semana sin móvil?",
+      "fr": "Qu'est-ce qu'une semaine sans téléphone changerait vraiment pour toi ?",
+      "de": "Was würde eine Woche ohne Handy für dich wirklich verändern?",
+      "it": "Cosa cambierebbe davvero per te una settimana senza telefono?"
+    }
+  },
+  {
+    "id": "q0137",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do every day that your younger self would find strange?",
+      "es": "¿Qué haces cada día que a tu yo de antes le parecería raro?",
+      "fr": "Que fais-tu chaque jour qui étonnerait la personne que tu étais avant ?",
+      "de": "Was machst du täglich, das du früher seltsam gefunden hättest?",
+      "it": "Cosa fai ogni giorno che a te di qualche anno fa sembrerebbe strano?"
+    }
+  },
+  {
+    "id": "q0138",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do the two of us always postpone?",
+      "es": "¿Qué aplazamos siempre los dos?",
+      "fr": "Qu'est-ce que nous deux repoussons toujours ?",
+      "de": "Was schieben wir beide immer auf?",
+      "it": "Cosa rimandiamo sempre noi due?"
+    }
+  },
+  {
+    "id": "q0139",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What noise do you make without realising it?",
+      "es": "¿Qué ruido haces sin darte cuenta?",
+      "fr": "Quel bruit fais-tu sans t'en rendre compte ?",
+      "de": "Welches Geräusch machst du, ohne es zu merken?",
+      "it": "Quale rumore fai senza accorgertene?"
+    }
+  },
+  {
+    "id": "q0140",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do in the first two minutes after getting home?",
+      "es": "¿Qué haces en los dos primeros minutos al llegar a casa?",
+      "fr": "Que fais-tu dans les deux premières minutes en rentrant chez toi ?",
+      "de": "Was machst du in den ersten zwei Minuten, wenn du nach Hause kommst?",
+      "it": "Cosa fai nei primi due minuti dopo essere tornato a casa?"
+    }
+  },
+  {
+    "id": "q0141",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which daily chore do you actually use for thinking?",
+      "es": "¿Qué tarea diaria te sirve en realidad para pensar?",
+      "fr": "Quelle corvée quotidienne te sert en réalité à réfléchir ?",
+      "de": "Welche tägliche Arbeit nutzt du eigentlich zum Nachdenken?",
+      "it": "Quale faccenda quotidiana usi in realtà per pensare?"
+    }
+  },
+  {
+    "id": "q0142",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which of our routines started because one of us was tired?",
+      "es": "¿Qué rutina nuestra empezó porque uno de los dos estaba cansado?",
+      "fr": "Laquelle de nos routines est née parce que l'un de nous était fatigué ?",
+      "de": "Welche unserer Routinen ist entstanden, weil einer von uns müde war?",
+      "it": "Quale nostra routine è nata perché uno di noi era stanco?"
+    }
+  },
+  {
+    "id": "q0143",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the strangest thing in your fridge right now?",
+      "es": "¿Qué es lo más raro que hay ahora mismo en tu nevera?",
+      "fr": "Quelle est la chose la plus étrange dans ton frigo en ce moment ?",
+      "de": "Was ist gerade das Seltsamste in deinem Kühlschrank?",
+      "it": "Qual è la cosa più strana che c'è ora nel tuo frigo?"
+    }
+  },
+  {
+    "id": "q0144",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What question do I ask you most often?",
+      "es": "¿Qué pregunta te hago con más frecuencia?",
+      "fr": "Quelle question est-ce que je te pose le plus souvent ?",
+      "de": "Welche Frage stelle ich dir am häufigsten?",
+      "it": "Quale domanda ti faccio più spesso?"
+    }
+  },
+  {
+    "id": "q0145",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which of your possessions do you touch every single day?",
+      "es": "¿Qué objeto tuyo tocas absolutamente todos los días?",
+      "fr": "Lequel de tes objets touches-tu absolument tous les jours ?",
+      "de": "Welchen deiner Gegenstände fasst du wirklich jeden Tag an?",
+      "it": "Quale tuo oggetto tocchi assolutamente tutti i giorni?"
+    }
+  },
+  {
+    "id": "q0146",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do when a day has gone wrong before noon?",
+      "es": "¿Qué haces cuando el día se tuerce antes del mediodía?",
+      "fr": "Que fais-tu quand une journée a déjà mal tourné avant midi ?",
+      "de": "Was machst du, wenn ein Tag schon vor Mittag schiefgelaufen ist?",
+      "it": "Cosa fai quando la giornata è già storta prima di mezzogiorno?"
+    }
+  },
+  {
+    "id": "q0147",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What would a stranger get wrong about your daily life?",
+      "es": "¿Qué entendería mal un desconocido sobre tu vida diaria?",
+      "fr": "Que comprendrait mal un inconnu à propos de ta vie quotidienne ?",
+      "de": "Was würde ein Fremder an deinem Alltag falsch verstehen?",
+      "it": "Cosa capirebbe male uno sconosciuto della tua vita quotidiana?"
+    }
+  },
+  {
+    "id": "q0148",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of my everyday habits would you adopt?",
+      "es": "¿Qué costumbre diaria mía adoptarías?",
+      "fr": "Laquelle de mes habitudes quotidiennes adopterais-tu ?",
+      "de": "Welche meiner Alltagsgewohnheiten würdest du übernehmen?",
+      "it": "Quale mia abitudine quotidiana adotteresti?"
+    }
+  },
+  {
+    "id": "q0149",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which shop or place do you go to more often than you admit?",
+      "es": "¿A qué tienda o sitio vas más a menudo de lo que reconoces?",
+      "fr": "Dans quel magasin ou lieu vas-tu plus souvent que tu ne l'avoues ?",
+      "de": "In welchen Laden oder an welchen Ort gehst du öfter, als du zugibst?",
+      "it": "In quale negozio o posto vai più spesso di quanto ammetti?"
+    }
+  },
+  {
+    "id": "q0150",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What has become routine for us that used to take real effort?",
+      "es": "¿Qué se ha vuelto rutina entre nosotros y antes costaba esfuerzo?",
+      "fr": "Qu'est-ce qui est devenu une routine chez nous et demandait un vrai effort ?",
+      "de": "Was ist bei uns Routine geworden, das früher echte Mühe gekostet hat?",
+      "it": "Cosa è diventato routine tra noi e prima richiedeva uno sforzo vero?"
+    }
+  },
+  {
+    "id": "q0151",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you do to fall asleep when sleep will not come?",
+      "es": "¿Qué haces para dormirte cuando el sueño no llega?",
+      "fr": "Que fais-tu pour t'endormir quand le sommeil ne vient pas ?",
+      "de": "Was machst du, um einzuschlafen, wenn der Schlaf nicht kommt?",
+      "it": "Cosa fai per addormentarti quando il sonno non arriva?"
+    }
+  },
+  {
+    "id": "q0152",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which piece of your clothing should have been retired years ago?",
+      "es": "¿Qué prenda tuya debería haberse jubilado hace años?",
+      "fr": "Quel vêtement à toi aurait dû partir à la retraite il y a des années ?",
+      "de": "Welches deiner Kleidungsstücke hätte längst in Rente gehen sollen?",
+      "it": "Quale tuo capo di vestiario doveva andare in pensione anni fa?"
+    }
+  },
+  {
+    "id": "q0153",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "How do you know when I need to be left alone?",
+      "es": "¿Cómo sabes cuándo necesito que me dejen en paz?",
+      "fr": "Comment sais-tu quand j'ai besoin qu'on me laisse tranquille ?",
+      "de": "Woran merkst du, wann ich in Ruhe gelassen werden will?",
+      "it": "Come capisci quando ho bisogno di stare in pace?"
+    }
+  },
+  {
+    "id": "q0154",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you spend money on every week without ever thinking about it?",
+      "es": "¿En qué gastas dinero cada semana sin pensarlo nunca?",
+      "fr": "Dans quoi mets-tu de l'argent chaque semaine sans jamais y penser ?",
+      "de": "Wofür gibst du jede Woche Geld aus, ohne je darüber nachzudenken?",
+      "it": "In cosa spendi soldi ogni settimana senza mai pensarci?"
+    }
+  },
+  {
+    "id": "q0155",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the best part of the route you take most often?",
+      "es": "¿Cuál es la mejor parte del trayecto que más repites?",
+      "fr": "Quelle est la meilleure partie du trajet que tu fais le plus souvent ?",
+      "de": "Was ist der schönste Teil der Strecke, die du am häufigsten gehst?",
+      "it": "Qual è la parte migliore del percorso che fai più spesso?"
+    }
+  },
+  {
+    "id": "q0156",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What do you do far better than the task actually requires?",
+      "es": "¿Qué haces mucho mejor de lo que la tarea realmente exige?",
+      "fr": "Que fais-tu bien mieux que la tâche ne l'exige vraiment ?",
+      "de": "Was machst du viel besser, als die Aufgabe es verlangt?",
+      "it": "Cosa fai molto meglio di quanto il compito richieda davvero?"
+    }
+  },
+  {
+    "id": "q0157",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which drawer or shelf of yours would you rather nobody opened?",
+      "es": "¿Qué cajón o estante tuyo preferirías que nadie abriera?",
+      "fr": "Quel tiroir ou quelle étagère à toi préférerais-tu que personne n'ouvre ?",
+      "de": "Welche deiner Schubladen oder Regale sollte lieber niemand öffnen?",
+      "it": "Quale tuo cassetto o scaffale preferiresti che nessuno aprisse?"
+    }
+  },
+  {
+    "id": "q0158",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do for me that you have never called a favour?",
+      "es": "¿Qué haces por mí que nunca has llamado un favor?",
+      "fr": "Que fais-tu pour moi sans jamais l'avoir appelé un service ?",
+      "de": "Was tust du für mich, das du nie einen Gefallen genannt hast?",
+      "it": "Cosa fai per me che non hai mai chiamato un favore?"
+    }
+  },
+  {
+    "id": "q0159",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do I do for you that you would miss immediately?",
+      "es": "¿Qué hago por ti que echarías de menos de inmediato?",
+      "fr": "Que fais-je pour toi qui te manquerait immédiatement ?",
+      "de": "Was mache ich für dich, das dir sofort fehlen würde?",
+      "it": "Cosa faccio per te che ti mancherebbe subito?"
+    }
+  },
+  {
+    "id": "q0160",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would your last shopping list say about your week?",
+      "es": "¿Qué diría tu última lista de la compra sobre tu semana?",
+      "fr": "Que dirait ta dernière liste de courses sur ta semaine ?",
+      "de": "Was würde dein letzter Einkaufszettel über deine Woche verraten?",
+      "it": "Cosa direbbe la tua ultima lista della spesa sulla tua settimana?"
+    }
+  },
+  {
+    "id": "q0161",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What does the state of your bed right now say about your week?",
+      "es": "¿Qué dice el estado de tu cama ahora mismo sobre tu semana?",
+      "fr": "Que dit l'état de ton lit en ce moment sur ta semaine ?",
+      "de": "Was sagt der Zustand deines Betts gerade über deine Woche aus?",
+      "it": "Cosa dice lo stato del tuo letto adesso sulla tua settimana?"
+    }
+  },
+  {
+    "id": "q0162",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us would last longer without the internet?",
+      "es": "¿Quién de los dos aguantaría más sin internet?",
+      "fr": "Lequel de nous deux tiendrait le plus longtemps sans internet ?",
+      "de": "Wer von uns beiden würde länger ohne Internet durchhalten?",
+      "it": "Chi di noi due resisterebbe più a lungo senza internet?"
+    }
+  },
+  {
+    "id": "q0163",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you put off until it turns into an emergency?",
+      "es": "¿Qué aplazas hasta que se convierte en una urgencia?",
+      "fr": "Qu'est-ce que tu repousses jusqu'à ce que ça devienne une urgence ?",
+      "de": "Was schiebst du auf, bis daraus ein Notfall wird?",
+      "it": "Cosa rimandi finché non diventa un'emergenza?"
+    }
+  },
+  {
+    "id": "q0164",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What weather makes you change your whole plan for the day?",
+      "es": "¿Qué tiempo te hace cambiar el plan entero del día?",
+      "fr": "Quel temps te fait changer tout ton programme de la journée ?",
+      "de": "Bei welchem Wetter wirfst du deinen ganzen Tagesplan um?",
+      "it": "Con che tempo cambi tutto il programma della giornata?"
+    }
+  },
+  {
+    "id": "q0165",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "What do we do together that would look boring to anyone else?",
+      "es": "¿Qué hacemos juntos que a cualquier otro le parecería aburrido?",
+      "fr": "Que faisons-nous ensemble qui paraîtrait ennuyeux à n'importe qui d'autre ?",
+      "de": "Was machen wir zusammen, das für jeden anderen langweilig aussähe?",
+      "it": "Cosa facciamo insieme che a chiunque altro sembrerebbe noioso?"
+    }
+  },
+  {
+    "id": "q0166",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What is the most unnecessary thing you own two of?",
+      "es": "¿Cuál es la cosa más innecesaria de la que tienes dos?",
+      "fr": "Quelle est la chose la plus inutile que tu possèdes en double ?",
+      "de": "Was ist das unnötigste Ding, das du doppelt besitzt?",
+      "it": "Qual è la cosa più inutile di cui hai due esemplari?"
+    }
+  },
+  {
+    "id": "q0167",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which sound at home tells you the day has properly started?",
+      "es": "¿Qué sonido de casa te dice que el día ha empezado de verdad?",
+      "fr": "Quel bruit chez toi t'annonce que la journée a vraiment commencé ?",
+      "de": "Welches Geräusch zu Hause sagt dir, dass der Tag richtig begonnen hat?",
+      "it": "Quale rumore in casa ti dice che la giornata è davvero iniziata?"
+    }
+  },
+  {
+    "id": "q0168",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do with an unexpected free hour?",
+      "es": "¿Qué haces con una hora libre inesperada?",
+      "fr": "Que fais-tu d'une heure de libre imprévue ?",
+      "de": "Was machst du mit einer unerwarteten freien Stunde?",
+      "it": "Cosa fai con un'ora libera inaspettata?"
+    }
+  },
+  {
+    "id": "q0169",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do I always underestimate the time for?",
+      "es": "¿Para qué subestimo siempre el tiempo que hace falta?",
+      "fr": "Pour quoi est-ce que je sous-estime toujours le temps nécessaire ?",
+      "de": "Wofür unterschätze ich immer die Zeit?",
+      "it": "Per cosa sottovaluto sempre il tempo che serve?"
+    }
+  },
+  {
+    "id": "q0170",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "Which everyday rule do you break when nobody is around?",
+      "es": "¿Qué norma cotidiana te saltas cuando no hay nadie cerca?",
+      "fr": "Quelle règle du quotidien enfreins-tu quand personne n'est là ?",
+      "de": "Welche Alltagsregel brichst du, wenn niemand da ist?",
+      "it": "Quale regola quotidiana infrangi quando non c'è nessuno?"
+    }
+  },
+  {
+    "id": "q0171",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How do you keep track of things you must not forget?",
+      "es": "¿Cómo llevas la cuenta de lo que no puedes olvidar?",
+      "fr": "Comment gardes-tu la trace de ce que tu ne dois pas oublier ?",
+      "de": "Wie behältst du im Blick, was du nicht vergessen darfst?",
+      "it": "Come tieni traccia delle cose che non devi dimenticare?"
+    }
+  },
+  {
+    "id": "q0172",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which part of your week do you spend waiting?",
+      "es": "¿Qué parte de tu semana te la pasas esperando?",
+      "fr": "Quelle partie de ta semaine passes-tu à attendre ?",
+      "de": "Welchen Teil deiner Woche verbringst du mit Warten?",
+      "it": "Quale parte della tua settimana passi ad aspettare?"
+    }
+  },
+  {
+    "id": "q0173",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is always the last thing you pack?",
+      "es": "¿Qué es siempre lo último que metes en la maleta?",
+      "fr": "Quelle est toujours la dernière chose que tu mets dans ton sac ?",
+      "de": "Was packst du immer als Letztes ein?",
+      "it": "Qual è sempre l'ultima cosa che metti in valigia?"
+    }
+  },
+  {
+    "id": "q0174",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "playful",
+    "text": {
+      "en": "What would break first if we swapped daily tasks for a week?",
+      "es": "¿Qué se rompería primero si intercambiáramos tareas una semana?",
+      "fr": "Qu'est-ce qui casserait en premier si on échangeait nos tâches une semaine ?",
+      "de": "Was ginge zuerst schief, wenn wir eine Woche die Aufgaben tauschten?",
+      "it": "Cosa salterebbe per primo se ci scambiassimo i compiti per una settimana?"
+    }
+  },
+  {
+    "id": "q0175",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What depends on you every single day to stay alive or working?",
+      "es": "¿Qué depende de ti cada día para seguir vivo o funcionando?",
+      "fr": "Qu'est-ce qui dépend de toi chaque jour pour rester en vie ou marcher ?",
+      "de": "Was hängt jeden Tag von dir ab, um am Leben oder in Gang zu bleiben?",
+      "it": "Cosa dipende da te ogni giorno per restare vivo o funzionante?"
+    }
+  },
+  {
+    "id": "q0176",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What in your day gives you the feeling of having done enough?",
+      "es": "¿Qué de tu día te da la sensación de haber hecho suficiente?",
+      "fr": "Qu'est-ce qui, dans ta journée, te donne le sentiment d'en avoir assez fait ?",
+      "de": "Was an deinem Tag gibt dir das Gefühl, genug getan zu haben?",
+      "it": "Cosa nella tua giornata ti dà la sensazione di aver fatto abbastanza?"
+    }
+  },
+  {
+    "id": "q0177",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What do you wear when you have given up on the day?",
+      "es": "¿Qué te pones cuando ya has tirado la toalla con el día?",
+      "fr": "Que mets-tu sur toi quand tu as renoncé à ta journée ?",
+      "de": "Was ziehst du an, wenn du den Tag schon abgeschrieben hast?",
+      "it": "Cosa ti metti quando hai già rinunciato alla giornata?"
+    }
+  },
+  {
+    "id": "q0178",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What is easier to say to me by message than out loud?",
+      "es": "¿Qué te resulta más fácil decirme por mensaje que en voz alta?",
+      "fr": "Qu'est-ce qui t'est plus facile à me dire par message qu'à voix haute ?",
+      "de": "Was fällt dir per Nachricht leichter zu sagen als laut?",
+      "it": "Cosa ti riesce più facile dirmi per messaggio che a voce?"
+    }
+  },
+  {
+    "id": "q0179",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What runs out in your home before anyone thinks to replace it?",
+      "es": "¿Qué se acaba en tu casa antes de que a alguien se le ocurra reponerlo?",
+      "fr": "Qu'est-ce qui s'épuise chez toi avant que quelqu'un pense à le racheter ?",
+      "de": "Was geht bei dir zu Hause aus, bevor jemand daran denkt, es nachzukaufen?",
+      "it": "Cosa finisce a casa tua prima che a qualcuno venga in mente di ricomprarlo?"
+    }
+  },
+  {
+    "id": "q0180",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "If your week had one song as its soundtrack, which one?",
+      "es": "Si tu semana tuviera una sola canción de fondo, ¿cuál sería?",
+      "fr": "Si ta semaine avait une seule chanson en fond, laquelle ?",
+      "de": "Wenn deine Woche einen einzigen Song als Soundtrack hätte, welchen?",
+      "it": "Se la tua settimana avesse una sola canzone di sottofondo, quale?"
+    }
+  },
+  {
+    "id": "q0181",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do at the end of a day to mark that it is over?",
+      "es": "¿Qué haces al final del día para marcar que se acabó?",
+      "fr": "Que fais-tu en fin de journée pour marquer qu'elle est finie ?",
+      "de": "Was machst du am Ende eines Tages, um ihn abzuschließen?",
+      "it": "Cosa fai a fine giornata per segnare che è finita?"
+    }
+  },
+  {
+    "id": "q0182",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "deep",
+    "text": {
+      "en": "What have you changed about your daily routine because of me?",
+      "es": "¿Qué has cambiado de tu rutina diaria por mi culpa?",
+      "fr": "Qu'as-tu changé dans ta routine quotidienne à cause de moi ?",
+      "de": "Was hast du an deinem Tagesablauf wegen mir geändert?",
+      "it": "Cosa hai cambiato della tua routine quotidiana per colpa mia?"
+    }
+  },
+  {
+    "id": "q0183",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which day of your week is the most different from the others?",
+      "es": "¿Qué día de tu semana es el más distinto de todos?",
+      "fr": "Quel jour de ta semaine est le plus différent des autres ?",
+      "de": "Welcher Tag deiner Woche unterscheidet sich am stärksten von den anderen?",
+      "it": "Quale giorno della tua settimana è il più diverso dagli altri?"
+    }
+  },
+  {
+    "id": "q0184",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What in your kitchen would a stranger have to ask you how to use?",
+      "es": "¿Qué de tu cocina tendría que preguntarte un desconocido cómo se usa?",
+      "fr": "Qu'est-ce que, dans ta cuisine, un inconnu devrait te demander comment utiliser ?",
+      "de": "Was in deiner Küche müsste ein Fremder dich fragen, wie es funktioniert?",
+      "it": "Cosa nella tua cucina un estraneo dovrebbe chiederti come si usa?"
+    }
+  },
+  {
+    "id": "q0185",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How much silence do you actually need in a day?",
+      "es": "¿Cuánto silencio necesitas en realidad al día?",
+      "fr": "De combien de silence as-tu vraiment besoin dans une journée ?",
+      "de": "Wie viel Stille brauchst du an einem Tag wirklich?",
+      "it": "Quanto silenzio ti serve davvero in una giornata?"
+    }
+  },
+  {
+    "id": "q0186",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "light",
+    "text": {
+      "en": "Which task do we both avoid until one of us cracks?",
+      "es": "¿Qué tarea evitamos los dos hasta que uno se rinde?",
+      "fr": "Quelle tâche évitons-nous tous les deux jusqu'à ce que l'un craque ?",
+      "de": "Welche Aufgabe meiden wir beide, bis einer von uns nachgibt?",
+      "it": "Quale compito evitiamo entrambi finché uno dei due cede?"
+    }
+  },
+  {
+    "id": "q0187",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "What do you do to feel less alone on an ordinary day?",
+      "es": "¿Qué haces para sentirte menos solo en un día cualquiera?",
+      "fr": "Que fais-tu pour te sentir moins seul un jour ordinaire ?",
+      "de": "Was machst du, um dich an einem gewöhnlichen Tag weniger allein zu fühlen?",
+      "it": "Cosa fai per sentirti meno solo in una giornata qualsiasi?"
+    }
+  },
+  {
+    "id": "q0188",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What do you keep far more of than you could ever need?",
+      "es": "¿De qué guardas muchísimo más de lo que podrías necesitar?",
+      "fr": "De quoi gardes-tu bien plus que tu ne pourras jamais en avoir besoin ?",
+      "de": "Wovon hebst du weit mehr auf, als du je brauchen könntest?",
+      "it": "Di cosa conservi molto più di quanto potrebbe mai servirti?"
+    }
+  },
+  {
+    "id": "q0189",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "playful",
+    "text": {
+      "en": "Which of us is more likely to be waiting at the door first?",
+      "es": "¿Quién de los dos es más probable que espere primero en la puerta?",
+      "fr": "Lequel de nous deux attend le plus souvent à la porte en premier ?",
+      "de": "Wer von uns beiden steht eher schon fertig an der Tür?",
+      "it": "Chi di noi due è più probabile che aspetti per primo alla porta?"
+    }
+  },
+  {
+    "id": "q0190",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "What is the first thing you do when the working week ends?",
+      "es": "¿Qué es lo primero que haces cuando termina la semana laboral?",
+      "fr": "Quelle est la première chose que tu fais quand la semaine se termine ?",
+      "de": "Was machst du als Erstes, wenn die Arbeitswoche vorbei ist?",
+      "it": "Qual è la prima cosa che fai quando finisce la settimana?"
+    }
+  },
+  {
+    "id": "q0191",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which ordinary thing do you do slowly on purpose?",
+      "es": "¿Qué cosa cotidiana haces despacio a propósito?",
+      "fr": "Quelle chose ordinaire fais-tu lentement exprès ?",
+      "de": "Welche gewöhnliche Sache machst du absichtlich langsam?",
+      "it": "Quale cosa ordinaria fai lentamente di proposito?"
+    }
+  },
+  {
+    "id": "q0192",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What are you strangely territorial about?",
+      "es": "¿Con qué eres extrañamente territorial?",
+      "fr": "Sur quoi es-tu bizarrement territorial ?",
+      "de": "Wobei bist du seltsam besitzergreifend?",
+      "it": "Su cosa sei stranamente territoriale?"
+    }
+  },
+  {
+    "id": "q0193",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What do I do that tells you I am about to leave the house?",
+      "es": "¿Qué hago que te avisa de que estoy a punto de salir de casa?",
+      "fr": "Que fais-je qui t'annonce que je suis sur le point de sortir ?",
+      "de": "Woran merkst du, dass ich gleich aus dem Haus gehe?",
+      "it": "Cosa faccio che ti fa capire che sto per uscire di casa?"
+    }
+  },
+  {
+    "id": "q0194",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which small purchase reliably improves a bad week for you?",
+      "es": "¿Qué compra pequeña te arregla siempre una semana mala?",
+      "fr": "Quel petit achat sauve toujours une mauvaise semaine chez toi ?",
+      "de": "Welche kleine Anschaffung rettet dir zuverlässig eine schlechte Woche?",
+      "it": "Quale piccolo acquisto ti salva sempre una settimana storta?"
+    }
+  },
+  {
+    "id": "q0195",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "deep",
+    "text": {
+      "en": "Which part of your day would you delete without regret?",
+      "es": "¿Qué parte de tu día borrarías sin ningún remordimiento?",
+      "fr": "Quelle partie de ta journée supprimerais-tu sans regret ?",
+      "de": "Welchen Teil deines Tages würdest du ohne Reue streichen?",
+      "it": "Quale parte della tua giornata cancelleresti senza rimpianti?"
+    }
+  },
+  {
+    "id": "q0196",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "Which everyday thing do you still do the way you were taught?",
+      "es": "¿Qué cosa cotidiana sigues haciendo como te enseñaron?",
+      "fr": "Quelle chose du quotidien fais-tu encore comme on te l'a apprise ?",
+      "de": "Welche Alltagssache machst du noch so, wie man es dir beigebracht hat?",
+      "it": "Quale cosa quotidiana fai ancora come te l'hanno insegnata?"
+    }
+  },
+  {
+    "id": "q0197",
+    "theme": "everyday",
+    "stage": "2y+",
+    "tone": "deep",
+    "text": {
+      "en": "What do we settle in seconds now that once needed a whole talk?",
+      "es": "¿Qué resolvemos en segundos ahora y antes exigía una conversación entera?",
+      "fr": "Qu'est-ce qu'on règle en deux secondes maintenant et qui demandait tout un échange ?",
+      "de": "Was klären wir heute in Sekunden, wofür wir früher ein ganzes Gespräch brauchten?",
+      "it": "Cosa risolviamo in due secondi ora e prima richiedeva un discorso intero?"
+    }
+  },
+  {
+    "id": "q0198",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "playful",
+    "text": {
+      "en": "What would you never let anyone else reorganise?",
+      "es": "¿Qué no dejarías que nadie más reorganizara?",
+      "fr": "Que ne laisserais-tu jamais quelqu'un d'autre réorganiser ?",
+      "de": "Was würdest du niemals jemand anderen umräumen lassen?",
+      "it": "Cosa non lasceresti mai riorganizzare a qualcun altro?"
+    }
+  },
+  {
+    "id": "q0199",
+    "theme": "everyday",
+    "stage": "any",
+    "tone": "light",
+    "text": {
+      "en": "How does your home change when you are the only one in it?",
+      "es": "¿Cómo cambia tu casa cuando eres el único que está en ella?",
+      "fr": "Comment ton logement change-t-il quand tu y es seul ?",
+      "de": "Wie verändert sich dein Zuhause, wenn du allein darin bist?",
+      "it": "Come cambia casa tua quando ci sei solo tu?"
+    }
+  },
+  {
+    "id": "q0200",
+    "theme": "everyday",
+    "stage": "6m+",
+    "tone": "light",
+    "text": {
+      "en": "What is our most reliable way of ending a day well?",
+      "es": "¿Cuál es nuestra forma más fiable de terminar bien un día?",
+      "fr": "Quelle est notre façon la plus sûre de bien finir une journée ?",
+      "de": "Was ist unsere verlässlichste Art, einen Tag gut zu beenden?",
+      "it": "Qual è il nostro modo più affidabile di finire bene una giornata?"
+    }
+  }
+]
