@@ -66,7 +66,7 @@ final class ThemeUITests: XCTestCase {
         guard let image = shot.cgImage else { throw XCTSkip("the screenshot carries no bitmap") }
         let width = image.width
         let height = image.height
-        let content = try brightness(of: image, x: width / 2, y: height / 2)
+        let content = try brightness(of: image, x: width / 40, y: height / 2)
         let bottom = try brightness(of: image, x: width / 40, y: height - height / 40)
         return (content, bottom)
     }
