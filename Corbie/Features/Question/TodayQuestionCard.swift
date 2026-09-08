@@ -2,6 +2,7 @@ import CorbieCore
 import SwiftUI
 
 struct TodayQuestionCard: View {
+    @Environment(\.palette) private var palette
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @Environment(\.scenePhase) private var scenePhase
@@ -55,7 +56,7 @@ struct TodayQuestionCard: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.m) {
                 Text(model.text ?? "")
                     .corbieScreenTitle()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .lineLimit(3)
                     .minimumScaleFactor(0.6)
                     .fixedSize(horizontal: false, vertical: true)
@@ -81,9 +82,13 @@ struct TodayQuestionCard: View {
         return Text(statusLine(memberId: memberId, isViewer: isViewer, answered: answered))
             .corbieCaption()
             .fontWeight(answered ? .semibold : .regular)
-            .foregroundStyle(answered ? environment.memberColor(id: memberId) : CorbieColorPalette.text2)
+            .foregroundStyle(answered ? memberColor(memberId) : palette.text2)
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func memberColor(_ memberId: UUID?) -> Color {
+        environment.memberSlot(id: memberId).map(palette.member) ?? palette.text2
     }
 
     private func statusLine(memberId: UUID?, isViewer: Bool, answered: Bool) -> String {

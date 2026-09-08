@@ -2,6 +2,7 @@ import CorbieCore
 import SwiftUI
 
 struct QuestionHistoryView: View {
+    @Environment(\.palette) private var palette
     @Environment(AppEnvironment.self) private var environment
     @State private var model = QuestionHistoryViewModel()
 
@@ -30,7 +31,7 @@ struct QuestionHistoryView: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.vertical, CorbieSpacing.m)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationTitle(String(localized: "question.history.title"))
         .navigationBarTitleDisplayMode(.large)
         .searchable(text: $model.search, prompt: Text("question.history.search"))
@@ -53,17 +54,17 @@ struct QuestionHistoryView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
                 Text(copy.day(of: day))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                 Text(copy.text(of: day) ?? day.questionId)
                     .corbieBody()
                     .fontWeight(.semibold)
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
                 if day.answers.isEmpty {
                     Text("question.history.skipped")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 } else {
                     ForEach(day.answers) { answer in
                         answerLine(answer)
@@ -75,11 +76,11 @@ struct QuestionHistoryView: View {
 
     @ViewBuilder private func answerLine(_ answer: QuestionAnswerDTO) -> some View {
         HStack(alignment: .top, spacing: CorbieSpacing.xs) {
-            MemberDot(color: environment.memberColor(id: answer.memberId))
+            MemberDot(slot: environment.memberSlot(id: answer.memberId))
                 .padding(.top, CorbieSpacing.xxs)
             Text(answer.text ?? String(localized: "question.history.locked"))
                 .corbieCaption()
-                .foregroundStyle(answer.isHidden ? CorbieColorPalette.text2 : CorbieColorPalette.text)
+                .foregroundStyle(answer.isHidden ? palette.text2 : palette.text)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
             Spacer(minLength: 0)

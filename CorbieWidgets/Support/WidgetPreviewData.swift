@@ -25,12 +25,12 @@ enum WidgetPreviewData {
             text: "What made you laugh today",
             viewer: WidgetQuestionMember(
                 name: "Ilya",
-                colorKey: MemberColorKey.defaultA.rawValue,
+                colorKey: MemberColorSlot.creatorDefault.rawValue,
                 hasAnswered: viewerAnswered
             ),
             partner: WidgetQuestionMember(
                 name: "Sofia",
-                colorKey: MemberColorKey.defaultB.rawValue,
+                colorKey: MemberColorSlot.partnerDefault.rawValue,
                 hasAnswered: false
             ),
             isRevealed: false,

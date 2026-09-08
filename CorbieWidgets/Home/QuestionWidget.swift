@@ -51,6 +51,7 @@ struct QuestionMediumWidget: Widget {
 }
 
 struct QuestionSmallWidgetView: View {
+    @Environment(\.palette) private var palette
     let entry: QuestionEntry
 
     var body: some View {
@@ -62,7 +63,7 @@ struct QuestionSmallWidgetView: View {
                     WidgetHeading(text: String(localized: "widget.question.heading"))
                     Text(text)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .lineLimit(4)
                         .minimumScaleFactor(0.7)
                     Spacer(minLength: 0)
@@ -79,6 +80,7 @@ struct QuestionSmallWidgetView: View {
 }
 
 struct QuestionMediumWidgetView: View {
+    @Environment(\.palette) private var palette
     let entry: QuestionEntry
 
     var body: some View {
@@ -90,7 +92,7 @@ struct QuestionMediumWidgetView: View {
                     WidgetHeading(text: String(localized: "widget.question.heading"))
                     Text(text)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .lineLimit(3)
                         .minimumScaleFactor(0.8)
                     Spacer(minLength: 0)
@@ -110,6 +112,7 @@ struct QuestionMediumWidgetView: View {
 }
 
 struct WidgetQuestionDots: View {
+    @Environment(\.palette) private var palette
     let snapshot: QuestionSnapshot
 
     var body: some View {
@@ -131,7 +134,7 @@ struct WidgetQuestionDots: View {
     }
 
     @ViewBuilder private func dot(_ member: WidgetQuestionMember?) -> some View {
-        let color = member?.colorKey.map { MemberColor(key: $0).color } ?? CorbieColorPalette.text2
+        let color = palette.member(storedKey: member?.colorKey)
         if member?.hasAnswered == true {
             Circle()
                 .fill(color)
@@ -145,6 +148,7 @@ struct WidgetQuestionDots: View {
 }
 
 struct WidgetQuestionStatus: View {
+    @Environment(\.palette) private var palette
     let member: WidgetQuestionMember?
     let isViewer: Bool
 
@@ -158,10 +162,8 @@ struct WidgetQuestionStatus: View {
     }
 
     private var color: Color {
-        guard member?.hasAnswered == true, let colorKey = member?.colorKey else {
-            return CorbieColorPalette.text2
-        }
-        return MemberColor(key: colorKey).color
+        guard member?.hasAnswered == true else { return palette.text2 }
+        return palette.member(storedKey: member?.colorKey)
     }
 }
 
