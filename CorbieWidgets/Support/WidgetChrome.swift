@@ -341,7 +341,9 @@ struct WidgetPlanLine: View {
     private let title: String
     private let progress: Double
     private let overspentFraction: Double
+    private let isOpenEnded: Bool
     private let amountText: String?
+    private let contributionsText: String?
     private let overspendText: String?
     private let stepsText: String?
 
@@ -353,6 +355,8 @@ struct WidgetPlanLine: View {
             saved: plan.savedText,
             target: plan.targetText,
             overspent: plan.overspentText,
+            isOpenEnded: plan.isOpenEnded,
+            expenseCount: plan.expenseCount,
             doneStepCount: plan.doneStepCount,
             stepCount: plan.stepCount
         )
@@ -366,6 +370,8 @@ struct WidgetPlanLine: View {
             saved: plan.savedText,
             target: plan.targetText,
             overspent: nil,
+            isOpenEnded: plan.isOpenEnded,
+            expenseCount: plan.expenseCount,
             doneStepCount: plan.doneStepCount,
             stepCount: plan.stepCount
         )
@@ -378,17 +384,25 @@ struct WidgetPlanLine: View {
         saved: String?,
         target: String?,
         overspent: String?,
+        isOpenEnded: Bool,
+        expenseCount: Int,
         doneStepCount: Int,
         stepCount: Int
     ) {
         self.title = title
         self.progress = progress
         self.overspentFraction = overspentFraction
-        if let saved, let target {
+        self.isOpenEnded = isOpenEnded
+        if isOpenEnded {
+            amountText = saved
+        } else if let saved, let target {
             amountText = String(format: String(localized: "plans.card.progress"), saved, target)
         } else {
             amountText = nil
         }
+        contributionsText = isOpenEnded
+            ? String.localizedStringWithFormat(String(localized: "plans.card.contributions"), expenseCount)
+            : nil
         overspendText = overspent.map { String(format: String(localized: "plans.card.overspend"), $0) }
         stepsText = stepCount > 0
             ? String(
@@ -414,26 +428,48 @@ struct WidgetPlanLine: View {
                         .lineLimit(1)
                 }
             }
-            ProgressBar(
-                value: progress,
-                overspend: overspentFraction,
-                accessibilityLabel: String(localized: "plans.card.progress.label"),
-                accessibilityValue: amountText ?? ""
-            )
-            HStack(spacing: CorbieSpacing.xs) {
-                if let amountText {
-                    Text(amountText)
-                        .corbieMono()
-                        .foregroundStyle(palette.text2)
-                        .lineLimit(1)
+            if isOpenEnded {
+                openAmount
+            } else {
+                ProgressBar(
+                    value: progress,
+                    overspend: overspentFraction,
+                    accessibilityLabel: String(localized: "plans.card.progress.label"),
+                    accessibilityValue: amountText ?? ""
+                )
+                HStack(spacing: CorbieSpacing.xs) {
+                    if let amountText {
+                        Text(amountText)
+                            .corbieMono()
+                            .foregroundStyle(palette.text2)
+                            .lineLimit(1)
+                    }
+                    Spacer(minLength: CorbieSpacing.xs)
+                    if let stepsText {
+                        Text(stepsText)
+                            .corbieMono()
+                            .foregroundStyle(palette.text2)
+                            .lineLimit(1)
+                    }
                 }
-                Spacer(minLength: CorbieSpacing.xs)
-                if let stepsText {
-                    Text(stepsText)
-                        .corbieMono()
-                        .foregroundStyle(palette.text2)
-                        .lineLimit(1)
-                }
+            }
+        }
+    }
+
+    private var openAmount: some View {
+        HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
+            Text(amountText ?? "")
+                .corbieBody()
+                .fontWeight(.semibold)
+                .foregroundStyle(palette.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+            Spacer(minLength: CorbieSpacing.xs)
+            if let contributionsText {
+                Text(contributionsText)
+                    .corbieMono()
+                    .foregroundStyle(palette.text2)
+                    .lineLimit(1)
             }
         }
     }

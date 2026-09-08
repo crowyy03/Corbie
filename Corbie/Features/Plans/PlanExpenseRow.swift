@@ -19,11 +19,16 @@ struct PlanExpenseRow: View {
                         Text(Money(amount: expense.amount, currency: expense.currency).formatted())
                             .corbieBody()
                             .fontWeight(.semibold)
-                            .foregroundStyle(palette.text)
+                            .foregroundStyle(expense.isWithdrawal ? palette.warn : palette.text)
                         if expense.isConverted {
                             Text(Money(amount: expense.amountInPlanCurrency, currency: planCurrency).approximate())
                                 .corbieMono()
                                 .foregroundStyle(palette.text2)
+                        }
+                        if expense.isWithdrawal {
+                            Text("plans.expense.takenout")
+                                .corbieMono()
+                                .foregroundStyle(palette.warn)
                         }
                     }
                     if let note = expense.note, note.isEmpty == false {
@@ -68,6 +73,19 @@ struct PlanExpenseRow: View {
                 currency: "USD",
                 amountInPlanCurrency: 640,
                 note: "flights",
+                date: Date()
+            ),
+            planCurrency: "USD",
+            memberSlot: MemberColorSlot.teal,
+            memberName: "you"
+        )
+        PlanExpenseRow(
+            expense: PlanExpenseDTO(
+                id: UUID(),
+                amount: -120,
+                currency: "USD",
+                amountInPlanCurrency: -120,
+                note: "tyres",
                 date: Date()
             ),
             planCurrency: "USD",

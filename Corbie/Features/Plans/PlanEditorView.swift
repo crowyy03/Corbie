@@ -24,6 +24,14 @@ struct PlanEditorView: View {
                 }
             }
         ) {
+            FieldRow(
+                label: String(localized: "plans.editor.field.kind"),
+                hint: model.isOpenEnded ? String(localized: "plans.editor.kind.open.hint") : nil
+            ) {
+                SegmentedPicker(selection: $model.kind, options: PlanEditorViewModel.Kind.allCases) { kind in
+                    PlansCopy.text(kind.titleKey)
+                }
+            }
             TextFieldRow(
                 label: String(localized: "plans.editor.field.title"),
                 placeholder: String(localized: "plans.editor.field.title.placeholder"),
@@ -35,10 +43,12 @@ struct PlanEditorView: View {
                 title: { PlansCopy.text($0.titleKey) },
                 selection: $model.type
             )
-            PlansAmountField(
-                label: String(localized: "plans.editor.field.target"),
-                amount: $model.targetAmount
-            )
+            if model.isOpenEnded == false {
+                PlansAmountField(
+                    label: String(localized: "plans.editor.field.target"),
+                    amount: $model.targetAmount
+                )
+            }
             PlansCurrencyField(
                 label: String(localized: "plans.editor.field.currency"),
                 currencies: model.currencies,

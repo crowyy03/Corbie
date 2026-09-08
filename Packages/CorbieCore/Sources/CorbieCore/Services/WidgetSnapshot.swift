@@ -191,6 +191,8 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
     public let isOverspent: Bool
     public let overspentText: String?
     public let overspentFraction: Double
+    public let isOpenEnded: Bool
+    public let expenseCount: Int
     public let doneStepCount: Int
     public let stepCount: Int
     public let isPremium: Bool
@@ -204,6 +206,8 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
         isOverspent: Bool,
         overspentText: String?,
         overspentFraction: Double = 0,
+        isOpenEnded: Bool = false,
+        expenseCount: Int = 0,
         doneStepCount: Int = 0,
         stepCount: Int = 0,
         isPremium: Bool
@@ -216,6 +220,8 @@ public struct PlanProgressSnapshot: Sendable, Codable, Equatable {
         self.isOverspent = isOverspent
         self.overspentText = overspentText
         self.overspentFraction = overspentFraction
+        self.isOpenEnded = isOpenEnded
+        self.expenseCount = expenseCount
         self.doneStepCount = doneStepCount
         self.stepCount = stepCount
         self.isPremium = isPremium

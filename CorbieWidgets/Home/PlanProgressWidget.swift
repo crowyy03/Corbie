@@ -123,6 +123,21 @@ struct PlanProgressWidgetView: View {
     PlanProgressEntry(
         date: Date(),
         snapshot: PlanProgressSnapshot(
+            planId: UUID(),
+            title: "The pot",
+            progress: 0,
+            savedText: "$1,640",
+            targetText: nil,
+            isOverspent: false,
+            overspentText: nil,
+            isOpenEnded: true,
+            expenseCount: 6,
+            isPremium: true
+        )
+    )
+    PlanProgressEntry(
+        date: Date(),
+        snapshot: PlanProgressSnapshot(
             planId: nil,
             title: nil,
             progress: 0,

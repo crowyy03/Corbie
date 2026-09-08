@@ -26,6 +26,8 @@ public struct TodayPlan: Sendable, Codable, Equatable, Identifiable {
     public let progress: Double
     public let savedText: String
     public let targetText: String
+    public let isOpenEnded: Bool
+    public let expenseCount: Int
     public let doneStepCount: Int
     public let stepCount: Int
 
@@ -36,6 +38,8 @@ public struct TodayPlan: Sendable, Codable, Equatable, Identifiable {
         progress: Double,
         savedText: String,
         targetText: String,
+        isOpenEnded: Bool = false,
+        expenseCount: Int = 0,
         doneStepCount: Int,
         stepCount: Int
     ) {
@@ -45,6 +49,8 @@ public struct TodayPlan: Sendable, Codable, Equatable, Identifiable {
         self.progress = progress
         self.savedText = savedText
         self.targetText = targetText
+        self.isOpenEnded = isOpenEnded
+        self.expenseCount = expenseCount
         self.doneStepCount = doneStepCount
         self.stepCount = stepCount
     }
@@ -57,6 +63,8 @@ public struct TodayPlan: Sendable, Codable, Equatable, Identifiable {
             progress: plan.progress,
             savedText: Money(amount: plan.totalSavedAmount, currency: plan.currency).formatted(locale: locale),
             targetText: Money(amount: plan.targetAmount, currency: plan.currency).formatted(locale: locale),
+            isOpenEnded: plan.isOpenEnded,
+            expenseCount: plan.expenseCount,
             doneStepCount: plan.doneStepCount,
             stepCount: plan.stepCount
         )

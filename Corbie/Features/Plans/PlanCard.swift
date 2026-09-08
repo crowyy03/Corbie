@@ -12,12 +12,20 @@ struct PlanCard: View {
         Card(isHighlighted: plan.status == .active) {
             VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                 header
-                ProgressBar(
-                    value: totals.progress,
-                    overspend: totals.overspendFraction,
-                    accessibilityLabel: String(localized: "plans.card.progress.label"),
-                    accessibilityValue: totals.savedOfTarget()
-                )
+                if plan.showsProgress {
+                    ProgressBar(
+                        value: totals.progress,
+                        overspend: totals.overspendFraction,
+                        accessibilityLabel: String(localized: "plans.card.progress.label"),
+                        accessibilityValue: totals.savedOfTarget()
+                    )
+                } else if plan.isOpenEnded {
+                    Text(totals.money(totals.saved).formatted())
+                        .corbieCounter()
+                        .foregroundStyle(palette.text)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.4)
+                }
                 footer
                 if let steps = planStepsBadge(done: plan.doneStepCount, total: plan.stepCount) {
                     Text(steps)
@@ -51,9 +59,14 @@ struct PlanCard: View {
         }
     }
 
+    private var summary: String {
+        guard plan.isOpenEnded else { return totals.savedOfTarget() }
+        return planOpenSubtitle(startedAt: plan.createdAt, contributionCount: plan.expenseCount)
+    }
+
     private var footer: some View {
         HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
-            Text(totals.savedOfTarget())
+            Text(summary)
                 .corbieMono()
                 .foregroundStyle(palette.text2)
             Spacer(minLength: CorbieSpacing.xs)
@@ -100,15 +113,28 @@ struct CompactPlanCard: View {
                             .lineLimit(2, reservesSpace: true)
                         Spacer(minLength: 0)
                     }
-                    ProgressBar(
-                        value: plan.progress,
-                        accessibilityLabel: String(localized: "plans.card.progress.label"),
-                        accessibilityValue: amount
-                    )
-                    Text(amount)
-                        .corbieMono()
-                        .foregroundStyle(palette.text2)
-                        .lineLimit(1)
+                    if plan.isOpenEnded {
+                        Text(plan.savedText)
+                            .corbieBody()
+                            .fontWeight(.semibold)
+                            .foregroundStyle(palette.text)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
+                        Text(planContributions(count: plan.expenseCount))
+                            .corbieMono()
+                            .foregroundStyle(palette.text2)
+                            .lineLimit(1)
+                    } else {
+                        ProgressBar(
+                            value: plan.progress,
+                            accessibilityLabel: String(localized: "plans.card.progress.label"),
+                            accessibilityValue: amount
+                        )
+                        Text(amount)
+                            .corbieMono()
+                            .foregroundStyle(palette.text2)
+                            .lineLimit(1)
+                    }
                     if showsSteps {
                         Text(steps ?? "")
                             .corbieMono()
@@ -152,6 +178,19 @@ struct CompactPlanCard: View {
                 currency: "USD",
                 savedAmount: 4000,
                 addedAmount: 4340
+            )
+        )
+        PlanCard(
+            plan: PlanDTO(
+                id: UUID(),
+                title: "The pot",
+                type: .other,
+                currency: "USD",
+                savedAmount: 400,
+                addedAmount: 1240,
+                isOpenEnded: true,
+                createdAt: Date().addingTimeInterval(-120 * 24 * 60 * 60),
+                expenseCount: 6
             )
         )
     }

@@ -129,8 +129,8 @@ import Testing
             )
         )
         let stored = try #require(try await repository.plan(id: plan.id))
-        #expect(stored.total == 520)
-        #expect(stored.contributionCount == 2)
+        #expect(stored.totalSavedAmount == 520)
+        #expect(stored.expenseCount == 2)
         #expect(stored.progress == 0)
         #expect(stored.showsProgress == false)
         #expect(stored.leftAmount == 0)
@@ -155,6 +155,19 @@ import Testing
             planId: plan.id,
             draft: PlanExpenseDraft(amount: 500, currency: "USD", addedByMemberId: world.me.id)
         )
+        _ = try await repository.addExpense(
+            planId: plan.id,
+            draft: PlanExpenseDraft(amount: 150, currency: "USD", addedByMemberId: world.partner.id)
+        )
+        _ = try await repository.addExpense(
+            planId: plan.id,
+            draft: PlanExpenseDraft(
+                amount: 200,
+                currency: "EUR",
+                fxRateToPlanCurrency: 1.1,
+                addedByMemberId: world.me.id
+            )
+        )
         let takenOut = try await repository.addExpense(
             planId: plan.id,
             draft: PlanExpenseDraft(amount: -120, currency: "USD", note: "Tyres", addedByMemberId: world.partner.id)
@@ -163,8 +176,8 @@ import Testing
         #expect(takenOut.amountInPlanCurrency == -120)
 
         let stored = try #require(try await repository.plan(id: plan.id))
-        #expect(stored.total == 380)
-        #expect(stored.contributionCount == 2)
+        #expect(stored.totalSavedAmount == 750)
+        #expect(stored.expenseCount == 4)
         let expenses = try await repository.expenses(planId: plan.id)
         #expect(expenses.filter(\.isWithdrawal).count == 1)
     }

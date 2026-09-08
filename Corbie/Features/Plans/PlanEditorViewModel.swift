@@ -5,7 +5,15 @@ import SwiftUI
 @MainActor
 @Observable
 final class PlanEditorViewModel {
+    enum Kind: String, CaseIterable, Hashable {
+        case targeted
+        case open
+
+        var titleKey: String { "plans.editor.kind." + rawValue }
+    }
+
     var title = ""
+    var kind: Kind = .targeted
     var type: PlanType = .other
     var targetAmount: Double = 0
     var savedAmount: Double = 0
@@ -25,6 +33,7 @@ final class PlanEditorViewModel {
         existing = plan
         guard let plan else { return }
         title = plan.title
+        kind = plan.isOpenEnded ? .open : .targeted
         type = plan.type
         targetAmount = plan.targetAmount
         savedAmount = plan.savedAmount
@@ -37,8 +46,11 @@ final class PlanEditorViewModel {
 
     var isEditing: Bool { existing != nil }
 
+    var isOpenEnded: Bool { kind == .open }
+
     var canSave: Bool {
-        isSaving == false && title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+        guard isSaving == false, trimmedTitle.isEmpty == false else { return false }
+        return isOpenEnded || targetAmount > 0
     }
 
     func attach(_ environment: AppEnvironment) {
@@ -55,38 +67,47 @@ final class PlanEditorViewModel {
         }
     }
 
+    func draft(spaceId: UUID, createdByMemberId: UUID?) -> PlanDraft {
+        PlanDraft(
+            spaceId: spaceId,
+            title: trimmedTitle,
+            type: type,
+            targetAmount: isOpenEnded ? 0 : targetAmount,
+            currency: currency,
+            savedAmount: savedAmount,
+            isOpenEnded: isOpenEnded,
+            startAt: hasDates ? startAt : nil,
+            endAt: hasDates ? endAt : nil,
+            note: trimmedNote,
+            createdByMemberId: createdByMemberId
+        )
+    }
+
+    func updated(_ plan: PlanDTO) -> PlanDTO {
+        var edited = plan
+        edited.title = trimmedTitle
+        edited.type = type
+        edited.isOpenEnded = isOpenEnded
+        edited.targetAmount = isOpenEnded ? 0 : targetAmount
+        edited.savedAmount = savedAmount
+        edited.currency = currency
+        edited.startAt = hasDates ? startAt : nil
+        edited.endAt = hasDates ? endAt : nil
+        edited.note = trimmedNote
+        return edited
+    }
+
     func save() async -> Bool {
         guard let environment, let space = environment.space else { return false }
         guard environment.premiumGate.require(isEditing ? .edit : .create) else { return false }
         isSaving = true
         defer { isSaving = false }
-        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
         do {
-            if var plan = existing {
-                plan.title = trimmedTitle
-                plan.type = type
-                plan.targetAmount = targetAmount
-                plan.savedAmount = savedAmount
-                plan.currency = currency
-                plan.startAt = hasDates ? startAt : nil
-                plan.endAt = hasDates ? endAt : nil
-                plan.note = trimmedNote.isEmpty ? nil : trimmedNote
-                _ = try await environment.repositories.plans.update(plan)
+            if let existing {
+                _ = try await environment.repositories.plans.update(updated(existing))
             } else {
                 let created = try await environment.repositories.plans.create(
-                    PlanDraft(
-                        spaceId: space.id,
-                        title: trimmedTitle,
-                        type: type,
-                        targetAmount: targetAmount,
-                        currency: currency,
-                        savedAmount: savedAmount,
-                        startAt: hasDates ? startAt : nil,
-                        endAt: hasDates ? endAt : nil,
-                        note: trimmedNote.isEmpty ? nil : trimmedNote,
-                        createdByMemberId: environment.currentMember?.id
-                    )
+                    draft(spaceId: space.id, createdByMemberId: environment.currentMember?.id)
                 )
                 environment.analytics.record(.planCreated(type: type, isOpenEnded: created.isOpenEnded))
             }
@@ -95,5 +116,14 @@ final class PlanEditorViewModel {
             environment.report(error)
             return false
         }
+    }
+
+    private var trimmedTitle: String {
+        title.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private var trimmedNote: String? {
+        let trimmed = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
     }
 }

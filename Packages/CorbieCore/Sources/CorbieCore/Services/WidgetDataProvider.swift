@@ -349,10 +349,15 @@ public struct WidgetDataProvider: Sendable {
             )
         case .planRing:
             let plans = try await controller.repositories.plans.plans(spaceId: context.space.id, statuses: [.active])
+            guard let plan = plans.first else {
+                return LockCircularSnapshot(mode: mode, value: nil, progress: nil, isPremium: context.isPremium)
+            }
             return LockCircularSnapshot(
                 mode: mode,
-                value: plans.first.map { Int(($0.progress * 100).rounded()) },
-                progress: plans.first?.progress,
+                value: plan.isOpenEnded
+                    ? Int(plan.totalSavedAmount.rounded())
+                    : Int((plan.progress * 100).rounded()),
+                progress: plan.isOpenEnded ? nil : plan.progress,
                 isPremium: context.isPremium
             )
         case .countdown:
@@ -532,6 +537,8 @@ public struct WidgetDataProvider: Sendable {
                 ? Money(amount: plan.overspentAmount, currency: plan.currency).formatted(locale: locale)
                 : nil,
             overspentFraction: plan.overspentFraction,
+            isOpenEnded: plan.isOpenEnded,
+            expenseCount: plan.expenseCount,
             doneStepCount: plan.doneStepCount,
             stepCount: plan.stepCount,
             isPremium: isPremium

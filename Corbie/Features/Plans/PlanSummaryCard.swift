@@ -11,17 +11,21 @@ struct PlanSummaryCard: View {
         Card(isHighlighted: true) {
             VStack(alignment: .leading, spacing: CorbieSpacing.m) {
                 header
-                ProgressBar(
-                    value: totals.progress,
-                    overspend: totals.overspendFraction,
-                    accessibilityLabel: String(localized: "plans.card.progress.label"),
-                    accessibilityValue: totals.savedOfTarget()
-                )
-                amounts
-                if totals.isOverspent {
-                    Text(overspendText)
-                        .corbieMono()
-                        .foregroundStyle(palette.warn)
+                if plan.isOpenEnded {
+                    total
+                } else {
+                    ProgressBar(
+                        value: totals.progress,
+                        overspend: totals.overspendFraction,
+                        accessibilityLabel: String(localized: "plans.card.progress.label"),
+                        accessibilityValue: totals.savedOfTarget()
+                    )
+                    amounts
+                    if totals.isOverspent {
+                        Text(overspendText)
+                            .corbieMono()
+                            .foregroundStyle(palette.warn)
+                    }
                 }
                 if let dates = planDateRange(start: plan.startAt, end: plan.endAt) {
                     Text(dates)
@@ -47,6 +51,21 @@ struct PlanSummaryCard: View {
                     .foregroundStyle(palette.text2)
             }
         }
+    }
+
+    private var total: some View {
+        VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
+            Text(totals.money(totals.saved).formatted())
+                .corbieCounter()
+                .foregroundStyle(palette.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.4)
+            Text(planOpenSubtitle(startedAt: plan.createdAt, contributionCount: plan.expenseCount))
+                .corbieMono()
+                .foregroundStyle(palette.text2)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
     }
 
     private var amounts: some View {
@@ -92,9 +111,23 @@ struct PlanSummaryCard: View {
         startAt: Date(),
         endAt: Date().addingTimeInterval(30 * 24 * 60 * 60)
     )
-    return PlanSummaryCard(plan: plan, totals: PlanTotals(plan: plan))
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieTheme.sand.palette.bg)
+    let pot = PlanDTO(
+        id: UUID(),
+        title: "The pot",
+        type: .other,
+        currency: "USD",
+        savedAmount: 400,
+        addedAmount: 1240,
+        isOpenEnded: true,
+        createdAt: Date().addingTimeInterval(-120 * 24 * 60 * 60),
+        expenseCount: 6
+    )
+    return VStack(spacing: CorbieSpacing.m) {
+        PlanSummaryCard(plan: plan, totals: PlanTotals(plan: plan))
+        PlanSummaryCard(plan: pot, totals: PlanTotals(plan: pot))
+    }
+    .padding(CorbieSpacing.l)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

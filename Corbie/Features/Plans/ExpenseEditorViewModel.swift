@@ -7,6 +7,7 @@ import SwiftUI
 final class ExpenseEditorViewModel {
     var amount: Double = 0
     var currency: String
+    var isWithdrawal = false
     var note = ""
     var date = Date()
     private(set) var isSaving = false
@@ -21,10 +22,13 @@ final class ExpenseEditorViewModel {
         currency = plan.currency
     }
 
+    var allowsWithdrawal: Bool { plan.isOpenEnded }
 
     var needsConversion: Bool { currency != plan.currency }
 
     var canSave: Bool { isSaving == false && amount > 0 }
+
+    var signedAmount: Double { isWithdrawal ? -amount : amount }
 
     func attach(_ environment: AppEnvironment) {
         self.environment = environment
@@ -37,12 +41,23 @@ final class ExpenseEditorViewModel {
         currencies = codes
     }
 
+    func draft(rate: Double, addedByMemberId: UUID?) -> PlanExpenseDraft {
+        let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        return PlanExpenseDraft(
+            amount: signedAmount,
+            currency: currency,
+            fxRateToPlanCurrency: rate,
+            note: trimmedNote.isEmpty ? nil : trimmedNote,
+            date: date,
+            addedByMemberId: addedByMemberId
+        )
+    }
+
     func save() async -> Bool {
         guard let environment else { return false }
         guard environment.premiumGate.require(.create) else { return false }
         isSaving = true
         defer { isSaving = false }
-        let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
         do {
             let conversion = try await environment.fx.convert(
                 amount: amount,
@@ -51,16 +66,9 @@ final class ExpenseEditorViewModel {
             )
             let expense = try await environment.repositories.plans.addExpense(
                 planId: plan.id,
-                draft: PlanExpenseDraft(
-                    amount: amount,
-                    currency: currency,
-                    fxRateToPlanCurrency: conversion.rate,
-                    note: trimmedNote.isEmpty ? nil : trimmedNote,
-                    date: date,
-                    addedByMemberId: environment.currentMember?.id
-                )
+                draft: draft(rate: conversion.rate, addedByMemberId: environment.currentMember?.id)
             )
-            environment.analytics.record(.expenseAdded(isNegative: expense.amount < 0))
+            environment.analytics.record(.expenseAdded(isNegative: expense.isWithdrawal))
             return true
         } catch {
             environment.report(error)

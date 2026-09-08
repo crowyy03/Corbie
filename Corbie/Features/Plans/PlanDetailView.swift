@@ -105,7 +105,9 @@ struct PlanDetailView: View {
                 .plansListRow()
             }
         } header: {
-            PlansSectionHeader(text: String(localized: "plans.detail.progress"))
+            PlansSectionHeader(
+                text: String(localized: plan.isOpenEnded ? "plans.detail.total" : "plans.detail.progress")
+            )
         }
     }
 

@@ -73,7 +73,10 @@ struct LockCircularWidgetView: View {
     private var accessibilityLabel: String {
         switch entry.snapshot.mode {
         case .daysTogether: return String(localized: "us.counters.days")
-        case .planRing: return String(localized: "plans.card.progress.label")
+        case .planRing:
+            return entry.snapshot.progress == nil
+                ? String(localized: "plans.detail.saved")
+                : String(localized: "plans.card.progress.label")
         case .countdown: return String(localized: "widget.dates.heading")
         }
     }
@@ -82,8 +85,8 @@ struct LockCircularWidgetView: View {
         Group {
             if entry.snapshot.isPremium == false {
                 LockedCircularView()
-            } else if entry.snapshot.mode == .planRing {
-                ring
+            } else if entry.snapshot.mode == .planRing, let progress = entry.snapshot.progress {
+                ring(progress: progress)
             } else if let value = entry.snapshot.value {
                 ZStack {
                     AccessoryWidgetBackground()
@@ -109,8 +112,8 @@ struct LockCircularWidgetView: View {
         }
     }
 
-    private var ring: some View {
-        Gauge(value: min(max(entry.snapshot.progress ?? 0, 0), 1)) {
+    private func ring(progress: Double) -> some View {
+        Gauge(value: min(max(progress, 0), 1)) {
             Text("widget.lock.circular.plan")
         } currentValueLabel: {
             Text((entry.snapshot.value ?? 0), format: .number)

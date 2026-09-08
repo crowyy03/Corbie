@@ -133,6 +133,20 @@ func planStepsBadge(done: Int, total: Int, locale: Locale = .current) -> String?
     )
 }
 
+func planContributions(count: Int) -> String {
+    String.localizedStringWithFormat(String(localized: "plans.card.contributions"), count)
+}
+
+func planOpenSubtitle(startedAt: Date?, contributionCount: Int, locale: Locale = .current) -> String {
+    let contributions = planContributions(count: contributionCount)
+    guard let startedAt else { return contributions }
+    return String.localizedStringWithFormat(
+        String(localized: "plans.card.open.since"),
+        startedAt.formatted(.dateTime.month(.wide).year().locale(locale)),
+        contributions
+    )
+}
+
 func planStepDue(
     for step: PlanStepDTO,
     now: Date,

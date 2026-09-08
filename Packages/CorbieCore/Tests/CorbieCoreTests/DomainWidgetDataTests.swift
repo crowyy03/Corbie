@@ -136,6 +136,41 @@ import Testing
         #expect(snapshot.doneStepCount == 1)
     }
 
+    @Test func anOpenPlanReachesTheWidgetsAsAnAmountWithoutARing() async throws {
+        let world = try await makeWorld()
+        let repositories = world.seed.controller.repositories
+        let pot = try await repositories.plans.create(
+            PlanDraft(
+                spaceId: world.seed.space.id,
+                title: "The pot",
+                type: .other,
+                currency: "USD",
+                isOpenEnded: true,
+                createdByMemberId: world.seed.me.id
+            )
+        )
+        _ = try await repositories.plans.addExpense(
+            planId: pot.id,
+            draft: PlanExpenseDraft(amount: 300, currency: "USD", addedByMemberId: world.seed.me.id)
+        )
+
+        let snapshot = try await world.provider.planProgress(planId: pot.id, now: world.now)
+        #expect(snapshot.isOpenEnded)
+        #expect(snapshot.expenseCount == 1)
+        #expect(snapshot.savedText == "$300")
+        #expect(snapshot.progress == 0)
+        #expect(snapshot.isOverspent == false)
+
+        let ring = try await world.provider.lockCircular(mode: .planRing, now: world.now)
+        #expect(ring.progress == nil)
+        #expect(ring.value == 300)
+
+        let carousel = TodayPlan(try #require(try await repositories.plans.plan(id: pot.id)), locale: locale)
+        #expect(carousel.isOpenEnded)
+        #expect(carousel.expenseCount == 1)
+        #expect(carousel.savedText == "$300")
+    }
+
     @Test func upcomingDatesMergeAutoDatesAndEvents() async throws {
         let world = try await makeWorld()
         let snapshot = try await world.provider.upcomingDates(now: world.now)

@@ -12,6 +12,7 @@ final class PlansUITests: XCTestCase {
         let title = uniqueTitle("Wedding")
         openEditor(app, title: QACatalog.text("plans.editor.title.new"), emptyStateKey: "plans.empty.action")
         type(title, into: app.textFields[QACatalog.text("plans.editor.field.title")])
+        type("4000", into: app.textFields[QACatalog.text("plans.editor.field.target")])
         app.buttons[QAText.save].tap()
 
         let card = app.button(labelContaining: title)

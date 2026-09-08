@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct ExpenseEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: ExpenseEditorViewModel
@@ -31,6 +33,15 @@ struct ExpenseEditorView: View {
                 currencies: model.currencies,
                 selection: $model.currency
             )
+            if model.allowsWithdrawal {
+                Toggle(isOn: $model.isWithdrawal) {
+                    Text("plans.expense.takenout")
+                        .corbieBody()
+                        .foregroundStyle(palette.text)
+                }
+                .tint(palette.accent)
+                .frame(minHeight: CorbieMetrics.minimumTapTarget)
+            }
             PlansNoteField(
                 label: String(localized: "plans.expense.field.note"),
                 placeholder: String(localized: "plans.expense.field.note.placeholder"),
@@ -53,7 +64,7 @@ struct ExpenseEditorView: View {
 #if DEBUG
 #Preview {
     ExpenseEditorView(
-        plan: PlanDTO(id: UUID(), title: "Lisbon in October", type: .trip, targetAmount: 5000, currency: "USD")
+        plan: PlanDTO(id: UUID(), title: "The pot", type: .other, currency: "USD", isOpenEnded: true)
     )
     .environment(AppEnvironment.preview())
 }
