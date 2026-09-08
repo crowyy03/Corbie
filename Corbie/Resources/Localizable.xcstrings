@@ -3923,6 +3923,720 @@
         }
       }
     },
+    "chore.action.history": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühere Aufteilungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Past splits"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repartos anteriores"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partages précédents"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Divisioni precedenti"
+          }
+        }
+      }
+    },
+    "chore.action.nudge": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachfragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask them"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregúntale"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demandez-lui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiediglielo"
+          }
+        }
+      }
+    },
+    "chore.action.rate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste bewerten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate the list"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valorar la lista"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noter la liste"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valuta la lista"
+          }
+        }
+      }
+    },
+    "chore.action.resplit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neu aufteilen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split again"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repartir otra vez"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repartager"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dividi di nuovo"
+          }
+        }
+      }
+    },
+    "chore.action.reveal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufteilung ansehen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See the split"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver el reparto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir le partage"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedi la divisione"
+          }
+        }
+      }
+    },
+    "chore.action.start": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufteilung starten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start the split"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar el reparto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancer le partage"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inizia la divisione"
+          }
+        }
+      }
+    },
+    "chore.applied.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Aufgaben übernommen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Added to Tasks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadido a Tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouté aux Tâches"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiunto alle Attività"
+          }
+        }
+      }
+    },
+    "chore.builder.add.placeholder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigene hinzufügen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add your own"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir una vuestra"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter la vôtre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi la vostra"
+          }
+        }
+      }
+    },
+    "chore.builder.continue": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continua"
+          }
+        }
+      }
+    },
+    "chore.builder.count": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ausgewählt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld picked"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld elegidas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sélectionnées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld scelte"
+          }
+        }
+      }
+    },
+    "chore.builder.custom.caps": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigene"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your own"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuestras"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les vôtres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le vostre"
+          }
+        }
+      }
+    },
+    "chore.builder.header": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wählt die aus, die es bei euch wirklich gibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick the ones that actually happen in your place."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegid las que de verdad pasan en vuestra casa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez celles qui existent vraiment chez vous."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegliete quelle che succedono davvero a casa vostra."
+          }
+        }
+      }
+    },
+    "chore.builder.more": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld more to go"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "faltan %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "encore %lld"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ne mancano %lld"
+          }
+        }
+      }
+    },
+    "chore.builder.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ihr könnt diese Liste beide bearbeiten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "you can both edit this list"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "los dos podéis editar esta lista"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vous pouvez tous les deux modifier cette liste"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "potete modificare questa lista entrambi"
+          }
+        }
+      }
+    },
+    "chore.builder.remove": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovi"
+          }
+        }
+      }
+    },
+    "chore.frequency.daily": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jeden Tag"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "every day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cada día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "chaque jour"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ogni giorno"
+          }
+        }
+      }
+    },
+    "chore.frequency.everytwoweeks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "alle zwei Wochen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "every two weeks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cada dos semanas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "toutes les deux semaines"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ogni due settimane"
+          }
+        }
+      }
+    },
+    "chore.frequency.fewtimesaweek": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ein paar Mal pro Woche"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a few times a week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "varias veces por semana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "quelques fois par semaine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "qualche volta a settimana"
+          }
+        }
+      }
+    },
+    "chore.frequency.monthly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jeden Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "every month"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cada mes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "chaque mois"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ogni mese"
+          }
+        }
+      }
+    },
+    "chore.frequency.quarterly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "alle drei Monate"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "every three months"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cada tres meses"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tous les trois mois"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ogni tre mesi"
+          }
+        }
+      }
+    },
+    "chore.frequency.weekly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jede Woche"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "every week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cada semana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "chaque semaine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ogni settimana"
+          }
+        }
+      }
+    },
     "chore.group.car": {
       "localizations": {
         "de": {
@@ -4259,6 +4973,1536 @@
           "stringUnit": {
             "state": "translated",
             "value": "Spesa"
+          }
+        }
+      }
+    },
+    "chore.history.empty.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "frühere Aufteilungen landen hier"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "past splits land here"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "los repartos anteriores aparecen aquí"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "les partages précédents arrivent ici"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "le divisioni precedenti finiscono qui"
+          }
+        }
+      }
+    },
+    "chore.history.empty.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nichts aufgeteilt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing split yet."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hay repartos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun partage pour l'instant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ancora nessuna divisione."
+          }
+        }
+      }
+    },
+    "chore.history.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühere Aufteilungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Past splits"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repartos anteriores"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partages précédents"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Divisioni precedenti"
+          }
+        }
+      }
+    },
+    "chore.intro.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dauert etwa zwei Minuten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "takes about two minutes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lleva unos dos minutos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "environ deux minutes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ci vogliono circa due minuti"
+          }
+        }
+      }
+    },
+    "chore.intro.subtitle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr bewertet die Liste blind. Niemand sieht die Antworten des anderen, bis ihr beide fertig seid."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You both rate the list blind. Nobody sees the other's answers until you are both done."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los dos valoráis la lista a ciegas. Nadie ve las respuestas del otro hasta que ambos terminéis."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous notez la liste à l'aveugle. Personne ne voit les réponses de l'autre avant que vous ayez fini tous les deux."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valutate la lista al buio. Nessuno vede le risposte dell'altro finché non avete finito entrambi."
+          }
+        }
+      }
+    },
+    "chore.intro.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilt die Hausarbeit danach, wem sie am wenigsten ausmacht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split the chores by who minds them least."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repartid las tareas según a quién le molesten menos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partagez les corvées selon qui les supporte le mieux."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dividete le faccende in base a chi le sopporta meglio."
+          }
+        }
+      }
+    },
+    "chore.nudge.sent": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von hier aus kann Corbie nicht anklopfen. Bitte %@, die Aufgabenteilung zu öffnen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie cannot ping them from here. Ask %@ to open the chore split."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie no puede avisar desde aquí. Pídele a %@ que abra el reparto de tareas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbie ne peut pas prévenir d'ici. Demandez à %@ d'ouvrir le partage des corvées."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Da qui Corbie non può avvisare. Chiedi a %@ di aprire la divisione delle faccende."
+          }
+        }
+      }
+    },
+    "chore.rating.hint": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karte wischen oder unten tippen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "swipe the card, or tap below"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "desliza la tarjeta o toca abajo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "balayez la carte, ou touchez en dessous"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "scorri la carta o tocca qui sotto"
+          }
+        }
+      }
+    },
+    "chore.rating.progress": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld von %2$lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld of %2$lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld de %2$lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld sur %2$lld"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld di %2$lld"
+          }
+        }
+      }
+    },
+    "chore.rating.progress.label": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortschritt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progress"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progreso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progression"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avanzamento"
+          }
+        }
+      }
+    },
+    "chore.rating.undo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte zurücknehmen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo the last one"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deshacer la última"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler la dernière"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annulla l'ultima"
+          }
+        }
+      }
+    },
+    "chore.ready.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bisher wurde nichts geteilt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nothing has been shared yet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "todavía no se ha compartido nada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rien n'a encore été partagé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "non è stato ancora condiviso nulla"
+          }
+        }
+      }
+    },
+    "chore.ready.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr beide seid fertig."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You two are both done."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los dos habéis terminado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez tous les deux fini."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avete finito tutti e due."
+          }
+        }
+      }
+    },
+    "chore.reveal.apply": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Aufgaben übernehmen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add these to Tasks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir a Tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter aux Tâches"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi alle Attività"
+          }
+        }
+      }
+    },
+    "chore.reveal.footer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgeglichen danach, wie oft jede Sache anfällt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Balanced by how often each one comes up."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equilibrado según la frecuencia de cada tarea."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Équilibré selon la fréquence de chaque tâche."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilanciato in base a quanto spesso torna ognuna."
+          }
+        }
+      }
+    },
+    "chore.reveal.headline": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr seid euch einiger, als ihr dachtet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You two agree more than you thought."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estáis más de acuerdo de lo que creíais."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous êtes plus d'accord que vous ne le pensiez."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siete più d'accordo di quanto pensavate."
+          }
+        }
+      }
+    },
+    "chore.reveal.list.anyone": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer gerade da ist"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whoever's around"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quien esté"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qui est là"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chi c'è"
+          }
+        }
+      }
+    },
+    "chore.reveal.list.rotating": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Wechsel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rotating"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por turnos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En alternance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A turno"
+          }
+        }
+      }
+    },
+    "chore.reveal.list.theirs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@'s"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Di %@"
+          }
+        }
+      }
+    },
+    "chore.reveal.list.yours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deins"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yours"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuyas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les vôtres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le tue"
+          }
+        }
+      }
+    },
+    "chore.reveal.trade.theirs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt beim anderen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theirs now."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora es cosa del otro."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est à l'autre, maintenant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ora è cosa dell'altro."
+          }
+        }
+      }
+    },
+    "chore.reveal.trade.yours": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt bei dir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yours now."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora es cosa tuya."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est à vous, maintenant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ora è cosa tua."
+          }
+        }
+      }
+    },
+    "chore.said.partner.fine": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ macht es nichts aus."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ doesn't mind."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A %@ no le importa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça ne dérange pas %@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A %@ non pesa."
+          }
+        }
+      }
+    },
+    "chore.said.partner.hate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ macht es lieber nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ would rather not."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ preferiría no hacerlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ préfère éviter."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ preferirebbe evitarlo."
+          }
+        }
+      }
+    },
+    "chore.said.partner.like": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ macht es sogar gern."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ actually likes it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A %@ hasta le gusta."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ aime bien, même."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A %@ anzi piace."
+          }
+        }
+      }
+    },
+    "chore.said.partner.neutral": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ist es egal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ doesn't mind either way."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A %@ le da igual."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour %@, c'est égal."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A %@ è indifferente."
+          }
+        }
+      }
+    },
+    "chore.said.you.fine": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dir macht es nichts aus."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You don't mind."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A ti no te importa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça ne vous dérange pas."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A te non pesa."
+          }
+        }
+      }
+    },
+    "chore.said.you.hate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du machst es lieber nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You'd rather not."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferirías no hacerlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous préférez éviter."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferiresti evitarlo."
+          }
+        }
+      }
+    },
+    "chore.said.you.like": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du machst es sogar gern."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You actually like it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A ti hasta te gusta."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous aimez bien, même."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A te anzi piace."
+          }
+        }
+      }
+    },
+    "chore.said.you.neutral": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dir ist es egal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You don't mind either way."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A ti te da igual."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça vous est égal."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A te è indifferente."
+          }
+        }
+      }
+    },
+    "chore.state.applied": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übernommen im %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applied %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplicado en %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appliqué en %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applicato a %@"
+          }
+        }
+      }
+    },
+    "chore.state.building": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste entsteht gerade"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Building the list"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Armando la lista"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste en cours"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista in costruzione"
+          }
+        }
+      }
+    },
+    "chore.state.notstarted": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht begonnen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not started"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin empezar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore commencé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non ancora iniziata"
+          }
+        }
+      }
+    },
+    "chore.state.readytoreveal": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereit zum Aufdecken"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready to reveal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo para revelar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prêt à découvrir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pronto da scoprire"
+          }
+        }
+      }
+    },
+    "chore.state.resplit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dinge ändern sich. Neu aufteilen?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Things change. Want to re-split?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las cosas cambian. ¿Repartimos de nuevo?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les choses changent. On repartage ?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le cose cambiano. Rifacciamo la divisione?"
+          }
+        }
+      }
+    },
+    "chore.state.revealed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereit für die Aufgaben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready to add to Tasks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo para pasar a Tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prêt à passer dans Tâches"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pronto per le Attività"
+          }
+        }
+      }
+    },
+    "chore.state.waiting": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warten auf die Bewertung von %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for %@ to rate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando a que %@ valore"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En attente des notes de %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In attesa che %@ valuti"
+          }
+        }
+      }
+    },
+    "chore.state.yourturn": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du bist mit dem Bewerten dran"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your turn to rate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te toca valorar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À vous de noter"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocca a te valutare"
+          }
+        }
+      }
+    },
+    "chore.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausarbeit aufteilen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chore split"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reparto de tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partage des corvées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Divisione delle faccende"
+          }
+        }
+      }
+    },
+    "chore.verdict.fine": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Macht mir nichts aus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I don't mind"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No me importa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça ne me dérange pas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non mi pesa"
+          }
+        }
+      }
+    },
+    "chore.verdict.hate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieber nicht"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'd rather not"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefiero no"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plutôt pas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferisco di no"
+          }
+        }
+      }
+    },
+    "chore.verdict.like": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mache ich sogar gern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I actually like it"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hasta me gusta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "J'aime bien, en fait"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anzi, mi piace"
+          }
+        }
+      }
+    },
+    "chore.verdict.neutral": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ist mir egal"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No strong feelings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Me da igual"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça m'est égal"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mi è indifferente"
+          }
+        }
+      }
+    },
+    "chore.waiting.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nichts wird gezeigt, bis ihr beide fertig seid"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nothing is shown until you both finish"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no se muestra nada hasta que terminéis los dos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rien ne s'affiche tant que vous n'avez pas fini tous les deux"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "non si vede nulla finché non avete finito entrambi"
+          }
+        }
+      }
+    },
+    "chore.waiting.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig. Warten auf %@."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done. Waiting for %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo. Esperando a %@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminé. En attente de %@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fatto. In attesa di %@."
           }
         }
       }
@@ -23784,16 +26028,16 @@
     },
     "settings.you.name.hint": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "how your partner sees you"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "so sieht dich dein Partner"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "how your partner sees you"
           }
         },
         "es": {
@@ -25516,6 +27760,40 @@
         }
       }
     },
+    "tasks.empty.chores": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausarbeit aufteilen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split the chores"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repartir las tareas de casa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager les corvées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dividi le faccende"
+          }
+        }
+      }
+    },
     "tasks.empty.filtered.title": {
       "localizations": {
         "de": {
@@ -25784,6 +28062,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "non spuntata"
+          }
+        }
+      }
+    },
+    "tasks.row.chore": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aus der Aufgabenteilung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "from the chore split"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "del reparto de tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "issu du partage des corvées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dalla divisione delle faccende"
           }
         }
       }
@@ -26302,6 +28614,40 @@
         }
       }
     },
+    "today.block.chores": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausarbeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chores"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tareas de casa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corvées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faccende"
+          }
+        }
+      }
+    },
     "today.block.comingup": {
       "localizations": {
         "de": {
@@ -26540,18 +28886,154 @@
         }
       }
     },
-    "today.comingup.gift": {
+    "today.chores.rate.note": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "deine Antworten sieht noch niemand"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "no gift picked · %lld ideas saved"
+            "value": "nobody sees your answers yet"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nadie ve tus respuestas todavía"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "personne ne voit encore vos réponses"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nessuno vede ancora le tue risposte"
+          }
+        }
+      }
+    },
+    "today.chores.rate.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewerte die Liste der Hausarbeit."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate the chore list."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valora la lista de tareas de casa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notez la liste des corvées."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valuta la lista delle faccende."
+          }
+        }
+      }
+    },
+    "today.chores.ready.note": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "die Aufteilung wartet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the split is waiting"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "el reparto está listo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "le partage vous attend"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "la divisione vi aspetta"
+          }
+        }
+      }
+    },
+    "today.chores.ready.title": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr habt beide bewertet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You two have both rated."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los dos habéis valorado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez tous les deux noté."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avete valutato entrambi."
+          }
+        }
+      }
+    },
+    "today.comingup.gift": {
+      "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "kein Geschenk gewählt · %lld Ideen gespeichert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no gift picked · %lld ideas saved"
           }
         },
         "es": {
@@ -27484,6 +29966,40 @@
         }
       }
     },
+    "us.hub.chores": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausarbeit aufteilen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chore split"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reparto de tareas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partage des corvées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Divisione delle faccende"
+          }
+        }
+      }
+    },
     "us.hub.header": {
       "localizations": {
         "de": {
@@ -27880,6 +30396,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scrivi una lettera al futuro."
+          }
+        }
+      }
+    },
+    "us.tile.chores.line": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blind bewerten, jeder behält, was ihm am wenigsten ausmacht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate them blind, keep what you mind least."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valorad a ciegas y cada uno se queda con lo que menos le molesta."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notez à l'aveugle, chacun garde ce qui le dérange le moins."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valutate al buio, ognuno tiene ciò che gli pesa meno."
           }
         }
       }

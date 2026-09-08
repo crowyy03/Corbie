@@ -192,14 +192,17 @@ struct TasksView: View {
     private func emptyState(_ model: TasksViewModel) -> some View {
         Group {
             if model.isEmpty {
-                EmptyState(
-                    systemImage: "checklist",
-                    title: String(localized: "tasks.empty.title"),
-                    monoNote: String(localized: "tasks.empty.note"),
-                    cta: EmptyStateAction(title: String(localized: "tasks.empty.action")) {
-                        startCreating()
-                    }
-                )
+                VStack(spacing: CorbieSpacing.s) {
+                    EmptyState(
+                        systemImage: "checklist",
+                        title: String(localized: "tasks.empty.title"),
+                        monoNote: String(localized: "tasks.empty.note"),
+                        cta: EmptyStateAction(title: String(localized: "tasks.empty.action")) {
+                            startCreating()
+                        }
+                    )
+                    TasksChoreSplitAction()
+                }
             } else {
                 EmptyState(
                     systemImage: "line.3.horizontal.decrease",

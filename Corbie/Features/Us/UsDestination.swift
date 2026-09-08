@@ -6,6 +6,7 @@ enum UsDestination: Hashable {
     case people
     case person(UUID)
     case questions
+    case chores
     case settings
 }
 
@@ -23,6 +24,8 @@ private struct UsDestinationsModifier: ViewModifier {
                 PersonDetailView(personId: id)
             case .questions:
                 QuestionHistoryView()
+            case .chores:
+                ChoresView()
             case .settings:
                 SettingsView()
             }
