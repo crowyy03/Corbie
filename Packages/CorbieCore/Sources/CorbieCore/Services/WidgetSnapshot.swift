@@ -273,6 +273,44 @@ public struct CapsuleSnapshot: Sendable, Codable, Equatable {
     }
 }
 
+public struct WidgetQuestionMember: Sendable, Codable, Equatable {
+    public let name: String?
+    public let colorKey: String?
+    public let hasAnswered: Bool
+
+    public init(name: String?, colorKey: String?, hasAnswered: Bool) {
+        self.name = name
+        self.colorKey = colorKey
+        self.hasAnswered = hasAnswered
+    }
+}
+
+public struct QuestionSnapshot: Sendable, Codable, Equatable {
+    public let text: String?
+    public let viewer: WidgetQuestionMember?
+    public let partner: WidgetQuestionMember?
+    public let isRevealed: Bool
+    public let isPremium: Bool
+
+    public init(
+        text: String?,
+        viewer: WidgetQuestionMember?,
+        partner: WidgetQuestionMember?,
+        isRevealed: Bool,
+        isPremium: Bool
+    ) {
+        self.text = text
+        self.viewer = viewer
+        self.partner = partner
+        self.isRevealed = isRevealed
+        self.isPremium = isPremium
+    }
+
+    public static func blank(isPremium: Bool) -> QuestionSnapshot {
+        QuestionSnapshot(text: nil, viewer: nil, partner: nil, isRevealed: false, isPremium: isPremium)
+    }
+}
+
 public struct OurDaySnapshot: Sendable, Codable, Equatable {
     public let days: Int?
     public let tasks: [WidgetTask]

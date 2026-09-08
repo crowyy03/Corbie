@@ -16,6 +16,7 @@ enum Route: Equatable {
     case people
     case person(UUID)
     case us
+    case question
     case join(String)
     case paywall
 }
@@ -56,6 +57,7 @@ enum Router {
         case .people: return .people
         case let .person(id): return .person(id)
         case .us: return .us
+        case .question: return .question
         case .paywall: return .paywall
         }
     }
@@ -95,6 +97,8 @@ enum Router {
             return identified(rest.first, make: Route.person) ?? .people
         case "us":
             return .us
+        case CorbieRoute.Segment.question:
+            return .question
         case CorbieRoute.Segment.paywall:
             return .paywall
         case "join":

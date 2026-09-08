@@ -16,6 +16,7 @@ struct CorbieWidgetsBundle: WidgetBundle {
         DaysTogetherWidget()
         CountdownWidget()
         CapsuleWidget()
+        QuestionSmallWidget()
     }
 
     @WidgetBundleBuilder
@@ -27,6 +28,7 @@ struct CorbieWidgetsBundle: WidgetBundle {
         UpcomingDatesWidget()
         ShoppingWidget()
         FreeSlotsWidget()
+        QuestionMediumWidget()
     }
 
     @WidgetBundleBuilder

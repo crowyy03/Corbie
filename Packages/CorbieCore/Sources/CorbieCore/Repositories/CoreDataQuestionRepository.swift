@@ -43,6 +43,21 @@ public struct CoreDataQuestionRepository: QuestionRepository {
         }
     }
 
+    public func storedQuestion(spaceId: UUID, viewerMemberId: UUID?, now: Date) async throws -> DailyQuestionDTO? {
+        try await access.read { context in
+            guard let space: Space = try ManagedFetch.first(Space.entityName, id: spaceId, in: context) else {
+                return nil
+            }
+            let zone = TimeZone(identifier: space.anchorTimeZone ?? "") ?? .current
+            let dayKey = QuestionSelector.dayKey(for: now, timeZone: zone)
+            let sameDay = space.questions
+                .filter { $0.dayKey == dayKey }
+                .sorted { ($0.id?.uuidString ?? "") < ($1.id?.uuidString ?? "") }
+            guard let question = sameDay.first else { return nil }
+            return DailyQuestionDTO(question, viewerMemberId: viewerMemberId, memberCount: space.members.count)
+        }
+    }
+
     public func answer(
         dailyQuestionId: UUID,
         memberId: UUID,

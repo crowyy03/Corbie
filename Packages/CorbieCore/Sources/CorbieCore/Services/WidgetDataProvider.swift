@@ -255,6 +255,25 @@ public struct WidgetDataProvider: Sendable {
         )
     }
 
+    public func question(now: Date = Date()) async throws -> QuestionSnapshot {
+        guard let context = try await context(now: now) else { return QuestionSnapshot.blank(isPremium: false) }
+        guard let viewer = context.viewer,
+              let question = try await controller.repositories.questions.todaysQuestion(
+                  spaceId: context.space.id,
+                  viewerMemberId: viewer.id,
+                  now: now
+              ),
+              let text = QuestionBank.bundled.entry(id: question.questionId)?.text(for: locale)
+        else { return QuestionSnapshot.blank(isPremium: context.isPremium) }
+        return QuestionSnapshot(
+            text: text,
+            viewer: questionMember(viewer, question: question),
+            partner: context.partner.map { questionMember($0, question: question) },
+            isRevealed: question.isRevealed,
+            isPremium: context.isPremium
+        )
+    }
+
     public func ourDay(now: Date = Date()) async throws -> OurDaySnapshot {
         guard let context = try await context(now: now) else {
             return OurDaySnapshot(days: nil, tasks: [], events: [], plan: nil, isPremium: false)
@@ -440,6 +459,14 @@ public struct WidgetDataProvider: Sendable {
             colorKey: context.colorKey(for: task.assigneeMemberId),
             isFree: task.isFree,
             dueAt: task.dueAt
+        )
+    }
+
+    private func questionMember(_ member: MemberDTO, question: DailyQuestionDTO) -> WidgetQuestionMember {
+        WidgetQuestionMember(
+            name: member.displayName,
+            colorKey: member.colorKey,
+            hasAnswered: question.hasAnswered(member.id)
         )
     }
 
