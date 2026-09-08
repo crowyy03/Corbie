@@ -8,7 +8,7 @@ struct TasksChoreSplitAction: View {
     @State private var isFlowPresented = false
 
     var body: some View {
-        Group {
+        VStack(spacing: 0) {
             if isOffered {
                 SecondaryButton(title: String(localized: "tasks.empty.chores")) {
                     isFlowPresented = true

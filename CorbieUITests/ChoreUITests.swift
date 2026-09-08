@@ -10,6 +10,11 @@ final class ChoreUITests: XCTestCase {
     func testTheSplitIsBuiltRatedAndThenWaitsForThePartner() throws {
         let app = launchSignedIn()
 
+        selectTab(app, .tasks)
+        let fromTasks = app.buttons[QACatalog.text("tasks.empty.chores")].firstMatch
+        XCTAssertTrue(fromTasks.waitForExistence(timeout: 40), "an empty Tasks tab does not offer the split")
+        saveScreenshot(app, named: "chores_tasks_empty")
+
         openUsHub(app)
         openUsTile(app, key: "us.hub.chores")
 
