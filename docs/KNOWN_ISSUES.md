@@ -139,3 +139,10 @@ partner's own birthday or the anniversary, which `RadarService.partnerStatus` re
 wishes. The same holds for free time: `FreeTimeView` shows "Free time needs two calendars" without a
 partner, so the slot list, the filters and the "Ask them" path are two-Apple-ID checks
 (`docs/TEST_PLAN.md` section 4).
+
+## Цены на экранах оплаты не проверяются автотестом
+
+`CorbieUITests/PaywallScreensUITests` доходит до `TrialOfferView` и `ComparisonView` и проверяет их тексты, но не карточки с ценами: в прогоне через `xcodebuild test` StoreKit не подхватывает `Products.storekit`. В логе симулятора клиент уходит в Sandbox (`Requesting Media API product batch ["app.corbie.monthly", "app.corbie.yearly"]`) и запрос падает без сети, экран показывает `The App Store did not answer`. XcodeGen 2.46 умеет класть `storeKitConfiguration` только в Run-действие схемы, ручная правка `Corbie.xcscheme` не помогает и стирается генерацией.
+
+Что это значит: арифметику годовой цены и скидки держат юнит-тесты `CorbieTests/PaywallScreensTests`, а карточки цен проверяются руками запуском из Xcode (Run-действие схемы StoreKit-конфигурацию подхватывает).
+
