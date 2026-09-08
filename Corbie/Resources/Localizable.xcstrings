@@ -12397,40 +12397,6 @@
         }
       }
     },
-    "paywall.action.continue": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weiter"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continue"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuar"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuer"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continua"
-          }
-        }
-      }
-    },
     "paywall.action.restore": {
       "localizations": {
         "de": {
@@ -12695,6 +12661,550 @@
         }
       }
     },
+    "paywall.compare.expired": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Testphase ist vorbei. Alles Angelegte ist noch da."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your trial has ended. Everything you made is still here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu prueba ha terminado. Todo lo que hicisteis sigue aquí."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre essai est terminé. Tout ce que vous avez fait est toujours là."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La tua prova è finita. Tutto quello che avete fatto è ancora qui."
+          }
+        }
+      }
+    },
+    "paywall.compare.free": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratuit"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis"
+          }
+        }
+      }
+    },
+    "paywall.compare.free.calendar": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemeinsamer Kalender"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared calendar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendario compartido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendrier partagé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendario condiviso"
+          }
+        }
+      }
+    },
+    "paywall.compare.free.made": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles Angelegte ansehen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See everything you have made"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver todo lo que ya habéis creado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir tout ce que vous avez créé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedere tutto quello che avete creato"
+          }
+        }
+      }
+    },
+    "paywall.compare.free.recap": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochenrückblick"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly recap"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resumen semanal"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilan de la semaine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riepilogo settimanale"
+          }
+        }
+      }
+    },
+    "paywall.compare.free.today": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute-Ansicht"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today screen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pantalla Hoy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écran Aujourd'hui"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermata Oggi"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium.capsules": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapseln und geheime Abstimmungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capsules and secret votes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cápsulas y votaciones secretas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capsules et votes secrets"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capsule e voti segreti"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium.chores": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausarbeit nach Vorlieben verteilt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chores split by preference"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tareas de casa repartidas por preferencia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corvées réparties selon les préférences"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faccende divise per preferenza"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium.everything": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles aus Gratis"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything in Free"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo lo de Gratis"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout ce qui est gratuit"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutto quello di Gratis"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium.plans": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pläne, offenes Sparen, viele Währungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans, open savings, many currencies"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planes, ahorro abierto, varias monedas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projets, cagnotte ouverte, plusieurs devises"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progetti, risparmio aperto, più valute"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium.question": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Frage am Tag, 1000 Stück"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A question a day, 1000 of them"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una pregunta al día, 1000 en total"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une question par jour, 1000 au total"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una domanda al giorno, 1000 in tutto"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium.widgets": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Widgets und wann ihr beide frei seid"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every widget and when you two are free"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos los widgets y cuando estáis libres los dos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous les widgets et quand vous êtes libres tous les deux"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutti i widget e quando siete liberi tutti e due"
+          }
+        }
+      }
+    },
+    "paywall.compare.premium.wishes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wünsche, die sich aus einem Link füllen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wishes that fill in from a link"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deseos que se rellenan desde un enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des souhaits qui se remplissent depuis un lien"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desideri che si riempiono da un link"
+          }
+        }
+      }
+    },
+    "paywall.cta.subscribe": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscribe"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suscribirse"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S'abonner"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbonati"
+          }
+        }
+      }
+    },
+    "paywall.cta.trial": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tage gratis testen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try %lld days free"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probar %lld días gratis"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essayer %lld jours gratuits"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prova %lld giorni gratis"
+          }
+        }
+      }
+    },
     "paywall.headline": {
       "localizations": {
         "de": {
@@ -12929,6 +13439,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Risparmi il %lld%%"
+          }
+        }
+      }
+    },
+    "paywall.offer.insteadof": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "statt %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "instead of %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "en vez de %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "au lieu de %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "invece di %@"
           }
         }
       }
@@ -13613,206 +14157,274 @@
         }
       }
     },
-    "paywall.value.capsules.note": {
+    "paywall.trial.skip": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Briefe, die sich später öffnen. Fragen, die im Stillen gestellt werden."
+            "value": "Ohne Abo weitermachen"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Letters that open later. Questions asked in secret."
+            "value": "Continue without a subscription"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cartas que se abren más tarde. Preguntas hechas en secreto."
+            "value": "Continuar sin suscripción"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Des lettres qui s'ouvrent plus tard. Des questions posées en secret."
+            "value": "Continuer sans abonnement"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lettere che si aprono più tardi. Domande fatte in segreto."
+            "value": "Continua senza abbonamento"
           }
         }
       }
     },
-    "paywall.value.capsules.title": {
+    "paywall.trial.sub": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kapseln und Abstimmungen"
+            "value": "Die zweite Person zahlt nichts."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Capsules and votes"
+            "value": "Your partner pays nothing."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cápsulas y votaciones"
+            "value": "La otra persona no paga nada."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Capsules et votes"
+            "value": "L'autre personne ne paie rien."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Capsule e voti"
+            "value": "L'altra persona non paga nulla."
           }
         }
       }
     },
-    "paywall.value.plans.note": {
+    "paywall.value.calendar": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ein Topf, eine Wunschliste, ihr beide."
+            "value": "Ein gemeinsamer Kalender und eure Termine"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "One pot, one wish list, both of you."
+            "value": "A shared calendar and your dates"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un bote, una lista de deseos, los dos."
+            "value": "Un calendario compartido y vuestras fechas"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Une cagnotte, une liste de souhaits, vous deux."
+            "value": "Un calendrier partagé et vos dates"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un salvadanaio, una lista dei desideri, tutti e due."
+            "value": "Un calendario condiviso e le vostre date"
           }
         }
       }
     },
-    "paywall.value.plans.title": {
+    "paywall.value.plans": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pläne und Wünsche"
+            "value": "Pläne und offenes Sparen"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plans and wishes"
+            "value": "Plans and open savings"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Planes y deseos"
+            "value": "Planes y ahorro abierto"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Projets et souhaits"
+            "value": "Des projets et une cagnotte ouverte"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Progetti e desideri"
+            "value": "Progetti e risparmio aperto"
           }
         }
       }
     },
-    "paywall.value.widgets.note": {
+    "paywall.value.question": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aufgaben, Termine und Listen auf dem Homescreen."
+            "value": "Eine Frage am Tag, die Antworten öffnen sich gemeinsam"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your tasks, dates and lists on the home screen."
+            "value": "A question a day, answers unlock together"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tus tareas, fechas y listas en la pantalla de inicio."
+            "value": "Una pregunta al día, las respuestas se abren juntas"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vos tâches, dates et listes sur l'écran d'accueil."
+            "value": "Une question par jour, les réponses s'ouvrent ensemble"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Attività, date e liste nella schermata Home."
+            "value": "Una domanda al giorno, le risposte si aprono insieme"
           }
         }
       }
     },
-    "paywall.value.widgets.title": {
+    "paywall.value.tasks": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Widgets"
+            "value": "Aufgaben, die ihr beide übernehmen könnt"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Widgets"
+            "value": "Tasks either of you can pick up"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Widgets"
+            "value": "Tareas que puede tomar cualquiera de los dos"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Widgets"
+            "value": "Des tâches que l'un ou l'autre peut prendre"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Widget"
+            "value": "Compiti che può prendere uno dei due"
+          }
+        }
+      }
+    },
+    "paywall.value.widgets": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles auf dem Homescreen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything on your home screen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo en la pantalla de inicio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout sur votre écran d'accueil"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutto sulla schermata home"
+          }
+        }
+      }
+    },
+    "paywall.value.wishes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wünsche, die sich aus einem Link füllen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wishes that fill in from a link"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deseos que se rellenan desde un enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des souhaits qui se remplissent depuis un lien"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desideri che si riempiono da un link"
           }
         }
       }

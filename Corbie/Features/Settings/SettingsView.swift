@@ -371,7 +371,7 @@ struct SettingsView: View {
         case .calendarImport:
             CalendarImportView()
         case let .paywall(request):
-            PaywallView(request: request)
+            ComparisonView(request: request) { sheet = nil }
         case let .legal(page):
             if let url = page.url {
                 LegalPageView(url: url)

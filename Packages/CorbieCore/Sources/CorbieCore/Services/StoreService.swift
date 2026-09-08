@@ -44,7 +44,7 @@ public actor StoreService: LocalEntitlementProviding {
                     product: product,
                     displayPrice: storeProduct.displayPrice,
                     price: storeProduct.price,
-                    currencyCode: storeProduct.priceFormatStyle.locale.currency?.identifier,
+                    priceFormatStyle: storeProduct.priceFormatStyle,
                     eligibleFreeTrialDays: await eligibleFreeTrialDays(for: storeProduct)
                 )
             )

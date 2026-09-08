@@ -4,28 +4,47 @@ import Foundation
 struct PaywallValueRow: Identifiable, Equatable {
     let id: String
     let systemImage: String
-    let titleKey: String
-    let noteKey: String
+    let textKey: String
 
     static let all: [PaywallValueRow] = [
-        PaywallValueRow(
-            id: "widgets",
-            systemImage: "square.grid.2x2",
-            titleKey: "paywall.value.widgets.title",
-            noteKey: "paywall.value.widgets.note"
+        PaywallValueRow(id: "calendar", systemImage: "calendar", textKey: "paywall.value.calendar"),
+        PaywallValueRow(id: "tasks", systemImage: "checkmark.circle", textKey: "paywall.value.tasks"),
+        PaywallValueRow(id: "wishes", systemImage: "star", textKey: "paywall.value.wishes"),
+        PaywallValueRow(id: "plans", systemImage: "flag", textKey: "paywall.value.plans"),
+        PaywallValueRow(id: "question", systemImage: "bubble.left.and.bubble.right", textKey: "paywall.value.question"),
+        PaywallValueRow(id: "widgets", systemImage: "square.grid.2x2", textKey: "paywall.value.widgets")
+    ]
+}
+
+struct ComparisonRow: Identifiable, Equatable {
+    let id: String
+    let freeKey: String?
+    let premiumKey: String
+
+    static let all: [ComparisonRow] = [
+        ComparisonRow(
+            id: "calendar",
+            freeKey: "paywall.compare.free.calendar",
+            premiumKey: "paywall.compare.premium.everything"
         ),
-        PaywallValueRow(
-            id: "plans",
-            systemImage: "flag",
-            titleKey: "paywall.value.plans.title",
-            noteKey: "paywall.value.plans.note"
+        ComparisonRow(
+            id: "today",
+            freeKey: "paywall.compare.free.today",
+            premiumKey: "paywall.compare.premium.question"
         ),
-        PaywallValueRow(
-            id: "capsules",
-            systemImage: "envelope",
-            titleKey: "paywall.value.capsules.title",
-            noteKey: "paywall.value.capsules.note"
-        )
+        ComparisonRow(
+            id: "recap",
+            freeKey: "paywall.compare.free.recap",
+            premiumKey: "paywall.compare.premium.wishes"
+        ),
+        ComparisonRow(
+            id: "made",
+            freeKey: "paywall.compare.free.made",
+            premiumKey: "paywall.compare.premium.plans"
+        ),
+        ComparisonRow(id: "capsules", freeKey: nil, premiumKey: "paywall.compare.premium.capsules"),
+        ComparisonRow(id: "chores", freeKey: nil, premiumKey: "paywall.compare.premium.chores"),
+        ComparisonRow(id: "widgets", freeKey: nil, premiumKey: "paywall.compare.premium.widgets")
     ]
 }
 
@@ -67,20 +86,34 @@ enum PaywallCopy {
         text(reasonKey(reason))
     }
 
+    static func headerKey(_ reason: PaywallReason) -> String {
+        reason == .trialEnded ? "paywall.compare.expired" : "paywall.headline"
+    }
+
     static func legalText(for offer: SubscriptionOffer) -> String {
         String(format: text(legalKey(offer.product)), offer.displayPrice)
     }
 
-    static func savingsBadge(for offer: SubscriptionOffer) -> String? {
-        guard let percent = offer.savingsPercent else { return nil }
-        return String(format: text("paywall.offer.badge"), percent)
+    static func callToAction(for offer: SubscriptionOffer?) -> String {
+        guard let days = offer?.eligibleFreeTrialDays else { return text("paywall.cta.subscribe") }
+        return String.localizedStringWithFormat(text("paywall.cta.trial"), days)
     }
 
-    static func monthlyEquivalent(for offer: SubscriptionOffer, locale: Locale = .current) -> String? {
-        guard let currency = offer.currencyCode,
+    static func savingsBadge(for offer: SubscriptionOffer) -> String? {
+        guard let percent = offer.savingsPercent else { return nil }
+        return String.localizedStringWithFormat(text("paywall.offer.badge"), percent)
+    }
+
+    static func monthlyEquivalent(for offer: SubscriptionOffer) -> String? {
+        guard let style = offer.priceFormatStyle,
               let amount = SubscriptionOfferMath.monthlyEquivalent(offer)
         else { return nil }
-        let money = Money(amount: amount, currency: currency).formatted(locale: locale)
-        return String(format: text("paywall.offer.permonth"), money)
+        return String(format: text("paywall.offer.permonth"), amount.formatted(style))
+    }
+
+    static func yearAtMonthlyPrice(for offer: SubscriptionOffer, monthly: SubscriptionOffer?) -> String? {
+        guard offer.product == .yearly, offer.savingsPercent != nil else { return nil }
+        guard let monthly, monthly.price > 0, let style = offer.priceFormatStyle else { return nil }
+        return SubscriptionOfferMath.twelveMonths(of: monthly.price).formatted(style)
     }
 }

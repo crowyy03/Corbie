@@ -13,6 +13,7 @@ struct RootView: View {
     @State private var joinRequest: JoinRequest?
     @State private var isUsHubOnScreen = false
     @State private var isLaunchRevealShown = true
+    @State private var isTrialOfferPresented = false
 
     private let credentials = AppleCredentialMonitor()
     private let partnerWatcher = PartnerJoinWatcher()
@@ -111,17 +112,29 @@ struct RootView: View {
                 .onDisappear { isUsHubOnScreen = false }
         }
         .sheet(item: paywallRequest) { request in
-            PaywallView(request: request)
+            ComparisonView(request: request) {
+                environment.premiumGate.dismissPaywall(screen: .comparison)
+            }
+        }
+        .fullScreenCover(isPresented: $isTrialOfferPresented) {
+            PaywallFlow { isTrialOfferPresented = false }
         }
         .sheet(item: $joinRequest) { request in
             JoinSheet(code: request.code)
         }
+        .task { await offerTheTrialOnce() }
         .task { await partnerWatcher.observe(environment) }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
             askForReviewIfEarned()
             Task { await partnerWatcher.check(environment) }
         }
+    }
+
+    private func offerTheTrialOnce() async {
+        guard TrialOfferFlag().claim() else { return }
+        await environment.refreshEntitlement()
+        isTrialOfferPresented = environment.premiumGate.isPremium == false
     }
 
     private var paywallRequest: Binding<PaywallRequest?> {

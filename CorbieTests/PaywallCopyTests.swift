@@ -3,14 +3,14 @@ import XCTest
 @testable import Corbie
 
 final class PaywallCopyTests: XCTestCase {
-    private let english = Locale(identifier: "en_US")
+    private let dollars = Decimal.FormatStyle.Currency(code: "USD", locale: Locale(identifier: "en_US"))
 
     private func offer(_ product: CorbieProduct, _ price: String, display: String, savings: Int? = nil) -> SubscriptionOffer {
         SubscriptionOffer(
             product: product,
             displayPrice: display,
             price: Decimal(string: price) ?? 0,
-            currencyCode: "USD",
+            priceFormatStyle: dollars,
             savingsPercent: savings
         )
     }
@@ -33,14 +33,15 @@ final class PaywallCopyTests: XCTestCase {
     }
 
     func testEveryValueRowResolves() {
-        XCTAssertEqual(PaywallValueRow.all.map(\.id), ["widgets", "plans", "capsules"])
+        XCTAssertEqual(
+            PaywallValueRow.all.map(\.id),
+            ["calendar", "tasks", "wishes", "plans", "question", "widgets"]
+        )
         for row in PaywallValueRow.all {
-            for key in [row.titleKey, row.noteKey] {
-                XCTAssertNotEqual(PaywallCopy.text(key), key, "missing catalog value for \(key)")
-            }
+            XCTAssertNotEqual(PaywallCopy.text(row.textKey), row.textKey, "missing catalog value for \(row.textKey)")
+            XCTAssertFalse(row.systemImage.isEmpty)
         }
-        XCTAssertEqual(PaywallCopy.text("paywall.value.plans.title"), "Plans and wishes")
-        XCTAssertEqual(PaywallCopy.text("paywall.value.capsules.title"), "Capsules and votes")
+        XCTAssertEqual(PaywallCopy.text("paywall.value.plans"), "Plans and open savings")
     }
 
     func testFreeTimeHasItsOwnPaywallLine() {
@@ -61,10 +62,10 @@ final class PaywallCopyTests: XCTestCase {
 
     func testOnlyTheLongerPlanShowsAMonthlyPrice() {
         XCTAssertEqual(
-            PaywallCopy.monthlyEquivalent(for: offer(.yearly, "29.99", display: "$29.99"), locale: english),
+            PaywallCopy.monthlyEquivalent(for: offer(.yearly, "29.99", display: "$29.99")),
             "$2.50 a month"
         )
-        XCTAssertNil(PaywallCopy.monthlyEquivalent(for: offer(.monthly, "4.99", display: "$4.99"), locale: english))
+        XCTAssertNil(PaywallCopy.monthlyEquivalent(for: offer(.monthly, "4.99", display: "$4.99")))
     }
 
     func testTheLegalLineNamesThePriceAndThePeriod() {
@@ -104,7 +105,6 @@ final class PaywallCopyTests: XCTestCase {
             "paywall.state.purchased",
             "paywall.state.restored",
             "paywall.state.restore.empty",
-            "paywall.action.continue",
             "paywall.action.restore",
             "paywall.action.close",
             "paywall.action.retry",

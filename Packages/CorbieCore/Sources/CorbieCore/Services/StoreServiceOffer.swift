@@ -48,7 +48,7 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
     public let product: CorbieProduct
     public let displayPrice: String
     public let price: Decimal
-    public let currencyCode: String?
+    public let priceFormatStyle: Decimal.FormatStyle.Currency?
     public let savingsPercent: Int?
     public let eligibleFreeTrialDays: Int?
 
@@ -56,14 +56,14 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
         product: CorbieProduct,
         displayPrice: String,
         price: Decimal,
-        currencyCode: String? = nil,
+        priceFormatStyle: Decimal.FormatStyle.Currency? = nil,
         savingsPercent: Int? = nil,
         eligibleFreeTrialDays: Int? = nil
     ) {
         self.product = product
         self.displayPrice = displayPrice
         self.price = price
-        self.currencyCode = currencyCode
+        self.priceFormatStyle = priceFormatStyle
         self.savingsPercent = savingsPercent
         self.eligibleFreeTrialDays = eligibleFreeTrialDays
     }
@@ -75,7 +75,7 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
             product: product,
             displayPrice: displayPrice,
             price: price,
-            currencyCode: currencyCode,
+            priceFormatStyle: priceFormatStyle,
             savingsPercent: percent,
             eligibleFreeTrialDays: eligibleFreeTrialDays
         )
@@ -83,11 +83,15 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
 }
 
 public enum SubscriptionOfferMath {
+    public static func twelveMonths(of monthly: Decimal) -> Decimal {
+        monthly * Decimal(CorbieProduct.yearly.monthsPerPeriod)
+    }
+
     public static func savingsPercent(monthly: Decimal, yearly: Decimal) -> Int? {
         guard monthly > 0, yearly > 0 else { return nil }
-        let twelveMonths = monthly * 12
-        guard yearly < twelveMonths else { return nil }
-        let saved = (twelveMonths - yearly) / twelveMonths * 100
+        let payingMonthly = twelveMonths(of: monthly)
+        guard yearly < payingMonthly else { return nil }
+        let saved = (payingMonthly - yearly) / payingMonthly * 100
         let percent = Int(NSDecimalNumber(decimal: saved).doubleValue.rounded())
         return percent > 0 ? percent : nil
     }

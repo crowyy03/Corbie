@@ -4,12 +4,14 @@ import Testing
 @testable import CorbieCore
 
 @Suite struct NetStoreServiceTests {
+    private let dollars = Decimal.FormatStyle.Currency(code: "USD", locale: Locale(identifier: "en_US"))
+
     private func offer(_ product: CorbieProduct, _ price: String, display: String) -> SubscriptionOffer {
         SubscriptionOffer(
             product: product,
             displayPrice: display,
             price: Decimal(string: price) ?? 0,
-            currencyCode: "USD"
+            priceFormatStyle: dollars
         )
     }
 
@@ -92,14 +94,14 @@ import Testing
                 product: .monthly,
                 displayPrice: "$4.99",
                 price: Decimal(string: "4.99") ?? 0,
-                currencyCode: "USD",
+                priceFormatStyle: dollars,
                 eligibleFreeTrialDays: 14
             ),
             SubscriptionOffer(
                 product: .yearly,
                 displayPrice: "$29.99",
                 price: Decimal(string: "29.99") ?? 0,
-                currencyCode: "USD",
+                priceFormatStyle: dollars,
                 eligibleFreeTrialDays: 14
             )
         ])
