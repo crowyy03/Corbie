@@ -35,6 +35,13 @@ struct UsHubView: View {
                     destination: .questions
                 )
                 UsTile(
+                    systemImage: "arrow.left.arrow.right",
+                    title: String(localized: "us.hub.chores"),
+                    line: String(localized: "us.tile.chores.line"),
+                    countText: model.choreLine,
+                    destination: .chores
+                )
+                UsTile(
                     systemImage: "person.crop.circle",
                     title: String(localized: "us.hub.people"),
                     line: String(localized: "us.tile.people.line"),

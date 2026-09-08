@@ -79,6 +79,11 @@ struct TaskRow: View {
                         .corbieMono()
                         .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
+                    if task.comesFromChoreSplit {
+                        Text("tasks.row.chore")
+                            .corbieMono()
+                            .foregroundStyle(palette.text2)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityElement(children: .combine)

@@ -10,6 +10,9 @@ final class UsHubViewModel {
     private(set) var capsuleCount = 0
     private(set) var voteCount = 0
     private(set) var answeredQuestionCount = 0
+    private(set) var choreLine = ""
+
+    @ObservationIgnored private let choreCopy = ChoreCopy()
 
     func load(_ environment: AppEnvironment, now: Date = Date()) async {
         guard let space = environment.space else {
@@ -37,6 +40,15 @@ final class UsHubViewModel {
                 spaceId: space.id,
                 viewerMemberId: viewerMemberId
             ).filter { $0.hasAnswered(viewerMemberId) }.count
+            choreLine = choreCopy.stateLine(
+                ChoreSplitState.make(
+                    sets: try await repositories.chores.history(spaceId: space.id, viewerMemberId: viewerMemberId),
+                    viewerMemberId: viewerMemberId,
+                    partnerMemberId: environment.partner?.id,
+                    now: now
+                ),
+                partnerName: environment.partnerName
+            )
         } catch {
             environment.report(error)
         }

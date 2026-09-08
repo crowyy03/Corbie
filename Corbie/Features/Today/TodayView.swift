@@ -42,6 +42,7 @@ struct TodayView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                 header(model)
                 TodayQuestionCard()
+                TodayChoreCard()
                 plansBlock(model)
                 if model.hasLoaded, model.feed.isEmpty {
                     emptyState(model)
