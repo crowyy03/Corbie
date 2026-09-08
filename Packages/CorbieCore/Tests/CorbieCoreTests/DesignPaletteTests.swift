@@ -53,7 +53,7 @@ import Testing
     }
 
     @Test func everyMemberColourClearsTheBrandBookFloorOnLightThemes() {
-        for theme in CorbieTheme.lightChoices {
+        for theme in CorbieTheme.allCases where theme.isDark == false {
             guard let members = Self.brandBookMembers[theme], let tokens = Self.brandBook[theme] else { continue }
             let background = tokens[0]
             for slot in MemberColorSlot.allCases {

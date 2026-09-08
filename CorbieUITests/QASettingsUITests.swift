@@ -6,7 +6,7 @@ final class QASettingsUITests: XCTestCase {
         try XCTSkipUnless(QARun.isEnglish, "the settings walk reads English labels")
     }
 
-    func testTheAppearanceTogglePicksAFixedThemeAndGoesBack() throws {
+    func testTappingAThemeAppliesItAndTheToggleBringsTheSystemBack() throws {
         let app = launchSignedIn(appearance: "system")
         openSharedSettings(app)
 
@@ -15,29 +15,18 @@ final class QASettingsUITests: XCTestCase {
         let follow = settingsSwitch(app, "settings.appearance.followsystem")
         XCTAssertTrue(follow.isHittable, "the appearance toggle is out of reach")
         XCTAssertEqual(follow.value as? String, "1", "a fresh install does not follow the system")
-        XCTAssertTrue(appearanceLabel(app, "settings.appearance.light").exists, "the light choice is missing")
 
-        flip(follow)
-        let turnedOff = expectation(for: NSPredicate(format: "value == %@", "0"), evaluatedWith: follow)
-        wait(for: [turnedOff], timeout: 20)
-        XCTAssertTrue(
-            appearanceLabel(app, "settings.appearance.light").waitForNonExistence(timeout: 10),
-            "a fixed appearance still asks for a light choice"
-        )
-
-        XCTAssertTrue(scrollTo(deep, in: app), "a fixed appearance offers no Deep theme")
         deep.tap()
         XCTAssertTrue(deep.isSelected, "picking Deep did not select it")
+        let turnedOff = expectation(for: NSPredicate(format: "value == %@", "0"), evaluatedWith: follow)
+        wait(for: [turnedOff], timeout: 20)
         saveScreenshot(app, named: "settings_theme_deep")
 
         XCTAssertTrue(follow.isHittable, "the appearance toggle went out of reach")
         flip(follow)
         let turnedOn = expectation(for: NSPredicate(format: "value == %@", "1"), evaluatedWith: follow)
         wait(for: [turnedOn], timeout: 20)
-        XCTAssertTrue(
-            appearanceLabel(app, "settings.appearance.light").waitForExistence(timeout: 10),
-            "going back to the system brought no light choice"
-        )
+        XCTAssertTrue(scrollTo(deep, in: app), "following the system hid the theme cards")
     }
 
     func testTheExportProducesAFileTheShareSheetCanTake() throws {
@@ -110,7 +99,4 @@ final class QASettingsUITests: XCTestCase {
         saveScreenshot(app, named: "settings_after_delete")
     }
 
-    private func appearanceLabel(_ app: XCUIApplication, _ key: String) -> XCUIElement {
-        app.staticTexts[QACatalog.text(key)].firstMatch
-    }
 }

@@ -1,108 +1,135 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "NSCalendarsFullAccessUsageDescription": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Corbie liest und schreibt die Termine, die ihr beide gemeinsam führt."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Corbie reads and writes the events you two keep in a shared calendar."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Corbie lee y escribe las fechas del calendario compartido de los dos."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Corbie lit et écrit les dates que vous tenez à deux dans un calendrier partagé."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Corbie legge e scrive le date che tenete in due in un calendario condiviso."
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Corbie"
           }
         }
       }
     },
-    "NSCalendarsWriteOnlyAccessUsageDescription": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einen Termin aus Corbie in deinen iPhone-Kalender eintragen."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add an event from Corbie to your iPhone calendar."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir una fecha de Corbie al calendario del iPhone."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter une date de Corbie au calendrier de l'iPhone."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiungere una data di Corbie al calendario di iPhone."
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Corbie"
           }
         }
       }
     },
-    "NSPhotoLibraryUsageDescription": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ein Foto für einen Wunsch, einen Plan oder eine Liste auswählen."
+    "NSCalendarsFullAccessUsageDescription" : {
+      "comment" : "Privacy - Calendars Full Access Usage Description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corbie liest und schreibt die Termine, die ihr beide gemeinsam führt."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick a photo for a wish, a plan or a list."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corbie reads and writes the events you two keep in a shared calendar."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegir una foto para un deseo, un plan o una lista."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corbie lee y escribe las fechas del calendario compartido de los dos."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisir une photo pour un souhait, un projet ou une liste."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corbie lit et écrit les dates que vous tenez à deux dans un calendrier partagé."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegliere una foto per un desiderio, un progetto o una lista."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corbie legge e scrive le date che tenete in due in un calendario condiviso."
+          }
+        }
+      }
+    },
+    "NSCalendarsWriteOnlyAccessUsageDescription" : {
+      "comment" : "Privacy - Calendars Write Only Usage Description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einen Termin aus Corbie in deinen iPhone-Kalender eintragen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add an event from Corbie to your iPhone calendar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir una fecha de Corbie al calendario del iPhone."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une date de Corbie au calendrier de l'iPhone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungere una data di Corbie al calendario di iPhone."
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryUsageDescription" : {
+      "comment" : "Privacy - Photo Library Usage Description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Foto für einen Wunsch, einen Plan oder eine Liste auswählen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a photo for a wish, a plan or a list."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir una foto para un deseo, un plan o una lista."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une photo pour un souhait, un projet ou une liste."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegliere una foto per un desiderio, un progetto o una lista."
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

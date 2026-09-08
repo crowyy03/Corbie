@@ -84,13 +84,27 @@ import Testing
     }
 
     @MainActor
-    @Test func theProviderKeepsTheLightAndDarkChoicesApart() {
+    @Test func pickingAThemeStopsFollowingTheSystemAndShowsItAtOnce() {
         let (defaults, name) = makeSuite()
         defer { removeSuite(defaults, name) }
 
         let provider = ThemeProvider(store: ThemeStore(defaults: defaults))
-        provider.setLightTheme(.sage)
-        provider.setDarkTheme(.deep)
+        provider.systemScheme = .light
+        provider.setTheme(.deep)
+        #expect(provider.settings.followsSystem == false)
+        #expect(provider.activeTheme == .deep)
+        #expect(provider.preferredColorScheme == ColorScheme.dark)
+    }
+
+    @MainActor
+    @Test func followingTheSystemAgainUsesTheLastLightAndDarkPicks() {
+        let (defaults, name) = makeSuite()
+        defer { removeSuite(defaults, name) }
+
+        let provider = ThemeProvider(store: ThemeStore(defaults: defaults))
+        provider.setTheme(.sage)
+        provider.setTheme(.deep)
+        provider.setFollowsSystem(true)
         provider.systemScheme = .light
         #expect(provider.activeTheme == .sage)
         provider.systemScheme = .dark

@@ -256,24 +256,11 @@ struct SettingsView: View {
             .tint(palette.accent)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
 
-            if environment.theme.settings.followsSystem {
-                themeChoiceRow(
-                    titleKey: "settings.appearance.light",
-                    themes: CorbieTheme.lightChoices,
-                    selection: lightThemeBinding
-                )
-                themeChoiceRow(
-                    titleKey: "settings.appearance.dark",
-                    themes: CorbieTheme.darkChoices,
-                    selection: darkThemeBinding
-                )
-            } else {
-                themeChoiceRow(
-                    titleKey: "settings.appearance.theme",
-                    themes: CorbieTheme.allCases,
-                    selection: themeBinding
-                )
-            }
+            themeChoiceRow(
+                titleKey: "settings.appearance.theme",
+                themes: CorbieTheme.allCases,
+                selection: themeBinding
+            )
         } header: {
             SectionCaps(text: String(localized: "settings.section.appearance"))
         }
@@ -476,22 +463,8 @@ struct SettingsView: View {
 
     private var themeBinding: Binding<CorbieTheme> {
         Binding(
-            get: { environment.theme.settings.theme },
+            get: { environment.theme.activeTheme },
             set: { environment.theme.setTheme($0) }
-        )
-    }
-
-    private var lightThemeBinding: Binding<CorbieTheme> {
-        Binding(
-            get: { environment.theme.settings.lightTheme },
-            set: { environment.theme.setLightTheme($0) }
-        )
-    }
-
-    private var darkThemeBinding: Binding<CorbieTheme> {
-        Binding(
-            get: { environment.theme.settings.darkTheme },
-            set: { environment.theme.setDarkTheme($0) }
         )
     }
 

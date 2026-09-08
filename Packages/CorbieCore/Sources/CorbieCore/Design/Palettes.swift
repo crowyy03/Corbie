@@ -7,9 +7,6 @@ public enum CorbieTheme: String, CaseIterable, Codable, Identifiable, Sendable {
     case sage
     case deep
 
-    public static let lightChoices: [CorbieTheme] = [.ice, .sand, .sage]
-    public static let darkChoices: [CorbieTheme] = [.deep]
-
     public var id: String { rawValue }
 
     public var displayNameKey: String { "theme.name." + rawValue }

@@ -103,15 +103,15 @@ public final class ThemeProvider {
     }
 
     public func setTheme(_ theme: CorbieTheme) {
-        apply { $0.theme = theme }
-    }
-
-    public func setLightTheme(_ theme: CorbieTheme) {
-        apply { $0.lightTheme = theme }
-    }
-
-    public func setDarkTheme(_ theme: CorbieTheme) {
-        apply { $0.darkTheme = theme }
+        apply {
+            $0.theme = theme
+            $0.followsSystem = false
+            if theme.isDark {
+                $0.darkTheme = theme
+            } else {
+                $0.lightTheme = theme
+            }
+        }
     }
 
     private func apply(_ change: (inout ThemeSettings) -> Void) {

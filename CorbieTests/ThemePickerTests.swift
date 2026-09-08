@@ -3,13 +3,10 @@ import XCTest
 @testable import Corbie
 
 final class ThemePickerTests: XCTestCase {
-    func testTheLightAndDarkChoicesCoverEveryTheme() {
-        XCTAssertEqual(CorbieTheme.lightChoices, [.ice, .sand, .sage])
-        XCTAssertEqual(CorbieTheme.darkChoices, [.deep])
-        XCTAssertEqual(Set(CorbieTheme.lightChoices + CorbieTheme.darkChoices), Set(CorbieTheme.allCases))
-        for theme in CorbieTheme.lightChoices {
-            XCTAssertFalse(theme.isDark)
-        }
+    func testDeepIsTheOnlyDarkThemeAndIceOpensTheApp() {
+        XCTAssertEqual(CorbieTheme.allCases.filter(\.isDark), [.deep])
+        XCTAssertEqual(CorbieTheme.allCases.first, .ice)
+        XCTAssertEqual(ThemeSettings.firstLaunch.lightTheme, .ice)
     }
 
     func testEveryThemeNameIsInTheCatalog() {

@@ -403,3 +403,10 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - `ChoreListBuilderViewModel`, `ChoreRatingViewModel` and `ChoreRevealViewModel` take a repository, a member id and an analytics recorder rather than `AppEnvironment`, the shape `TasksViewModel` already uses, so they can be driven against the in-memory stack in `CorbieTests`. `ChoresView` builds them and wires `onChanged` back into `ChoresViewModel`.
 - The nudge on the waiting state is the free-time nudge: a toast that tells you Corbie cannot ping the other phone from here. `ChoresViewModel` stores the day it was last used in the App Group defaults under `corbie.chore.nudged` and disables the button for the rest of that day.
 - `ChoreUITests` stops at the waiting state. The reveal needs the partner's ratings and a single device has one member, so the split itself is covered by `ChoreRevealViewModelTests` with two full rating sets instead.
+
+## Тап по теме включает её сразу
+
+Основатель 08-09: «нажимаю тёмную тему - она не переключается и не выбирается». Под включённым «Match system appearance» экран показывал два ряда, светлые темы и отдельно Deep как единственный тёмный вариант. Deep там стоял выбранным с самого начала, тап по нему ничего не менял, а приложение оставалось светлым, потому что светлой была система.
+
+Теперь в настройках один ряд из четырёх карточек, подсвечена та тема, что на экране сейчас. Тап по карточке снимает «следовать системе» и включает тему сразу; выбранная светлая или тёмная запоминается, и когда «следовать системе» включают обратно, днём берётся последняя светлая, ночью последняя тёмная. Раздельных ручек «светлая для дня» и «тёмная для ночи» больше нет: с одной тёмной темой второй ряд был кнопкой, которая не делает ничего.
+

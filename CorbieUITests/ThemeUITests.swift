@@ -13,14 +13,12 @@ final class ThemeUITests: XCTestCase {
         openSharedSettings(app)
         let follow = settingsSwitch(app, "settings.appearance.followsystem")
         XCTAssertTrue(scrollTo(follow, in: app), "settings has no appearance toggle")
-        if (follow.value as? String) == "1" {
-            flip(follow)
-        }
 
         let deep = app.collectionViews.buttons[QACatalog.text("theme.name.deep")].firstMatch
         XCTAssertTrue(scrollTo(deep, in: app), "the theme picker offers no Deep card")
         deep.tap()
         XCTAssertTrue(deep.isSelected, "tapping Deep did not select it")
+        XCTAssertEqual(follow.value as? String, "0", "tapping Deep left the app following the system")
 
         closeSettings(app)
         selectTab(app, .today)
@@ -35,11 +33,6 @@ final class ThemeUITests: XCTestCase {
     func testTheThemeChoiceSurvivesARelaunch() throws {
         let app = launchSignedIn(appearance: "light")
         openSharedSettings(app)
-        let follow = settingsSwitch(app, "settings.appearance.followsystem")
-        XCTAssertTrue(scrollTo(follow, in: app), "settings has no appearance toggle")
-        if (follow.value as? String) == "1" {
-            flip(follow)
-        }
         let sage = app.collectionViews.buttons[QACatalog.text("theme.name.sage")].firstMatch
         XCTAssertTrue(scrollTo(sage, in: app), "the theme picker offers no Sage card")
         sage.tap()
