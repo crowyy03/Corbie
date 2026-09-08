@@ -9,9 +9,9 @@ public struct ThemeSettings: Sendable, Equatable {
     public var darkTheme: CorbieTheme
 
     public static let firstLaunch = ThemeSettings(
-        theme: .sand,
+        theme: .ice,
         followsSystem: true,
-        lightTheme: .sand,
+        lightTheme: .ice,
         darkTheme: .deep
     )
 
@@ -124,11 +124,11 @@ public final class ThemeProvider {
 }
 
 private struct PaletteEnvironmentKey: EnvironmentKey {
-    static let defaultValue = CorbieTheme.sand.palette
+    static let defaultValue = CorbieTheme.ice.palette
 }
 
 private struct ThemeEnvironmentKey: EnvironmentKey {
-    static let defaultValue = CorbieTheme.sand
+    static let defaultValue = CorbieTheme.ice
 }
 
 public extension EnvironmentValues {

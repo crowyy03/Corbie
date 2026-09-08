@@ -16,13 +16,13 @@ import Testing
         defaults.removePersistentDomain(forName: name)
     }
 
-    @Test func firstLaunchFollowsTheSystemWithSandAndDeep() {
+    @Test func firstLaunchFollowsTheSystemWithIceAndDeep() {
         let (defaults, name) = makeSuite()
         defer { removeSuite(defaults, name) }
 
         let settings = ThemeStore(defaults: defaults).settings
         #expect(settings.followsSystem)
-        #expect(settings.lightTheme == .sand)
+        #expect(settings.lightTheme == .ice)
         #expect(settings.darkTheme == .deep)
     }
 
@@ -45,7 +45,7 @@ import Testing
         defer { removeSuite(defaults, name) }
 
         defaults.set("sepia", forKey: ThemeStore.Key.theme)
-        #expect(ThemeStore(defaults: defaults).settings.theme == .sand)
+        #expect(ThemeStore(defaults: defaults).settings.theme == .ice)
     }
 
     @Test func followingTheSystemPicksTheLightOrDarkChoice() {

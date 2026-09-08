@@ -4,7 +4,7 @@ import XCTest
 
 final class ThemePickerTests: XCTestCase {
     func testTheLightAndDarkChoicesCoverEveryTheme() {
-        XCTAssertEqual(CorbieTheme.lightChoices, [.sand, .sage])
+        XCTAssertEqual(CorbieTheme.lightChoices, [.ice, .sand, .sage])
         XCTAssertEqual(CorbieTheme.darkChoices, [.deep])
         XCTAssertEqual(Set(CorbieTheme.lightChoices + CorbieTheme.darkChoices), Set(CorbieTheme.allCases))
         for theme in CorbieTheme.lightChoices {

@@ -2,11 +2,12 @@ import Foundation
 import SwiftUI
 
 public enum CorbieTheme: String, CaseIterable, Codable, Identifiable, Sendable {
+    case ice
     case sand
     case sage
     case deep
 
-    public static let lightChoices: [CorbieTheme] = [.sand, .sage]
+    public static let lightChoices: [CorbieTheme] = [.ice, .sand, .sage]
     public static let darkChoices: [CorbieTheme] = [.deep]
 
     public var id: String { rawValue }
@@ -17,6 +18,7 @@ public enum CorbieTheme: String, CaseIterable, Codable, Identifiable, Sendable {
 
     public var palette: ThemePalette {
         switch self {
+        case .ice: return ThemePalette.ice
         case .sand: return ThemePalette.sand
         case .sage: return ThemePalette.sage
         case .deep: return ThemePalette.deep
@@ -106,6 +108,27 @@ public struct ThemePalette: Sendable, Equatable {
 }
 
 extension ThemePalette {
+    static let ice = ThemePalette(
+        bg: hex("#F4F7FA"),
+        surface: hex("#FFFFFF"),
+        elevated: hex("#FFFFFF"),
+        border: hex("#DBE3EC"),
+        text: hex("#0B0E13"),
+        text2: hex("#5A6878"),
+        accent: hex("#8FC5E8"),
+        ctaFill: hex("#8FC5E8"),
+        ctaText: hex("#0B0E13"),
+        warn: hex("#E8956F"),
+        memberColors: [
+            .teal: hex("#489693"),
+            .blue: hex("#318FD7"),
+            .violet: hex("#9879DA"),
+            .rose: hex("#CE6A8D"),
+            .clay: hex("#B87C57"),
+            .green: hex("#4B977A")
+        ]
+    )
+
     static let sand = ThemePalette(
         bg: hex("#FAF9F6"),
         surface: hex("#FFFFFF"),

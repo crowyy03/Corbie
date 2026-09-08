@@ -374,3 +374,11 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - `preferredColorScheme` is applied inside `ThemedRoot`, not on the `WindowGroup` content in `CorbieApp.body`. An `App` body does not re-run on an `@Observable` change, and the founder's report was that switching theme left the tab bar and the status bar on the old colours until relaunch.
 - The theme launch arguments the UI tests pass (`-autoTheme`, `-theme`) land in `NSArgumentDomain`, which shadows the App Group suite for the whole run. `XCUIApplication.dropThemeLaunchArguments()` strips them before the relaunch in `ThemeUITests`, otherwise the test reads the override back instead of what the app saved.
 - `scripts/check_colors.sh` runs as a pre-build phase on the app target and owns the hex rule that used to sit in `check_strings.sh`. `ENABLE_USER_SCRIPT_SANDBOXING` is off on that target because the script reads the whole source tree.
+
+## Ice остаётся четвёртой темой и включается по умолчанию
+
+Основатель 08-09: «начальную тему, которая light была, оставим тоже, пусть она будет дефолтная при входе». Палитра первой версии сохранена как тема `ice`, первый запуск включает «следовать системе» с Ice днём и Deep ночью, Sand и Sage выбираются в настройках.
+
+Структурные токены скопированы из первой версии без изменений - это и есть тот вид, который основатель просил вернуть. Цвета участников пришлось затемнить: исходные давали 2.15-2.54:1 к фону при правиле бренд-бука 3.2:1, а ими красится не только точка, но и строка статуса. Оттенки сохранены, поднята только светлота; `rose` и `clay` в первой версии не существовали и добавлены в том же холодном регистре. Порог проверяется тестом `everyMemberColourClearsTheBrandBookFloorOnLightThemes`.
+
+Акцент `#8FC5E8` оставлен как был, хотя на фоне он даёт 1.73:1. Он работает заливкой кнопки и подсветкой активной вкладки, где контраст считается по тексту на нём (10.42:1). Если понадобится ставить акцент текстом на фоне, значение придётся затемнять отдельным решением.
