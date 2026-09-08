@@ -112,6 +112,7 @@ enum QAText {
     static var sharedSettings: String { QACatalog.text("us.hub.settings") }
     static var settingsTitle: String { QACatalog.text("settings.title") }
     static var paywallHeadline: String { QACatalog.text("paywall.headline") }
+    static var trialSkip: String { QACatalog.text("paywall.trial.skip") }
     static var developerRow: String { QACatalog.text("settings.developer") }
     static let developerTitle = "Developer"
     static let expireTrial = "Expire the trial"
@@ -226,6 +227,18 @@ extension XCTestCase {
         let later = app.buttons[QAText.later]
         XCTAssertTrue(later.waitForExistence(timeout: 60), "the invite step never appeared", file: file, line: line)
         later.tap()
+        passTrialOfferIfShown(app, file: file, line: line)
+    }
+
+    func passTrialOfferIfShown(_ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
+        let skip = app.buttons[QAText.trialSkip].firstMatch
+        guard skip.waitForExistence(timeout: 20) else { return }
+        waitUntilHittable(skip)
+        skip.tap()
+        let close = app.buttons[QAText.close].firstMatch
+        XCTAssertTrue(close.waitForExistence(timeout: 20), "the comparison screen has no way out", file: file, line: line)
+        waitUntilHittable(close)
+        close.tap()
     }
 
     func selectTab(_ app: XCUIApplication, _ tab: QATab, file: StaticString = #filePath, line: UInt = #line) {

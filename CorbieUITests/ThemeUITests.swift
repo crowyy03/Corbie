@@ -27,8 +27,9 @@ final class ThemeUITests: XCTestCase {
         let after = try screenBrightness(app)
 
         XCTAssertGreaterThan(before.content, 0.6, "the light theme did not paint a light background")
+        XCTAssertGreaterThan(before.bottom, 0.6, "the light theme did not paint the strip beside the tab bar")
         XCTAssertLessThan(after.content, 0.3, "the content kept the light background after switching to Deep")
-        XCTAssertLessThan(after.tabBar, 0.3, "the tab bar kept the light background after switching to Deep")
+        XCTAssertLessThan(after.bottom, 0.3, "the strip beside the tab bar kept the light background after switching to Deep")
     }
 
     func testTheThemeChoiceSurvivesARelaunch() throws {
@@ -67,14 +68,14 @@ final class ThemeUITests: XCTestCase {
         closeUsHub(app)
     }
 
-    private func screenBrightness(_ app: XCUIApplication) throws -> (content: Double, tabBar: Double) {
+    private func screenBrightness(_ app: XCUIApplication) throws -> (content: Double, bottom: Double) {
         let shot = app.screenshot().image
         guard let image = shot.cgImage else { throw XCTSkip("the screenshot carries no bitmap") }
         let width = image.width
         let height = image.height
         let content = try brightness(of: image, x: width / 2, y: height / 2)
-        let tabBar = try brightness(of: image, x: width / 6, y: height - height / 40)
-        return (content, tabBar)
+        let bottom = try brightness(of: image, x: width / 40, y: height - height / 40)
+        return (content, bottom)
     }
 
     private func brightness(of image: CGImage, x: Int, y: Int) throws -> Double {

@@ -33,7 +33,7 @@ final class UsBadgeUITests: XCTestCase {
         let option = app.anyElement(labelContaining: "Cook at home")
         XCTAssertTrue(option.waitForExistence(timeout: 20))
         option.tap()
-        app.buttons["Answer"].tap()
+        app.buttons["vote.submit"].firstMatch.tap()
         XCTAssertTrue(app.anyElement(labelContaining: "Answer saved").waitForExistence(timeout: 20))
         closeTheHub(app)
 

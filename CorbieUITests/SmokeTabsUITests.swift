@@ -180,7 +180,7 @@ final class SmokeTabsUITests: XCTestCase {
         XCTAssertTrue(option.waitForExistence(timeout: 30), "the vote has no options to pick")
         option.tap()
 
-        let answer = app.buttons[QACatalog.text("votes.detail.answer")]
+        let answer = app.buttons["vote.submit"].firstMatch
         XCTAssertTrue(answer.waitForExistence(timeout: 20), "there is no way to submit an answer")
         answer.tap()
 

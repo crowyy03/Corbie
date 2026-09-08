@@ -32,6 +32,7 @@ struct VoteView: View {
                         submit()
                     }
                     .disabled(model.canSubmit == false)
+                    .accessibilityIdentifier("vote.submit")
                 }
             }
             .padding(CorbieSpacing.l)
