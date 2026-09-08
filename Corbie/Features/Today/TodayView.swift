@@ -58,20 +58,20 @@ struct TodayView: View {
     private func header(_ model: TodayViewModel) -> some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             SectionCaps(text: presentation.headerDate(model.feed.day))
-            HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
-                if let days = model.feed.daysTogether {
+            if let days = model.feed.daysTogether {
+                HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
                     Text(presentation.daysTogether(days))
                         .corbieCounter()
                         .foregroundStyle(palette.text)
                     Text("today.header.days")
                         .corbieMono()
                         .foregroundStyle(palette.text2)
-                }
-                Spacer(minLength: 0)
-                HStack(spacing: CorbieSpacing.xxs) {
-                    MemberDot(slot: environment.memberSlot(id: environment.currentMember?.id))
-                    if environment.isPaired {
-                        MemberDot(slot: environment.memberSlot(id: environment.partner?.id))
+                    Spacer(minLength: 0)
+                    HStack(spacing: CorbieSpacing.xxs) {
+                        MemberDot(slot: environment.memberSlot(id: environment.currentMember?.id))
+                        if environment.isPaired {
+                            MemberDot(slot: environment.memberSlot(id: environment.partner?.id))
+                        }
                     }
                 }
             }
