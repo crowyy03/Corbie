@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PersonDateEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: PersonDateEditorViewModel
@@ -28,7 +30,7 @@ struct PersonDateEditorView: View {
                 .padding(.vertical, CorbieSpacing.m)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(Text(titleKey))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -113,9 +115,9 @@ struct PersonDateEditorView: View {
             Toggle(isOn: $model.remindersEnabled) {
                 Text("people.date.reminders")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
         }
     }

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct LaunchRevealView: View {
+    @Environment(\.palette) private var palette
+
     let isReady: Bool
     let onFinished: () -> Void
 
@@ -14,7 +16,7 @@ struct LaunchRevealView: View {
 
     var body: some View {
         ZStack {
-            CorbieColorPalette.bg
+            palette.bg
                 .ignoresSafeArea()
             HStack(spacing: -markSize * 0.24) {
                 Image(systemName: "bird.fill")
@@ -24,7 +26,7 @@ struct LaunchRevealView: View {
                     .offset(x: hasFlown ? flight : 0, y: hasFlown ? -flight * 0.6 : 0)
             }
             .font(.system(size: markSize, weight: .regular))
-            .foregroundStyle(CorbieColorPalette.text)
+            .foregroundStyle(palette.text)
             .accessibilityHidden(true)
         }
         .opacity(hasFlown ? 0 : 1)

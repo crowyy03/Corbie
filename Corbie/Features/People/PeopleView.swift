@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PeopleView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @State private var model = PeopleViewModel()
 
@@ -21,7 +23,7 @@ struct PeopleView: View {
                             PersonRow(
                                 person: person,
                                 radar: model.radar[person.id],
-                                ownerColor: environment.memberColor(id: person.ownerMemberId),
+                                ownerSlot: environment.memberSlot(id: person.ownerMemberId),
                                 ownerName: environment.memberName(id: person.ownerMemberId)
                             )
                         }
@@ -33,7 +35,7 @@ struct PeopleView: View {
             .padding(.bottom, CorbieSpacing.xxl)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             AddToolbarItem {
@@ -56,11 +58,11 @@ struct PeopleView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             Text("people.title")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .accessibilityAddTraits(.isHeader)
             Text("people.subtitle")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, CorbieSpacing.s)
@@ -80,9 +82,11 @@ struct PeopleView: View {
 }
 
 private struct PersonRow: View {
+    @Environment(\.palette) private var palette
+
     let person: PersonDTO
     let radar: PeopleRadarSummary?
-    let ownerColor: Color
+    let ownerSlot: MemberColorSlot?
     let ownerName: String
 
     var body: some View {
@@ -92,20 +96,20 @@ private struct PersonRow: View {
                     Text(person.name)
                         .corbieBody()
                         .fontWeight(.semibold)
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     if let caption {
                         Text(caption)
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                     if let radar {
                         Text(radar.text.line())
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.ice)
+                            .foregroundStyle(palette.accent)
                     }
                 }
                 Spacer(minLength: 0)
-                MemberDot(color: ownerColor, accessibilityLabel: ownerName)
+                MemberDot(slot: ownerSlot, accessibilityLabel: ownerName)
                     .padding(.top, CorbieSpacing.xxs)
             }
         }

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct CalendarMonthView: View {
+    @Environment(\.palette) private var palette
+
     let model: CalendarViewModel
     let onSelect: (Date) -> Void
 
@@ -25,7 +27,7 @@ struct CalendarMonthView: View {
             Text(model.monthTitle)
                 .corbieBody()
                 .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             Spacer(minLength: CorbieSpacing.xs)
             if model.isOnCurrentMonth == false {
                 Button(String(localized: "calendar.month.today")) {
@@ -33,7 +35,7 @@ struct CalendarMonthView: View {
                 }
                 .buttonStyle(.plain)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.ice)
+                .foregroundStyle(palette.accent)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             }
             monthButton(systemImage: "chevron.left", label: "calendar.month.previous", months: -1)
@@ -47,7 +49,7 @@ struct CalendarMonthView: View {
         } label: {
             Image(systemName: systemImage)
                 .font(.system(size: CorbieFont.captionSize, weight: .semibold))
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
                 .contentShape(Rectangle())
         }
@@ -60,7 +62,7 @@ struct CalendarMonthView: View {
             ForEach(Array(model.formatting.weekdaySymbols.enumerated()), id: \.offset) { symbol in
                 Text(symbol.element)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .frame(maxWidth: .infinity)
             }
         }
@@ -69,6 +71,8 @@ struct CalendarMonthView: View {
 }
 
 private struct CalendarWeekRow: View {
+    @Environment(\.palette) private var palette
+
     static let barHeight: CGFloat = 6
     static let barSpacing: CGFloat = 3
 
@@ -108,7 +112,7 @@ private struct CalendarWeekRow: View {
 
     private func bar(for span: CalendarSpan, columnWidth: CGFloat) -> some View {
         RoundedRectangle(cornerRadius: Self.barHeight / 2, style: .continuous)
-            .fill(CorbieColorPalette.ice)
+            .fill(palette.accent)
             .frame(width: max(columnWidth * CGFloat(span.length) - CorbieSpacing.xxs, 2), height: Self.barHeight)
             .offset(
                 x: columnWidth * CGFloat(span.startColumn) + CorbieSpacing.xxs / 2,
@@ -119,6 +123,8 @@ private struct CalendarWeekRow: View {
 }
 
 private struct CalendarDayCell: View {
+    @Environment(\.palette) private var palette
+
     static let dotLimit = 2
     static let dotSize: CGFloat = 6
 
@@ -137,8 +143,8 @@ private struct CalendarDayCell: View {
     private var isInMonth: Bool { model.grid.isInMonth(day) }
 
     private var numberColor: Color {
-        if isToday { return CorbieColorPalette.accentInk }
-        return isInMonth ? CorbieColorPalette.text : CorbieColorPalette.text2
+        if isToday { return palette.ctaText }
+        return isInMonth ? palette.text : palette.text2
     }
 
     var body: some View {
@@ -154,12 +160,12 @@ private struct CalendarDayCell: View {
                     .frame(width: CorbieSpacing.xl, height: CorbieSpacing.xl)
                     .background {
                         if isToday {
-                            Circle().fill(CorbieColorPalette.ice)
+                            Circle().fill(palette.accent)
                         }
                     }
                     .overlay {
                         if isSelected {
-                            Circle().strokeBorder(CorbieColorPalette.ice, lineWidth: 2)
+                            Circle().strokeBorder(palette.accent, lineWidth: 2)
                         }
                     }
                 dots
@@ -177,7 +183,7 @@ private struct CalendarDayCell: View {
         HStack(spacing: CorbieSpacing.xxs / 2) {
             ForEach(Array(entries.prefix(Self.dotLimit)), id: \.id) { entry in
                 Circle()
-                    .fill(CalendarPalette.color(for: entry, in: environment))
+                    .fill(CalendarEntryTint.color(for: entry, in: environment, palette: palette))
                     .frame(width: Self.dotSize, height: Self.dotSize)
             }
         }

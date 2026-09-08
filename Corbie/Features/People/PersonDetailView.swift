@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PersonDetailView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: PersonDetailViewModel
@@ -26,7 +28,7 @@ struct PersonDetailView: View {
             .padding(.bottom, CorbieSpacing.xxl)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -75,12 +77,12 @@ struct PersonDetailView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             Text(person.name)
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .accessibilityAddTraits(.isHeader)
             if let radar = model.radar {
                 Text(radar.text.line())
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.ice)
+                    .foregroundStyle(palette.accent)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -118,7 +120,7 @@ struct PersonDetailView: View {
                     if model.dateLines.isEmpty {
                         Text("people.detail.dates.empty")
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     } else {
                         ForEach(model.dateLines) { line in
                             PersonDateRowView(
@@ -141,7 +143,7 @@ struct PersonDetailView: View {
                 SectionCaps(text: String(localized: String.LocalizationValue(key)))
                 Text(value)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
             .accessibilityElement(children: .combine)
         }
@@ -151,10 +153,10 @@ struct PersonDetailView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             SectionCaps(text: String(localized: "people.detail.owner"))
             HStack(spacing: CorbieSpacing.xs) {
-                MemberDot(color: environment.memberColor(id: person.ownerMemberId))
+                MemberDot(slot: environment.memberSlot(id: person.ownerMemberId))
                 Text(environment.memberName(id: person.ownerMemberId))
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
         }
         .accessibilityElement(children: .combine)
@@ -202,6 +204,8 @@ struct PersonDetailView: View {
 }
 
 private struct PersonDateRowView: View {
+    @Environment(\.palette) private var palette
+
     let line: PersonDateLine
     let edit: () -> Void
     let remove: () -> Void
@@ -212,12 +216,12 @@ private struct PersonDateRowView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(line.title)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                     if let caption = line.caption {
                         Text(caption)
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .multilineTextAlignment(.leading)
                     }
                 }
@@ -225,7 +229,7 @@ private struct PersonDateRowView: View {
                 if let dayText = line.dayText {
                     Text(dayText)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.trailing)
                 }
             }
@@ -245,6 +249,8 @@ private struct PersonDateRowView: View {
 }
 
 private struct GiftIdeaRow: View {
+    @Environment(\.palette) private var palette
+
     let idea: GiftIdeaDTO
     let price: String?
     let toggle: () -> Void
@@ -256,7 +262,7 @@ private struct GiftIdeaRow: View {
             HStack(alignment: .top, spacing: CorbieSpacing.s) {
                 Button(action: toggle) {
                     Image(systemName: idea.isDone ? "checkmark.circle.fill" : "circle")
-                        .foregroundStyle(idea.isDone ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+                        .foregroundStyle(idea.isDone ? palette.accent : palette.text2)
                         .frame(
                             minWidth: CorbieMetrics.minimumTapTarget,
                             minHeight: CorbieMetrics.minimumTapTarget,
@@ -271,18 +277,18 @@ private struct GiftIdeaRow: View {
                     VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                         Text(idea.title)
                             .corbieBody()
-                            .foregroundStyle(idea.isDone ? CorbieColorPalette.text2 : CorbieColorPalette.text)
+                            .foregroundStyle(idea.isDone ? palette.text2 : palette.text)
                             .multilineTextAlignment(.leading)
                         if let caption {
                             Text(caption)
                                 .corbieMono()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                                 .multilineTextAlignment(.leading)
                         }
                         if let note = idea.note, note.isEmpty == false {
                             Text(note)
                                 .corbieCaption()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                                 .multilineTextAlignment(.leading)
                         }
                     }
@@ -294,7 +300,7 @@ private struct GiftIdeaRow: View {
                 if let url = link {
                     Link(destination: url) {
                         Image(systemName: "arrow.up.right.square")
-                            .foregroundStyle(CorbieColorPalette.ice)
+                            .foregroundStyle(palette.accent)
                             .frame(
                                 minWidth: CorbieMetrics.minimumTapTarget,
                                 minHeight: CorbieMetrics.minimumTapTarget,

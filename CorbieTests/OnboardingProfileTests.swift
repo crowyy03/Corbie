@@ -63,19 +63,19 @@ final class OnboardingProfileTests: XCTestCase {
         let member = MemberDTO(
             id: UUID(),
             displayName: "Old",
-            colorKey: MemberColorKey.p3.rawValue,
+            colorKey: MemberColorSlot.blue.rawValue,
             birthdayMonth: 5,
             birthdayDay: 9
         )
         var draft = ProfileDraft()
         draft.displayName = "Sofia"
-        draft.colorKey = .p5
+        draft.colorSlot = .clay
 
         let updated = draft.applied(to: member)
 
         XCTAssertEqual(updated.id, member.id)
         XCTAssertEqual(updated.displayName, "Sofia")
-        XCTAssertEqual(updated.colorKey, MemberColorKey.p5.rawValue)
+        XCTAssertEqual(updated.colorKey, MemberColorSlot.clay.rawValue)
         XCTAssertNil(updated.birthdayMonth)
         XCTAssertNil(updated.birthdayDay)
     }
@@ -89,13 +89,13 @@ final class OnboardingProfileTests: XCTestCase {
     }
 
     func testDraftFromStoredMemberWinsOverTheAppleName() {
-        let member = MemberDTO(id: UUID(), displayName: "Sofia", colorKey: MemberColorKey.p4.rawValue)
+        let member = MemberDTO(id: UUID(), displayName: "Sofia", colorKey: MemberColorSlot.violet.rawValue)
         let space = SpaceDTO(id: UUID(), togetherSince: Date(timeIntervalSince1970: 1))
 
         let draft = ProfileDraft.from(member: member, space: space, appleName: "Apple Name")
 
         XCTAssertEqual(draft.displayName, "Sofia")
-        XCTAssertEqual(draft.colorKey, .p4)
+        XCTAssertEqual(draft.colorSlot, .violet)
         XCTAssertEqual(draft.togetherSince, space.togetherSince)
     }
 
@@ -103,7 +103,7 @@ final class OnboardingProfileTests: XCTestCase {
         let draft = ProfileDraft.from(member: nil, space: nil, appleName: "Sofia")
 
         XCTAssertEqual(draft.displayName, "Sofia")
-        XCTAssertEqual(draft.colorKey, .defaultA)
+        XCTAssertEqual(draft.colorSlot, .creatorDefault)
         XCTAssertNil(draft.togetherSince)
     }
 
@@ -112,7 +112,7 @@ final class OnboardingProfileTests: XCTestCase {
         draft.displayName = "  "
 
         XCTAssertNil(draft.memberDraft.displayName)
-        XCTAssertEqual(draft.memberDraft.colorKey, MemberColorKey.defaultA.rawValue)
+        XCTAssertEqual(draft.memberDraft.colorKey, MemberColorSlot.creatorDefault.rawValue)
     }
 
     func testOnboardingStepsAreNumberedAfterTheIntroPages() {

@@ -16,50 +16,84 @@ import Testing
         defaults.removePersistentDomain(forName: name)
     }
 
-    @Test func defaultsToSystemWhenNothingStored() {
+    @Test func firstLaunchFollowsTheSystemWithSandAndDeep() {
         let (defaults, name) = makeSuite()
         defer { removeSuite(defaults, name) }
 
-        #expect(ThemePreference.stored(in: defaults) == .system)
+        let settings = ThemeStore(defaults: defaults).settings
+        #expect(settings.followsSystem)
+        #expect(settings.lightTheme == .sand)
+        #expect(settings.darkTheme == .deep)
     }
 
-    @Test func persistenceRoundTrip() {
-        let (defaults, name) = makeSuite()
-        defer { removeSuite(defaults, name) }
-
-        for preference in ThemePreference.allCases {
-            preference.store(in: defaults)
-            #expect(ThemePreference.stored(in: defaults) == preference)
-        }
-    }
-
-    @Test func unknownStoredValueFallsBackToSystem() {
-        let (defaults, name) = makeSuite()
-        defer { removeSuite(defaults, name) }
-
-        defaults.set("sepia", forKey: ThemePreference.storageKey)
-        #expect(ThemePreference.stored(in: defaults) == .system)
-    }
-
-    @Test func colorSchemeMapping() {
-        #expect(ThemePreference.system.colorScheme == nil)
-        #expect(ThemePreference.light.colorScheme == ColorScheme.light)
-        #expect(ThemePreference.dark.colorScheme == ColorScheme.dark)
-    }
-
-    @MainActor
-    @Test func storeWritesAndReloadsPreference() {
+    @Test func everySettingSurvivesAReload() {
         let (defaults, name) = makeSuite()
         defer { removeSuite(defaults, name) }
 
         let store = ThemeStore(defaults: defaults)
-        #expect(store.preference == .system)
-        #expect(store.preferredColorScheme == nil)
+        store.save(ThemeSettings(theme: .sage, followsSystem: false, lightTheme: .sage, darkTheme: .deep))
 
-        store.setPreference(.dark)
-        #expect(store.preferredColorScheme == ColorScheme.dark)
+        let reloaded = ThemeStore(defaults: defaults).settings
+        #expect(reloaded.theme == .sage)
+        #expect(reloaded.followsSystem == false)
+        #expect(reloaded.lightTheme == .sage)
+        #expect(reloaded.darkTheme == .deep)
+    }
 
-        let reloaded = ThemeStore(defaults: defaults)
-        #expect(reloaded.preference == .dark)
+    @Test func anUnknownStoredNameFallsBackToTheFirstLaunchValue() {
+        let (defaults, name) = makeSuite()
+        defer { removeSuite(defaults, name) }
+
+        defaults.set("sepia", forKey: ThemeStore.Key.theme)
+        #expect(ThemeStore(defaults: defaults).settings.theme == .sand)
+    }
+
+    @Test func followingTheSystemPicksTheLightOrDarkChoice() {
+        let settings = ThemeSettings(theme: .sage, followsSystem: true, lightTheme: .sand, darkTheme: .deep)
+        #expect(settings.resolved(for: .light) == .sand)
+        #expect(settings.resolved(for: .dark) == .deep)
+        #expect(settings.preferredColorScheme == nil)
+    }
+
+    @Test func aFixedThemeIgnoresTheSystemAndForcesTheScheme() {
+        let light = ThemeSettings(theme: .sage, followsSystem: false, lightTheme: .sand, darkTheme: .deep)
+        #expect(light.resolved(for: .dark) == .sage)
+        #expect(light.preferredColorScheme == ColorScheme.light)
+
+        let dark = ThemeSettings(theme: .deep, followsSystem: false, lightTheme: .sand, darkTheme: .deep)
+        #expect(dark.resolved(for: .light) == .deep)
+        #expect(dark.preferredColorScheme == ColorScheme.dark)
+    }
+
+    @MainActor
+    @Test func theProviderWritesThroughToTheStore() {
+        let (defaults, name) = makeSuite()
+        defer { removeSuite(defaults, name) }
+
+        let provider = ThemeProvider(store: ThemeStore(defaults: defaults))
+        provider.systemScheme = .dark
+        #expect(provider.preferredColorScheme == nil)
+        #expect(provider.activeTheme == .deep)
+
+        provider.setFollowsSystem(false)
+        provider.setTheme(.sage)
+        #expect(provider.preferredColorScheme == ColorScheme.light)
+        #expect(provider.activeTheme == .sage)
+
+        #expect(ThemeStore(defaults: defaults).settings.theme == .sage)
+    }
+
+    @MainActor
+    @Test func theProviderKeepsTheLightAndDarkChoicesApart() {
+        let (defaults, name) = makeSuite()
+        defer { removeSuite(defaults, name) }
+
+        let provider = ThemeProvider(store: ThemeStore(defaults: defaults))
+        provider.setLightTheme(.sage)
+        provider.setDarkTheme(.deep)
+        provider.systemScheme = .light
+        #expect(provider.activeTheme == .sage)
+        provider.systemScheme = .dark
+        #expect(provider.activeTheme == .deep)
     }
 }

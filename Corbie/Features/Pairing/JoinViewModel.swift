@@ -141,11 +141,13 @@ final class JoinViewModel {
            existing.spaceId != space.id {
             try await environment.repositories.members.delete(id: existing.id)
         }
-        _ = try await environment.repositories.members.upsertCurrentMember(
+        let saved = try await environment.repositories.members.upsertCurrentMember(
             appleUserId: appleUserID,
             spaceId: space.id,
-            draft: profile.memberDraft
+            draft: profile.memberDraft,
+            theme: environment.theme.activeTheme
         )
+        environment.showColorShift(saved)
     }
 
     private func carryTogetherSince(into space: SpaceDTO) async throws {

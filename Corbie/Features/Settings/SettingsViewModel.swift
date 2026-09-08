@@ -65,8 +65,13 @@ final class SettingsViewModel {
         isWorking = true
         defer { isWorking = false }
         do {
-            let updated = try await environment.repositories.members.update(profile.applied(to: member))
-            environment.apply(member: updated)
+            let saved = try await environment.repositories.members.update(
+                profile.applied(to: member),
+                theme: environment.theme.activeTheme
+            )
+            environment.apply(member: saved.member)
+            profile.colorSlot = saved.member.colorSlot
+            environment.showColorShift(saved)
             if let space = environment.space {
                 var changed = profile.applied(to: space)
                 changed.weddingDate = weddingDate

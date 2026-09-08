@@ -41,10 +41,15 @@ targets:
         product: CorbieCore
       - target: CorbieWidgets
       - target: CorbieShare
+    preBuildScripts:
+      - name: Check colors
+        script: "\"$PROJECT_DIR/scripts/check_colors.sh\""
+        basedOnDependencyAnalysis: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.corbie
         PRODUCT_NAME: Corbie
+        ENABLE_USER_SCRIPT_SANDBOXING: "NO"
         TARGETED_DEVICE_FAMILY: "1"
         CODE_SIGN_ENTITLEMENTS: Configs/Corbie.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon

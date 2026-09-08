@@ -1,11 +1,13 @@
 import SwiftUI
 
 public struct Card<Content: View>: View {
-    private let showsChromeGradient: Bool
+    private let isHighlighted: Bool
     private let content: Content
 
-    public init(showsChromeGradient: Bool = false, @ViewBuilder content: () -> Content) {
-        self.showsChromeGradient = showsChromeGradient
+    @Environment(\.palette) private var palette
+
+    public init(isHighlighted: Bool = false, @ViewBuilder content: () -> Content) {
+        self.isHighlighted = isHighlighted
         self.content = content()
     }
 
@@ -19,49 +21,29 @@ public struct Card<Content: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background {
                 ZStack {
-                    shape.fill(CorbieColorPalette.surface)
-                    if showsChromeGradient {
-                        shape.fill(CorbieColorPalette.chrome).opacity(0.14)
+                    shape.fill(palette.surface)
+                    if isHighlighted {
+                        shape.fill(palette.accent).opacity(0.12)
                     }
                 }
             }
-            .overlay(shape.strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline))
+            .overlay(shape.strokeBorder(isHighlighted ? palette.accent : palette.border, lineWidth: CorbieMetrics.hairline))
     }
 }
 
 #if DEBUG
-struct CardGallery: View {
-    var body: some View {
+#if canImport(UIKit)
+#Preview("Card") {
+    PreviewThemes {
         VStack(spacing: CorbieSpacing.m) {
             Card {
-                VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
-                    Text(verbatim: "Plain card")
-                        .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
-                    Text(verbatim: "surface, corner 20, padding 16")
-                        .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
-                }
+                Text(verbatim: "Plain card").corbieBody()
             }
-            Card(showsChromeGradient: true) {
-                Text(verbatim: "Chrome card")
-                    .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+            Card(isHighlighted: true) {
+                Text(verbatim: "Highlighted card").corbieBody()
             }
         }
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
     }
-}
-
-#if canImport(UIKit)
-#Preview("Card light") {
-    CardGallery().preferredColorScheme(.light)
-}
-
-#Preview("Card dark") {
-    CardGallery().preferredColorScheme(.dark)
 }
 #endif
 #endif

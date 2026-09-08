@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PlanDetailView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: PlanDetailViewModel
@@ -22,7 +24,7 @@ struct PlanDetailView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationTitle(model.plan?.title ?? "")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
@@ -97,7 +99,7 @@ struct PlanDetailView: View {
                 Card {
                     Text(note)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .plansListRow()
@@ -128,7 +130,7 @@ struct PlanDetailView: View {
                     PlanExpenseRow(
                         expense: expense,
                         planCurrency: plan.currency,
-                        memberColor: environment.memberColor(id: expense.addedByMemberId),
+                        memberSlot: environment.memberSlot(id: expense.addedByMemberId),
                         memberName: environment.memberName(id: expense.addedByMemberId)
                     )
                     .plansListRow()
@@ -150,7 +152,7 @@ struct PlanDetailView: View {
                 PlanStepRow(
                     step: step,
                     due: planStepDue(for: step, now: Date()),
-                    assigneeColor: step.assigneeMemberId.map { environment.memberColor(id: $0) },
+                    assigneeSlot: environment.memberSlot(id: step.assigneeMemberId),
                     assigneeName: step.assigneeMemberId.map { environment.memberName(id: $0) },
                     isReadOnly: model.isReadOnly,
                     toggle: { Task { await model.toggleStep(step) } },
@@ -173,7 +175,7 @@ struct PlanDetailView: View {
             if model.steps.isEmpty {
                 Text("plans.detail.steps.hint")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .plansListRow()
             }
         } header: {

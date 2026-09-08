@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PlanStepComposer: View {
+    @Environment(\.palette) private var palette
+
     @Binding var title: String
     let canAdd: Bool
     let add: () -> Void
@@ -18,7 +20,7 @@ struct PlanStepComposer: View {
             TextField(String(localized: "plans.detail.steps.add.placeholder"), text: $title)
                 .textFieldStyle(.plain)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .focused($isFocused)
                 .submitLabel(.done)
                 .onSubmit(submit)
@@ -28,7 +30,7 @@ struct PlanStepComposer: View {
                 .accessibilityLabel(Text("plans.detail.steps.add.placeholder"))
             Button(action: submit) {
                 Image(systemName: "plus")
-                    .foregroundStyle(canAdd ? CorbieColorPalette.text : CorbieColorPalette.text2)
+                    .foregroundStyle(canAdd ? palette.text : palette.text2)
                     .frame(minWidth: CorbieMetrics.minimumTapTarget, minHeight: CorbieMetrics.minimumTapTarget)
                     .contentShape(Rectangle())
             }
@@ -41,13 +43,15 @@ struct PlanStepComposer: View {
 
 #if DEBUG
 private struct PlanStepComposerPreview: View {
+    @Environment(\.palette) private var palette
+
     @State private var title = ""
 
     var body: some View {
         PlanStepComposer(title: $title, canAdd: title.isEmpty == false) {}
             .padding(CorbieSpacing.l)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
     }
 }
 

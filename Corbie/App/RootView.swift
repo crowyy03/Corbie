@@ -6,6 +6,7 @@ struct RootView: View {
     @Environment(AppState.self) private var appState
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.palette) private var palette
     @Environment(\.requestReview) private var requestReview
 
     @State private var pendingJoinCode: String?
@@ -102,6 +103,8 @@ struct RootView: View {
             .tag(AppState.Tab.plans)
 
         }
+        .toolbarBackground(palette.surface, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
         .fullScreenCover(isPresented: $state.isUsHubPresented) {
             UsView()
                 .onAppear { isUsHubOnScreen = true }

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct TakeButton: View {
+    @Environment(\.palette) private var palette
+
     let title: String
     let action: () -> Void
 
@@ -10,10 +12,10 @@ struct TakeButton: View {
             Text("tasks.action.take")
                 .corbieCaption()
                 .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.accentInk)
+                .foregroundStyle(palette.ctaText)
                 .padding(.horizontal, CorbieSpacing.s)
                 .frame(minHeight: CorbieMetrics.chipHeight)
-                .background(Capsule(style: .continuous).fill(CorbieColorPalette.ice))
+                .background(Capsule(style: .continuous).fill(palette.accent))
         }
         .buttonStyle(.plain)
         .frame(minWidth: CorbieMetrics.minimumTapTarget, minHeight: CorbieMetrics.minimumTapTarget)

@@ -54,7 +54,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
             spaceId: member.space?.id,
             appleUserHash: member.appleUserHash,
             displayName: member.displayName,
-            colorKey: member.colorKey,
+            colorKey: MemberColorSlot.stored(member.colorKey).rawValue,
             birthdayMonth: member.birthdayMonth?.intValue,
             birthdayDay: member.birthdayDay?.intValue,
             joinedAt: member.joinedAt,
@@ -66,6 +66,8 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
             notificationPrefs: member.notificationPrefs
         )
     }
+
+    public var colorSlot: MemberColorSlot { MemberColorSlot.stored(colorKey) }
 
     public var hasBirthday: Bool { birthdayMonth != nil && birthdayDay != nil }
 }

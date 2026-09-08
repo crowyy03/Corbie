@@ -2,12 +2,14 @@ import CorbieCore
 import SwiftUI
 
 struct PlanCard: View {
+    @Environment(\.palette) private var palette
+
     let plan: PlanDTO
 
     private var totals: PlanTotals { PlanTotals(plan: plan) }
 
     var body: some View {
-        Card(showsChromeGradient: plan.status == .active) {
+        Card(isHighlighted: plan.status == .active) {
             VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                 header
                 ProgressBar(
@@ -20,7 +22,7 @@ struct PlanCard: View {
                 if let steps = planStepsBadge(done: plan.doneStepCount, total: plan.stepCount) {
                     Text(steps)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
         }
@@ -29,22 +31,22 @@ struct PlanCard: View {
     private var header: some View {
         HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
             Image(systemName: plan.type.systemImage)
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .accessibilityHidden(true)
             Text(plan.title)
                 .corbieBody()
                 .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(2)
             Spacer(minLength: CorbieSpacing.xs)
             if plan.status == .completed {
                 Text(PlansCopy.text(PlanStatus.completed.titleKey))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             } else if totals.isOverspent {
                 Text(totals.overspendBadge())
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.warn)
+                    .foregroundStyle(palette.warn)
             }
         }
     }
@@ -53,12 +55,12 @@ struct PlanCard: View {
         HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
             Text(totals.savedOfTarget())
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
             Spacer(minLength: CorbieSpacing.xs)
             if let dates = planDateRange(start: plan.startAt, end: plan.endAt) {
                 Text(dates)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .lineLimit(1)
             }
         }
@@ -66,6 +68,8 @@ struct PlanCard: View {
 }
 
 struct CompactPlanCard: View {
+    @Environment(\.palette) private var palette
+
     static let width: CGFloat = 240
 
     let plan: TodayPlan
@@ -82,16 +86,16 @@ struct CompactPlanCard: View {
 
     var body: some View {
         Button(action: open) {
-            Card(showsChromeGradient: true) {
+            Card(isHighlighted: true) {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                     HStack(alignment: .firstTextBaseline, spacing: CorbieSpacing.xs) {
                         Image(systemName: plan.type.systemImage)
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .accessibilityHidden(true)
                         Text(plan.title)
                             .corbieBody()
                             .fontWeight(.semibold)
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                             .multilineTextAlignment(.leading)
                             .lineLimit(2, reservesSpace: true)
                         Spacer(minLength: 0)
@@ -103,12 +107,12 @@ struct CompactPlanCard: View {
                     )
                     Text(amount)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .lineLimit(1)
                     if showsSteps {
                         Text(steps ?? "")
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .lineLimit(1, reservesSpace: true)
                     }
                 }
@@ -153,6 +157,6 @@ struct CompactPlanCard: View {
     }
     .padding(CorbieSpacing.l)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(CorbieColorPalette.bg)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

@@ -37,6 +37,8 @@ struct DaysTogetherWidget: Widget {
 }
 
 struct DaysTogetherWidgetView: View {
+    @Environment(\.palette) private var palette
+
     let entry: DaysTogetherEntry
 
     var body: some View {
@@ -47,7 +49,7 @@ struct DaysTogetherWidgetView: View {
                     WidgetCounter(value: days)
                     Text("widget.daystogether.caption")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .lineLimit(1)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

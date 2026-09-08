@@ -6,20 +6,38 @@ final class QASettingsUITests: XCTestCase {
         try XCTSkipUnless(QARun.isEnglish, "the settings walk reads English labels")
     }
 
-    func testTheThemeSegmentSwitchesAndGoesBack() throws {
+    func testTheAppearanceTogglePicksAFixedThemeAndGoesBack() throws {
         let app = launchSignedIn(appearance: "system")
         openSharedSettings(app)
 
-        let dark = settingsRow(app, "settings.appearance.dark")
-        XCTAssertTrue(scrollTo(dark, in: app), "the appearance section has no Dark option")
-        dark.tap()
-        XCTAssertTrue(dark.isSelected, "picking Dark did not select it")
-        saveScreenshot(app, named: "settings_theme_dark")
+        let deep = settingsRow(app, "theme.name.deep")
+        XCTAssertTrue(scrollTo(deep, in: app), "the appearance section has no theme cards")
+        let follow = settingsSwitch(app, "settings.appearance.followsystem")
+        XCTAssertTrue(follow.isHittable, "the appearance toggle is out of reach")
+        XCTAssertEqual(follow.value as? String, "1", "a fresh install does not follow the system")
+        XCTAssertTrue(appearanceLabel(app, "settings.appearance.light").exists, "the light choice is missing")
 
-        let system = settingsRow(app, "settings.appearance.system")
-        XCTAssertTrue(system.exists, "the appearance section has no System option")
-        system.tap()
-        XCTAssertTrue(system.isSelected, "the theme did not go back to System")
+        flip(follow)
+        let turnedOff = expectation(for: NSPredicate(format: "value == %@", "0"), evaluatedWith: follow)
+        wait(for: [turnedOff], timeout: 20)
+        XCTAssertTrue(
+            appearanceLabel(app, "settings.appearance.light").waitForNonExistence(timeout: 10),
+            "a fixed appearance still asks for a light choice"
+        )
+
+        XCTAssertTrue(scrollTo(deep, in: app), "a fixed appearance offers no Deep theme")
+        deep.tap()
+        XCTAssertTrue(deep.isSelected, "picking Deep did not select it")
+        saveScreenshot(app, named: "settings_theme_deep")
+
+        XCTAssertTrue(follow.isHittable, "the appearance toggle went out of reach")
+        flip(follow)
+        let turnedOn = expectation(for: NSPredicate(format: "value == %@", "1"), evaluatedWith: follow)
+        wait(for: [turnedOn], timeout: 20)
+        XCTAssertTrue(
+            appearanceLabel(app, "settings.appearance.light").waitForExistence(timeout: 10),
+            "going back to the system brought no light choice"
+        )
     }
 
     func testTheExportProducesAFileTheShareSheetCanTake() throws {
@@ -60,10 +78,6 @@ final class QASettingsUITests: XCTestCase {
         wait(for: [turnedOff], timeout: 40)
     }
 
-    private func flip(_ toggle: XCUIElement) {
-        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
-    }
-
     func testASoloSpaceOffersNoLeaveRowAndDeletesFromTheAccountSection() throws {
         let app = launchSignedIn()
         openSharedSettings(app)
@@ -94,5 +108,9 @@ final class QASettingsUITests: XCTestCase {
             "deleting the account did not land back on onboarding"
         )
         saveScreenshot(app, named: "settings_after_delete")
+    }
+
+    private func appearanceLabel(_ app: XCUIApplication, _ key: String) -> XCUIElement {
+        app.staticTexts[QACatalog.text(key)].firstMatch
     }
 }

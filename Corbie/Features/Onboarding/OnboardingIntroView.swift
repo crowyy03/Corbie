@@ -3,6 +3,8 @@ import CorbieCore
 import SwiftUI
 
 struct OnboardingIntroView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(\.colorScheme) private var colorScheme
     @Bindable var model: OnboardingViewModel
 
@@ -25,7 +27,7 @@ struct OnboardingIntroView: View {
 
             Text("onboarding.intro.signin.note")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal, CorbieSpacing.l)
@@ -40,11 +42,11 @@ struct OnboardingIntroView: View {
             CorbieMarkView(size: 76)
             Text("onboarding.intro.page1.title")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .multilineTextAlignment(.center)
             Text("onboarding.intro.page1.note")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .multilineTextAlignment(.center)
             Spacer()
         }
@@ -56,7 +58,7 @@ struct OnboardingIntroView: View {
             Spacer()
             Text("onboarding.intro.page2.title")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             featureCard(
                 systemImage: "checkmark.circle",
                 title: Text("onboarding.intro.tasks.title"),
@@ -82,15 +84,15 @@ struct OnboardingIntroView: View {
             Spacer()
             Image(systemName: "person.2")
                 .font(.system(size: CorbieMetrics.emptyStateIconSize, weight: .light))
-                .foregroundStyle(CorbieColorPalette.ice)
+                .foregroundStyle(palette.accent)
                 .accessibilityHidden(true)
             Text("onboarding.intro.page3.title")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .multilineTextAlignment(.center)
             Text("onboarding.intro.page3.note")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .multilineTextAlignment(.center)
             Spacer()
         }
@@ -102,16 +104,16 @@ struct OnboardingIntroView: View {
             HStack(alignment: .top, spacing: CorbieSpacing.s) {
                 Image(systemName: systemImage)
                     .font(.system(size: CorbieSpacing.l, weight: .light))
-                    .foregroundStyle(CorbieColorPalette.ice)
+                    .foregroundStyle(palette.accent)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     title
                         .corbieBody()
                         .fontWeight(.semibold)
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     note
                         .corbieCaption()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
         }
@@ -121,7 +123,7 @@ struct OnboardingIntroView: View {
         HStack(spacing: CorbieSpacing.xs) {
             ForEach(0 ..< OnboardingStepIndex.introPageCount, id: \.self) { index in
                 Circle()
-                    .fill(index == model.page ? CorbieColorPalette.ice : CorbieColorPalette.border)
+                    .fill(index == model.page ? palette.accent : palette.border)
                     .frame(width: dotSize, height: dotSize)
             }
         }
@@ -148,7 +150,7 @@ struct OnboardingIntroView: View {
         } label: {
             Text("onboarding.debug.signin")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .frame(maxWidth: .infinity, minHeight: CorbieMetrics.minimumTapTarget)
         }
         .disabled(model.isWorking)
@@ -170,6 +172,6 @@ struct OnboardingIntroView: View {
 #Preview {
     OnboardingIntroView(model: OnboardingViewModel(environment: .preview(), appState: AppState()))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
+        .background(CorbieTheme.sand.palette.bg)
 }
 #endif

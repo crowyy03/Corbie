@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PaywallView: View {
+    @Environment(\.palette) private var palette
+
     let request: PaywallRequest
 
     @Environment(AppEnvironment.self) private var environment
@@ -22,7 +24,7 @@ struct PaywallView: View {
                 .padding(.horizontal, CorbieSpacing.l)
                 .padding(.bottom, CorbieSpacing.xxl)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -43,10 +45,10 @@ struct PaywallView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
             Text(PaywallCopy.reasonText(request.reason))
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
             Text("paywall.headline")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -59,17 +61,17 @@ struct PaywallView: View {
                 HStack(alignment: .top, spacing: CorbieSpacing.s) {
                     Image(systemName: row.systemImage)
                         .font(.system(size: CorbieSpacing.l, weight: .light))
-                        .foregroundStyle(CorbieColorPalette.ice)
+                        .foregroundStyle(palette.accent)
                         .frame(width: CorbieSpacing.xl)
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                         Text(LocalizedStringKey(row.titleKey))
                             .corbieBody()
                             .fontWeight(.semibold)
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                         Text(LocalizedStringKey(row.noteKey))
                             .corbieCaption()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
@@ -85,7 +87,7 @@ struct PaywallView: View {
                 ProgressView()
                 Text("paywall.state.loading")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
             .frame(maxWidth: .infinity, minHeight: CorbieMetrics.controlHeight)
         case .ready:
@@ -99,7 +101,7 @@ struct PaywallView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                     Text("paywall.state.unavailable")
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     SecondaryButton(title: String(localized: "paywall.action.retry")) {
                         Task { await model.reload(environment) }
                     }
@@ -119,31 +121,31 @@ struct PaywallView: View {
                         Text(LocalizedStringKey(PaywallCopy.titleKey(offer.product)))
                             .corbieBody()
                             .fontWeight(.semibold)
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                             .fixedSize(horizontal: false, vertical: true)
                         if let badge = PaywallCopy.savingsBadge(for: offer) {
                             Text(badge)
                                 .corbieMono()
                                 .fontWeight(.semibold)
-                                .foregroundStyle(CorbieColorPalette.accentInk)
+                                .foregroundStyle(palette.ctaText)
                                 .padding(.horizontal, CorbieSpacing.xs)
                                 .padding(.vertical, CorbieSpacing.xxs)
-                                .background(Capsule(style: .continuous).fill(CorbieColorPalette.ice))
+                                .background(Capsule(style: .continuous).fill(palette.accent))
                         }
                     }
                     if let permonth = PaywallCopy.monthlyEquivalent(for: offer) {
                         Text(permonth)
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                 }
                 Spacer(minLength: CorbieSpacing.xs)
                 Text(offer.displayPrice)
                     .corbieBody()
                     .fontWeight(.semibold)
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
-                    .foregroundStyle(isSelected ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+                    .foregroundStyle(isSelected ? palette.accent : palette.text2)
                     .accessibilityHidden(true)
             }
             .padding(CorbieSpacing.m)
@@ -151,12 +153,12 @@ struct PaywallView: View {
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
             .background(
                 RoundedRectangle(cornerRadius: CorbieRadius.card, style: .continuous)
-                    .fill(CorbieColorPalette.surface)
+                    .fill(palette.surface)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: CorbieRadius.card, style: .continuous)
                     .strokeBorder(
-                        isSelected ? CorbieColorPalette.ice : CorbieColorPalette.border,
+                        isSelected ? palette.accent : palette.border,
                         lineWidth: isSelected ? 2 : CorbieMetrics.hairline
                     )
             )
@@ -178,7 +180,7 @@ struct PaywallView: View {
             if let message = model.message {
                 Text(message)
                     .corbieCaption()
-                    .foregroundStyle(CorbieColorPalette.warn)
+                    .foregroundStyle(palette.warn)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
             }
@@ -195,7 +197,7 @@ struct PaywallView: View {
     private var legal: some View {
         Text(legalText)
             .corbieMono()
-            .foregroundStyle(CorbieColorPalette.text2)
+            .foregroundStyle(palette.text2)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -208,7 +210,7 @@ struct PaywallView: View {
                 } label: {
                     Text(LocalizedStringKey(link.paywallTitleKey))
                         .corbieCaption()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .underline()
                         .frame(minHeight: CorbieMetrics.minimumTapTarget)
                         .contentShape(Rectangle())

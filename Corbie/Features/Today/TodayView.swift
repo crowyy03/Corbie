@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct TodayView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @Environment(\.scenePhase) private var scenePhase
@@ -13,7 +15,7 @@ struct TodayView: View {
 
     var body: some View {
         ZStack {
-            CorbieColorPalette.bg.ignoresSafeArea()
+            palette.bg.ignoresSafeArea()
             if let model {
                 content(model)
             }
@@ -59,16 +61,16 @@ struct TodayView: View {
                 if let days = model.feed.daysTogether {
                     Text(presentation.daysTogether(days))
                         .corbieCounter()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     Text("today.header.days")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
                 Spacer(minLength: 0)
                 HStack(spacing: CorbieSpacing.xxs) {
-                    MemberDot(color: environment.memberColor(id: environment.currentMember?.id))
+                    MemberDot(slot: environment.memberSlot(id: environment.currentMember?.id))
                     if environment.isPaired {
-                        MemberDot(color: environment.memberColor(id: environment.partner?.id))
+                        MemberDot(slot: environment.memberSlot(id: environment.partner?.id))
                     }
                 }
             }
@@ -117,7 +119,7 @@ struct TodayView: View {
                     } label: {
                         Text(presentation.moreFreeTasks(model.feed.freeTasksRemaining))
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.ice)
+                            .foregroundStyle(palette.accent)
                             .frame(maxWidth: .infinity, minHeight: CorbieMetrics.minimumTapTarget, alignment: .leading)
                             .contentShape(Rectangle())
                     }
@@ -132,7 +134,7 @@ struct TodayView: View {
                         title: presentation.dateTitle(date),
                         caption: presentation.dateCaption(date),
                         giftLine: date.isGiftMissing ? presentation.giftLine(date) : nil,
-                        dotColor: environment.memberColor(id: date.memberId),
+                        dotSlot: environment.memberSlot(id: date.memberId),
                         open: { model.open(route(for: date), block: .comingUp, in: appState) }
                     )
                 }
@@ -166,7 +168,7 @@ struct TodayView: View {
     private func entryRow(_ entry: TodayEntry, block: TodayBlock, model: TodayViewModel) -> some View {
         TodayEntryRow(
             entry: entry,
-            dotColor: environment.memberColor(id: entry.memberId),
+            dotSlot: environment.memberSlot(id: entry.memberId),
             time: presentation.time(for: entry),
             fromPlan: entry.planTitle.map(presentation.fromPlan),
             checkboxLabel: presentation.checkboxLabel(entry),

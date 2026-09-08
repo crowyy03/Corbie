@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct ProfileBirthdayPicker: View {
+    @Environment(\.palette) private var palette
+
     @Binding var profile: ProfileDraft
     let toggleTitle: String
     let monthLabel: String
@@ -12,9 +14,9 @@ struct ProfileBirthdayPicker: View {
             Toggle(isOn: enabled) {
                 Text(toggleTitle)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
 
             if profile.hasBirthday {
                 HStack(spacing: CorbieSpacing.m) {
@@ -26,7 +28,7 @@ struct ProfileBirthdayPicker: View {
                         Text(monthLabel)
                     }
                     .pickerStyle(.menu)
-                    .tint(CorbieColorPalette.ice)
+                    .tint(palette.accent)
 
                     Picker(selection: day) {
                         ForEach(1 ... PersonBirthday.dayCount(month: profile.birthdayMonth ?? 1), id: \.self) { value in
@@ -36,7 +38,7 @@ struct ProfileBirthdayPicker: View {
                         Text(dayLabel)
                     }
                     .pickerStyle(.menu)
-                    .tint(CorbieColorPalette.ice)
+                    .tint(palette.accent)
                 }
             }
         }

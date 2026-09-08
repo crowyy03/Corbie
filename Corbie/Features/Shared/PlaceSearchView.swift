@@ -3,6 +3,8 @@ import MapKit
 import SwiftUI
 
 struct PlaceSearchView: View {
+    @Environment(\.palette) private var palette
+
     let title: String
     let placeholder: String
     let onPick: (MapPlace) -> Void
@@ -21,7 +23,7 @@ struct PlaceSearchView: View {
             }
             .padding(CorbieSpacing.l)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -37,12 +39,12 @@ struct PlaceSearchView: View {
     private func searchField(query: Binding<String>) -> some View {
         HStack(spacing: CorbieSpacing.s) {
             Image(systemName: "magnifyingglass")
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .accessibilityHidden(true)
             TextField(placeholder, text: query)
                 .textFieldStyle(.plain)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .accessibilityLabel(placeholder)
         }
         .padding(.horizontal, CorbieSpacing.s)
@@ -56,7 +58,7 @@ struct PlaceSearchView: View {
         if model.suggestions.isEmpty {
             Text(model.hasQuery ? "place.search.empty" : "place.search.hint")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         } else {
             ScrollView {
                 VStack(spacing: CorbieSpacing.xs) {
@@ -81,12 +83,12 @@ struct PlaceSearchView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(suggestion.title)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                     if suggestion.subtitle.isEmpty == false {
                         Text(suggestion.subtitle)
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .multilineTextAlignment(.leading)
                     }
                 }

@@ -3,7 +3,7 @@ import Foundation
 
 struct ProfileDraft: Equatable {
     var displayName = ""
-    var colorKey: MemberColorKey = .defaultA
+    var colorSlot: MemberColorSlot = .creatorDefault
     var togetherSince: Date?
     var birthdayMonth: Int?
     var birthdayDay: Int?
@@ -19,7 +19,7 @@ struct ProfileDraft: Equatable {
     var memberDraft: MemberDraft {
         MemberDraft(
             displayName: trimmedName.isEmpty ? nil : trimmedName,
-            colorKey: colorKey.rawValue,
+            colorKey: colorSlot.rawValue,
             birthdayMonth: birthdayMonth,
             birthdayDay: birthdayDay
         )
@@ -28,7 +28,7 @@ struct ProfileDraft: Equatable {
     func applied(to member: MemberDTO) -> MemberDTO {
         var updated = member
         updated.displayName = trimmedName.isEmpty ? nil : trimmedName
-        updated.colorKey = colorKey.rawValue
+        updated.colorKey = colorSlot.rawValue
         updated.birthdayMonth = birthdayMonth
         updated.birthdayDay = birthdayDay
         return updated
@@ -60,7 +60,7 @@ struct ProfileDraft: Equatable {
     static func from(member: MemberDTO?, space: SpaceDTO?, appleName: String?) -> ProfileDraft {
         var draft = ProfileDraft()
         draft.displayName = member?.displayName ?? appleName ?? ""
-        draft.colorKey = MemberColor(key: member?.colorKey).key
+        draft.colorSlot = MemberColorSlot.stored(member?.colorKey)
         draft.togetherSince = space?.togetherSince
         draft.birthdayMonth = member?.birthdayMonth
         draft.birthdayDay = member?.birthdayDay

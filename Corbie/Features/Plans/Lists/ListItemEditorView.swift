@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct ListItemEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: ListItemEditorViewModel
@@ -57,11 +59,11 @@ struct ListItemEditorView: View {
                     VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                         Text(model.placeName ?? model.title)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                         if let address = model.address, address.isEmpty == false {
                             Text(address)
                                 .corbieMono()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                         }
                     }
                 }

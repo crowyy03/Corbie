@@ -11,12 +11,26 @@ enum WidgetLayout {
     static let stripeWidth: CGFloat = 3
 }
 
+struct WidgetSurface: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var theme: CorbieTheme {
+        ThemeStore().settings.resolved(for: colorScheme)
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .padding(CorbieSpacing.s)
+            .containerBackground(for: .widget) {
+                theme.palette.bg
+            }
+            .corbieTheme(theme)
+    }
+}
+
 extension View {
     func corbieWidgetSurface() -> some View {
-        padding(CorbieSpacing.s)
-            .containerBackground(for: .widget) {
-                CorbieColorPalette.bg
-            }
+        modifier(WidgetSurface())
     }
 
     func corbieAccessorySurface() -> some View {
@@ -27,12 +41,14 @@ extension View {
 }
 
 struct WidgetHeading: View {
+    @Environment(\.palette) private var palette
+
     let text: String
 
     var body: some View {
         Text(text)
             .corbieSectionCaps()
-            .foregroundStyle(CorbieColorPalette.text2)
+            .foregroundStyle(palette.text2)
             .lineLimit(1)
             .minimumScaleFactor(0.8)
             .accessibilityAddTraits(.isHeader)
@@ -40,6 +56,8 @@ struct WidgetHeading: View {
 }
 
 struct WidgetCounter: View {
+    @Environment(\.palette) private var palette
+
     let value: Int
     var compact = false
 
@@ -51,25 +69,29 @@ struct WidgetCounter: View {
                 Text(value, format: .number).corbieCounter()
             }
         }
-        .foregroundStyle(CorbieColorPalette.text)
+        .foregroundStyle(palette.text)
         .minimumScaleFactor(0.4)
         .lineLimit(1)
     }
 }
 
 struct WidgetCaption: View {
+    @Environment(\.palette) private var palette
+
     let text: String
 
     var body: some View {
         Text(text)
             .corbieMono()
-            .foregroundStyle(CorbieColorPalette.text2)
+            .foregroundStyle(palette.text2)
             .lineLimit(2)
             .minimumScaleFactor(0.8)
     }
 }
 
 struct WidgetEmptyState: View {
+    @Environment(\.palette) private var palette
+
     let title: LocalizedStringKey
     let note: LocalizedStringKey
 
@@ -77,12 +99,12 @@ struct WidgetEmptyState: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             Text(title)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(2)
                 .minimumScaleFactor(0.8)
             Text(note)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .lineLimit(2)
                 .minimumScaleFactor(0.8)
         }
@@ -135,23 +157,27 @@ struct WidgetLink<Content: View>: View {
 }
 
 struct WidgetOverflowLine: View {
+    @Environment(\.palette) private var palette
+
     let count: Int
 
     var body: some View {
         Text(String(localized: "widget.more", defaultValue: "+\(count) more"))
             .corbieMono()
-            .foregroundStyle(CorbieColorPalette.text2)
+            .foregroundStyle(palette.text2)
             .lineLimit(1)
     }
 }
 
 struct WidgetTaskRow: View {
+    @Environment(\.palette) private var palette
+
     let task: WidgetTask
     let now: Date
 
     private var markColor: Color {
-        guard task.isFree == false, let colorKey = task.colorKey else { return CorbieColorPalette.text2 }
-        return MemberColor(key: colorKey).color
+        guard task.isFree == false, let colorKey = task.colorKey else { return palette.text2 }
+        return palette.member(storedKey: colorKey)
     }
 
     var body: some View {
@@ -175,6 +201,8 @@ struct WidgetTaskRow: View {
 }
 
 struct WidgetTaskText: View {
+    @Environment(\.palette) private var palette
+
     let task: WidgetTask
     let now: Date
 
@@ -190,12 +218,12 @@ struct WidgetTaskText: View {
         VStack(alignment: .leading, spacing: 0) {
             Text(task.title)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(1)
             if let dueText {
                 Text(dueText)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .lineLimit(1)
             }
         }
@@ -204,12 +232,14 @@ struct WidgetTaskText: View {
 }
 
 struct WidgetDateRow: View {
+    @Environment(\.palette) private var palette
+
     let date: WidgetDate
     let now: Date
 
     private var stripeColor: Color {
-        guard let colorKey = date.colorKey else { return CorbieColorPalette.ice }
-        return MemberColor(key: colorKey).color
+        guard let colorKey = date.colorKey else { return palette.accent }
+        return palette.member(storedKey: colorKey)
     }
 
     private var subtitle: String {
@@ -225,17 +255,17 @@ struct WidgetDateRow: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(WidgetDateLabel.upcoming(kind: date.kind, title: date.title, ordinal: date.ordinal))
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .lineLimit(1)
                 Text(subtitle)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .lineLimit(1)
             }
             Spacer(minLength: CorbieSpacing.xs)
             Text(WidgetDateLabel.shortDate(date.date, now: now))
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .lineLimit(1)
         }
         .frame(height: WidgetLayout.dateRowHeight)
@@ -244,11 +274,13 @@ struct WidgetDateRow: View {
 }
 
 struct WidgetEventRow: View {
+    @Environment(\.palette) private var palette
+
     let event: WidgetEvent
 
     private var stripeColor: Color {
-        guard let colorKey = event.colorKey else { return CorbieColorPalette.ice }
-        return MemberColor(key: colorKey).color
+        guard let colorKey = event.colorKey else { return palette.accent }
+        return palette.member(storedKey: colorKey)
     }
 
     var body: some View {
@@ -258,18 +290,18 @@ struct WidgetEventRow: View {
                 .frame(width: WidgetLayout.stripeWidth)
             Text(event.title)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(1)
             Spacer(minLength: CorbieSpacing.xs)
             if let startAt = event.startAt, event.isAllDay == false {
                 Text(startAt, style: .time)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .lineLimit(1)
             } else {
                 Text("today.row.allday")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .lineLimit(1)
             }
         }
@@ -279,21 +311,23 @@ struct WidgetEventRow: View {
 }
 
 struct WidgetFreeSlotRow: View {
+    @Environment(\.palette) private var palette
+
     let slot: WidgetFreeSlot
 
     var body: some View {
         HStack(spacing: CorbieSpacing.xs) {
             Capsule(style: .continuous)
-                .fill(CorbieColorPalette.ice)
+                .fill(palette.accent)
                 .frame(width: WidgetLayout.stripeWidth)
             Text(slot.dayText)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(1)
             Spacer(minLength: CorbieSpacing.xs)
             Text(slot.windowText)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .lineLimit(1)
         }
         .frame(height: WidgetLayout.dateRowHeight)
@@ -302,6 +336,8 @@ struct WidgetFreeSlotRow: View {
 }
 
 struct WidgetPlanLine: View {
+    @Environment(\.palette) private var palette
+
     private let title: String
     private let progress: Double
     private let overspentFraction: Double
@@ -368,13 +404,13 @@ struct WidgetPlanLine: View {
             HStack(spacing: CorbieSpacing.xs) {
                 Text(title)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .lineLimit(1)
                 Spacer(minLength: CorbieSpacing.xs)
                 if let overspendText {
                     Text(overspendText)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.warn)
+                        .foregroundStyle(palette.warn)
                         .lineLimit(1)
                 }
             }
@@ -388,14 +424,14 @@ struct WidgetPlanLine: View {
                 if let amountText {
                     Text(amountText)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .lineLimit(1)
                 }
                 Spacer(minLength: CorbieSpacing.xs)
                 if let stepsText {
                     Text(stepsText)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .lineLimit(1)
                 }
             }

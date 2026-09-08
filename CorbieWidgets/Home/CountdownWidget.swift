@@ -79,6 +79,8 @@ struct CountdownWidget: Widget {
 }
 
 struct CountdownWidgetView: View {
+    @Environment(\.palette) private var palette
+
     let entry: CountdownEntry
 
     private var label: String {
@@ -97,12 +99,12 @@ struct CountdownWidgetView: View {
                     WidgetCounter(value: daysAway)
                     Text(label)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .lineLimit(2)
                         .minimumScaleFactor(0.8)
                     Text(WidgetDateLabel.shortDate(date, now: entry.date))
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.ice)
+                        .foregroundStyle(palette.accent)
                         .lineLimit(1)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

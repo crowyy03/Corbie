@@ -2,8 +2,10 @@ import CorbieCore
 import SwiftUI
 
 struct CorbieMarkView: View {
+    @Environment(\.palette) private var palette
+
     var size: CGFloat = 64
-    var tint: Color = CorbieColorPalette.text
+    var tint: Color?
 
     var body: some View {
         HStack(spacing: -size * 0.24) {
@@ -12,7 +14,7 @@ struct CorbieMarkView: View {
             Image(systemName: "bird.fill")
         }
         .font(.system(size: size, weight: .regular))
-        .foregroundStyle(tint)
+        .foregroundStyle(tint ?? palette.text)
         .accessibilityHidden(true)
     }
 }
@@ -21,9 +23,9 @@ struct CorbieMarkView: View {
 #Preview {
     VStack(spacing: CorbieSpacing.xl) {
         CorbieMarkView()
-        CorbieMarkView(size: 32, tint: CorbieColorPalette.text2)
+        CorbieMarkView(size: 32, tint: CorbieTheme.sand.palette.text2)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(CorbieColorPalette.bg)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

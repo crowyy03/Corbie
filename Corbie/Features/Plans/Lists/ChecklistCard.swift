@@ -2,34 +2,36 @@ import CorbieCore
 import SwiftUI
 
 struct ChecklistCard: View {
+    @Environment(\.palette) private var palette
+
     let list: ChecklistListDTO
 
     var body: some View {
         Card {
             HStack(alignment: .top, spacing: CorbieSpacing.s) {
                 Image(systemName: list.template.systemImage)
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(list.title)
                         .corbieBody()
                         .fontWeight(.semibold)
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .lineLimit(2)
                     if let subtitle = list.subtitle, subtitle.isEmpty == false {
                         Text(subtitle)
                             .corbieCaption()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                             .lineLimit(1)
                     }
                     Text(progressText)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
                 Spacer(minLength: 0)
                 if list.isPinnedShopping {
                     Image(systemName: "pin")
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .accessibilityHidden(true)
                 }
             }
@@ -67,6 +69,6 @@ struct ChecklistCard: View {
     }
     .padding(CorbieSpacing.l)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(CorbieColorPalette.bg)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

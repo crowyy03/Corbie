@@ -3,6 +3,8 @@ import CorbieCore
 import SwiftUI
 
 struct DebugNotificationsSections: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @State private var authorization: NotificationAuthorization = .notDetermined
     @State private var pending: [String] = []
@@ -19,23 +21,23 @@ struct DebugNotificationsSections: View {
             } header: {
                 Text(verbatim: "State")
             }
-            .listRowBackground(CorbieColorPalette.surface)
+            .listRowBackground(palette.surface)
 
             Section {
                 if pending.isEmpty {
                     Text(verbatim: "none")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
                 ForEach(pending, id: \.self) { identifier in
                     Text(verbatim: identifier)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             } header: {
                 Text(verbatim: "Pending notifications")
             }
-            .listRowBackground(CorbieColorPalette.surface)
+            .listRowBackground(palette.surface)
 
             Section {
                 Button {
@@ -46,11 +48,11 @@ struct DebugNotificationsSections: View {
                 } label: {
                     Text(verbatim: "Forget the joint action flag")
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.ice)
+                        .foregroundStyle(palette.accent)
                 }
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             }
-            .listRowBackground(CorbieColorPalette.surface)
+            .listRowBackground(palette.surface)
         }
         .task { await reload() }
     }
@@ -59,10 +61,10 @@ struct DebugNotificationsSections: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
             Text(verbatim: title)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             Text(verbatim: value)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
         .padding(.vertical, CorbieSpacing.xxs)
     }

@@ -14,9 +14,8 @@ extension AppEnvironment {
         return currentMember.id == id
     }
 
-    func memberColor(id: UUID?) -> Color {
-        guard let member = member(id: id) else { return CorbieColorPalette.text2 }
-        return MemberColor(key: member.colorKey).color
+    func memberSlot(id: UUID?) -> MemberColorSlot? {
+        member(id: id)?.colorSlot
     }
 
     func memberName(id: UUID?) -> String {
@@ -27,5 +26,16 @@ extension AppEnvironment {
 
     var partnerName: String {
         partner?.displayName ?? String(localized: "member.name.partner")
+    }
+
+    func showColorShift(_ saved: MemberSaveResult) {
+        guard let shifted = saved.shiftedColorFrom else { return }
+        toasts.show(
+            message: String(
+                format: String(localized: "settings.you.color.shifted"),
+                String(localized: String.LocalizationValue(shifted.displayNameKey)),
+                String(localized: String.LocalizationValue(saved.member.colorSlot.displayNameKey))
+            )
+        )
     }
 }

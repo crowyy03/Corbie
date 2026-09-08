@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.openURL) private var openURL
     @State private var model = SettingsViewModel()
@@ -25,7 +27,7 @@ struct SettingsView: View {
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationTitle(String(localized: "settings.title"))
         .navigationBarTitleDisplayMode(.inline)
         .task { model.attach(environment) }
@@ -62,21 +64,25 @@ struct SettingsView: View {
                 Task { await model.saveProfile() }
             }
             .buttonStyle(.plain)
-            .foregroundStyle(model.canSaveProfile ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+            .foregroundStyle(model.canSaveProfile ? palette.accent : palette.text2)
             .disabled(model.canSaveProfile == false)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
         } header: {
             SectionCaps(text: String(localized: "settings.section.you"))
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var colorRow: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
             Text("settings.you.color")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
-            MemberColorPicker(selection: $model.profile.colorKey)
+                .foregroundStyle(palette.text2)
+            MemberColorPicker(
+                selection: $model.profile.colorSlot,
+                partnerSlot: model.partner?.colorSlot,
+                partnerName: environment.partnerName
+            )
         }
         .padding(.vertical, CorbieSpacing.xxs)
     }
@@ -91,7 +97,7 @@ struct SettingsView: View {
             )
             Text("settings.you.birthday.hint")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
         .padding(.vertical, CorbieSpacing.xxs)
     }
@@ -102,24 +108,24 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(verbatim: partner.displayName ?? environment.partnerName)
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     Text(partnerJoinLine(partner))
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
                 .padding(.vertical, CorbieSpacing.xxs)
                 .accessibilityElement(children: .combine)
             } else {
                 Text("settings.partner.none")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                 row(titleKey: "settings.partner.invite") { sheet = .invite }
                 row(titleKey: "settings.partner.havecode") { sheet = .join }
             }
         } header: {
             SectionCaps(text: String(localized: "settings.section.partner"))
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var datesSection: some View {
@@ -139,9 +145,9 @@ struct SettingsView: View {
         } footer: {
             Text("settings.dates.footer")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var spaceSection: some View {
@@ -153,10 +159,10 @@ struct SettingsView: View {
             } label: {
                 Text("settings.space.currency")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
             .pickerStyle(.menu)
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
 
             NavigationLink {
@@ -164,7 +170,7 @@ struct SettingsView: View {
             } label: {
                 Text("settings.section.notifications")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
 
@@ -174,16 +180,16 @@ struct SettingsView: View {
         } footer: {
             Text("settings.space.currency.hint")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var subscriptionSection: some View {
         Section {
             Text(verbatim: model.subscriptionStatus.text)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             if model.subscriptionStatus.showsPlans {
                 row(titleKey: "settings.subscription.plans") { sheet = .paywall(PaywallRequest(reason: .settings)) }
@@ -198,14 +204,14 @@ struct SettingsView: View {
         } header: {
             SectionCaps(text: String(localized: "settings.section.subscription"))
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var privacySection: some View {
         Section {
             Text("settings.privacy.copy")
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .padding(.vertical, CorbieSpacing.xxs)
             BusyTimesSharingToggle()
             ForEach(LegalPage.allCases) { page in
@@ -214,7 +220,7 @@ struct SettingsView: View {
         } header: {
             SectionCaps(text: String(localized: "settings.section.privacy"))
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var dataSection: some View {
@@ -226,7 +232,7 @@ struct SettingsView: View {
                 ShareLink(item: url) {
                     Text("settings.data.share")
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.ice)
+                        .foregroundStyle(palette.accent)
                 }
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             }
@@ -235,21 +241,67 @@ struct SettingsView: View {
         } footer: {
             Text("settings.data.export.hint")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var appearanceSection: some View {
         Section {
-            SegmentedPicker(selection: themeBinding, options: ThemePreference.allCases) { preference in
-                String(localized: String.LocalizationValue("settings.appearance." + preference.rawValue))
+            Toggle(isOn: followsSystemBinding) {
+                Text("settings.appearance.followsystem")
+                    .corbieBody()
+                    .foregroundStyle(palette.text)
             }
-            .padding(.vertical, CorbieSpacing.xxs)
+            .tint(palette.accent)
+            .frame(minHeight: CorbieMetrics.minimumTapTarget)
+
+            if environment.theme.settings.followsSystem {
+                themeChoiceRow(
+                    titleKey: "settings.appearance.light",
+                    themes: CorbieTheme.lightChoices,
+                    selection: lightThemeBinding
+                )
+                themeChoiceRow(
+                    titleKey: "settings.appearance.dark",
+                    themes: CorbieTheme.darkChoices,
+                    selection: darkThemeBinding
+                )
+            } else {
+                themeChoiceRow(
+                    titleKey: "settings.appearance.theme",
+                    themes: CorbieTheme.allCases,
+                    selection: themeBinding
+                )
+            }
         } header: {
             SectionCaps(text: String(localized: "settings.section.appearance"))
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
+    }
+
+    private func themeChoiceRow(
+        titleKey: String,
+        themes: [CorbieTheme],
+        selection: Binding<CorbieTheme>
+    ) -> some View {
+        VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
+            Text(String(localized: String.LocalizationValue(titleKey)))
+                .corbieMono()
+                .foregroundStyle(palette.text2)
+            HStack(spacing: CorbieSpacing.s) {
+                ForEach(themes) { candidate in
+                    ThemePreviewCard(
+                        theme: candidate,
+                        name: String(localized: String.LocalizationValue(candidate.displayNameKey)),
+                        isSelected: selection.wrappedValue == candidate
+                    ) {
+                        withAnimation(.easeInOut(duration: 0.2)) { selection.wrappedValue = candidate }
+                    }
+                }
+            }
+        }
+        .padding(.vertical, CorbieSpacing.xxs)
     }
 
     private var accountSection: some View {
@@ -265,28 +317,28 @@ struct SettingsView: View {
         } header: {
             SectionCaps(text: String(localized: "settings.section.account"))
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     private var aboutSection: some View {
         Section {
             Text(verbatim: model.versionLine)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
             #if DEBUG
             NavigationLink {
                 DebugMenuView()
             } label: {
                 Text("settings.developer")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
             .frame(minHeight: CorbieMetrics.minimumTapTarget)
             #endif
         } header: {
             SectionCaps(text: String(localized: "settings.section.about"))
         }
-        .listRowBackground(CorbieColorPalette.surface)
+        .listRowBackground(palette.surface)
     }
 
     @ViewBuilder private var confirmationActions: some View {
@@ -333,7 +385,7 @@ struct SettingsView: View {
             HStack {
                 Text(String(localized: String.LocalizationValue(titleKey)))
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Spacer(minLength: 0)
             }
             .contentShape(Rectangle())
@@ -351,7 +403,7 @@ struct SettingsView: View {
             HStack {
                 Text(String(localized: String.LocalizationValue(titleKey)))
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.warn)
+                    .foregroundStyle(palette.warn)
                 Spacer(minLength: 0)
                 if isWorking {
                     ProgressView()
@@ -372,9 +424,9 @@ struct SettingsView: View {
             )) {
                 Text(String(localized: String.LocalizationValue(titleKey)))
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             if date.wrappedValue != nil {
                 let selection = Binding(get: { date.wrappedValue ?? Date() }, set: { date.wrappedValue = $0 })
                 Group {
@@ -389,7 +441,7 @@ struct SettingsView: View {
                     }
                 }
                 .datePickerStyle(.compact)
-                .tint(CorbieColorPalette.ice)
+                .tint(palette.accent)
             }
         }
         .padding(.vertical, CorbieSpacing.xxs)
@@ -398,7 +450,7 @@ struct SettingsView: View {
     private func datePickerLabel(_ titleKey: String) -> some View {
         Text(String(localized: String.LocalizationValue(titleKey)))
             .corbieBody()
-            .foregroundStyle(CorbieColorPalette.text)
+            .foregroundStyle(palette.text)
     }
 
     private func partnerJoinLine(_ partner: MemberDTO) -> String {
@@ -422,10 +474,33 @@ struct SettingsView: View {
         )
     }
 
-    private var themeBinding: Binding<ThemePreference> {
+    private var themeBinding: Binding<CorbieTheme> {
         Binding(
-            get: { environment.theme.preference },
-            set: { environment.theme.setPreference($0) }
+            get: { environment.theme.settings.theme },
+            set: { environment.theme.setTheme($0) }
+        )
+    }
+
+    private var lightThemeBinding: Binding<CorbieTheme> {
+        Binding(
+            get: { environment.theme.settings.lightTheme },
+            set: { environment.theme.setLightTheme($0) }
+        )
+    }
+
+    private var darkThemeBinding: Binding<CorbieTheme> {
+        Binding(
+            get: { environment.theme.settings.darkTheme },
+            set: { environment.theme.setDarkTheme($0) }
+        )
+    }
+
+    private var followsSystemBinding: Binding<Bool> {
+        Binding(
+            get: { environment.theme.settings.followsSystem },
+            set: { follows in
+                withAnimation(.easeInOut(duration: 0.2)) { environment.theme.setFollowsSystem(follows) }
+            }
         )
     }
 

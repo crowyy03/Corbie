@@ -42,21 +42,23 @@ public final class ToastCenter {
 struct ToastView: View {
     let text: String
 
+    @Environment(\.palette) private var palette
+
     var body: some View {
         Text(text)
             .corbieCaption()
-            .foregroundStyle(CorbieColorPalette.text)
+            .foregroundStyle(palette.text)
             .multilineTextAlignment(.leading)
             .padding(.horizontal, CorbieSpacing.m)
             .padding(.vertical, CorbieSpacing.s)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: CorbieRadius.card, style: .continuous)
-                    .fill(CorbieColorPalette.elevated)
+                    .fill(palette.elevated)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: CorbieRadius.card, style: .continuous)
-                    .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
+                    .strokeBorder(palette.border, lineWidth: CorbieMetrics.hairline)
             )
     }
 }
@@ -86,22 +88,11 @@ public extension View {
 }
 
 #if DEBUG
-struct ToastGallery: View {
-    var body: some View {
-        ToastView(text: "Could not reach the server. Saved locally.")
-            .padding(CorbieSpacing.l)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-            .background(CorbieColorPalette.bg)
-    }
-}
-
 #if canImport(UIKit)
-#Preview("Toast light") {
-    ToastGallery().preferredColorScheme(.light)
-}
-
-#Preview("Toast dark") {
-    ToastGallery().preferredColorScheme(.dark)
+#Preview("Toast") {
+    PreviewThemes {
+        ToastView(text: "Could not reach the server. Saved locally.")
+    }
 }
 #endif
 #endif

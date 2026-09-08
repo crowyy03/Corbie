@@ -1,15 +1,24 @@
 import SwiftUI
 
+public struct FieldBoxModifier: ViewModifier {
+    @Environment(\.palette) private var palette
+
+    public func body(content: Content) -> some View {
+        content
+            .background(
+                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
+                    .fill(palette.surface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
+                    .strokeBorder(palette.border, lineWidth: CorbieMetrics.hairline)
+            )
+    }
+}
+
 public extension View {
     func corbieFieldBox() -> some View {
-        background(
-            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                .fill(CorbieColorPalette.surface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                .strokeBorder(CorbieColorPalette.border, lineWidth: CorbieMetrics.hairline)
-        )
+        modifier(FieldBoxModifier())
     }
 }
 
@@ -17,6 +26,8 @@ public struct FieldRow<Content: View>: View {
     private let label: String
     private let hint: String?
     private let content: Content
+
+    @Environment(\.palette) private var palette
 
     public init(label: String, hint: String? = nil, @ViewBuilder content: () -> Content) {
         self.label = label
@@ -31,7 +42,7 @@ public struct FieldRow<Content: View>: View {
             if let hint {
                 Text(hint)
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -45,6 +56,8 @@ public struct TextFieldRow: View {
     private let hint: String?
     @Binding private var text: String
 
+    @Environment(\.palette) private var palette
+
     public init(label: String, placeholder: String, hint: String? = nil, text: Binding<String>) {
         self.label = label
         self.placeholder = placeholder
@@ -57,7 +70,7 @@ public struct TextFieldRow: View {
             TextField(placeholder, text: $text)
                 .textFieldStyle(.plain)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .padding(.horizontal, CorbieSpacing.s)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
                 .corbieFieldBox()
@@ -67,7 +80,7 @@ public struct TextFieldRow: View {
 }
 
 #if DEBUG
-struct FieldRowGallery: View {
+private struct FieldRowPreview: View {
     @State private var title = ""
 
     var body: some View {
@@ -79,24 +92,17 @@ struct FieldRowGallery: View {
                 text: $title
             )
             FieldRow(label: "Priority", hint: "must, want, someday") {
-                Text(verbatim: "Want")
-                    .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                Text(verbatim: "Want").corbieBody()
             }
         }
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .background(CorbieColorPalette.bg)
     }
 }
 
 #if canImport(UIKit)
-#Preview("FieldRow light") {
-    FieldRowGallery().preferredColorScheme(.light)
-}
-
-#Preview("FieldRow dark") {
-    FieldRowGallery().preferredColorScheme(.dark)
+#Preview("FieldRow") {
+    PreviewThemes {
+        FieldRowPreview()
+    }
 }
 #endif
 #endif

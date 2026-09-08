@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct RecapCard: View {
+    @Environment(\.palette) private var palette
+
     let summary: RecapSummary
     let open: () -> Void
 
@@ -9,7 +11,7 @@ struct RecapCard: View {
 
     var body: some View {
         Button(action: open) {
-            Card(showsChromeGradient: true) {
+            Card(isHighlighted: true) {
                 VStack(alignment: .leading, spacing: CorbieSpacing.m) {
                     SectionCaps(text: String(localized: "recap.title"))
                     columns
@@ -30,17 +32,17 @@ struct RecapCard: View {
             ForEach(summary.members) { member in
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     HStack(spacing: CorbieSpacing.xxs) {
-                        MemberDot(color: MemberColor(key: member.colorKey).color)
+                        MemberDot(slot: MemberColorSlot.stored(member.colorKey))
                         Text(member.name ?? String(localized: "member.name.partner"))
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                     Text(presentation.count(member.tasksDone))
                         .corbieCounter()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                     Text("recap.tasks")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -53,7 +55,7 @@ struct RecapCard: View {
                 ForEach(summary.plans) { move in
                     Text(presentation.planLine(move))
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                 }
             }
@@ -71,7 +73,7 @@ struct RecapCard: View {
                             + presentation.upcomingCaption(item, now: summary.week.end)
                     )
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .multilineTextAlignment(.leading)
                 }
             }
@@ -83,12 +85,12 @@ struct RecapCard: View {
             if let days = summary.daysTogether {
                 Text(presentation.count(days) + " " + String(localized: "today.header.days"))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
             if let milestone = summary.milestone {
                 Text(presentation.milestoneLine(milestone))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.ice)
+                    .foregroundStyle(palette.accent)
             }
         }
     }
@@ -96,6 +98,8 @@ struct RecapCard: View {
 
 #if DEBUG
 private struct RecapCardGallery: View {
+    @Environment(\.palette) private var palette
+
     private let calendar = Calendar.current
 
     var body: some View {
@@ -107,14 +111,14 @@ private struct RecapCardGallery: View {
                     RecapMemberTally(
                         memberId: UUID(),
                         name: PreviewNames.member,
-                        colorKey: MemberColorKey.defaultA.rawValue,
+                        colorKey: MemberColorSlot.creatorDefault.rawValue,
                         tasksDone: 12,
                         wishesAdded: 2
                     ),
                     RecapMemberTally(
                         memberId: UUID(),
                         name: PreviewNames.partner,
-                        colorKey: MemberColorKey.defaultB.rawValue,
+                        colorKey: MemberColorSlot.partnerDefault.rawValue,
                         tasksDone: 7,
                         wishesAdded: 0
                     )
@@ -144,7 +148,7 @@ private struct RecapCardGallery: View {
         )
         .padding(CorbieSpacing.l)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
     }
 }
 

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PersonEditorView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isRelationFocused: Bool
@@ -33,7 +35,7 @@ struct PersonEditorView: View {
                 .padding(.vertical, CorbieSpacing.m)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(Text(titleKey))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -73,7 +75,7 @@ struct PersonEditorView: View {
                     .focused($isRelationFocused)
                     .textFieldStyle(.plain)
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .padding(.horizontal, CorbieSpacing.s)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)
                     .corbieFieldBox()
@@ -178,7 +180,7 @@ struct PersonEditorView: View {
             .lineLimit(2...5)
             .textFieldStyle(.plain)
             .corbieBody()
-            .foregroundStyle(CorbieColorPalette.text)
+            .foregroundStyle(palette.text)
             .padding(.horizontal, CorbieSpacing.s)
             .padding(.vertical, CorbieSpacing.xs)
             .frame(minHeight: CorbieMetrics.minimumTapTarget, alignment: .topLeading)

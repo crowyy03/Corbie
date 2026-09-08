@@ -2,11 +2,13 @@ import CorbieCore
 import SwiftUI
 
 struct LaunchPlaceholderView: View {
+    @Environment(\.palette) private var palette
+
     var body: some View {
         ZStack {
-            CorbieColorPalette.bg
+            palette.bg
                 .ignoresSafeArea()
-            CorbieMarkView(size: 44, tint: CorbieColorPalette.text2)
+            CorbieMarkView(size: 44, tint: palette.text2)
         }
     }
 }

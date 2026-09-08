@@ -17,6 +17,7 @@ struct CorbiePillButtonStyle: ButtonStyle {
         let variant: Variant
 
         @Environment(\.isEnabled) private var isEnabled
+        @Environment(\.palette) private var palette
 
         private var shape: RoundedRectangle {
             RoundedRectangle(cornerRadius: CorbieRadius.pill, style: .continuous)
@@ -24,14 +25,14 @@ struct CorbiePillButtonStyle: ButtonStyle {
 
         private var foreground: Color {
             switch variant {
-            case .filled: return CorbieColorPalette.bg
-            case .outlined: return CorbieColorPalette.text
+            case .filled: return palette.ctaText
+            case .outlined: return palette.text
             }
         }
 
         private var fill: Color {
             switch variant {
-            case .filled: return CorbieColorPalette.text
+            case .filled: return palette.ctaFill
             case .outlined: return .clear
             }
         }
@@ -39,7 +40,7 @@ struct CorbiePillButtonStyle: ButtonStyle {
         private var stroke: Color {
             switch variant {
             case .filled: return .clear
-            case .outlined: return CorbieColorPalette.border
+            case .outlined: return palette.border
             }
         }
 

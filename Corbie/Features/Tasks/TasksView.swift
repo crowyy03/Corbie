@@ -12,6 +12,8 @@ struct TaskEditorRequest: Identifiable {
 }
 
 struct TasksView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @Environment(\.scenePhase) private var scenePhase
@@ -23,7 +25,7 @@ struct TasksView: View {
 
     var body: some View {
         ZStack {
-            CorbieColorPalette.bg.ignoresSafeArea()
+            palette.bg.ignoresSafeArea()
             if let model {
                 list(model)
             }
@@ -115,14 +117,14 @@ struct TasksView: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.vertical, CorbieSpacing.xs)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .listRowInsets(EdgeInsets())
     }
 
     private func row(_ task: TaskDTO, model: TasksViewModel) -> some View {
         TaskRow(
             task: task,
-            dotColor: environment.memberColor(id: task.assigneeMemberId),
+            dotSlot: environment.memberSlot(id: task.assigneeMemberId),
             subtitle: subtitles.text(
                 for: task,
                 viewerMemberId: environment.currentMember?.id,
@@ -145,7 +147,7 @@ struct TasksView: View {
             } label: {
                 Label("tasks.action.done", systemImage: "checkmark")
             }
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             if task.isFree {
@@ -154,14 +156,14 @@ struct TasksView: View {
                 } label: {
                     Label("tasks.action.take", systemImage: "hand.raised")
                 }
-                .tint(CorbieColorPalette.ice)
+                .tint(palette.accent)
             } else {
                 Button {
                     edit { await model.handBack(task) }
                 } label: {
                     Label("tasks.action.handback", systemImage: "arrow.uturn.backward")
                 }
-                .tint(CorbieColorPalette.text2)
+                .tint(palette.text2)
             }
         }
         .contextMenu {

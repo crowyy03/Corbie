@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct PlansView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @State private var model = PlansViewModel()
@@ -18,7 +20,7 @@ struct PlansView: View {
             .padding(.top, CorbieSpacing.s)
             .padding(.bottom, CorbieSpacing.xxl)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .screenHeader(String(localized: "tab.plans.title")) {
             AddButton { model.startCreate() }
             UsPillButton()

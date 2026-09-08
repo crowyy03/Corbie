@@ -49,7 +49,7 @@ final class AppEnvironment {
     let premiumGate: PremiumGate
     let usBadge: UsBadgeProvider
     let toasts: ToastCenter
-    let theme: ThemeStore
+    let theme: ThemeProvider
 
     private(set) var session: Session = .loading
 
@@ -93,7 +93,7 @@ final class AppEnvironment {
         linkParser = LinkParser(client: client)
         remoteChanges = RemoteChangeNotifier(stack: persistence.stack, scheduler: scheduler)
         toasts = ToastCenter()
-        theme = ThemeStore()
+        theme = ThemeProvider()
     }
 
     var space: SpaceDTO? {
@@ -383,13 +383,13 @@ extension AppEnvironment {
         let member = MemberDTO(
             id: UUID(),
             displayName: PreviewNames.member,
-            colorKey: MemberColorKey.defaultA.rawValue,
+            colorKey: MemberColorSlot.creatorDefault.rawValue,
             joinedAt: Date()
         )
         let partner = MemberDTO(
             id: UUID(),
             displayName: PreviewNames.partner,
-            colorKey: MemberColorKey.defaultB.rawValue,
+            colorKey: MemberColorSlot.partnerDefault.rawValue,
             joinedAt: Date()
         )
         let space = SpaceDTO(

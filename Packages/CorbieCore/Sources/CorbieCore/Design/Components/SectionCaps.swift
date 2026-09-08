@@ -3,6 +3,8 @@ import SwiftUI
 public struct SectionCaps: View {
     private let text: String
 
+    @Environment(\.palette) private var palette
+
     public init(text: String) {
         self.text = text
     }
@@ -10,31 +12,21 @@ public struct SectionCaps: View {
     public var body: some View {
         Text(text)
             .corbieSectionCaps()
-            .foregroundStyle(CorbieColorPalette.text2)
+            .foregroundStyle(palette.text2)
             .accessibilityAddTraits(.isHeader)
     }
 }
 
 #if DEBUG
-struct SectionCapsGallery: View {
-    var body: some View {
+#if canImport(UIKit)
+#Preview("SectionCaps") {
+    PreviewThemes {
         VStack(alignment: .leading, spacing: CorbieSpacing.s) {
             SectionCaps(text: "Today")
             SectionCaps(text: "Coming up")
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(CorbieSpacing.l)
-        .background(CorbieColorPalette.bg)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
-
-#if canImport(UIKit)
-#Preview("SectionCaps light") {
-    SectionCapsGallery().preferredColorScheme(.light)
-}
-
-#Preview("SectionCaps dark") {
-    SectionCapsGallery().preferredColorScheme(.dark)
 }
 #endif
 #endif

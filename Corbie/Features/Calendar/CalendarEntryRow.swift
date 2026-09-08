@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct CalendarEntryRow: View {
+    @Environment(\.palette) private var palette
+
     static let dayColumnWidth: CGFloat = 52
     static let colorBarWidth: CGFloat = 3
 
@@ -15,23 +17,23 @@ struct CalendarEntryRow: View {
             HStack(alignment: .center, spacing: CorbieSpacing.m) {
                 dayColumn
                 RoundedRectangle(cornerRadius: Self.colorBarWidth / 2, style: .continuous)
-                    .fill(CalendarPalette.color(for: entry, in: environment))
+                    .fill(CalendarEntryTint.color(for: entry, in: environment, palette: palette))
                     .frame(width: Self.colorBarWidth)
                     .frame(maxHeight: .infinity)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(model.formatting.title(for: entry))
                         .corbieBody()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                     Text(caption)
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                     if let radar = model.radarLine(for: entry) {
                         Text(model.formatting.radarCaption(for: radar))
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.ice)
+                            .foregroundStyle(palette.accent)
                             .multilineTextAlignment(.leading)
                     }
                 }
@@ -48,10 +50,10 @@ struct CalendarEntryRow: View {
             Text(model.formatting.dayNumber(entry.startDay))
                 .corbieScreenTitle()
                 .monospacedDigit()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             Text(model.formatting.monthCaption(entry.startDay))
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
         .frame(minWidth: Self.dayColumnWidth, alignment: .leading)
     }

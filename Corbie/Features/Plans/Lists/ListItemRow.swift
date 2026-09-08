@@ -2,10 +2,12 @@ import CorbieCore
 import SwiftUI
 
 struct ListItemRow: View {
+    @Environment(\.palette) private var palette
+
     let item: ListItemDTO
-    let addedByColor: Color
+    let addedBySlot: MemberColorSlot?
     let addedByName: String
-    let checkedByColor: Color
+    let checkedBySlot: MemberColorSlot?
     let checkedByName: String?
     let onToggle: () -> Void
     let onOpen: () -> Void
@@ -15,10 +17,15 @@ struct ListItemRow: View {
             HStack(alignment: .top, spacing: CorbieSpacing.xs) {
                 checkbox
                 details
-                MemberDot(color: addedByColor, accessibilityLabel: addedByName)
+                MemberDot(slot: addedBySlot, accessibilityLabel: addedByName)
                     .padding(.top, CorbieSpacing.s)
             }
         }
+    }
+
+    private var checkColor: Color {
+        guard item.isChecked, let checkedBySlot else { return palette.text2 }
+        return palette.member(checkedBySlot)
     }
 
     private var checkbox: some View {
@@ -26,7 +33,7 @@ struct ListItemRow: View {
             Image(systemName: item.isChecked ? "checkmark.circle.fill" : "circle")
                 .corbieBody()
                 .imageScale(.large)
-                .foregroundStyle(item.isChecked ? checkedByColor : CorbieColorPalette.text2)
+                .foregroundStyle(checkColor)
                 .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
                 .contentShape(Rectangle())
         }
@@ -40,13 +47,13 @@ struct ListItemRow: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                 Text(item.title)
                     .corbieBody()
-                    .foregroundStyle(item.isChecked ? CorbieColorPalette.text2 : CorbieColorPalette.text)
-                    .strikethrough(item.isChecked, color: CorbieColorPalette.text2)
+                    .foregroundStyle(item.isChecked ? palette.text2 : palette.text)
+                    .strikethrough(item.isChecked, color: palette.text2)
                     .multilineTextAlignment(.leading)
                 if let note = item.note, note.isEmpty == false {
                     Text(note)
                         .corbieCaption()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                 }
                 if let place = placeLine {
@@ -57,12 +64,12 @@ struct ListItemRow: View {
                             .lineLimit(1)
                     }
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                 }
                 if item.isChecked, let checkedByName {
                     Text(String(format: PlansCopy.text("lists.item.checkedby"), checkedByName))
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -94,18 +101,18 @@ struct ListItemRow: View {
                 latitude: 38.7,
                 longitude: -9.14
             ),
-            addedByColor: MemberColorKey.p1.color,
+            addedBySlot: MemberColorSlot.teal,
             addedByName: "you",
-            checkedByColor: MemberColorKey.p2.color,
+            checkedBySlot: MemberColorSlot.rose,
             checkedByName: nil,
             onToggle: {},
             onOpen: {}
         )
         ListItemRow(
             item: ListItemDTO(id: UUID(), title: "Milk", isChecked: true),
-            addedByColor: MemberColorKey.p2.color,
+            addedBySlot: MemberColorSlot.rose,
             addedByName: "Sofia",
-            checkedByColor: MemberColorKey.p1.color,
+            checkedBySlot: MemberColorSlot.teal,
             checkedByName: "you",
             onToggle: {},
             onOpen: {}
@@ -113,6 +120,6 @@ struct ListItemRow: View {
     }
     .padding(CorbieSpacing.l)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(CorbieColorPalette.bg)
+    .background(CorbieTheme.sand.palette.bg)
 }
 #endif

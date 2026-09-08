@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct VotesView: View {
+    @Environment(\.palette) private var palette
+
     var startsWithEditor = false
 
     @Environment(AppEnvironment.self) private var environment
@@ -32,7 +34,7 @@ struct VotesView: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.vertical, CorbieSpacing.m)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationTitle(String(localized: "votes.title"))
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
@@ -67,16 +69,16 @@ struct VotesView: View {
 
     private func row(_ vote: VoteDTO) -> some View {
         let outcome = model.outcome(for: vote)
-        return Card(showsChromeGradient: outcome == .needsYourAnswer) {
+        return Card(isHighlighted: outcome == .needsYourAnswer) {
             VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                 Text(vote.question)
                     .corbieBody()
                     .fontWeight(.semibold)
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .multilineTextAlignment(.leading)
                 Text(caption(for: vote, outcome: outcome))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .multilineTextAlignment(.leading)
             }
         }

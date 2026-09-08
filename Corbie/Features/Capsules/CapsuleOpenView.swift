@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct CapsuleOpenView: View {
+    @Environment(\.palette) private var palette
+
     private let onOpened: (CapsuleDTO) -> Void
 
     @Environment(AppEnvironment.self) private var environment
@@ -33,7 +35,7 @@ struct CapsuleOpenView: View {
                 .padding(CorbieSpacing.l)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(String(localized: "capsules.open.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -53,10 +55,10 @@ struct CapsuleOpenView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
             Text(model.capsule.title)
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
             Text(String(format: String(localized: "capsules.open.from"), model.authorName))
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
         .accessibilityElement(children: .combine)
     }
@@ -65,7 +67,7 @@ struct CapsuleOpenView: View {
         VStack(spacing: CorbieSpacing.m) {
             Text("capsules.open.sealed")
                 .corbieCaption()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .multilineTextAlignment(.center)
             PrimaryButton(title: String(localized: "capsules.open.action")) {
                 breakSeal()
@@ -79,11 +81,11 @@ struct CapsuleOpenView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.m) {
             Text(model.capsule.body)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .frame(maxWidth: .infinity, alignment: .leading)
             Text(model.readByBothText)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         }
         .transition(.opacity)
     }
@@ -100,27 +102,29 @@ struct CapsuleOpenView: View {
 }
 
 private struct SealMark: View {
+    @Environment(\.palette) private var palette
+
     let isBroken: Bool
 
     var body: some View {
         ZStack {
             SealHalf(isTop: true)
-                .fill(CorbieColorPalette.ice)
+                .fill(palette.accent)
                 .offset(y: isBroken ? -22 : 0)
                 .rotationEffect(.degrees(isBroken ? -8 : 0), anchor: .bottomLeading)
                 .opacity(isBroken ? 0.3 : 1)
             SealHalf(isTop: false)
-                .fill(CorbieColorPalette.ice)
+                .fill(palette.accent)
                 .offset(y: isBroken ? 22 : 0)
                 .rotationEffect(.degrees(isBroken ? 8 : 0), anchor: .topTrailing)
                 .opacity(isBroken ? 0.3 : 1)
             Image(systemName: "lock")
                 .font(.system(size: 32, weight: .light))
-                .foregroundStyle(CorbieColorPalette.accentInk)
+                .foregroundStyle(palette.ctaText)
                 .opacity(isBroken ? 0 : 1)
             Image(systemName: "envelope.open")
                 .font(.system(size: 32, weight: .light))
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .opacity(isBroken ? 1 : 0)
         }
     }

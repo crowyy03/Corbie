@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct JoinView: View {
+    @Environment(\.palette) private var palette
+
     @State private var model: JoinViewModel
     private let onCancel: () -> Void
     private let onJoined: () -> Void
@@ -32,7 +34,7 @@ struct JoinView: View {
         VStack(alignment: .leading, spacing: CorbieSpacing.l) {
             Text("pairing.join.title")
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
 
             TextFieldRow(
                 label: String(localized: "pairing.join.field.label"),
@@ -48,17 +50,17 @@ struct JoinView: View {
             if let message = model.block?.message ?? model.failure {
                 Text(verbatim: message)
                     .corbieCaption()
-                    .foregroundStyle(CorbieColorPalette.warn)
+                    .foregroundStyle(palette.warn)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             if model.isWorking {
                 HStack(spacing: CorbieSpacing.s) {
                     ProgressView()
-                        .tint(CorbieColorPalette.ice)
+                        .tint(palette.accent)
                     Text("pairing.join.working")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
 
@@ -75,7 +77,7 @@ struct JoinView: View {
         .padding(.horizontal, CorbieSpacing.l)
         .padding(.vertical, CorbieSpacing.xl)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .onChange(of: model.phase) { _, phase in
             guard phase == .joined else { return }
             onJoined()

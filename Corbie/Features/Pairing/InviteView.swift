@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct InviteView: View {
+    @Environment(\.palette) private var palette
+
     @State private var model: InviteViewModel
     private let onHasCode: (() -> Void)?
     private let onDone: () -> Void
@@ -22,10 +24,10 @@ struct InviteView: View {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
                 Text("pairing.invite.title")
                     .corbieScreenTitle()
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                 Text("pairing.invite.note")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
 
                 codeCard(at: context.date)
 
@@ -40,21 +42,21 @@ struct InviteView: View {
     }
 
     @ViewBuilder private func codeCard(at date: Date) -> some View {
-        Card(showsChromeGradient: true) {
+        Card(isHighlighted: true) {
             VStack(alignment: .leading, spacing: CorbieSpacing.s) {
                 switch model.phase {
                 case .idle, .working:
                     HStack(spacing: CorbieSpacing.s) {
                         ProgressView()
-                            .tint(CorbieColorPalette.ice)
+                            .tint(palette.accent)
                         Text("pairing.invite.working")
                             .corbieMono()
-                            .foregroundStyle(CorbieColorPalette.text2)
+                            .foregroundStyle(palette.text2)
                     }
                 case .ready:
                     Text(verbatim: model.code ?? "")
                         .corbieCounter()
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
                         .accessibilityLabel(Text("pairing.invite.code.label"))
@@ -63,7 +65,7 @@ struct InviteView: View {
                 case .failed:
                     Text("pairing.invite.failed.note")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -75,11 +77,11 @@ struct InviteView: View {
             if countdown.isExpired {
                 Text("pairing.invite.expired")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             } else {
                 Text(verbatim: String(format: String(localized: "pairing.invite.expires"), countdown.text()))
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .monospacedDigit()
             }
         }
@@ -102,7 +104,7 @@ struct InviteView: View {
             Button(action: onDone) {
                 Text("pairing.invite.later")
                     .corbieBody()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: CorbieMetrics.minimumTapTarget)
                     .contentShape(Rectangle())
@@ -116,12 +118,12 @@ struct InviteView: View {
             Text("pairing.invite.share")
                 .corbieBody()
                 .fontWeight(.semibold)
-                .foregroundStyle(CorbieColorPalette.bg)
+                .foregroundStyle(palette.bg)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: CorbieMetrics.controlHeight)
                 .background(
                     RoundedRectangle(cornerRadius: CorbieRadius.pill, style: .continuous)
-                        .fill(CorbieColorPalette.text)
+                        .fill(palette.text)
                 )
                 .contentShape(RoundedRectangle(cornerRadius: CorbieRadius.pill, style: .continuous))
         }
@@ -133,6 +135,6 @@ struct InviteView: View {
 #Preview {
     InviteView(environment: .preview(), spaceId: UUID(), onHasCode: {}, onDone: {})
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
+        .background(CorbieTheme.sand.palette.bg)
 }
 #endif

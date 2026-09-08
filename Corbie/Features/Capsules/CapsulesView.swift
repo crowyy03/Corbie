@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct CapsulesView: View {
+    @Environment(\.palette) private var palette
+
     var startsWithEditor = false
 
     @Environment(AppEnvironment.self) private var environment
@@ -31,7 +33,7 @@ struct CapsulesView: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.vertical, CorbieSpacing.m)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .navigationTitle(String(localized: "capsules.title"))
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
@@ -90,24 +92,24 @@ struct CapsulesView: View {
     }
 
     private func card(_ capsule: CapsuleDTO, state: CapsuleRowState) -> some View {
-        Card(showsChromeGradient: state.isHighlighted) {
+        Card(isHighlighted: state.isHighlighted) {
             HStack(alignment: .top, spacing: CorbieSpacing.s) {
                 Image(systemName: state.systemImage)
-                    .foregroundStyle(state.isHighlighted ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+                    .foregroundStyle(state.isHighlighted ? palette.accent : palette.text2)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                     Text(title(for: capsule))
                         .corbieBody()
                         .fontWeight(.semibold)
-                        .foregroundStyle(CorbieColorPalette.text)
+                        .foregroundStyle(palette.text)
                         .multilineTextAlignment(.leading)
                     Text(caption(for: capsule, state: state))
                         .corbieCaption()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                     Text(detail(for: capsule, state: state))
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                         .multilineTextAlignment(.leading)
                 }
                 Spacer(minLength: 0)

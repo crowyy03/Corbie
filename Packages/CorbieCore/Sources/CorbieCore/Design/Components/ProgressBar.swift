@@ -6,6 +6,8 @@ public struct ProgressBar: View {
     private let accessibilityLabel: String?
     private let accessibilityValue: String?
 
+    @Environment(\.palette) private var palette
+
     public init(
         value: Double,
         overspend: Double = 0,
@@ -38,16 +40,16 @@ public struct ProgressBar: View {
         GeometryReader { proxy in
             HStack(spacing: 0) {
                 Rectangle()
-                    .fill(CorbieColorPalette.ice)
+                    .fill(palette.accent)
                     .frame(width: proxy.size.width * reachedFraction)
                 Rectangle()
-                    .fill(CorbieColorPalette.warn)
+                    .fill(palette.warn)
                     .frame(width: proxy.size.width * overspendFraction)
                 Spacer(minLength: 0)
             }
         }
         .frame(height: CorbieMetrics.progressBarHeight)
-        .background(CorbieColorPalette.border)
+        .background(palette.border)
         .clipShape(Capsule(style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(accessibilityLabel ?? ""))
@@ -56,26 +58,15 @@ public struct ProgressBar: View {
 }
 
 #if DEBUG
-struct ProgressBarGallery: View {
-    var body: some View {
+#if canImport(UIKit)
+#Preview("ProgressBar") {
+    PreviewThemes {
         VStack(spacing: CorbieSpacing.l) {
             ProgressBar(value: 0.35)
             ProgressBar(value: 1)
             ProgressBar(value: 1, overspend: 0.4)
         }
-        .padding(CorbieSpacing.l)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(CorbieColorPalette.bg)
     }
-}
-
-#if canImport(UIKit)
-#Preview("ProgressBar light") {
-    ProgressBarGallery().preferredColorScheme(.light)
-}
-
-#Preview("ProgressBar dark") {
-    ProgressBarGallery().preferredColorScheme(.dark)
 }
 #endif
 #endif

@@ -6,6 +6,8 @@ struct CalendarEventRoute: Hashable {
 }
 
 struct CalendarView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AppState.self) private var appState
     @State private var model = CalendarViewModel()
@@ -26,7 +28,7 @@ struct CalendarView: View {
             .padding(CorbieSpacing.l)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
         .screenHeader(String(localized: "tab.calendar.title")) {
             Menu {
                 Button(String(localized: "calendar.import.action")) {
@@ -35,7 +37,7 @@ struct CalendarView: View {
             } label: {
                 Image(systemName: "ellipsis.circle")
                     .font(.system(size: 22, weight: .medium))
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
                     .contentShape(Rectangle())
             }
@@ -45,7 +47,7 @@ struct CalendarView: View {
             } label: {
                 Image(systemName: "clock.badge.checkmark")
                     .font(.system(size: 20, weight: .medium))
-                    .foregroundStyle(CorbieColorPalette.text)
+                    .foregroundStyle(palette.text)
                     .frame(width: CorbieMetrics.minimumTapTarget, height: CorbieMetrics.minimumTapTarget)
                     .contentShape(Rectangle())
             }
@@ -98,7 +100,7 @@ struct CalendarView: View {
                 }
                 .buttonStyle(.plain)
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
                 .frame(minHeight: CorbieMetrics.minimumTapTarget)
             }
         }
@@ -110,7 +112,7 @@ struct CalendarView: View {
         if entries.isEmpty {
             if model.isLoading {
                 ProgressView()
-                    .tint(CorbieColorPalette.ice)
+                    .tint(palette.accent)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, CorbieSpacing.l)
             } else if model.selectedDay == nil {
@@ -123,7 +125,7 @@ struct CalendarView: View {
             } else {
                 Text("calendar.day.empty")
                     .corbieMono()
-                    .foregroundStyle(CorbieColorPalette.text2)
+                    .foregroundStyle(palette.text2)
             }
         } else {
             LazyVStack(spacing: CorbieSpacing.xs) {

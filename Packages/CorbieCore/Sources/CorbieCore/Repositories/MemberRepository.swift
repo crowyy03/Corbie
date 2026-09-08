@@ -22,13 +22,28 @@ public struct MemberDraft: Sendable, Equatable {
     }
 }
 
+public struct MemberSaveResult: Sendable, Equatable {
+    public let member: MemberDTO
+    public let shiftedColorFrom: MemberColorSlot?
+
+    public init(member: MemberDTO, shiftedColorFrom: MemberColorSlot? = nil) {
+        self.member = member
+        self.shiftedColorFrom = shiftedColorFrom
+    }
+}
+
 public protocol MemberRepository: Sendable {
-    func upsertCurrentMember(appleUserId: String, spaceId: UUID, draft: MemberDraft) async throws -> MemberDTO
+    func upsertCurrentMember(
+        appleUserId: String,
+        spaceId: UUID,
+        draft: MemberDraft,
+        theme: CorbieTheme
+    ) async throws -> MemberSaveResult
     func member(id: UUID) async throws -> MemberDTO?
     func member(appleUserId: String) async throws -> MemberDTO?
     func members(spaceId: UUID) async throws -> [MemberDTO]
     func partner(of memberId: UUID, spaceId: UUID) async throws -> MemberDTO?
-    func update(_ member: MemberDTO) async throws -> MemberDTO
+    func update(_ member: MemberDTO, theme: CorbieTheme) async throws -> MemberSaveResult
     func updatePrefs(memberId: UUID, prefs: NotificationPrefs) async throws -> MemberDTO
     func touchLastSeen(memberId: UUID, at date: Date) async throws
     func setSharesBusyTimes(memberId: UUID, shares: Bool) async throws -> MemberDTO

@@ -2,6 +2,8 @@ import CorbieCore
 import SwiftUI
 
 struct CalendarImportView: View {
+    @Environment(\.palette) private var palette
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var model: CalendarImportViewModel
@@ -17,13 +19,13 @@ struct CalendarImportView: View {
                 VStack(alignment: .leading, spacing: CorbieSpacing.m) {
                     Text("calendar.import.note")
                         .corbieMono()
-                        .foregroundStyle(CorbieColorPalette.text2)
+                        .foregroundStyle(palette.text2)
                     content
                 }
                 .padding(CorbieSpacing.l)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(String(localized: "calendar.import.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -45,7 +47,7 @@ struct CalendarImportView: View {
         case .idle, .importing:
             ProgressView()
                 .frame(maxWidth: .infinity)
-                .tint(CorbieColorPalette.ice)
+                .tint(palette.accent)
         case .denied:
             EmptyState(
                 systemImage: "calendar.badge.exclamationmark",
@@ -74,7 +76,7 @@ struct CalendarImportView: View {
         if model.calendars.isEmpty {
             Text("calendar.import.empty")
                 .corbieMono()
-                .foregroundStyle(CorbieColorPalette.text2)
+                .foregroundStyle(palette.text2)
         } else {
             VStack(spacing: CorbieSpacing.xs) {
                 ForEach(model.calendars) { calendar in
@@ -97,16 +99,16 @@ struct CalendarImportView: View {
             Card {
                 HStack(spacing: CorbieSpacing.s) {
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                        .foregroundStyle(isSelected ? CorbieColorPalette.ice : CorbieColorPalette.text2)
+                        .foregroundStyle(isSelected ? palette.accent : palette.text2)
                     VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
                         Text(calendar.title)
                             .corbieBody()
-                            .foregroundStyle(CorbieColorPalette.text)
+                            .foregroundStyle(palette.text)
                             .multilineTextAlignment(.leading)
                         if let sourceTitle = calendar.sourceTitle {
                             Text(sourceTitle)
                                 .corbieMono()
-                                .foregroundStyle(CorbieColorPalette.text2)
+                                .foregroundStyle(palette.text2)
                                 .multilineTextAlignment(.leading)
                         }
                     }

@@ -137,10 +137,10 @@ struct CalendarFormatting {
     }
 }
 
-enum CalendarPalette {
+enum CalendarEntryTint {
     @MainActor
-    static func color(for entry: CalendarEntry, in environment: AppEnvironment) -> Color {
-        guard let ownerMemberId = entry.ownerMemberId else { return CorbieColorPalette.ice }
-        return environment.memberColor(id: ownerMemberId)
+    static func color(for entry: CalendarEntry, in environment: AppEnvironment, palette: ThemePalette) -> Color {
+        guard let slot = environment.memberSlot(id: entry.ownerMemberId) else { return palette.accent }
+        return palette.member(slot)
     }
 }

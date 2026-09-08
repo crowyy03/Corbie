@@ -164,13 +164,15 @@ final class TasksViewModelTests: XCTestCase {
         let me = try await repositories.members.upsertCurrentMember(
             appleUserId: "tests.me",
             spaceId: space.id,
-            draft: MemberDraft(displayName: "Ilya", colorKey: MemberColorKey.p1.rawValue)
-        )
+            draft: MemberDraft(displayName: "Ilya", colorKey: MemberColorSlot.teal.rawValue),
+            theme: .sand
+        ).member
         let partner = try await repositories.members.upsertCurrentMember(
             appleUserId: "tests.partner",
             spaceId: space.id,
-            draft: MemberDraft(displayName: "Sofia", colorKey: MemberColorKey.p2.rawValue)
-        )
+            draft: MemberDraft(displayName: "Sofia", colorKey: MemberColorSlot.rose.rawValue),
+            theme: .sand
+        ).member
 
         _ = try await repositories.tasks.create(
             TaskDraft(

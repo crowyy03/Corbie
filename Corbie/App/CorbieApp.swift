@@ -21,13 +21,7 @@ struct CorbieApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environment(appState)
-                .environment(environment)
-                .environment(environment.premiumGate)
-                .environment(environment.toasts)
-                .toastHost()
-                .preferredColorScheme(environment.theme.preferredColorScheme)
+            ThemedRoot(appState: appState, environment: environment)
                 .task {
                     appDelegate.connect(environment: environment, appState: appState)
                     await environment.bootstrap()
@@ -40,6 +34,33 @@ struct CorbieApp: App {
                     appState.open(Router.route(for: url))
                 }
         }
+    }
+}
+
+private struct ThemedRoot: View {
+    let appState: AppState
+    let environment: AppEnvironment
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var theme: CorbieTheme {
+        environment.theme.activeTheme
+    }
+
+    var body: some View {
+        RootView()
+            .environment(appState)
+            .environment(environment)
+            .environment(environment.premiumGate)
+            .environment(environment.toasts)
+            .environment(environment.theme)
+            .toastHost()
+            .corbieTheme(theme)
+            .tint(theme.palette.accent)
+            .preferredColorScheme(environment.theme.preferredColorScheme)
+            .onChange(of: colorScheme, initial: true) { _, scheme in
+                environment.theme.systemScheme = scheme
+            }
     }
 }
 

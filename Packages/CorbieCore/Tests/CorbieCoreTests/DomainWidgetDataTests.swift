@@ -71,7 +71,7 @@ import Testing
         #expect(context.viewer?.id == world.seed.me.id)
         #expect(context.partner?.id == world.seed.partner.id)
         #expect(context.isPremium)
-        #expect(context.colorKey(for: world.seed.partner.id) == MemberColorKey.p2.rawValue)
+        #expect(context.colorKey(for: world.seed.partner.id) == MemberColorSlot.partnerDefault.rawValue)
         #expect(context.name(for: world.seed.partner.id) == "Sofia")
     }
 
@@ -88,7 +88,7 @@ import Testing
         #expect(snapshot.items.count == 3)
         #expect(snapshot.remaining == 1)
         #expect(snapshot.items[0].title == "Book the vet")
-        #expect(snapshot.items[0].colorKey == MemberColorKey.p1.rawValue)
+        #expect(snapshot.items[0].colorKey == MemberColorSlot.creatorDefault.rawValue)
         let free = snapshot.items.first { $0.title == "Buy milk" }
         #expect(free?.isFree == true)
         #expect(free?.colorKey == nil)

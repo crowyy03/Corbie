@@ -3,13 +3,15 @@ import SwiftUI
 
 struct ScreenHeader<Trailing: View>: View {
     let title: String
+
+    @Environment(\.palette) private var palette
     @ViewBuilder let trailing: Trailing
 
     var body: some View {
         HStack(alignment: .center, spacing: CorbieSpacing.s) {
             Text(title)
                 .corbieScreenTitle()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .accessibilityAddTraits(.isHeader)
@@ -21,7 +23,7 @@ struct ScreenHeader<Trailing: View>: View {
         .padding(.horizontal, CorbieSpacing.l)
         .padding(.top, CorbieSpacing.xs)
         .padding(.bottom, CorbieSpacing.xs)
-        .background(CorbieColorPalette.bg)
+        .background(palette.bg)
     }
 }
 

@@ -31,6 +31,8 @@ extension View {
 }
 
 struct PlansSectionHeader: View {
+    @Environment(\.palette) private var palette
+
     let text: String
 
     var body: some View {
@@ -38,7 +40,7 @@ struct PlansSectionHeader: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.vertical, CorbieSpacing.xs)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
@@ -46,6 +48,8 @@ struct PlansSectionHeader: View {
 }
 
 struct PlansAmountField: View {
+    @Environment(\.palette) private var palette
+
     let label: String
     let hint: String?
     @Binding var amount: Double
@@ -62,7 +66,7 @@ struct PlansAmountField: View {
                 .keyboardType(.decimalPad)
                 .textFieldStyle(.plain)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .plansFieldBackground()
                 .accessibilityLabel(Text(label))
         }
@@ -70,6 +74,8 @@ struct PlansAmountField: View {
 }
 
 struct PlansCurrencyField: View {
+    @Environment(\.palette) private var palette
+
     let label: String
     let currencies: [String]
     @Binding var selection: String
@@ -83,7 +89,7 @@ struct PlansCurrencyField: View {
             }
             .pickerStyle(.menu)
             .labelsHidden()
-            .tint(CorbieColorPalette.text)
+            .tint(palette.text)
             .plansFieldBackground()
             .accessibilityLabel(Text(label))
         }
@@ -91,6 +97,8 @@ struct PlansCurrencyField: View {
 }
 
 struct PlansNoteField: View {
+    @Environment(\.palette) private var palette
+
     let label: String
     let placeholder: String
     @Binding var text: String
@@ -101,7 +109,7 @@ struct PlansNoteField: View {
                 .lineLimit(2...5)
                 .textFieldStyle(.plain)
                 .corbieBody()
-                .foregroundStyle(CorbieColorPalette.text)
+                .foregroundStyle(palette.text)
                 .padding(.vertical, CorbieSpacing.xs)
                 .plansFieldBackground()
                 .accessibilityLabel(Text(label))
@@ -136,6 +144,8 @@ struct PlansChipsField<Value: Hashable>: View {
 }
 
 struct PlansDateField: View {
+    @Environment(\.palette) private var palette
+
     let label: String
     let range: PartialRangeFrom<Date>?
     @Binding var date: Date
@@ -157,7 +167,7 @@ struct PlansDateField: View {
             }
             .datePickerStyle(.compact)
             .labelsHidden()
-            .tint(CorbieColorPalette.ice)
+            .tint(palette.accent)
             .plansFieldBackground()
             .accessibilityLabel(Text(label))
         }
@@ -165,22 +175,26 @@ struct PlansDateField: View {
 }
 
 struct PlansInfoBlock: View {
+    @Environment(\.palette) private var palette
+
     let text: String
 
     var body: some View {
         Text(text)
             .corbieMono()
-            .foregroundStyle(CorbieColorPalette.text2)
+            .foregroundStyle(palette.text2)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(CorbieSpacing.m)
             .background(
                 RoundedRectangle(cornerRadius: CorbieRadius.field, style: .continuous)
-                    .fill(CorbieColorPalette.elevated)
+                    .fill(palette.elevated)
             )
     }
 }
 
 struct PlansEditorScaffold<Content: View>: View {
+    @Environment(\.palette) private var palette
+
     private let title: String
     private let saveTitle: String
     private let canSave: Bool
@@ -212,7 +226,7 @@ struct PlansEditorScaffold<Content: View>: View {
                 }
                 .padding(CorbieSpacing.l)
             }
-            .background(CorbieColorPalette.bg)
+            .background(palette.bg)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
