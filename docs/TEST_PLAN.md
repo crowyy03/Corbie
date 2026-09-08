@@ -8,10 +8,10 @@ What a machine checks, what a person has to check, and what came out of the run 
 
 | Suite | Where | Count | What it proves |
 | --- | --- | --- | --- |
-| `CorbieCoreTests` | `Packages/CorbieCore/Tests` | 473 | Repositories on an in-memory store, formatters, recurrence, FX, entitlement resolution, widget snapshots, App Intents, the Us badge rule, the Today feed. |
-| `CorbieTests` | `CorbieTests` | 245 | View model logic, copy, routing, release facts (`QAReleaseTests`), relative dates (`QARelativeDateTests`). |
-| `CorbieUITests` | `CorbieUITests` | 39 | The walks below, driven through the DEBUG-only "continue without Apple ID (debug build)" button. One of them skips itself: the paywall price needs StoreKit, which `xcodebuild` does not hand the app (`docs/KNOWN_ISSUES.md`). |
-| Server | `server` | 111 | Deno tests for the Supabase functions. |
+| `CorbieCoreTests` | `Packages/CorbieCore/Tests` | 579 | Repositories on an in-memory store, formatters, recurrence, FX, entitlement resolution, widget snapshots, App Intents, the Us badge rule, the Today feed. |
+| `CorbieTests` | `CorbieTests` | 310 | View model logic, copy, routing, release facts (`QAReleaseTests`), relative dates (`QARelativeDateTests`). |
+| `CorbieUITests` | `CorbieUITests` | 45 | The walks below, driven through the DEBUG-only "continue without Apple ID (debug build)" button; the shared launch helper also walks past the one-time trial offer. Two of them skip themselves: the paywall price needs StoreKit, which `xcodebuild` does not hand the app (`docs/KNOWN_ISSUES.md`), and the weekly recap card only exists on Sunday evening. |
+| Server | `server` | 112 | Deno tests for the Supabase functions. |
 
 ### UI walks
 
@@ -38,6 +38,11 @@ string.
 | `TodayUITests` | Task due today and an event today, then the Today tab: the task in the Today block with a checkbox, the event in Events, the empty carousel offering "Add a plan", the new plan in the carousel, ticking the task, and the carousel tap landing on the plan inside the Plans tab. |
 | `PlansUITests` | Plan money and a prep step from the plan screen, prep step drag reorder, a list item ticked. |
 | `PeopleNavigationUITests` | A person opened from the hub shows their gift ideas once, and back returns to the list. |
+| `QuestionUITests` | Today shows the question of the day, the answer is saved, the partner slot stays hidden, the Us pill dot goes out, and the day appears in the Questions history. |
+| `ChoreUITests` | The chore list is built from the catalog, every card is rated with the buttons, and the split waits for the partner; the reveal is covered by `ChoreRevealViewModelTests` because one device has one member. |
+| `OpenSavingsUITests` | An open plan takes two contributions and one withdrawal, shows the total and no percentage anywhere. |
+| `PaywallScreensUITests` | Onboarding ends on the trial offer, the quiet link opens the comparison table, both screens carry their key texts. |
+| `ThemeUITests` | Tapping Deep repaints the page margin dark at once and turns off "match system"; a picked theme survives a relaunch; the partner's colour slot is offered once. |
 | `FreeTimeUITests` | The calendar entry into free time raises the privacy sheet first, "Not now" leaves the screen usable, the range picker and filters are there. |
 | `UsBadgeUITests` | An unanswered vote dots the Us pill and answering it clears the dot. |
 | `QAUsBadgeUITests` | The second trigger a solo space can raise: a person whose birthday is seven days out with no gift picked dots the pill, and marking a gift idea picked clears it. |

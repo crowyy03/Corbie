@@ -200,6 +200,7 @@ extension XCTestCase {
         let app = XCUIApplication.corbie(appearance: appearance, extraArguments: extraArguments)
         app.launch()
         passOnboardingIfShown(app, file: file, line: line)
+        passTrialOfferIfShown(app, file: file, line: line)
         let tabBar = app.tabBars.firstMatch
         if tabBar.waitForExistence(timeout: 60) == false {
             saveScreenshot(app, named: "no_tab_bar")
@@ -227,7 +228,6 @@ extension XCTestCase {
         let later = app.buttons[QAText.later]
         XCTAssertTrue(later.waitForExistence(timeout: 60), "the invite step never appeared", file: file, line: line)
         later.tap()
-        passTrialOfferIfShown(app, file: file, line: line)
     }
 
     func passTrialOfferIfShown(_ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {

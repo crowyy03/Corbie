@@ -22,23 +22,23 @@ Fix: export the two-raven mark at 1024x1024 into that `.appiconset`. The mark al
 vector view, `CorbieMarkView` in `Packages/CorbieCore/Sources/CorbieCore/Design`, and it is what the
 onboarding intro draws, so the icon can be rendered from it rather than redrawn.
 
-### The server base URL is never configured
+### The server base URL ships empty
 
-`ServerConfiguration.infoPlistKey` is `CORBIE_SERVER_URL`
-(`Packages/CorbieCore/Sources/CorbieCore/Services/APIClientConfiguration.swift:4`) and no Info.plist
-in the project sets it: `grep -rn CORBIE_SERVER_URL --include='*.yml' --include='*.plist' .` finds
-only the declaration. Every client call therefore goes to `https://corbie.supabase.co/functions/v1`
-(`ServerConfiguration.fallback`, `:36`), a placeholder project ref.
+`CORBIE_SERVER_URL` is a build setting in `project.yml` (base settings) that reaches the Corbie and
+CorbieShare Info plists, and `ServerConfiguration.fromBundle` reads it
+(`Packages/CorbieCore/Sources/CorbieCore/Services/APIClientConfiguration.swift`). It ships as an empty
+string, so every client call still goes to `https://corbie.supabase.co/functions/v1`
+(`ServerConfiguration.fallback`), a placeholder project ref.
 
 Effect today: invites cannot be created or redeemed, links never parse, currency rates never refresh,
 the entitlement can only come from the local StoreKit transaction, and analytics never lands. Each
 degrades into a hint rather than a crash (`docs/TEST_PLAN.md` section 2), so it is invisible until
 someone tries to pair.
 
-Fix: add `CORBIE_SERVER_URL` to the Corbie and CorbieShare Info.plist blocks in `project.yml` with the
-real Supabase project ref, per build configuration. `SessionService` already refuses to call a
-placeholder (`Corbie/Features/Pairing/SessionService.swift:26`); `APIClient` does not, and could get
-the same guard so the failure names the cause instead of a network error.
+Fix: put the real Supabase project ref (or a full https URL) into that one line and run
+`xcodegen generate`. `SessionService` already refuses to call a placeholder
+(`Corbie/Features/Pairing/SessionService.swift`); `APIClient` does not, and could get the same guard
+so the failure names the cause instead of a network error.
 
 ## Minor
 
@@ -104,21 +104,6 @@ Reproduce: any UI test, `print(app.usPill.frame)` after `launchSignedIn()`.
 
 Fix, if the founder wants the pill visually bigger: give it its own row instead of a toolbar item, or
 accept the bar height. Nothing to change if the system region is enough.
-
-### The primary button is not the accent colour
-
-`CorbiePillButtonStyle(variant: .filled)` fills with `CorbieColorPalette.text` and writes in `bg`
-(`Packages/CorbieCore/Sources/CorbieCore/Design/Components/PillButtonStyle.swift:27` and `:34`), so
-every primary call to action is a black pill on light and a white pill on dark. The brand book names
-`ice` `#8FC5E8` as the single accent, "buttons, progress, selections, active tab", and chips, the
-progress bar and the active tab do use it. This is a deliberate-looking design system choice from
-module 01, so it needs the founder to decide rather than a silent change.
-
-### The rating prompt from the spec does not exist
-
-Spec section 12 asks for `SKStoreReviewController` after the third joint action and not before day
-five. `grep -rn "requestReview\|SKStoreReviewController" Corbie Packages/CorbieCore/Sources` returns
-nothing.
 
 ### Notifications are asked for once and never re-offered in the app
 
