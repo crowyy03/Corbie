@@ -18,15 +18,15 @@ struct LaunchRevealView: View {
         ZStack {
             palette.bg
                 .ignoresSafeArea()
-            HStack(spacing: -markSize * 0.24) {
-                Image(systemName: "bird.fill")
-                    .scaleEffect(x: -1)
+            ZStack {
+                CorbieRavenShape(side: .left)
+                    .fill(palette.text)
                     .offset(x: hasFlown ? -flight : 0, y: hasFlown ? -flight * 0.6 : 0)
-                Image(systemName: "bird.fill")
+                CorbieRavenShape(side: .right)
+                    .fill(palette.text)
                     .offset(x: hasFlown ? flight : 0, y: hasFlown ? -flight * 0.6 : 0)
             }
-            .font(.system(size: markSize, weight: .regular))
-            .foregroundStyle(palette.text)
+            .frame(width: markSize, height: markSize)
             .accessibilityHidden(true)
         }
         .opacity(hasFlown ? 0 : 1)
