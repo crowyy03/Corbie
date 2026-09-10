@@ -39,9 +39,9 @@ struct OnboardingIntroView: View {
     private var markPage: some View {
         VStack(spacing: CorbieSpacing.l) {
             Spacer()
-            CorbieMarkView(size: 76)
+            CorbieMarkView(size: 114)
             Text("onboarding.intro.page1.title")
-                .corbieScreenTitle()
+                .corbieIntroTitle()
                 .foregroundStyle(palette.text)
                 .multilineTextAlignment(.center)
             Text("onboarding.intro.page1.note")
