@@ -9,19 +9,6 @@ iPhone 17 Pro Max QA, iPhone 17e QA and iPhone 17 Badge.
 
 ## Blockers
 
-### The app has no icon
-
-`Corbie/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json` declares one universal 1024x1024
-slot and the folder contains no image file, so the build has no icon and App Store Connect rejects
-the upload.
-
-Reproduce: `ls Corbie/Resources/Assets.xcassets/AppIcon.appiconset/` lists `Contents.json` and
-nothing else.
-
-Fix: export the two-raven mark at 1024x1024 into that `.appiconset`. The mark already exists as a
-vector view, `CorbieMarkView` in `Packages/CorbieCore/Sources/CorbieCore/Design`, and it is what the
-onboarding intro draws, so the icon can be rendered from it rather than redrawn.
-
 ### The server base URL ships empty
 
 `CORBIE_SERVER_URL` is a build setting in `project.yml` (base settings) that reaches the Corbie and

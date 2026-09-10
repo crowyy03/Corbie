@@ -21,8 +21,9 @@
 
 **Технические правила.** Читается в 1024×1024 и в 29×29. Монохромная версия для локскрин-виджетов. Версия на тёмном фоне (белые силуэты). Никогда не добавляем сердечко, кольца, стрелы.
 
-**Бриф для генерации (Higgsfield / Claude Design):**
-> Minimal flat logo mark: two raven silhouettes perched side by side, overlapping, facing opposite directions, pure black on pure white, no details, no feathers, no eyes, geometric, single weight, app icon proportions, centered, generous negative space.
+**Где знак живёт в коде.** Финальный контур (`icon.svg` из пакета основателя) переведён в `CorbieMarkShape` в `Packages/CorbieCore/Sources/CorbieCore/Design/CorbieMarkShape.swift`: два замкнутых контура, координаты в единичном квадрате, вписывается в любой прямоугольник по центру без искажения. `CorbieRavenShape(side:)` даёт одного ворона для заставки, где они разлетаются. Цвет всегда из палитры темы, никакого чёрного в коде. Иконка приложения собрана из того же контура.
+
+**Системные символы в знаке запрещены.** До 10-09 знак рисовался двумя `bird.fill` из SF Symbols: лицензия Apple запрещает системные символы в логотипах и брендинге, это основание для реджекта. Функциональные иконки интерфейса (галочки, календарь, звезда во вкладке) под запрет не попадают.
 
 ## 3. Позиционирование
 
