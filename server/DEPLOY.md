@@ -1,11 +1,11 @@
 # Deploying the Corbie server to Supabase
 
-Written for someone who has never used Supabase. Every command in here was rehearsed against the local
-stack on 2026-09-12: the five migrations applied, all nine functions served, and `scripts/smoke.sh`
-returned 15 pass, 0 fail, 2 pending (the two that need Apple).
+Written for someone who has never used Supabase. Every command here was run for real on 2026-09-12
+against the live project `powtuiqqagdoiuqjeebr` in East US (Ohio): five migrations applied, nine
+functions deployed, `scripts/smoke.sh` 15 pass, 0 fail, 2 pending (the two that need Apple).
 
-Two things only you can do, because they need your account and your password: creating the project
-(step 1) and logging the CLI in (step 2a). Everything after that I can run for you.
+Two things only you can do, because they need your account: creating the project (step 1) and logging
+the CLI in (step 2a). Everything after that runs from this repo.
 
 Never paste the database password or the service role key into a chat, a commit, or a ticket.
 
@@ -19,9 +19,10 @@ Never paste the database password or the service role key into a chat, a commit,
    - **Database Password**: press **Generate a password**, then copy it into your password manager
      under "Corbie Supabase DB". You need it once, in step 2b. Losing it is survivable (you can reset
      it in Project Settings, Database), but resetting invalidates anything already using it.
-   - **Region**: **East US (North Virginia)**. That is `us-east-1`, the lowest median latency to the
-     US as a whole, and the region every Supabase default is tuned for. Pick it even though you are
-     not in the US: the users are.
+   - **Region**: an East US one, because the users are in the US and the region cannot be changed
+     later. The live project sits in **East US (Ohio)**, `us-east-2`; **East US (North Virginia)**,
+     `us-east-1`, is the other sensible pick. The difference between the two is single-digit
+     milliseconds, so either is fine and neither is worth redoing.
    - **Plan**: Free is enough to finish this checklist. Move to Pro ($25/month) before the app ships:
      free projects are paused after 7 days without traffic, and a paused project answers nothing.
 4. Press **Create new project** and wait about two minutes while it provisions.
@@ -151,10 +152,10 @@ than `supabase secrets set` for the private key: the CLI form puts the value in 
 
 | Secret | What it is for | Where the value comes from | Blocked? |
 | --- | --- | --- | --- |
-| `SESSION_SECRET` | HMAC key that signs the 180-day Corbie session token, so the app does not have to hold a short-lived Apple token. Every protected endpoint verifies against it. | `openssl rand -base64 48`, once. Store it in your password manager; changing it signs everyone out. | ready now |
-| `APPLE_CLIENT_ID` | The `aud` claim demanded of Apple identity tokens. | `app.corbie` | ready now |
-| `APPLE_BUNDLE_ID` | The bundle App Store notifications must name, so another app's notifications are refused. | `app.corbie` | ready now |
-| `APPLE_ENV` | Which App Store environment this project accepts. A notification from the other one is rejected. | `Sandbox` while testing, `Production` for the shipping project. Set `Sandbox` now. | ready now |
+| `SESSION_SECRET` | HMAC key that signs the 180-day Corbie session token, so the app does not have to hold a short-lived Apple token. Every protected endpoint verifies against it. | `openssl rand -base64 48`, once. Already generated and set on the live project; the only local copy is the file named in the handover, move it to your password manager. Changing it signs everyone out. | set |
+| `APPLE_CLIENT_ID` | The `aud` claim demanded of Apple identity tokens. | `app.corbie` | set |
+| `APPLE_BUNDLE_ID` | The bundle App Store notifications must name, so another app's notifications are refused. | `app.corbie` | set |
+| `APPLE_ENV` | Which App Store environment this project accepts. A notification from the other one is rejected. | `Sandbox` while testing, `Production` for the shipping project. Set `Sandbox` now. | set |
 | `APPLE_TEAM_ID` | Signs the client secret used to revoke a Sign in with Apple credential on account deletion. | Apple Developer, Membership details, Team ID. | **blocked on the Apple account** |
 | `APPLE_KEY_ID` | Same signature, names which key signed it. | Apple Developer, Certificates Identifiers and Profiles, Keys, the key with Sign in with Apple enabled. | **blocked on the Apple account** |
 | `APPLE_PRIVATE_KEY` | Same signature, the key itself. | The `.p8` file Apple lets you download exactly once when you create that key. Paste the whole file including the BEGIN and END lines; real newlines and `\n` escapes both work. | **blocked on the Apple account** |
