@@ -58,15 +58,18 @@ supabase projects list
 Success looks like a table with your project and its reference id. Failure is
 `Access token not provided`.
 
-### 2b. Link this repo to the project (you, it asks for the database password)
+### 2b. Link this repo to the project
 
 ```bash
 cd ~/Desktop/codding/Corbie/server
-supabase link --project-ref <ref>
+supabase link --project-ref <ref> -p ""
 ```
 
-It prompts for the database password from step 1. Success: `Finished supabase link.` It writes
-`supabase/.temp/project-ref`, which is gitignored.
+The `-p ""` skips the database password prompt. On 2026-09-12 that was enough for everything below:
+`supabase db push` printed `Initialising login role...` and provisioned its own short-lived role from
+the access token, so the password was never needed. Keep it anyway, for psql and for the dashboard.
+
+Success writes `supabase/.temp/project-ref`, which is gitignored.
 
 ## 3. Apply the migrations
 
@@ -75,7 +78,9 @@ cd ~/Desktop/codding/Corbie/server
 supabase db push
 ```
 
-It lists the five migrations it is about to apply and asks for confirmation.
+It lists the five migrations it is about to apply and asks for confirmation. Add `< /dev/null` to
+take the default. Dry run first with `supabase db push --dry-run` if you want to see the list without
+applying anything.
 
 Success output ends with:
 
@@ -92,9 +97,11 @@ Verify:
 
 ```bash
 supabase migration list --linked
+supabase inspect db table-stats --linked
 ```
 
-Every row must show the same version in the Local and Remote columns. A row with a Local version and
+Every migration row must show the same version in the Local and Remote columns, and the table list
+must hold `invites`, `entitlements`, `events`, `fx_rates`, `parse_cache` and `rate_limits`. A row with a Local version and
 an empty Remote column means that migration did not apply.
 
 What you should have afterwards, checked in the dashboard SQL editor:
