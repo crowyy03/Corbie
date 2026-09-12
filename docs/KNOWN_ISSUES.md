@@ -11,21 +11,11 @@ iPhone 17 Pro Max QA, iPhone 17e QA and iPhone 17 Badge.
 
 ### The server base URL ships empty
 
-`CORBIE_SERVER_URL` is a build setting in `project.yml` (base settings) that reaches the Corbie and
-CorbieShare Info plists, and `ServerConfiguration.fromBundle` reads it
-(`Packages/CorbieCore/Sources/CorbieCore/Services/APIClientConfiguration.swift`). It ships as an empty
-string, so every client call still goes to `https://corbie.supabase.co/functions/v1`
-(`ServerConfiguration.fallback`), a placeholder project ref.
-
-Effect today: invites cannot be created or redeemed, links never parse, currency rates never refresh,
-the entitlement can only come from the local StoreKit transaction, and analytics never lands. Each
-degrades into a hint rather than a crash (`docs/TEST_PLAN.md` section 2), so it is invisible until
-someone tries to pair.
-
-Fix: put the real Supabase project ref (or a full https URL) into that one line and run
-`xcodegen generate`. `SessionService` already refuses to call a placeholder
-(`Corbie/Features/Pairing/SessionService.swift`); `APIClient` does not, and could get the same guard
-so the failure names the cause instead of a network error.
+RESOLVED 12-09. `CORBIE_SERVER_URL` in `project.yml` now carries the live Supabase project ref
+`powtuiqqagdoiuqjeebr`, it reaches the app and the share extension through their Info plists, and
+`ServerConfiguration.fromBundle` builds `https://powtuiqqagdoiuqjeebr.supabase.co/functions/v1` from
+it. The five migrations are applied on that project, all nine functions are deployed, and
+`server/scripts/smoke.sh` answers 15 pass, 0 fail, 2 pending against it.
 
 ## Minor
 
