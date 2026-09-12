@@ -21,6 +21,15 @@ tests/                          deno tests and fixture HTML
 
 Every function is deployed with `verify_jwt = false`. The Supabase gateway checks nothing; each function does its own check, because `session`, `invite`, `entitlement` and `apple-revoke` authenticate with an Apple identity token or with the Corbie session token that `session` issues, rather than with a Supabase JWT, and `appstore-notifications` authenticates with Apple's signature over the payload.
 
+## Deploying
+
+`DEPLOY.md` is the step by step for a live Supabase project: creating it, migrations, functions,
+every secret and where its value comes from, pointing the app at it, and the smoke test.
+
+`scripts/session-token.ts` mints a Corbie session token from `SESSION_SECRET` through the server's own
+code, so `invite`, `entitlement` and `apple-revoke` can be exercised without an Apple identity token.
+`scripts/smoke.sh <base-url> [token]` walks every endpoint and prints a pass table.
+
 ## Local
 
 Docker must be running.
