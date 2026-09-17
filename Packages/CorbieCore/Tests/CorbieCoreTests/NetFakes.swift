@@ -123,7 +123,7 @@ struct StubLocalEntitlements: LocalEntitlementProviding {
 
 enum NetTestSupport {
     static func client(
-        transport: FakeTransport,
+        transport: any HTTPTransport,
         sleeper: RetrySleeper = RecordingSleeper(),
         appleToken: String? = "apple-token",
         anonId: String? = "6f1e4a1e-0d5f-4e0e-9a54-1a5c1a2b3c4d",

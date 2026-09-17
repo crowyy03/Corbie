@@ -147,7 +147,7 @@ import Testing
 
 @Suite struct NetAnalyticsQueueTests {
     private func analytics(
-        transport: FakeTransport,
+        transport: any HTTPTransport,
         storage: any AnalyticsStorage,
         threshold: Int = Analytics.flushThreshold
     ) -> Analytics {
@@ -242,6 +242,56 @@ import Testing
         #expect(await service.pendingCount == Analytics.queueLimit)
     }
 
+    @Test(.timeLimit(.minutes(1))) func aFlushThatStartsWhileABatchIsOutSendsNothingTwice() async throws {
+        let storage = InMemoryAnalyticsStorage(events: backlog(named: "app_open", count: 25))
+        let transport = FirstRequestGate()
+        let service = analytics(transport: transport, storage: storage, threshold: 1)
+
+        let first = Task { await service.flush() }
+        try await transport.waitForRequests(1)
+        await service.flush()
+        await service.track(.taskDone)
+        try #require(transport.requests.count == 1)
+
+        transport.open()
+        await first.value
+        #expect(transport.requests.map { NetTestSupport.decodeBatch($0).count } == [25, 1])
+        #expect(NetTestSupport.decodeBatch(transport.requests.last).map(\.name) == ["task_done"])
+        #expect(await service.pendingCount == 0)
+        #expect(storage.load().isEmpty)
+    }
+
+    @Test(.timeLimit(.minutes(1))) func eventsDroppedForTheLimitWhileABatchIsOutAreNotRemovedTwice() async throws {
+        let storage = InMemoryAnalyticsStorage(events: backlog(named: "app_open", count: Analytics.queueLimit))
+        let transport = FirstRequestGate()
+        let service = analytics(transport: transport, storage: storage, threshold: 10_000)
+
+        let flushing = Task { await service.flush() }
+        try await transport.waitForRequests(1)
+        for _ in 0 ..< 30 {
+            await service.track(.taskDone)
+        }
+        #expect(await service.pendingCount == Analytics.queueLimit)
+
+        transport.open()
+        await flushing.value
+        let sent = transport.requests.flatMap { NetTestSupport.decodeBatch($0) }
+        #expect(sent.filter { $0.name == "app_open" }.count == Analytics.queueLimit)
+        #expect(sent.filter { $0.name == "task_done" }.count == 30)
+        #expect(await service.pendingCount == 0)
+    }
+
+    private func backlog(named name: String, count: Int) -> [AnalyticsEventPayload] {
+        let payload = AnalyticsEventPayload(
+            name: name,
+            props: [:],
+            ts: NetTestSupport.date("2026-09-05T10:00:00Z"),
+            appVersion: "1.0 (12)",
+            locale: "en_US"
+        )
+        return Array(repeating: payload, count: count)
+    }
+
     @Test func theFileQueueSurvivesARestart() throws {
         let directory = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("corbie-analytics-\(UUID().uuidString)", isDirectory: true)
@@ -282,5 +332,51 @@ import Testing
         let generated = volatile.current
         #expect(volatile.current == generated)
         #expect(AnonymousIdentity.inMemory().current != generated)
+    }
+}
+
+private final class FirstRequestGate: HTTPTransport, @unchecked Sendable {
+    private let lock = NSLock()
+    private var recorded: [HTTPRequest] = []
+    private var waiting: [CheckedContinuation<Void, Never>] = []
+    private var isOpen = false
+
+    var requests: [HTTPRequest] {
+        lock.withLock { recorded }
+    }
+
+    func open() {
+        let released = lock.withLock {
+            isOpen = true
+            defer { waiting = [] }
+            return waiting
+        }
+        released.forEach { $0.resume() }
+    }
+
+    func waitForRequests(_ count: Int) async throws {
+        var attempts = 0
+        while requests.count < count, attempts < 2000 {
+            attempts += 1
+            try await Task.sleep(nanoseconds: 1_000_000)
+        }
+        try #require(requests.count >= count)
+    }
+
+    func send(_ request: HTTPRequest) async throws -> HTTPResponse {
+        await withCheckedContinuation { continuation in
+            let passes = lock.withLock {
+                recorded.append(request)
+                let holds = isOpen == false && recorded.count == 1
+                if holds {
+                    waiting.append(continuation)
+                }
+                return holds == false
+            }
+            if passes {
+                continuation.resume()
+            }
+        }
+        return HTTPResponse(status: 202)
     }
 }

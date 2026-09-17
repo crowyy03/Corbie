@@ -24,6 +24,8 @@ public actor Analytics: AnalyticsRecording {
     private var queue: [AnalyticsEventPayload] = []
     private var didLoad = false
     private var ticker: Task<Void, Never>?
+    private var isFlushing = false
+    private var droppedDuringSend = 0
 
     public init(
         client: APIClient? = nil,
@@ -62,6 +64,9 @@ public actor Analytics: AnalyticsRecording {
         if queue.count > Analytics.queueLimit {
             let dropped = queue.count - Analytics.queueLimit
             queue.removeFirst(dropped)
+            if isFlushing {
+                droppedDuringSend += dropped
+            }
             Analytics.log.error("the analytics queue is full, dropped \(dropped, privacy: .public) oldest events")
         }
         storage.save(queue)
@@ -72,13 +77,16 @@ public actor Analytics: AnalyticsRecording {
 
     public func flush() async {
         loadIfNeeded()
+        guard isFlushing == false else { return }
+        isFlushing = true
+        defer { isFlushing = false }
         while queue.isEmpty == false {
             let batch = Array(queue.prefix(Analytics.maxEventsPerBatch))
+            droppedDuringSend = 0
             do {
                 try await client.events(batch)
             } catch let failure as APIError where isPermanent(failure) {
-                queue.removeFirst(batch.count)
-                storage.save(queue)
+                removeSent(batch)
                 Analytics.log.error(
                     """
                     the server refused \(batch.count, privacy: .public) events with status \
@@ -89,8 +97,7 @@ public actor Analytics: AnalyticsRecording {
             } catch {
                 return
             }
-            queue.removeFirst(batch.count)
-            storage.save(queue)
+            removeSent(batch)
         }
     }
 
@@ -125,6 +132,12 @@ public actor Analytics: AnalyticsRecording {
         guard didLoad == false else { return }
         didLoad = true
         queue = storage.load()
+    }
+
+    private func removeSent(_ batch: [AnalyticsEventPayload]) {
+        queue.removeFirst(max(0, batch.count - droppedDuringSend))
+        droppedDuringSend = 0
+        storage.save(queue)
     }
 
     private func isPermanent(_ failure: APIError) -> Bool {
