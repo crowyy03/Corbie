@@ -9,6 +9,7 @@ public struct CloudKitMirroringEvent: Sendable, Equatable {
         case unknown
     }
 
+    public let identifier: UUID
     public let kind: Kind
     public let storeIdentifier: String
     public let startedAt: Date
@@ -22,8 +23,10 @@ public struct CloudKitMirroringEvent: Sendable, Equatable {
         startedAt: Date,
         endedAt: Date?,
         succeeded: Bool,
-        failure: String? = nil
+        failure: String? = nil,
+        identifier: UUID = UUID()
     ) {
+        self.identifier = identifier
         self.kind = kind
         self.storeIdentifier = storeIdentifier
         self.startedAt = startedAt
@@ -41,12 +44,14 @@ public struct CloudKitMirroringEvent: Sendable, Equatable {
             startedAt: event.startDate,
             endedAt: event.endDate,
             succeeded: event.succeeded,
-            failure: event.error?.localizedDescription
+            failure: event.error?.localizedDescription,
+            identifier: event.identifier
         )
     }
 
-    func isFinishedExport(of storeIdentifier: String, startedAtOrAfter marker: Date) -> Bool {
-        kind == .exporting && endedAt != nil && self.storeIdentifier == storeIdentifier && startedAt >= marker
+    func isFinished(_ kind: Kind, of storeIdentifier: String?, startedAtOrAfter marker: Date) -> Bool {
+        guard self.kind == kind, endedAt != nil, startedAt >= marker else { return false }
+        return storeIdentifier == nil || self.storeIdentifier == storeIdentifier
     }
 }
 

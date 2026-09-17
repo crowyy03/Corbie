@@ -12,7 +12,6 @@ final class TodayQuestionModel {
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var environment: AppEnvironment?
     @ObservationIgnored private var reloadObserver: (any NSObjectProtocol)?
-    @ObservationIgnored private var reminder: QuestionReminderPlan?
     @ObservationIgnored private var shownDayKey: String?
 
     init(copy: QuestionCopy = QuestionCopy(), now: @escaping @Sendable () -> Date = { Date() }) {
@@ -63,7 +62,7 @@ final class TodayQuestionModel {
         } catch {
             environment.report(error)
         }
-        await scheduleReminder()
+        await environment.replanPartnerProgressReminders([.questionOfTheDay])
     }
 
     func refresh() async {
@@ -82,7 +81,7 @@ final class TodayQuestionModel {
         } catch {
             environment.report(error)
         }
-        await scheduleReminder()
+        await environment.replanPartnerProgressReminders([.questionOfTheDay])
     }
 
     func apply(_ updated: DailyQuestionDTO?) {
@@ -91,30 +90,5 @@ final class TodayQuestionModel {
         guard let updated, text != nil, shownDayKey != updated.dayKey else { return }
         shownDayKey = updated.dayKey
         environment?.analytics.record(.questionShown)
-    }
-
-    private func scheduleReminder() async {
-        guard let environment, let space = environment.space else { return }
-        let today = QuestionSelector.dayKey(for: now(), timeZone: space.anchorCalendarTimeZone)
-        guard let plan = QuestionReminderPlanner.plan(
-            question: question,
-            viewerMemberId: environment.currentMember?.id,
-            partnerMemberId: environment.partner?.id,
-            today: today
-        ), plan != reminder else { return }
-        reminder = plan
-        do {
-            _ = try await environment.notifications.scheduleQuestionReminder(
-                dayKey: plan.dayKey,
-                on: now(),
-                partnerName: environment.partnerName,
-                partnerAnswered: plan.partnerAnswered,
-                viewerAnswered: plan.viewerAnswered,
-                prefs: environment.currentMember?.notificationPrefs ?? .allEnabled,
-                now: now()
-            )
-        } catch {
-            environment.report(error)
-        }
     }
 }

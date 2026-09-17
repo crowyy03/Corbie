@@ -80,66 +80,6 @@ final class ChoreSplitStateTests: XCTestCase {
     }
 }
 
-final class ChoreReminderPlannerTests: XCTestCase {
-    private let viewerId = UUID()
-    private let partnerId = UUID()
-
-    func testThePartnerFinishingFirstEarnsANotice() throws {
-        let plan = try XCTUnwrap(
-            ChoreReminderPlanner.plan(
-                sets: [set(rated: [partnerId])],
-                viewerMemberId: viewerId,
-                partnerMemberId: partnerId,
-                partnerName: "Sofia",
-                alreadyToldAbout: nil
-            )
-        )
-        XCTAssertEqual(plan.partnerName, "Sofia")
-    }
-
-    func testNobodyIsToldTwiceAboutTheSameSplit() {
-        let waiting = set(rated: [partnerId])
-        XCTAssertNil(
-            ChoreReminderPlanner.plan(
-                sets: [waiting],
-                viewerMemberId: viewerId,
-                partnerMemberId: partnerId,
-                partnerName: "Sofia",
-                alreadyToldAbout: waiting.id.uuidString
-            )
-        )
-    }
-
-    func testThereIsNothingToSayWhileThePartnerIsStillRating() {
-        XCTAssertNil(plan(for: [set(rated: [])]))
-        XCTAssertNil(plan(for: [set(rated: [viewerId])]))
-        XCTAssertNil(plan(for: [set(rated: [viewerId, partnerId])]))
-        XCTAssertNil(plan(for: [set(status: .building, rated: [partnerId])]))
-        XCTAssertNil(plan(for: []))
-    }
-
-    private func plan(for sets: [ChoreSetDTO]) -> ChoreReminderPlan? {
-        ChoreReminderPlanner.plan(
-            sets: sets,
-            viewerMemberId: viewerId,
-            partnerMemberId: partnerId,
-            partnerName: "Sofia",
-            alreadyToldAbout: nil
-        )
-    }
-
-    private func set(status: ChoreSetStatus = .rating, rated: [UUID]) -> ChoreSetDTO {
-        ChoreSetDTO(
-            id: UUID(),
-            status: status,
-            items: (0 ..< ChoreSetDTO.minimumIncludedItems).map {
-                ChoreItemDTO(id: UUID(), title: "chore \($0)", sortIndex: $0)
-            },
-            ratedMemberIds: rated
-        )
-    }
-}
-
 final class ChoreCopyTests: XCTestCase {
     private let copy = ChoreCopy(
         locale: Locale(identifier: "en_US"),

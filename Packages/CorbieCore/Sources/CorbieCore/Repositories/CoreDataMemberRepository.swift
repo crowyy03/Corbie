@@ -64,7 +64,7 @@ public struct CoreDataMemberRepository: MemberRepository {
             let members: [Member] = try ManagedFetch.all(
                 Member.entityName,
                 predicate: ManagedFetch.spaceRelation(spaceId),
-                sort: [NSSortDescriptor(key: "joinedAt", ascending: true)],
+                sort: [NSSortDescriptor(key: "joinedAt", ascending: true), NSSortDescriptor(key: "id", ascending: true)],
                 in: context
             )
             return members.map(MemberDTO.init)

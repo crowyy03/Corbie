@@ -1,4 +1,3 @@
-import CorbieCore
 import Foundation
 
 struct ChoreReminderPlan: Equatable {

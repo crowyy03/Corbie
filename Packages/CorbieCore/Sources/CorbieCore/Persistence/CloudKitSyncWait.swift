@@ -1,23 +1,24 @@
 import CoreData
 import Foundation
 
-public enum CloudKitExportOutcome: Sendable, Equatable {
-    case exported
+public enum CloudKitSyncOutcome: Sendable, Equatable {
+    case finished
     case failed(String)
     case timedOut
 }
 
-final class CloudKitExportWait: @unchecked Sendable {
+final class CloudKitSyncWait: @unchecked Sendable {
     typealias EventReader = @Sendable (Notification) -> CloudKitMirroringEvent?
 
     private let lock = NSLock()
     private let center: NotificationCenter
     private var observer: (any NSObjectProtocol)?
-    private var result: CloudKitExportOutcome?
-    private var waiter: CheckedContinuation<CloudKitExportOutcome, Never>?
+    private var result: CloudKitSyncOutcome?
+    private var waiter: CheckedContinuation<CloudKitSyncOutcome, Never>?
 
     init(
-        storeIdentifier: String,
+        kind: CloudKitMirroringEvent.Kind,
+        storeIdentifier: String?,
         startedAtOrAfter marker: Date,
         center: NotificationCenter = .default,
         readEvent: @escaping EventReader = { CloudKitMirroringEvent(notification: $0) }
@@ -29,9 +30,9 @@ final class CloudKitExportWait: @unchecked Sendable {
             queue: nil
         ) { [weak self] notification in
             guard let event = readEvent(notification),
-                  event.isFinishedExport(of: storeIdentifier, startedAtOrAfter: marker)
+                  event.isFinished(kind, of: storeIdentifier, startedAtOrAfter: marker)
             else { return }
-            self?.finish(event.succeeded ? .exported : .failed(event.failure ?? "export failed"))
+            self?.finish(event.succeeded ? .finished : .failed(event.failure ?? "sync failed"))
         }
         lock.withLock { observer = token }
     }
@@ -40,14 +41,14 @@ final class CloudKitExportWait: @unchecked Sendable {
         stopObserving()
     }
 
-    func outcome(within timeout: Duration) async -> CloudKitExportOutcome {
+    func outcome(within timeout: Duration) async -> CloudKitSyncOutcome {
         let timer = Task { [weak self] in
             guard (try? await Task.sleep(for: timeout)) != nil else { return }
             self?.finish(.timedOut)
         }
         defer { timer.cancel() }
         return await withCheckedContinuation { continuation in
-            let settled: CloudKitExportOutcome? = lock.withLock {
+            let settled: CloudKitSyncOutcome? = lock.withLock {
                 if let result { return result }
                 waiter = continuation
                 return nil
@@ -58,9 +59,9 @@ final class CloudKitExportWait: @unchecked Sendable {
         }
     }
 
-    private func finish(_ outcome: CloudKitExportOutcome) {
+    private func finish(_ outcome: CloudKitSyncOutcome) {
         var isFirst = false
-        var waiting: CheckedContinuation<CloudKitExportOutcome, Never>?
+        var waiting: CheckedContinuation<CloudKitSyncOutcome, Never>?
         lock.withLock {
             guard result == nil else { return }
             isFirst = true

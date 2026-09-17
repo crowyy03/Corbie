@@ -53,6 +53,9 @@ struct FreeTimeView: View {
             .onChange(of: environment.currentMember?.sharesBusyTimes) {
                 Task { await model.load() }
             }
+            .onChange(of: environment.partner) {
+                Task { await model.load() }
+            }
             .sheet(item: $model.sheet, onDismiss: { Task { await model.refresh() } }) { sheet in
                 sheetContent(sheet)
             }

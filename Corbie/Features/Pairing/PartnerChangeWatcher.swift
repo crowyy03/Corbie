@@ -1,7 +1,7 @@
 import CorbieCore
 import Foundation
 
-struct PartnerJoinWatcher: Sendable {
+struct PartnerChangeWatcher: Sendable {
     @MainActor
     func observe(_ environment: AppEnvironment) async {
         await check(environment)
@@ -13,10 +13,6 @@ struct PartnerJoinWatcher: Sendable {
 
     @MainActor
     func check(_ environment: AppEnvironment) async {
-        guard let space = environment.space, environment.partner == nil else { return }
-        guard let members = try? await environment.repositories.members.members(spaceId: space.id),
-              members.count >= 2
-        else { return }
-        await environment.reloadSession()
+        await environment.reloadSessionIfPartnerChanged()
     }
 }

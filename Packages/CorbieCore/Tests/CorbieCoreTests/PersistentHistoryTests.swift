@@ -64,6 +64,38 @@ import Testing
         #expect(share.tokenKey == "history.token.share")
     }
 
+    @Test func recordsMergedBeforeAHandlerExistsReachItOnceItIsSet() throws {
+        let directory = try makeDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let suiteName = "corbie-history-" + UUID().uuidString
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let app = CoreDataStack(storesIn: directory, author: .app)
+        let widgets = CoreDataStack(storesIn: directory, author: .widgets)
+        let holding = PersistentHistoryObserver(
+            container: app.container,
+            author: .app,
+            defaults: defaults,
+            holdsRecordsUntilHandled: true
+        )
+        let dropping = PersistentHistoryObserver(container: app.container, author: .share, defaults: defaults)
+        try write(into: widgets)
+        #expect(try holding.process() >= 1)
+        #expect(try dropping.process() >= 1)
+
+        let held = RecordBox()
+        holding.setHandler { held.append($0) }
+        #expect(held.records.map(\.entityName) == [Space.entityName])
+        #expect(held.records.first?.author == TransactionAuthor.widgets.rawValue)
+        holding.setHandler { held.append($0) }
+        #expect(held.records.count == 1)
+
+        let dropped = RecordBox()
+        dropping.setHandler { dropped.append($0) }
+        #expect(dropped.records.isEmpty)
+    }
+
     private func makeDirectory() throws -> URL {
         let directory = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("corbie-history-" + UUID().uuidString, isDirectory: true)
@@ -89,5 +121,18 @@ import Testing
             space.displayCurrency = "USD"
             try context.save()
         }
+    }
+}
+
+private final class RecordBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var stored: [RemoteChangeRecord] = []
+
+    var records: [RemoteChangeRecord] {
+        lock.withLock { stored }
+    }
+
+    func append(_ records: [RemoteChangeRecord]) {
+        lock.withLock { stored.append(contentsOf: records) }
     }
 }

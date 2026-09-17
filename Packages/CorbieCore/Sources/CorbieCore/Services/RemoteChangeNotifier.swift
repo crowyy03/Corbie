@@ -8,19 +8,22 @@ public actor RemoteChangeNotifier {
         public var partnerId: UUID?
         public var partnerName: String
         public var prefs: NotificationPrefs
+        public var timeZone: TimeZone
 
         public init(
             spaceId: UUID,
             memberId: UUID,
             partnerId: UUID? = nil,
             partnerName: String = "",
-            prefs: NotificationPrefs = .allEnabled
+            prefs: NotificationPrefs = .allEnabled,
+            timeZone: TimeZone = .current
         ) {
             self.spaceId = spaceId
             self.memberId = memberId
             self.partnerId = partnerId
             self.partnerName = partnerName
             self.prefs = prefs
+            self.timeZone = timeZone
         }
 
         var viewer: RemoteChangeViewer {
@@ -32,11 +35,14 @@ public actor RemoteChangeNotifier {
 
     private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "remote-change")
 
+    public nonisolated let reminders: PartnerProgressReminders
+
     private let stack: CoreDataStack
     private let resolver: RemoteChangeResolver
     private let scheduler: NotificationScheduler
     private let defaults: UserDefaults
     private let reviewPrompt: ReviewPromptTracker
+    private nonisolated let inFlight = InFlightTasks()
 
     private var audience: Audience?
     private var isObserving = false
@@ -44,10 +50,12 @@ public actor RemoteChangeNotifier {
     public init(
         stack: CoreDataStack,
         scheduler: NotificationScheduler,
+        reminders: PartnerProgressReminders,
         defaults: UserDefaults = .corbieShared
     ) {
         self.stack = stack
         self.scheduler = scheduler
+        self.reminders = reminders
         self.defaults = defaults
         reviewPrompt = ReviewPromptTracker(defaults: defaults)
         resolver = RemoteChangeResolver(stack: stack)
@@ -64,9 +72,10 @@ public actor RemoteChangeNotifier {
     public func start() {
         guard isObserving == false else { return }
         isObserving = true
+        let inFlight = inFlight
         stack.onRemoteChange { [weak self] records in
             guard let self else { return }
-            Task { await self.handle(records) }
+            inFlight.run { _ = await self.handle(records) }
         }
     }
 
@@ -75,9 +84,30 @@ public actor RemoteChangeNotifier {
         stack.onRemoteChange(nil)
     }
 
+    public nonisolated func waitForPendingChanges() async {
+        await inFlight.waitUntilEmpty()
+    }
+
     @discardableResult
     public func handle(_ records: [RemoteChangeRecord]) async -> [RemoteChangeAlert] {
         guard let audience else { return [] }
+        let delivered = await deliverAlerts(for: records, audience: audience)
+        await reminders.replan(PartnerProgressReminder.triggered(by: records), for: audience)
+        return delivered
+    }
+
+    @discardableResult
+    public func noteJointAction() async -> Bool {
+        let granted = (try? await scheduler.requestAuthorizationIfNeeded()) ?? false
+        defaults.set(true, forKey: RemoteChangeNotifier.jointActionKey)
+        return granted
+    }
+
+    public func forgetJointAction() {
+        defaults.removeObject(forKey: RemoteChangeNotifier.jointActionKey)
+    }
+
+    private func deliverAlerts(for records: [RemoteChangeRecord], audience: Audience) async -> [RemoteChangeAlert] {
         let changes = await resolver.changes(for: records, spaceId: audience.spaceId)
         guard changes.isEmpty == false else { return [] }
         reviewPrompt.recordJointAction()
@@ -95,16 +125,5 @@ public actor RemoteChangeNotifier {
             }
         }
         return delivered
-    }
-
-    @discardableResult
-    public func noteJointAction() async -> Bool {
-        let granted = (try? await scheduler.requestAuthorizationIfNeeded()) ?? false
-        defaults.set(true, forKey: RemoteChangeNotifier.jointActionKey)
-        return granted
-    }
-
-    public func forgetJointAction() {
-        defaults.removeObject(forKey: RemoteChangeNotifier.jointActionKey)
     }
 }

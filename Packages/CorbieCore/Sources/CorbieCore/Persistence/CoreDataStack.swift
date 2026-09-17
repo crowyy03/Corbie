@@ -23,6 +23,7 @@ public final class CoreDataStack: @unchecked Sendable {
     private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "persistence")
 
     private let history: PersistentHistoryObserver?
+    private let runningImports: CloudKitRunningImports?
 
     public var viewContext: NSManagedObjectContext { container.viewContext }
 
@@ -60,6 +61,7 @@ public final class CoreDataStack: @unchecked Sendable {
     ) {
         self.author = author
         self.mirroring = mirroring
+        runningImports = mirroring == .cloudKit ? CloudKitRunningImports() : nil
         let container = CoreDataStack.makeContainer(mirroring: mirroring)
         container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(in: directory, mirroring: mirroring)
         self.container = container
@@ -71,7 +73,8 @@ public final class CoreDataStack: @unchecked Sendable {
                 container: container,
                 author: author,
                 defaults: defaults,
-                retention: mirroring.historyRetention
+                retention: mirroring.historyRetention,
+                holdsRecordsUntilHandled: mirroring == .cloudKit
             )
         }
         history?.start()
@@ -89,6 +92,7 @@ public final class CoreDataStack: @unchecked Sendable {
         loadFailure = CoreDataStack.load(container)
         CoreDataStack.configure(container.viewContext, author: author)
         history = nil
+        runningImports = nil
     }
 
     deinit {
@@ -108,6 +112,17 @@ public final class CoreDataStack: @unchecked Sendable {
     @discardableResult
     public func processHistory() throws -> Int {
         try history?.process() ?? 0
+    }
+
+    func importWait(for scope: StoreScope?, arrivedAt: Date) -> CloudKitSyncWait? {
+        guard let runningImports else { return nil }
+        let storeIdentifier = scope.flatMap { store(for: $0)?.identifier }
+        let running = runningImports.earliestStart(storeIdentifier: storeIdentifier) ?? arrivedAt
+        return CloudKitSyncWait(
+            kind: .importing,
+            storeIdentifier: storeIdentifier,
+            startedAtOrAfter: min(running, arrivedAt)
+        )
     }
 
     public func reloadStores() throws {

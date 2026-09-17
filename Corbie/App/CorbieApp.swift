@@ -8,31 +8,19 @@ import UserNotifications
 @main
 struct CorbieApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @State private var appState = AppState()
-    @State private var environment: AppEnvironment
-
-    init() {
-        #if DEBUG
-        DebugLaunch.resetStoreIfRequested()
-        DebugLaunch.applyEntitlementArgument()
-        DebugLaunch.applyMonetizationArgument()
-        #endif
-        _environment = State(initialValue: AppEnvironment())
-    }
 
     var body: some Scene {
         WindowGroup {
-            ThemedRoot(appState: appState, environment: environment)
+            ThemedRoot(appState: appDelegate.appState, environment: appDelegate.environment)
                 .task {
-                    appDelegate.connect(environment: environment, appState: appState)
-                    await environment.bootstrap()
+                    await appDelegate.environment.bootstrap()
                 }
                 .onOpenURL { url in
-                    appState.open(Router.route(for: url))
+                    appDelegate.appState.open(Router.route(for: url))
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
                     guard let url = activity.webpageURL else { return }
-                    appState.open(Router.route(for: url))
+                    appDelegate.appState.open(Router.route(for: url))
                 }
         }
     }
@@ -69,27 +57,17 @@ private struct ThemedRoot: View {
 final class AppDelegate: NSObject, UIApplicationDelegate {
     private let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "sharing")
 
-    private var environment: AppEnvironment?
-    private var appState: AppState?
-    private var pending: [NotificationResponse] = []
+    private(set) lazy var environment = AppDelegate.makeEnvironment()
+    private(set) lazy var appState = AppState()
 
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = self
+        environment.startProcess()
         application.registerForRemoteNotifications()
         return true
-    }
-
-    func connect(environment: AppEnvironment, appState: AppState) {
-        self.environment = environment
-        self.appState = appState
-        let queued = pending
-        pending = []
-        for response in queued {
-            perform(response)
-        }
     }
 
     func application(
@@ -97,11 +75,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
-        let stack = PersistenceController.shared.stack
+        let environment = environment
+        let sync = environment.remotePushSync(scope: RemotePushSync.scope(ofPush: userInfo))
         Task {
-            let merged = (try? stack.processHistory()) ?? 0
-            WidgetReloadRequest.post()
-            completionHandler(merged > 0 ? .newData : .noData)
+            let outcome = await Deadline.run(within: RemotePushSync.budget) {
+                await environment.processReady()
+                return await sync.finish()
+            }
+            completionHandler((outcome ?? sync.progress).fetchResult)
         }
     }
 
@@ -127,20 +108,25 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         }
     }
 
-    private func perform(_ response: NotificationResponse) {
-        guard let environment, let appState else {
-            pending.append(response)
-            return
-        }
+    private static func makeEnvironment() -> AppEnvironment {
+        #if DEBUG
+        DebugLaunch.resetStoreIfRequested()
+        DebugLaunch.applyEntitlementArgument()
+        DebugLaunch.applyMonetizationArgument()
+        #endif
+        return AppEnvironment()
+    }
+
+    private func perform(_ response: NotificationResponse) async {
         switch NotificationRouting.outcome(for: response) {
         case let .takeTask(taskId):
-            write(environment) {
+            await write {
                 try await TaskIntentRunner.take(taskId: taskId)
             }
         case let .completeTask(taskId):
-            write(environment) {
+            await write {
                 try await TaskIntentRunner.markDone(taskId: taskId)
-                await environment.notifications.cancelTaskDueToday(taskId: taskId)
+                await self.environment.notifications.cancelTaskDueToday(taskId: taskId)
             }
         case let .open(route):
             appState.open(route)
@@ -149,13 +135,22 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         }
     }
 
-    private func write(_ environment: AppEnvironment, _ body: @escaping () async throws -> Void) {
-        Task {
-            do {
-                try await body()
-            } catch {
-                environment.report(error)
-            }
+    private func write(_ body: () async throws -> Void) async {
+        await environment.processReady()
+        do {
+            try await body()
+        } catch {
+            environment.report(error)
+        }
+    }
+}
+
+private extension RemotePushOutcome {
+    var fetchResult: UIBackgroundFetchResult {
+        switch self {
+        case .newData: return .newData
+        case .noData: return .noData
+        case .failed: return .failed
         }
     }
 }
@@ -179,7 +174,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             userInfo: response.notification.request.content.userInfo
         )
         Task { @MainActor in
-            perform(parsed)
+            await perform(parsed)
             completionHandler()
         }
     }

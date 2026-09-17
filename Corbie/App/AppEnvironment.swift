@@ -59,6 +59,9 @@ final class AppEnvironment {
     private(set) var session: Session = .loading
 
     @ObservationIgnored private var hasResyncedNotifications = false
+    @ObservationIgnored private var processStart: Task<Void, Never>?
+    @ObservationIgnored private var processStartedInBackground = false
+    @ObservationIgnored private var partnerCheck: Task<PartnerCheck, Never>?
     @ObservationIgnored private var isCheckingPartnerOnServer = false
     @ObservationIgnored private var arePartnerChecksPaused = false
     @ObservationIgnored private var partnerCheckedOnServerAt: Date?
@@ -104,7 +107,15 @@ final class AppEnvironment {
         usBadge = UsBadgeProvider(repositories: repositories)
         fx = FXService(client: client)
         linkParser = LinkParser(client: client)
-        remoteChanges = RemoteChangeNotifier(stack: persistence.stack, scheduler: scheduler)
+        remoteChanges = RemoteChangeNotifier(
+            stack: persistence.stack,
+            scheduler: scheduler,
+            reminders: PartnerProgressReminders(
+                chores: persistence.repositories.chores,
+                questions: persistence.repositories.questions,
+                scheduler: scheduler
+            )
+        )
         toasts = ToastCenter()
         theme = ThemeProvider()
     }
@@ -131,27 +142,57 @@ final class AppEnvironment {
 
     var isPaired: Bool { partner != nil }
 
+    func startProcess() {
+        guard processStart == nil else { return }
+        processStartedInBackground = UIApplication.shared.applicationState == .background
+        IntentPersistence.shared.use(controller: persistence, identity: identity)
+        WidgetReloader.shared.start()
+        processStart = Task { await prepareProcess() }
+    }
+
+    func processReady() async {
+        startProcess()
+        await processStart?.value
+    }
+
     func bootstrap() async {
+        usBadge.observeReloads()
+        await analytics.start()
+        reviewPrompt.recordLaunch()
+        await processReady()
+        if case let .signedIn(context) = session {
+            await runSessionUpkeep(context)
+        } else if processStartedInBackground {
+            await reloadSession()
+        }
+    }
+
+    func remotePushSync(scope: StoreScope?) -> RemotePushSync {
+        RemotePushSync(stack: persistence.stack, notifier: remoteChanges, scope: scope)
+    }
+
+    func reloadSession() async {
+        guard let context = await loadSession() else { return }
+        await runSessionUpkeep(context)
+    }
+
+    private func prepareProcess() async {
         do {
             try persistence.stack.initializeCloudKitSchemaIfRequested()
         } catch {
             report(error)
         }
-        IntentPersistence.shared.use(controller: persistence, identity: identity)
-        WidgetReloader.shared.start()
-        usBadge.observeReloads()
-        await analytics.start()
         await notifications.registerCategories()
-        reviewPrompt.recordLaunch()
+        await loadSession()
         await remoteChanges.start()
-        await reloadSession()
     }
 
-    func reloadSession() async {
+    @discardableResult
+    private func loadSession() async -> SessionContext? {
         guard let appleUserID = identity.currentAppleUserID else {
             session = .signedOut
             premiumGate.update(entitlements.stateWithoutSpace())
-            return
+            return nil
         }
         do {
             guard let member = try await repositories.members.member(appleUserId: appleUserID),
@@ -159,22 +200,28 @@ final class AppEnvironment {
             else {
                 session = .signedOut
                 premiumGate.update(entitlements.stateWithoutSpace())
-                return
+                return nil
             }
             let partner = try await repositories.members.partner(of: member.id, spaceId: space.id)
-            session = .signedIn(SessionContext(space: space, member: member, partner: partner))
+            let context = SessionContext(space: space, member: member, partner: partner)
+            session = .signedIn(context)
             startBusyPublishing(spaceId: space.id)
             await updateNotificationAudience()
             await resyncNotificationBacklog()
             premiumGate.update(await entitlements.cachedState(space: space))
-            try? await repositories.members.touchLastSeen(memberId: member.id)
-            Task { await premiumGate.refresh(spaceId: space.id) }
-            Task { await publishBusyTimes() }
-            Task { await reconcilePartnerMembership() }
+            return context
         } catch {
             session = .signedOut
             report(error)
+            return nil
         }
+    }
+
+    private func runSessionUpkeep(_ context: SessionContext) async {
+        try? await repositories.members.touchLastSeen(memberId: context.member.id)
+        Task { await premiumGate.refresh(spaceId: context.space.id) }
+        Task { await publishBusyTimes() }
+        Task { await reconcilePartnerMembership() }
     }
 
     func withPartnerChecksPaused(_ body: () async -> Void) async {
@@ -183,23 +230,42 @@ final class AppEnvironment {
         await body()
     }
 
+    @discardableResult
+    func reloadSessionIfPartnerChanged() async -> PartnerCheck {
+        let previous = partnerCheck
+        let check = Task {
+            _ = await previous?.value
+            return await self.reloadSessionIfStoredPartnerDiffers()
+        }
+        partnerCheck = check
+        return await check.value
+    }
+
+    private func reloadSessionIfStoredPartnerDiffers() async -> PartnerCheck {
+        guard arePartnerChecksPaused == false, case let .signedIn(context) = session else { return .unchanged }
+        let stored: MemberDTO?
+        do {
+            stored = try await repositories.members.partner(of: context.member.id, spaceId: context.space.id)
+        } catch {
+            AppEnvironment.log.error("partner lookup failed: \(error.localizedDescription, privacy: .public)")
+            return .unreadable
+        }
+        guard arePartnerChecksPaused == false,
+              case let .signedIn(current) = session,
+              current.member.id == context.member.id,
+              current.space.id == context.space.id,
+              PartnerChangeRule.needsReload(stored: stored, session: current.partner)
+        else { return .unchanged }
+        await reloadSession()
+        return .reloaded
+    }
+
     func reconcilePartnerMembership(serverCheckInterval: TimeInterval = 0) async {
         guard arePartnerChecksPaused == false,
               case let .signedIn(context) = session,
-              let partner = context.partner
+              context.partner != nil
         else { return }
-        let partnerIsStored: Bool
-        do {
-            partnerIsStored = try await repositories.members.member(id: partner.id) != nil
-        } catch {
-            AppEnvironment.log.error("partner lookup failed: \(error.localizedDescription, privacy: .public)")
-            return
-        }
-        guard arePartnerChecksPaused == false else { return }
-        guard partnerIsStored else {
-            await reloadSession()
-            return
-        }
+        guard await reloadSessionIfPartnerChanged() == .unchanged, arePartnerChecksPaused == false else { return }
         guard isCheckingPartnerOnServer == false, isPartnerServerCheckDue(interval: serverCheckInterval) else { return }
         isCheckingPartnerOnServer = true
         partnerCheckedOnServerAt = Date()
@@ -352,6 +418,7 @@ final class AppEnvironment {
     func apply(space: SpaceDTO) {
         guard case let .signedIn(context) = session, context.space.id == space.id else { return }
         session = .signedIn(SessionContext(space: space, member: context.member, partner: context.partner))
+        Task { await updateNotificationAudience() }
     }
 
     func resyncNotificationBacklog() async {
@@ -362,18 +429,23 @@ final class AppEnvironment {
     }
 
     func updateNotificationAudience() async {
-        guard case let .signedIn(context) = session else {
-            await remoteChanges.update(audience: nil)
-            return
-        }
-        await remoteChanges.update(
-            audience: RemoteChangeNotifier.Audience(
-                spaceId: context.space.id,
-                memberId: context.member.id,
-                partnerId: context.partner?.id,
-                partnerName: partnerName,
-                prefs: context.member.notificationPrefs
-            )
+        await remoteChanges.update(audience: notificationAudience)
+    }
+
+    func replanPartnerProgressReminders(_ reminders: Set<PartnerProgressReminder>) async {
+        guard let notificationAudience else { return }
+        await remoteChanges.reminders.replan(reminders, for: notificationAudience)
+    }
+
+    private var notificationAudience: RemoteChangeNotifier.Audience? {
+        guard case let .signedIn(context) = session else { return nil }
+        return RemoteChangeNotifier.Audience(
+            spaceId: context.space.id,
+            memberId: context.member.id,
+            partnerId: context.partner?.id,
+            partnerName: partnerName,
+            prefs: context.member.notificationPrefs,
+            timeZone: context.space.anchorCalendarTimeZone
         )
     }
 
@@ -419,7 +491,14 @@ final class AppEnvironment {
     func report(_ error: any Error) {
         toasts.show(message: error.localizedDescription)
     }
+}
 
+extension AppEnvironment {
+    enum PartnerCheck: Equatable {
+        case unchanged
+        case reloaded
+        case unreadable
+    }
 }
 
 #if DEBUG

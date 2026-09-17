@@ -190,11 +190,15 @@ public final class CloudKitSharing {
     }
 
     private func removeOwnMember(_ memberId: UUID, spaceId: UUID, store: NSPersistentStore) async throws {
-        let export = CloudKitExportWait(storeIdentifier: store.identifier ?? "", startedAtOrAfter: Date())
+        let export = CloudKitSyncWait(
+            kind: .exporting,
+            storeIdentifier: store.identifier ?? "",
+            startedAtOrAfter: Date()
+        )
         let removed = try await members.removeMembersAndFreeTheirTasks(ids: [memberId], spaceId: spaceId)
         guard removed > 0 else { return }
         let outcome = await export.outcome(within: exportTimeout)
-        guard outcome != .exported else { return }
+        guard outcome != .finished else { return }
         CloudKitSharing.log.error(
             "leaving before the member removal was exported: \(String(describing: outcome), privacy: .public)"
         )

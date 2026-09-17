@@ -7,13 +7,11 @@ import Observation
 final class TodayChoreModel {
     private(set) var state: ChoreSplitState = .notStarted
 
-    @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var environment: AppEnvironment?
     @ObservationIgnored private var reloadObserver: (any NSObjectProtocol)?
 
-    init(defaults: UserDefaults = .corbieShared, now: @escaping @Sendable () -> Date = { Date() }) {
-        self.defaults = defaults
+    init(now: @escaping @Sendable () -> Date = { Date() }) {
         self.now = now
     }
 
@@ -55,30 +53,10 @@ final class TodayChoreModel {
                 partnerMemberId: environment.partner?.id,
                 now: now()
             )
-            await tellTheViewer(about: sets, in: environment)
         } catch {
             environment.report(error)
+            return
         }
-    }
-
-    private func tellTheViewer(about sets: [ChoreSetDTO], in environment: AppEnvironment) async {
-        guard let plan = ChoreReminderPlanner.plan(
-            sets: sets,
-            viewerMemberId: environment.currentMember?.id,
-            partnerMemberId: environment.partner?.id,
-            partnerName: environment.partnerName,
-            alreadyToldAbout: defaults.string(forKey: ChoreReminderPlanner.toldKey)
-        ) else { return }
-        defaults.set(plan.setId.uuidString, forKey: ChoreReminderPlanner.toldKey)
-        do {
-            try await environment.notifications.scheduleChoreSplitReady(
-                setId: plan.setId,
-                partnerName: plan.partnerName,
-                prefs: environment.currentMember?.notificationPrefs ?? .allEnabled,
-                now: now()
-            )
-        } catch {
-            environment.report(error)
-        }
+        await environment.replanPartnerProgressReminders([.choreSplitReady])
     }
 }

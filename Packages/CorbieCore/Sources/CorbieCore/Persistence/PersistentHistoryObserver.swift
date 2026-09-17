@@ -11,20 +11,24 @@ final class PersistentHistoryObserver: @unchecked Sendable {
     private let author: TransactionAuthor
     private let defaults: UserDefaults
     private let retention: TimeInterval?
+    private let holdsRecordsUntilHandled: Bool
     private let lock = NSLock()
     private var observer: (any NSObjectProtocol)?
     private var handler: (@Sendable ([RemoteChangeRecord]) -> Void)?
+    private var heldRecords: [RemoteChangeRecord] = []
 
     init(
         container: NSPersistentContainer,
         author: TransactionAuthor,
         defaults: UserDefaults = .corbieShared,
-        retention: TimeInterval? = PersistentHistoryObserver.retention
+        retention: TimeInterval? = PersistentHistoryObserver.retention,
+        holdsRecordsUntilHandled: Bool = false
     ) {
         self.container = container
         self.author = author
         self.defaults = defaults
         self.retention = retention
+        self.holdsRecordsUntilHandled = holdsRecordsUntilHandled
     }
 
     var tokenKey: String { StoreReset.historyTokenKey(author: author) }
@@ -67,6 +71,10 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
         self.handler = handler
+        guard let handler, heldRecords.isEmpty == false else { return }
+        let held = heldRecords
+        heldRecords = []
+        handler(held)
     }
 
     @discardableResult
@@ -95,7 +103,11 @@ final class PersistentHistoryObserver: @unchecked Sendable {
             RemoteChangesMerged.post()
         }
         if harvest.records.isEmpty == false {
-            currentHandler?(harvest.records)
+            if let currentHandler {
+                currentHandler(harvest.records)
+            } else if holdsRecordsUntilHandled {
+                heldRecords.append(contentsOf: harvest.records)
+            }
         }
         return harvest.merges.count
     }
@@ -128,6 +140,7 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         (transaction.changes ?? []).map { change in
             RemoteChangeRecord(
                 objectURI: change.changedObjectID.uriRepresentation(),
+                entityName: change.changedObjectID.entity.name,
                 type: changeType(change.changeType),
                 properties: Set((change.updatedProperties ?? []).map(\.name)),
                 author: transaction.author,

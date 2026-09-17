@@ -16,7 +16,7 @@ struct RootView: View {
     @State private var isTrialOfferPresented = false
 
     private let credentials = AppleCredentialMonitor()
-    private let partnerWatcher = PartnerJoinWatcher()
+    private let partnerWatcher = PartnerChangeWatcher()
     private let departureWatcher = PartnerDepartureWatcher()
 
     var body: some View {
