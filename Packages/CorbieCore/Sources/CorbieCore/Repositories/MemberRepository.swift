@@ -50,6 +50,8 @@ public protocol MemberRepository: Sendable {
     func markUsVisited(memberId: UUID, at date: Date) async throws -> MemberDTO
     func markRecapSeen(memberId: UUID, at date: Date) async throws -> MemberDTO
     func delete(id: UUID) async throws
+    @discardableResult
+    func removeMembersAndFreeTheirTasks(ids: [UUID], spaceId: UUID) async throws -> Int
 }
 
 extension MemberRepository {

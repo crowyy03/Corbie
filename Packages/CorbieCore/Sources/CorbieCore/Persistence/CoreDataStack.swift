@@ -2,10 +2,22 @@ import CoreData
 import Foundation
 import os
 
+public enum StoreMirroring: Sendable, Equatable {
+    case cloudKit
+    case disabled
+
+    var historyRetention: TimeInterval? {
+        switch self {
+        case .cloudKit: return PersistentHistoryObserver.retention
+        case .disabled: return nil
+        }
+    }
+}
+
 public final class CoreDataStack: @unchecked Sendable {
     public let container: NSPersistentContainer
     public let author: TransactionAuthor
-    public let isCloudKitEnabled: Bool
+    public let mirroring: StoreMirroring
     public let loadFailure: (any Error)?
 
     private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "persistence")
@@ -15,41 +27,59 @@ public final class CoreDataStack: @unchecked Sendable {
     public var viewContext: NSManagedObjectContext { container.viewContext }
 
     public var cloudKitContainer: NSPersistentCloudKitContainer? {
-        container as? NSPersistentCloudKitContainer
+        guard mirroring == .cloudKit else { return nil }
+        return container as? NSPersistentCloudKitContainer
     }
 
-    public init(author: TransactionAuthor = .app, cloudKitEnabled: Bool = true) {
-        self.author = author
-        isCloudKitEnabled = cloudKitEnabled
-        let container = NSPersistentCloudKitContainer(name: CorbieModel.name, managedObjectModel: CorbieModel.shared)
-        container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(
-            in: CoreDataStack.storesDirectory(),
-            cloudKitEnabled: cloudKitEnabled
+    public convenience init(appGroupAuthor author: TransactionAuthor, mirroring: StoreMirroring) {
+        self.init(
+            directory: CoreDataStack.storesDirectory(),
+            author: author,
+            mirroring: mirroring,
+            historyDefaults: .corbieShared,
+            requiresAppGroup: true
         )
+    }
+
+    public convenience init(storesIn directory: URL, author: TransactionAuthor = .tests) {
+        self.init(
+            directory: directory,
+            author: author,
+            mirroring: .disabled,
+            historyDefaults: nil,
+            requiresAppGroup: false
+        )
+    }
+
+    init(
+        directory: URL,
+        author: TransactionAuthor,
+        mirroring: StoreMirroring,
+        historyDefaults: UserDefaults?,
+        requiresAppGroup: Bool
+    ) {
+        self.author = author
+        self.mirroring = mirroring
+        let container = CoreDataStack.makeContainer(mirroring: mirroring)
+        container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(in: directory, mirroring: mirroring)
         self.container = container
-        loadFailure = CoreDataStack.load(container) ?? CoreDataStack.appGroupFailure()
+        let appGroupFailure = requiresAppGroup ? CoreDataStack.appGroupFailure() : nil
+        loadFailure = CoreDataStack.load(container) ?? appGroupFailure
         CoreDataStack.configure(container.viewContext, author: author)
-        history = PersistentHistoryObserver(container: container, author: author)
+        history = historyDefaults.map { defaults in
+            PersistentHistoryObserver(
+                container: container,
+                author: author,
+                defaults: defaults,
+                retention: mirroring.historyRetention
+            )
+        }
         history?.start()
-    }
-
-    public init(storesIn directory: URL, author: TransactionAuthor = .tests) {
-        self.author = author
-        isCloudKitEnabled = false
-        let container = NSPersistentContainer(name: CorbieModel.name, managedObjectModel: CorbieModel.shared)
-        container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(
-            in: directory,
-            cloudKitEnabled: false
-        )
-        self.container = container
-        loadFailure = CoreDataStack.load(container)
-        CoreDataStack.configure(container.viewContext, author: author)
-        history = nil
     }
 
     public init(inMemoryAuthor author: TransactionAuthor = .tests) {
         self.author = author
-        isCloudKitEnabled = false
+        mirroring = .disabled
         let container = NSPersistentContainer(name: CorbieModel.name, managedObjectModel: CorbieModel.shared)
         let description = NSPersistentStoreDescription(url: URL(fileURLWithPath: "/dev/null"))
         description.type = NSInMemoryStoreType
@@ -163,13 +193,22 @@ public final class CoreDataStack: @unchecked Sendable {
         }
     }
 
-    private static func storeDescriptions(in directory: URL, cloudKitEnabled: Bool) -> [NSPersistentStoreDescription] {
+    private static func makeContainer(mirroring: StoreMirroring) -> NSPersistentContainer {
+        switch mirroring {
+        case .cloudKit:
+            return NSPersistentCloudKitContainer(name: CorbieModel.name, managedObjectModel: CorbieModel.shared)
+        case .disabled:
+            return NSPersistentContainer(name: CorbieModel.name, managedObjectModel: CorbieModel.shared)
+        }
+    }
+
+    static func storeDescriptions(in directory: URL, mirroring: StoreMirroring) -> [NSPersistentStoreDescription] {
         [StoreScope.privateStore, StoreScope.sharedStore].map { scope in
             let description = NSPersistentStoreDescription(url: directory.appendingPathComponent(scope.fileName))
             description.shouldAddStoreAsynchronously = false
             description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
             description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-            if cloudKitEnabled {
+            if mirroring == .cloudKit {
                 let options = NSPersistentCloudKitContainerOptions(
                     containerIdentifier: CorbieIdentifiers.cloudKitContainer
                 )

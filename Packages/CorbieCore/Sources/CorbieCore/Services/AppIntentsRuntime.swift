@@ -17,7 +17,7 @@ public final class IntentPersistence: @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
         if let storedController { return storedController }
-        let created = PersistenceController.cloudKit(author: .widgets)
+        let created = PersistenceController.appGroupWithoutMirroring(author: .widgets)
         storedController = created
         return created
     }

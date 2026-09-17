@@ -2,6 +2,7 @@ import CorbieCore
 import CoreData
 import EventKit
 import Observation
+import os
 import SwiftUI
 import UIKit
 
@@ -24,6 +25,10 @@ final class AppEnvironment {
     nonisolated static let appleIdentityTokenKey = "apple.identity.token"
     nonisolated static let appleAuthorizationCodeKey = "apple.authorization.code"
     nonisolated static let appleRefreshTokenKey = "apple.refresh.token"
+    nonisolated static let partnerCheckIntervalOnRemoteChange: TimeInterval = 60
+    nonisolated static let partnerCheckIntervalOnForeground: TimeInterval = 5
+
+    private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "sharing")
 
     @ObservationIgnored let persistence: PersistenceController
     @ObservationIgnored let repositories: Repositories
@@ -54,6 +59,9 @@ final class AppEnvironment {
     private(set) var session: Session = .loading
 
     @ObservationIgnored private var hasResyncedNotifications = false
+    @ObservationIgnored private var isCheckingPartnerOnServer = false
+    @ObservationIgnored private var arePartnerChecksPaused = false
+    @ObservationIgnored private var partnerCheckedOnServerAt: Date?
 
     init(
         persistence: PersistenceController = .shared,
@@ -162,10 +170,55 @@ final class AppEnvironment {
             try? await repositories.members.touchLastSeen(memberId: member.id)
             Task { await premiumGate.refresh(spaceId: space.id) }
             Task { await publishBusyTimes() }
+            Task { await reconcilePartnerMembership() }
         } catch {
             session = .signedOut
             report(error)
         }
+    }
+
+    func withPartnerChecksPaused(_ body: () async -> Void) async {
+        arePartnerChecksPaused = true
+        defer { arePartnerChecksPaused = false }
+        await body()
+    }
+
+    func reconcilePartnerMembership(serverCheckInterval: TimeInterval = 0) async {
+        guard arePartnerChecksPaused == false,
+              case let .signedIn(context) = session,
+              let partner = context.partner
+        else { return }
+        let partnerIsStored: Bool
+        do {
+            partnerIsStored = try await repositories.members.member(id: partner.id) != nil
+        } catch {
+            AppEnvironment.log.error("partner lookup failed: \(error.localizedDescription, privacy: .public)")
+            return
+        }
+        guard arePartnerChecksPaused == false else { return }
+        guard partnerIsStored else {
+            await reloadSession()
+            return
+        }
+        guard isCheckingPartnerOnServer == false, isPartnerServerCheckDue(interval: serverCheckInterval) else { return }
+        isCheckingPartnerOnServer = true
+        partnerCheckedOnServerAt = Date()
+        defer { isCheckingPartnerOnServer = false }
+        do {
+            let removed = try await sharing.removeDepartedMembers(
+                space: context.space.id,
+                ownerMemberId: context.member.id
+            )
+            guard removed.isEmpty == false, arePartnerChecksPaused == false else { return }
+            await reloadSession()
+        } catch {
+            AppEnvironment.log.error("partner check skipped: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    private func isPartnerServerCheckDue(interval: TimeInterval) -> Bool {
+        guard let partnerCheckedOnServerAt else { return true }
+        return Date().timeIntervalSince(partnerCheckedOnServerAt) >= interval
     }
 
     func publishBusyTimes(force: Bool = false) async {

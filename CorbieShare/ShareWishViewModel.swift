@@ -104,7 +104,7 @@ final class ShareWishViewModel {
     }
 
     private func resolveSession() async {
-        let controller = PersistenceController.cloudKit(author: .share)
+        let controller = PersistenceController.appGroupWithoutMirroring(author: .share)
         persistence = controller
         guard let appleUserID = MemberIdentity().currentAppleUserID,
               let member = try? await controller.repositories.members.member(appleUserId: appleUserID),

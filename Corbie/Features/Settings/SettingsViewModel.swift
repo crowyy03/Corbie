@@ -21,7 +21,7 @@ final class SettingsViewModel {
     var member: MemberDTO? { environment?.currentMember }
     var partner: MemberDTO? { environment?.partner }
     var space: SpaceDTO? { environment?.space }
-    var isPaired: Bool { environment?.isPaired ?? false }
+    var offersLeaving: Bool { SettingsAccountPlan.offersLeaving(space: space, memberId: member?.id) }
 
     var isProfileDirty: Bool { profile != savedProfile || weddingDate != savedWedding }
 
@@ -120,35 +120,59 @@ final class SettingsViewModel {
     }
 
     func leaveSpace() async {
-        guard let environment, let space = environment.space else { return }
+        guard let environment, let space = environment.space, let member = environment.currentMember else { return }
         isLeaving = true
         defer { isLeaving = false }
-        do {
-            try await environment.sharing.leave(space: space.id)
-            await environment.notifications.cancelEverything()
-            await environment.reloadSession()
-        } catch {
-            environment.report(error)
+        await environment.withPartnerChecksPaused {
+            do {
+                try await environment.sharing.leave(space: space.id, memberId: member.id)
+                await environment.notifications.cancelEverything()
+                await environment.reloadSession()
+            } catch {
+                environment.report(error)
+            }
         }
     }
 
     func deleteAccount() async {
-        guard let environment, let space = environment.space else { return }
+        guard let environment, let space = environment.space, let member = environment.currentMember else { return }
         isDeleting = true
         defer { isDeleting = false }
-        let accountPlan = SettingsAccountPlan.decide(space: space, memberId: environment.currentMember?.id)
-        do {
-            switch accountPlan {
-            case .deleteSpace:
-                try await environment.sharing.deleteSpace(space: space.id)
-            case .leaveSpace:
-                try await environment.sharing.leave(space: space.id)
+        let accountPlan = SettingsAccountPlan.decide(space: space, memberId: member.id)
+        await environment.withPartnerChecksPaused {
+            if let failure = await deleteCloudKitData(
+                accountPlan,
+                spaceId: space.id,
+                memberId: member.id,
+                sharing: environment.sharing
+            ) {
+                environment.report(failure)
             }
-        } catch {
-            environment.report(error)
+            await revokeApple(environment)
+            await environment.wipeLocalState()
         }
-        await revokeApple(environment)
-        await environment.wipeLocalState()
+    }
+
+    private func deleteCloudKitData(
+        _ accountPlan: SettingsAccountPlan,
+        spaceId: UUID,
+        memberId: UUID,
+        sharing: CloudKitSharing
+    ) async -> (any Error)? {
+        var failure: (any Error)?
+        if accountPlan == .leaveSpace {
+            do {
+                try await sharing.leave(space: spaceId, memberId: memberId)
+            } catch {
+                failure = error
+            }
+        }
+        do {
+            try await sharing.purgePrivateZones()
+        } catch {
+            failure = failure ?? error
+        }
+        return failure
     }
 
     private func revokeApple(_ environment: AppEnvironment) async {

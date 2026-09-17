@@ -2,7 +2,7 @@ import CoreData
 import Foundation
 
 public final class PersistenceController: Sendable {
-    public static let shared = PersistenceController(stack: CoreDataStack(author: .app))
+    public static let shared = PersistenceController(stack: CoreDataStack(appGroupAuthor: .app, mirroring: .cloudKit))
     #if DEBUG
     public static let preview = PersistenceController(stack: CoreDataStack(inMemoryAuthor: .tests))
     #endif
@@ -19,8 +19,8 @@ public final class PersistenceController: Sendable {
         PersistenceController(stack: CoreDataStack(inMemoryAuthor: author))
     }
 
-    public static func cloudKit(author: TransactionAuthor) -> PersistenceController {
-        PersistenceController(stack: CoreDataStack(author: author))
+    public static func appGroupWithoutMirroring(author: TransactionAuthor) -> PersistenceController {
+        PersistenceController(stack: CoreDataStack(appGroupAuthor: author, mirroring: .disabled))
     }
 
     public var viewContext: NSManagedObjectContext { stack.viewContext }

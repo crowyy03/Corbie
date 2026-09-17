@@ -131,6 +131,38 @@ public struct CoreDataMemberRepository: MemberRepository {
             context.delete(member)
         }
     }
+
+    @discardableResult
+    public func removeMembersAndFreeTheirTasks(ids: [UUID], spaceId: UUID) async throws -> Int {
+        guard ids.isEmpty == false else { return 0 }
+        return try await access.write { context in
+            let memberIds = ids.map { $0 as NSUUID }
+            let members: [Member] = try ManagedFetch.all(
+                Member.entityName,
+                predicate: NSPredicate(format: "id IN %@ AND space.id == %@", memberIds, spaceId as NSUUID),
+                in: context
+            )
+            guard members.isEmpty == false else { return 0 }
+            let tasks: [TaskItem] = try ManagedFetch.all(
+                TaskItem.entityName,
+                predicate: NSPredicate(format: "assigneeMemberId IN %@ AND space.id == %@", memberIds, spaceId as NSUUID),
+                in: context
+            )
+            let steps: [PlanStep] = try ManagedFetch.all(
+                PlanStep.entityName,
+                predicate: NSPredicate(
+                    format: "assigneeMemberId IN %@ AND plan.space.id == %@",
+                    memberIds,
+                    spaceId as NSUUID
+                ),
+                in: context
+            )
+            tasks.forEach { $0.assigneeMemberId = nil }
+            steps.forEach { $0.assigneeMemberId = nil }
+            members.forEach(context.delete)
+            return members.count
+        }
+    }
 }
 
 enum MemberColorAssignment {

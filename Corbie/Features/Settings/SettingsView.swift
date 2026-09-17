@@ -295,7 +295,7 @@ struct SettingsView: View {
 
     private var accountSection: some View {
         Section {
-            if model.isPaired {
+            if model.offersLeaving {
                 destructiveRow(titleKey: "settings.account.leave", isWorking: model.isLeaving) {
                     confirmation = .leave
                 }

@@ -37,4 +37,9 @@ enum SettingsAccountPlan: Equatable {
         guard let memberId else { return .leaveSpace }
         return creator == memberId ? .deleteSpace : .leaveSpace
     }
+
+    static func offersLeaving(space: SpaceDTO?, memberId: UUID?) -> Bool {
+        guard let space, let memberId else { return false }
+        return decide(space: space, memberId: memberId) == .leaveSpace
+    }
 }

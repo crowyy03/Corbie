@@ -41,6 +41,17 @@ final class SettingsStatusTests: XCTestCase {
         XCTAssertEqual(SettingsAccountPlan.decide(space: space, memberId: UUID()), .deleteSpace)
     }
 
+    func testOnlyTheJoinerIsOfferedLeaving() {
+        let owner = UUID()
+        let joiner = UUID()
+        let space = SpaceDTO(id: UUID(), creatorMemberId: owner, memberCount: 2)
+        XCTAssertFalse(SettingsAccountPlan.offersLeaving(space: space, memberId: owner))
+        XCTAssertTrue(SettingsAccountPlan.offersLeaving(space: space, memberId: joiner))
+        XCTAssertFalse(SettingsAccountPlan.offersLeaving(space: space, memberId: nil))
+        XCTAssertFalse(SettingsAccountPlan.offersLeaving(space: nil, memberId: joiner))
+        XCTAssertFalse(SettingsAccountPlan.offersLeaving(space: SpaceDTO(id: UUID()), memberId: joiner))
+    }
+
     func testTheLegalPagesPointAtTheHostedDocuments() {
         XCTAssertEqual(LegalPage.privacy.url?.absoluteString, "https://yourcorbie.app/privacy")
         XCTAssertEqual(LegalPage.terms.url?.absoluteString, "https://yourcorbie.app/terms")

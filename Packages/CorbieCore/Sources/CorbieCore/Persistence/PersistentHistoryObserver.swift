@@ -10,14 +10,21 @@ final class PersistentHistoryObserver: @unchecked Sendable {
     private let container: NSPersistentContainer
     private let author: TransactionAuthor
     private let defaults: UserDefaults
+    private let retention: TimeInterval?
     private let lock = NSLock()
     private var observer: (any NSObjectProtocol)?
     private var handler: (@Sendable ([RemoteChangeRecord]) -> Void)?
 
-    init(container: NSPersistentContainer, author: TransactionAuthor, defaults: UserDefaults = .corbieShared) {
+    init(
+        container: NSPersistentContainer,
+        author: TransactionAuthor,
+        defaults: UserDefaults = .corbieShared,
+        retention: TimeInterval? = PersistentHistoryObserver.retention
+    ) {
         self.container = container
         self.author = author
         self.defaults = defaults
+        self.retention = retention
     }
 
     var tokenKey: String { StoreReset.historyTokenKey(author: author) }
@@ -85,6 +92,7 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         }
         if harvest.merges.isEmpty == false {
             WidgetReloadRequest.post()
+            RemoteChangesMerged.post()
         }
         if harvest.records.isEmpty == false {
             currentHandler?(harvest.records)
@@ -109,8 +117,10 @@ final class PersistentHistoryObserver: @unchecked Sendable {
             harvest.merges.append(transaction.objectIDNotification().userInfo ?? [:])
             harvest.records.append(contentsOf: PersistentHistoryObserver.records(in: transaction))
         }
-        let cutoff = Date().addingTimeInterval(-PersistentHistoryObserver.retention)
-        _ = try context.execute(NSPersistentHistoryChangeRequest.deleteHistory(before: cutoff))
+        if let retention {
+            let cutoff = Date().addingTimeInterval(-retention)
+            _ = try context.execute(NSPersistentHistoryChangeRequest.deleteHistory(before: cutoff))
+        }
         return harvest
     }
 

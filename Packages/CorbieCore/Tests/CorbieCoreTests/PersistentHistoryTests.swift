@@ -33,6 +33,27 @@ import Testing
         #expect(try observer.process() == 0)
     }
 
+    @Test func onlyAnObserverWithARetentionPurgesHistory() throws {
+        let directory = try makeDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let suiteName = "corbie-history-" + UUID().uuidString
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let stack = CoreDataStack(storesIn: directory, author: .app)
+        let widgets = CoreDataStack(storesIn: directory, author: .widgets)
+        try write(into: widgets)
+        #expect(try transactionCount(in: stack) >= 1)
+
+        let keeping = PersistentHistoryObserver(container: stack.container, author: .share, defaults: defaults, retention: nil)
+        #expect(try keeping.process() >= 1)
+        #expect(try transactionCount(in: stack) >= 1)
+
+        let purging = PersistentHistoryObserver(container: stack.container, author: .app, defaults: defaults, retention: 0)
+        #expect(try purging.process() >= 1)
+        #expect(try transactionCount(in: stack) == 0)
+    }
+
     @Test func theTokenKeyIsScopedToTheProcess() throws {
         let directory = try makeDirectory()
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -48,6 +69,14 @@ import Testing
             .appendingPathComponent("corbie-history-" + UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         return directory
+    }
+
+    private func transactionCount(in stack: CoreDataStack) throws -> Int {
+        let context = stack.newBackgroundContext()
+        return try context.performAndWait {
+            let result = try context.execute(NSPersistentHistoryChangeRequest.fetchHistory(after: nil as NSPersistentHistoryToken?))
+            return ((result as? NSPersistentHistoryResult)?.result as? [NSPersistentHistoryTransaction])?.count ?? 0
+        }
     }
 
     private func write(into stack: CoreDataStack) throws {

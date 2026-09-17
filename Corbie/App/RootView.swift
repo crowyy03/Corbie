@@ -17,6 +17,7 @@ struct RootView: View {
 
     private let credentials = AppleCredentialMonitor()
     private let partnerWatcher = PartnerJoinWatcher()
+    private let departureWatcher = PartnerDepartureWatcher()
 
     var body: some View {
         content
@@ -125,11 +126,17 @@ struct RootView: View {
         .task { await offerTheTrialOnce() }
         .task { await refreshEntitlementHourly() }
         .task { await partnerWatcher.observe(environment) }
+        .task { await departureWatcher.observe(environment) }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
             askForReviewIfEarned()
             Task { await environment.refreshEntitlement() }
             Task { await partnerWatcher.check(environment) }
+            Task {
+                await environment.reconcilePartnerMembership(
+                    serverCheckInterval: AppEnvironment.partnerCheckIntervalOnForeground
+                )
+            }
         }
     }
 

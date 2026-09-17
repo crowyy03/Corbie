@@ -102,6 +102,46 @@ wishes. The same holds for free time: `FreeTimeView` shows "Free time needs two 
 partner, so the slot list, the filters and the "Ask them" path are two-Apple-ID checks
 (`docs/TEST_PLAN.md` section 4).
 
+### A widget tick or a shared wish reaches the partner only after the app runs
+
+Since 2026-09-17 only the app syncs with iCloud (`docs/DECISIONS.md`, persistence fix round A). The
+widget extension, App Intents running outside the app and the share extension write straight into
+the shared store and stop there. The change shows on this phone's widgets at once, but it is uploaded
+only when Corbie itself next runs on this phone and exports it. A task ticked on the Home Screen, a
+task taken from the Free tasks widget, or a wish added from the share sheet therefore reaches the
+partner after the next time this person opens Corbie, or when iOS happens to resume it in the
+background.
+
+Reproduce: two paired phones, Corbie closed on A. Tick a task on A's Tasks widget. B does not change
+until A opens Corbie. `docs/TWO_DEVICE_TEST_SESSION.md` step 8.
+
+Fix, if the delay matters: have the extensions ask the app to run (a background task request or a
+push), which v1 does not do.
+
+### Leaving can stop halfway
+
+`CloudKitSharing.leave` checks the network, removes the participant's own member row, waits for that
+removal to upload, and only then removes the share membership. If that last call fails, the row is
+already gone but the person is still in the share. Tapping "Leave space" again finishes it. If the app
+is relaunched first, the session finds no member and opens onboarding, which reuses the joined space
+still in the store, so the person comes back as a new member instead of leaving.
+
+Not seen on a device; found by reading the code.
+
+### A partner who deletes the app stays the partner
+
+Deleting Corbie does not take anyone out of the CloudKit share, so the owner's cleanup
+(`DepartedMemberRule`) still sees an accepted participant and keeps the member. Only leaving in the
+app, deleting the account in the app, or losing access to the share frees the owner to invite someone
+else.
+
+### The owner's cleanup needs something to wake it
+
+When a partner leaves and the removal of their row did not upload in time, the owner's phone removes
+the row itself, but only on launch, on returning to the foreground, or after a synced change. An owner
+who keeps Corbie open on one screen with no incoming changes keeps seeing the old partner until one of
+those happens.
+
 ## Цены на экранах оплаты не проверяются автотестом
 
 `CorbieUITests/PaywallScreensUITests` доходит до `TrialOfferView` и `ComparisonView` и проверяет их тексты, но не карточки с ценами: в прогоне через `xcodebuild test` StoreKit не подхватывает `Products.storekit`. В логе симулятора клиент уходит в Sandbox (`Requesting Media API product batch ["app.corbie.monthly", "app.corbie.yearly"]`) и запрос падает без сети, экран показывает `The App Store did not answer`. XcodeGen 2.46 умеет класть `storeKitConfiguration` только в Run-действие схемы, ручная правка `Corbie.xcscheme` не помогает и стирается генерацией.
