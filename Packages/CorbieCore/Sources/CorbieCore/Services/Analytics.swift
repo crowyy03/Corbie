@@ -5,6 +5,11 @@ public protocol AnalyticsRecording: Sendable {
     func record(_ event: AnalyticsEvent)
 }
 
+public enum AnalyticsDelivery: Sendable, Equatable {
+    case server
+    case discarded
+}
+
 public actor Analytics: AnalyticsRecording {
     public static let maxEventsPerBatch = 50
     public static let flushThreshold = 20
@@ -19,6 +24,7 @@ public actor Analytics: AnalyticsRecording {
     private let localeIdentifier: String
     private let threshold: Int
     private let interval: TimeInterval
+    private let delivery: AnalyticsDelivery
     private let now: @Sendable () -> Date
 
     private var queue: [AnalyticsEventPayload] = []
@@ -26,6 +32,7 @@ public actor Analytics: AnalyticsRecording {
     private var ticker: Task<Void, Never>?
     private var isFlushing = false
     private var droppedDuringSend = 0
+    private var didDiscardStoredEvents = false
 
     public init(
         client: APIClient? = nil,
@@ -35,6 +42,7 @@ public actor Analytics: AnalyticsRecording {
         locale: Locale = .current,
         threshold: Int = Analytics.flushThreshold,
         interval: TimeInterval = Analytics.flushInterval,
+        delivery: AnalyticsDelivery = .server,
         now: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.client = client ?? APIClient(identity: identity)
@@ -43,6 +51,7 @@ public actor Analytics: AnalyticsRecording {
         localeIdentifier = locale.identifier
         self.threshold = max(1, threshold)
         self.interval = max(1, interval)
+        self.delivery = delivery
         self.now = now
     }
 
@@ -51,6 +60,10 @@ public actor Analytics: AnalyticsRecording {
     }
 
     public func track(_ event: AnalyticsEvent) async {
+        guard delivery == .server else {
+            discardStoredEvents()
+            return
+        }
         loadIfNeeded()
         queue.append(
             AnalyticsEventPayload(
@@ -76,6 +89,10 @@ public actor Analytics: AnalyticsRecording {
     }
 
     public func flush() async {
+        guard delivery == .server else {
+            discardStoredEvents()
+            return
+        }
         loadIfNeeded()
         guard isFlushing == false else { return }
         isFlushing = true
@@ -112,6 +129,10 @@ public actor Analytics: AnalyticsRecording {
     }
 
     public func start() {
+        guard delivery == .server else {
+            discardStoredEvents()
+            return
+        }
         guard ticker == nil else { return }
         let seconds = interval
         ticker = Task { [weak self] in
@@ -126,6 +147,14 @@ public actor Analytics: AnalyticsRecording {
     public func stop() {
         ticker?.cancel()
         ticker = nil
+    }
+
+    private func discardStoredEvents() {
+        guard didDiscardStoredEvents == false else { return }
+        didDiscardStoredEvents = true
+        didLoad = true
+        queue = []
+        storage.save([])
     }
 
     private func loadIfNeeded() {

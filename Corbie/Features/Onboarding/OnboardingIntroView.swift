@@ -3,6 +3,8 @@ import CorbieCore
 import SwiftUI
 
 struct OnboardingIntroView: View {
+    static let signInScopes: [ASAuthorization.Scope] = [.fullName]
+
     @Environment(\.palette) private var palette
 
     @Environment(\.colorScheme) private var colorScheme
@@ -132,7 +134,7 @@ struct OnboardingIntroView: View {
 
     private var signInButton: some View {
         SignInWithAppleButton(.signIn) { request in
-            request.requestedScopes = [.fullName, .email]
+            request.requestedScopes = OnboardingIntroView.signInScopes
         } onCompletion: { result in
             handle(result)
         }

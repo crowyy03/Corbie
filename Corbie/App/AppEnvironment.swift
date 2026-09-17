@@ -24,6 +24,11 @@ final class AppEnvironment {
     nonisolated static let sessionTokenKey = "server.session.token"
     nonisolated static let appleIdentityTokenKey = "apple.identity.token"
     nonisolated static let appleRefreshTokenKey = "apple.refresh.token"
+    #if DEBUG
+    nonisolated static let analyticsDelivery = AnalyticsDelivery.discarded
+    #else
+    nonisolated static let analyticsDelivery = AnalyticsDelivery.server
+    #endif
     nonisolated static let partnerCheckIntervalOnRemoteChange: TimeInterval = 60
     nonisolated static let partnerCheckIntervalOnForeground: TimeInterval = 5
 
@@ -85,7 +90,7 @@ final class AppEnvironment {
         let client = APIClient(identity: anonymousIdentity, appleToken: tokenProvider)
         apiClient = client
         sessionService = SessionService(configuration: client.configuration)
-        analytics = Analytics(client: client, identity: anonymousIdentity)
+        analytics = Analytics(client: client, identity: anonymousIdentity, delivery: AppEnvironment.analyticsDelivery)
         self.store = store
         let scheduler = NotificationScheduler(client: notificationClient)
         notifications = scheduler

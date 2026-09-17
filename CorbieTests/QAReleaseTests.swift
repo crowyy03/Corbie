@@ -1,3 +1,5 @@
+import AuthenticationServices
+import CorbieCore
 import XCTest
 @testable import Corbie
 
@@ -35,6 +37,19 @@ final class QAReleaseTests: XCTestCase {
         let data = try Data(contentsOf: url)
         let plist = try PropertyListSerialization.propertyList(from: data, format: nil)
         return try XCTUnwrap(plist as? [String: String], "the English strings table is not a dictionary")
+    }
+
+    @MainActor
+    func testSignInWithAppleAsksOnlyForTheName() {
+        XCTAssertEqual(OnboardingIntroView.signInScopes, [.fullName])
+    }
+
+    func testDebugBuildsKeepAnalyticsOffTheLiveServer() {
+        #if DEBUG
+        XCTAssertEqual(AppEnvironment.analyticsDelivery, .discarded)
+        #else
+        XCTAssertEqual(AppEnvironment.analyticsDelivery, .server)
+        #endif
     }
 
     func testExportComplianceIsDeclared() {

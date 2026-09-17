@@ -25,7 +25,7 @@ Status per code: `unauthorized` 401, `invalid_request` 400, `not_found` 404, `ex
 
 ## Rate limits
 
-A token bucket per IP and route lives in the `rate_limits` table; a full bucket refills over one hour. Exceeding it is `429 rate_limited`.
+A token bucket per caller and route lives in the `rate_limits` table; a full bucket refills over one hour. Exceeding it is `429 rate_limited`. The caller is the IP address the gateway reports, or `X-Anon-Id` when there is none, and the key stores only an HMAC-SHA256 of that value under the `RATE_LIMIT_SALT` secret (`<route>:ip:<32 hex>` or `<route>:anon:<32 hex>`), never the address itself. Without the secret every rate-limited endpoint answers `500 Server is missing RATE_LIMIT_SALT`.
 
 | Endpoint        | Requests per hour per IP |
 | --------------- | ------------------------ |

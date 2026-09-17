@@ -149,7 +149,8 @@ import Testing
     private func analytics(
         transport: any HTTPTransport,
         storage: any AnalyticsStorage,
-        threshold: Int = Analytics.flushThreshold
+        threshold: Int = Analytics.flushThreshold,
+        delivery: AnalyticsDelivery = .server
     ) -> Analytics {
         Analytics(
             client: NetTestSupport.client(transport: transport, retry: .noRetries),
@@ -158,6 +159,7 @@ import Testing
             appVersion: "1.0 (12)",
             locale: Locale(identifier: "en_US"),
             threshold: threshold,
+            delivery: delivery,
             now: { NetTestSupport.date("2026-09-05T10:00:00Z") }
         )
     }
@@ -290,6 +292,26 @@ import Testing
             locale: "en_US"
         )
         return Array(repeating: payload, count: count)
+    }
+
+    @Test func aBuildThatDiscardsAnalyticsSendsAndKeepsNothing() async throws {
+        let storage = InMemoryAnalyticsStorage(events: backlog(named: "app_open", count: 30))
+        let transport = FakeTransport([.empty(202)])
+        let service = analytics(transport: transport, storage: storage, threshold: 1, delivery: .discarded)
+
+        await service.start()
+        #expect(storage.load().isEmpty)
+        for _ in 0 ..< 5 {
+            await service.track(.taskDone)
+        }
+        await service.flush()
+        #expect(transport.requestCount == 0)
+        #expect(await service.pendingCount == 0)
+        #expect(storage.load().isEmpty)
+
+        let release = analytics(transport: transport, storage: storage, threshold: 1)
+        await release.flush()
+        #expect(transport.requestCount == 0)
     }
 
     @Test func theFileQueueSurvivesARestart() throws {

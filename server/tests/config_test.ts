@@ -64,6 +64,7 @@ Deno.test("the endpoint refuses anything but GET with 405", async () => {
 Deno.test("an unreachable database answers 500 internal, not a flag", async () => {
   Deno.env.set("SUPABASE_URL", `http://127.0.0.1:${closedLocalPort()}`);
   Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "test-service-role-key");
+  Deno.env.set("RATE_LIMIT_SALT", "test-salt");
   try {
     const response = await callConfig();
     const body = await response.json();
@@ -73,5 +74,6 @@ Deno.test("an unreachable database answers 500 internal, not a flag", async () =
   } finally {
     Deno.env.delete("SUPABASE_URL");
     Deno.env.delete("SUPABASE_SERVICE_ROLE_KEY");
+    Deno.env.delete("RATE_LIMIT_SALT");
   }
 });

@@ -1,4 +1,3 @@
-import { sha256Hex } from "./hash.ts";
 import { ApiError } from "./respond.ts";
 import { serviceClient } from "./supabase.ts";
 
@@ -24,21 +23,37 @@ function trimmed(value: string | null): string | null {
   return result.length > 0 ? result : null;
 }
 
-async function digest(value: string): Promise<string> {
-  return (await sha256Hex(value)).slice(0, 32);
+async function saltedDigest(value: string): Promise<string> {
+  const salt = Deno.env.get("RATE_LIMIT_SALT") ?? "";
+  if (salt.length === 0) throw new ApiError("internal", "Server is missing RATE_LIMIT_SALT");
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(salt),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
+  return [...new Uint8Array(signature)].map((byte) => byte.toString(16).padStart(2, "0")).join("")
+    .slice(0, 32);
 }
 
-export async function clientKey(req: Request): Promise<string> {
+function callerAddress(req: Request): string | null {
   const direct = trimmed(req.headers.get("cf-connecting-ip")) ??
     trimmed(req.headers.get("x-real-ip"));
   if (direct) return direct;
 
   const forwarded = trimmed(req.headers.get("x-forwarded-for"));
   const hops = forwarded?.split(",").map((hop) => hop.trim()).filter((hop) => hop.length > 0) ?? [];
-  if (hops.length > 0) return hops[hops.length - 1];
+  return hops.length > 0 ? hops[hops.length - 1] : null;
+}
+
+export async function clientKey(req: Request): Promise<string> {
+  const address = callerAddress(req);
+  if (address) return `ip:${await saltedDigest(address)}`;
 
   const anon = trimmed(req.headers.get("x-anon-id"));
-  if (anon) return `anon:${await digest(anon)}`;
+  if (anon) return `anon:${await saltedDigest(anon)}`;
   return "unknown";
 }
 

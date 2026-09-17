@@ -90,18 +90,19 @@ The tests cover the invite code alphabet, price parsing, URL normalization, ever
 
 Set in the Supabase dashboard, or `supabase secrets set --env-file .env`.
 
-| Name                        | Used by                                            | Notes                                                              |
-| --------------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
-| `SUPABASE_URL`              | every function                                     | injected by the platform                                           |
-| `SUPABASE_SERVICE_ROLE_KEY` | every function                                     | injected by the platform; the only key that can touch the tables   |
-| `SESSION_SECRET`            | every endpoint that requires auth                  | signs and checks the session token; rotating it signs everyone out |
-| `APPLE_CLIENT_ID`           | `session`, `invite`, `entitlement`, `apple-revoke` | defaults to `app.corbie`; the `aud` an identity token must carry   |
-| `APPLE_TEAM_ID`             | `apple-revoke`                                     | ten character team id                                              |
-| `APPLE_KEY_ID`              | `apple-revoke`                                     | key id of the Sign in with Apple key                               |
-| `APPLE_PRIVATE_KEY`         | `apple-revoke`                                     | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted         |
-| `APPLE_ENV`                 | `appstore-notifications`                           | `Sandbox` or `Production`; a payload from the other one is refused |
-| `APPLE_BUNDLE_ID`           | `appstore-notifications`                           | defaults to `app.corbie`; a payload for another app is dropped     |
-| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                            | optional; without it Instagram links return only url and source    |
+| Name                        | Used by                                            | Notes                                                                |
+| --------------------------- | -------------------------------------------------- | -------------------------------------------------------------------- |
+| `SUPABASE_URL`              | every function                                     | injected by the platform                                             |
+| `SUPABASE_SERVICE_ROLE_KEY` | every function                                     | injected by the platform; the only key that can touch the tables     |
+| `SESSION_SECRET`            | every endpoint that requires auth                  | signs and checks the session token; rotating it signs everyone out   |
+| `RATE_LIMIT_SALT`           | every rate-limited endpoint                        | HMAC key for the rate limit bucket key, so no IP is stored; required |
+| `APPLE_CLIENT_ID`           | `session`, `invite`, `entitlement`, `apple-revoke` | defaults to `app.corbie`; the `aud` an identity token must carry     |
+| `APPLE_TEAM_ID`             | `apple-revoke`                                     | ten character team id                                                |
+| `APPLE_KEY_ID`              | `apple-revoke`                                     | key id of the Sign in with Apple key                                 |
+| `APPLE_PRIVATE_KEY`         | `apple-revoke`                                     | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted           |
+| `APPLE_ENV`                 | `appstore-notifications`                           | `Sandbox` or `Production`; a payload from the other one is refused   |
+| `APPLE_BUNDLE_ID`           | `appstore-notifications`                           | defaults to `app.corbie`; a payload for another app is dropped       |
+| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                            | optional; without it Instagram links return only url and source      |
 
 `APPLE_PRIVATE_KEY` never leaves the Supabase secret store, and nothing here belongs in the app binary.
 
