@@ -204,9 +204,11 @@ Timings below are what to expect on Wi-Fi. Anything slower than double them is a
    In progress with phone B's colour and "took today". Repeat with a date, a wish, a plan money entry,
    a prep step, a list item tick and a person. Every one of them should land within 5 s with the app
    open.
-6. **Notifications.** Phone B: mark the task done. Expected on phone A: a "Task taken" or "Back to
-   free" style alert if the matching toggle is on, and no alert for the actions spec section 9 leaves
-   silent.
+6. **Notifications.** Phone B: take a free task, then hand it back. Expected on phone A: "Task taken"
+   and then "Back to free" while "Task taken or handed back" is on, and neither while it is off.
+   Phone B: mark a task done. Expected on phone A: no alert. Spec section 9 has no type for a finished
+   task, and the classifier skips done tasks on purpose. Repeat the take with Corbie on phone A in the
+   background and not force-quit: the alert still arrives.
 7. **Widgets.** Add the Tasks, Shopping, OurDay and Days together widgets on both phones. Expected:
    the same contents on both within a minute, and ticking a task from phone A's widget removes it from
    phone B's within a minute.
@@ -237,9 +239,13 @@ Do this with the two-Apple-ID run still fresh, before any submission.
    located event with a guest in each phone's iPhone calendar inside the next 14 days.
 2. Open the CloudKit Dashboard for the Corbie container, Development environment, the shared database
    for the pair, record type `CD_BusyInterval`.
-3. Expected: every record carries only a start, an end, an all-day flag, a member id and a space id.
-   No title, no location, no attendee, no notes field, in any record. Read the field list, not just
-   the values, so an always-empty field still shows up.
+3. Expected: every record carries only the fields of `BusyInterval` in `CorbieModel.swift`:
+   `CD_id`, `CD_memberId`, `CD_startAt`, `CD_endAt`, `CD_sourceRaw` (`device` for the iPhone
+   calendar, `corbie` for Corbie's own dates), `CD_updatedAt`, the link to the space (`CD_space`) and
+   CloudKit's own `CD_entityName` and system fields. There is no all-day flag: an all-day event is
+   stored as whole days from its start to its end. No title, no location, no attendee, no notes
+   field, in any record. Read the field list, not just the values, so an always-empty field still
+   shows up.
 4. Cross-check the writer: `BusyPublisher` and `CorbieEventBusyPublisher` in
    `Packages/CorbieCore/Sources/CorbieCore/Services` must not read a title or a location.
 5. Phone A: turn the toggle off. Expected within 60 s: every `CD_BusyInterval` written by phone A's

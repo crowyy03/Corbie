@@ -9,9 +9,15 @@ the code and from the English values in `Corbie/Resources/Localizable.xcstrings`
 on a device. Timings are the targets from `docs/TEST_PLAN.md` section 5 and the limits written in the
 code, not measurements.
 
-Updated on 2026-09-17 after the persistence fix round A (commit `e823a89`): open questions 1, 3,
+Updated on 2026-09-17 after the persistence fix round A (commit `63e4af1`): open questions 1, 3,
 5 and 6 are fixed in the code, and steps 8, 8b, 13, 13b, 14 and 16 say what that build should show.
 The fixes were checked by unit tests and by reading the code, not on a device.
+
+Updated again on 2026-09-17 after fix round B (commit `2e15dfa`): open questions 2, 7 and 9 are fixed,
+steps 4, 6e, 8, 9, 12a and 12c say what that build should show, and the new step 9e checks a phone whose
+Corbie is not in memory. A silent push that launches the app in the background cannot be produced on
+a simulator, so everything about the background path in steps 8, 9 and 9e is unchecked until this
+session runs.
 
 Names used below:
 
@@ -37,7 +43,7 @@ Do all of this before the session starts. Budget 45 minutes.
 | 3 | Same language (English) and region on both. Settings, General, Date & Time: "Set Automatically" on. | The question of the day is picked per language (`QuestionCopy`). Step 10 compares the text. |
 | 4 | Low Power Mode off. Low Data Mode off for Wi-Fi and cellular. Background App Refresh on, and on for Corbie. Focus off. | Partner changes arrive as silent pushes (`UIBackgroundModes: remote-notification` in `project.yml`). iOS holds them back in these modes. |
 | 5 | Signing works: `docs/APPLE_MANUAL_STEPS.md` section 1 is done (Apple Development certificate, no red errors under Signing & Capabilities for all three targets). | Team `735XXP9B5R` is set in `project.yml`. This Mac had no signing identity when that checklist was written. |
-| 6 | Build: `xcodegen generate`, open `Corbie.xcodeproj`, scheme **Corbie**, Run (Debug) on phone A, then on phone B, from the same checkout state. Write down `git rev-parse --short HEAD` and whether the tree had local changes. `git log --oneline` must contain `e823a89`. | Both phones must run the same code. Steps 8, 8b, 13, 13b, 14 and 16 describe the build with the persistence fixes. |
+| 6 | Build: `xcodegen generate`, open `Corbie.xcodeproj`, scheme **Corbie**, Run (Debug) on phone A, then on phone B, from the same checkout state. Write down `git rev-parse --short HEAD` and whether the tree had local changes. `git log --oneline` must contain `63e4af1` and `2e15dfa`. | Both phones must run the same code. Steps 8, 8b, 13, 13b, 14 and 16 describe the build with the persistence fixes, steps 4, 6e, 8, 9, 9e, 12a and 12c the build with fix round B. |
 | 7 | The build carries the module 21 changes. Check in the checkout: `Configs/Corbie.entitlements` lists `applinks:yourcorbie.app`, and `CorbieIdentifiers.universalLinkHost` is `"yourcorbie.app"`. | `main` at `cac7abf` still says `corbie.app` in all three places (entitlement, `Router.isCorbieHost`, `InviteLink`), so steps 3 and 15 fail on a build from `main`. |
 | 8 | Delete Corbie from both phones before installing. | Steps 3 and 4 need a fresh install on B. |
 | 9 | Never tap "continue without Apple ID (debug build)" on the intro screen. Use the Sign in with Apple button. | That button stores the fixed id `debug.simulator.user` (`OnboardingViewModel.swift:93`). With it on both phones, B's join finds A's member by that id and both phones become the same person (`CoreDataMemberRepository.upsertCurrentMember`). |
@@ -48,9 +54,10 @@ Do all of this before the session starts. Budget 45 minutes.
 | 14 | Notification permission: A grants it in step 1, B in step 5. Afterwards, Shared settings, Notifications, "Permission" must read "Allowed" on both. On both phones, in the same screen, these switches must be on: "Task assigned to you", "Task taken or handed back", "Partner added a wish", "Plan money: expense, goal, over budget", "Question of the day", "Chore split". | Corbie never asks at launch (`docs/TEST_PLAN.md` section 3). A refused prompt can only be undone in iOS Settings. |
 | 15 | Calendar events for the privacy audit: on each phone, in the iPhone Calendar app, one event in the next 14 days with a title, a location and at least one invitee. Create them now. | Step 12 checks that none of this reaches CloudKit. |
 | 16 | Network: both phones on the same Wi-Fi to start. Step 7 moves one phone to cellular: check Settings, Cellular, Corbie is on. | Both phones on one Wi-Fi share one public IP. The server allows 30 invites, 30 sessions and 60 redeems per hour per IP (`server/API.md`). The session uses a handful. |
-| 17 | Keep the receiving app open unless a step says otherwise, and never force-quit it. | Alerts about partner changes are made by the receiving app itself when the change arrives (`RemoteChangeNotifier`). A force-quit app gets no silent pushes. |
+| 17 | Never force-quit Corbie unless a step says so. Background (Home Screen, or another app) is fine and is what steps 8 and 9 test. | Alerts about partner changes are made by the receiving app itself when the change arrives (`RemoteChangeNotifier`). iOS launches or resumes Corbie in the background for a silent push, but not after a force-quit, until Corbie is opened again. |
 | 18 | Dashboard: sign in at `https://icloud.developer.apple.com` with the Apple ID of team `735XXP9B5R`. Have both test Apple ID passwords ready for "Act as iCloud Account". | Private and shared data is visible only while acting as the account that owns it. |
-| 19 | Time budget: about 3.5 hours for sections 4 and 5, plus one check at 20:00 local time (step 9c). If the session ends before 20:00, run steps 13 and 14 after that check. | Leaving and deleting cancel every pending Corbie notification (`NotificationScheduler.cancelEverything`). |
+| 19 | Time budget: about 4 hours for sections 4 and 5, plus one check at 20:00 local time (step 9c). If the session ends before 20:00, run steps 13 and 14 after that check. | Leaving and deleting cancel every pending Corbie notification (`NotificationScheduler.cancelEverything`). |
+| 20 | Logs: the Mac with Console.app, both phones connected by cable at least for steps 8, 9 and 9e. In Console, pick the phone, press Start, and search for `remote-push`. | Every silent push Corbie handles writes one line, for example `push for the shared store: import finished, newData after 4.2 s` (the seconds print with more digits) (subsystem `app.corbie`, category `remote-push`, `RemotePushSync.finish`). It is the only way to tell "the push never came" from "the push came and the rule said nothing". |
 
 ### 1.1 Clearing old Development data (only if check 11 fails)
 
@@ -226,8 +233,9 @@ arrive (`JoinViewModel.spaceArrivalAttempts`, 30 tries every 500 ms). A within 3
 - "This space already has things in it, and two spaces cannot be merged yet.": B made something
   before joining, or old Development data (section 1.1).
 - "Too many tries. Wait a minute.": the redeem limit of 60 per hour per IP.
-- A never shows B: bring A's app to the foreground. `PartnerJoinWatcher` looks for a second member on
-  foreground and after every synced change. Still nothing after a minute: B's member did not upload.
+- A never shows B: bring A's app to the foreground. `PartnerChangeWatcher` compares the stored partner
+  with the session on foreground and after every synced change (`AppEnvironment.reloadSessionIfPartnerChanged`).
+  Still nothing after a minute: B's member did not upload.
   Dashboard, acting as A, Private database, the share zone, record type `CD_Member`: there must be two
   records.
 
@@ -265,6 +273,12 @@ here. Step 9 checks them properly.
 - **6d. Plan money, both ways.** A: Plans, "Big", plus, "New plan", "With a target", Title "Trip",
   Target amount 1000, "Save". B: "Trip" in Plans. B: open "Trip", "Add money", Amount 100, "Save". A:
   "Trip" shows 100 of 1,000 in the plan's currency.
+- **6e. Profile, B to A.** A: open Shared settings and stay there. B: Shared settings, section "You",
+  change Name (add "2"), pick another Color, "Save". A, without leaving the screen: the Partner row
+  shows the new name. A then closes the Us hub: the Us pill shows B's new colour. Then B changes the
+  name back. Since fix round B the session reloads when the partner's name, colour, birthday, joined
+  date or busy times switch changes (`AppEnvironment.reloadSessionIfPartnerChanged`); before it, A
+  showed the change only after a relaunch.
 
 **Time.** Each change within 5 s of Save (`docs/TEST_PLAN.md` section 5). Write down anything over
 10 s.
@@ -328,14 +342,17 @@ Corbie uploads the change the next time it runs (`PersistenceController.appGroup
   colour, and A's "Free tasks" widget drops it.
 
 **Time.** A phone's own widget at once. The other phone's list within 10 s after the phone that
-tapped the widget opens Corbie. The other phone's widget within 60 s after that, if its app was
-opened recently and not force-quit.
+tapped the widget opens Corbie. The other phone's widget within 60 s after that, with Corbie on that
+phone in the background and not force-quit: the silent push launches or resumes it, it merges the
+change and asks WidgetKit to redraw (`AppDelegate` push handler, `RemotePushSync`, `WidgetReloader`).
 
 **If it fails.**
-- The other phone's app has the change but its widget does not: only the app process asks WidgetKit
-  to redraw, after it merges a change (`PersistentHistoryObserver.process` posts
-  `WidgetReloadRequest`, `WidgetReloader` calls `reloadAllTimelines`). Open that app and leave it:
-  the widget should update. Without that, widgets redraw only at midnight
+- The other phone's widget stays old while its Corbie is in the background: look in Console for a
+  `remote-push` line from that phone. No line: the push did not reach Corbie (pre-flight 4 and 17).
+  A line with `noData`: the import did not bring the change in time; write down the seconds and the
+  import outcome. A line with `newData` and still an old widget: WidgetKit did not redraw on
+  `reloadAllTimelines`, which iOS may postpone for a widget that reloads often. Open that app and
+  leave it: the widget should update. Without any of that, widgets redraw only at midnight
   (`WidgetTimelineBuilder`).
 - B never gets A's tick, even a minute after A opened Corbie and stayed in it: A's app did not upload
   the widget's write. Dashboard, acting as A, Private database, the share zone, `CD_TaskItem`, the
@@ -381,11 +398,19 @@ open Corbie on B and write down the time.
 Run each part twice: first with the receiving app in the background (Home Screen, not force-quit),
 then with it in the foreground. A banner shows in the foreground too (`AppDelegate`
 `willPresent` returns banner, list and sound). The phone that made the change must get nothing.
+In the background the receiving phone should write a `remote-push` line (pre-flight 20) for each
+change; copy it into the sheet.
 
 **9a. Task assigned, A to B.**
 - Do: A: Tasks, plus, What to do "Call the bank", Who: B's name, "Save".
 - See on B: "A task for you", "<A's name> gave you Call the bank". A long press shows "Take" and
   "Done". Nothing on A.
+- Then, with B locked and Corbie on B in the background: long-press the alert on B's lock screen and
+  tap "Done". Do not open Corbie on B. Unlock B after a minute and open Corbie: "Call the bank" is
+  done, without a second tap. A: the task leaves the open list within a minute, or only after B opens
+  Corbie; write down which. The action runs without a window now (`AppDelegate.perform` waits for
+  `AppEnvironment.processReady`), and whether iOS keeps Corbie running long enough to upload it is
+  what this checks.
 - Rule: a new task whose assignee is the reader and whose creator is not, or a task moved to the
   reader (`RemoteChangeClassifier.taskAlert`).
 
@@ -395,11 +420,14 @@ then with it in the foreground. A banner shows in the foreground too (`AppDelega
 - Rule: a new wish the reader did not add, not yet gifted (`RemoteChangeClassifier.wishAlert`).
 
 **9c. Question of the day (timed).**
-- The reminder is set by the phone itself when Today opens, at 10:00 or 20:00 local time
+- The reminder is set by the phone itself at 10:00 or 20:00 local time
   (`NotificationScheduler.scheduleQuestionReminder`), one per day, and it is cancelled once that
-  person answers.
-- If it is before 10:00 on A: B answers today's question (Today, "Question of the day", "Answer",
-  type, "Save"). A does not answer. At 10:00, A gets "Today's question", "<B's name> has answered.
+  person answers. The phone plans it when Today opens and when the partner's answer arrives, also
+  with Corbie in the background (`PartnerProgressReminders`, triggered by a `DailyQuestion` or
+  `QuestionAnswer` change from the other phone).
+- If it is before 10:00 on A: put Corbie on A in the background on a tab other than Today. B answers
+  today's question (Today, "Question of the day", "Answer", type, "Save"). A does not answer and
+  does not open Corbie until 10:00. At 10:00, A gets "Today's question", "<B's name> has answered.
   Your turn." B gets nothing.
 - Otherwise: neither of you answers today. At 20:00 both get "Today's question", "Neither of you has
   answered yet." Steps 10 to 12 do not answer the question. Run steps 13 and 14 after 20:00.
@@ -407,33 +435,72 @@ then with it in the foreground. A banner shows in the foreground too (`AppDelega
   (open question 10). That matches the spec text of notification type 11.
 
 **9d. Chore split ready, A finishes first.**
-- Do: B opens Corbie on the Today tab, then goes to the Home Screen. A: Us pill, "Chore split",
+- Do: B opens Corbie on the Tasks tab, not Today, then goes to the Home Screen. A: Us pill, "Chore split",
   "Start the split", check the list ("Continue" needs at least 8 picked), then rate every card with
   "I actually like it", "I don't mind", "No strong feelings" or "I'd rather not" (or swipe).
 - See on A: "Done. Waiting for <B's name>." and "nothing is shown until you both finish". "Ask them"
   only shows a toast; it sends nothing.
 - See on B: "Chore split", "<A's name> has rated the list. Your turn." Nothing on A.
 - Rule: the partner rated everything, the reader has not, and the reader was not told about this
-  split before (`ChoreReminderPlanner.plan`). Do not rate on B yet: step 11 continues from here.
+  split before (`ChoreReminderPlanner.plan`, `corbie.chore.split.told`). It is planned when A's
+  ratings arrive on B, whichever screen B was on (`PartnerProgressReminders`). Do not rate on B yet:
+  step 11 continues from here.
+- Then open Corbie on B, go to Today and back to the Home Screen: no second "Chore split" alert.
 
 **Time.** The same as the change reaching the phone: within 5 s in the foreground. In the background,
 write down the delay.
 
 **If it fails.**
-- Nothing in the background, but the banner shows once the app is in front: delivery, not the rule.
-  These alerts are local notifications made by the receiving app while it merges the change
-  (`RemoteChangeNotifier.handle`). The app has to be in memory: opened since the last restart and
-  not force-quit. Open question 7.
-- 9d only shows up when B opens the app: the chore alert is made by the Today card
-  (`TodayChoreModel.tellTheViewer`), which stops listening once Today is off screen
-  (`TodayChoreCard` `.onDisappear`). Write down which case happened.
+- Nothing in the background, but the banner shows once the app is in front: look for the
+  `remote-push` line on the receiving phone. No line: iOS did not hand the push to Corbie (pre-flight
+  4 and 17; iOS also rations silent pushes, so write down how many came before the first miss). A
+  line with `noData` and seconds near 20: the import of the change had not finished when Corbie
+  stopped waiting (open question 13). A line with `newData` and no banner: the rule said nothing;
+  check the switches.
+- 9c or 9d only shows up when the receiving phone opens Today: the partner's change reached the
+  phone but did not plan the reminder. Write down the `remote-push` line and which case happened.
 - Nothing even in the foreground: that person's switch is off (pre-flight 14,
   `RemoteChangeKind.isEnabled`), permission refused, or the reader's details were never loaded
   (`AppEnvironment.updateNotificationAudience`, called from `reloadSession`).
 - The alert lands on the phone that made the change: the rule compares against the reader's member
   id. Both phones resolving to the same member points to pre-flight 9.
-- Marking a task done sends nothing, by design of the code: finished tasks are skipped
-  (`RemoteChangeClassifier.swift:107`). `docs/TEST_PLAN.md` section 5 step 6 expects an alert there.
+- Marking a task done sends nothing, by design: spec section 9 has no type for a finished task, and
+  the classifier skips done tasks (`RemoteChangeClassifier.taskAlert`). `docs/TEST_PLAN.md` section 5
+  step 6 says the same since fix round B.
+
+### Step 9e. A phone whose Corbie is not in memory
+
+This is the path fix round B changed: iOS launches Corbie in the background for the push, with no
+window, and the app must still merge, alert and redraw the widgets. It cannot be run on a simulator.
+
+**Do.**
+1. B: open Corbie once, then restart the phone (hold the side button, slide, switch on again). Unlock
+   B once and leave it on the Home Screen with the "Free tasks" widget from step 8 visible. Do not
+   open Corbie on B.
+2. A: Tasks, plus, What to do "Cold start", Who: B's name, "Save".
+3. Wait 60 s. Then, still without opening Corbie on B, look at B's lock screen and widget.
+4. Lock B. A: Tasks, plus, What to do "Cold start 2", Who "Nobody", "Save". Wait 60 s.
+
+**See.**
+- B, after 2: "A task for you", "<A's name> gave you Cold start", within a minute, while Corbie was
+  never opened after the restart.
+- Console on B: one `remote-push` line for the shared store with `newData`.
+- B, after 4: no alert (a free task alerts nobody), and "Cold start 2" appears on B's "Free tasks"
+  widget within a minute, with B locked.
+- Then open Corbie on B: Today loads as usual, the tasks are there once, and no alert repeats.
+
+**Time.** Within 60 s of A's save. Write down the seconds from the `remote-push` line.
+
+**If it fails.**
+- No alert and no `remote-push` line: iOS did not launch Corbie for the push. Check pre-flight 4, and
+  that Corbie was opened once after installing. Try once more with B unlocked.
+- A `remote-push` line with `import timedOut` and `noData`, and the alert shows only when Corbie is
+  opened: the import started before Corbie began waiting and finished too late, or not at all, in the
+  background (open question 13). Write down the seconds.
+- The alert shows but the widget stays old: as step 8, "If it fails".
+- Opening Corbie on B afterwards shows the intro screen instead of the tabs: the background launch
+  read no signed-in member and the window did not load it again (`AppEnvironment.bootstrap`). Stop
+  and report it with the time of the restart and of the first unlock.
 
 ### Step 10. Question of the day is the same in two time zones
 
@@ -504,17 +571,19 @@ Starts where 9d ended: A rated everything, B has not.
 
 **12a. Turn sharing on (both phones).**
 
-**Do.** Us pill, Shared settings, Privacy, "Share my busy times" on. Allow full calendar access. Then
-Calendar tab, the clock button at the top ("When you two are free"). The first time, a sheet "Your
-calendar stays yours" shows; tap "Share my busy times" or "Not now". Write down what the screen shows.
-Then force-quit Corbie on both phones, open it again, and open the same screen.
+**Do.** A first: Us pill, Shared settings, Privacy, "Share my busy times" on. Allow full calendar
+access. Then Calendar tab, the clock button at the top ("When you two are free"). The first time, a
+sheet "Your calendar stays yours" shows; tap "Share my busy times" or "Not now". Leave A on that
+screen. Then the same on B. Write down what A's screen shows. Then force-quit Corbie on both phones,
+open it again, and open the same screen.
 
 **See.**
-- After the relaunch: "Free windows" with a list. "Evenings", "Weekends" and "2+ hours" narrow it.
-  "Next 7 days" and "Next 14 days" switch the range.
-- Before the relaunch, the phone that switched first probably shows "<partner> hasn't shared their
-  busy times yet" even though the partner switched too. The partner's switch is read from the session,
-  which loads only at launch (open question 2).
+- A, before B switches: "<B's name> hasn't shared their busy times yet".
+- A, within a few seconds of B's switch, without touching A: "Free windows" with a list. The
+  session follows the partner's switch as it syncs (`AppEnvironment.reloadSessionIfPartnerChanged`,
+  `PartnerChangeRule`) and the screen reloads when the partner changes (`FreeTimeView`).
+- After the relaunch, the same on both. "Evenings", "Weekends" and "2+ hours" narrow the list. "Next
+  7 days" and "Next 14 days" switch the range.
 
 **Time.** The list within a few seconds of opening.
 
@@ -524,6 +593,8 @@ Then force-quit Corbie on both phones, open it again, and open the same screen.
   Calendars.
 - "<partner> hasn't shared their busy times yet" after the relaunch: the partner's `sharesBusyTimes`
   did not sync. Dashboard, `CD_Member`, field `CD_sharesBusyTimes`.
+- The list shows after the relaunch but not before it: the partner's switch synced but the session
+  did not pick it up. Write down how long A stayed on the screen.
 - A new iPhone Calendar event shows up only after about 30 s: changes are batched for 30 s
   (`BusyPublisher.changeDebounce`). Pull down on the free time screen to publish at once.
 
@@ -570,10 +641,8 @@ reopen Corbie and look again.
 **See.**
 - Dashboard: every `CD_BusyInterval` with A's member id is gone. B's records stay. Screenshot the list.
 - B, as the spec asks (`docs/TEST_PLAN.md` 5a step 5): "<A's name> hasn't shared their busy times
-  yet" within 60 s.
-- B, as the code works today: before the relaunch B still treats A as sharing, so the list shows
-  windows computed without A's busy times. After the relaunch the "hasn't shared" line appears.
-  Write down both (open question 2).
+  yet" within 60 s, before the relaunch as well as after it. B's session follows A's switch as it
+  syncs (step 12a).
 
 **Time.** "Within seconds" is the target from module 21. The app deletes the records on the phone at
 once (`BusyPublisher.disableSharing`, `CoreDataBusyIntervalRepository.deleteAll`) and the upload
@@ -745,13 +814,10 @@ None of these was run on a device. Each one names the step where it shows.
    leaving (`CloudKitSharing.leave`), and A removes members of a space whose share has no other
    accepted or pending participant (`CloudKitSharing.removeDepartedMembers`, `DepartedMemberRule`).
    A partner who only deletes the app is still a participant and stays (`docs/KNOWN_ISSUES.md`).
-2. **The partner's details are loaded only at launch** (steps 12a and 12c). The partner comes from
-   `AppEnvironment.reloadSession` (`Corbie/App/AppEnvironment.swift` line 163).
-   `PartnerJoinWatcher.check` returns early once a partner exists (`PartnerJoinWatcher.swift` line 16).
-   The free time screen reads `environment.partner.sharesBusyTimes`
-   (`FreeTimeViewModel.swift` lines 134 and 158) and does not reload on synced changes
-   (`FreeTimeView.swift` lines 41 to 55). A partner's switch, name or colour change shows only after a
-   relaunch.
+2. **Fixed in fix round B: the partner's details were loaded only at launch** (steps 12a and 12c).
+   The session now reloads whenever the stored partner differs from the session's partner in a field
+   the app shows (`AppEnvironment.reloadSessionIfPartnerChanged`, `PartnerChangeRule`), after every
+   synced change and on foreground, and the free time screen reloads when the partner changes.
 3. **Fixed in the persistence fix round A: deleting the account could leave the records in iCloud**
    (steps 14 and 16). The app now deletes the zones on the server before the wipe
    (`CloudKitSharing.purgePrivateZones`), and a participant leaves first as in step 13.
@@ -768,30 +834,28 @@ None of these was run on a device. Each one names the step where it shows.
    changes reach the partner after the app next runs (`docs/KNOWN_ISSUES.md`).
 6. **Fixed in the persistence fix round A: the owner saw "Leave space"** (step 13). The row now shows
    only for the participant (`SettingsAccountPlan.offersLeaving`).
-7. **Partner alerts and widget redraws need the receiving app in memory** (steps 8, 8b and 9).
-   `remoteChanges.start()`, the alert audience and `WidgetReloader.shared.start()` run only in
-   `AppEnvironment.bootstrap`, which is called from the window's `.task`
-   (`Corbie/App/CorbieApp.swift` lines 26 to 29). I believe iOS does not create the window when it
-   launches an app in the background for a push, so in that case the push handler
-   (`CorbieApp.swift` lines 95 to 106) merges the change with no alert and no widget redraw. Not
-   checked on a device. The chore alert also waits for the Today card
-   (`TodayChoreCard.swift` lines 18 and 19).
+7. **Fixed in the code in fix round B, not yet on a device: partner alerts and widget redraws needed
+   the receiving app in memory** (steps 8, 8b, 9 and 9e). The app delegate now owns the environment
+   and starts the widget reloader, the session with its alert audience and the change notifier from
+   `didFinishLaunching` (`AppEnvironment.startProcess`), and the push handler waits for the import
+   and the alerts before it answers iOS (`RemotePushSync`). The chore notice and the question
+   reminder are planned from partner changes too (`PartnerProgressReminders`), not only by the Today
+   cards.
 8. **A used invite code is kept only in memory** (step 4). `JoinViewModel.redeemedShare`
    (`JoinViewModel.swift` lines 111 to 116): if the CloudKit part fails and the screen is closed, the
    code is spent and a new one is needed. Every CloudKit failure, including the 15 s wait, reads "Check
    that you are signed in to iCloud." (`JoinFailure.swift` line 19), which misleads when the account is
    fine.
-9. **`docs/TEST_PLAN.md` disagreed with the code in three places; two remain.** 5a lists an all-day flag the model
-   does not have and omits `sourceRaw` and `updatedAt` (`CorbieModel.swift` lines 149 to 154).
-   Section 5 step 6 expects an alert when a task is marked done; the classifier skips done tasks
-   (`RemoteChangeClassifier.swift` line 107). Section 5 step 12 expects "Nobody yet" on A, which the
-   code now does (see 1).
+9. **Fixed in fix round B: `docs/TEST_PLAN.md` disagreed with the code.** 5a now lists the
+   `BusyInterval` fields from `CorbieModel.swift`, with no all-day flag. Section 5 step 6 now expects
+   no alert for a task marked done, which is what spec section 9 lists and what the classifier does.
+   Section 5 step 12 expects "Nobody yet" on A, which the code does since round A (see 1).
 10. **The question reminder can disappear for the day.** When the partner answers after 10:00,
     `scheduleQuestionReminder` cancels the pending 20:00 reminder and the 10:00 one is already past
     (`NotificationScheduler.swift` lines 395 to 398). It follows the spec text of type 11, so this is a
     product question.
 11. **The app delegate's share-accept callback is likely never called.**
-    `application(_:userDidAcceptCloudKitShareWith:)` (`CorbieApp.swift` lines 115 to 128) is the
+    `application(_:userDidAcceptCloudKitShareWith:)` (`CorbieApp.swift` lines 96 to 109) is the
     pre-scene API; a SwiftUI app gets the scene version instead. The invite flow does not use it
     (`JoinViewModel` accepts the share itself), so only someone opening a raw iCloud share link is
     affected.
@@ -799,6 +863,17 @@ None of these was run on a device. Each one names the step where it shows.
     is one message for both roles (`SettingsConfirmation.messageKey`, `settings.account.delete.note`).
     For B the code only removes B's own part and leaves A's space alone, so the sentence is wrong for
     B. Fixing it needs a second catalog key in five languages.
+13. **When the container's import starts relative to the push callback is not known** (steps 8, 9
+    and 9e). The push handler waits up to 20 s for an import of the pushed database that was running
+    when the push arrived or started after it (`RemotePushSync`, `CloudKitRunningImports`). If
+    `NSPersistentCloudKitContainer` finishes its import before Corbie hears about the push, the wait
+    runs the full 20 s and the change is still classified, only later than it could be. If it starts
+    the import only after Corbie has answered iOS, the alert may wait for the next launch. The
+    `remote-push` line (pre-flight 20) shows which one happens.
+14. **The notification prompt can be asked from a background launch.** The first change from the other
+    phone asks for permission when it was never asked (`RemoteChangeNotifier.noteJointAction`), and
+    that can now happen with Corbie in the background. What iOS does with that request then is not
+    checked. This session does not reach it, because both phones answer the prompt in steps 1 and 5.
 
 ---
 
@@ -812,4 +887,5 @@ than its "See" lines.
 | | | | | | | |
 
 Also note once per session: the commit and local changes of the build (pre-flight 6), iOS versions,
-the network each phone was on, and the Developer screen's "Monetization" footer on both phones.
+the network each phone was on, the Developer screen's "Monetization" footer on both phones, and every
+`remote-push` line from steps 8, 9 and 9e (pre-flight 20).
