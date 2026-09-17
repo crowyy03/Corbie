@@ -91,6 +91,25 @@ final class PairingInviteTests: XCTestCase {
         XCTAssertEqual(SessionService.failure(status: 403, body: envelope), .auth("token expired"))
     }
 
+    func testSessionRequestCarriesTheAuthorizationCodeOnlyWhenThereIsOne() throws {
+        let withCode = try SessionService.body(authorizationCode: "code-1")
+        XCTAssertEqual(try JSONSerialization.jsonObject(with: withCode) as? [String: String], ["authorizationCode": "code-1"])
+        for missing in [nil, ""] {
+            let body = try SessionService.body(authorizationCode: missing)
+            XCTAssertEqual(String(data: body, encoding: .utf8), "{}")
+        }
+    }
+
+    func testSessionResponseMayCarryTheAppleRefreshToken() throws {
+        let decoder = CorbieJSON.decoder
+        let withToken = Data(#"{"token":"jwt","expiresAt":"2027-03-04T10:00:00Z","appleRefreshToken":"refresh-1"}"#.utf8)
+        XCTAssertEqual(try decoder.decode(SessionService.Token.self, from: withToken).appleRefreshToken, "refresh-1")
+        let without = Data(#"{"token":"jwt","expiresAt":"2027-03-04T10:00:00Z"}"#.utf8)
+        let token = try decoder.decode(SessionService.Token.self, from: without)
+        XCTAssertEqual(token.token, "jwt")
+        XCTAssertNil(token.appleRefreshToken)
+    }
+
     override func tearDown() {
         UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName)
         super.tearDown()

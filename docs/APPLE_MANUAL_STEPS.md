@@ -65,8 +65,10 @@ Supabase dashboard, project `corbie`, Edge Functions, Secrets (or Project Settin
 | `APPLE_PRIVATE_KEY` | the whole contents of `AuthKey_5FTU34GQVH.p8`, including the `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines |
 
 Use the dashboard for the private key: `supabase secrets set` would leave it in your shell history.
-The key is used only by `/apple-revoke`, which revokes the Sign in with Apple grant when someone
-deletes their account.
+The key is used by `/session`, which turns the one-time Sign in with Apple code into a refresh token
+when someone signs in, and by `/apple-revoke`, which revokes the grant with that token when someone
+deletes their account. Set the secrets before any test phone signs in: a phone that signed in
+without them has no refresh token, and its grant is not revoked until it signs in again.
 
 Verify from the repo, with a session token minted as in `server/DEPLOY.md` section 7:
 

@@ -5,6 +5,11 @@ struct SessionService: Sendable {
     struct Token: Sendable, Equatable, Decodable {
         let token: String
         let expiresAt: Date
+        let appleRefreshToken: String?
+    }
+
+    struct Body: Sendable, Equatable, Encodable {
+        let authorizationCode: String?
     }
 
     static let path = "session"
@@ -25,7 +30,7 @@ struct SessionService: Sendable {
 
     var isConfigured: Bool { configuration.isPlaceholder == false }
 
-    func exchange(appleIdentityToken: String) async throws -> Token {
+    func exchange(appleIdentityToken: String, authorizationCode: String? = nil) async throws -> Token {
         guard isConfigured else {
             throw CorbieError.network("server url is not configured")
         }
@@ -38,7 +43,7 @@ struct SessionService: Sendable {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue(appVersion, forHTTPHeaderField: "X-App-Version")
-        request.httpBody = Data("{}".utf8)
+        request.httpBody = try SessionService.body(authorizationCode: authorizationCode)
 
         let data: Data
         let response: URLResponse
@@ -57,6 +62,15 @@ struct SessionService: Sendable {
             return try CorbieJSON.decoder.decode(Token.self, from: data)
         } catch {
             throw CorbieError.network("session response is not readable")
+        }
+    }
+
+    static func body(authorizationCode: String?) throws -> Data {
+        let code = authorizationCode.flatMap { $0.isEmpty ? nil : $0 }
+        do {
+            return try CorbieJSON.encoder.encode(Body(authorizationCode: code))
+        } catch {
+            throw CorbieError.network("session request is not encodable")
         }
     }
 

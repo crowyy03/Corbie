@@ -34,7 +34,6 @@ enum DebugLaunch {
             AnonymousIdentity.storageKey,
             AppEnvironment.sessionTokenKey,
             AppEnvironment.appleIdentityTokenKey,
-            AppEnvironment.appleAuthorizationCodeKey,
             AppEnvironment.appleRefreshTokenKey,
         ]
         for key in keys {

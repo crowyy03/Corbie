@@ -194,14 +194,17 @@ final class BundleAnchor {}
         #expect(transport.requestCount == 1)
     }
 
-    @Test func appleRevokeNeedsOneOfTheTwoTokens() async throws {
+    @Test func appleRevokeSendsOnlyTheRefreshToken() async throws {
         let transport = FakeTransport([.empty(204)])
         let client = NetTestSupport.client(transport: transport)
-        try await client.revokeAppleAccount(authorizationCode: "code")
+        try await client.revokeAppleAccount(refreshToken: "refresh-1")
         #expect(transport.requestCount == 1)
         #expect(transport.lastRequest?.header("Authorization") == "Bearer apple-token")
+        let body = try #require(transport.lastRequest?.body)
+        let sent = try #require(try JSONSerialization.jsonObject(with: body) as? [String: String])
+        #expect(sent == ["refreshToken": "refresh-1"])
         do {
-            try await client.revokeAppleAccount()
+            try await client.revokeAppleAccount(refreshToken: "")
             Issue.record("expected a failure")
         } catch let failure as APIError {
             #expect(failure.kind == .invalidRequest)

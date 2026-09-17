@@ -173,13 +173,9 @@ final class SettingsViewModel {
     }
 
     private func revokeApple(_ environment: AppEnvironment) async {
-        let secret = environment.appleRevocationSecret()
-        guard secret.authorizationCode != nil || secret.refreshToken != nil else { return }
+        guard let refreshToken = environment.appleRefreshToken() else { return }
         do {
-            try await environment.apiClient.revokeAppleAccount(
-                authorizationCode: secret.authorizationCode,
-                refreshToken: secret.refreshToken
-            )
+            try await environment.apiClient.revokeAppleAccount(refreshToken: refreshToken)
         } catch {
             environment.report(error)
         }

@@ -106,9 +106,10 @@ From `docs/KNOWN_ISSUES.md`:
 
 From other docs and the Debug build:
 
-- Deleting the account ends with the toast "No answer from the network." while `APPLE_TEAM_ID`,
-  `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` are not set: `POST /apple-revoke` answers 500
-  (`server/DEPLOY.md` section 5). The data part of the deletion still runs. See also open question 4.
+- While `APPLE_TEAM_ID`, `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` are not set, `POST /session` cannot
+  turn the sign-in code into a refresh token, so the phone stores none and deleting the account sends
+  no revoke at all. Set the three secrets before the phones sign in for this session; a phone that
+  signed in earlier has to sign out and in again to get a token. See also open question 4.
 - If `POST /session` refuses the Apple token, a toast shows after Sign in with Apple and onboarding
   continues (`docs/TEST_PLAN.md` section 2).
 - Debug-only items: "continue without Apple ID (debug build)" on the intro screen, and "Developer" at
@@ -739,9 +740,11 @@ undo." Tap "Delete account". Wait for the intro screen. Then check the Dashboard
 with Apple again with the same Apple ID.
 
 **See.**
-- A: a spinner, very likely the toast "No answer from the network." after a few seconds (the Apple
-  revoke call is tried four times; section 3 and open question 4), then the intro screen. Widgets on A
-  go empty after the next reload.
+- A: a spinner, then the intro screen, with no toast when the three Apple secrets were set before A
+  signed in. Without them there is no refresh token and no revoke call (section 3). Widgets on A go
+  empty after the next reload.
+- Before signing in again, iPhone Settings, your name, Sign in with Apple: Corbie is no longer listed.
+  If it is, the revoke failed: note the toast, if any.
 - Dashboard, acting as A, Development, Private: the zone `com.apple.coredata.cloudkit.share.` plus an
   id is gone. `com.apple.coredata.cloudkit.zone` is gone, or back but empty once A's app has started
   again. Query `CD_Space`, `CD_Member` and `CD_TaskItem` and write down the counts: 0 each. Before
@@ -782,8 +785,8 @@ account", then "Delete account" in the dialog. Wait for the intro screen. Then c
 Then on B: Sign in with Apple again.
 
 **See.**
-- B: a spinner, up to about 20 s for leaving plus the zone deletion and the Apple revoke, very likely
-  the toast "No answer from the network.", then the intro screen.
+- B: a spinner, up to about 20 s for leaving plus the zone deletion and the Apple revoke, then the
+  intro screen.
 - The dialog on B still says "The space you own goes with it", although B owns nothing. The code
   deletes only B's part (`SettingsViewModel.deleteAccount`); the wording is a known copy problem, not
   a data problem.
@@ -823,13 +826,11 @@ None of these was run on a device. Each one names the step where it shows.
 3. **Fixed in the persistence fix round A: deleting the account could leave the records in iCloud**
    (steps 14 and 16). The app now deletes the zones on the server before the wipe
    (`CloudKitSharing.purgePrivateZones`), and a participant leaves first as in step 13.
-4. **Revoking Sign in with Apple uses a code Apple accepts only once and only for five minutes.** The
-   app stores the authorization code at sign-in (`OnboardingViewModel.swift` lines 64 to 68) and never
-   stores a refresh token (`AppEnvironment.storeAppleRevocationSecret`, no caller passes one).
-   `server/supabase/functions/apple-revoke/index.ts` (`exchangeAuthorizationCode`, line 16) trades that
-   code at deletion time. Even with the three Apple secrets set, a deletion later than five minutes
-   after sign-in will likely fail the revoke. The five-minute rule is Apple's documented limit, not
-   something checked here.
+4. **Fixed in the code, not yet on a device: revoking Sign in with Apple used a code Apple accepts only
+   once and only for five minutes.** The app now sends the code to `POST /session` at sign-in, stores
+   the refresh token the server returns (`AppEnvironment.exchangeSessionToken`) and revokes with that
+   token on deletion (`SettingsViewModel.revokeApple`). Check in step 14 that Settings, Apple ID,
+   Sign in with Apple no longer lists Corbie after the deletion.
 5. **Fixed in the persistence fix round A: the widget and share extensions each ran their own
    CloudKit sync on the same files** (steps 8 and 8b). They now open the files without syncing
    (`PersistenceController.appGroupWithoutMirroring`) and the app uploads what they wrote, so their

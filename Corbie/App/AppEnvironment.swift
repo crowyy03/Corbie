@@ -23,7 +23,6 @@ final class AppEnvironment {
 
     nonisolated static let sessionTokenKey = "server.session.token"
     nonisolated static let appleIdentityTokenKey = "apple.identity.token"
-    nonisolated static let appleAuthorizationCodeKey = "apple.authorization.code"
     nonisolated static let appleRefreshTokenKey = "apple.refresh.token"
     nonisolated static let partnerCheckIntervalOnRemoteChange: TimeInterval = 60
     nonisolated static let partnerCheckIntervalOnForeground: TimeInterval = 5
@@ -376,23 +375,24 @@ final class AppEnvironment {
         await premiumGate.refresh(spaceId: space.id)
     }
 
-    func storeAppleCredential(
-        userIdentifier: String,
-        identityToken: String?,
-        authorizationCode: String? = nil
-    ) throws {
+    func storeAppleCredential(userIdentifier: String, identityToken: String?) throws {
         try identity.setAppleUserID(userIdentifier)
-        storeAppleRevocationSecret(authorizationCode: authorizationCode)
         guard let identityToken, identityToken.isEmpty == false else { return }
         try secrets.setString(identityToken, for: Self.appleIdentityTokenKey)
     }
 
-    func exchangeSessionToken() async throws {
+    func exchangeSessionToken(authorizationCode: String?) async throws {
         guard let identityToken = try secrets.string(for: Self.appleIdentityTokenKey) else {
             throw CorbieError.auth("no apple identity token to exchange")
         }
-        let token = try await sessionService.exchange(appleIdentityToken: identityToken)
+        let token = try await sessionService.exchange(
+            appleIdentityToken: identityToken,
+            authorizationCode: authorizationCode
+        )
         try secrets.setString(token.token, for: Self.sessionTokenKey)
+        if let refreshToken = token.appleRefreshToken, refreshToken.isEmpty == false {
+            try secrets.setString(refreshToken, for: Self.appleRefreshTokenKey)
+        }
     }
 
     func signOut() {
@@ -400,7 +400,6 @@ final class AppEnvironment {
         try? identity.clear()
         try? secrets.removeValue(for: Self.sessionTokenKey)
         try? secrets.removeValue(for: Self.appleIdentityTokenKey)
-        try? secrets.removeValue(for: Self.appleAuthorizationCodeKey)
         try? secrets.removeValue(for: Self.appleRefreshTokenKey)
         session = .signedOut
         premiumGate.update(entitlements.stateWithoutSpace())
@@ -451,20 +450,11 @@ final class AppEnvironment {
         )
     }
 
-    func storeAppleRevocationSecret(authorizationCode: String?, refreshToken: String? = nil) {
-        if let authorizationCode, authorizationCode.isEmpty == false {
-            try? secrets.setString(authorizationCode, for: Self.appleAuthorizationCodeKey)
+    func appleRefreshToken() -> String? {
+        guard let token = try? secrets.string(for: Self.appleRefreshTokenKey), token.isEmpty == false else {
+            return nil
         }
-        if let refreshToken, refreshToken.isEmpty == false {
-            try? secrets.setString(refreshToken, for: Self.appleRefreshTokenKey)
-        }
-    }
-
-    func appleRevocationSecret() -> (authorizationCode: String?, refreshToken: String?) {
-        (
-            try? secrets.string(for: Self.appleAuthorizationCodeKey),
-            try? secrets.string(for: Self.appleRefreshTokenKey)
-        )
+        return token
     }
 
     func wipeLocalState() async {
@@ -477,7 +467,6 @@ final class AppEnvironment {
         try? identity.clear()
         try? secrets.removeValue(for: Self.sessionTokenKey)
         try? secrets.removeValue(for: Self.appleIdentityTokenKey)
-        try? secrets.removeValue(for: Self.appleAuthorizationCodeKey)
         try? secrets.removeValue(for: Self.appleRefreshTokenKey)
         anonymousIdentity.reset()
         do {

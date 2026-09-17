@@ -153,9 +153,9 @@ Max 50 events per batch. Event names are validated against the allowlist in `doc
 
 Auth required. Used on account deletion.
 
-Request: `{"authorizationCode": "<code from ASAuthorizationAppleIDCredential>"}` or `{"refreshToken": "..."}`.
+Request: `{"refreshToken": "..."}`, the token `POST /session` returned at sign in. `{"authorizationCode": "..."}` is still accepted, but a code is dead five minutes after sign in, so the app sends only the refresh token and sends nothing when it has none.
 
-The function exchanges the code for a refresh token with `client_secret` (ES256 JWT built from `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY`) and calls `https://appleid.apple.com/auth/revoke`. Response `204`.
+The function builds a `client_secret` (ES256 JWT from `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY`), exchanges a code for a refresh token when it got a code, and calls `https://appleid.apple.com/auth/revoke`. Response `204`.
 
 ## Swift client
 

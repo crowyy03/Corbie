@@ -313,6 +313,5 @@ struct ParseRequestBody: Encodable, Sendable {
 }
 
 struct AppleRevokeBody: Encodable, Sendable {
-    let authorizationCode: String?
-    let refreshToken: String?
+    let refreshToken: String
 }

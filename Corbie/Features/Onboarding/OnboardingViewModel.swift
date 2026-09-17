@@ -63,14 +63,13 @@ final class OnboardingViewModel {
         do {
             try environment.storeAppleCredential(
                 userIdentifier: credential.userIdentifier,
-                identityToken: credential.identityToken,
-                authorizationCode: credential.authorizationCode
+                identityToken: credential.identityToken
             )
         } catch {
             environment.report(error)
             return
         }
-        await exchangeSessionToken()
+        await exchangeSessionToken(authorizationCode: credential.authorizationCode)
         do {
             try await loadProfile(appleName: credential.displayName)
             if joinCode == nil {
@@ -159,10 +158,10 @@ final class OnboardingViewModel {
         await environment.reloadSession()
     }
 
-    private func exchangeSessionToken() async {
+    private func exchangeSessionToken(authorizationCode: String?) async {
         guard environment.sessionService.isConfigured else { return }
         do {
-            try await environment.exchangeSessionToken()
+            try await environment.exchangeSessionToken(authorizationCode: authorizationCode)
         } catch {
             environment.report(error)
         }

@@ -146,14 +146,14 @@ public struct APIClient: Sendable {
         )
     }
 
-    public func revokeAppleAccount(authorizationCode: String? = nil, refreshToken: String? = nil) async throws {
-        guard authorizationCode != nil || refreshToken != nil else {
-            throw APIError.invalidRequest("authorizationCode or refreshToken is required")
+    public func revokeAppleAccount(refreshToken: String) async throws {
+        guard refreshToken.isEmpty == false else {
+            throw APIError.invalidRequest("refreshToken is required")
         }
         _ = try await send(
             method: .post,
             path: Path.appleRevoke,
-            body: try encode(AppleRevokeBody(authorizationCode: authorizationCode, refreshToken: refreshToken)),
+            body: try encode(AppleRevokeBody(refreshToken: refreshToken)),
             authenticated: true,
             anonymous: false
         )
