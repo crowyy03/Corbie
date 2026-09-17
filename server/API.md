@@ -51,9 +51,11 @@ If the bucket cannot be read (database error) the request is allowed through, so
 
 Auth required with an Apple identity token only (a session token is rejected here). Exchanges the short-lived Apple token for a Corbie session token.
 
-Request: `{}`
+Request: `{}`, or `{"authorizationCode": "<code from ASAuthorizationAppleIDCredential>"}` right after Sign in with Apple.
 
-Response `200`: `{"token": "<jwt>", "expiresAt": "2027-03-04T10:00:00Z"}`
+Response `200`: `{"token": "<jwt>", "expiresAt": "2027-03-04T10:00:00Z", "appleRefreshToken": "<token>"}`
+
+`appleRefreshToken` is present only when the request carried an authorization code and Apple exchanged it. The code is single use and lives five minutes, so this is the only moment it can be turned into the refresh token that `POST /apple-revoke` needs when the account is deleted. The server does not keep the refresh token; the client stores it in the Keychain under `apple.refresh.token`. If the Apple key secrets are missing or Apple refuses the code, the session is still issued without the field. A malformed `authorizationCode` is `400 invalid_request`.
 
 The session token is an HS256 JWT signed with the `SESSION_SECRET` secret: claims `iss` = `corbie`, `sub` = SHA-256 hex of the Apple `sub`, `iat`, `exp` = 180 days. Every endpoint that requires auth accepts it in place of the Apple token; the server never stores it. The client keeps it in the Keychain under `server.session.token`. A `401` is surfaced as an error; nothing exchanges a new token on its own, so a token that outlives its 180 days is replaced only when the person signs in again.
 
