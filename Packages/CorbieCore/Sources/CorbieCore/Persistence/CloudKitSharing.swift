@@ -105,7 +105,8 @@ public final class CloudKitSharing {
             throw CorbieError.cloudKit("shared store is not loaded")
         }
         guard let space = try space(with: spaceId, in: stack.viewContext) else {
-            throw CorbieError.notFound("space \(spaceId)")
+            CloudKitSharing.log.info("space \(spaceId, privacy: .public) is not stored here any more, nothing to leave")
+            return
         }
         guard space.objectID.persistentStore === shared else {
             throw CorbieError.cloudKit("space \(spaceId) is owned here, delete it instead of leaving it")
@@ -114,14 +115,17 @@ public final class CloudKitSharing {
             throw CorbieError.cloudKit("space \(spaceId) has no share to leave")
         }
         let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).sharedCloudDatabase
-        _ = try await serverShare(share.recordID, in: database)
-        try await removeOwnMember(memberId, spaceId: spaceId, store: shared)
-        do {
-            _ = try await database.deleteRecord(withID: share.recordID)
-        } catch {
-            throw CorbieError.cloudKit(error.localizedDescription)
+        if try await serverShare(share.recordID, in: database) != nil {
+            try await removeOwnMember(memberId, spaceId: spaceId, store: shared)
+            do {
+                _ = try await database.deleteRecord(withID: share.recordID)
+            } catch let error as CKError where CloudKitSharing.isMissingRecord(error) {
+                CloudKitSharing.log.info("the share of space \(spaceId, privacy: .public) was already gone")
+            } catch {
+                throw CorbieError.cloudKit(error.localizedDescription)
+            }
         }
-        try await purgeZone(share.recordID.zoneID, in: shared, container: container)
+        try await purgeZone(share.recordID.zoneID, in: shared, container: container, missingZoneIsPurged: true)
     }
 
     public func removeDepartedMembers(space spaceId: UUID, ownerMemberId: UUID) async throws -> [UUID] {
@@ -130,20 +134,25 @@ public final class CloudKitSharing {
               let space = try space(with: spaceId, in: stack.viewContext),
               space.objectID.persistentStore === privateStore
         else { return [] }
-        let memberIds = try await members.members(spaceId: spaceId).map(\.id)
-        guard memberIds.contains(where: { $0 != ownerMemberId }) else { return [] }
+        let spaceMembers = try await members.members(spaceId: spaceId)
+        guard spaceMembers.contains(where: { $0.id != ownerMemberId }) else { return [] }
         guard let share = try existingShare(for: spaceId) else { return [] }
         let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).privateCloudDatabase
-        let current = try await serverShare(share.recordID, in: database)
+        guard let current = try await serverShare(share.recordID, in: database) else { return [] }
         let departed = DepartedMemberRule.memberIdsToRemove(
             ownerMemberId: ownerMemberId,
-            memberIds: memberIds,
+            members: spaceMembers,
             participants: current.participants.map(ShareParticipantSummary.init)
         )
         guard departed.isEmpty == false else { return [] }
         try await members.removeMembersAndFreeTheirTasks(ids: departed, spaceId: spaceId)
         CloudKitSharing.log.info("removed \(departed.count) members who left space \(spaceId, privacy: .public)")
         return departed
+    }
+
+    public func isICloudAccountMissing() async -> Bool {
+        let status = try? await CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).accountStatus()
+        return status == .noAccount || status == .restricted
     }
 
     public func purgePrivateZones() async throws {
@@ -204,10 +213,12 @@ public final class CloudKitSharing {
         )
     }
 
-    private func serverShare(_ recordID: CKRecord.ID, in database: CKDatabase) async throws -> CKShare {
+    private func serverShare(_ recordID: CKRecord.ID, in database: CKDatabase) async throws -> CKShare? {
         let record: CKRecord
         do {
             record = try await database.record(for: recordID)
+        } catch let error as CKError where CloudKitSharing.isMissingRecord(error) {
+            return nil
         } catch {
             throw CorbieError.cloudKit(error.localizedDescription)
         }
@@ -254,6 +265,11 @@ public final class CloudKitSharing {
                 }
             }
         }
+    }
+
+    nonisolated static func isMissingRecord(_ error: any Error) -> Bool {
+        guard let error = error as? CKError else { return false }
+        return error.code == .unknownItem || isMissingZone(error)
     }
 
     nonisolated static func isMissingZone(_ error: any Error) -> Bool {

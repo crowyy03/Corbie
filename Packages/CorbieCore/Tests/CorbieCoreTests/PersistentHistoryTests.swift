@@ -33,7 +33,7 @@ import Testing
         #expect(try observer.process() == 0)
     }
 
-    @Test func onlyAnObserverWithARetentionPurgesHistory() throws {
+    @Test func historyIsDeletedOnlyUpToTheCutoffTheObserverIsGiven() throws {
         let directory = try makeDirectory()
         defer { try? FileManager.default.removeItem(at: directory) }
         let suiteName = "corbie-history-" + UUID().uuidString
@@ -45,13 +45,35 @@ import Testing
         try write(into: widgets)
         #expect(try transactionCount(in: stack) >= 1)
 
-        let keeping = PersistentHistoryObserver(container: stack.container, author: .share, defaults: defaults, retention: nil)
+        let keeping = PersistentHistoryObserver(container: stack.container, author: .share, defaults: defaults)
         #expect(try keeping.process() >= 1)
         #expect(try transactionCount(in: stack) >= 1)
 
-        let purging = PersistentHistoryObserver(container: stack.container, author: .app, defaults: defaults, retention: 0)
-        #expect(try purging.process() >= 1)
+        let neverUploaded = PersistentHistoryObserver(
+            container: stack.container,
+            author: .tests,
+            defaults: defaults,
+            cleanupCutoff: { ids in
+                HistoryCleanupRule.cutoff(now: Date(), storeIdentifiers: ids, lastUploadStarts: [:], retention: 0)
+            }
+        )
+        #expect(try neverUploaded.process() >= 1)
+        #expect(try transactionCount(in: stack) >= 1)
+
+        let seenIdentifiers = IdentifierBox()
+        let uploaded = PersistentHistoryObserver(
+            container: stack.container,
+            author: .app,
+            defaults: defaults,
+            cleanupCutoff: { ids in
+                seenIdentifiers.identifiers = ids
+                let starts = Dictionary(uniqueKeysWithValues: ids.map { ($0, Date()) })
+                return HistoryCleanupRule.cutoff(now: Date(), storeIdentifiers: ids, lastUploadStarts: starts, retention: 0)
+            }
+        )
+        #expect(try uploaded.process() >= 1)
         #expect(try transactionCount(in: stack) == 0)
+        #expect(seenIdentifiers.identifiers.count == stack.container.persistentStoreCoordinator.persistentStores.count)
     }
 
     @Test func theTokenKeyIsScopedToTheProcess() throws {
@@ -134,5 +156,15 @@ private final class RecordBox: @unchecked Sendable {
 
     func append(_ records: [RemoteChangeRecord]) {
         lock.withLock { stored.append(contentsOf: records) }
+    }
+}
+
+private final class IdentifierBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var stored: [String] = []
+
+    var identifiers: [String] {
+        get { lock.withLock { stored } }
+        set { lock.withLock { stored = newValue } }
     }
 }

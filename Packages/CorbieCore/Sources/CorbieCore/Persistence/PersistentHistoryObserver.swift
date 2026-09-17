@@ -3,14 +3,14 @@ import Foundation
 import os
 
 final class PersistentHistoryObserver: @unchecked Sendable {
-    static let retention: TimeInterval = 7 * 24 * 60 * 60
+    typealias CleanupCutoff = @Sendable (_ storeIdentifiers: [String]) -> Date?
 
     private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "history")
 
     private let container: NSPersistentContainer
     private let author: TransactionAuthor
     private let defaults: UserDefaults
-    private let retention: TimeInterval?
+    private let cleanupCutoff: CleanupCutoff?
     private let holdsRecordsUntilHandled: Bool
     private let lock = NSLock()
     private var observer: (any NSObjectProtocol)?
@@ -21,13 +21,13 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         container: NSPersistentContainer,
         author: TransactionAuthor,
         defaults: UserDefaults = .corbieShared,
-        retention: TimeInterval? = PersistentHistoryObserver.retention,
+        cleanupCutoff: CleanupCutoff? = nil,
         holdsRecordsUntilHandled: Bool = false
     ) {
         self.container = container
         self.author = author
         self.defaults = defaults
-        self.retention = retention
+        self.cleanupCutoff = cleanupCutoff
         self.holdsRecordsUntilHandled = holdsRecordsUntilHandled
     }
 
@@ -129,8 +129,8 @@ final class PersistentHistoryObserver: @unchecked Sendable {
             harvest.merges.append(transaction.objectIDNotification().userInfo ?? [:])
             harvest.records.append(contentsOf: PersistentHistoryObserver.records(in: transaction))
         }
-        if let retention {
-            let cutoff = Date().addingTimeInterval(-retention)
+        let storeIdentifiers = container.persistentStoreCoordinator.persistentStores.compactMap(\.identifier)
+        if let cutoff = cleanupCutoff?(storeIdentifiers) {
             _ = try context.execute(NSPersistentHistoryChangeRequest.deleteHistory(before: cutoff))
         }
         return harvest

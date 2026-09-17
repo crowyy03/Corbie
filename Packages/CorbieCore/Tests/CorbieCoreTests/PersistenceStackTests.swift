@@ -88,8 +88,6 @@ import Testing
         #expect(mirrored.allSatisfy { $0.cloudKitContainerOptions?.containerIdentifier == CorbieIdentifiers.cloudKitContainer })
         let local = CoreDataStack.storeDescriptions(in: directory, mirroring: .disabled)
         #expect(local.allSatisfy { $0.cloudKitContainerOptions == nil })
-        #expect(StoreMirroring.cloudKit.historyRetention == PersistentHistoryObserver.retention)
-        #expect(StoreMirroring.disabled.historyRetention == nil)
     }
 
     @MainActor
@@ -110,6 +108,14 @@ import Testing
         #expect(throws: notConfigured) {
             _ = try sharing.existingShare(for: UUID())
         }
+    }
+
+    @Test func aShareRecordIsGoneWhenItOrItsZoneIsMissing() {
+        #expect(CloudKitSharing.isMissingRecord(CKError(.unknownItem)))
+        #expect(CloudKitSharing.isMissingRecord(CKError(.zoneNotFound)))
+        #expect(CloudKitSharing.isMissingRecord(CKError(.networkFailure)) == false)
+        #expect(CloudKitSharing.isMissingRecord(CKError(.notAuthenticated)) == false)
+        #expect(CloudKitSharing.isMissingRecord(CorbieError.cloudKit("record")) == false)
     }
 
     @Test func aMissingZoneCountsAsPurged() {

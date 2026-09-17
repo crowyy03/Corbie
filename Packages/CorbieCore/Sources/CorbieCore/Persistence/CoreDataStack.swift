@@ -5,13 +5,6 @@ import os
 public enum StoreMirroring: Sendable, Equatable {
     case cloudKit
     case disabled
-
-    var historyRetention: TimeInterval? {
-        switch self {
-        case .cloudKit: return PersistentHistoryObserver.retention
-        case .disabled: return nil
-        }
-    }
 }
 
 public final class CoreDataStack: @unchecked Sendable {
@@ -24,6 +17,7 @@ public final class CoreDataStack: @unchecked Sendable {
 
     private let history: PersistentHistoryObserver?
     private let runningImports: CloudKitRunningImports?
+    private let exportLedger: CloudKitExportLedger?
 
     public var viewContext: NSManagedObjectContext { container.viewContext }
 
@@ -62,6 +56,8 @@ public final class CoreDataStack: @unchecked Sendable {
         self.author = author
         self.mirroring = mirroring
         runningImports = mirroring == .cloudKit ? CloudKitRunningImports() : nil
+        let exportLedger = mirroring == .cloudKit ? historyDefaults.map { CloudKitExportLedger(defaults: $0) } : nil
+        self.exportLedger = exportLedger
         let container = CoreDataStack.makeContainer(mirroring: mirroring)
         container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(in: directory, mirroring: mirroring)
         self.container = container
@@ -73,7 +69,7 @@ public final class CoreDataStack: @unchecked Sendable {
                 container: container,
                 author: author,
                 defaults: defaults,
-                retention: mirroring.historyRetention,
+                cleanupCutoff: exportLedger.map(CoreDataStack.cleanupAfterUpload),
                 holdsRecordsUntilHandled: mirroring == .cloudKit
             )
         }
@@ -93,6 +89,17 @@ public final class CoreDataStack: @unchecked Sendable {
         CoreDataStack.configure(container.viewContext, author: author)
         history = nil
         runningImports = nil
+        exportLedger = nil
+    }
+
+    private static func cleanupAfterUpload(_ ledger: CloudKitExportLedger) -> PersistentHistoryObserver.CleanupCutoff {
+        { storeIdentifiers in
+            HistoryCleanupRule.cutoff(
+                now: Date(),
+                storeIdentifiers: storeIdentifiers,
+                lastUploadStarts: ledger.lastUploadStarts
+            )
+        }
     }
 
     deinit {

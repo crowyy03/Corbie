@@ -147,6 +147,7 @@ final class SettingsViewModel {
                 sharing: environment.sharing
             ) {
                 environment.report(failure)
+                return
             }
             await revokeApple(environment)
             await environment.wipeLocalState()
@@ -159,20 +160,16 @@ final class SettingsViewModel {
         memberId: UUID,
         sharing: CloudKitSharing
     ) async -> (any Error)? {
-        var failure: (any Error)?
-        if accountPlan == .leaveSpace {
-            do {
-                try await sharing.leave(space: spaceId, memberId: memberId)
-            } catch {
-                failure = error
-            }
-        }
+        guard await sharing.isICloudAccountMissing() == false else { return nil }
         do {
+            if accountPlan == .leaveSpace {
+                try await sharing.leave(space: spaceId, memberId: memberId)
+            }
             try await sharing.purgePrivateZones()
+            return nil
         } catch {
-            failure = failure ?? error
+            return error
         }
-        return failure
     }
 
     private func revokeApple(_ environment: AppEnvironment) async {

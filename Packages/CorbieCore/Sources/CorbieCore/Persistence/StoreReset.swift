@@ -43,6 +43,7 @@ public struct StoreReset: @unchecked Sendable {
         for author in TransactionAuthor.allCases {
             defaults.removeObject(forKey: StoreReset.historyTokenKey(author: author))
         }
+        defaults.removeObject(forKey: CloudKitExportLedger.storageKey)
     }
 
     public static func historyTokenKey(author: TransactionAuthor) -> String {

@@ -122,9 +122,10 @@ push), which v1 does not do.
 
 `CloudKitSharing.leave` checks the network, removes the participant's own member row, waits for that
 removal to upload, and only then removes the share membership. If that last call fails, the row is
-already gone but the person is still in the share. Tapping "Leave space" again finishes it. If the app
-is relaunched first, the session finds no member and opens onboarding, which reuses the joined space
-still in the store, so the person comes back as a new member instead of leaving.
+already gone but the person is still in the share. Tapping "Leave space" or "Delete account" again
+finishes it, also when the share record was already deleted. If the app is relaunched first, the
+session finds no member and opens onboarding, which reuses the joined space still in the store, so the
+person comes back as a new member instead of leaving.
 
 Not seen on a device; found by reading the code.
 
@@ -134,6 +135,20 @@ Deleting Corbie does not take anyone out of the CloudKit share, so the owner's c
 (`DepartedMemberRule`) still sees an accepted participant and keeps the member. Only leaving in the
 app, deleting the account in the app, or losing access to the share frees the owner to invite someone
 else.
+
+### A partner who leaves and rejoins before the owner's app runs keeps the old row
+
+If the removal of the leaving partner's row did not upload and they join again through the old link
+before the owner's phone ran its check, the share lists an accepted participant again and the old row
+stays next to the new one. `partner(of:)` returns the earlier row, so the owner sees the old profile
+and new assignments go to it. The fix is to store the participant's CloudKit user record name on the
+member row when they join and match participants by it, which needs a model field.
+
+### Deleting the account without iCloud leaves the iCloud records
+
+With no iCloud account or a restricted one on the phone, account deletion wipes the phone and revokes
+Sign in with Apple, but the records in the iCloud account that was used before cannot be reached from
+this device. Signing in to that iCloud account again and deleting the account once more removes them.
 
 ### The owner's cleanup needs something to wake it
 

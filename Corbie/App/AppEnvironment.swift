@@ -63,7 +63,7 @@ final class AppEnvironment {
     @ObservationIgnored private var processStartedInBackground = false
     @ObservationIgnored private var partnerCheck: Task<PartnerCheck, Never>?
     @ObservationIgnored private var isCheckingPartnerOnServer = false
-    @ObservationIgnored private var arePartnerChecksPaused = false
+    @ObservationIgnored private var partnerCheckPauses = 0
     @ObservationIgnored private var partnerCheckedOnServerAt: Date?
 
     init(
@@ -224,9 +224,11 @@ final class AppEnvironment {
         Task { await reconcilePartnerMembership() }
     }
 
+    private var arePartnerChecksPaused: Bool { partnerCheckPauses > 0 }
+
     func withPartnerChecksPaused(_ body: () async -> Void) async {
-        arePartnerChecksPaused = true
-        defer { arePartnerChecksPaused = false }
+        partnerCheckPauses += 1
+        defer { partnerCheckPauses -= 1 }
         await body()
     }
 

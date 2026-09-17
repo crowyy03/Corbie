@@ -753,9 +753,10 @@ with Apple again with the same Apple ID.
 **Time.** A back on the intro screen within 20 s.
 
 **If it fails.**
-- Toast "iCloud did not answer." before the intro screen: at least one zone was not deleted on the
-  server (`CloudKitSharing.purgePrivateZones`). The phone was still wiped. Write down which zones the
-  Dashboard still shows: their records come back on the next sign-in.
+- Toast "iCloud did not answer." and A stays in the tabs: at least one zone was not deleted on the
+  server (`CloudKitSharing.purgePrivateZones`), so the deletion stopped before the wipe. Check the
+  network and tap "Delete account" again. If it keeps failing, write down which zones the Dashboard
+  still shows.
 - Old data after signing in again: the same, look at the zones in the Dashboard.
 - A stays in the tabs: `wipeLocalState` did not finish. Relaunch.
 
@@ -792,8 +793,9 @@ Then on B: Sign in with Apple again.
   `com.apple.coredata.cloudkit.` zone with records in it.
 - B after signing in again: a fresh solo space with nothing from before.
 
-**If it fails.** As in steps 13 and 14. Toast "iCloud did not answer." on B means leaving or the zone
-deletion failed; B was still wiped. Check both Dashboard views and write down what is left.
+**If it fails.** As in steps 13 and 14. Toast "iCloud did not answer." with B still in the tabs means
+leaving or the zone deletion failed and nothing was wiped. Tap "Delete account" again; it finishes a
+half-done leave. If it keeps failing, check both Dashboard views and write down what is left.
 
 ---
 
