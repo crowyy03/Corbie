@@ -3,9 +3,9 @@
 Written for someone who has never used Supabase. Every command here was run for real on 2026-09-12
 against the live project `powtuiqqagdoiuqjeebr` in East US (Ohio): five migrations applied, nine
 functions deployed, `scripts/smoke.sh` 15 pass, 0 fail, 2 pending (the two that need Apple).
-Migration `0006_app_config.sql` and the `config` function were added after that run: the steps below
-now apply six migrations and deploy ten functions, and the live project gets both only on the next
-`supabase db push` and `supabase functions deploy`.
+On 2026-09-17 the live project got migrations `0006` and `0007`, all ten functions were redeployed,
+`SESSION_SECRET` was rotated and `RATE_LIMIT_SALT` was added; `scripts/smoke.sh` answered 16 pass,
+0 fail, 2 pending.
 
 Two things only you can do, because they need your account: creating the project (step 1) and logging
 the CLI in (step 2a). Everything after that runs from this repo.
@@ -135,8 +135,13 @@ Database, Extensions and run `supabase db push` again.
 
 ```bash
 cd ~/Desktop/codding/Corbie/server
-supabase functions deploy
+supabase functions deploy --import-map supabase/functions/deno.json
 ```
+
+Without Docker running, the CLI bundles on Supabase's side, and that bundler does not read the
+workspace `deno.json` by itself: every function fails with `Relative import path "@supabase/supabase-js"
+not prefixed with / or ./ or ../`. `--import-map` hands it the import map; with Docker running the flag
+is harmless.
 
 With no function named, it deploys all ten: `session`, `invite`, `invite-redeem`, `parse`, `fx`,
 `config`, `events`, `entitlement`, `apple-revoke`, `appstore-notifications`. It reads

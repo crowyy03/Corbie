@@ -62,8 +62,8 @@ check "POST /parse" 200 canonicalURL "$code"
 code=$(call POST /parse -H 'content-type: application/json' -d '{"url":"not a url"}')
 check "POST /parse (bad url)" 400 invalid_request "$code"
 
-code=$(call POST /events -H 'content-type: application/json' -H "x-anon-id: $anon" -d '{"events":[{"name":"app_open","ts":"2026-01-01T00:00:00Z","appVersion":"1.0 (1)","locale":"en_US"}]}')
-check "POST /events" 202 "" "$code"
+code=$(call POST /events -H 'content-type: application/json' -H "x-anon-id: $anon" -d '{"events":[{"name":"smoke_check_not_stored","ts":"2026-01-01T00:00:00Z","appVersion":"smoke","locale":"en_US"}]}')
+check "POST /events (name off the allowlist, nothing stored)" 202 "" "$code"
 
 code=$(call POST /events -H 'content-type: application/json' -H 'x-anon-id: nope' -d '{"events":[]}')
 check "POST /events (bad anon id)" 400 invalid_request "$code"

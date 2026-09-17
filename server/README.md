@@ -111,7 +111,7 @@ Set in the Supabase dashboard, or `supabase secrets set --env-file .env`.
 ```
 supabase link --project-ref <project-ref> -p <database-password>
 supabase db push
-supabase functions deploy
+supabase functions deploy --import-map supabase/functions/deno.json
 ```
 
 `.github/workflows/supabase.yml` does both on a push to `main` that touches `server/**`, using the `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF` and `SUPABASE_DB_PASSWORD` repository secrets (`db push` opens a direct Postgres connection and cannot prompt for the password in CI), and runs the tests on pull requests.
