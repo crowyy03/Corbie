@@ -206,10 +206,10 @@ import Testing
     @Test func withoutASpaceTheFlagDecidesBetweenFreeAndReadOnly() async throws {
         let world = try await TestWorld.make()
         let off = service(world: world, monetizationEnabled: false)
-        #expect(await off.stateWithoutSpace() == .monetizationOff)
+        #expect(off.stateWithoutSpace() == .monetizationOff)
         #expect(await off.refreshWithoutSpace() == .monetizationOff)
         let on = service(world: world, monetizationEnabled: true)
-        #expect(await on.stateWithoutSpace() == .readOnly)
+        #expect(on.stateWithoutSpace() == .readOnly)
         #expect(await on.refreshWithoutSpace() == .readOnly)
     }
 }

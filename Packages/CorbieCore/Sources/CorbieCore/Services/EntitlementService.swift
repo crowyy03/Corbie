@@ -59,7 +59,7 @@ public actor EntitlementService {
         return lastState
     }
 
-    public func stateWithoutSpace() -> EntitlementState {
+    public nonisolated func stateWithoutSpace() -> EntitlementState {
         monetization.isEnabled ? .readOnly : .monetizationOff
     }
 

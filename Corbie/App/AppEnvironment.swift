@@ -142,7 +142,7 @@ final class AppEnvironment {
     func reloadSession() async {
         guard let appleUserID = identity.currentAppleUserID else {
             session = .signedOut
-            premiumGate.update(await entitlements.stateWithoutSpace())
+            premiumGate.update(entitlements.stateWithoutSpace())
             return
         }
         do {
@@ -150,7 +150,7 @@ final class AppEnvironment {
                   let space = try await repositories.spaces.currentSpace(memberId: member.id)
             else {
                 session = .signedOut
-                premiumGate.update(await entitlements.stateWithoutSpace())
+                premiumGate.update(entitlements.stateWithoutSpace())
                 return
             }
             let partner = try await repositories.members.partner(of: member.id, spaceId: space.id)
@@ -282,7 +282,7 @@ final class AppEnvironment {
         try? secrets.removeValue(for: Self.appleAuthorizationCodeKey)
         try? secrets.removeValue(for: Self.appleRefreshTokenKey)
         session = .signedOut
-        premiumGate.update(await entitlements.stateWithoutSpace())
+        premiumGate.update(entitlements.stateWithoutSpace())
         Task { await remoteChanges.update(audience: nil) }
     }
 
@@ -359,7 +359,7 @@ final class AppEnvironment {
             report(error)
         }
         session = .signedOut
-        premiumGate.update(await entitlements.stateWithoutSpace())
+        premiumGate.update(entitlements.stateWithoutSpace())
         await remoteChanges.start()
     }
 
