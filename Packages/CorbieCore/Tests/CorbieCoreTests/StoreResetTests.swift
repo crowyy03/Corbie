@@ -3,6 +3,7 @@ import Foundation
 import Testing
 @testable import CorbieCore
 
+@MainActor
 @Suite struct StoreResetTests {
     @Test func wipingRemovesEveryRowAndLeavesAWorkingStore() throws {
         let directory = try makeDirectory()

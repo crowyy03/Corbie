@@ -4,7 +4,13 @@ import Testing
 @testable import CorbieCore
 
 @Suite struct ModelRulesTests {
-    private let model = CorbieModel.shared
+    private let model = ModelRulesTests.sharedModelFrozenByACoordinator()
+
+    private static func sharedModelFrozenByACoordinator() -> NSManagedObjectModel {
+        let model = CorbieModel.shared
+        _ = NSPersistentStoreCoordinator(managedObjectModel: model)
+        return model
+    }
 
     @Test func modelHasEveryEntityFromTheSpec() {
         let expected: Set<String> = [
