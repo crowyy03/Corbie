@@ -130,7 +130,7 @@ enum NetTestSupport {
         retry: RetryPolicy = .default
     ) -> APIClient {
         APIClient(
-            configuration: ServerConfiguration(projectRef: "testref") ?? .fallback,
+            configuration: ServerConfiguration(projectRef: "testref") ?? .notConfigured,
             transport: transport,
             appVersion: "1.0 (12)",
             anonId: { anonId },

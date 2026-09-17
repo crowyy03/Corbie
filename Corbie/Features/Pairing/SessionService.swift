@@ -28,11 +28,11 @@ struct SessionService: Sendable {
         self.appVersion = appVersion
     }
 
-    var isConfigured: Bool { configuration.isPlaceholder == false }
+    var isConfigured: Bool { configuration.isNotConfigured == false }
 
     func exchange(appleIdentityToken: String, authorizationCode: String? = nil) async throws -> Token {
         guard isConfigured else {
-            throw CorbieError.network("server url is not configured")
+            throw CorbieError.notConfigured("this build carries no server url, see \(ServerConfiguration.infoPlistKey)")
         }
         guard appleIdentityToken.isEmpty == false else {
             throw CorbieError.auth("apple identity token is empty")

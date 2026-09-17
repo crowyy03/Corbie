@@ -75,7 +75,8 @@ final class AppEnvironment {
         secrets: any SecretStore = KeychainStore(),
         anonymousIdentity: AnonymousIdentity = .shared,
         notificationClient: any NotificationCenterClient = SystemNotificationCenterClient(),
-        store: StoreService = .shared
+        store: StoreService = .shared,
+        transport: (any HTTPTransport)? = nil
     ) {
         self.persistence = persistence
         repositories = persistence.repositories
@@ -87,7 +88,12 @@ final class AppEnvironment {
             if let token = try secrets.string(for: AppEnvironment.sessionTokenKey) { return token }
             return try secrets.string(for: AppEnvironment.appleIdentityTokenKey)
         }
-        let client = APIClient(identity: anonymousIdentity, appleToken: tokenProvider)
+        let serverTransport = transport ?? URLSessionTransport()
+        let client = APIClient(
+            transport: serverTransport,
+            identity: anonymousIdentity,
+            appleToken: tokenProvider
+        )
         apiClient = client
         sessionService = SessionService(configuration: client.configuration)
         analytics = Analytics(client: client, identity: anonymousIdentity, delivery: AppEnvironment.analyticsDelivery)
@@ -110,7 +116,7 @@ final class AppEnvironment {
         )
         usBadge = UsBadgeProvider(repositories: repositories)
         fx = FXService(client: client)
-        linkParser = LinkParser(client: client)
+        linkParser = LinkParser(client: client, imageTransport: serverTransport)
         remoteChanges = RemoteChangeNotifier(
             stack: persistence.stack,
             scheduler: scheduler,
@@ -148,6 +154,7 @@ final class AppEnvironment {
 
     func startProcess() {
         guard processStart == nil else { return }
+        apiClient.configuration.announce(process: "app")
         processStartedInBackground = UIApplication.shared.applicationState == .background
         IntentPersistence.shared.use(controller: persistence, identity: identity)
         WidgetReloader.shared.start()
@@ -499,12 +506,13 @@ extension AppEnvironment {
 
 #if DEBUG
 extension AppEnvironment {
-    static func preview() -> AppEnvironment {
+    static func preview(transport: (any HTTPTransport)? = nil) -> AppEnvironment {
         AppEnvironment(
             persistence: .preview,
             secrets: InMemorySecretStore(),
             anonymousIdentity: .inMemory(),
-            notificationClient: PreviewNotificationClient()
+            notificationClient: PreviewNotificationClient(),
+            transport: transport
         )
     }
 
@@ -514,8 +522,8 @@ extension AppEnvironment {
         return environment
     }
 
-    static func previewSignedIn(paired: Bool = true) -> AppEnvironment {
-        let environment = AppEnvironment.preview()
+    static func previewSignedIn(paired: Bool = true, transport: (any HTTPTransport)? = nil) -> AppEnvironment {
+        let environment = AppEnvironment.preview(transport: transport)
         let member = MemberDTO(
             id: UUID(),
             displayName: PreviewNames.member,

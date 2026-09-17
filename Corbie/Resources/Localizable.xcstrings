@@ -6898,6 +6898,41 @@
         }
       }
     },
+    "error.notconfigured.message": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese App-Version hat keine Serveradresse."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This build has no server address."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versión no tiene dirección de servidor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette version n'a pas d'adresse de serveur."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa versione non ha un indirizzo del server."
+          }
+        }
+      }
+    },
     "error.notfound.message": {
       "extractionState": "stale",
       "localizations": {

@@ -39,6 +39,13 @@ final class QAReleaseTests: XCTestCase {
         return try XCTUnwrap(plist as? [String: String], "the English strings table is not a dictionary")
     }
 
+    func testTheBundleCarriesTheServerUrl() {
+        let configuration = ServerConfiguration.fromBundle()
+        XCTAssertFalse(configuration.isNotConfigured, "CORBIE_SERVER_URL did not reach the app bundle")
+        XCTAssertEqual(configuration.functionsBaseURL.scheme, "https")
+        XCTAssertEqual(configuration.functionsBaseURL.path, "/functions/v1")
+    }
+
     @MainActor
     func testSignInWithAppleAsksOnlyForTheName() {
         XCTAssertEqual(OnboardingIntroView.signInScopes, [.fullName])

@@ -80,6 +80,7 @@ public struct APIError: Error, Sendable, Equatable {
         case decoding
         case invalidRequest
         case missingAppleToken
+        case notConfigured
     }
 
     public let kind: Kind
@@ -113,6 +114,8 @@ public struct APIError: Error, Sendable, Equatable {
         switch kind {
         case .missingAppleToken:
             return .auth(detail)
+        case .notConfigured:
+            return .notConfigured(detail)
         case .server where isUnauthorized:
             return .auth(detail)
         case .server, .transport, .decoding, .invalidRequest:
@@ -131,6 +134,11 @@ public struct APIError: Error, Sendable, Equatable {
             detail: "\(status) \(described)"
         )
     }
+
+    static let notConfigured = APIError(
+        kind: .notConfigured,
+        detail: "this build carries no server url, see \(ServerConfiguration.infoPlistKey)"
+    )
 
     static func transport(_ error: Error) -> APIError {
         APIError(kind: .transport, detail: String(describing: error))

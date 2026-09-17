@@ -17,10 +17,19 @@ import Testing
         #expect(ServerConfiguration(rawValue: "  ") == nil)
     }
 
-    @Test func bundleWithoutTheKeyFallsBackToTheCompiledDefault() {
+    @Test func aBundleWithoutTheKeyIsNotConfiguredAndSendsNothing() async throws {
         let configuration = ServerConfiguration.fromBundle(Bundle(for: BundleAnchor.self))
-        #expect(configuration == ServerConfiguration.fallback)
-        #expect(configuration.isPlaceholder)
+        #expect(configuration == ServerConfiguration.notConfigured)
+        #expect(configuration.isNotConfigured)
+        #expect(configuration.summary == "no server url in CORBIE_SERVER_URL")
+
+        let transport = FakeTransport([.json(#"{"canonicalURL":"https://shop.test","source":"generic"}"#)])
+        let client = APIClient(configuration: configuration, transport: transport, anonId: { "anon" })
+        await #expect(throws: APIError.notConfigured) {
+            _ = try await client.parse(url: URL(string: "https://shop.test/item")!)
+        }
+        #expect(transport.requestCount == 0)
+        #expect(APIError.notConfigured.corbieError == CorbieError.notConfigured(APIError.notConfigured.detail))
     }
 
     @Test func retryDelayGrowsAndStaysInsideTheJitterBand() {

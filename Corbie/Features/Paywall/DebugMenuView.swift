@@ -72,6 +72,13 @@ struct DebugMenuView: View {
             } footer: {
                 Text(verbatim: monetizationState)
             }
+            Section {
+                Text(verbatim: serverState)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } header: {
+                Text(verbatim: "Server")
+            }
             DebugNotificationsSections()
         }
         .navigationTitle(Text(verbatim: "Developer"))
@@ -88,6 +95,13 @@ struct DebugMenuView: View {
                 .contentShape(Rectangle())
         }
         .disabled(model.isWorking)
+    }
+
+    private var serverState: String {
+        """
+        \(environment.apiClient.configuration.summary)
+        version \(AppVersion.current())
+        """
     }
 
     private var monetizationState: String {

@@ -167,6 +167,7 @@ public struct APIClient: Sendable {
         authenticated: Bool,
         anonymous: Bool
     ) async throws -> HTTPResponse {
+        guard configuration.isNotConfigured == false else { throw APIError.notConfigured }
         var headers = ["X-App-Version": appVersion, "Accept": "application/json"]
         if body != nil {
             headers["Content-Type"] = "application/json"

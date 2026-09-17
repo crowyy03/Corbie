@@ -8,6 +8,7 @@ public enum CorbieError: Error, Equatable, Sendable {
     case notPremium
     case invalidInput(String)
     case notFound(String)
+    case notConfigured(String)
 }
 
 extension CorbieError: LocalizedError {
@@ -27,13 +28,16 @@ extension CorbieError: LocalizedError {
             return String(localized: "error.invalidinput.message")
         case .notFound:
             return String(localized: "error.notfound.message")
+        case .notConfigured:
+            return String(localized: "error.notconfigured.message")
         }
     }
 
     public var failureReason: String? {
         switch self {
         case let .persistence(detail), let .cloudKit(detail), let .network(detail),
-             let .auth(detail), let .invalidInput(detail), let .notFound(detail):
+             let .auth(detail), let .invalidInput(detail), let .notFound(detail),
+             let .notConfigured(detail):
             return detail
         case .notPremium:
             return nil

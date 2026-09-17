@@ -11,7 +11,11 @@ iPhone 17 Pro Max QA, iPhone 17e QA and iPhone 17 Badge.
 
 ### The server base URL ships empty
 
-RESOLVED 12-09. `CORBIE_SERVER_URL` in `project.yml` now carries the live Supabase project ref
+RESOLVED 12-09, and since 18-09 a build without it cannot reach a server at all: `APIClient` refuses
+the call and the app says "This build has no server address." (`docs/DECISIONS.md`). If link parsing
+comes back empty on a device, check Settings, Developer, Server, or the `server` log line at launch.
+
+`CORBIE_SERVER_URL` in `project.yml` carries the live Supabase project ref
 `powtuiqqagdoiuqjeebr`, it reaches the app and the share extension through their Info plists, and
 `ServerConfiguration.fromBundle` builds `https://powtuiqqagdoiuqjeebr.supabase.co/functions/v1` from
 it. The five migrations are applied on that project, all nine functions are deployed, and

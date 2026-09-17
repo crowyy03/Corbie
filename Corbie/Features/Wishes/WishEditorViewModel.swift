@@ -188,7 +188,9 @@ final class WishEditorViewModel {
             parseState = .idle
             didParseSucceed = true
         } catch {
+            guard Task.isCancelled == false else { return }
             parseState = .failed
+            environment.report(error)
         }
     }
 

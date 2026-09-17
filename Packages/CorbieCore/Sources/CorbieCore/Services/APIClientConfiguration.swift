@@ -1,8 +1,8 @@
 import Foundation
+import os
 
 public struct ServerConfiguration: Sendable, Equatable {
     public static let infoPlistKey = "CORBIE_SERVER_URL"
-    public static let defaultProjectRef = "corbie"
 
     public let functionsBaseURL: URL
 
@@ -33,17 +33,20 @@ public struct ServerConfiguration: Sendable, Equatable {
         self.init(functionsBaseURL: url)
     }
 
-    public static let fallback = ServerConfiguration(projectRef: defaultProjectRef)
-        ?? ServerConfiguration(functionsBaseURL: URL(fileURLWithPath: "/"))
+    public static let notConfigured = ServerConfiguration(functionsBaseURL: URL(fileURLWithPath: "/"))
 
     public static func fromBundle(_ bundle: Bundle = .main) -> ServerConfiguration {
         guard let raw = bundle.object(forInfoDictionaryKey: infoPlistKey) as? String,
               let configuration = ServerConfiguration(rawValue: raw)
-        else { return fallback }
+        else { return notConfigured }
         return configuration
     }
 
-    public var isPlaceholder: Bool { self == ServerConfiguration.fallback }
+    public var isNotConfigured: Bool { self == ServerConfiguration.notConfigured }
+
+    public var summary: String {
+        isNotConfigured ? "no server url in \(ServerConfiguration.infoPlistKey)" : functionsBaseURL.absoluteString
+    }
 
     public func url(path: String, query: [URLQueryItem] = []) -> URL {
         var components = URLComponents(url: functionsBaseURL, resolvingAgainstBaseURL: false)
@@ -55,6 +58,13 @@ public struct ServerConfiguration: Sendable, Equatable {
             components?.queryItems = query
         }
         return components?.url ?? functionsBaseURL
+    }
+}
+
+public extension ServerConfiguration {
+    func announce(process: String) {
+        Logger(subsystem: CorbieIdentifiers.bundleID, category: "server")
+            .notice("\(process, privacy: .public) talks to \(summary, privacy: .public)")
     }
 }
 

@@ -159,7 +159,6 @@ final class OnboardingViewModel {
     }
 
     private func exchangeSessionToken(authorizationCode: String?) async {
-        guard environment.sessionService.isConfigured else { return }
         do {
             try await environment.exchangeSessionToken(authorizationCode: authorizationCode)
         } catch {
