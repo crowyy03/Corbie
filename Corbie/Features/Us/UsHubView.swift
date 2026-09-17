@@ -146,7 +146,7 @@ struct UsHubView: View {
                         Text("us.hub.settings")
                             .corbieBody()
                             .foregroundStyle(palette.text)
-                        Text("us.settings.note")
+                        Text(environment.premiumGate.isMonetizationOff ? "us.settings.note.free" : "us.settings.note")
                             .corbieMono()
                             .foregroundStyle(palette.text2)
                     }

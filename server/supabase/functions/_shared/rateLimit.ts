@@ -13,6 +13,7 @@ export const buckets = {
   inviteRedeem: { capacity: 60, refillPerHour: 60 },
   parse: { capacity: 60, refillPerHour: 60 },
   fx: { capacity: 120, refillPerHour: 120 },
+  config: { capacity: 120, refillPerHour: 120 },
   events: { capacity: 600, refillPerHour: 600 },
   entitlement: { capacity: 240, refillPerHour: 240 },
   appleRevoke: { capacity: 10, refillPerHour: 10 },

@@ -5,6 +5,7 @@ public actor EntitlementService {
 
     private let client: APIClient
     private let spaces: any SpaceRepository
+    private let monetization: any MonetizationSource
     private let store: (any SecretStore)?
     private let local: (any LocalEntitlementProviding)?
     private let notifications: NotificationScheduler?
@@ -15,6 +16,7 @@ public actor EntitlementService {
     public init(
         client: APIClient,
         spaces: any SpaceRepository,
+        monetization: any MonetizationSource,
         store: (any SecretStore)? = KeychainStore(),
         local: (any LocalEntitlementProviding)? = nil,
         notifications: NotificationScheduler? = nil,
@@ -22,6 +24,7 @@ public actor EntitlementService {
     ) {
         self.client = client
         self.spaces = spaces
+        self.monetization = monetization
         self.store = store
         self.local = local
         self.notifications = notifications
@@ -31,6 +34,7 @@ public actor EntitlementService {
     public var state: EntitlementState { lastState }
 
     public func refresh(spaceId: UUID) async -> EntitlementState {
+        guard await monetization.refresh() else { return await settleWithoutMonetization() }
         let space = try? await spaces.space(id: spaceId)
         let server = await serverEntitlement(spaceId: spaceId)
         let localEntitlement = await local?.currentEntitlement()
@@ -49,7 +53,18 @@ public actor EntitlementService {
         return effective
     }
 
+    public func refreshWithoutSpace() async -> EntitlementState {
+        guard await monetization.refresh() else { return await settleWithoutMonetization() }
+        lastState = .readOnly
+        return lastState
+    }
+
+    public func stateWithoutSpace() -> EntitlementState {
+        monetization.isEnabled ? .readOnly : .monetizationOff
+    }
+
     public func cachedState(space: SpaceDTO) -> EntitlementState {
+        guard monetization.isEnabled else { return .monetizationOff }
         if let forced = EntitlementService.forcedState(now: now()) { return forced }
         return EntitlementResolver.resolve(
             EntitlementInputs(
@@ -122,6 +137,12 @@ public actor EntitlementService {
             expiresAt: expiresAt,
             payerMemberId: space.subscriptionPayerMemberId
         )
+    }
+
+    private func settleWithoutMonetization() async -> EntitlementState {
+        lastState = .monetizationOff
+        await notifications?.cancelTrialEnding()
+        return lastState
     }
 
     private func scheduleTrialEnding(_ state: EntitlementState) async {

@@ -47,4 +47,30 @@ public enum DebugEntitlementOverride: String, Sendable, Equatable, CaseIterable,
         UserDefaults(suiteName: suiteName) ?? .standard
     }
 }
+
+public enum DebugMonetizationOverride: String, Sendable, Equatable, CaseIterable, Codable {
+    case on
+    case off
+
+    public static let storageKey = "corbie.debug.monetization"
+
+    public var isEnabled: Bool { self == .on }
+
+    public static func stored(suiteName: String = CorbieIdentifiers.appGroup) -> DebugMonetizationOverride? {
+        guard let raw = defaults(suiteName).string(forKey: storageKey) else { return nil }
+        return DebugMonetizationOverride(rawValue: raw)
+    }
+
+    public static func store(_ override: DebugMonetizationOverride?, suiteName: String = CorbieIdentifiers.appGroup) {
+        guard let override else {
+            defaults(suiteName).removeObject(forKey: storageKey)
+            return
+        }
+        defaults(suiteName).set(override.rawValue, forKey: storageKey)
+    }
+
+    private static func defaults(_ suiteName: String) -> UserDefaults {
+        UserDefaults(suiteName: suiteName) ?? .standard
+    }
+}
 #endif

@@ -55,17 +55,26 @@ jobs:
       SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
       SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
     steps:
+      - name: Skip when the deploy secrets are not configured
+        if: env.SUPABASE_ACCESS_TOKEN == ''
+        run: echo "::notice::SUPABASE_ACCESS_TOKEN is not set, so this push was not deployed. Deploy by hand as server/DEPLOY.md describes."
+
       - uses: actions/checkout@v4
+        if: env.SUPABASE_ACCESS_TOKEN != ''
 
       - uses: supabase/setup-cli@v1
+        if: env.SUPABASE_ACCESS_TOKEN != ''
         with:
           version: latest
 
       - name: Link project
+        if: env.SUPABASE_ACCESS_TOKEN != ''
         run: supabase link --project-ref "$SUPABASE_PROJECT_REF" -p "$SUPABASE_DB_PASSWORD"
 
       - name: Push migrations
+        if: env.SUPABASE_ACCESS_TOKEN != ''
         run: supabase db push -p "$SUPABASE_DB_PASSWORD"
 
       - name: Deploy functions
+        if: env.SUPABASE_ACCESS_TOKEN != ''
         run: supabase functions deploy --project-ref "$SUPABASE_PROJECT_REF"

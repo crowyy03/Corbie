@@ -36,14 +36,15 @@ final class RouterTests: XCTestCase {
 
     func testJoinRoutes() throws {
         XCTAssertEqual(try route("corbie://join/k7m2qx"), .join("K7M2QX"))
-        XCTAssertEqual(try route("https://corbie.app/join/K7M2QX"), .join("K7M2QX"))
-        XCTAssertEqual(try route("https://www.corbie.app/join/K7M2QX"), .join("K7M2QX"))
+        XCTAssertEqual(try route("https://yourcorbie.app/join/K7M2QX"), .join("K7M2QX"))
+        XCTAssertEqual(try route("https://www.yourcorbie.app/join/K7M2QX"), .join("K7M2QX"))
     }
 
     func testUnknownLinksAreIgnored() throws {
         XCTAssertNil(try route("corbie://nowhere"))
         XCTAssertNil(try route("https://example.com/join/K7M2QX"))
-        XCTAssertNil(try route("https://corbie.app/pricing"))
+        XCTAssertNil(try route("https://yourcorbie.app/pricing"))
+        XCTAssertNil(try route("https://corbie.app/join/K7M2QX"))
     }
 
     @MainActor

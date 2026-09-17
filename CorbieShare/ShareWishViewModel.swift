@@ -120,9 +120,11 @@ final class ShareWishViewModel {
         partnerId = partner?.id
         partnerName = partner?.displayName
         isForMe = partnerId == nil
+        let client = APIClient(identity: .shared)
         let entitlements = EntitlementService(
-            client: APIClient(identity: .shared),
-            spaces: controller.repositories.spaces
+            client: client,
+            spaces: controller.repositories.spaces,
+            monetization: ServerMonetizationFlag(client: client)
         )
         let state = await entitlements.cachedState(space: space)
         stage = state.isPremium ? .ready : .readOnly

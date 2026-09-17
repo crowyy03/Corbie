@@ -17,6 +17,15 @@ final class DebugMenuViewModel {
         lastAction = label
     }
 
+    func force(_ override: DebugMonetizationOverride?, _ environment: AppEnvironment, label: String) async {
+        guard isWorking == false else { return }
+        isWorking = true
+        defer { isWorking = false }
+        DebugMonetizationOverride.store(override)
+        await environment.refreshEntitlement()
+        lastAction = label
+    }
+
     func clearEntitlementCache(_ environment: AppEnvironment) async {
         guard let space = environment.space, isWorking == false else { return }
         isWorking = true
@@ -40,13 +49,28 @@ struct DebugMenuView: View {
                     }
                 }
                 row("Follow the real subscription") {
-                    await model.force(nil, environment, label: "override cleared")
+                    await model.force(nil as DebugEntitlementOverride?, environment, label: "override cleared")
                 }
                 row("Clear the entitlement cache") { await model.clearEntitlementCache(environment) }
             } header: {
                 Text(verbatim: "Subscription")
             } footer: {
                 Text(verbatim: state)
+            }
+            Section {
+                row("Follow the server flag") {
+                    await model.force(nil as DebugMonetizationOverride?, environment, label: "monetization follows the server")
+                }
+                row("Force monetization on") {
+                    await model.force(DebugMonetizationOverride.on, environment, label: "monetization forced on")
+                }
+                row("Force monetization off") {
+                    await model.force(DebugMonetizationOverride.off, environment, label: "monetization forced off")
+                }
+            } header: {
+                Text(verbatim: "Monetization")
+            } footer: {
+                Text(verbatim: monetizationState)
             }
             DebugNotificationsSections()
         }
@@ -64,6 +88,13 @@ struct DebugMenuView: View {
                 .contentShape(Rectangle())
         }
         .disabled(model.isWorking)
+    }
+
+    private var monetizationState: String {
+        let store = MonetizationFlagStore()
+        let server = store.fetchedValue.map { $0 ? "on" : "off" } ?? "never fetched"
+        let forced = DebugMonetizationOverride.stored()?.rawValue ?? "none"
+        return "effective: \(store.isEnabled ? "on" : "off")\nserver: \(server)\nforced: \(forced)"
     }
 
     private var state: String {

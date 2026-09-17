@@ -11,26 +11,33 @@ import Testing
 
     @Test func aRunningIntroTrialUnlocksTheWidgets() {
         let subject = space(status: .trial, expiresAt: now.addingTimeInterval(3600))
-        #expect(WidgetPremiumRule.isPremium(space: subject, now: now))
+        #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: true))
         let over = space(status: .trial, expiresAt: now.addingTimeInterval(-3600))
-        #expect(WidgetPremiumRule.isPremium(space: over, now: now) == false)
+        #expect(WidgetPremiumRule.isPremium(space: over, now: now, monetizationEnabled: true) == false)
         let undated = space(status: .trial, expiresAt: nil)
-        #expect(WidgetPremiumRule.isPremium(space: undated, now: now) == false)
+        #expect(WidgetPremiumRule.isPremium(space: undated, now: now, monetizationEnabled: true) == false)
     }
 
     @Test func anActiveSubscriptionUnlocksUntilItExpires() {
         let live = space(status: .active, expiresAt: now.addingTimeInterval(86_400))
-        #expect(WidgetPremiumRule.isPremium(space: live, now: now))
+        #expect(WidgetPremiumRule.isPremium(space: live, now: now, monetizationEnabled: true))
         let lapsed = space(status: .active, expiresAt: now.addingTimeInterval(-1))
-        #expect(WidgetPremiumRule.isPremium(space: lapsed, now: now) == false)
+        #expect(WidgetPremiumRule.isPremium(space: lapsed, now: now, monetizationEnabled: true) == false)
         let openEnded = space(status: .active, expiresAt: nil)
-        #expect(WidgetPremiumRule.isPremium(space: openEnded, now: now))
+        #expect(WidgetPremiumRule.isPremium(space: openEnded, now: now, monetizationEnabled: true))
     }
 
     @Test func readOnlyAndNoneStayLocked() {
         for status in [SubscriptionStatus.none, .readonly, .expired] {
             let subject = space(status: status, expiresAt: now.addingTimeInterval(86_400))
-            #expect(WidgetPremiumRule.isPremium(space: subject, now: now) == false)
+            #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: true) == false)
+        }
+    }
+
+    @Test func monetizationOffUnlocksEveryWidgetWhateverTheSpaceSays() {
+        for status in [SubscriptionStatus.none, .readonly, .expired, .trial, .active] {
+            let subject = space(status: status, expiresAt: now.addingTimeInterval(-86_400))
+            #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: false))
         }
     }
 
@@ -60,7 +67,8 @@ import Testing
             controller: seed.controller,
             calendar: calendar,
             locale: locale,
-            viewerMemberId: seed.me.id
+            viewerMemberId: seed.me.id,
+            monetization: MonetizationTestSupport.enabled
         )
         return World(provider: provider, seed: seed, now: now)
     }
@@ -399,7 +407,12 @@ import Testing
 
     @Test func anEmptyStoreProducesLockedEmptySnapshots() async throws {
         let controller = PersistenceController.inMemory()
-        let provider = WidgetDataProvider(controller: controller, calendar: calendar, locale: locale)
+        let provider = WidgetDataProvider(
+            controller: controller,
+            calendar: calendar,
+            locale: locale,
+            monetization: MonetizationTestSupport.enabled
+        )
         let now = DomainClock.date("2026-09-05 12:00", in: calendar)
         #expect(try await provider.context(now: now) == nil)
         #expect(try await provider.daysTogether(now: now) == DaysTogetherSnapshot(days: nil, isPremium: false))
@@ -447,7 +460,8 @@ import Testing
             controller: seed.controller,
             calendar: calendar,
             locale: locale,
-            viewerMemberId: seed.me.id
+            viewerMemberId: seed.me.id,
+            monetization: MonetizationTestSupport.enabled
         )
         return World(provider: provider, seed: seed, now: now)
     }

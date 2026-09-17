@@ -18,7 +18,9 @@ struct SettingsView: View {
             partnerSection
             datesSection
             spaceSection
-            subscriptionSection
+            if environment.premiumGate.isMonetizationOff == false {
+                subscriptionSection
+            }
             privacySection
             dataSection
             appearanceSection
@@ -309,6 +311,10 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         Section {
+            row(titleKey: "settings.support.title") {
+                guard let url = SupportMail.current().url else { return }
+                openURL(url)
+            }
             Text(verbatim: model.versionLine)
                 .corbieMono()
                 .foregroundStyle(palette.text2)

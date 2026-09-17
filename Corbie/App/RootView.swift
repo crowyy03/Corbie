@@ -123,18 +123,29 @@ struct RootView: View {
             JoinSheet(code: request.code)
         }
         .task { await offerTheTrialOnce() }
+        .task { await refreshEntitlementHourly() }
         .task { await partnerWatcher.observe(environment) }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
             askForReviewIfEarned()
+            Task { await environment.refreshEntitlement() }
             Task { await partnerWatcher.check(environment) }
         }
     }
 
     private func offerTheTrialOnce() async {
-        guard TrialOfferFlag().claim() else { return }
         await environment.refreshEntitlement()
-        isTrialOfferPresented = environment.premiumGate.isPremium == false
+        let state = environment.premiumGate.state
+        guard TrialOfferFlag.mayClaim(state), TrialOfferFlag().claim() else { return }
+        isTrialOfferPresented = state.isPremium == false
+    }
+
+    private func refreshEntitlementHourly() async {
+        while Task.isCancelled == false {
+            try? await Task.sleep(for: .seconds(3600))
+            guard Task.isCancelled == false else { return }
+            await environment.refreshEntitlement()
+        }
     }
 
     private var paywallRequest: Binding<PaywallRequest?> {

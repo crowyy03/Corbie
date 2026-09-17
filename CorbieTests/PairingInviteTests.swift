@@ -33,7 +33,7 @@ final class PairingInviteTests: XCTestCase {
 
     func testSharedLinkParsesBackIntoAJoinRoute() throws {
         let url = try XCTUnwrap(InviteLink.url(code: "K7M2QX"))
-        XCTAssertEqual(url.absoluteString, "https://corbie.app/join/K7M2QX")
+        XCTAssertEqual(url.absoluteString, "https://yourcorbie.app/join/K7M2QX")
         XCTAssertEqual(Router.route(for: url), .join("K7M2QX"))
     }
 

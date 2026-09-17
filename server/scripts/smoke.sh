@@ -53,6 +53,9 @@ check "GET /fx?base=USD" 200 '"rates"' "$code"
 code=$(call GET "/fx?base=XX")
 check "GET /fx?base=XX (bad code)" 400 invalid_request "$code"
 
+code=$(call GET /config)
+check "GET /config" 200 monetizationEnabled "$code"
+
 code=$(call POST /parse -H 'content-type: application/json' -d '{"url":"https://www.ikea.com/us/en/p/billy-bookcase-white-00263850/"}')
 check "POST /parse" 200 canonicalURL "$code"
 

@@ -6,7 +6,9 @@ final class PaywallScreensUITests: XCTestCase {
     }
 
     func testOnboardingEndsOnTheTrialOfferAndTheQuietLinkOpensTheComparison() {
-        let app = XCUIApplication.corbie(extraArguments: ["-corbie-entitlement", "read_only"])
+        let app = XCUIApplication.corbie(
+            extraArguments: ["-corbie-entitlement", "read_only"] + XCUIApplication.monetizationOn
+        )
         app.launch()
         passOnboardingIfShown(app)
 

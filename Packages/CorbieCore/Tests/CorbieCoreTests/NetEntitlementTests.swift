@@ -202,6 +202,7 @@ import Testing
         let service = EntitlementService(
             client: NetTestSupport.client(transport: transport),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: secrets,
             local: StubLocalEntitlements(nil),
             now: { NetTestSupport.date("2026-09-20T10:00:00Z") }
@@ -229,6 +230,7 @@ import Testing
                 transport: FakeTransport(json: payload(world.space.id, status: "none", expiresAt: nil))
             ),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: InMemorySecretStore(),
             local: StubLocalEntitlements(
                 LocalEntitlement(productId: "app.corbie.yearly", expiresAt: endsAt, isInIntroOffer: true)
@@ -254,6 +256,7 @@ import Testing
                 transport: FakeTransport(json: payload(world.space.id, status: "none", expiresAt: nil))
             ),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: InMemorySecretStore(),
             local: StubLocalEntitlements(
                 LocalEntitlement(productId: "app.corbie.yearly", expiresAt: endsAt, isInIntroOffer: true)
@@ -285,6 +288,7 @@ import Testing
                 transport: FakeTransport(json: payload(world.space.id, status: "active", expiresAt: "2027-09-05T10:00:00Z"))
             ),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: InMemorySecretStore(),
             local: StubLocalEntitlements(nil),
             notifications: scheduler,
@@ -304,6 +308,7 @@ import Testing
                 transport: FakeTransport(json: payload(world.space.id, status: "active", expiresAt: "2027-09-05T10:00:00Z"))
             ),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: secrets,
             now: { NetTestSupport.date("2026-09-20T10:00:00Z") }
         )
@@ -315,6 +320,7 @@ import Testing
                 retry: .noRetries
             ),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: secrets,
             now: { NetTestSupport.date("2026-09-21T10:00:00Z") }
         )
@@ -327,6 +333,7 @@ import Testing
         let service = EntitlementService(
             client: NetTestSupport.client(transport: FakeTransport(json: payload(world.space.id, status: "none", expiresAt: nil))),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: InMemorySecretStore(),
             now: { NetTestSupport.date("2026-09-05T10:00:00Z") }
         )
@@ -344,6 +351,7 @@ import Testing
                 transport: FakeTransport(json: payload(world.space.id, status: "active", expiresAt: "2027-09-05T10:00:00Z"))
             ),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: secrets,
             now: { NetTestSupport.date("2026-09-20T10:00:00Z") }
         )
@@ -352,6 +360,7 @@ import Testing
         let offline = EntitlementService(
             client: NetTestSupport.client(transport: FakeTransport([.urlFailure(.notConnectedToInternet)]), retry: .noRetries),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: secrets,
             now: { NetTestSupport.date("2026-09-21T10:00:00Z") }
         )
@@ -361,6 +370,7 @@ import Testing
         let mirroredOnly = EntitlementService(
             client: NetTestSupport.client(transport: FakeTransport([.urlFailure(.notConnectedToInternet)]), retry: .noRetries),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: InMemorySecretStore(),
             now: { NetTestSupport.date("2026-09-21T10:00:00Z") }
         )
@@ -376,6 +386,7 @@ import Testing
         let service = EntitlementService(
             client: NetTestSupport.client(transport: FakeTransport(json: payload(world.space.id, status: "active", expiresAt: nil))),
             spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
             store: secrets
         )
         _ = await service.refresh(spaceId: world.space.id)

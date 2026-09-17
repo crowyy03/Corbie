@@ -42,6 +42,7 @@ string.
 | `ChoreUITests` | The chore list is built from the catalog, every card is rated with the buttons, and the split waits for the partner; the reveal is covered by `ChoreRevealViewModelTests` because one device has one member. |
 | `OpenSavingsUITests` | An open plan takes two contributions and one withdrawal, shows the total and no percentage anywhere. |
 | `PaywallScreensUITests` | Onboarding ends on the trial offer, the quiet link opens the comparison table, both screens carry their key texts. |
+| `MonetizationOffUITests` | With monetization off and a forced read-only entitlement, onboarding lands on the tabs with no trial offer, the plus in Tasks opens the editor rather than the paywall, and settings shows the support entry but no plans and no restore. Every other walk launches with `-corbie-monetization off` unless it asks for `on`, so the live server's flag cannot change what the suite sees. |
 | `ThemeUITests` | Tapping Deep repaints the page margin dark at once and turns off "match system"; a picked theme survives a relaunch; the partner's colour slot is offered once. |
 | `FreeTimeUITests` | The calendar entry into free time raises the privacy sheet first, "Not now" leaves the screen usable, the range picker and filters are there. |
 | `UsBadgeUITests` | An unanswered vote dots the Us pill and answering it clears the dot. |

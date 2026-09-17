@@ -14,6 +14,10 @@ struct TrialOfferFlag {
         defaults.bool(forKey: TrialOfferFlag.storageKey)
     }
 
+    static func mayClaim(_ state: EntitlementState) -> Bool {
+        state.isMonetizationOff == false
+    }
+
     func claim() -> Bool {
         guard hasBeenShown == false else { return false }
         defaults.set(true, forKey: TrialOfferFlag.storageKey)

@@ -9,6 +9,7 @@ public struct APIClient: Sendable {
         public static let entitlement = "entitlement"
         public static let events = "events"
         public static let appleRevoke = "apple-revoke"
+        public static let config = "config"
     }
 
     public let configuration: ServerConfiguration
@@ -109,6 +110,16 @@ public struct APIClient: Sendable {
             anonymous: true
         )
         return try decode(FXRatesPayload.self, from: response)
+    }
+
+    public func config() async throws -> ConfigPayload {
+        let response = try await send(
+            method: .get,
+            path: Path.config,
+            authenticated: false,
+            anonymous: true
+        )
+        return try decode(ConfigPayload.self, from: response)
     }
 
     public func entitlement(spaceId: UUID) async throws -> EntitlementPayload {

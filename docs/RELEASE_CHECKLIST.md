@@ -1,7 +1,8 @@
 # Release checklist
 
-State of the build in this worktree, checked against spec section 12 and architecture section 16 on
-2026-09-06 with Xcode 26.6 and the iOS 26.5 runtime. Screenshot names refer to the QA run described in
+State of the build, checked against spec section 12 and architecture section 16 on 2026-09-06 and
+updated for module 21 (Apple wiring and the monetization flag) on 2026-09-17, with Xcode 26.6 and the
+iOS 26.5 runtime. Screenshot names refer to the QA run described in
 `docs/TEST_PLAN.md`; they are produced by `CorbieUITests` and written to the directory named in
 `TEST_RUNNER_CORBIE_SCREENSHOT_DIR`.
 
@@ -19,13 +20,13 @@ Status values: **done**, **blocked on Apple account**, **blocked on device test*
 | Sign in with Apple works | blocked on device test | `Corbie/Features/Onboarding/OnboardingIntroView.swift:132`. The simulator has no iCloud account (`AKAuthenticationError -7022` in the test log), so the real flow needs a device with an Apple ID. `docs/TEST_PLAN.md` section 9. |
 | The debug bypass is compiled out of Release | done | Both halves sit inside `#if DEBUG`: the row in the stack at `Corbie/Features/Onboarding/OnboardingIntroView.swift:21`, the button itself at `:144`, the view model entry at `Corbie/Features/Onboarding/OnboardingViewModel.swift:83`. `grep -rn "debugSignIn" Corbie --include='*.swift'` returns only those two files. The UI-test store reset is guarded the same way: `CorbieApp.init` calls `DebugLaunch.resetStoreIfRequested()` inside `#if DEBUG` (`Corbie/App/CorbieApp.swift:16`) and the whole of `Corbie/App/DebugLaunch.swift` sits inside `#if DEBUG`. So is the developer menu that expires the trial: `Corbie/Features/Settings/SettingsView.swift:274` (`#if DEBUG`, the link at `:275`) and all of `Corbie/Features/Paywall/DebugMenuView.swift`. Proof from the built product, not from the source: `xcodebuild -scheme Corbie -configuration Release -destination 'generic/platform=iOS Simulator' -derivedDataPath /tmp/corbie-dd-release build` succeeds, and the binary it writes carries no `debugSignIn` symbol, no `-corbie-reset-store` string, no "Expire the trial" and no "debug build" (`nm -a` and `strings` over `Release-iphonesimulator/Corbie.app/Corbie`, four counts of zero). |
 | Account deletion exists | done | `Corbie/Features/Settings/SettingsView.swift:259` opens the confirmation, `SettingsViewModel.deleteAccount` (`:134`) deletes or leaves the space, revokes the Apple credential and wipes the device. `QASettingsUITests.testZDeletingTheAccountReturnsToOnboarding` walks it and lands back on onboarding (screenshots `settings_delete_confirm`, `settings_after_delete`). |
-| Privacy nutrition labels | not done, App Store Connect only | Nothing to change in the app: analytics carries enum names and counts only (`Packages/CorbieCore/Sources/CorbieCore/Services/AnalyticsEvent.swift`), identified by a device UUID (`AnonymousIdentity`). Answer the questionnaire as spec section 15 says: Data Not Linked to You, Usage Data and Diagnostics. |
+| Privacy nutrition labels | done in App Store Connect, one mismatch | Published: Product Interaction for analytics, Crash and Performance for app functionality, nothing linked, no tracking. The code collects no crash or performance data (no MetricKit, no crash reporter), so that line over-declares; it also leaves out Other User Content, which the app does send (links pasted for wishes go to `/parse`, invite share links go to `/invite`). `Corbie/Resources/PrivacyInfo.xcprivacy` declares exactly what the code does. Align the label with it. |
 | No placeholder text in the app | done | `CorbieTests/QAReleaseTests.swift` (`testNoPlaceholderCopyReachesTheEnglishStrings`) reads the compiled English strings table and fails on `lorem`, `todo`, `fixme`, `placeholder`, `tbd`, `xxx`. |
 | No exclamation marks, em dashes or arrows in the copy | done | `CorbieTests/QAReleaseTests.swift` (`testTheEnglishCopyKeepsTheBrandRules`) plus `scripts/lint_style.sh`, which checks every language in the catalog. |
 | No third-party SDKs | done | `Packages/CorbieCore/Package.swift` declares no runtime dependency; the only optional package (`swift-testing`) is added for tests when `CORBIE_EXTERNAL_TESTING=1`. |
 | App icon | done | `Corbie/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png`, the two-raven mark from the brand book, 1024x1024. The same outline is drawn in the app by `CorbieMarkShape` (`Packages/CorbieCore/Sources/CorbieCore/Design/CorbieMarkShape.swift`), so the icon and the in-app mark are the same drawing rather than two lookalikes. |
 | Export compliance | done | `ITSAppUsesNonExemptEncryption` is `false` in `project.yml` (Corbie target info); asserted by `CorbieTests/QAReleaseTests.swift` (`testExportComplianceIsDeclared`). Answer the App Store Connect question as exempt. |
-| Age rating | not done, App Store Connect only | 4+ per spec section 12. Nothing in the app produces user-generated public content; capsules and votes stay inside the pair. Fill the questionnaire in App Store Connect. |
+| Age rating | done in App Store Connect | 4+, set by the founder. Nothing in the app produces public user content; capsules and votes stay inside the pair. |
 | Permission strings match what the app asks for | done | Calendar full access, calendar write-only and photo library are declared and used; location, camera, contacts, Face ID and microphone are not declared and never requested. Asserted by `CorbieTests/QAReleaseTests.swift` (`testEveryPermissionTheAppAsksForHasAReason`, `testNoReasonIsDeclaredForAPermissionTheAppNeverAsksFor`). |
 | Permission refusals have no dead end | done | `CorbieUITests/QAPermissionsUITests` walks calendar, photos and notifications with the prompt denied; each screen keeps a way out and the denied ones name where to turn access on. Revoke first with `xcrun simctl privacy`, see `docs/TEST_PLAN.md` section 3. Screenshots `permission_calendar_denied`, `permission_photos_picker`, `permission_notifications_denied`. |
 | First launch without network does not crash | done | The whole QA matrix runs against an unreachable server and a simulator with no iCloud account. `CorbieUITests/QAOfflineUITests` walks the invite and the link parser and both fail into a hint with a way out (screenshots `offline_invite_failed`, `offline_parse_failed`). Full table in `docs/TEST_PLAN.md` section 2. |
@@ -36,6 +37,31 @@ Status values: **done**, **blocked on Apple account**, **blocked on device test*
 | 14 day introductory offer on both products | not done, App Store Connect only | `Products.storekit` carries a `P2W` free introductory offer on `app.corbie.monthly` and `app.corbie.yearly`, which only steers the local test configuration. The same offer has to be created on both products in App Store Connect, or `Product.SubscriptionInfo.isEligibleForIntroOffer` answers false in production and the CTA reads Subscribe for everyone. |
 | Billing Grace Period switched on | not done, App Store Connect only | A console setting, not code. Without it Apple never sends `DID_FAIL_TO_RENEW` with a grace window, so `in_grace_period` never reaches `entitlements` and a failed renewal drops the pair to read-only on the first retry. |
 
+## Module 21 gates for a free v1
+
+| Item | Status | Evidence |
+| --- | --- | --- |
+| Monetization is off on the live server | release gate | `curl -s https://powtuiqqagdoiuqjeebr.supabase.co/functions/v1/config` must print `{"monetizationEnabled":false}` on the day of submission. The app then treats everyone as premium: no trial offer, no comparison table, no read-only, widgets unlocked, no trial notice, no subscription section in settings (`NetMonetizationTests`, `MonetizationOffUITests`). |
+| Purchase path unreachable while monetization is off | done | `PremiumGate.presentPaywall` returns early and every gated action passes; `TrialOfferView` is only shown by `RootView.offerTheTrialOnce`, which does not even claim its one-time flag while monetization is off. `StoreService` never loads products because `EntitlementService.refresh` returns before it asks StoreKit. `Products.storekit` is a navigator file group and a scheme Run option, not a bundle resource. Do not submit the two subscriptions with this version. |
+| Universal links on `yourcorbie.app` | done | `Configs/Corbie.entitlements` carries `applinks:yourcorbie.app`; the live association file names `735XXP9B5R.app.corbie` for `/join/*`, is served as `application/json`, and Apple's CDN (`app-site-association.cdn-apple.com/a/v1/yourcorbie.app`) already holds the same body. |
+| Support and privacy URLs | done | `https://yourcorbie.app/support`, `/privacy` and `/terms` answer 200. The app opens `/privacy` and `/terms` from settings and the paywall footer (`LegalPage`), and settings has a Contact support entry that mails `support@yourcorbie.app` with the device, system and app version prefilled (`SupportMail`). |
+| Privacy manifest in every target | done | `Corbie/Resources/PrivacyInfo.xcprivacy`, `CorbieWidgets/PrivacyInfo.xcprivacy`, `CorbieShare/PrivacyInfo.xcprivacy`: App Group defaults declared with reasons 1C8F.1 and CA92.1. Without it App Store Connect rejects the upload with ITMS-91053. |
+| No personal address anywhere | done in the app, not in git | No personal address in the sources, the string catalog or the built binary; `SupportMailTests.testTheOnlyAddressInTheCatalogIsSupport` pins it. The public GitHub repository still shows the personal address as the author of every commit. |
+| Trader status (EU Digital Services Act) | founder, App Store Connect | See the module 21 report. |
+
+## When banking lands
+
+1. Sign the Paid Apps Agreement (bank account and tax form) in App Store Connect, Business.
+2. Create `app.corbie.monthly` and `app.corbie.yearly` in the group `corbie.premium` with the prices from spec section 8. On both, add a 14-day free introductory offer. Turn on Billing Grace Period for the group.
+3. Decide how production App Store notifications reach a project whose `APPLE_ENV` says `Production`: either a second Supabase project for production with its own URL in App Store Connect, or a server change that accepts both environments on one project and records which one wrote each row. The function refuses the other environment today, and both URLs point at the one project.
+4. Set `APPLE_TEAM_ID`, `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` if that has not happened yet; `/apple-revoke` needs them either way.
+5. Submit the two subscriptions for review together with a build.
+6. Run the sandbox purchase checks in `docs/TEST_PLAN.md` section 7 on a build with `-corbie-monetization on` or the developer menu's "Force monetization on".
+7. Flip the value in the Supabase SQL editor:
+   `update public.app_config set value = 'true'::jsonb, updated_at = now() where key = 'monetization_enabled';`
+8. Verify: `curl -s https://powtuiqqagdoiuqjeebr.supabase.co/functions/v1/config` prints `{"monetizationEnabled":true}`. On a device that installed during the free period, relaunch the app: the trial offer appears once, the plus in Tasks opens the comparison table after the offer is skipped, and settings shows the subscription section.
+9. To undo, run the same statement with `'false'::jsonb`. Devices pick it up on the next launch, foreground or hourly refresh.
+
 ## Release configuration
 
 | Item | Status | Evidence |
@@ -43,8 +69,8 @@ Status values: **done**, **blocked on Apple account**, **blocked on device test*
 | The app builds in the Release configuration | done, was failing | Two `#Preview` blocks called `AppEnvironment.preview()` and `AppEnvironment.previewSignedIn()`, which live in a `#if DEBUG` extension, without a guard of their own, so `-configuration Release` failed to compile `OnboardingIntroView.swift` and `SettingsView.swift` and no archive was possible. Both are wrapped now and the Release build succeeds with no `warning:` and no `error:` line. It was broken on `main` too: `git show main:Corbie/Features/Settings/SettingsView.swift` ends with the same unguarded preview. |
 | `CORBIE_SERVER_URL` points at the real Supabase project | done | `project.yml` base settings carry the project ref `powtuiqqagdoiuqjeebr`; the built `Corbie.app/Info.plist` shows it, and the live smoke run in `server/DEPLOY.md` section 7 passed 15 of 15 non-Apple checks. Deployment steps and secrets are in `server/DEPLOY.md`. |
 | CloudKit schema deployed from development to production | blocked on Apple account | Architecture section 18.4. Nothing in the repo can prove it; do it in the CloudKit dashboard before the first TestFlight build that ships to strangers. |
-| App Store Server Notifications URL set for sandbox and production | blocked on Apple account | Architecture section 18.9. The server side lives in `server/supabase/functions`. |
-| `DEVELOPMENT_TEAM` filled in | blocked on Apple account | `project.yml` ships an empty `DEVELOPMENT_TEAM`. |
+| App Store Server Notifications URL set for sandbox and production | done, with a known gap | Both point at `https://powtuiqqagdoiuqjeebr.supabase.co/functions/v1/appstore-notifications`. One project answers both, but `APPLE_ENV` is `Sandbox`, so production notifications are refused with 400 and Apple keeps retrying. Harmless while monetization is off and no product is on sale; it has to be solved before the flip, see "When banking lands". |
+| `DEVELOPMENT_TEAM` filled in | done | `project.yml` base settings carry `735XXP9B5R`. Signing needs that team signed into Xcode on this Mac (Settings, Accounts); see the module 21 report for the device build result. |
 | Version and build number | done | `MARKETING_VERSION` 1.0, `CURRENT_PROJECT_VERSION` 1 in `project.yml`; shown in settings through `settings.about.version`. |
 
 ## Store listing (spec section 12)

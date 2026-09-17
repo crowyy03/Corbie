@@ -8,7 +8,7 @@ enum LegalPage: String, Identifiable, CaseIterable {
 
     var id: String { rawValue }
 
-    var url: URL? { URL(string: "https://corbie.app/" + rawValue) }
+    var url: URL? { URL(string: "https://\(CorbieIdentifiers.universalLinkHost)/" + rawValue) }
 
     var settingsTitleKey: String { "settings.legal." + rawValue }
 

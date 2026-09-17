@@ -7,7 +7,7 @@ final class QAReadOnlyUITests: XCTestCase {
     }
 
     func testAnExpiredTrialLocksCreationAndKeepsTheCalendarAndToday() throws {
-        let app = launchSignedIn()
+        let app = launchSignedIn(extraArguments: XCUIApplication.monetizationOn)
 
         let taskTitle = uniqueTitle("Water the plants")
         addTaskDueToday(app, title: taskTitle)
@@ -65,7 +65,7 @@ final class QAReadOnlyUITests: XCTestCase {
     }
 
     func testTheWeeklyRecapStaysFreeAfterTheTrial() throws {
-        let app = launchSignedIn()
+        let app = launchSignedIn(extraArguments: XCUIApplication.monetizationOn)
         setTrial(app, action: QAText.expireTrial)
         closeUsHub(app)
         selectTab(app, .today)

@@ -42,8 +42,8 @@ final class SettingsStatusTests: XCTestCase {
     }
 
     func testTheLegalPagesPointAtTheHostedDocuments() {
-        XCTAssertEqual(LegalPage.privacy.url?.absoluteString, "https://corbie.app/privacy")
-        XCTAssertEqual(LegalPage.terms.url?.absoluteString, "https://corbie.app/terms")
+        XCTAssertEqual(LegalPage.privacy.url?.absoluteString, "https://yourcorbie.app/privacy")
+        XCTAssertEqual(LegalPage.terms.url?.absoluteString, "https://yourcorbie.app/terms")
         for page in LegalPage.allCases {
             let title = String(localized: String.LocalizationValue(page.settingsTitleKey))
             XCTAssertNotEqual(title, page.settingsTitleKey)

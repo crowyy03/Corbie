@@ -5,6 +5,14 @@ import Foundation
 enum DebugLaunch {
     static let resetStoreArgument = "-corbie-reset-store"
     static let entitlementArgument = "-corbie-entitlement"
+    static let monetizationArgument = "-corbie-monetization"
+
+    static func applyMonetizationArgument(arguments: [String] = ProcessInfo.processInfo.arguments) {
+        guard let flag = arguments.firstIndex(of: monetizationArgument), flag + 1 < arguments.count,
+              let override = DebugMonetizationOverride(rawValue: arguments[flag + 1])
+        else { return }
+        DebugMonetizationOverride.store(override)
+    }
 
     static func applyEntitlementArgument(arguments: [String] = ProcessInfo.processInfo.arguments) {
         guard let flag = arguments.firstIndex(of: entitlementArgument), flag + 1 < arguments.count,

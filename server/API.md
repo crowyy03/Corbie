@@ -2,16 +2,16 @@
 
 Base URL: `https://<project-ref>.supabase.co/functions/v1`. All functions are deployed with `verify_jwt = false`; authentication is done inside the function.
 
-The server never sees couple data. It stores invite codes (15 min TTL), entitlement per `spaceId`, anonymous analytics events, an FX cache and a parse cache of the product links it fetched.
+The server never sees couple data. It stores invite codes (15 min TTL), entitlement per `spaceId`, anonymous analytics events, an FX cache, a parse cache of the product links it fetched, and the monetization flag.
 
 ## Headers
 
-| Header          | Where                                                 | Value                                                                                                                                                                                                                                                                                                                                                                                                              |
-| --------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Authorization` | `session`, `invite`, `entitlement`, `apple-revoke`    | `Bearer <token>`. Either an Apple identity token (RS256 JWT from Sign in with Apple, verified against Apple JWKS, `iss` `https://appleid.apple.com`, `aud` `app.corbie`) or a Corbie session token issued by `POST /session` (HS256 JWT, `iss` `corbie`). Apple identity tokens live about ten minutes, so the client exchanges one for a session token right after sign-in and uses the session token afterwards. |
-| `X-Anon-Id`     | `events` (required), `parse`, `fx` (rate limit key)   | device-local UUID, not linked to Apple ID                                                                                                                                                                                                                                                                                                                                                                          |
-| `X-App-Version` | all                                                   | `MARKETING_VERSION (BUILD)`                                                                                                                                                                                                                                                                                                                                                                                        |
-| `Content-Type`  | POST                                                  | `application/json`                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Header          | Where                                                         | Value                                                                                                                                                                                                                                                                                                                                                                                                              |
+| --------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Authorization` | `session`, `invite`, `entitlement`, `apple-revoke`            | `Bearer <token>`. Either an Apple identity token (RS256 JWT from Sign in with Apple, verified against Apple JWKS, `iss` `https://appleid.apple.com`, `aud` `app.corbie`) or a Corbie session token issued by `POST /session` (HS256 JWT, `iss` `corbie`). Apple identity tokens live about ten minutes, so the client exchanges one for a session token right after sign-in and uses the session token afterwards. |
+| `X-Anon-Id`     | `events` (required), `parse`, `fx`, `config` (rate limit key) | device-local UUID, not linked to Apple ID                                                                                                                                                                                                                                                                                                                                                                          |
+| `X-App-Version` | all                                                           | `MARKETING_VERSION (BUILD)`                                                                                                                                                                                                                                                                                                                                                                                        |
+| `Content-Type`  | POST                                                          | `application/json`                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 No CORS headers are sent: the client is a native app and no browser origin is allowed. `OPTIONS` is answered with `405`.
 
@@ -34,6 +34,7 @@ A token bucket per IP and route lives in the `rate_limits` table; a full bucket 
 | `invite-redeem` | 60                       |
 | `parse`         | 60                       |
 | `fx`            | 120                      |
+| `config`        | 120                      |
 | `entitlement`   | 240                      |
 | `events`        | 600                      |
 | `apple-revoke`  | 10                       |
@@ -101,6 +102,14 @@ Response `200`:
 Rate limited per IP. ECB rates via Frankfurter, cached 12 h per base.
 
 Response `200`: `{"base": "USD", "date": "2026-09-05", "rates": {"EUR": 0.91, "GBP": 0.78, "CHF": 0.88, "CAD": 1.36, ...}}`
+
+### GET `/config`
+
+No auth. Rate limited per IP (120/hour). Returns the server-controlled monetization flag, read from the `monetization_enabled` row of `app_config`.
+
+Response `200`: `{"monetizationEnabled": false}`
+
+A missing row answers `false`. A database error, or a stored value that is not a JSON boolean, answers `500 internal` and never a flag value.
 
 ### POST `/appstore-notifications`
 
@@ -171,6 +180,8 @@ The response body is read as a stream and abandoned once 3 MB have arrived, so a
 **oEmbed.** TikTok uses the public `https://www.tiktok.com/oembed` endpoint. Instagram's oEmbed needs a Facebook app token: set `INSTAGRAM_OEMBED_TOKEN` to enable it. Without the token an Instagram link returns only `canonicalURL` and `source`, which is the same fallback the client already handles.
 
 **FX.** Cached 12 h per base in `fx_rates`. If Frankfurter fails and a stale row exists, the stale row is served rather than an error; only a cold cache plus a failing upstream returns `502 upstream_failed`.
+
+**Config.** `monetizationEnabled` is `false` only when the row says `false` or does not exist. When the read fails, or the row holds anything other than a JSON `true` or `false`, the endpoint answers `500 internal` instead of falling back to `false`. The client contract is to keep the last value it fetched when a request fails, and to treat a value it never fetched as `false`. An error therefore leaves every app where it was, while a `200 false` during a database outage would hand the paid app to everyone for free at once. The value is read on every request, with no cache on the server.
 
 **App Store notifications.** The JWS `x5c` chain is verified in full: every certificate must be inside its validity window, each must be signed by the next, issuer and subject DER must match along the chain, and the last certificate must be byte-for-byte the Apple Root CA G3 embedded in `_shared/appleRootCA.ts` (SHA-256 `63343abf…3e9179`). Every certificate above the leaf must also be a certificate authority: basic constraints `cA=TRUE`, the `keyCertSign` key usage bit, and a path length constraint that still covers the certificates below it. The leaf must carry Apple's App Store signing extension `1.2.840.113635.100.6.11.1`, so an ordinary end entity certificate issued by Apple to some other developer cannot sign a notification. `signedTransactionInfo` and `signedRenewalInfo` are verified the same way, not merely decoded.
 

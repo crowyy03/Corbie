@@ -198,3 +198,26 @@ enum NetTestSupport {
         return batch.events
     }
 }
+
+struct FixedMonetization: MonetizationSource {
+    let isEnabled: Bool
+
+    func refresh() async -> Bool { isEnabled }
+}
+
+enum MonetizationTestSupport {
+    static let enabled: MonetizationFlagStore = {
+        let store = MonetizationFlagStore(suiteName: "corbie.tests.monetization.enabled")
+        store.record(true)
+        return store
+    }()
+
+    static func freshStore() -> (store: MonetizationFlagStore, suiteName: String) {
+        let suiteName = "corbie.tests.monetization." + UUID().uuidString
+        return (MonetizationFlagStore(suiteName: suiteName), suiteName)
+    }
+
+    static func remove(suiteName: String) {
+        UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName)
+    }
+}

@@ -92,6 +92,7 @@ public final class PremiumGate {
 
     public var isPremium: Bool { state.isPremium }
     public var isReadOnly: Bool { state.isReadOnly }
+    public var isMonetizationOff: Bool { state.isMonetizationOff }
     public var trialDaysLeft: Int? { state.trialDaysLeft }
     public var trialEndsAt: Date? { state.trialEndsAt }
 
@@ -111,6 +112,7 @@ public final class PremiumGate {
     }
 
     public func presentPaywall(reason: PaywallReason) {
+        guard isMonetizationOff == false else { return }
         pendingPaywall = PaywallRequest(id: makeId(), reason: reason, action: nil, requestedAt: now())
         analytics.record(.comparisonShown(reason: reason))
     }
@@ -135,6 +137,11 @@ public final class PremiumGate {
     public func refresh(spaceId: UUID) async {
         guard let entitlements else { return }
         update(await entitlements.refresh(spaceId: spaceId))
+    }
+
+    public func refreshWithoutSpace() async {
+        guard let entitlements else { return }
+        update(await entitlements.refreshWithoutSpace())
     }
 
     private static func isGrace(_ state: EntitlementState) -> Bool {

@@ -70,6 +70,10 @@ verify_jwt = false
 enabled = true
 verify_jwt = false
 
+[functions.config]
+enabled = true
+verify_jwt = false
+
 [functions.appstore-notifications]
 enabled = true
 verify_jwt = false

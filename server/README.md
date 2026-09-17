@@ -1,8 +1,8 @@
 # Corbie server
 
-Supabase project behind the app: invite codes, link parsing, FX rates, entitlements, anonymous analytics. Postgres plus Deno edge functions, no other runtime.
+Supabase project behind the app: invite codes, link parsing, FX rates, entitlements, anonymous analytics, the monetization flag. Postgres plus Deno edge functions, no other runtime.
 
-Couple data never reaches this server. It holds invite codes with a 15 minute TTL, one entitlement row per `spaceId`, anonymous events keyed by a device UUID, and two caches.
+Couple data never reaches this server. It holds invite codes with a 15 minute TTL, one entitlement row per `spaceId`, anonymous events keyed by a device UUID, two caches, and the `app_config` row with the monetization flag.
 
 The request and response contract is `API.md`. Architecture sections 5, 6, 9, 13 and 14 in `docs/03_TECH_ARCHITECTURE.md` are the source of truth behind it.
 
@@ -14,8 +14,11 @@ supabase/migrations/0001_init   tables, RLS, rate limiter, nightly purge
 supabase/migrations/0002_views  analytics schema and its four views
 supabase/migrations/0003_*      entitlement ordering columns and their write function
 supabase/migrations/0004_*      funnel and pairing views anchored on the first open
+supabase/migrations/0005_*      billing retry and grace statuses, entitlement status view
+supabase/migrations/0006_*      app_config table seeded with monetization_enabled = false
 supabase/functions/_shared      auth, rate limit, responses, parsing, Apple crypto
 supabase/functions/<name>       one Deno.serve entry point per endpoint
+supabase/functions/config       public monetization flag, read from app_config
 tests/                          deno tests and fixture HTML
 ```
 
@@ -46,6 +49,8 @@ Endpoints that need no Apple token can be exercised straight away:
 
 ```
 curl "http://127.0.0.1:54321/functions/v1/fx?base=USD"
+
+curl "http://127.0.0.1:54321/functions/v1/config"
 
 curl -X POST "http://127.0.0.1:54321/functions/v1/parse" \
   -H "content-type: application/json" \
@@ -79,7 +84,7 @@ deno fmt --check
 deno lint
 ```
 
-The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the session token round trip together with the expiry, tamper and missing secret cases, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, the parse address guard, the App Store status mapping, event validation with PII dropping, and the error envelope.
+The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the session token round trip together with the expiry, tamper and missing secret cases, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, the parse address guard, the App Store status mapping, event validation with PII dropping, the error envelope, and the monetization flag answering 500 rather than `false` when the database fails or holds a non-boolean.
 
 ## Secrets
 

@@ -16,7 +16,7 @@ import Testing
     }
 
     @Test func unknownRoutesAreRejected() {
-        #expect(CorbieRoute(urlString: "https://corbie.app/tasks") == nil)
+        #expect(CorbieRoute(urlString: "https://yourcorbie.app/tasks") == nil)
         #expect(CorbieRoute(urlString: "corbie://nowhere") == nil)
         #expect(CorbieRoute(urlString: "corbie://") == nil)
         #expect(CorbieRoute(urlString: "corbie://events") == nil)

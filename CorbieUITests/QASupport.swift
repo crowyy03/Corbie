@@ -120,6 +120,8 @@ enum QAText {
 
 extension XCUIApplication {
     static let resetStoreArgument = "-corbie-reset-store"
+    static let monetizationArgument = "-corbie-monetization"
+    static let monetizationOn = [monetizationArgument, "on"]
 
     static func corbie(
         language: String = QARun.language,
@@ -131,6 +133,9 @@ extension XCUIApplication {
         app.launchArguments += XCUIApplication.themeArguments(for: appearance)
         app.launchArguments += [resetStoreArgument]
         app.launchArguments += extraArguments
+        if extraArguments.contains(monetizationArgument) == false {
+            app.launchArguments += [monetizationArgument, "off"]
+        }
         if QARun.usesLargeText {
             app.launchArguments += [
                 "-UIPreferredContentSizeCategoryName",
@@ -200,7 +205,9 @@ extension XCTestCase {
         let app = XCUIApplication.corbie(appearance: appearance, extraArguments: extraArguments)
         app.launch()
         passOnboardingIfShown(app, file: file, line: line)
-        passTrialOfferIfShown(app, file: file, line: line)
+        if extraArguments.contains(XCUIApplication.monetizationArgument) {
+            passTrialOfferIfShown(app, file: file, line: line)
+        }
         let tabBar = app.tabBars.firstMatch
         if tabBar.waitForExistence(timeout: 60) == false {
             saveScreenshot(app, named: "no_tab_bar")

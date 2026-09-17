@@ -82,12 +82,17 @@ final class AppEnvironment {
         let entitlementService = EntitlementService(
             client: client,
             spaces: persistence.repositories.spaces,
+            monetization: ServerMonetizationFlag(client: client),
             store: secrets,
             local: store,
             notifications: scheduler
         )
         entitlements = entitlementService
-        premiumGate = PremiumGate(analytics: analytics, entitlements: entitlementService)
+        premiumGate = PremiumGate(
+            state: MonetizationFlagStore().isEnabled ? .readOnly : .monetizationOff,
+            analytics: analytics,
+            entitlements: entitlementService
+        )
         usBadge = UsBadgeProvider(repositories: repositories)
         fx = FXService(client: client)
         linkParser = LinkParser(client: client)
@@ -137,7 +142,7 @@ final class AppEnvironment {
     func reloadSession() async {
         guard let appleUserID = identity.currentAppleUserID else {
             session = .signedOut
-            premiumGate.update(.readOnly)
+            premiumGate.update(await entitlements.stateWithoutSpace())
             return
         }
         do {
@@ -145,7 +150,7 @@ final class AppEnvironment {
                   let space = try await repositories.spaces.currentSpace(memberId: member.id)
             else {
                 session = .signedOut
-                premiumGate.update(.readOnly)
+                premiumGate.update(await entitlements.stateWithoutSpace())
                 return
             }
             let partner = try await repositories.members.partner(of: member.id, spaceId: space.id)
@@ -243,7 +248,10 @@ final class AppEnvironment {
     }
 
     func refreshEntitlement() async {
-        guard let space else { return }
+        guard let space else {
+            await premiumGate.refreshWithoutSpace()
+            return
+        }
         await premiumGate.refresh(spaceId: space.id)
     }
 
@@ -274,7 +282,7 @@ final class AppEnvironment {
         try? secrets.removeValue(for: Self.appleAuthorizationCodeKey)
         try? secrets.removeValue(for: Self.appleRefreshTokenKey)
         session = .signedOut
-        premiumGate.update(.readOnly)
+        premiumGate.update(await entitlements.stateWithoutSpace())
         Task { await remoteChanges.update(audience: nil) }
     }
 
@@ -351,7 +359,7 @@ final class AppEnvironment {
             report(error)
         }
         session = .signedOut
-        premiumGate.update(.readOnly)
+        premiumGate.update(await entitlements.stateWithoutSpace())
         await remoteChanges.start()
     }
 

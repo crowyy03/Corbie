@@ -3,6 +3,9 @@
 Written for someone who has never used Supabase. Every command here was run for real on 2026-09-12
 against the live project `powtuiqqagdoiuqjeebr` in East US (Ohio): five migrations applied, nine
 functions deployed, `scripts/smoke.sh` 15 pass, 0 fail, 2 pending (the two that need Apple).
+Migration `0006_app_config.sql` and the `config` function were added after that run: the steps below
+now apply six migrations and deploy ten functions, and the live project gets both only on the next
+`supabase db push` and `supabase functions deploy`.
 
 Two things only you can do, because they need your account: creating the project (step 1) and logging
 the CLI in (step 2a). Everything after that runs from this repo.
@@ -29,12 +32,12 @@ Never paste the database password or the service role key into a chat, a commit,
 
 ### What to copy out, and where each value goes
 
-| Value | Where to find it | Where it goes |
-| --- | --- | --- |
-| **Reference ID** (looks like `abcdefghijklmnopqrst`) | Project Settings, General | This is the only value the app needs. It goes into `CORBIE_SERVER_URL` in `project.yml` (step 5), and into every command below as `<ref>`. |
-| **Project URL** (`https://<ref>.supabase.co`) | Project Settings, API | Nothing to set by hand. Edge functions receive it as `SUPABASE_URL` automatically. Useful for curl. |
-| **anon / publishable key** | Project Settings, API (newer dashboards: API Keys) | Nowhere. Corbie never sends it. Every function is deployed with `verify_jwt = false` and does its own auth, so the Supabase gateway asks for no key at all. |
-| **service_role / secret key** | Same page, hidden behind **Reveal** | Nowhere by hand. Functions receive it as `SUPABASE_SERVICE_ROLE_KEY` automatically. It bypasses row level security: it must never reach the app bundle, the repo, or a chat. Copy it only if you want to run admin queries yourself. |
+| Value                                                | Where to find it                                   | Where it goes                                                                                                                                                                                                                        |
+| ---------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Reference ID** (looks like `abcdefghijklmnopqrst`) | Project Settings, General                          | This is the only value the app needs. It goes into `CORBIE_SERVER_URL` in `project.yml` (step 5), and into every command below as `<ref>`.                                                                                           |
+| **Project URL** (`https://<ref>.supabase.co`)        | Project Settings, API                              | Nothing to set by hand. Edge functions receive it as `SUPABASE_URL` automatically. Useful for curl.                                                                                                                                  |
+| **anon / publishable key**                           | Project Settings, API (newer dashboards: API Keys) | Nowhere. Corbie never sends it. Every function is deployed with `verify_jwt = false` and does its own auth, so the Supabase gateway asks for no key at all.                                                                          |
+| **service_role / secret key**                        | Same page, hidden behind **Reveal**                | Nowhere by hand. Functions receive it as `SUPABASE_SERVICE_ROLE_KEY` automatically. It bypasses row level security: it must never reach the app bundle, the repo, or a chat. Copy it only if you want to run admin queries yourself. |
 
 ## 2. Point the CLI at the project
 
@@ -79,7 +82,7 @@ cd ~/Desktop/codding/Corbie/server
 supabase db push
 ```
 
-It lists the five migrations it is about to apply and asks for confirmation. Add `< /dev/null` to
+It lists the six migrations it is about to apply and asks for confirmation. Add `< /dev/null` to
 take the default. Dry run first with `supabase db push --dry-run` if you want to see the list without
 applying anything.
 
@@ -91,6 +94,7 @@ Applying migration 0002_views.sql...
 Applying migration 0003_entitlement_ordering.sql...
 Applying migration 0004_cohort_views.sql...
 Applying migration 0005_entitlement_statuses.sql...
+Applying migration 0006_app_config.sql...
 Finished supabase db push.
 ```
 
@@ -102,17 +106,21 @@ supabase inspect db table-stats --linked
 ```
 
 Every migration row must show the same version in the Local and Remote columns, and the table list
-must hold `invites`, `entitlements`, `events`, `fx_rates`, `parse_cache` and `rate_limits`. A row with a Local version and
-an empty Remote column means that migration did not apply.
+must hold `app_config`, `invites`, `entitlements`, `events`, `fx_rates`, `parse_cache` and
+`rate_limits`. A row with a Local version and an empty Remote column means that migration did not
+apply.
 
 What you should have afterwards, checked in the dashboard SQL editor:
 
 ```sql
 select tablename from pg_tables where schemaname = 'public' order by 1;
--- entitlements, events, fx_rates, invites, parse_cache, rate_limits
+-- app_config, entitlements, events, fx_rates, invites, parse_cache, rate_limits
+
+select key, value from public.app_config;
+-- monetization_enabled | false
 
 select table_name from information_schema.views where table_schema = 'analytics' order by 1;
--- first_open_cohort, onboarding_funnel, paired_ratio, retention_d1_d7_d30, trial_to_paid
+-- entitlement_status, first_open_cohort, onboarding_funnel, paired_ratio, retention_d1_d7_d30
 
 select jobname, schedule from cron.job;
 -- corbie_purge_expired_rows | 17 3 * * *
@@ -130,10 +138,10 @@ cd ~/Desktop/codding/Corbie/server
 supabase functions deploy
 ```
 
-With no function named, it deploys all nine: `session`, `invite`, `invite-redeem`, `parse`, `fx`,
-`events`, `entitlement`, `apple-revoke`, `appstore-notifications`. It reads `verify_jwt = false` per
-function from `supabase/config.toml`, which is what makes the gateway let unauthenticated requests
-reach our own checks.
+With no function named, it deploys all ten: `session`, `invite`, `invite-redeem`, `parse`, `fx`,
+`config`, `events`, `entitlement`, `apple-revoke`, `appstore-notifications`. It reads
+`verify_jwt = false` per function from `supabase/config.toml`, which is what makes the gateway let
+unauthenticated requests reach our own checks.
 
 Success: a line per function ending in `Deployed Functions on project <ref>`.
 
@@ -143,23 +151,23 @@ Verify:
 supabase functions list
 ```
 
-Nine rows, each with status `ACTIVE` and `verify_jwt` false.
+Ten rows, each with status `ACTIVE` and `verify_jwt` false.
 
 ## 5. Secrets
 
 Dashboard, Project Settings, Edge Functions, Secrets, **Add new secret**. Use the dashboard rather
 than `supabase secrets set` for the private key: the CLI form puts the value in your shell history.
 
-| Secret | What it is for | Where the value comes from | Blocked? |
-| --- | --- | --- | --- |
-| `SESSION_SECRET` | HMAC key that signs the 180-day Corbie session token, so the app does not have to hold a short-lived Apple token. Every protected endpoint verifies against it. | `openssl rand -base64 48`, once. Already generated and set on the live project; the only local copy is the file named in the handover, move it to your password manager. Changing it signs everyone out. | set |
-| `APPLE_CLIENT_ID` | The `aud` claim demanded of Apple identity tokens. | `app.corbie` | set |
-| `APPLE_BUNDLE_ID` | The bundle App Store notifications must name, so another app's notifications are refused. | `app.corbie` | set |
-| `APPLE_ENV` | Which App Store environment this project accepts. A notification from the other one is rejected. | `Sandbox` while testing, `Production` for the shipping project. Set `Sandbox` now. | set |
-| `APPLE_TEAM_ID` | Signs the client secret used to revoke a Sign in with Apple credential on account deletion. | Apple Developer, Membership details, Team ID. | **blocked on the Apple account** |
-| `APPLE_KEY_ID` | Same signature, names which key signed it. | Apple Developer, Certificates Identifiers and Profiles, Keys, the key with Sign in with Apple enabled. | **blocked on the Apple account** |
-| `APPLE_PRIVATE_KEY` | Same signature, the key itself. | The `.p8` file Apple lets you download exactly once when you create that key. Paste the whole file including the BEGIN and END lines; real newlines and `\n` escapes both work. | **blocked on the Apple account** |
-| `INSTAGRAM_OEMBED_TOKEN` | Lets the wish parser read Instagram and TikTok links through oEmbed. | A Meta app access token. Optional: without it those two sites fall back to a bare link and every other shop still parses. | optional, leave empty |
+| Secret                   | What it is for                                                                                                                                                  | Where the value comes from                                                                                                                                                                               | Blocked?                         |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `SESSION_SECRET`         | HMAC key that signs the 180-day Corbie session token, so the app does not have to hold a short-lived Apple token. Every protected endpoint verifies against it. | `openssl rand -base64 48`, once. Already generated and set on the live project; the only local copy is the file named in the handover, move it to your password manager. Changing it signs everyone out. | set                              |
+| `APPLE_CLIENT_ID`        | The `aud` claim demanded of Apple identity tokens.                                                                                                              | `app.corbie`                                                                                                                                                                                             | set                              |
+| `APPLE_BUNDLE_ID`        | The bundle App Store notifications must name, so another app's notifications are refused.                                                                       | `app.corbie`                                                                                                                                                                                             | set                              |
+| `APPLE_ENV`              | Which App Store environment this project accepts. A notification from the other one is rejected.                                                                | `Sandbox` while testing, `Production` for the shipping project. Set `Sandbox` now.                                                                                                                       | set                              |
+| `APPLE_TEAM_ID`          | Signs the client secret used to revoke a Sign in with Apple credential on account deletion.                                                                     | Apple Developer, Membership details, Team ID.                                                                                                                                                            | **blocked on the Apple account** |
+| `APPLE_KEY_ID`           | Same signature, names which key signed it.                                                                                                                      | Apple Developer, Certificates Identifiers and Profiles, Keys, the key with Sign in with Apple enabled.                                                                                                   | **blocked on the Apple account** |
+| `APPLE_PRIVATE_KEY`      | Same signature, the key itself.                                                                                                                                 | The `.p8` file Apple lets you download exactly once when you create that key. Paste the whole file including the BEGIN and END lines; real newlines and `\n` escapes both work.                          | **blocked on the Apple account** |
+| `INSTAGRAM_OEMBED_TOKEN` | Lets the wish parser read Instagram and TikTok links through oEmbed.                                                                                            | A Meta app access token. Optional: without it those two sites fall back to a bare link and every other shop still parses.                                                                                | optional, leave empty            |
 
 Do not set these four, they are injected into every function automatically and the CLI refuses names
 that start with `SUPABASE_`: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
@@ -218,25 +226,67 @@ pending. The simulator cannot do it either: it has no iCloud account.
 
 ### What each check proves
 
-| Check | Proves |
-| --- | --- |
-| `GET /fx?base=USD` | The function runs, reached Postgres with the injected service role key, and called the upstream rate feed. |
-| `GET /fx?base=XX` | Input validation and the shared error shape. |
-| `POST /parse` | Outbound fetching, the shop adapters and the parse cache. |
-| `POST /events` | The analytics allowlist and the insert path. |
-| `GET /invite-redeem/ZZZZZZ` | Unknown codes are a clean 404, not a crash. |
-| `GET /entitlement/{id}` without a token | Auth is enforced inside the function, so `verify_jwt = false` did not open a hole. |
-| `OPTIONS /fx` | No CORS surface: browsers get 405. |
-| `POST /invite` with a session token | Session tokens work end to end, and a code is written to the database. |
-| `GET /invite-redeem/{code}` twice | The pairing flow: first call returns the share link, second is 410 redeemed. |
-| `GET /entitlement/{id}` with a token | An unknown space answers `status: none` rather than failing. |
-| `POST /session` with a session token | A session token cannot mint another session token. |
+| Check                                   | Proves                                                                                                     |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `GET /fx?base=USD`                      | The function runs, reached Postgres with the injected service role key, and called the upstream rate feed. |
+| `GET /fx?base=XX`                       | Input validation and the shared error shape.                                                               |
+| `GET /config`                           | The monetization flag is readable without auth and `app_config` exists.                                    |
+| `POST /parse`                           | Outbound fetching, the shop adapters and the parse cache.                                                  |
+| `POST /events`                          | The analytics allowlist and the insert path.                                                               |
+| `GET /invite-redeem/ZZZZZZ`             | Unknown codes are a clean 404, not a crash.                                                                |
+| `GET /entitlement/{id}` without a token | Auth is enforced inside the function, so `verify_jwt = false` did not open a hole.                         |
+| `OPTIONS /fx`                           | No CORS surface: browsers get 405.                                                                         |
+| `POST /invite` with a session token     | Session tokens work end to end, and a code is written to the database.                                     |
+| `GET /invite-redeem/{code}` twice       | The pairing flow: first call returns the share link, second is 410 redeemed.                               |
+| `GET /entitlement/{id}` with a token    | An unknown space answers `status: none` rather than failing.                                               |
+| `POST /session` with a session token    | A session token cannot mint another session token.                                                         |
+
+## Turning monetization on
+
+The flag is one row in `app_config`. Migration 0006 creates it as `false`, and `GET /config`
+returns whatever the row holds, read fresh on every request.
+
+To turn it on: Dashboard, SQL Editor, **New query**, paste and press **Run**:
+
+```sql
+update public.app_config set value = 'true'::jsonb, updated_at = now() where key = 'monetization_enabled';
+```
+
+Check the row in the same editor:
+
+```sql
+select key, value, updated_at from public.app_config;
+```
+
+It must show `monetization_enabled`, `true`, and an `updated_at` from a moment ago. No row at all
+means migration 0006 never ran: go back to step 3.
+
+Then check what the app will see:
+
+```bash
+curl -s "https://<ref>.supabase.co/functions/v1/config"
+```
+
+It must print `{"monetizationEnabled":true}`.
+
+To turn it off again, the same way:
+
+```sql
+update public.app_config set value = 'false'::jsonb, updated_at = now() where key = 'monetization_enabled';
+```
+
+and the same `select` must show `false`, and the same curl must print
+`{"monetizationEnabled":false}`.
+
+Only ever write `'true'::jsonb` or `'false'::jsonb`. Anything else, the string `'"true"'` or
+`'null'` included, makes the endpoint answer `500` with `"error":"internal"` instead of a value, on
+purpose: a broken value must never read as `false`.
 
 ## What is live after this, and what is not
 
 Working end to end once steps 1 to 7 are done: invite codes, link parsing for wishes, currency rates,
-anonymous analytics with its four views, entitlement reads, the per-IP rate limiter, and the nightly
-purge.
+the monetization flag, anonymous analytics with its four views, entitlement reads, the per-IP rate
+limiter, and the nightly purge.
 
 Still blocked, all on the Apple Developer account: `POST /session` (needs a real identity token),
 `POST /apple-revoke` (needs the `.p8`), and App Store Server Notifications, which are what write

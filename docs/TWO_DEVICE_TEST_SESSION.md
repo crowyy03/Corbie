@@ -1,0 +1,699 @@
+# Two-Apple-ID test session
+
+A session plan for two physical iPhones on two different Apple IDs, in the order to run it. It
+expands `docs/TEST_PLAN.md` section 5 and 5a for module 21.
+
+Written on 2026-09-17 against `main` at `cac7abf` plus the uncommitted module 21 work in the same
+checkout (team id, `yourcorbie.app` links, the server monetization flag). Every "See" line comes from
+the code and from the English values in `Corbie/Resources/Localizable.xcstrings`. Nothing here was run
+on a device. Timings are the targets from `docs/TEST_PLAN.md` section 5 and the limits written in the
+code, not measurements.
+
+Names used below:
+
+- **Phone A** is the owner. It creates the space.
+- **Phone B** is the partner. It joins the space.
+- **Us pill** is the pair of coloured dots at the top right of every tab (VoiceOver: "Open the Us hub").
+- **Shared settings** is the tile at the bottom of the Us hub. The screen it opens is titled "Settings".
+- **Dashboard** is the CloudKit Console at `https://icloud.developer.apple.com`.
+
+Each step has four parts: **Do**, **See**, **Time**, **If it fails**. Section 6 lists the places where
+the code itself makes a step doubtful. Section 7 is the sheet to fill in.
+
+---
+
+## 1. Pre-flight
+
+Do all of this before the session starts. Budget 45 minutes.
+
+| # | Check | Why |
+| --- | --- | --- |
+| 1 | Two iPhones on iOS 17 or later, Developer Mode on (Settings, Privacy & Security, Developer Mode). | Xcode installs Debug builds only with Developer Mode on. Interactive widgets need iOS 17 (`project.yml`, deployment target 17.0). |
+| 2 | Each phone signed in to iCloud with its own Apple ID. iCloud Drive on. After the first launch, Settings, your name, iCloud, apps using iCloud: Corbie on. | Both stores sync through container `iCloud.app.corbie` (`CoreDataStack.storeDescriptions`). Sign in with Apple uses the Apple ID of the phone. |
+| 3 | Same language (English) and region on both. Settings, General, Date & Time: "Set Automatically" on. | The question of the day is picked per language (`QuestionCopy`). Step 10 compares the text. |
+| 4 | Low Power Mode off. Low Data Mode off for Wi-Fi and cellular. Background App Refresh on, and on for Corbie. Focus off. | Partner changes arrive as silent pushes (`UIBackgroundModes: remote-notification` in `project.yml`). iOS holds them back in these modes. |
+| 5 | Signing works: `docs/APPLE_MANUAL_STEPS.md` section 1 is done (Apple Development certificate, no red errors under Signing & Capabilities for all three targets). | Team `735XXP9B5R` is set in `project.yml`. This Mac had no signing identity when that checklist was written. |
+| 6 | Build: `xcodegen generate`, open `Corbie.xcodeproj`, scheme **Corbie**, Run (Debug) on phone A, then on phone B, from the same checkout state. Write down `git rev-parse --short HEAD` and whether the tree had local changes. | Both phones must run the same code. |
+| 7 | The build carries the module 21 changes. Check in the checkout: `Configs/Corbie.entitlements` lists `applinks:yourcorbie.app`, and `CorbieIdentifiers.universalLinkHost` is `"yourcorbie.app"`. | `main` at `cac7abf` still says `corbie.app` in all three places (entitlement, `Router.isCorbieHost`, `InviteLink`), so steps 3 and 15 fail on a build from `main`. |
+| 8 | Delete Corbie from both phones before installing. | Steps 3 and 4 need a fresh install on B. |
+| 9 | Never tap "continue without Apple ID (debug build)" on the intro screen. Use the Sign in with Apple button. | That button stores the fixed id `debug.simulator.user` (`OnboardingViewModel.swift:93`). With it on both phones, B's join finds A's member by that id and both phones become the same person (`CoreDataMemberRepository.upsertCurrentMember`). |
+| 10 | CloudKit environment: a Debug build signed by Xcode uses **Development** (`aps-environment` is `development` in `Configs/Corbie.entitlements`, and a development-signed app carries no production container environment). In the Dashboard, always pick **Development**. | Data from this session never appears in Production. See section 2. |
+| 11 | Old Development data: if either Apple ID ever ran a Corbie Debug build, its data comes back on install. After signing in on A (step 1), the profile screen must be empty apart from the Apple name, and Today must read "Nothing on today". If not, clear that Apple ID first (section 1.1). | `OnboardingViewModel.loadProfile` reuses any space already in the store. On B, old data makes the join fail with "This space already has things in it, and two spaces cannot be merged yet." |
+| 12 | Server: live at `powtuiqqagdoiuqjeebr`, nothing to do for this session. Invite codes and redeem have worked since the deploy of 2026-09-12 (`server/DEPLOY.md`). `POST /session` has never run with a real Apple token before: step 1 is its first real call. | |
+| 13 | Monetization is off, so both phones have full access. Server check: `curl -s https://powtuiqqagdoiuqjeebr.supabase.co/functions/v1/config` should print `{"monetizationEnabled":false}`. On 2026-09-17 it answered `404 Requested function was not found`, because migration `0006_app_config.sql` and the `config` function are not deployed yet (`server/DEPLOY.md`, first paragraph). That does not block the session: a value the app never fetched counts as off (`MonetizationFlagStore.isEnabled`). In-app check on each phone: Us pill, Shared settings, About, "Developer" (Debug builds only), section "Monetization". The footer must read `effective: off` and `forced: none`. If `forced` is not `none`, tap "Follow the server flag". Touch nothing else on the Developer screen. | With the flag off, Settings has no "Subscription" section, the Shared settings tile reads "names, dates and notifications", no trial offer screen appears, and no widget shows "Unlock in Corbie". Any of those appearing means the flag is not off on that phone. |
+| 14 | Notification permission: A grants it in step 1, B in step 5. Afterwards, Shared settings, Notifications, "Permission" must read "Allowed" on both. On both phones, in the same screen, these switches must be on: "Task assigned to you", "Task taken or handed back", "Partner added a wish", "Plan money: expense, goal, over budget", "Question of the day", "Chore split". | Corbie never asks at launch (`docs/TEST_PLAN.md` section 3). A refused prompt can only be undone in iOS Settings. |
+| 15 | Calendar events for the privacy audit: on each phone, in the iPhone Calendar app, one event in the next 14 days with a title, a location and at least one invitee. Create them now. | Step 12 checks that none of this reaches CloudKit. |
+| 16 | Network: both phones on the same Wi-Fi to start. Step 7 moves one phone to cellular: check Settings, Cellular, Corbie is on. | Both phones on one Wi-Fi share one public IP. The server allows 30 invites, 30 sessions and 60 redeems per hour per IP (`server/API.md`). The session uses a handful. |
+| 17 | Keep the receiving app open unless a step says otherwise, and never force-quit it. | Alerts about partner changes are made by the receiving app itself when the change arrives (`RemoteChangeNotifier`). A force-quit app gets no silent pushes. |
+| 18 | Dashboard: sign in at `https://icloud.developer.apple.com` with the Apple ID of team `735XXP9B5R`. Have both test Apple ID passwords ready for "Act as iCloud Account". | Private and shared data is visible only while acting as the account that owns it. |
+| 19 | Time budget: about 3.5 hours for sections 4 and 5, plus one check at 20:00 local time (step 9c). If the session ends before 20:00, run steps 13 and 14 after that check. | Leaving and deleting cancel every pending Corbie notification (`NotificationScheduler.cancelEverything`). |
+
+### 1.1 Clearing old Development data (only if check 11 fails)
+
+1. Delete Corbie from the affected phone.
+2. Dashboard, CloudKit Database, container `iCloud.app.corbie`, environment Development.
+3. "Act as iCloud Account" with that Apple ID. Database: Private. Zones: delete
+   `com.apple.coredata.cloudkit.zone` and every `com.apple.coredata.cloudkit.share.` zone.
+4. Reinstall and repeat check 11.
+
+The heavier option is "Reset Environment" for Development. It wipes all Development data and the
+Development schema for every account. After it, run the app once with `CORBIE_INIT_SCHEMA=1`
+(`docs/APPLE_MANUAL_STEPS.md` section 2, steps 1 and 2) so every record type exists again before any
+production deploy.
+
+I did not open the Dashboard while writing this. The menu names are from memory and may differ
+slightly.
+
+---
+
+## 2. What waits for the production schema deploy
+
+- **Nothing in this session.** A Debug build uses the Development environment, where the schema grows
+  as records are written. The session can run before "Deploy Schema Changes".
+- **A TestFlight or App Store build** uses Production. Until the schema is deployed there
+  (`docs/APPLE_MANUAL_STEPS.md` section 2), expect step 2 to fail already: creating the share saves
+  `CD_` records whose types do not exist in Production. Everything after it fails too: join,
+  propagation, the other phone's widgets, partner alerts, question sync, chore split, free time, and
+  leave or delete in iCloud. Only things local to one phone still work. Not checked on a TestFlight
+  build.
+- The space model has 25 entities (`CorbieModel.swift`), so Development must show 25 `CD_` record
+  types before the deploy.
+
+---
+
+## 3. Known issues you will see (do not report them as new)
+
+From `docs/KNOWN_ISSUES.md`:
+
+- The Us hub counters show "-" when there is nothing to count, for example when together-since was
+  skipped.
+- The Us pill and the toolbar Save button look short: bar items are 36 points tall.
+- Notifications are asked for once. After a refusal, only Settings, Notifications, "Open iOS
+  Settings" brings them back, and a task due date or a capsule schedules nothing without a word.
+- VoiceOver reads a list item's title twice ("Milk, button" two times).
+- Free time and half of the Us badge need a partner. That is what this session covers.
+
+From other docs and the Debug build:
+
+- Deleting the account ends with the toast "No answer from the network." while `APPLE_TEAM_ID`,
+  `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` are not set: `POST /apple-revoke` answers 500
+  (`server/DEPLOY.md` section 5). The data part of the deletion still runs. See also open question 4.
+- If `POST /session` refuses the Apple token, a toast shows after Sign in with Apple and onboarding
+  continues (`docs/TEST_PLAN.md` section 2).
+- Debug-only items: "continue without Apple ID (debug build)" on the intro screen, and "Developer" at
+  the bottom of Settings.
+
+---
+
+## 4. Session
+
+### Step 1. Create the space (phone A)
+
+**Do.** Launch Corbie. Tap "Sign in with Apple" and confirm. On "Your side of the space" fill Name,
+Color, Birthday ("Add month and day") and Together since ("Set a date"), then "Continue". On "Invite
+your partner" tap "Later". Then Tasks tab, the plus button, "New task": What to do "Pre-flight task",
+Due: "Set a date" on, "Save". When iOS asks about notifications, tap Allow.
+
+**See.**
+- After "Later": the Today tab. No trial offer screen. No toast after Sign in with Apple.
+- The task in Tasks.
+- Us pill, Shared settings, section Partner: "Nobody yet. The space works solo.", then "Invite your
+  partner" and "Have a code?". No "Subscription" section.
+
+**Time.** Under a minute from Face ID to Today.
+
+**If it fails.**
+- Toast "Sign in again to continue." or "No answer from the network." right after Sign in with Apple:
+  `POST /session` refused the identity token (`SessionService.exchange`; the server checks that the
+  token's audience is `APPLE_CLIENT_ID`, `app.corbie`). Onboarding continues, but invites then work
+  only while the Apple token is fresh, about 10 minutes (the token provider in `AppEnvironment.init`
+  falls back to it). Look at the `session` function logs in Supabase.
+- The Apple sheet shows an error: Sign in with Apple is missing on App ID `app.corbie` in the
+  developer portal, or from the signed app.
+- Profile already filled, or old items on Today: old Development data (section 1.1).
+- Toast "That did not save." on launch: App Group `group.app.corbie` is missing from the signed app
+  (`CoreDataStack.appGroupFailure`).
+
+### Step 2. Invite by code (phone A)
+
+**Do.** Us pill, "Shared settings", Partner, "Invite your partner". Wait for the code. Tap "Share
+code" and send it to B in Messages. Leave this sheet open until step 4 ends. Do not close and reopen
+it: every time the invite screen appears it makes a new code, and the server expires the previous
+unused one (`InviteView` `.task`, `server/supabase/functions/invite/index.ts` line 48).
+
+**See.** Title "Invite your partner", note "one code, fifteen minutes", then "making a code" with a
+spinner, then six characters (letters and digits, no 0, O, 1, I or L) and "expires in 14:59" counting
+down. The shared message reads "Join me on Corbie: https://yourcorbie.app/join/" followed by the code.
+
+**Time.** Code within 5 s. The first time, a CloudKit share is created too (`CloudKitSharing.share`).
+`docs/TEST_PLAN.md` says 3 s. Over 15 s is a defect.
+
+**If it fails** (the card reads "no code yet - check the connection and try again" with "Try again"):
+- Toast "iCloud did not answer.": creating the share failed. iCloud not signed in, iCloud Drive off,
+  the container missing from the provisioning profile, or a TestFlight build without the production
+  schema (section 2).
+- Toast "Sign in again to continue.": `POST /invite` answered 401. The session token is missing (see
+  step 1) and the Apple token is older than about 10 minutes. There is no sign-out in the app: delete
+  and reinstall, or fix `POST /session`.
+- Toast "No answer from the network.": the server is down, or 30 invites were already made from this
+  IP within the hour.
+- The link says `corbie.app`: the build came from `main`, not from the module 21 checkout (pre-flight
+  7).
+
+### Step 3. Accept, part 1: the universal link (phone B)
+
+**Do.** Install Corbie on B. Do not open it. In Messages, tap A's link. Sign in with Apple with B's
+Apple ID, fill the profile, tap "Continue". On the screen that follows, do not tap "Join". Tap
+"Later".
+
+**See.**
+- Corbie opens, not Safari, on the intro pages.
+- After "Continue": the "Have a code?" screen with A's six characters already in the "Invite code"
+  field.
+- After "Later": "Invite your partner" with B's own code. Ignore it and do not share it.
+
+Why it stops here: the code is used up only when "Join" is tapped (`JoinViewModel.redeemedShare`), so
+"Later" keeps it valid for step 4, which tests typing the code. Step 15 does the full join from a
+link.
+
+**Time.** The app opens within 2 s of the tap.
+
+**If it fails.**
+- Safari opens the yourcorbie.app home page: iOS has not tied the domain to the app. Check pre-flight
+  7, delete and reinstall, tap again. The site side is fine: on 2026-09-17
+  `https://yourcorbie.app/.well-known/apple-app-site-association` answered 200, `application/json`,
+  app `735XXP9B5R.app.corbie`, path `/join/*`. A link typed or pasted into Safari's address bar never
+  opens the app, so tap it inside Messages or Notes. If Safari was chosen once, long-press the link
+  and pick "Open in Corbie".
+- The app opens but the field is empty: the host did not match (`Router.isCorbieHost`, build from
+  `main`), or the code is not six valid characters (`OnboardingViewModel.adopt`, `InviteCodeFormat`).
+
+### Step 4. Accept, part 2: typing the code (phone B)
+
+**Do.** On B's "Invite your partner", tap "Have a code?". Type A's code (lower case is fine). Tap
+"Join". Keep A's app open on the invite sheet.
+
+**See.**
+- B: "joining" with a spinner, then the Today tab and the toast "You two are connected". No trial
+  offer screen.
+- A: close the invite sheet. Settings, Partner shows B's name and "Joined on" with today's date. The
+  Us pill has two colours.
+- B: Shared settings, Partner shows A's name and "Created the space".
+
+**Time.** B up to 20 s. After accepting the share, the app waits up to 15 s for the shared space to
+arrive (`JoinViewModel.spaceArrivalAttempts`, 30 tries every 500 ms). A within 30 s.
+
+**If it fails.**
+- "No space answers to that code.": a typo, or A opened the invite screen again and the code was
+  replaced.
+- "That code expired. Ask for a new one.": more than 15 minutes since step 2.
+- "That code was already used. Ask for a new one.": the code was used before. This also happens when
+  a Join failed and the screen was then left: the app keeps the used code only in memory
+  (`JoinViewModel.redeemed`). Get a fresh code from A.
+- "iCloud did not answer. Check that you are signed in to iCloud.": any CloudKit failure, including
+  the 15 s wait running out (`JoinFailure.kind` maps every CloudKit error to this line). Tap "Join"
+  again: the retry starts from the CloudKit part with the same code. If it keeps failing: iCloud Drive
+  off on B, or A's share not uploaded yet (check the Dashboard: acting as A, Private database, a zone
+  named `com.apple.coredata.cloudkit.share.` plus an id should exist).
+- "This space already has things in it, and two spaces cannot be merged yet.": B made something
+  before joining, or old Development data (section 1.1).
+- "Too many tries. Wait a minute.": the redeem limit of 60 per hour per IP.
+- A never shows B: bring A's app to the foreground. `PartnerJoinWatcher` looks for a second member on
+  foreground and after every synced change. Still nothing after a minute: B's member did not upload.
+  Dashboard, acting as A, Private database, the share zone, record type `CD_Member`: there must be two
+  records.
+
+### Step 5. Link while paired, and B's notification permission (phone B)
+
+**Do.** Tap A's link in Messages again. On the sheet, tap "Join", then "Done". Then Tasks, plus,
+What to do "B's first task", Due: "Set a date" on, "Save". Tap Allow when iOS asks.
+
+**See.**
+- The link opens a "Have a code?" sheet with the code filled in. "Join" shows "This space is already
+  shared with someone." Nothing else changes, and the code is not spent: this check runs before the
+  server is asked (`JoinViewModel.blockingReason`).
+- "B's first task" appears on A.
+- Shared settings, Notifications, "Permission" reads "Allowed" on both phones.
+
+**Time.** The task reaches A within 5 s.
+
+**If it fails.**
+- No sheet: the route is lost between `Router.webRoute` and `RootView.consumeRoute`.
+- No permission prompt: it was refused before. Fix it in iOS Settings, Notifications, Corbie.
+
+### Step 6. Edits reach the other phone, both ways (Wi-Fi)
+
+Both apps stay in the foreground, each on the tab being checked. Partner alerts may already show up
+here. Step 9 checks them properly.
+
+**Do and See.**
+- **6a. Task, A to B, then back.** A: Tasks, plus, What to do "Milk", Who "Nobody", "Save". B: "Milk"
+  under "Free" with "nobody took it yet" and "Take". B: tap "Take". A: "Milk" moves under "In
+  progress" in B's colour, with a line "<B's name> took" and when.
+- **6b. Date, B to A.** B: Calendar, plus, "New date", Title "Dinner", Starts this evening, "Save".
+  A: "Dinner" in the Calendar on today's date.
+- **6c. Wish, A to B.** A: Wishes, plus, "New wish", Title "Book", "This wish is for me" on, "Save".
+  B: "Book" in Wishes.
+- **6d. Plan money, both ways.** A: Plans, "Big", plus, "New plan", "With a target", Title "Trip",
+  Target amount 1000, "Save". B: "Trip" in Plans. B: open "Trip", "Add money", Amount 100, "Save". A:
+  "Trip" shows 100 of 1,000 in the plan's currency.
+
+**Time.** Each change within 5 s of Save (`docs/TEST_PLAN.md` section 5). Write down anything over
+10 s.
+
+**If it fails.**
+- Nothing arrives: send the sending app to the background and back. If the change then arrives, the
+  upload waited for the app. Check the Dashboard (acting as A, Private database, the share zone,
+  record type `CD_TaskItem`, `CD_Event`, `CD_Wish`, `CD_Plan` or `CD_PlanExpense`). In the Dashboard
+  but not on the other phone: that phone missed the silent push (pre-flight 4). Bring its app to the
+  foreground or relaunch it. The sync pulls changes on launch.
+- It arrives only after a relaunch: the change was downloaded but not merged into the screen
+  (`PersistentHistoryObserver.process`), or that screen does not refresh on `WidgetReloadRequest`.
+- Works from A to B but not from B to A: B writes into A's zone through the shared database. The
+  share is created read-write (`CloudKitSharing.share`, `publicPermission = .readWrite`). Check B is
+  still a participant.
+- The same item twice: a duplicate import. Write down which item and on which phone.
+
+### Step 7. The same on cellular
+
+**Do.** B turns Wi-Fi off, cellular on. Repeat 6a with "Bread" and 6d with another 50. Then B back on
+Wi-Fi, A on cellular, repeat 6b with "Lunch".
+
+**See.** The same as step 6.
+
+**Time.** Within 10 s. Write down anything over 30 s.
+
+**If it fails.** Settings, Cellular, Corbie off. Low Data Mode on. The iCloud switches under
+Settings, Cellular: I did not check which one CloudKit follows, so try with iCloud Drive on there.
+
+### Step 8. Widgets update on both phones
+
+**Do.**
+1. On both phones, long-press the Home Screen, add from the Corbie widgets: "Tasks" (medium), "Free
+   tasks" (medium), "Our day" (large), "Days together" (small).
+2. A: create task "Widget test", Who "Nobody", "Save". Go to the Home Screen on both phones.
+3. A: on A's "Tasks" widget, tap the circle next to one task.
+4. B: on B's "Free tasks" widget, tap "Take" next to a free task.
+
+**See.**
+- No "Unlock in Corbie" on any widget.
+- Both "Tasks" widgets show the same open tasks in the same order: all open tasks of the space,
+  earliest due date first (`WidgetDataProvider.openTasks`).
+- "Widget test" on both "Free tasks" widgets.
+- The ticked task leaves A's widget at once and B's widget and B's Tasks list soon after.
+- The task B took leaves both "Free tasks" widgets and shows under "In progress" on A.
+- "Days together" shows the same number on both.
+
+**Time.** A phone's own widget at once. The other phone's widget within 60 s, if its app was opened
+recently and not force-quit.
+
+**If it fails.**
+- The other phone's app has the change but its widget does not: only the app process asks WidgetKit
+  to redraw, after it merges a change (`PersistentHistoryObserver.process` posts
+  `WidgetReloadRequest`, `WidgetReloader` calls `reloadAllTimelines`). Open that app and leave it:
+  the widget should update. Without that, widgets redraw only at midnight
+  (`WidgetTimelineBuilder`).
+- B learns about A's widget tick only after A opens Corbie: the tick is saved by the widget
+  extension, which runs its own copy of the CloudKit sync (`IntentPersistence.controller()`). Write
+  down whether B updated before or after A opened the app. Open question 5.
+- "Unlock in Corbie": the flag is not off on that phone (pre-flight 13). The widget reads the same
+  stored flag (`WidgetDataProvider`, `MonetizationFlagStore`).
+- "Nothing open." on a phone that has open tasks: the widget found no space. The App Group is missing
+  on the widget target, or the extension cannot read the keychain item `apple.user.id` (access group
+  `group.app.corbie`, `KeychainStore`).
+
+### Step 9. Notifications reach the right person
+
+Run each part twice: first with the receiving app in the background (Home Screen, not force-quit),
+then with it in the foreground. A banner shows in the foreground too (`AppDelegate`
+`willPresent` returns banner, list and sound). The phone that made the change must get nothing.
+
+**9a. Task assigned, A to B.**
+- Do: A: Tasks, plus, What to do "Call the bank", Who: B's name, "Save".
+- See on B: "A task for you", "<A's name> gave you Call the bank". A long press shows "Take" and
+  "Done". Nothing on A.
+- Rule: a new task whose assignee is the reader and whose creator is not, or a task moved to the
+  reader (`RemoteChangeClassifier.taskAlert`).
+
+**9b. Partner wish, B to A.**
+- Do: B: Wishes, plus, Title "Lamp", "Save".
+- See on A: "A new wish", "<B's name> added Lamp". Nothing on B.
+- Rule: a new wish the reader did not add, not yet gifted (`RemoteChangeClassifier.wishAlert`).
+
+**9c. Question of the day (timed).**
+- The reminder is set by the phone itself when Today opens, at 10:00 or 20:00 local time
+  (`NotificationScheduler.scheduleQuestionReminder`), one per day, and it is cancelled once that
+  person answers.
+- If it is before 10:00 on A: B answers today's question (Today, "Question of the day", "Answer",
+  type, "Save"). A does not answer. At 10:00, A gets "Today's question", "<B's name> has answered.
+  Your turn." B gets nothing.
+- Otherwise: neither of you answers today. At 20:00 both get "Today's question", "Neither of you has
+  answered yet." Steps 10 to 12 do not answer the question. Run steps 13 and 14 after 20:00.
+- Not a test case: if the partner answers after 10:00, the reader gets no reminder that day at all
+  (open question 10). That matches the spec text of notification type 11.
+
+**9d. Chore split ready, A finishes first.**
+- Do: B opens Corbie on the Today tab, then goes to the Home Screen. A: Us pill, "Chore split",
+  "Start the split", check the list ("Continue" needs at least 8 picked), then rate every card with
+  "I actually like it", "I don't mind", "No strong feelings" or "I'd rather not" (or swipe).
+- See on A: "Done. Waiting for <B's name>." and "nothing is shown until you both finish". "Ask them"
+  only shows a toast; it sends nothing.
+- See on B: "Chore split", "<A's name> has rated the list. Your turn." Nothing on A.
+- Rule: the partner rated everything, the reader has not, and the reader was not told about this
+  split before (`ChoreReminderPlanner.plan`). Do not rate on B yet: step 11 continues from here.
+
+**Time.** The same as the change reaching the phone: within 5 s in the foreground. In the background,
+write down the delay.
+
+**If it fails.**
+- Nothing in the background, but the banner shows once the app is in front: delivery, not the rule.
+  These alerts are local notifications made by the receiving app while it merges the change
+  (`RemoteChangeNotifier.handle`). The app has to be in memory: opened since the last restart and
+  not force-quit. Open question 7.
+- 9d only shows up when B opens the app: the chore alert is made by the Today card
+  (`TodayChoreModel.tellTheViewer`), which stops listening once Today is off screen
+  (`TodayChoreCard` `.onDisappear`). Write down which case happened.
+- Nothing even in the foreground: that person's switch is off (pre-flight 14,
+  `RemoteChangeKind.isEnabled`), permission refused, or the reader's details were never loaded
+  (`AppEnvironment.updateNotificationAudience`, called from `reloadSession`).
+- The alert lands on the phone that made the change: the rule compares against the reader's member
+  id. Both phones resolving to the same member points to pre-flight 9.
+- Marking a task done sends nothing, by design of the code: finished tasks are skipped
+  (`RemoteChangeClassifier.swift:107`). `docs/TEST_PLAN.md` section 5 step 6 expects an alert there.
+
+### Step 10. Question of the day is the same in two time zones
+
+**Do.**
+1. Both phones: Today, the "Question of the day" card. Compare the question text.
+2. B: iOS Settings, General, Date & Time, "Set Automatically" off, Time Zone: pick a city where the
+   date differs from A's date right now. After noon on A, pick Auckland. Before noon on A, pick
+   Honolulu.
+3. Switch back to Corbie on B. It reloads the card when it becomes active. Compare again.
+4. B: turn "Set Automatically" back on.
+
+**See.** The same question text on both phones, before and after the change. The status lines ("You
+are still writing", "<name> is still writing") do not change.
+
+Why: the day is counted in the space's time zone, taken from A's phone when A created the space
+(`Space.anchorTimeZone`, `QuestionSelector.dayKey`), not in the phone's zone.
+
+**Time.** At once.
+
+**If it fails.**
+- Different questions right after pairing, before any zone change: both phones created the day's
+  question before syncing. Wait a minute and reopen Today. Both should settle on one question
+  (`CoreDataQuestionRepository.merged` keeps the record with the lowest id). Still different: the
+  records did not sync. Dashboard, share zone, `CD_DailyQuestion`: one record for today.
+- Same before, different after: B's copy of the space has no time zone and falls back to the phone's
+  (`SpaceDTO.anchorCalendarTimeZone`). Dashboard, `CD_Space`, field `CD_anchorTimeZone`.
+- No card at all: no question fits the pair's stage (`QuestionSelector.selection`), or the phones use
+  different languages.
+
+### Step 11. Chore ratings stay hidden until both finish
+
+Starts where 9d ended: A rated everything, B has not.
+
+**Do.**
+1. B: Today, card "Rate the chore list." with "nobody sees your answers yet". Open it and rate about
+   half the cards. Stop.
+2. Look on both phones: Today, Us pill, "Chore split".
+3. B: rate the rest.
+4. On one phone: "See the split". Then "Add these to Tasks".
+
+**See.**
+- Before B finishes: no line on either phone says what the other person chose. Such lines ("<name>
+  doesn't mind.", "<name> would rather not.") exist only on the reveal screen. A shows "Done. Waiting
+  for <B's name>.".
+- After B finishes: both phones show "You two are both done." and "nothing has been shared yet" with
+  "See the split". The Today card reads "You two have both rated." with "the split is waiting".
+- After "See the split": "You two agree more than you thought.", lists "Yours", "<name>'s",
+  "Rotating", "Whoever's around", and the lines about what each of you said. The other phone shows
+  the same within seconds.
+- After "Add these to Tasks": "Added to Tasks", and the chores appear in Tasks on both phones with
+  "from the chore split".
+
+**Time.** Each change within 5 s on the other phone.
+
+**If it fails.**
+- A choice of the other person shows before both finish: the filter is
+  `ChoreItemDTO.init(_:title:showsEveryRating:viewerMemberId:)`, switched by
+  `CoreDataChoreRepository.everyoneHasRated`.
+- B finished but a phone stays on "Waiting for": one phone's ratings did not sync (Dashboard,
+  `CD_ChoreRating`), or that phone sees fewer than two members in the space (`everyoneHasRated` counts
+  `space.members`).
+- "See the split" answers "Check what you typed.": the reveal needs two members and both ratings on
+  every included chore (`CoreDataChoreRepository.reveal`).
+- Note, not a defect: the ratings are ordinary records in the shared zone (`CD_ChoreRating`, field
+  `CD_verdictRaw`). "Hidden" is a rule of the app, not encryption.
+
+### Step 12. Free time and the privacy audit
+
+**12a. Turn sharing on (both phones).**
+
+**Do.** Us pill, Shared settings, Privacy, "Share my busy times" on. Allow full calendar access. Then
+Calendar tab, the clock button at the top ("When you two are free"). The first time, a sheet "Your
+calendar stays yours" shows; tap "Share my busy times" or "Not now". Write down what the screen shows.
+Then force-quit Corbie on both phones, open it again, and open the same screen.
+
+**See.**
+- After the relaunch: "Free windows" with a list. "Evenings", "Weekends" and "2+ hours" narrow it.
+  "Next 7 days" and "Next 14 days" switch the range.
+- Before the relaunch, the phone that switched first probably shows "<partner> hasn't shared their
+  busy times yet" even though the partner switched too. The partner's switch is read from the session,
+  which loads only at launch (open question 2).
+
+**Time.** The list within a few seconds of opening.
+
+**If it fails.**
+- "Corbie needs your busy times too": that phone's own switch is off.
+- "Corbie has no access to your iPhone calendar.": calendar access refused. iOS Settings, Privacy,
+  Calendars.
+- "<partner> hasn't shared their busy times yet" after the relaunch: the partner's `sharesBusyTimes`
+  did not sync. Dashboard, `CD_Member`, field `CD_sharesBusyTimes`.
+- A new iPhone Calendar event shows up only after about 30 s: changes are batched for 30 s
+  (`BusyPublisher.changeDebounce`). Pull down on the free time screen to publish at once.
+
+**12b. Read the records in the Dashboard.**
+
+1. `https://icloud.developer.apple.com`, sign in with the team Apple ID, CloudKit Database, container
+   `iCloud.app.corbie`, environment **Development**.
+2. Schema, Record Types, `CD_BusyInterval`. Read the list of fields. This is the place to read,
+   because a field that is always empty still shows up here.
+   - Allowed, from the model (`CorbieModel.swift` lines 149 to 154, `BusyInterval.swift`): `CD_id`,
+     `CD_memberId`, `CD_startAt`, `CD_endAt`, `CD_sourceRaw` (value `device` for the iPhone calendar,
+     `corbie` for Corbie's own dates), `CD_updatedAt`, `CD_space` (the link to the space record),
+     `CD_entityName` (value `BusyInterval`). CloudKit adds its own system fields: record name,
+     created and modified time and user, change tag.
+   - Not allowed: anything else. No title, location, notes, URL, attendee, organizer, calendar name or
+     event identifier.
+   - `docs/TEST_PLAN.md` 5a mentions an all-day flag. The model has none: an all-day event is stored
+     as whole days from start to end (`BusyIntervals.wholeDays`).
+3. Data, Records. "Act as iCloud Account" with A's Apple ID. Database: **Private**. Zone: the one
+   named `com.apple.coredata.cloudkit.share.` plus an id. The shared space moved there in step 2;
+   `com.apple.coredata.cloudkit.zone` holds only what was never shared. Record type
+   `CD_BusyInterval`. Query.
+4. If the Dashboard refuses the query because `recordName` is not queryable: Schema, Indexes,
+   `CD_BusyInterval`, add an index on `recordName` of type Queryable, save, query again. This changes
+   the Development schema only and is harmless in a later deploy.
+5. Records from both phones sit in this one zone: B writes into A's zone through the shared database.
+   To tell the people apart, query `CD_Member` in the same zone: its `CD_id` equals `CD_memberId`, and
+   `CD_displayName` names the person. As B's Apple ID, the same zone appears under Database:
+   **Shared**.
+6. Open at least three records per person. Each holds two dates, a member id, `device` or `corbie`,
+   an update time and a link to the space. None of the titles, places or guests from pre-flight 15
+   appears anywhere.
+7. Expect `corbie` records for both people covering the same shared dates, such as "Dinner" from
+   step 6b: each phone publishes the space's own dates of kind Event and Trip as its own busy time
+   (`CorbieEventBusyPublisher`).
+8. Screenshot the field list and the record list.
+
+**12c. Turn it off and watch the records go (phone A).**
+
+**Do.** A: Shared settings, Privacy, "Share my busy times" off. Keep A's app in the foreground. In the
+Dashboard, query again every 5 s. On B, look at the free time screen, pull down, then force-quit and
+reopen Corbie and look again.
+
+**See.**
+- Dashboard: every `CD_BusyInterval` with A's member id is gone. B's records stay. Screenshot the list.
+- B, as the spec asks (`docs/TEST_PLAN.md` 5a step 5): "<A's name> hasn't shared their busy times
+  yet" within 60 s.
+- B, as the code works today: before the relaunch B still treats A as sharing, so the list shows
+  windows computed without A's busy times. After the relaunch the "hasn't shared" line appears.
+  Write down both (open question 2).
+
+**Time.** "Within seconds" is the target from module 21. The app deletes the records on the phone at
+once (`BusyPublisher.disableSharing`, `CoreDataBusyIntervalRepository.deleteAll`) and the upload
+follows the save. Not measured. Over 60 s with A in the foreground is a defect.
+
+**If it fails.**
+- Records stay: A's app went to the background right after the switch, so the upload is waiting.
+  Bring it back and wait. Or the switch did not save (toast "That did not save.").
+- Only A's `corbie` records stay: a publish ran after the switch. `deleteAll(memberId:)` removes both
+  kinds; `publishBusyTimes` reads the switch from the session.
+- A title, place or guest field exists: stop and report it. The calendar reader takes only start,
+  end, all-day, availability, and the reply of the phone's own owner to skip declined events
+  (`SystemDeviceCalendarSource.busyRanges`). The writer sets only the fields listed above
+  (`CoreDataBusyIntervalRepository.replace`). An extra field means another build wrote it.
+
+Optional, if there is time before step 13: `docs/TEST_PLAN.md` section 5 steps 8 (capsule), 9 (vote),
+11 (Us badge) and 5b (Today and the Our day widget). Their expectations stand as written there.
+
+### Step 13. Leave the space (phone B)
+
+**Do.** B: Us pill, Shared settings, Account, "Leave space". The dialog reads "Leave this space?" and
+"You stop seeing the shared data. Your partner keeps it." Tap "Leave space".
+
+Do not try "Leave space" on A. The owner sees the row too, because it shows whenever there is a
+partner (`SettingsView.accountSection`), but an owner can only delete: on A it ends with the toast
+"iCloud did not answer." (`CloudKitSharing.leave` refuses a space the phone owns).
+
+**See.**
+- B: a spinner in the row, then the intro screen "A shared space for two". Pending Corbie
+  notifications on B are cancelled. B's widgets show their empty state after the next reload.
+- A, as the spec asks (`docs/TEST_PLAN.md` section 5 step 12): all data stays, and Settings, Partner
+  reads "Nobody yet. The space works solo." within 60 s.
+- A, as the code works today: A keeps showing B as partner, and therefore no "Invite your partner"
+  row. Leaving removes B from the share and deletes B's own copy only. B's member record stays in A's
+  space, and A treats any second member as the partner (`CoreDataMemberRepository.partner`). Write
+  down what A shows after 60 s and after a relaunch (open question 1).
+- Dashboard, acting as A, Private, the share zone: B's records are still there, as "Your partner
+  keeps it" says. Acting as B, the Shared database no longer lists the zone.
+- B: Sign in with Apple again. A new solo space with nothing of A's.
+
+**Time.** B back on the intro screen within 10 s.
+
+**If it fails.**
+- Toast "iCloud did not answer." and B stays in the tabs: deleting the share membership or clearing
+  the zone failed (`CloudKitSharing.leave`). Network, or the share was already gone.
+- B lands on onboarding but A's data shows up again after signing in: the zone was not cleared on B
+  (`purgeObjectsAndRecordsInZone`).
+
+### Step 14. The owner deletes the space (phone A)
+
+**Do.** A: Us pill, Shared settings, Account, "Delete account". The dialog reads "Delete your
+account?" and "The space you own goes with it, this phone is wiped and you are signed out. There is no
+undo." Tap "Delete account". Wait for the intro screen. Then check the Dashboard. Then on A: Sign in
+with Apple again with the same Apple ID.
+
+**See.**
+- A: a spinner, very likely the toast "No answer from the network." after a few seconds (the Apple
+  revoke call is tried four times; section 3 and open question 4), then the intro screen. Widgets on A
+  go empty after the next reload.
+- Dashboard, acting as A, Development, Private: the records in the share zone should be gone. Query
+  `CD_Space`, `CD_Member` and `CD_TaskItem` there and write down the counts.
+- After signing in again, as the spec asks (`docs/TEST_PLAN.md` section 5 step 13): a fresh solo space,
+  an empty profile apart from the Apple name, "Nothing on today".
+- As the code works today, check this carefully: the app deletes the space on the phone and wipes the
+  store files right after (`SettingsViewModel.deleteAccount`, `AppEnvironment.wipeLocalState`,
+  `StoreReset.wipe`). If the deletions had not reached iCloud by then, the records are still in the
+  zone, and the new sign-in brings the old space back. Write down whether old items came back (open
+  question 3).
+
+**Time.** A back on the intro screen within 15 s.
+
+**If it fails.**
+- Toast "iCloud did not answer." before the intro screen: deleting the share record failed
+  (`CloudKitSharing.deleteSpace`). The phone was still wiped, the iCloud data was not deleted.
+- Old data after signing in again: see the last "See" point.
+- A stays in the tabs: `wipeLocalState` did not finish. Relaunch.
+
+### Step 15 (optional). Pair again through the link
+
+Only if step 14 left A with an empty space.
+
+**Do.** A: Shared settings, Partner, "Invite your partner", "Share code". B, signed in with an empty
+solo space since step 13: tap the new link in Messages, then "Join".
+
+**See.** A "Have a code?" sheet with the code filled in, then the same as step 4. This is the full
+link-to-join path that step 3 stopped short of.
+
+**If it fails.** "This space already has things in it, and two spaces cannot be merged yet.": B made
+something after step 13. Otherwise as in steps 3 and 4.
+
+---
+
+## 5. Not in this session
+
+- `docs/TEST_PLAN.md` section 5 step 4 (one subscription for two), sections 7 and 8: monetization is
+  off.
+- `docs/TEST_PLAN.md` section 6 (offline and reconnect): a separate session.
+
+---
+
+## 6. Open questions found in the code while writing this plan
+
+None of these was run on a device. Each one names the step where it shows.
+
+1. **Leaving does not remove the partner from the owner's space** (step 13). `CloudKitSharing.leave`
+   (`Packages/CorbieCore/Sources/CorbieCore/Persistence/CloudKitSharing.swift` lines 89 to 110) deletes
+   B's share membership and clears B's copy. Nothing deletes B's `Member` in A's zone.
+   `CoreDataMemberRepository.partner` (lines 74 to 76) returns any other member, so A keeps a partner,
+   never shows "Nobody yet", and loses the invite rows (`SettingsView.swift` lines 111 to 126). A
+   cannot invite anyone again.
+2. **The partner's details are loaded only at launch** (steps 12a and 12c). The partner comes from
+   `AppEnvironment.reloadSession` (`Corbie/App/AppEnvironment.swift` line 156).
+   `PartnerJoinWatcher.check` returns early once a partner exists (`PartnerJoinWatcher.swift` line 16).
+   The free time screen reads `environment.partner.sharesBusyTimes`
+   (`FreeTimeViewModel.swift` lines 134 and 158) and does not reload on synced changes
+   (`FreeTimeView.swift` lines 41 to 55). A partner's switch, name or colour change shows only after a
+   relaunch.
+3. **Deleting the account may leave the records in iCloud** (step 14). `SettingsViewModel.deleteAccount`
+   (`Corbie/Features/Settings/SettingsViewModel.swift` lines 135 to 152) deletes the space on the phone,
+   then `AppEnvironment.wipeLocalState` removes the store files (`StoreReset.wipe`,
+   `StoreReset.swift` lines 17 to 40). Nothing waits for the deletions to upload, and a new sign-in
+   downloads whatever is still in the zone.
+4. **Revoking Sign in with Apple uses a code Apple accepts only once and only for five minutes.** The
+   app stores the authorization code at sign-in (`OnboardingViewModel.swift` lines 64 to 68) and never
+   stores a refresh token (`AppEnvironment.storeAppleRevocationSecret`, no caller passes one).
+   `server/supabase/functions/apple-revoke/index.ts` (`exchangeAuthorizationCode`, line 16) trades that
+   code at deletion time. Even with the three Apple secrets set, a deletion later than five minutes
+   after sign-in will likely fail the revoke. The five-minute rule is Apple's documented limit, not
+   something checked here.
+5. **The widget and share extensions each run their own CloudKit sync on the same files.**
+   `IntentPersistence.controller()` (`AppIntentsRuntime.swift` line 20, used by
+   `CorbieWidgets/Support/WidgetStore.swift` line 8) and `CorbieShare/ShareWishViewModel.swift`
+   (line 107) create `PersistenceController.cloudKit`, which turns on CloudKit mirroring
+   (`CoreDataStack.swift` lines 172 to 178). Apple's guidance is one syncing process per store. Watch
+   for duplicates and for widget ticks that reach the partner only after the app opens (step 8).
+6. **The owner sees "Leave space"** (step 13). `SettingsView.swift` lines 298 to 302 show it whenever a
+   partner exists; for the owner it ends in "iCloud did not answer."
+7. **Partner alerts and widget redraws need the receiving app in memory** (steps 8 and 9).
+   `remoteChanges.start()`, the alert audience and `WidgetReloader.shared.start()` run only in
+   `AppEnvironment.bootstrap`, which is called from the window's `.task`
+   (`Corbie/App/CorbieApp.swift` lines 26 to 29). I believe iOS does not create the window when it
+   launches an app in the background for a push, so in that case the push handler
+   (`CorbieApp.swift` lines 95 to 106) merges the change with no alert and no widget redraw. Not
+   checked on a device. The chore alert also waits for the Today card
+   (`TodayChoreCard.swift` lines 18 and 19).
+8. **A used invite code is kept only in memory** (step 4). `JoinViewModel.redeemedShare`
+   (`JoinViewModel.swift` lines 111 to 116): if the CloudKit part fails and the screen is closed, the
+   code is spent and a new one is needed. Every CloudKit failure, including the 15 s wait, reads "Check
+   that you are signed in to iCloud." (`JoinFailure.swift` line 19), which misleads when the account is
+   fine.
+9. **`docs/TEST_PLAN.md` disagrees with the code in three places.** 5a lists an all-day flag the model
+   does not have and omits `sourceRaw` and `updatedAt` (`CorbieModel.swift` lines 149 to 154).
+   Section 5 step 6 expects an alert when a task is marked done; the classifier skips done tasks
+   (`RemoteChangeClassifier.swift` line 107). Section 5 step 12 expects "Nobody yet" on A (see 1).
+10. **The question reminder can disappear for the day.** When the partner answers after 10:00,
+    `scheduleQuestionReminder` cancels the pending 20:00 reminder and the 10:00 one is already past
+    (`NotificationScheduler.swift` lines 395 to 398). It follows the spec text of type 11, so this is a
+    product question.
+11. **The app delegate's share-accept callback is likely never called.**
+    `application(_:userDidAcceptCloudKitShareWith:)` (`CorbieApp.swift` lines 115 to 128) is the
+    pre-scene API; a SwiftUI app gets the scene version instead. The invite flow does not use it
+    (`JoinViewModel` accepts the share itself), so only someone opening a raw iCloud share link is
+    affected.
+
+---
+
+## 7. What to record
+
+One row per check. Add a screenshot when a step is slower than its target or shows something else
+than its "See" lines.
+
+| Step | Phone | Action at | Seen at | Delay | Pass | Notes, screenshot |
+| --- | --- | --- | --- | --- | --- | --- |
+| | | | | | | |
+
+Also note once per session: the commit and local changes of the build (pre-flight 6), iOS versions,
+the network each phone was on, and the Developer screen's "Monetization" footer on both phones.

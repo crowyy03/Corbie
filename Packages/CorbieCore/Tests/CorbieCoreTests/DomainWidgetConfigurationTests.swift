@@ -19,7 +19,8 @@ import Testing
             controller: seed.controller,
             calendar: calendar,
             locale: locale,
-            viewerMemberId: seed.me.id
+            viewerMemberId: seed.me.id,
+            monetization: MonetizationTestSupport.enabled
         )
         return World(provider: provider, seed: seed, now: now)
     }

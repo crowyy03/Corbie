@@ -404,8 +404,9 @@ public struct LockInlineSnapshot: Sendable, Codable, Equatable {
 }
 
 public enum WidgetPremiumRule {
-    public static func isPremium(space: SpaceDTO, now: Date) -> Bool {
-        MirroredEntitlement(space: space).isPremium(at: now)
+    public static func isPremium(space: SpaceDTO, now: Date, monetizationEnabled: Bool) -> Bool {
+        guard monetizationEnabled else { return true }
+        return MirroredEntitlement(space: space).isPremium(at: now)
     }
 }
 

@@ -39,20 +39,25 @@ public struct WidgetDataProvider: Sendable {
     private let locale: Locale
     private let identity: MemberIdentity
     private let viewerMemberIdOverride: UUID?
+    private let monetization: MonetizationFlagStore
 
     public init(
         controller: PersistenceController,
         calendar: Calendar = .current,
         locale: Locale = .current,
         identity: MemberIdentity = MemberIdentity(),
-        viewerMemberId: UUID? = nil
+        viewerMemberId: UUID? = nil,
+        monetization: MonetizationFlagStore = MonetizationFlagStore()
     ) {
         self.controller = controller
         self.calendar = calendar
         self.locale = locale
         self.identity = identity
         viewerMemberIdOverride = viewerMemberId
+        self.monetization = monetization
     }
+
+    private var premiumWithoutSpace: Bool { monetization.isEnabled == false }
 
     public func context(now: Date = Date()) async throws -> WidgetContext? {
         let repositories = controller.repositories
@@ -67,13 +72,13 @@ public struct WidgetDataProvider: Sendable {
             members: members,
             viewer: viewer,
             partner: partner,
-            isPremium: WidgetPremiumRule.isPremium(space: space, now: now)
+            isPremium: WidgetPremiumRule.isPremium(space: space, now: now, monetizationEnabled: monetization.isEnabled)
         )
     }
 
     public func daysTogether(now: Date = Date()) async throws -> DaysTogetherSnapshot {
         guard let context = try await context(now: now) else {
-            return DaysTogetherSnapshot(days: nil, isPremium: false)
+            return DaysTogetherSnapshot(days: nil, isPremium: premiumWithoutSpace)
         }
         return DaysTogetherSnapshot(
             days: ImportantDates.daysTogether(space: context.space, now: now, calendar: calendar),
@@ -89,7 +94,7 @@ public struct WidgetDataProvider: Sendable {
                 date: nil,
                 daysAway: nil,
                 ordinal: nil,
-                isPremium: false
+                isPremium: premiumWithoutSpace
             )
         }
         let provider = AutoDatesProvider(calendar: calendar)
@@ -145,7 +150,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func partnerWishes(now: Date = Date()) async throws -> PartnerWishesSnapshot {
         guard let context = try await context(now: now) else {
-            return PartnerWishesSnapshot(items: [], remaining: 0, partnerName: nil, isPremium: false)
+            return PartnerWishesSnapshot(items: [], remaining: 0, partnerName: nil, isPremium: premiumWithoutSpace)
         }
         guard let partner = context.partner else {
             return PartnerWishesSnapshot(items: [], remaining: 0, partnerName: nil, isPremium: context.isPremium)
@@ -176,7 +181,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func planProgress(planId: UUID? = nil, now: Date = Date()) async throws -> PlanProgressSnapshot {
         guard let context = try await context(now: now) else {
-            return planSnapshot(nil, isPremium: false)
+            return planSnapshot(nil, isPremium: premiumWithoutSpace)
         }
         let plans = try await controller.repositories.plans.plans(spaceId: context.space.id, statuses: [.active])
         let plan = planId.flatMap { id in plans.first { $0.id == id } } ?? plans.first
@@ -185,7 +190,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func upcomingDates(now: Date = Date()) async throws -> UpcomingDatesSnapshot {
         guard let context = try await context(now: now) else {
-            return UpcomingDatesSnapshot(items: [], isPremium: false)
+            return UpcomingDatesSnapshot(items: [], isPremium: premiumWithoutSpace)
         }
         let items = try await widgetDates(context: context, now: now)
         return UpcomingDatesSnapshot(
@@ -196,7 +201,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func shopping(now: Date = Date()) async throws -> ShoppingSnapshot {
         guard let context = try await context(now: now) else {
-            return ShoppingSnapshot(listId: nil, title: nil, items: [], remaining: 0, isPremium: false)
+            return ShoppingSnapshot(listId: nil, title: nil, items: [], remaining: 0, isPremium: premiumWithoutSpace)
         }
         let lists = try await controller.repositories.lists.lists(spaceId: context.space.id)
         guard let pinned = lists.first(where: \.isPinnedShopping) else {
@@ -228,7 +233,7 @@ public struct WidgetDataProvider: Sendable {
                 opensAt: nil,
                 daysAway: nil,
                 isForViewer: false,
-                isPremium: false
+                isPremium: premiumWithoutSpace
             )
         }
         let capsules = try await controller.repositories.capsules.capsules(spaceId: context.space.id)
@@ -256,7 +261,7 @@ public struct WidgetDataProvider: Sendable {
     }
 
     public func question(now: Date = Date()) async throws -> QuestionSnapshot {
-        guard let context = try await context(now: now) else { return QuestionSnapshot.blank(isPremium: false) }
+        guard let context = try await context(now: now) else { return QuestionSnapshot.blank(isPremium: premiumWithoutSpace) }
         guard let viewer = context.viewer,
               let question = try await controller.repositories.questions.todaysQuestion(
                   spaceId: context.space.id,
@@ -276,7 +281,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func ourDay(now: Date = Date()) async throws -> OurDaySnapshot {
         guard let context = try await context(now: now) else {
-            return OurDaySnapshot(days: nil, tasks: [], events: [], plan: nil, isPremium: false)
+            return OurDaySnapshot(days: nil, tasks: [], events: [], plan: nil, isPremium: premiumWithoutSpace)
         }
         let day = try await TodayFeedProvider(
             repositories: controller.repositories,
@@ -298,7 +303,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func freeSlots(now: Date = Date()) async throws -> FreeSlotsSnapshot {
         guard let context = try await context(now: now) else {
-            return FreeSlotsSnapshot(availability: .notPaired, isPremium: false)
+            return FreeSlotsSnapshot(availability: .notPaired, isPremium: premiumWithoutSpace)
         }
         guard let viewer = context.viewer, let partner = context.partner else {
             return FreeSlotsSnapshot(availability: .notPaired, isPremium: context.isPremium)
@@ -337,7 +342,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func lockCircular(mode: LockCircularMode, now: Date = Date()) async throws -> LockCircularSnapshot {
         guard let context = try await context(now: now) else {
-            return LockCircularSnapshot(mode: mode, value: nil, progress: nil, isPremium: false)
+            return LockCircularSnapshot(mode: mode, value: nil, progress: nil, isPremium: premiumWithoutSpace)
         }
         switch mode {
         case .daysTogether:
@@ -378,7 +383,7 @@ public struct WidgetDataProvider: Sendable {
                 taskId: nil,
                 freeCount: 0,
                 nextDate: nil,
-                isPremium: false
+                isPremium: premiumWithoutSpace
             )
         }
         let open = try await openTasks(spaceId: context.space.id)
@@ -395,7 +400,7 @@ public struct WidgetDataProvider: Sendable {
 
     public func lockInline(now: Date = Date()) async throws -> LockInlineSnapshot {
         guard let context = try await context(now: now) else {
-            return LockInlineSnapshot(kind: nil, name: nil, daysAway: nil, isPremium: false)
+            return LockInlineSnapshot(kind: nil, name: nil, daysAway: nil, isPremium: premiumWithoutSpace)
         }
         let dates = try await widgetDates(context: context, now: now)
         guard let next = dates.first else {
@@ -420,7 +425,7 @@ public struct WidgetDataProvider: Sendable {
         matching isIncluded: (TaskDTO) -> Bool
     ) async throws -> TasksSnapshot {
         guard let context = try await context(now: now) else {
-            return TasksSnapshot(items: [], remaining: 0, isPremium: false)
+            return TasksSnapshot(items: [], remaining: 0, isPremium: premiumWithoutSpace)
         }
         let open = try await openTasks(spaceId: context.space.id).filter(isIncluded)
         return TasksSnapshot(
