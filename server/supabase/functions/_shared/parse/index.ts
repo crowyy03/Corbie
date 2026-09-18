@@ -2,7 +2,8 @@ import { parseHtml } from "../html.ts";
 import { adapterForHost } from "./adapters/index.ts";
 import { safeFetch } from "./guard.ts";
 import { extractJsonLd } from "./jsonld.ts";
-import { browserUserAgent, hostOf, normalizeUrl, resolveShortLink } from "./normalizeUrl.ts";
+import { browserHeaders } from "./browserHeaders.ts";
+import { hostOf, normalizeUrl, resolveShortLink } from "./normalizeUrl.ts";
 import { fetchOEmbed } from "./oembed.ts";
 import { extractOpenGraph } from "./og.ts";
 import {
@@ -121,11 +122,7 @@ export async function parseLink(
     response = await fetchImpl(canonicalURL, {
       redirect: "follow",
       signal: AbortSignal.timeout(upstreamTimeoutMs),
-      headers: {
-        "user-agent": browserUserAgent,
-        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept-language": "en-US,en;q=0.9",
-      },
+      headers: browserHeaders(canonicalURL),
     });
   } catch {
     return bare;

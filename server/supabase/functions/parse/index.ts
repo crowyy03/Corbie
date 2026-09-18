@@ -6,6 +6,10 @@ import { serviceClient } from "../_shared/supabase.ts";
 
 const cacheTtlMs = 24 * 60 * 60 * 1000;
 
+export function isWorthCaching(result: ParseResult): boolean {
+  return result.title !== null || result.imageURL !== null;
+}
+
 function requireUrl(value: unknown): string {
   if (typeof value !== "string" || value.trim().length === 0 || value.length > 2048) {
     throw new ApiError("invalid_request", "url is required");
@@ -61,7 +65,7 @@ async function handle(req: Request): Promise<Response> {
   if (cached) return json(cached);
 
   const result: ParseResult = await parseLink(canonicalURL);
-  if (result.title !== null || result.imageURL !== null) await writeCache(hash, result);
+  if (isWorthCaching(result)) await writeCache(hash, result);
 
   return json(result);
 }

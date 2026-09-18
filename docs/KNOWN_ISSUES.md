@@ -106,6 +106,32 @@ wishes. The same holds for free time: `FreeTimeView` shows "Free time needs two 
 partner, so the slot list, the filters and the "Ask them" path are two-Apple-ID checks
 (`docs/TEST_PLAN.md` section 4).
 
+### Luxury and bot-protected shops cannot be read from the server
+
+Their site answers our server with `403` because the request comes from a datacenter address: Supabase
+Edge Functions run in the cloud, and those ranges are blocked wholesale. Checked on 2026-09-18 with a
+full mobile-Safari header set, including the same `Accept-Language` a phone in that country sends: the
+answer stays `403`, so the gate is the address, not the headers.
+
+What the person sees: the link is kept, "could not read this link - fill it in by hand" appears under
+the field, and the name, price and photo are typed in by hand. Nothing is lost, the wish saves.
+
+What the server does about it anyway:
+
+- It sends the whole mobile-Safari header set (`_shared/parse/browserHeaders.ts`), with the language
+  taken from the country of the host, which is enough for shops that gate on headers rather than on
+  the address.
+- A result that carries neither a title nor an image is never written to `parse_cache`
+  (`isWorthCaching`), so the next attempt goes out to the shop again instead of replaying a stored
+  failure for a day. A page that answers with a title, even a poor one, is cached for 24 hours as
+  before.
+
+The v1.1 answer is to parse on the device when the server comes back empty: the phone fetches the page
+from the person's own address, which is what the competitors appear to do, and reads the same
+`og:` and JSON-LD tags. It needs an amendment to `CLAUDE.md` and `docs/03_TECH_ARCHITECTURE.md`, which
+say today that the client calls no third party, and it hands the shop the person's IP address, which
+is what opening the link in Safari would do anyway. Not in v1.
+
 ### A widget tick or a shared wish reaches the partner only after the app runs
 
 Since 2026-09-17 only the app syncs with iCloud (`docs/DECISIONS.md`, persistence fix round A). The

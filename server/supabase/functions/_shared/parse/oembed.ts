@@ -1,5 +1,5 @@
 import { emptyFields, type ParseSource, type ProductFields } from "./types.ts";
-import { browserUserAgent } from "./normalizeUrl.ts";
+import { browserUserAgent } from "./browserHeaders.ts";
 
 export interface OEmbedResponse {
   thumbnail_url?: string;

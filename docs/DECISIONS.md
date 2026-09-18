@@ -489,3 +489,9 @@ Running log of implementation decisions not covered by the spec. Newest at the b
 - A failed link parse now reports the error as a toast as well as changing the caption, except when the parse was cancelled because the link changed again, which is not a failure and no longer leaves the caption on "could not read this link".
 - `AppEnvironment.init` takes an optional `transport`, used for the API client and for the wish photo download, so a test can drive the whole chain from the HTTP response to the form (`CorbieTests/WishLinkFillTests.swift`, the IKEA shape with a null price and null currency).
 
+## 2026-09-18 (what the link parser can and cannot reach)
+
+- The parse fetch sends the mobile Safari header set from `_shared/parse/browserHeaders.ts` instead of a desktop user agent and a fixed `en-US`: the same headers a phone sends, with `accept-language` derived from the country of the host (`.de` gets `de-DE,de;q=0.9,en;q=0.8`, an unknown or generic domain gets `en-US`). Short-link resolution and the page fetch use the same set. It costs nothing and it is the only lever we have left for shops that gate on headers; shops that block datacenter addresses answer `403` whatever we send, which the founder checked on 2026-09-18.
+- `parse_cache` keeps only a result that carries a title or an image (`isWorthCaching`). That was already the behaviour; it is now a named function with tests, including one that proves a `403` page with a title in it still comes back empty and uncached, so a shop that was unreachable once is tried again rather than answering from a stored failure for a day.
+- Parsing on the device from the person's own address is the answer for the blocked shops, and it is v1.1: it contradicts the standing rule that the client talks to no third party, so it needs an amendment first (`docs/KNOWN_ISSUES.md`).
+

@@ -1,3 +1,4 @@
+import { browserHeaders } from "./browserHeaders.ts";
 import { safeFetch } from "./guard.ts";
 
 const trackingParams = new Set([
@@ -123,7 +124,7 @@ export async function resolveShortLink(
         method: "GET",
         redirect: "manual",
         signal: AbortSignal.timeout(5000),
-        headers: { "user-agent": browserUserAgent },
+        headers: browserHeaders(current),
       });
     } catch {
       return current;
@@ -135,6 +136,3 @@ export async function resolveShortLink(
   }
   return current;
 }
-
-export const browserUserAgent =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15";
