@@ -810,6 +810,13 @@ half-done leave. If it keeps failing, check both Dashboard views and write down 
 
 ---
 
+## 5a. When a step fails
+
+`docs/PAIRING_FAILURES.md` lists every way an invite or a join can fail, what the screen says and
+which log line to look for in Console (subsystem `app.corbie`, categories `pairing`, `storage`,
+`server`, `keychain`). Check the `storage` line of all three processes before anything else: it says
+whether the App Group and the shared keychain are reachable on that phone.
+
 ## 6. Open questions found in the code while writing this plan
 
 None of these was run on a device. Each one names the step where it shows.

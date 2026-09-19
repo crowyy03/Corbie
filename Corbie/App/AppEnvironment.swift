@@ -68,6 +68,7 @@ final class AppEnvironment {
     @ObservationIgnored private var partnerCheck: Task<PartnerCheck, Never>?
     @ObservationIgnored private var isCheckingPartnerOnServer = false
     @ObservationIgnored private var partnerCheckPauses = 0
+    @ObservationIgnored private(set) var storage: StorageHealth?
     @ObservationIgnored private var partnerCheckedOnServerAt: Date?
 
     init(
@@ -155,6 +156,7 @@ final class AppEnvironment {
     func startProcess() {
         guard processStart == nil else { return }
         apiClient.configuration.announce(process: "app")
+        storage = StorageProbe.run(process: "app")
         processStartedInBackground = UIApplication.shared.applicationState == .background
         IntentPersistence.shared.use(controller: persistence, identity: identity)
         WidgetReloader.shared.start()
@@ -167,6 +169,7 @@ final class AppEnvironment {
     }
 
     func bootstrap() async {
+        reportStorageFailure()
         usBadge.observeReloads()
         await analytics.start()
         reviewPrompt.recordLaunch()
@@ -489,6 +492,16 @@ final class AppEnvironment {
         session = .signedOut
         premiumGate.update(entitlements.stateWithoutSpace())
         await remoteChanges.start()
+    }
+
+    private func reportStorageFailure() {
+        if let failure = persistence.stack.loadFailure {
+            AppEnvironment.log.error("store did not load: \(failure.localizedDescription, privacy: .public)")
+            toasts.show(message: String(localized: "error.storage.message"))
+            return
+        }
+        guard let storage, storage.isHealthy == false else { return }
+        toasts.show(message: String(localized: "error.storage.message"))
     }
 
     func report(_ error: any Error) {

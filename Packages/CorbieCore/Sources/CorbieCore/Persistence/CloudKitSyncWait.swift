@@ -84,3 +84,17 @@ final class CloudKitSyncWait: @unchecked Sendable {
         }
     }
 }
+
+public struct CloudKitUploadWatch: Sendable {
+    private let wait: CloudKitSyncWait?
+
+    init(wait: CloudKitSyncWait?) {
+        self.wait = wait
+    }
+
+    public func finished(within timeout: Duration) async -> Bool {
+        guard let wait else { return false }
+        return await wait.outcome(within: timeout) == .finished
+    }
+}
+

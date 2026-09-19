@@ -121,6 +121,15 @@ public final class CoreDataStack: @unchecked Sendable {
         try history?.process() ?? 0
     }
 
+    public func watchUpload(of scope: StoreScope) -> CloudKitUploadWatch {
+        guard mirroring == .cloudKit, let identifier = store(for: scope)?.identifier else {
+            return CloudKitUploadWatch(wait: nil)
+        }
+        return CloudKitUploadWatch(
+            wait: CloudKitSyncWait(kind: .exporting, storeIdentifier: identifier, startedAtOrAfter: Date())
+        )
+    }
+
     func importWait(for scope: StoreScope?, arrivedAt: Date) -> CloudKitSyncWait? {
         guard let runningImports else { return nil }
         let storeIdentifier = scope.flatMap { store(for: $0)?.identifier }

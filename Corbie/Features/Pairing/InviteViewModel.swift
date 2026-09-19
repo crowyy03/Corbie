@@ -1,6 +1,7 @@
 import CorbieCore
 import Foundation
 import Observation
+import os
 
 @MainActor
 @Observable
@@ -15,6 +16,9 @@ final class InviteViewModel {
     private(set) var phase: Phase = .idle
     private(set) var code: String?
     private(set) var expiresAt: Date?
+    private(set) var failure: String?
+
+    private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "pairing")
 
     @ObservationIgnored private let environment: AppEnvironment
     @ObservationIgnored private let spaceId: UUID
@@ -44,19 +48,40 @@ final class InviteViewModel {
         phase = .working
         code = nil
         expiresAt = nil
+        failure = nil
         do {
+            try await requireICloud()
+            InviteViewModel.log.notice("invite: asking CloudKit for the share of \(self.spaceId, privacy: .public)")
             let share = try await environment.sharing.share(space: spaceId)
             guard let url = share.url else {
-                throw CorbieError.cloudKit("the share has no url yet")
+                throw PairingFailure.sharePending
             }
+            InviteViewModel.log.notice("invite: share url is ready, asking the server for a code")
             let invite = try await environment.apiClient.createInvite(spaceId: spaceId, shareURL: url)
             code = invite.code
             expiresAt = invite.expiresAt
             phase = .ready
+            InviteViewModel.log.notice("invite: code \(invite.code, privacy: .public) is ready")
             environment.analytics.record(.inviteCreated)
         } catch {
+            let kind = PairingFailure.kind(for: error)
             phase = .failed
-            environment.report(error)
+            failure = kind.message
+            InviteViewModel.log.error(
+                """
+                invite failed as \(kind.rawValue, privacy: .public): \
+                \((error as? LocalizedError)?.failureReason ?? error.localizedDescription, privacy: .public)
+                """
+            )
+            environment.report(kind)
+        }
+    }
+
+    private func requireICloud() async throws {
+        switch await environment.sharing.iCloudAccount() {
+        case .available, .unknown: return
+        case .missing: throw PairingFailure.signedOutOfICloud
+        case .busy: throw PairingFailure.iCloudBusy
         }
     }
 }

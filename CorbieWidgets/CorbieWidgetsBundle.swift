@@ -1,8 +1,14 @@
+import CorbieCore
 import SwiftUI
 import WidgetKit
 
 @main
 struct CorbieWidgetsBundle: WidgetBundle {
+    init() {
+        _ = StorageProbe.run(process: "widgets")
+        ServerConfiguration.fromBundle().announce(process: "widgets")
+    }
+
     @WidgetBundleBuilder
     var body: some Widget {
         smallWidgets

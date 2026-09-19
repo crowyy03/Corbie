@@ -13,7 +13,7 @@ public final class CloudKitSharing {
         ownerName: CKCurrentUserDefaultName
     )
 
-    private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "sharing")
+    private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "pairing")
 
     private let stack: CoreDataStack
     private let members: CoreDataMemberRepository
@@ -39,11 +39,17 @@ public final class CloudKitSharing {
             let share = result.1
             share[CKShare.SystemFieldKey.title] = CloudKitSharing.shareTitle
             share.publicPermission = .readWrite
-            return try await container.persistUpdatedShare(share, in: store)
+            let saved = try await container.persistUpdatedShare(share, in: store)
+            CloudKitSharing.log.notice(
+                "share for space \(spaceId, privacy: .public) saved, url \(saved.url == nil ? "pending" : "ready", privacy: .public)"
+            )
+            return saved
         } catch let error as CorbieError {
             throw error
         } catch {
-            throw CorbieError.cloudKit(error.localizedDescription)
+            let failure = CloudKitFailure(step: "share create", error: error)
+            CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
+            throw failure
         }
     }
 
@@ -65,8 +71,11 @@ public final class CloudKitSharing {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
             container.acceptShareInvitations(from: [metadata], into: store) { _, error in
                 if let error {
-                    continuation.resume(throwing: CorbieError.cloudKit(error.localizedDescription))
+                    let failure = CloudKitFailure(step: "accept share", error: error)
+                    CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
+                    continuation.resume(throwing: failure)
                 } else {
+                    CloudKitSharing.log.notice("share accepted")
                     continuation.resume()
                 }
             }
@@ -89,10 +98,18 @@ public final class CloudKitSharing {
                     if let metadata = box.value {
                         continuation.resume(returning: metadata)
                     } else {
-                        continuation.resume(throwing: CorbieError.cloudKit("share metadata is missing"))
+                        let failure = CloudKitFailure(
+                            step: "fetch share metadata",
+                            reason: .missing,
+                            detail: "the share link carries no metadata"
+                        )
+                        CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
+                        continuation.resume(throwing: failure)
                     }
                 case let .failure(error):
-                    continuation.resume(throwing: CorbieError.cloudKit(error.localizedDescription))
+                    let failure = CloudKitFailure(step: "fetch share metadata", error: error)
+                    CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
+                    continuation.resume(throwing: failure)
                 }
             }
             CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).add(operation)
@@ -150,9 +167,33 @@ public final class CloudKitSharing {
         return departed
     }
 
+    public enum ICloudAccount: Sendable, Equatable {
+        case available
+        case missing
+        case busy
+        case unknown
+    }
+
+    public func iCloudAccount() async -> ICloudAccount {
+        guard let status = try? await CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).accountStatus()
+        else { return .unknown }
+        switch status {
+        case .available: return .available
+        case .noAccount, .restricted: return .missing
+        case .temporarilyUnavailable: return .busy
+        case .couldNotDetermine: return .unknown
+        @unknown default: return .unknown
+        }
+    }
+
     public func isICloudAccountMissing() async -> Bool {
-        let status = try? await CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).accountStatus()
-        return status == .noAccount || status == .restricted
+        await iCloudAccount() == .missing
+    }
+
+    public func isOwnShare(_ metadata: CKShare.Metadata) async -> Bool {
+        let container = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer)
+        guard let me = try? await container.userRecordID() else { return false }
+        return metadata.ownerIdentity.userRecordID == me
     }
 
     public func purgePrivateZones() async throws {

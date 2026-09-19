@@ -7,6 +7,7 @@ import UniformTypeIdentifiers
 final class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        _ = StorageProbe.run(process: "share extension")
         ServerConfiguration.fromBundle().announce(process: "share extension")
         let items = (extensionContext?.inputItems as? [NSExtensionItem]) ?? []
         embed(ThemedShareRoot(items: items) { [weak self] in

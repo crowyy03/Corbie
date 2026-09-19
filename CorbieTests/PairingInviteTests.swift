@@ -1,3 +1,4 @@
+import CloudKit
 import CorbieCore
 import XCTest
 @testable import Corbie
@@ -74,13 +75,46 @@ final class PairingInviteTests: XCTestCase {
         XCTAssertEqual(countdown.text(locale: .posix), "0:01")
     }
 
-    func testJoinFailureNamesWhatTheServerSaid() {
-        XCTAssertEqual(JoinFailure.kind(for: serverError(status: 404, code: "not_found")), .notFound)
-        XCTAssertEqual(JoinFailure.kind(for: serverError(status: 410, code: "expired")), .expired)
-        XCTAssertEqual(JoinFailure.kind(for: serverError(status: 410, code: "redeemed")), .redeemed)
-        XCTAssertEqual(JoinFailure.kind(for: serverError(status: 429, code: "rate_limited")), .throttled)
-        XCTAssertEqual(JoinFailure.kind(for: CorbieError.cloudKit("no account")), .iCloud)
-        XCTAssertEqual(JoinFailure.kind(for: CorbieError.network("offline")), .generic)
+    func testPairingFailureNamesWhatTheServerSaid() {
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 404, code: "not_found")), .notFound)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "expired")), .expired)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "redeemed")), .redeemed)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 429, code: "rate_limited")), .throttled)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 401, code: "unauthorized")), .signInAgain)
+        XCTAssertEqual(PairingFailure.kind(for: CorbieError.cloudKit("no account")), .iCloud)
+        XCTAssertEqual(PairingFailure.kind(for: CorbieError.network("offline")), .network)
+        XCTAssertEqual(PairingFailure.kind(for: APIError(kind: .notConfigured, detail: "no url")), .serverMissing)
+    }
+
+    func testPairingFailureNamesWhatCloudKitSaid() {
+        let cases: [(CKError.Code, PairingFailure)] = [
+            (.notAuthenticated, .signedOutOfICloud),
+            (.managedAccountRestricted, .signedOutOfICloud),
+            (.accountTemporarilyUnavailable, .iCloudBusy),
+            (.requestRateLimited, .iCloudBusy),
+            (.networkUnavailable, .network),
+            (.networkFailure, .network),
+            (.unknownItem, .shareMissing),
+            (.zoneNotFound, .shareMissing),
+            (.internalError, .iCloud)
+        ]
+        for (code, expected) in cases {
+            let failure = CloudKitFailure(step: "accept share", error: CKError(code))
+            XCTAssertEqual(PairingFailure.kind(for: failure), expected, "\(code)")
+        }
+    }
+
+    func testEveryPairingFailureCarriesItsOwnSentence() {
+        var seen: Set<String> = []
+        for failure in PairingFailure.allCases {
+            let message = failure.message
+            XCTAssertFalse(message.isEmpty, failure.rawValue)
+            XCTAssertFalse(message.hasPrefix("pairing."), "\(failure.rawValue) shows a raw key")
+            XCTAssertFalse(message.hasPrefix("error."), "\(failure.rawValue) shows a raw key")
+            XCTAssertEqual(failure.errorDescription, message)
+            seen.insert(message)
+        }
+        XCTAssertGreaterThanOrEqual(seen.count, PairingFailure.allCases.count - 1)
     }
 
     func testSessionExchangeSeparatesAuthFromNetworkFailures() {

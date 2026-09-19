@@ -63,7 +63,7 @@ struct InviteView: View {
                         .accessibilityValue(Text(verbatim: InviteCodeFormat.spelledOut(model.code ?? "")))
                     countdownLine(at: date)
                 case .failed:
-                    Text("pairing.invite.failed.note")
+                    Text(verbatim: model.failure ?? String(localized: "pairing.invite.failed.note"))
                         .corbieMono()
                         .foregroundStyle(palette.text2)
                 }

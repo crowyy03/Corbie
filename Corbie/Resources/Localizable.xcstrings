@@ -7038,6 +7038,41 @@
         }
       }
     },
+    "error.storage.message": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese App-Version erreicht ihren geteilten Speicher nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This build cannot reach its shared storage."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versión no puede acceder a su almacenamiento compartido."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette version n'atteint pas son stockage partagé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa versione non raggiunge la sua memoria condivisa."
+          }
+        }
+      }
+    },
     "freetime.empty.note": {
       "localizations": {
         "de": {
@@ -13814,6 +13849,216 @@
         }
       }
     },
+    "pairing.error.icloud.busy": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud ist auf diesem iPhone noch nicht bereit. Versuche es in einer Minute erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud is not ready on this iPhone. Try again in a minute."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud no está listo en este iPhone. Inténtalo dentro de un minuto."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud n'est pas prêt sur cet iPhone. Réessaie dans une minute."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud non è pronto su questo iPhone. Riprova tra un minuto."
+          }
+        }
+      }
+    },
+    "pairing.error.icloud.ownaccount": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Code stammt aus demselben iCloud-Account. Zum Verbinden braucht es zwei."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That code comes from this same iCloud account. Pairing needs two."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese código viene de esta misma cuenta de iCloud. Para vincular hacen falta dos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce code vient du même compte iCloud. Il en faut deux pour se relier."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo codice arriva dallo stesso account iCloud. Per collegarsi ne servono due."
+          }
+        }
+      }
+    },
+    "pairing.error.icloud.signedout": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melde dich auf diesem iPhone bei iCloud an und versuche es erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to iCloud on this iPhone, then try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión en iCloud en este iPhone y vuelve a intentarlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecte-toi à iCloud sur cet iPhone, puis réessaie."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accedi a iCloud su questo iPhone e riprova."
+          }
+        }
+      }
+    },
+    "pairing.error.share.missing": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Einladung ist in iCloud nicht mehr da. Bitte um einen neuen Code."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That invite is gone from iCloud. Ask for a new code."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esa invitación ya no está en iCloud. Pide un código nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette invitation n'est plus dans iCloud. Demande un nouveau code."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quell'invito non è più su iCloud. Chiedi un codice nuovo."
+          }
+        }
+      }
+    },
+    "pairing.error.share.pending": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud hat den Einladungslink noch nicht veröffentlicht. Versuche es gleich erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud has not published the invite link yet. Try again in a moment."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud todavía no ha publicado el enlace de invitación. Inténtalo en un momento."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud n'a pas encore publié le lien d'invitation. Réessaie dans un instant."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud non ha ancora pubblicato il link d'invito. Riprova tra poco."
+          }
+        }
+      }
+    },
+    "pairing.error.space.late": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud hat den Raum noch nicht geschickt. Bleib online und versuche es erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud has not sent the space yet. Stay online and try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud aún no ha enviado el espacio. Quédate en línea e inténtalo otra vez."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud n'a pas encore envoyé l'espace. Reste en ligne et réessaie."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud non ha ancora inviato lo spazio. Resta online e riprova."
+          }
+        }
+      }
+    },
     "pairing.invite.code.label": {
       "localizations": {
         "de": {
@@ -14320,6 +14565,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Siete collegati"
+          }
+        }
+      }
+    },
+    "pairing.join.connected.pending": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du bist drin. Dein Partner sieht dich, sobald iCloud synchronisiert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You are in. Your partner sees you once iCloud syncs."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya estás dentro. Tu pareja te verá cuando iCloud sincronice."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu es dans l'espace. Ton partenaire te verra une fois iCloud synchronisé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sei dentro. Il tuo partner ti vedrà quando iCloud avrà sincronizzato."
           }
         }
       }

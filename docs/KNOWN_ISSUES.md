@@ -9,6 +9,13 @@ iPhone 17 Pro Max QA, iPhone 17e QA and iPhone 17 Badge.
 
 ## Blockers
 
+### Pairing failures now have names
+
+Every step of an invite and a join says what went wrong and writes one log line:
+`docs/PAIRING_FAILURES.md` has the table of step, screen text and log line, including the App Group
+and keychain probe that runs at launch in all three targets. Nothing in that table has run on two
+real phones yet.
+
 ### The server base URL ships empty
 
 RESOLVED 12-09, and since 18-09 a build without it cannot reach a server at all: `APIClient` refuses

@@ -1,6 +1,7 @@
 import CorbieCore
 import Foundation
 import Observation
+import os
 
 @MainActor
 @Observable
@@ -25,6 +26,9 @@ final class JoinViewModel {
 
     static let spaceArrivalAttempts = 30
     static let spaceArrivalDelay = Duration.milliseconds(500)
+    static let memberUploadTimeout = Duration.seconds(20)
+
+    private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "pairing")
 
     var code = ""
     private(set) var phase: Phase = .editing
@@ -73,7 +77,14 @@ final class JoinViewModel {
         } catch {
             phase = .editing
             guard block == nil else { return }
-            failure = JoinFailure.kind(for: error).message
+            let kind = PairingFailure.kind(for: error)
+            failure = kind.message
+            JoinViewModel.log.error(
+                """
+                join failed as \(kind.rawValue, privacy: .public): \
+                \((error as? LocalizedError)?.failureReason ?? error.localizedDescription, privacy: .public)
+                """
+            )
         }
     }
 
@@ -85,20 +96,43 @@ final class JoinViewModel {
             block = reason
             throw CorbieError.invalidInput("local space cannot be replaced")
         }
+        try await requireICloud()
+        JoinViewModel.log.notice("join: redeeming the code on the server")
         let share = try await redeemedShare()
         guard let url = share.shareLink else {
-            throw CorbieError.cloudKit("the invite has no share link")
+            throw PairingFailure.shareMissing
         }
+        JoinViewModel.log.notice("join: asking CloudKit for the share behind the link")
         let metadata = try await environment.sharing.fetchShareMetadata(from: url)
+        guard await environment.sharing.isOwnShare(metadata) == false else {
+            throw PairingFailure.ownAccount
+        }
+        JoinViewModel.log.notice("join: accepting the share")
         try await environment.sharing.acceptShare(metadata: metadata)
+        JoinViewModel.log.notice("join: waiting for the space to arrive from iCloud")
         let joined = try await waitForJoinedSpace(id: share.spaceId)
         try await dropLocalSpace(joinedId: joined.id)
+        let upload = environment.persistence.stack.watchUpload(of: .sharedStore)
         try await adoptMember(appleUserID: appleUserID, in: joined)
         try await carryTogetherSince(into: joined)
         environment.analytics.record(.inviteRedeemed)
         appState.selectedTab = .today
         await environment.reloadSession()
-        environment.toasts.show(message: String(localized: "pairing.join.connected"))
+        let uploaded = await upload.finished(within: JoinViewModel.memberUploadTimeout)
+        JoinViewModel.log.notice("join: member upload \(uploaded ? "finished" : "not confirmed", privacy: .public)")
+        environment.toasts.show(
+            message: uploaded
+                ? String(localized: "pairing.join.connected")
+                : String(localized: "pairing.join.connected.pending")
+        )
+    }
+
+    private func requireICloud() async throws {
+        switch await environment.sharing.iCloudAccount() {
+        case .available, .unknown: return
+        case .missing: throw PairingFailure.signedOutOfICloud
+        case .busy: throw PairingFailure.iCloudBusy
+        }
     }
 
     private func blockingReason() async -> Block? {
@@ -124,7 +158,7 @@ final class JoinViewModel {
                 try await Task.sleep(for: JoinViewModel.spaceArrivalDelay)
             }
         }
-        throw CorbieError.cloudKit("the shared space did not arrive in time")
+        throw PairingFailure.spaceLate
     }
 
     private func dropLocalSpace(joinedId: UUID) async throws {

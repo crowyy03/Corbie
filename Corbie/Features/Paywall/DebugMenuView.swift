@@ -101,6 +101,7 @@ struct DebugMenuView: View {
         """
         \(environment.apiClient.configuration.summary)
         version \(AppVersion.current())
+        \(environment.storage?.summary ?? "storage not probed yet")
         """
     }
 
