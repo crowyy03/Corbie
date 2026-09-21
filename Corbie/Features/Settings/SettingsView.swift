@@ -52,27 +52,36 @@ struct SettingsView: View {
 
     private var youSection: some View {
         Section {
-            TextFieldRow(
-                label: String(localized: "settings.you.name"),
-                placeholder: String(localized: "settings.you.name.placeholder"),
-                hint: String(localized: "settings.you.name.hint"),
-                text: $model.profile.displayName
-            )
-            .textInputAutocapitalization(.words)
-            .accessibilityLabel(Text("settings.you.name"))
+            nameRow
             colorRow
             birthdayRow
-            Button(String(localized: "settings.you.save")) {
-                Task { await model.saveProfile() }
-            }
-            .buttonStyle(.plain)
-            .foregroundStyle(model.canSaveProfile ? palette.accent : palette.text2)
-            .disabled(model.canSaveProfile == false)
-            .frame(minHeight: CorbieMetrics.minimumTapTarget)
         } header: {
             SectionCaps(text: String(localized: "settings.section.you"))
         }
         .listRowBackground(palette.surface)
+    }
+
+    private var nameRow: some View {
+        FieldRow(label: String(localized: "settings.you.name"), hint: String(localized: "settings.you.name.hint")) {
+            HStack(spacing: CorbieSpacing.s) {
+                TextField(String(localized: "settings.you.name.placeholder"), text: $model.profile.displayName)
+                    .textFieldStyle(.plain)
+                    .textInputAutocapitalization(.words)
+                    .corbieBody()
+                    .foregroundStyle(palette.text)
+                    .padding(.horizontal, CorbieSpacing.s)
+                    .frame(minHeight: CorbieMetrics.minimumTapTarget)
+                    .corbieFieldBox()
+                    .accessibilityLabel(Text("settings.you.name"))
+                Button(String(localized: "settings.you.save")) {
+                    Task { await model.saveName() }
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(model.canSaveName ? palette.accent : palette.text2)
+                .disabled(model.canSaveName == false)
+                .frame(minWidth: CorbieMetrics.minimumTapTarget, minHeight: CorbieMetrics.minimumTapTarget)
+            }
+        }
     }
 
     private var colorRow: some View {
@@ -81,7 +90,7 @@ struct SettingsView: View {
                 .corbieMono()
                 .foregroundStyle(palette.text2)
             MemberColorPicker(
-                selection: $model.profile.colorSlot,
+                selection: Binding(get: { model.profile.colorSlot }, set: { model.setColor($0) }),
                 partnerSlot: model.partner?.colorSlot,
                 partnerName: environment.partnerName
             )
@@ -92,7 +101,7 @@ struct SettingsView: View {
     private var birthdayRow: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.s) {
             ProfileBirthdayPicker(
-                profile: $model.profile,
+                profile: Binding(get: { model.profile }, set: { model.setBirthday(from: $0) }),
                 toggleTitle: String(localized: "settings.you.birthday"),
                 monthLabel: String(localized: "settings.you.birthday.month"),
                 dayLabel: String(localized: "settings.you.birthday.day")
@@ -135,12 +144,12 @@ struct SettingsView: View {
             dateRow(
                 titleKey: "settings.dates.together",
                 pastOnly: true,
-                date: Binding(get: { model.profile.togetherSince }, set: { model.profile.togetherSince = $0 })
+                date: Binding(get: { model.profile.togetherSince }, set: { model.setTogetherSince($0) })
             )
             dateRow(
                 titleKey: "settings.dates.wedding",
                 pastOnly: false,
-                date: Binding(get: { model.weddingDate }, set: { model.weddingDate = $0 })
+                date: Binding(get: { model.weddingDate }, set: { model.setWeddingDate($0) })
             )
         } header: {
             SectionCaps(text: String(localized: "settings.section.dates"))
@@ -463,7 +472,7 @@ struct SettingsView: View {
     private var currencyBinding: Binding<String> {
         Binding(
             get: { model.displayCurrency },
-            set: { code in Task { await model.setCurrency(code) } }
+            set: { model.setCurrency($0) }
         )
     }
 

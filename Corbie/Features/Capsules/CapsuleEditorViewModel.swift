@@ -81,8 +81,10 @@ final class CapsuleEditorViewModel {
                 var updated = capsule
                 updated.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
                 updated.body = letter
-                updated.opensAt = opening
-                saved = try await environment.repositories.capsules.update(updated)
+                if opensAt != capsule.opensAt {
+                    updated.opensAt = opening
+                }
+                saved = try await environment.repositories.capsules.update(updated, from: capsule)
             }
             await schedule(saved, environment: environment, member: member)
             didFinish = true

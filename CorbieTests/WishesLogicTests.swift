@@ -107,32 +107,6 @@ final class WishesLogicTests: XCTestCase {
         XCTAssertEqual(WishParseRetry.candidates(in: wishes, attempted: [], isOnline: true, limit: 2).count, 2)
     }
 
-    func testParsedLinkFillsOnlyTheEmptyFields() throws {
-        var stored = wish(owner: me, url: "https://etsy.com/listing/1", needsParse: true)
-        stored.title = "Linen apron"
-        stored.price = nil
-        let parsed = ParsedLink(
-            canonicalURL: try XCTUnwrap(URL(string: "https://www.etsy.com/listing/1")),
-            source: .etsy,
-            title: "Apron, sand",
-            price: 48,
-            currency: "usd",
-            imageURL: URL(string: "https://img.example.com/1.jpg"),
-            imageData: Data([1, 2, 3])
-        )
-
-        let filled = WishParsedFill.merged(parsed, into: stored)
-
-        XCTAssertEqual(filled.title, "Linen apron")
-        XCTAssertEqual(filled.price, 48)
-        XCTAssertEqual(filled.currency, "USD")
-        XCTAssertEqual(filled.source, .etsy)
-        XCTAssertEqual(filled.url, "https://www.etsy.com/listing/1")
-        XCTAssertEqual(filled.imageURL, "https://img.example.com/1.jpg")
-        XCTAssertEqual(filled.localImage, Data([1, 2, 3]))
-        XCTAssertFalse(filled.needsParse)
-    }
-
     func testCurrencyOptionsPutTheSpaceCurrencyFirst() {
         let options = WishEditorViewModel.currencyOptions(
             spaceCurrency: "eur",

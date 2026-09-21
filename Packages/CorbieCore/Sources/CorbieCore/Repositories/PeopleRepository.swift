@@ -77,16 +77,17 @@ public struct GiftIdeaDraft: Sendable, Equatable {
 
 public protocol PeopleRepository: Sendable {
     func create(_ draft: PersonDraft) async throws -> PersonDTO
-    func update(_ person: PersonDTO) async throws -> PersonDTO
+    func update(_ edited: PersonDTO, from original: PersonDTO) async throws -> PersonDTO
     func person(id: UUID) async throws -> PersonDTO?
     func people(spaceId: UUID) async throws -> [PersonDTO]
     func delete(id: UUID) async throws
     func addDate(personId: UUID, draft: PersonDateDraft) async throws -> PersonDateDTO
-    func updateDate(_ date: PersonDateDTO) async throws -> PersonDateDTO
+    func updateDate(_ edited: PersonDateDTO, from original: PersonDateDTO) async throws -> PersonDateDTO
     func dates(personId: UUID) async throws -> [PersonDateDTO]
     func deleteDate(id: UUID) async throws
     func addGiftIdea(personId: UUID, draft: GiftIdeaDraft) async throws -> GiftIdeaDTO
-    func updateGiftIdea(_ idea: GiftIdeaDTO) async throws -> GiftIdeaDTO
+    func updateGiftIdea(_ edited: GiftIdeaDTO, from original: GiftIdeaDTO) async throws -> GiftIdeaDTO
+    func setGiftIdeaDone(ideaId: UUID, isDone: Bool) async throws -> GiftIdeaDTO
     func giftIdeas(personId: UUID) async throws -> [GiftIdeaDTO]
     func deleteGiftIdea(id: UUID) async throws
 }

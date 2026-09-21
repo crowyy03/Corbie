@@ -65,7 +65,8 @@ public struct WishQuery: Sendable, Equatable {
 
 public protocol WishRepository: Sendable {
     func create(_ draft: WishDraft) async throws -> WishDTO
-    func update(_ wish: WishDTO) async throws -> WishDTO
+    func update(_ edited: WishDTO, from original: WishDTO) async throws -> WishDTO
+    func fillEmptyFields(wishId: UUID, parsedFrom link: String, with parsed: ParsedLink) async throws -> WishDTO
     func fulfil(wishId: UUID, at date: Date) async throws -> WishDTO
     func wish(id: UUID) async throws -> WishDTO?
     func wishes(_ query: WishQuery) async throws -> [WishDTO]

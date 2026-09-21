@@ -196,7 +196,7 @@ import Testing
         var anna = try #require(try await repositories.people.people(spaceId: world.seed.space.id).first { $0.name == "Anna" })
         anna.birthdayMonth = 9
         anna.birthdayDay = 12
-        _ = try await repositories.people.update(anna)
+        _ = try await repositories.people.update(anna, from: try #require(try await repositories.people.person(id: anna.id)))
         let snapshot = try await world.provider.upcomingDates(now: world.now)
         let birthday = try #require(snapshot.items.first { $0.kind == .personBirthday })
         #expect(birthday.radar == RadarStatus(ideasCount: 2, giftPicked: false))
@@ -230,7 +230,7 @@ import Testing
         anna.birthdayMonth = 9
         anna.birthdayDay = 12
         anna.birthdayYear = 1992
-        _ = try await repositories.people.update(anna)
+        _ = try await repositories.people.update(anna, from: try #require(try await repositories.people.person(id: anna.id)))
         let snapshot = try await world.provider.upcomingDates(now: world.now)
         let birthday = try #require(snapshot.items.first { $0.kind == .personBirthday })
         #expect(birthday.ordinal == 34)
@@ -436,7 +436,7 @@ import Testing
         var space = world.seed.space
         space.subscriptionStatus = .expired
         space.subscriptionExpiresAt = DomainClock.date("2026-08-01", in: calendar)
-        _ = try await world.seed.controller.repositories.spaces.update(space)
+        try await OtherContext.overwrite(space, in: world.seed.controller)
         #expect(try await world.provider.tasks(now: world.now).isPremium == false)
         #expect(try await world.provider.daysTogether(now: world.now).isPremium == false)
         #expect(try await world.provider.ourDay(now: world.now).isPremium == false)
@@ -567,7 +567,7 @@ import Testing
         var space = world.seed.space
         space.subscriptionStatus = .expired
         space.subscriptionExpiresAt = DomainClock.date("2026-08-01", in: calendar)
-        _ = try await world.seed.controller.repositories.spaces.update(space)
+        try await OtherContext.overwrite(space, in: world.seed.controller)
         let snapshot = try await world.provider.freeSlots(now: world.now)
         #expect(snapshot.isPremium == false)
     }

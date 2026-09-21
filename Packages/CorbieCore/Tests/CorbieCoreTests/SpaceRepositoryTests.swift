@@ -30,7 +30,7 @@ import Testing
         space.togetherSince = Date(timeIntervalSince1970: 1_600_000_000)
         space.weddingDate = Date(timeIntervalSince1970: 1_700_000_000)
         space.displayCurrency = "GBP"
-        let saved = try await world.repositories.spaces.update(space)
+        let saved = try await world.repositories.spaces.update(space, from: world.space)
         #expect(saved.displayCurrency == "GBP")
         #expect(saved.togetherSince == space.togetherSince)
         #expect(saved.weddingDate == space.weddingDate)

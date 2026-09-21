@@ -38,7 +38,7 @@ import Testing
         let world = try await makeWorld()
         var space = world.seed.space
         space.weddingDate = nil
-        _ = try await world.seed.controller.repositories.spaces.update(space)
+        _ = try await world.seed.controller.repositories.spaces.setWeddingDate(spaceId: space.id, space.weddingDate)
         let snapshot = try await world.provider.countdown(source: .wedding, now: world.now)
         #expect(snapshot.kind == .wedding)
         #expect(snapshot.date == nil)

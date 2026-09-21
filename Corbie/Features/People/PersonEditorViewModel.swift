@@ -21,6 +21,7 @@ final class PersonEditorViewModel {
 
     @ObservationIgnored let mode: PersonEditorMode
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var loadedOwner: PersonOwner = .me
 
     init(mode: PersonEditorMode) {
         self.mode = mode
@@ -42,6 +43,7 @@ final class PersonEditorViewModel {
         if let person = mode.person, let partner = environment.partner {
             owner = person.ownerMemberId == partner.id ? .partner : .me
         }
+        loadedOwner = owner
     }
 
     var suggestions: [RelationSuggestion] { RelationSuggestion.matching(relation) }
@@ -80,15 +82,18 @@ final class PersonEditorViewModel {
                         note: trimmed(note)
                     )
                 )
-            case .existing(var person):
+            case let .existing(original):
+                var person = original
                 person.name = trimmedName
                 person.relation = trimmed(relation)
                 person.birthdayMonth = birthdayMonth
                 person.birthdayDay = birthdayMonth == nil ? nil : birthdayDay
                 person.birthdayYear = birthdayMonth == nil ? nil : birthdayYear
-                person.ownerMemberId = ownerMemberId(environment)
+                if owner != loadedOwner {
+                    person.ownerMemberId = ownerMemberId(environment)
+                }
                 person.note = trimmed(note)
-                _ = try await environment.repositories.people.update(person)
+                _ = try await environment.repositories.people.update(person, from: original)
             }
             return true
         } catch {

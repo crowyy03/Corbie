@@ -16,6 +16,13 @@ final class WishLinkFillTests: XCTestCase {
         """
     }
 
+    private var emptyResponse: String {
+        """
+        {"price":129,"title":null,"author":null,"source":"ikea","currency":"USD",
+        "imageURL":null,"canonicalURL":"\(canonical)"}
+        """
+    }
+
     func testAnIkeaLinkWithoutAPriceStillFillsTheTitleAndThePhoto() async throws {
         let transport = StubTransport(parseResponse: ikeaResponse, imageLink: imageLink, image: pngData())
         let environment = AppEnvironment.previewSignedIn(transport: transport)
@@ -47,6 +54,26 @@ final class WishLinkFillTests: XCTestCase {
 
         XCTAssertTrue(model.title.isEmpty)
         XCTAssertNotNil(environment.toasts.current, "a failed parse must say so, not only change the hint")
+    }
+
+    func testALinkThatReadsEmptyIsAFailureAndFillsNothing() async throws {
+        let transport = StubTransport(parseResponse: emptyResponse, imageLink: imageLink, image: pngData())
+        let environment = AppEnvironment.previewSignedIn(transport: transport)
+        let model = WishEditorViewModel()
+        model.configure(environment, request: WishEditorRequest(wish: nil, link: pasted))
+        let startingCurrency = model.currency
+
+        try await waitUntil("the empty read fails") { model.parseState == .failed }
+
+        XCTAssertTrue(model.title.isEmpty)
+        XCTAssertNil(model.imageURL)
+        XCTAssertNil(model.localImage)
+        XCTAssertTrue(model.priceText.isEmpty, "an empty read must not fill the price either")
+        XCTAssertEqual(model.currency, startingCurrency)
+        XCTAssertEqual(model.link, pasted, "an empty read must not rewrite the link")
+        XCTAssertEqual(environment.toasts.current?.text, String(localized: "wishes.editor.link.empty"))
+        XCTAssertEqual(transport.parseRequests, [pasted])
+        XCTAssertEqual(transport.imageRequests, 0)
     }
 
     private func waitUntil(

@@ -57,18 +57,49 @@ public struct CoreDataSpaceRepository: SpaceRepository {
         }
     }
 
-    public func update(_ space: SpaceDTO) async throws -> SpaceDTO {
-        try await access.write { context in
-            let entity: Space = try ManagedFetch.require(Space.entityName, id: space.id, in: context)
-            entity.togetherSince = space.togetherSince
-            entity.anchorTimeZone = space.anchorTimeZone ?? entity.anchorTimeZone
-            entity.weddingDate = space.weddingDate
-            entity.displayCurrency = space.displayCurrency
-            entity.creatorMemberId = space.creatorMemberId
-            entity.subscriptionStatus = space.subscriptionStatus
-            entity.subscriptionExpiresAt = space.subscriptionExpiresAt
-            entity.subscriptionPayerMemberId = space.subscriptionPayerMemberId
-            return SpaceDTO(entity)
+    public func update(_ edited: SpaceDTO, from original: SpaceDTO) async throws -> SpaceDTO {
+        let changes = try FieldChanges(edited, from: original)
+        return try await access.write { context in
+            let space: Space = try ManagedFetch.require(Space.entityName, id: edited.id, in: context)
+            changes.write(\.togetherSince) { space.togetherSince = $0 }
+            changes.write(\.weddingDate) { space.weddingDate = $0 }
+            changes.write(\.displayCurrency) { space.displayCurrency = $0 }
+            return SpaceDTO(space)
+        }
+    }
+
+    public func setTogetherSince(spaceId: UUID, _ date: Date?) async throws -> SpaceDTO {
+        try await writeSpace(spaceId) { space in
+            guard space.togetherSince != date else { return }
+            space.togetherSince = date
+        }
+    }
+
+    public func setTogetherSinceIfUnset(spaceId: UUID, _ date: Date) async throws -> SpaceDTO {
+        try await writeSpace(spaceId) { space in
+            guard space.togetherSince == nil else { return }
+            space.togetherSince = date
+        }
+    }
+
+    public func setWeddingDate(spaceId: UUID, _ date: Date?) async throws -> SpaceDTO {
+        try await writeSpace(spaceId) { space in
+            guard space.weddingDate != date else { return }
+            space.weddingDate = date
+        }
+    }
+
+    public func setDisplayCurrency(spaceId: UUID, _ code: String) async throws -> SpaceDTO {
+        try await writeSpace(spaceId) { space in
+            guard space.displayCurrency != code else { return }
+            space.displayCurrency = code
+        }
+    }
+
+    public func setCreatorIfUnset(spaceId: UUID, memberId: UUID) async throws -> SpaceDTO {
+        try await writeSpace(spaceId) { space in
+            guard space.creatorMemberId == nil else { return }
+            space.creatorMemberId = memberId
         }
     }
 
@@ -91,6 +122,14 @@ public struct CoreDataSpaceRepository: SpaceRepository {
         try await access.write { context in
             guard let space: Space = try ManagedFetch.first(Space.entityName, id: id, in: context) else { return }
             context.delete(space)
+        }
+    }
+
+    private func writeSpace(_ spaceId: UUID, _ change: @escaping @Sendable (Space) -> Void) async throws -> SpaceDTO {
+        try await access.write { context in
+            let space: Space = try ManagedFetch.require(Space.entityName, id: spaceId, in: context)
+            change(space)
+            return SpaceDTO(space)
         }
     }
 }

@@ -34,6 +34,7 @@ final class WishEditorViewModel {
 
     @ObservationIgnored private var environment: AppEnvironment?
     @ObservationIgnored private var existing: WishDTO?
+    @ObservationIgnored private var loadedIsForMe = false
     @ObservationIgnored private var source: WishSource = .manual
     @ObservationIgnored private var parseTask: Task<Void, Never>?
     @ObservationIgnored private var lastParsedLink: String?
@@ -72,6 +73,7 @@ final class WishEditorViewModel {
             imageURL = wish.imageURL
             source = wish.source
             isForMe = environment.isCurrentMember(wish.ownerMemberId)
+            loadedIsForMe = isForMe
             didParseSucceed = wish.needsParse == false
         } else {
             isForMe = environment.isPaired == false
@@ -123,8 +125,11 @@ final class WishEditorViewModel {
         let cleanNote = WishText.clean(note).isEmpty ? nil : WishText.clean(note)
 
         do {
-            if var wish = existing {
-                wish.ownerMemberId = owner
+            if let original = existing {
+                var wish = original
+                if isForMe != loadedIsForMe {
+                    wish.ownerMemberId = owner
+                }
                 wish.title = cleanTitle
                 wish.url = canonicalLink
                 wish.imageURL = imageURL
@@ -135,7 +140,7 @@ final class WishEditorViewModel {
                 wish.note = cleanNote
                 wish.source = source
                 wish.needsParse = needsParse
-                _ = try await environment.repositories.wishes.update(wish)
+                _ = try await environment.repositories.wishes.update(wish, from: original)
             } else {
                 let draft = WishDraft(
                     spaceId: space.id,
@@ -184,12 +189,19 @@ final class WishEditorViewModel {
         parseState = .parsing
         do {
             let parsed = try await environment.linkParser.parse(url: url)
+            guard parsed.isEmpty == false else {
+                parseState = .failed
+                WishLinkLog.readEmpty(url, parsed: parsed, reader: .editor)
+                environment.toasts.show(message: String(localized: "wishes.editor.link.empty"))
+                return
+            }
             apply(parsed)
             parseState = .idle
             didParseSucceed = true
         } catch {
             guard Task.isCancelled == false else { return }
             parseState = .failed
+            WishLinkLog.failed(url, error: error, reader: .editor)
             environment.report(error)
         }
     }

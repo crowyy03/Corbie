@@ -22,37 +22,35 @@ import Testing
         let world = try await TestWorld.make()
         var member = world.me
         member.colorKey = MemberColorSlot.clay.rawValue
-        let saved = try await world.repositories.members.update(member, theme: .sand)
+        let saved = try await world.repositories.members.update(member, from: world.me, theme: .sand)
         #expect(saved.shiftedColorFrom == .clay)
         #expect(saved.member.colorSlot == .green)
     }
 
     @Test func aColourThatIsFreeIsKeptAsAskedOnWrite() async throws {
         let world = try await TestWorld.make()
-        var member = world.me
-        member.colorKey = MemberColorSlot.blue.rawValue
-        let saved = try await world.repositories.members.update(member, theme: .sand)
+        let saved = try await world.repositories.members.setColor(
+            memberId: world.me.id,
+            colorKey: MemberColorSlot.blue.rawValue,
+            theme: .sand
+        )
         #expect(saved.shiftedColorFrom == nil)
         #expect(saved.member.colorSlot == .blue)
     }
 
     @Test func tealAndGreenAreOnlySplitApartInDeep() async throws {
         let world = try await TestWorld.make()
-        var partner = world.partner
-        partner.colorKey = MemberColorSlot.green.rawValue
-        _ = try await world.repositories.members.update(partner, theme: .sand)
+        let members = world.repositories.members
+        _ = try await members.setColor(memberId: world.partner.id, colorKey: MemberColorSlot.green.rawValue, theme: .sand)
 
-        var member = world.me
-        member.colorKey = MemberColorSlot.teal.rawValue
-        #expect(try await world.repositories.members.update(member, theme: .sand).shiftedColorFrom == nil)
-        #expect(try await world.repositories.members.update(member, theme: .deep).shiftedColorFrom == .teal)
+        let teal = MemberColorSlot.teal.rawValue
+        #expect(try await members.setColor(memberId: world.me.id, colorKey: teal, theme: .sand).shiftedColorFrom == nil)
+        #expect(try await members.setColor(memberId: world.me.id, colorKey: teal, theme: .deep).shiftedColorFrom == .teal)
     }
 
     @Test func aLegacyColourKeyIsReadBackAsASlot() async throws {
         let world = try await TestWorld.make()
-        var member = world.me
-        member.colorKey = "p3"
-        let saved = try await world.repositories.members.update(member, theme: .sand)
+        let saved = try await world.repositories.members.setColor(memberId: world.me.id, colorKey: "p3", theme: .sand)
         #expect(saved.member.colorSlot == .blue)
         #expect(saved.member.colorKey == MemberColorSlot.blue.rawValue)
     }
@@ -83,7 +81,7 @@ import Testing
         member.displayName = "Ilya"
         member.birthdayMonth = 6
         member.birthdayDay = 20
-        let saved = try await world.repositories.members.update(member, theme: .sand).member
+        let saved = try await world.repositories.members.update(member, from: world.me, theme: .sand).member
         #expect(saved.hasBirthday)
         #expect(saved.birthdayMonth == 6)
         #expect(saved.birthdayDay == 20)
@@ -140,7 +138,7 @@ import Testing
         )
         #expect(person.hasBirthday)
 
-        var idea = try await repository.addGiftIdea(
+        let idea = try await repository.addGiftIdea(
             personId: person.id,
             draft: GiftIdeaDraft(title: "Ceramic mug", price: 24, currency: "EUR")
         )
@@ -148,8 +146,7 @@ import Testing
         #expect(withIdea.giftIdeaCount == 1)
         #expect(withIdea.hasPickedGift == false)
 
-        idea.isDone = true
-        _ = try await repository.updateGiftIdea(idea)
+        _ = try await repository.setGiftIdeaDone(ideaId: idea.id, isDone: true)
         let picked = try #require(try await repository.person(id: person.id))
         #expect(picked.hasPickedGift)
 
@@ -160,12 +157,13 @@ import Testing
     @Test func aBirthdayYearIsOptionalAndSurvivesAnEdit() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.people
-        var person = try await repository.create(
+        let created = try await repository.create(
             PersonDraft(spaceId: world.space.id, name: "Anna", birthdayMonth: 9, birthdayDay: 12)
         )
-        #expect(person.birthdayYear == nil)
+        #expect(created.birthdayYear == nil)
+        var person = created
         person.birthdayYear = 1992
-        let saved = try await repository.update(person)
+        let saved = try await repository.update(person, from: created)
         #expect(saved.birthdayYear == 1992)
         let stored = try #require(try await repository.person(id: person.id))
         #expect(stored.birthdayYear == 1992)
@@ -175,10 +173,11 @@ import Testing
         let world = try await TestWorld.make()
         let repository = world.repositories.people
         let person = try await repository.create(PersonDraft(spaceId: world.space.id, name: "Anna"))
-        var wedding = try await repository.addDate(
+        let added = try await repository.addDate(
             personId: person.id,
             draft: PersonDateDraft(title: "wedding day", month: 6, day: 4, year: 2019)
         )
+        var wedding = added
         _ = try await repository.addDate(
             personId: person.id,
             draft: PersonDateDraft(title: "name day", month: 2, day: 3, remindersEnabled: false)
@@ -191,7 +190,7 @@ import Testing
 
         wedding.title = "anniversary"
         wedding.remindersEnabled = false
-        let saved = try await repository.updateDate(wedding)
+        let saved = try await repository.updateDate(wedding, from: added)
         #expect(saved.title == "anniversary")
         #expect(saved.remindersEnabled == false)
 

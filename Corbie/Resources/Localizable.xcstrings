@@ -37271,6 +37271,40 @@
         }
       }
     },
+    "wishes.editor.link.empty": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von diesem Link kam nichts Lesbares zurück. Trag es von Hand ein."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing readable came back from that link. Fill it in by hand."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese enlace no ha devuelto nada legible. Rellénalo a mano."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien de lisible n'est revenu de ce lien. Remplissez à la main."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Da quel link non è tornato niente di leggibile. Compila a mano."
+          }
+        }
+      }
+    },
     "wishes.editor.link.failed": {
       "localizations": {
         "de": {

@@ -88,16 +88,17 @@ import Testing
         let world = try await TestWorld.make()
         let repository = world.repositories.capsules
         let opensAt = now.addingTimeInterval(86_400)
-        var capsule = try await repository.create(
+        let created = try await repository.create(
             CapsuleDraft(spaceId: world.space.id, title: "Draft", body: "One", opensAt: opensAt),
             now: now
         )
+        var capsule = created
         capsule.body = "Two"
-        let edited = try await repository.update(capsule, now: now)
+        let edited = try await repository.update(capsule, from: created, now: now)
         #expect(edited.body == "Two")
 
         await #expect(throws: CorbieError.invalidInput("capsule is already open")) {
-            _ = try await repository.update(capsule, now: opensAt)
+            _ = try await repository.update(capsule, from: created, now: opensAt)
         }
     }
 

@@ -78,13 +78,14 @@ final class PersonDateEditorViewModel {
                         remindersEnabled: remindersEnabled
                     )
                 )
-            case .existing(var date):
+            case let .existing(original):
+                var date = original
                 date.title = trimmedTitle
                 date.month = month
                 date.day = day
                 date.year = year
                 date.remindersEnabled = remindersEnabled
-                _ = try await environment.repositories.people.updateDate(date)
+                _ = try await environment.repositories.people.updateDate(date, from: original)
             }
             return true
         } catch {

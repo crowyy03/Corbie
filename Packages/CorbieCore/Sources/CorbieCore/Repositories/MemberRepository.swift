@@ -43,7 +43,10 @@ public protocol MemberRepository: Sendable {
     func member(appleUserId: String) async throws -> MemberDTO?
     func members(spaceId: UUID) async throws -> [MemberDTO]
     func partner(of memberId: UUID, spaceId: UUID) async throws -> MemberDTO?
-    func update(_ member: MemberDTO, theme: CorbieTheme) async throws -> MemberSaveResult
+    func update(_ edited: MemberDTO, from original: MemberDTO, theme: CorbieTheme) async throws -> MemberSaveResult
+    func setDisplayName(memberId: UUID, _ name: String?) async throws -> MemberDTO
+    func setColor(memberId: UUID, colorKey: String, theme: CorbieTheme) async throws -> MemberSaveResult
+    func setBirthday(memberId: UUID, month: Int?, day: Int?) async throws -> MemberDTO
     func updatePrefs(memberId: UUID, prefs: NotificationPrefs) async throws -> MemberDTO
     func touchLastSeen(memberId: UUID, at date: Date) async throws
     func setSharesBusyTimes(memberId: UUID, shares: Bool) async throws -> MemberDTO

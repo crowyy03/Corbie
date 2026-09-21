@@ -11,21 +11,23 @@ final class SettingsViewModel {
     var currencies: [String] = []
     var exportURL: URL?
     var isWorking = false
+    private(set) var isSavingName = false
     private(set) var isLeaving = false
     private(set) var isDeleting = false
 
     private var environment: AppEnvironment?
-    private var savedProfile = ProfileDraft()
-    private var savedWedding: Date?
+    private var savedName = ""
+    @ObservationIgnored private var commits: Task<Void, Never>?
+    @ObservationIgnored private var pendingCommits = 0
 
     var member: MemberDTO? { environment?.currentMember }
     var partner: MemberDTO? { environment?.partner }
     var space: SpaceDTO? { environment?.space }
     var offersLeaving: Bool { SettingsAccountPlan.offersLeaving(space: space, memberId: member?.id) }
 
-    var isProfileDirty: Bool { profile != savedProfile || weddingDate != savedWedding }
+    var isNameDirty: Bool { profile.trimmedName != savedName }
 
-    var canSaveProfile: Bool { isProfileDirty && profile.isComplete && isWorking == false }
+    var canSaveName: Bool { isNameDirty && profile.isComplete && isSavingName == false }
 
     var subscriptionStatus: SettingsSubscriptionStatus {
         SettingsSubscriptionStatus(state: environment?.premiumGate.state ?? .readOnly)
@@ -46,53 +48,86 @@ final class SettingsViewModel {
 
     func reloadFromSession() {
         guard let environment else { return }
-        profile = ProfileDraft.from(
-            member: environment.currentMember,
-            space: environment.space,
-            appleName: nil
-        )
-        weddingDate = environment.space?.weddingDate
-        displayCurrency = environment.space?.displayCurrency ?? "USD"
-        if currencies.contains(displayCurrency) == false {
-            currencies.insert(displayCurrency, at: 0)
+        let stored = ProfileDraft.from(member: environment.currentMember, space: environment.space, appleName: nil)
+        let pendingName = isNameDirty ? profile.displayName : nil
+        savedName = stored.trimmedName
+        if pendingCommits == 0 {
+            profile = stored
+            weddingDate = environment.space?.weddingDate
+            displayCurrency = environment.space?.displayCurrency ?? "USD"
+            if currencies.contains(displayCurrency) == false {
+                currencies.insert(displayCurrency, at: 0)
+            }
         }
-        savedProfile = profile
-        savedWedding = weddingDate
+        profile.displayName = pendingName ?? stored.displayName
     }
 
-    func saveProfile() async {
-        guard let environment, let member = environment.currentMember, canSaveProfile else { return }
-        isWorking = true
-        defer { isWorking = false }
+    func saveName() async {
+        guard let environment, let member = environment.currentMember, canSaveName else { return }
+        isSavingName = true
+        defer { isSavingName = false }
+        let name = profile.trimmedName
         do {
-            let saved = try await environment.repositories.members.update(
-                profile.applied(to: member),
+            let saved = try await environment.repositories.members.setDisplayName(memberId: member.id, name)
+            savedName = name
+            environment.apply(member: saved)
+        } catch {
+            environment.report(error)
+        }
+    }
+
+    func setColor(_ slot: MemberColorSlot) {
+        guard slot != profile.colorSlot else { return }
+        profile.colorSlot = slot
+        commit { environment in
+            guard let member = environment.currentMember else { return }
+            let saved = try await environment.repositories.members.setColor(
+                memberId: member.id,
+                colorKey: slot.rawValue,
                 theme: environment.theme.activeTheme
             )
             environment.apply(member: saved.member)
-            profile.colorSlot = saved.member.colorSlot
             environment.showColorShift(saved)
-            if let space = environment.space {
-                var changed = profile.applied(to: space)
-                changed.weddingDate = weddingDate
-                environment.apply(space: try await environment.repositories.spaces.update(changed))
-            }
-            savedProfile = profile
-            savedWedding = weddingDate
-        } catch {
-            environment.report(error)
         }
     }
 
-    func setCurrency(_ code: String) async {
-        guard let environment, var space = environment.space, space.displayCurrency != code else { return }
+    func setBirthday(from edited: ProfileDraft) {
+        let month = edited.birthdayMonth
+        let day = edited.birthdayDay
+        guard month != profile.birthdayMonth || day != profile.birthdayDay else { return }
+        profile.birthdayMonth = month
+        profile.birthdayDay = day
+        commit { environment in
+            guard let member = environment.currentMember else { return }
+            let saved = try await environment.repositories.members.setBirthday(memberId: member.id, month: month, day: day)
+            environment.apply(member: saved)
+        }
+    }
+
+    func setTogetherSince(_ date: Date?) {
+        guard date != profile.togetherSince else { return }
+        profile.togetherSince = date
+        commit { environment in
+            guard let space = environment.space else { return }
+            environment.apply(space: try await environment.repositories.spaces.setTogetherSince(spaceId: space.id, date))
+        }
+    }
+
+    func setWeddingDate(_ date: Date?) {
+        guard date != weddingDate else { return }
+        weddingDate = date
+        commit { environment in
+            guard let space = environment.space else { return }
+            environment.apply(space: try await environment.repositories.spaces.setWeddingDate(spaceId: space.id, date))
+        }
+    }
+
+    func setCurrency(_ code: String) {
+        guard code != displayCurrency else { return }
         displayCurrency = code
-        space.displayCurrency = code
-        do {
-            environment.apply(space: try await environment.repositories.spaces.update(space))
-        } catch {
-            displayCurrency = environment.space?.displayCurrency ?? code
-            environment.report(error)
+        commit { environment in
+            guard let space = environment.space else { return }
+            environment.apply(space: try await environment.repositories.spaces.setDisplayCurrency(spaceId: space.id, code))
         }
     }
 
@@ -170,6 +205,27 @@ final class SettingsViewModel {
         } catch {
             return error
         }
+    }
+
+    private func commit(_ write: @escaping @MainActor (AppEnvironment) async throws -> Void) {
+        guard let environment else { return }
+        pendingCommits += 1
+        let previous = commits
+        commits = Task { [weak self] in
+            await previous?.value
+            do {
+                try await write(environment)
+            } catch {
+                environment.report(error)
+            }
+            self?.finishCommit()
+        }
+    }
+
+    private func finishCommit() {
+        pendingCommits -= 1
+        guard pendingCommits == 0 else { return }
+        reloadFromSession()
     }
 
     private func revokeApple(_ environment: AppEnvironment) async {

@@ -8,7 +8,9 @@ private struct StubEventRepository: EventRepository {
     func events(spaceId: UUID, from: Date?, to: Date?) async throws -> [EventDTO] { stored }
 
     func create(_ draft: EventDraft) async throws -> EventDTO { throw CorbieError.notFound("create") }
-    func update(_ event: EventDTO) async throws -> EventDTO { throw CorbieError.notFound("update") }
+    func update(_ edited: EventDTO, from original: EventDTO) async throws -> EventDTO {
+        throw CorbieError.notFound("update")
+    }
     func event(id: UUID) async throws -> EventDTO? { nil }
     func delete(id: UUID) async throws {}
     func addComment(eventId: UUID, memberId: UUID?, text: String) async throws -> EventCommentDTO {

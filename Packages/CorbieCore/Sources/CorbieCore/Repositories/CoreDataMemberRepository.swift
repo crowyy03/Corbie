@@ -75,14 +75,39 @@ public struct CoreDataMemberRepository: MemberRepository {
         try await members(spaceId: spaceId).first { $0.id != memberId }
     }
 
-    public func update(_ member: MemberDTO, theme: CorbieTheme) async throws -> MemberSaveResult {
+    public func update(_ edited: MemberDTO, from original: MemberDTO, theme: CorbieTheme) async throws -> MemberSaveResult {
+        let changes = try FieldChanges(edited, from: original)
+        return try await access.write { context in
+            let member: Member = try ManagedFetch.require(Member.entityName, id: edited.id, in: context)
+            changes.write(\.displayName) { member.displayName = $0 }
+            if changes.changed(\.birthdayMonth) || changes.changed(\.birthdayDay) {
+                CoreDataMemberRepository.write(month: edited.birthdayMonth, day: edited.birthdayDay, to: member)
+            }
+            guard changes.changed(\.colorKey) else { return MemberSaveResult(member: MemberDTO(member)) }
+            return try MemberColorAssignment.apply(requested: edited.colorKey, to: member, theme: theme, in: context)
+        }
+    }
+
+    public func setDisplayName(memberId: UUID, _ name: String?) async throws -> MemberDTO {
         try await access.write { context in
-            let entity: Member = try ManagedFetch.require(Member.entityName, id: member.id, in: context)
-            entity.displayName = member.displayName
-            entity.birthdayMonth = member.birthdayMonth.map(NSNumber.init(value:))
-            entity.birthdayDay = member.birthdayDay.map(NSNumber.init(value:))
-            entity.notificationPrefs = member.notificationPrefs
-            return try MemberColorAssignment.apply(requested: member.colorKey, to: entity, theme: theme, in: context)
+            let member: Member = try ManagedFetch.require(Member.entityName, id: memberId, in: context)
+            if member.displayName != name { member.displayName = name }
+            return MemberDTO(member)
+        }
+    }
+
+    public func setColor(memberId: UUID, colorKey: String, theme: CorbieTheme) async throws -> MemberSaveResult {
+        try await access.write { context in
+            let member: Member = try ManagedFetch.require(Member.entityName, id: memberId, in: context)
+            return try MemberColorAssignment.apply(requested: colorKey, to: member, theme: theme, in: context)
+        }
+    }
+
+    public func setBirthday(memberId: UUID, month: Int?, day: Int?) async throws -> MemberDTO {
+        try await access.write { context in
+            let member: Member = try ManagedFetch.require(Member.entityName, id: memberId, in: context)
+            CoreDataMemberRepository.write(month: month, day: day, to: member)
+            return MemberDTO(member)
         }
     }
 
@@ -162,6 +187,11 @@ public struct CoreDataMemberRepository: MemberRepository {
             members.forEach(context.delete)
             return members.count
         }
+    }
+
+    private static func write(month: Int?, day: Int?, to member: Member) {
+        if member.birthdayMonth?.intValue != month { member.birthdayMonth = month.map(NSNumber.init(value:)) }
+        if member.birthdayDay?.intValue != day { member.birthdayDay = day.map(NSNumber.init(value:)) }
     }
 }
 

@@ -433,7 +433,7 @@ private struct Fixture {
         var space = world.space
         space.anchorTimeZone = "UTC"
         space.togetherSince = DomainClock.date("2020-01-01", in: calendar)
-        _ = try await world.repositories.spaces.update(space)
+        try await OtherContext.overwrite(space, in: world.controller)
         let stack = world.controller.stack
         let questions = CoreDataQuestionRepository(
             stack: stack,

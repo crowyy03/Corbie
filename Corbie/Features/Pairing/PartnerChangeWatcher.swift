@@ -13,6 +13,6 @@ struct PartnerChangeWatcher: Sendable {
 
     @MainActor
     func check(_ environment: AppEnvironment) async {
-        await environment.reloadSessionIfPartnerChanged()
+        await environment.refreshSessionFromStore()
     }
 }

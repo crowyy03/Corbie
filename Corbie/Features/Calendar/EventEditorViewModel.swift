@@ -43,6 +43,7 @@ final class EventEditorViewModel {
     private(set) var isSaving = false
 
     @ObservationIgnored let existing: EventDTO?
+    @ObservationIgnored private var loadedTime: (isAllDay: Bool, start: Date, end: Date)?
     @ObservationIgnored let people: [PersonDTO]
     @ObservationIgnored let calendar: Calendar
     @ObservationIgnored let formatting: CalendarFormatting
@@ -99,6 +100,7 @@ final class EventEditorViewModel {
             note = event.note ?? ""
             reminders = Set(event.reminderOffsets)
             place = MapPlace(event: event)
+            loadedTime = (isAllDay, start, end)
         }
     }
 
@@ -137,20 +139,27 @@ final class EventEditorViewModel {
         let dates = resolvedDates()
         do {
             let saved: EventDTO
-            if var event = existing {
+            if let original = existing {
+                var event = original
                 event.title = trimmedTitle
-                event.startAt = dates.start
-                event.endAt = dates.end
-                event.isAllDay = isAllDay
+                if isTimeEdited {
+                    event.startAt = dates.start
+                    event.endAt = dates.end
+                    event.isAllDay = isAllDay
+                }
                 event.kind = kind
                 event.personId = showsPersonPicker ? personId : nil
-                event.locationName = place?.name
-                event.address = place?.address
-                event.latitude = place?.latitude
-                event.longitude = place?.longitude
+                if place != MapPlace(event: original) {
+                    event.locationName = place?.name
+                    event.address = place?.address
+                    event.latitude = place?.latitude
+                    event.longitude = place?.longitude
+                }
                 event.note = trimmedNote
-                event.reminderOffsets = sortedReminders
-                saved = try await environment.repositories.events.update(event)
+                if Set(original.reminderOffsets) != reminders {
+                    event.reminderOffsets = sortedReminders
+                }
+                saved = try await environment.repositories.events.update(event, from: original)
             } else {
                 let draft = EventDraft(
                     spaceId: space.id,
@@ -177,6 +186,11 @@ final class EventEditorViewModel {
             environment.report(error)
             return false
         }
+    }
+
+    private var isTimeEdited: Bool {
+        guard let loadedTime else { return true }
+        return loadedTime.isAllDay != isAllDay || loadedTime.start != start || loadedTime.end != end
     }
 
     private var trimmedNote: String? {

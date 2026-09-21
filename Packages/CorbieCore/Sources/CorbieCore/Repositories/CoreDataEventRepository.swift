@@ -38,22 +38,37 @@ public struct CoreDataEventRepository: EventRepository {
         }
     }
 
-    public func update(_ event: EventDTO) async throws -> EventDTO {
-        try await access.write { context in
-            let entity: Event = try ManagedFetch.require(Event.entityName, id: event.id, in: context)
-            entity.title = event.title
-            entity.startAt = event.startAt
-            entity.endAt = event.endAt
-            entity.isAllDay = event.isAllDay
-            entity.kind = event.kind
-            entity.personId = event.personId
-            entity.locationName = event.locationName
-            entity.address = event.address
-            entity.latitude = event.latitude.map(NSNumber.init(value:))
-            entity.longitude = event.longitude.map(NSNumber.init(value:))
-            entity.note = event.note
-            entity.reminderOffsets = event.reminderOffsets
-            return EventDTO(entity)
+    public func update(_ edited: EventDTO, from original: EventDTO) async throws -> EventDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("event title is empty")
+        }
+        let movesTime = changes.changed(\.startAt) || changes.changed(\.endAt) || changes.changed(\.isAllDay)
+        if movesTime, let startAt = edited.startAt, let endAt = edited.endAt, endAt < startAt {
+            throw CorbieError.invalidInput("event ends before it starts")
+        }
+        let movesPlace = changes.changed(\.locationName) || changes.changed(\.address)
+            || changes.changed(\.latitude) || changes.changed(\.longitude)
+        return try await access.write { context in
+            let event: Event = try ManagedFetch.require(Event.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in event.title = title }
+            if movesTime {
+                event.startAt = edited.startAt
+                event.endAt = edited.endAt
+                event.isAllDay = edited.isAllDay
+            }
+            changes.write(\.kind) { event.kind = $0 }
+            changes.write(\.personId) { event.personId = $0 }
+            if movesPlace {
+                event.locationName = edited.locationName
+                event.address = edited.address
+                event.latitude = edited.latitude.map(NSNumber.init(value:))
+                event.longitude = edited.longitude.map(NSNumber.init(value:))
+            }
+            changes.write(\.note) { event.note = $0 }
+            changes.write(\.reminderOffsets) { event.reminderOffsets = $0 }
+            return EventDTO(event)
         }
     }
 

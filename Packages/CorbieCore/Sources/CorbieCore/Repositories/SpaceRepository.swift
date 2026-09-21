@@ -4,7 +4,12 @@ public protocol SpaceRepository: Sendable {
     func create(displayCurrency: String, creatorMemberId: UUID?, now: Date) async throws -> SpaceDTO
     func space(id: UUID) async throws -> SpaceDTO?
     func currentSpace(memberId: UUID?) async throws -> SpaceDTO?
-    func update(_ space: SpaceDTO) async throws -> SpaceDTO
+    func update(_ edited: SpaceDTO, from original: SpaceDTO) async throws -> SpaceDTO
+    func setTogetherSince(spaceId: UUID, _ date: Date?) async throws -> SpaceDTO
+    func setTogetherSinceIfUnset(spaceId: UUID, _ date: Date) async throws -> SpaceDTO
+    func setWeddingDate(spaceId: UUID, _ date: Date?) async throws -> SpaceDTO
+    func setDisplayCurrency(spaceId: UUID, _ code: String) async throws -> SpaceDTO
+    func setCreatorIfUnset(spaceId: UUID, memberId: UUID) async throws -> SpaceDTO
     func setSubscription(
         spaceId: UUID,
         status: SubscriptionStatus,

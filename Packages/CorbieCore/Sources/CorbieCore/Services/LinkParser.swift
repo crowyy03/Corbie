@@ -26,6 +26,11 @@ public struct ParsedLink: Sendable, Equatable {
         self.imageURL = imageURL
         self.imageData = imageData
     }
+
+    public var isEmpty: Bool {
+        let hasTitle = title.map { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false } ?? false
+        return hasTitle == false && imageURL == nil && imageData == nil
+    }
 }
 
 public struct LinkParser: Sendable {

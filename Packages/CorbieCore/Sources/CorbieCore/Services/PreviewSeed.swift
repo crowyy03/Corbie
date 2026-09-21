@@ -56,13 +56,18 @@ public enum PreviewSeed {
             ),
             theme: .sand
         ).member
-        var space = try await repositories.spaces.space(id: created.id) ?? created
-        space.togetherSince = day(offset: -460, from: now, calendar: calendar)
-        space.weddingDate = day(offset: -120, from: now, calendar: calendar)
-        space.creatorMemberId = me.id
-        space.subscriptionStatus = .active
-        space.subscriptionExpiresAt = day(offset: 365, from: now, calendar: calendar)
-        space = try await repositories.spaces.update(space)
+        _ = try await repositories.spaces.setTogetherSince(
+            spaceId: created.id,
+            day(offset: -460, from: now, calendar: calendar)
+        )
+        _ = try await repositories.spaces.setWeddingDate(spaceId: created.id, day(offset: -120, from: now, calendar: calendar))
+        _ = try await repositories.spaces.setCreatorIfUnset(spaceId: created.id, memberId: me.id)
+        let space = try await repositories.spaces.setSubscription(
+            spaceId: created.id,
+            status: .active,
+            expiresAt: day(offset: 365, from: now, calendar: calendar),
+            payerMemberId: nil
+        )
 
         let tasks = try await seedTasks(repositories, spaceId: space.id, me: me, partner: partner, now: now, calendar: calendar)
         let events = try await seedEvents(repositories, spaceId: space.id, me: me, partner: partner, now: now, calendar: calendar)

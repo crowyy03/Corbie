@@ -57,6 +57,8 @@ final class TaskEditorViewModel {
     @ObservationIgnored var onError: ((any Error) -> Void)?
 
     @ObservationIgnored let existingTask: TaskDTO?
+    @ObservationIgnored private let loadedAssignee: TaskAssigneeOption
+    @ObservationIgnored private let loadedDueAt: (hasDueDate: Bool, dueDate: Date)
     @ObservationIgnored private let context: TasksContext
     @ObservationIgnored private let repository: any TaskRepository
     @ObservationIgnored private let notifications: TaskDueNotifications
@@ -82,9 +84,13 @@ final class TaskEditorViewModel {
         self.now = now
         title = task?.title ?? ""
         note = task?.note ?? ""
-        assignee = TaskEditorViewModel.option(for: task?.assigneeMemberId, context: context)
-        hasDueDate = task?.dueAt != nil
-        dueDate = task?.dueAt ?? calendar.startOfDay(for: now())
+        let loadedAssignee = TaskEditorViewModel.option(for: task?.assigneeMemberId, context: context)
+        let loadedDueAt = (hasDueDate: task?.dueAt != nil, dueDate: task?.dueAt ?? calendar.startOfDay(for: now()))
+        assignee = loadedAssignee
+        self.loadedAssignee = loadedAssignee
+        hasDueDate = loadedDueAt.hasDueDate
+        dueDate = loadedDueAt.dueDate
+        self.loadedDueAt = loadedDueAt
         repeatOption = TaskRepeatOption(task?.recurrence ?? .none)
         if case let .weekdays(days) = task?.recurrence ?? .none {
             weekdays = Set(days)
@@ -163,13 +169,18 @@ final class TaskEditorViewModel {
     private func store(title: String) async throws -> TaskDTO {
         let dueAt = hasDueDate ? calendar.startOfDay(for: dueDate) : nil
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-        if var task = existingTask {
+        if let original = existingTask {
+            var task = original
             task.title = title
             task.note = trimmedNote.isEmpty ? nil : trimmedNote
-            task.assigneeMemberId = assigneeMemberId
-            task.dueAt = dueAt
+            if assignee != loadedAssignee {
+                task.assigneeMemberId = assigneeMemberId
+            }
+            if hasDueDate != loadedDueAt.hasDueDate || dueDate != loadedDueAt.dueDate {
+                task.dueAt = dueAt
+            }
             task.recurrence = recurrence
-            return try await repository.update(task)
+            return try await repository.update(task, from: original)
         }
         guard let spaceId = context.spaceId else {
             throw CorbieError.notFound("space for a new task")

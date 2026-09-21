@@ -86,11 +86,24 @@ final class WishesViewModel {
         var didChange = false
         for wish in pending {
             attemptedParse.insert(wish.id)
-            guard let raw = wish.url,
-                  let parsed = try? await environment.linkParser.parse(rawURL: raw)
-            else { continue }
-            let filled = WishParsedFill.merged(parsed, into: wish)
-            if (try? await environment.repositories.wishes.update(filled)) != nil {
+            guard let raw = wish.url, let url = LinkParser.normalize(raw) else { continue }
+            let parsed: ParsedLink
+            do {
+                parsed = try await environment.linkParser.parse(url: url)
+            } catch {
+                WishLinkLog.failed(url, error: error, reader: .backgroundRetry)
+                continue
+            }
+            guard parsed.isEmpty == false else {
+                WishLinkLog.readEmpty(url, parsed: parsed, reader: .backgroundRetry)
+                continue
+            }
+            let filled = try? await environment.repositories.wishes.fillEmptyFields(
+                wishId: wish.id,
+                parsedFrom: raw,
+                with: parsed
+            )
+            if let filled, filled != wish {
                 didChange = true
             }
         }

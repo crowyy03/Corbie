@@ -34,22 +34,33 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         }
     }
 
-    public func update(_ person: PersonDTO) async throws -> PersonDTO {
-        try CoreDataPeopleRepository.validateDay(
-            month: person.birthdayMonth,
-            day: person.birthdayDay,
-            year: person.birthdayYear
-        )
+    public func update(_ edited: PersonDTO, from original: PersonDTO) async throws -> PersonDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let name = edited.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.name), name.isEmpty {
+            throw CorbieError.invalidInput("person name is empty")
+        }
+        let movesBirthday = changes.changed(\.birthdayMonth) || changes.changed(\.birthdayDay)
+            || changes.changed(\.birthdayYear)
+        if movesBirthday {
+            try CoreDataPeopleRepository.validateDay(
+                month: edited.birthdayMonth,
+                day: edited.birthdayDay,
+                year: edited.birthdayYear
+            )
+        }
         return try await access.write { context in
-            let entity: Person = try ManagedFetch.require(Person.entityName, id: person.id, in: context)
-            entity.name = person.name
-            entity.relation = person.relation
-            entity.birthdayMonth = person.birthdayMonth.map(NSNumber.init(value:))
-            entity.birthdayDay = person.birthdayDay.map(NSNumber.init(value:))
-            entity.birthdayYear = person.birthdayYear.map(NSNumber.init(value:))
-            entity.ownerMemberId = person.ownerMemberId
-            entity.note = person.note
-            return PersonDTO(entity)
+            let person: Person = try ManagedFetch.require(Person.entityName, id: edited.id, in: context)
+            changes.write(\.name) { _ in person.name = name }
+            changes.write(\.relation) { person.relation = $0 }
+            if movesBirthday {
+                person.birthdayMonth = edited.birthdayMonth.map(NSNumber.init(value:))
+                person.birthdayDay = edited.birthdayDay.map(NSNumber.init(value:))
+                person.birthdayYear = edited.birthdayYear.map(NSNumber.init(value:))
+            }
+            changes.write(\.ownerMemberId) { person.ownerMemberId = $0 }
+            changes.write(\.note) { person.note = $0 }
+            return PersonDTO(person)
         }
     }
 
@@ -107,20 +118,26 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         }
     }
 
-    public func updateDate(_ date: PersonDateDTO) async throws -> PersonDateDTO {
-        let title = date.title.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard title.isEmpty == false else {
+    public func updateDate(_ edited: PersonDateDTO, from original: PersonDateDTO) async throws -> PersonDateDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
             throw CorbieError.invalidInput("person date title is empty")
         }
-        try CoreDataPeopleRepository.validateDay(month: date.month, day: date.day, year: date.year)
+        let movesDay = changes.changed(\.month) || changes.changed(\.day) || changes.changed(\.year)
+        if movesDay {
+            try CoreDataPeopleRepository.validateDay(month: edited.month, day: edited.day, year: edited.year)
+        }
         return try await access.write { context in
-            let entity: PersonDate = try ManagedFetch.require(PersonDate.entityName, id: date.id, in: context)
-            entity.title = title
-            entity.month = date.month.map(NSNumber.init(value:))
-            entity.day = date.day.map(NSNumber.init(value:))
-            entity.year = date.year.map(NSNumber.init(value:))
-            entity.remindersEnabled = date.remindersEnabled
-            return PersonDateDTO(entity)
+            let date: PersonDate = try ManagedFetch.require(PersonDate.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in date.title = title }
+            if movesDay {
+                date.month = edited.month.map(NSNumber.init(value:))
+                date.day = edited.day.map(NSNumber.init(value:))
+                date.year = edited.year.map(NSNumber.init(value:))
+            }
+            changes.write(\.remindersEnabled) { date.remindersEnabled = $0 }
+            return PersonDateDTO(date)
         }
     }
 
@@ -163,16 +180,28 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         }
     }
 
-    public func updateGiftIdea(_ idea: GiftIdeaDTO) async throws -> GiftIdeaDTO {
+    public func updateGiftIdea(_ edited: GiftIdeaDTO, from original: GiftIdeaDTO) async throws -> GiftIdeaDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("gift idea title is empty")
+        }
+        return try await access.write { context in
+            let idea: GiftIdea = try ManagedFetch.require(GiftIdea.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in idea.title = title }
+            changes.write(\.url) { idea.url = $0 }
+            changes.write(\.price) { idea.price = $0.map(NSNumber.init(value:)) }
+            changes.write(\.currency) { idea.currency = $0 }
+            changes.write(\.note) { idea.note = $0 }
+            return GiftIdeaDTO(idea)
+        }
+    }
+
+    public func setGiftIdeaDone(ideaId: UUID, isDone: Bool) async throws -> GiftIdeaDTO {
         try await access.write { context in
-            let entity: GiftIdea = try ManagedFetch.require(GiftIdea.entityName, id: idea.id, in: context)
-            entity.title = idea.title
-            entity.url = idea.url
-            entity.price = idea.price.map(NSNumber.init(value:))
-            entity.currency = idea.currency
-            entity.note = idea.note
-            entity.isDone = idea.isDone
-            return GiftIdeaDTO(entity)
+            let idea: GiftIdea = try ManagedFetch.require(GiftIdea.entityName, id: ideaId, in: context)
+            if idea.isDone != isDone { idea.isDone = isDone }
+            return GiftIdeaDTO(idea)
         }
     }
 

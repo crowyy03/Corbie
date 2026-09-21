@@ -27,7 +27,7 @@ public struct CapsuleDraft: Sendable, Equatable {
 
 public protocol CapsuleRepository: Sendable {
     func create(_ draft: CapsuleDraft, now: Date) async throws -> CapsuleDTO
-    func update(_ capsule: CapsuleDTO, now: Date) async throws -> CapsuleDTO
+    func update(_ edited: CapsuleDTO, from original: CapsuleDTO, now: Date) async throws -> CapsuleDTO
     func markOpened(capsuleId: UUID, memberId: UUID, at date: Date) async throws -> CapsuleDTO
     func capsule(id: UUID) async throws -> CapsuleDTO?
     func capsules(spaceId: UUID) async throws -> [CapsuleDTO]
@@ -39,8 +39,8 @@ extension CapsuleRepository {
         try await create(draft, now: Date())
     }
 
-    public func update(_ capsule: CapsuleDTO) async throws -> CapsuleDTO {
-        try await update(capsule, now: Date())
+    public func update(_ edited: CapsuleDTO, from original: CapsuleDTO) async throws -> CapsuleDTO {
+        try await update(edited, from: original, now: Date())
     }
 
     public func markOpened(capsuleId: UUID, memberId: UUID) async throws -> CapsuleDTO {

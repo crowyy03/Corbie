@@ -22,7 +22,7 @@ import Testing
         var space = world.space
         space.anchorTimeZone = anchor
         space.togetherSince = DomainClock.date("2020-01-01", in: calendar)
-        _ = try await world.repositories.spaces.update(space)
+        try await OtherContext.overwrite(space, in: world.controller)
         let repository = CoreDataQuestionRepository(
             stack: world.controller.stack,
             bank: bank(30),

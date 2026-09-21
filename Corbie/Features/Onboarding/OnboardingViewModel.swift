@@ -203,9 +203,7 @@ final class OnboardingViewModel {
         member = created
         profile.colorSlot = created.colorSlot
         if base.creatorMemberId == nil {
-            var updated = base
-            updated.creatorMemberId = created.id
-            space = try await environment.repositories.spaces.update(updated)
+            space = try await environment.repositories.spaces.setCreatorIfUnset(spaceId: base.id, memberId: created.id)
         } else {
             space = base
         }
@@ -216,12 +214,13 @@ final class OnboardingViewModel {
         guard let member, let space else { return }
         let saved = try await environment.repositories.members.update(
             profile.applied(to: member),
+            from: member,
             theme: environment.theme.activeTheme
         )
         environment.showColorShift(saved)
         self.member = saved.member
         profile.colorSlot = saved.member.colorSlot
-        self.space = try await environment.repositories.spaces.update(profile.applied(to: space))
+        self.space = try await environment.repositories.spaces.update(profile.applied(to: space), from: space)
     }
 
     private func makeSpace() async throws -> SpaceDTO {

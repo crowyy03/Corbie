@@ -51,7 +51,7 @@ public struct EventDraft: Sendable, Equatable {
 
 public protocol EventRepository: Sendable {
     func create(_ draft: EventDraft) async throws -> EventDTO
-    func update(_ event: EventDTO) async throws -> EventDTO
+    func update(_ edited: EventDTO, from original: EventDTO) async throws -> EventDTO
     func event(id: UUID) async throws -> EventDTO?
     func events(spaceId: UUID, from: Date?, to: Date?) async throws -> [EventDTO]
     func delete(id: UUID) async throws

@@ -79,7 +79,7 @@ public struct TaskCompletion: Sendable, Equatable {
 
 public protocol TaskRepository: Sendable {
     func create(_ draft: TaskDraft) async throws -> TaskDTO
-    func update(_ task: TaskDTO) async throws -> TaskDTO
+    func update(_ edited: TaskDTO, from original: TaskDTO) async throws -> TaskDTO
     func take(taskId: UUID, memberId: UUID, at date: Date) async throws -> TaskDTO
     func handBack(taskId: UUID) async throws -> TaskDTO
     func markDone(taskId: UUID, memberId: UUID?, at date: Date, calendar: Calendar) async throws -> TaskCompletion

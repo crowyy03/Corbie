@@ -66,6 +66,7 @@ final class AppEnvironment {
     @ObservationIgnored private var processStart: Task<Void, Never>?
     @ObservationIgnored private var processStartedInBackground = false
     @ObservationIgnored private var partnerCheck: Task<PartnerCheck, Never>?
+    @ObservationIgnored private var spaceCheck: Task<Void, Never>?
     @ObservationIgnored private var isCheckingPartnerOnServer = false
     @ObservationIgnored private var partnerCheckPauses = 0
     @ObservationIgnored private(set) var storage: StorageHealth?
@@ -244,6 +245,35 @@ final class AppEnvironment {
         partnerCheckPauses += 1
         defer { partnerCheckPauses -= 1 }
         await body()
+    }
+
+    func refreshSessionFromStore() async {
+        guard await reloadSessionIfPartnerChanged() == .unchanged else { return }
+        let previous = spaceCheck
+        let check = Task {
+            _ = await previous?.value
+            await self.applyStoredSpaceIfItDiffers()
+        }
+        spaceCheck = check
+        await check.value
+    }
+
+    private func applyStoredSpaceIfItDiffers() async {
+        guard arePartnerChecksPaused == false, case let .signedIn(context) = session else { return }
+        let stored: SpaceDTO?
+        do {
+            stored = try await repositories.spaces.space(id: context.space.id)
+        } catch {
+            AppEnvironment.log.error("space lookup failed: \(error.localizedDescription, privacy: .public)")
+            return
+        }
+        guard let stored,
+              arePartnerChecksPaused == false,
+              case let .signedIn(current) = session,
+              current.space.id == stored.id,
+              current.space != stored
+        else { return }
+        apply(space: stored)
     }
 
     @discardableResult

@@ -134,7 +134,16 @@ final class ShareWishViewModel {
         isParsing = true
         defer { isParsing = false }
         let parser = LinkParser(client: APIClient(identity: .shared))
-        guard let parsed = try? await parser.parse(url: url) else {
+        let parsed: ParsedLink
+        do {
+            parsed = try await parser.parse(url: url)
+        } catch {
+            WishLinkLog.failed(url, error: error, reader: .shareExtension)
+            didParseFail = true
+            return
+        }
+        guard parsed.isEmpty == false else {
+            WishLinkLog.readEmpty(url, parsed: parsed, reader: .shareExtension)
             didParseFail = true
             return
         }

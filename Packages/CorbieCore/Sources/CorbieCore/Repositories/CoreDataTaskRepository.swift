@@ -31,18 +31,21 @@ public struct CoreDataTaskRepository: TaskRepository {
         }
     }
 
-    public func update(_ task: TaskDTO) async throws -> TaskDTO {
-        try await access.write { context in
-            let entity: TaskItem = try ManagedFetch.require(TaskItem.entityName, id: task.id, in: context)
-            entity.title = task.title
-            entity.note = task.note
-            entity.assigneeMemberId = task.assigneeMemberId
-            entity.dueAt = task.dueAt
-            entity.recurrence = task.recurrence
-            entity.rotatesBetweenMembers = task.rotatesBetweenMembers
-            entity.choreItemId = task.choreItemId
-            entity.archivedAt = task.archivedAt
-            return TaskDTO(entity)
+    public func update(_ edited: TaskDTO, from original: TaskDTO) async throws -> TaskDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("task title is empty")
+        }
+        return try await access.write { context in
+            let task: TaskItem = try ManagedFetch.require(TaskItem.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in task.title = title }
+            changes.write(\.note) { task.note = $0 }
+            changes.write(\.assigneeMemberId) { task.assigneeMemberId = $0 }
+            changes.write(\.dueAt) { task.dueAt = $0 }
+            changes.write(\.recurrence) { task.recurrence = $0 }
+            changes.write(\.rotatesBetweenMembers) { task.rotatesBetweenMembers = $0 }
+            return TaskDTO(task)
         }
     }
 

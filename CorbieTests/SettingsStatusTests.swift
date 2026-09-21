@@ -60,4 +60,40 @@ final class SettingsStatusTests: XCTestCase {
             XCTAssertNotEqual(title, page.settingsTitleKey)
         }
     }
+
+    @MainActor
+    func testAPendingNameEditSurvivesASessionReload() throws {
+        let environment = AppEnvironment.previewSignedIn()
+        let model = SettingsViewModel()
+        model.attach(environment)
+        model.profile.displayName = "Ilya V"
+        let anniversary = Date(timeIntervalSince1970: 1_600_000_000)
+        var space = try XCTUnwrap(environment.space)
+        space.togetherSince = anniversary
+        environment.apply(space: space)
+        var partner = try XCTUnwrap(environment.partner)
+        partner.displayName = "Sofia M"
+        environment.apply(member: partner)
+
+        model.reloadFromSession()
+
+        XCTAssertEqual(model.profile.displayName, "Ilya V")
+        XCTAssertTrue(model.canSaveName)
+        XCTAssertEqual(model.profile.togetherSince, anniversary)
+    }
+
+    @MainActor
+    func testAnUntouchedNameFollowsTheSession() throws {
+        let environment = AppEnvironment.previewSignedIn()
+        let model = SettingsViewModel()
+        model.attach(environment)
+        var member = try XCTUnwrap(environment.currentMember)
+        member.displayName = "Ilya from the iPad"
+        environment.apply(member: member)
+
+        model.reloadFromSession()
+
+        XCTAssertEqual(model.profile.displayName, "Ilya from the iPad")
+        XCTAssertFalse(model.canSaveName)
+    }
 }

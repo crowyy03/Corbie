@@ -100,10 +100,8 @@ final class PersonDetailViewModel {
 
     func toggle(_ idea: GiftIdeaDTO) async {
         guard let environment, environment.premiumGate.require(.edit) else { return }
-        var updated = idea
-        updated.isDone.toggle()
         do {
-            _ = try await environment.repositories.people.updateGiftIdea(updated)
+            _ = try await environment.repositories.people.setGiftIdeaDone(ideaId: idea.id, isDone: idea.isDone == false)
         } catch {
             environment.report(error)
         }

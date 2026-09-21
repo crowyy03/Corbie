@@ -129,13 +129,14 @@ final class GiftIdeaEditorViewModel {
                         note: trimmed(note)
                     )
                 )
-            case .existing(var idea):
+            case let .existing(original):
+                var idea = original
                 idea.title = trimmedTitle
                 idea.url = trimmed(link)
                 idea.price = price
                 idea.currency = price == nil ? nil : currency
                 idea.note = trimmed(note)
-                _ = try await environment.repositories.people.updateGiftIdea(idea)
+                _ = try await environment.repositories.people.updateGiftIdea(idea, from: original)
             }
             return true
         } catch {

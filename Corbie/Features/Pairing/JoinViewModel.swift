@@ -186,8 +186,6 @@ final class JoinViewModel {
 
     private func carryTogetherSince(into space: SpaceDTO) async throws {
         guard let togetherSince = profile.togetherSince, space.togetherSince == nil else { return }
-        var updated = space
-        updated.togetherSince = togetherSince
-        _ = try await environment.repositories.spaces.update(updated)
+        _ = try await environment.repositories.spaces.setTogetherSinceIfUnset(spaceId: space.id, togetherSince)
     }
 }

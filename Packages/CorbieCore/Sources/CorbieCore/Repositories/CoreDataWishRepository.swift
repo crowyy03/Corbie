@@ -34,23 +34,47 @@ public struct CoreDataWishRepository: WishRepository {
         }
     }
 
-    public func update(_ wish: WishDTO) async throws -> WishDTO {
+    public func update(_ edited: WishDTO, from original: WishDTO) async throws -> WishDTO {
+        let changes = try FieldChanges(edited, from: original)
+        return try await access.write { context in
+            let wish: Wish = try ManagedFetch.require(Wish.entityName, id: edited.id, in: context)
+            changes.write(\.ownerMemberId) { wish.ownerMemberId = $0 }
+            changes.write(\.title) { wish.title = $0 }
+            changes.write(\.url) { wish.url = $0 }
+            changes.write(\.imageURL) { wish.imageURL = $0 }
+            changes.write(\.localImage) { wish.localImage = $0 }
+            changes.write(\.price) { wish.price = $0.map(NSNumber.init(value:)) }
+            changes.write(\.currency) { wish.currency = $0 }
+            changes.write(\.priority) { wish.priority = $0 }
+            changes.write(\.note) { wish.note = $0 }
+            changes.write(\.source) { wish.source = $0 }
+            changes.write(\.needsParse) { wish.needsParse = $0 }
+            return WishDTO(wish)
+        }
+    }
+
+    public func fillEmptyFields(wishId: UUID, parsedFrom link: String, with parsed: ParsedLink) async throws -> WishDTO {
         try await access.write { context in
-            let entity: Wish = try ManagedFetch.require(Wish.entityName, id: wish.id, in: context)
-            entity.ownerMemberId = wish.ownerMemberId
-            entity.title = wish.title
-            entity.url = wish.url
-            entity.imageURL = wish.imageURL
-            entity.localImage = wish.localImage
-            entity.price = wish.price.map(NSNumber.init(value:))
-            entity.currency = wish.currency
-            entity.priority = wish.priority
-            entity.note = wish.note
-            entity.source = wish.source
-            entity.isFulfilled = wish.isFulfilled
-            entity.fulfilledAt = wish.fulfilledAt
-            entity.needsParse = wish.needsParse
-            return WishDTO(entity)
+            let wish: Wish = try ManagedFetch.require(Wish.entityName, id: wishId, in: context)
+            guard wish.needsParse, wish.url == link, parsed.isEmpty == false else { return WishDTO(wish) }
+            if (wish.title ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, let title = parsed.title {
+                wish.title = title
+            }
+            if wish.price == nil, let price = parsed.price {
+                wish.price = NSNumber(value: price)
+                wish.currency = Money.currencyCode(parsed.currency) ?? wish.currency
+            }
+            if (wish.imageURL ?? "").isEmpty, let imageURL = parsed.imageURL {
+                wish.imageURL = imageURL.absoluteString
+            }
+            if wish.localImage == nil, let imageData = parsed.imageData {
+                wish.localImage = imageData
+            }
+            if wish.source == .manual {
+                wish.source = parsed.source
+            }
+            wish.needsParse = false
+            return WishDTO(wish)
         }
     }
 

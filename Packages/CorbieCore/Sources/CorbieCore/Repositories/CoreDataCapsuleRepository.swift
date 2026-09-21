@@ -33,20 +33,25 @@ public struct CoreDataCapsuleRepository: CapsuleRepository {
         }
     }
 
-    public func update(_ capsule: CapsuleDTO, now: Date) async throws -> CapsuleDTO {
-        guard capsule.body.count <= CapsuleItem.maxBodyLength else {
+    public func update(_ edited: CapsuleDTO, from original: CapsuleDTO, now: Date) async throws -> CapsuleDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("capsule title is empty")
+        }
+        guard edited.body.count <= CapsuleItem.maxBodyLength else {
             throw CorbieError.invalidInput("capsule body is longer than \(CapsuleItem.maxBodyLength)")
         }
         return try await access.write { context in
-            let entity: CapsuleItem = try ManagedFetch.require(CapsuleItem.entityName, id: capsule.id, in: context)
-            guard entity.openedAt == nil, (entity.opensAt ?? now) > now else {
+            let capsule: CapsuleItem = try ManagedFetch.require(CapsuleItem.entityName, id: edited.id, in: context)
+            guard capsule.openedAt == nil, (capsule.opensAt ?? now) > now else {
                 throw CorbieError.invalidInput("capsule is already open")
             }
-            entity.title = capsule.title
-            entity.body = capsule.body
-            entity.opensAt = capsule.opensAt
-            entity.recipientMemberId = capsule.recipientMemberId
-            return CapsuleDTO(entity)
+            changes.write(\.title) { _ in capsule.title = title }
+            changes.write(\.body) { capsule.body = $0 }
+            changes.write(\.opensAt) { capsule.opensAt = $0 }
+            changes.write(\.recipientMemberId) { capsule.recipientMemberId = $0 }
+            return CapsuleDTO(capsule)
         }
     }
 
