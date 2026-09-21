@@ -10,16 +10,24 @@ public struct ToggleShoppingItemIntent: AppIntent {
     @Parameter(title: "intent.shopping.parameter.id")
     public var itemID: String
 
+    @Parameter(title: "intent.shopping.parameter.showedchecked", default: false)
+    public var showedChecked: Bool
+
     public init() {
         itemID = ""
+        showedChecked = false
     }
 
-    public init(itemID: UUID) {
+    public init(itemID: UUID, showedChecked: Bool) {
         self.itemID = itemID.uuidString
+        self.showedChecked = showedChecked
     }
 
     public func perform() async throws -> some IntentResult {
-        try await TaskIntentRunner.toggleShoppingItem(itemId: TaskIntentRunner.identifier(itemID))
+        try await TaskIntentRunner.toggleShoppingItem(
+            itemId: TaskIntentRunner.identifier(itemID),
+            showedChecked: showedChecked
+        )
         return .result()
     }
 }

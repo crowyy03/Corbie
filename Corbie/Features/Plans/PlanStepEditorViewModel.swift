@@ -23,6 +23,8 @@ final class PlanStepEditorViewModel {
     private(set) var partnerName = ""
 
     @ObservationIgnored private let step: PlanStepDTO
+    @ObservationIgnored private var loadedAssignee: PlanStepAssignee = .nobody
+    @ObservationIgnored private let loadedDue: (hasDue: Bool, dueAt: Date)
     @ObservationIgnored private var environment: AppEnvironment?
     @ObservationIgnored private var didConfigure = false
 
@@ -30,8 +32,10 @@ final class PlanStepEditorViewModel {
         self.step = step
         title = step.title
         note = step.note ?? ""
-        hasDue = step.dueAt != nil
-        dueAt = step.dueAt ?? Date()
+        let loadedDue = (hasDue: step.dueAt != nil, dueAt: step.dueAt ?? Date())
+        hasDue = loadedDue.hasDue
+        dueAt = loadedDue.dueAt
+        self.loadedDue = loadedDue
     }
 
     var canSave: Bool {
@@ -46,6 +50,7 @@ final class PlanStepEditorViewModel {
         if let assigneeMemberId = step.assigneeMemberId {
             assignee = environment.isCurrentMember(assigneeMemberId) ? .me : .partner
         }
+        loadedAssignee = assignee
         if environment.isPaired || assignee == .partner {
             assigneeOptions = PlanStepAssignee.allCases
         }
@@ -64,13 +69,17 @@ final class PlanStepEditorViewModel {
         isSaving = true
         defer { isSaving = false }
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-        var updated = step
-        updated.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        updated.note = trimmedNote.isEmpty ? nil : trimmedNote
-        updated.assigneeMemberId = assigneeMemberId(in: environment)
-        updated.dueAt = hasDue ? dueAt : nil
+        var edited = step
+        edited.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        edited.note = trimmedNote.isEmpty ? nil : trimmedNote
+        if assignee != loadedAssignee {
+            edited.assigneeMemberId = assigneeMemberId(in: environment)
+        }
+        if hasDue != loadedDue.hasDue || dueAt != loadedDue.dueAt {
+            edited.dueAt = hasDue ? dueAt : nil
+        }
         do {
-            _ = try await environment.repositories.plans.updateStep(updated)
+            _ = try await environment.repositories.plans.updateStep(edited, from: step)
             return true
         } catch {
             environment.report(error)

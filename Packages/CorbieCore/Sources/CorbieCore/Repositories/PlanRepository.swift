@@ -86,7 +86,8 @@ public struct PlanStepDraft: Sendable, Equatable {
 
 public protocol PlanRepository: Sendable {
     func create(_ draft: PlanDraft) async throws -> PlanDTO
-    func update(_ plan: PlanDTO) async throws -> PlanDTO
+    func update(_ edited: PlanDTO, from original: PlanDTO) async throws -> PlanDTO
+    func setSavedAmount(planId: UUID, _ amount: Double) async throws -> PlanDTO
     func setStatus(planId: UUID, status: PlanStatus) async throws -> PlanDTO
     func plan(id: UUID) async throws -> PlanDTO?
     func plans(spaceId: UUID, statuses: [PlanStatus]) async throws -> [PlanDTO]
@@ -95,7 +96,7 @@ public protocol PlanRepository: Sendable {
     func expenses(planId: UUID) async throws -> [PlanExpenseDTO]
     func deleteExpense(id: UUID) async throws
     func addStep(planId: UUID, draft: PlanStepDraft) async throws -> PlanStepDTO
-    func updateStep(_ step: PlanStepDTO) async throws -> PlanStepDTO
+    func updateStep(_ edited: PlanStepDTO, from original: PlanStepDTO) async throws -> PlanStepDTO
     func toggleStep(stepId: UUID, by memberId: UUID?, at date: Date) async throws -> PlanStepDTO
     func deleteStep(id: UUID) async throws
     func reorderSteps(planId: UUID, orderedStepIds: [UUID]) async throws -> [PlanStepDTO]

@@ -216,9 +216,7 @@ import Testing
         let plan = try await world.repositories.plans.create(
             PlanDraft(spaceId: world.space.id, title: "Kitchen", createdByMemberId: world.me.id)
         )
-        var completed = plan
-        completed.status = .completed
-        _ = try await world.repositories.plans.update(completed)
+        _ = try await world.repositories.plans.setStatus(planId: plan.id, status: .completed)
         let result = try await feed(world)
         #expect(result.plans.isEmpty)
         #expect(result.isEmpty)

@@ -45,12 +45,15 @@ final class ListEditorViewModel {
         let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedSubtitle = subtitle.trimmingCharacters(in: .whitespacesAndNewlines)
         do {
-            if var list = existing {
+            if let original = existing {
+                var list = original
                 list.title = trimmedTitle
                 list.subtitle = trimmedSubtitle.isEmpty ? nil : trimmedSubtitle
-                list.template = list.isPinnedShopping ? list.template : template
+                if original.isPinnedShopping == false {
+                    list.template = template
+                }
                 list.anyoneCanCheck = anyoneCanCheck
-                _ = try await environment.repositories.lists.update(list)
+                _ = try await environment.repositories.lists.update(list, from: original)
             } else {
                 _ = try await environment.repositories.lists.create(
                     ChecklistDraft(

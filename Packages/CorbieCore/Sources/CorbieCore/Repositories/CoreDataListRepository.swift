@@ -28,14 +28,19 @@ public struct CoreDataListRepository: ListRepository {
         }
     }
 
-    public func update(_ list: ChecklistListDTO) async throws -> ChecklistListDTO {
-        try await access.write { context in
-            let entity: ChecklistList = try ManagedFetch.require(ChecklistList.entityName, id: list.id, in: context)
-            entity.title = list.title
-            entity.subtitle = list.subtitle
-            entity.template = list.template
-            entity.anyoneCanCheck = list.anyoneCanCheck
-            return ChecklistListDTO(entity)
+    public func update(_ edited: ChecklistListDTO, from original: ChecklistListDTO) async throws -> ChecklistListDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("list title is empty")
+        }
+        return try await access.write { context in
+            let list: ChecklistList = try ManagedFetch.require(ChecklistList.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in list.title = title }
+            changes.write(\.subtitle) { list.subtitle = $0 }
+            changes.write(\.template) { list.template = $0 }
+            changes.write(\.anyoneCanCheck) { list.anyoneCanCheck = $0 }
+            return ChecklistListDTO(list)
         }
     }
 
@@ -128,34 +133,59 @@ public struct CoreDataListRepository: ListRepository {
         }
     }
 
-    public func updateItem(_ item: ListItemDTO) async throws -> ListItemDTO {
-        try await access.write { context in
-            let entity: ListItem = try ManagedFetch.require(ListItem.entityName, id: item.id, in: context)
-            entity.title = item.title
-            entity.note = item.note
-            entity.placeName = item.placeName
-            entity.address = item.address
-            entity.latitude = item.latitude.map(NSNumber.init(value:))
-            entity.longitude = item.longitude.map(NSNumber.init(value:))
-            entity.sortIndex = Int32(item.sortIndex)
-            return ListItemDTO(entity)
+    public func updateItem(_ edited: ListItemDTO, from original: ListItemDTO) async throws -> ListItemDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("list item title is empty")
+        }
+        let movesPlace = changes.changed(\.placeName) || changes.changed(\.address)
+            || changes.changed(\.latitude) || changes.changed(\.longitude)
+        return try await access.write { context in
+            let item: ListItem = try ManagedFetch.require(ListItem.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in item.title = title }
+            changes.write(\.note) { item.note = $0 }
+            if movesPlace {
+                item.placeName = edited.placeName
+                item.address = edited.address
+                item.latitude = edited.latitude.map(NSNumber.init(value:))
+                item.longitude = edited.longitude.map(NSNumber.init(value:))
+            }
+            return ListItemDTO(item)
         }
     }
 
     public func toggleItem(itemId: UUID, memberId: UUID?, at date: Date) async throws -> ListItemDTO {
         try await access.write { context in
             let item: ListItem = try ManagedFetch.require(ListItem.entityName, id: itemId, in: context)
-            if item.list?.anyoneCanCheck == false {
-                let author = item.addedByMemberId ?? item.list?.createdByMemberId
-                guard let memberId, let author, memberId == author else {
-                    throw CorbieError.invalidInput("only the author can tick items in this list")
-                }
-            }
-            item.isChecked.toggle()
-            item.checkedByMemberId = item.isChecked ? memberId : nil
-            item.checkedAt = item.isChecked ? date : nil
+            try CoreDataListRepository.requireTickRight(on: item, memberId: memberId)
+            CoreDataListRepository.setChecked(item, to: !item.isChecked, memberId: memberId, at: date)
             return ListItemDTO(item)
         }
+    }
+
+    public func setItemChecked(itemId: UUID, _ isChecked: Bool, memberId: UUID?, at date: Date) async throws -> ListItemDTO {
+        try await access.write { context in
+            let item: ListItem = try ManagedFetch.require(ListItem.entityName, id: itemId, in: context)
+            guard item.isChecked != isChecked else { return ListItemDTO(item) }
+            try CoreDataListRepository.requireTickRight(on: item, memberId: memberId)
+            CoreDataListRepository.setChecked(item, to: isChecked, memberId: memberId, at: date)
+            return ListItemDTO(item)
+        }
+    }
+
+    private static func requireTickRight(on item: ListItem, memberId: UUID?) throws {
+        guard item.list?.anyoneCanCheck == false else { return }
+        let author = item.addedByMemberId ?? item.list?.createdByMemberId
+        guard let memberId, let author, memberId == author else {
+            throw CorbieError.invalidInput("only the author can tick items in this list")
+        }
+    }
+
+    private static func setChecked(_ item: ListItem, to isChecked: Bool, memberId: UUID?, at date: Date) {
+        item.isChecked = isChecked
+        item.checkedByMemberId = isChecked ? memberId : nil
+        item.checkedAt = isChecked ? date : nil
     }
 
     public func items(listId: UUID) async throws -> [ListItemDTO] {

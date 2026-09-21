@@ -8766,6 +8766,41 @@
         }
       }
     },
+    "intent.shopping.parameter.showedchecked": {
+      "extractionState": "stale",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als abgehakt angezeigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Showed as ticked"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se veía marcado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affiché comme coché"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrato come spuntato"
+          }
+        }
+      }
+    },
     "intent.shopping.toggle.title": {
       "extractionState": "stale",
       "localizations": {

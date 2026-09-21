@@ -80,7 +80,7 @@ struct ShoppingRow: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            Button(intent: ToggleShoppingItemIntent(itemID: item.id)) {
+            Button(intent: ToggleShoppingItemIntent(itemID: item.id, showedChecked: item.isChecked)) {
                 Image(systemName: item.isChecked ? "checkmark.circle.fill" : "circle")
                     .corbieBody()
                     .imageScale(.large)

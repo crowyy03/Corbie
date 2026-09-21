@@ -143,12 +143,13 @@ import Testing
         }
     }
 
-    @Test func togglingAShoppingItemFlipsItBothWays() async throws {
+    @Test func tappingAShoppingRowSetsTheOppositeOfWhatItShowed() async throws {
         let world = try await makeWorld()
         let items = try await world.seed.controller.repositories.lists.items(listId: world.seed.shoppingList.id)
-        let first = try #require(items.first)
+        let first = try #require(items.first { $0.isChecked == false })
         let checked = try await TaskIntentRunner.toggleShoppingItem(
             itemId: first.id,
+            showedChecked: false,
             persistence: world.persistence,
             now: world.now
         )
@@ -156,10 +157,94 @@ import Testing
         #expect(checked.checkedByMemberId == world.seed.me.id)
         let unchecked = try await TaskIntentRunner.toggleShoppingItem(
             itemId: first.id,
+            showedChecked: true,
             persistence: world.persistence,
             now: world.now
         )
         #expect(unchecked.isChecked == false)
+        #expect(unchecked.checkedByMemberId == nil)
+    }
+
+    @Test func aStaleUncheckedRowTappedAfterThePartnerTickedItLeavesTheTick() async throws {
+        let world = try await makeWorld()
+        let controller = world.seed.controller
+        let items = try await controller.repositories.lists.items(listId: world.seed.shoppingList.id)
+        let stale = try #require(items.first { $0.isChecked == false })
+        let partnerId = world.seed.partner.id
+        let partnerTickedAt = world.now.addingTimeInterval(-600)
+        try await OtherContext.change(ListItem.entityName, id: stale.id, in: controller) { (item: ListItem) in
+            item.isChecked = true
+            item.checkedByMemberId = partnerId
+            item.checkedAt = partnerTickedAt
+        }
+
+        let tapped = try await TaskIntentRunner.toggleShoppingItem(
+            itemId: stale.id,
+            showedChecked: stale.isChecked,
+            persistence: world.persistence,
+            now: world.now
+        )
+
+        #expect(tapped.isChecked)
+        #expect(tapped.checkedByMemberId == partnerId)
+        #expect(tapped.checkedAt == partnerTickedAt)
+        let stored = try await controller.repositories.lists.items(listId: world.seed.shoppingList.id)
+        let item = try #require(stored.first { $0.id == stale.id })
+        #expect(item.isChecked)
+        #expect(item.checkedByMemberId == partnerId)
+    }
+
+    @Test func aRowThatShowedCheckedUnticksIt() async throws {
+        let world = try await makeWorld()
+        let controller = world.seed.controller
+        let items = try await controller.repositories.lists.items(listId: world.seed.shoppingList.id)
+        let open = try #require(items.first { $0.isChecked == false })
+        let partnerId = world.seed.partner.id
+        let ticked = try await controller.repositories.lists.setItemChecked(
+            itemId: open.id,
+            true,
+            memberId: partnerId,
+            at: world.now
+        )
+
+        let tapped = try await TaskIntentRunner.toggleShoppingItem(
+            itemId: ticked.id,
+            showedChecked: ticked.isChecked,
+            persistence: world.persistence,
+            now: world.now
+        )
+
+        #expect(tapped.isChecked == false)
+        #expect(tapped.checkedByMemberId == nil)
+        #expect(tapped.checkedAt == nil)
+    }
+
+    @Test func aStaleCheckedRowTappedAfterThePartnerUntickedItStaysUnticked() async throws {
+        let world = try await makeWorld()
+        let controller = world.seed.controller
+        let items = try await controller.repositories.lists.items(listId: world.seed.shoppingList.id)
+        let open = try #require(items.first { $0.isChecked == false })
+        let stale = try await controller.repositories.lists.setItemChecked(
+            itemId: open.id,
+            true,
+            memberId: world.seed.me.id,
+            at: world.now
+        )
+        try await OtherContext.change(ListItem.entityName, id: stale.id, in: controller) { (item: ListItem) in
+            item.isChecked = false
+            item.checkedByMemberId = nil
+            item.checkedAt = nil
+        }
+
+        let tapped = try await TaskIntentRunner.toggleShoppingItem(
+            itemId: stale.id,
+            showedChecked: stale.isChecked,
+            persistence: world.persistence,
+            now: world.now
+        )
+
+        #expect(tapped.isChecked == false)
+        #expect(tapped.checkedByMemberId == nil)
     }
 
     @Test func identifiersMustBeUUIDs() throws {
@@ -195,7 +280,9 @@ import AppIntents
         let itemId = UUID()
         #expect(ToggleTaskDoneIntent(taskID: taskId).taskID == taskId.uuidString)
         #expect(TakeTaskIntent(taskID: taskId).taskID == taskId.uuidString)
-        #expect(ToggleShoppingItemIntent(itemID: itemId).itemID == itemId.uuidString)
+        let shoppingIntent = ToggleShoppingItemIntent(itemID: itemId, showedChecked: true)
+        #expect(shoppingIntent.itemID == itemId.uuidString)
+        #expect(shoppingIntent.showedChecked)
     }
 
     @Test func performingTheToggleIntentWritesThroughTheSharedPersistence() async throws {
@@ -210,6 +297,24 @@ import AppIntents
         let stored = try await seed.controller.repositories.tasks.task(id: task.id)
         #expect(stored?.isDone == true)
         #expect(stored?.doneByMemberId == seed.me.id)
+    }
+
+    @Test func performingTheShoppingIntentKeepsATickThatIsAlreadyThere() async throws {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let seed = try await PreviewSeed.make(now: now, calendar: calendar)
+        let identity = MemberIdentity(store: InMemorySecretStore())
+        try identity.setAppleUserID("preview.me")
+        IntentPersistence.shared.use(controller: seed.controller, identity: identity)
+        defer { IntentPersistence.shared.reset() }
+        let lists = seed.controller.repositories.lists
+        let open = try #require(try await lists.items(listId: seed.shoppingList.id).first { $0.isChecked == false })
+        _ = try await lists.setItemChecked(itemId: open.id, true, memberId: seed.partner.id, at: now)
+
+        _ = try await ToggleShoppingItemIntent(itemID: open.id, showedChecked: false).perform()
+
+        let stored = try #require(try await lists.items(listId: seed.shoppingList.id).first { $0.id == open.id })
+        #expect(stored.isChecked)
+        #expect(stored.checkedByMemberId == seed.partner.id)
     }
 }
 #endif

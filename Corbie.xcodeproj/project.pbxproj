@@ -114,6 +114,7 @@
 		58237ACAF65E022531A29BA7 /* WishesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF01F964053D82217E75A089 /* WishesFilter.swift */; };
 		594A4CF200F52CA83C738879 /* QuestionDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF40ADDD34430919F6A2DE /* QuestionDayView.swift */; };
 		59B69066A3FF2DA605D1CEAD /* UsDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC0D46F35A085E5A41767B /* UsDestination.swift */; };
+		5A1491BB558E2C4EE889E18E /* PlanEditorEditsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E54033DDF79F80BD0BEF522 /* PlanEditorEditsTests.swift */; };
 		5A833FEB97E7D9551E5C2F28 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEADECE3D6ABD0A50F325ECA /* RootView.swift */; };
 		5AA79A71BAAF5F1E12E86725 /* FreeTimePrivacySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003108EFBF4A52C857BE02CB /* FreeTimePrivacySheet.swift */; };
 		5C625981CA321BD018F6A45A /* SettingsNotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CD4FE2DC9B6D290F37FDBC /* SettingsNotificationsViewModel.swift */; };
@@ -544,6 +545,7 @@
 		98ED49809BD4DC7C7BB09BC4 /* RecapPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecapPresentation.swift; sourceTree = "<group>"; };
 		99ACECF1088DB58F38F21410 /* PeopleRelationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRelationTests.swift; sourceTree = "<group>"; };
 		9DC1BF52E7D1EB8473DEB11A /* OnboardingProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProfileView.swift; sourceTree = "<group>"; };
+		9E54033DDF79F80BD0BEF522 /* PlanEditorEditsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanEditorEditsTests.swift; sourceTree = "<group>"; };
 		9F1D6A0D0765F5689804FF9B /* PlanSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanSummaryCard.swift; sourceTree = "<group>"; };
 		A12207CA53D4C7A0BE312173 /* TodayQuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayQuestionModel.swift; sourceTree = "<group>"; };
 		A17C9CE3648CACAEF49793FA /* ExpenseEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditorViewModel.swift; sourceTree = "<group>"; };
@@ -1014,6 +1016,7 @@
 				BEC1E4E92969E872AF1BA575 /* PeopleDatesTests.swift */,
 				E06D24E69364151FE6F40BBC /* PeopleRadarSummaryTests.swift */,
 				99ACECF1088DB58F38F21410 /* PeopleRelationTests.swift */,
+				9E54033DDF79F80BD0BEF522 /* PlanEditorEditsTests.swift */,
 				B310FDE0142B17C029F56392 /* PlansPresentationTests.swift */,
 				062DF1A1AB7A3DF299FFA27B /* QARelativeDateTests.swift */,
 				FBEE50115885F067C97C49EE /* QAReleaseTests.swift */,
@@ -1518,6 +1521,7 @@
 				8088044EE968505EB5E2A0AD /* PeopleDatesTests.swift in Sources */,
 				B1EE512764B5E74F9CD123B9 /* PeopleRadarSummaryTests.swift in Sources */,
 				32379CC93B091A54D77E977A /* PeopleRelationTests.swift in Sources */,
+				5A1491BB558E2C4EE889E18E /* PlanEditorEditsTests.swift in Sources */,
 				B4B7513B620D0E5E0A33FAAE /* PlansPresentationTests.swift in Sources */,
 				EA95CDB039DA1F58783BB622 /* QARelativeDateTests.swift in Sources */,
 				7F96241286C5F7E112C9663C /* QAReleaseTests.swift in Sources */,

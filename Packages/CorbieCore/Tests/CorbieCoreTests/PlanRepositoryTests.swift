@@ -212,7 +212,7 @@ import Testing
     @Test func aPlanCanBeTurnedIntoAnOpenOneAndBack() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.plans
-        var plan = try await repository.create(
+        let plan = try await repository.create(
             PlanDraft(
                 spaceId: world.space.id,
                 title: "Lisbon",
@@ -222,15 +222,16 @@ import Testing
                 createdByMemberId: world.me.id
             )
         )
-        plan.isOpenEnded = true
-        let opened = try await repository.update(plan)
+        var open = plan
+        open.isOpenEnded = true
+        let opened = try await repository.update(open, from: plan)
         #expect(opened.isOpenEnded)
         #expect(opened.targetAmount == 0)
 
         var back = opened
         back.isOpenEnded = false
         back.targetAmount = 1500
-        let targeted = try await repository.update(back)
+        let targeted = try await repository.update(back, from: opened)
         #expect(targeted.isOpenEnded == false)
         #expect(targeted.targetAmount == 1500)
         #expect(targeted.showsProgress)

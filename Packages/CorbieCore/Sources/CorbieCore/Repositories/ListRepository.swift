@@ -58,14 +58,15 @@ public struct ListItemDraft: Sendable, Equatable {
 
 public protocol ListRepository: Sendable {
     func create(_ draft: ChecklistDraft) async throws -> ChecklistListDTO
-    func update(_ list: ChecklistListDTO) async throws -> ChecklistListDTO
+    func update(_ edited: ChecklistListDTO, from original: ChecklistListDTO) async throws -> ChecklistListDTO
     func list(id: UUID) async throws -> ChecklistListDTO?
     func lists(spaceId: UUID) async throws -> [ChecklistListDTO]
     func delete(id: UUID) async throws
     func pinnedShoppingList(spaceId: UUID, title: String, createdByMemberId: UUID?) async throws -> ChecklistListDTO
     func addItem(listId: UUID, draft: ListItemDraft) async throws -> ListItemDTO
-    func updateItem(_ item: ListItemDTO) async throws -> ListItemDTO
+    func updateItem(_ edited: ListItemDTO, from original: ListItemDTO) async throws -> ListItemDTO
     func toggleItem(itemId: UUID, memberId: UUID?, at date: Date) async throws -> ListItemDTO
+    func setItemChecked(itemId: UUID, _ isChecked: Bool, memberId: UUID?, at date: Date) async throws -> ListItemDTO
     func items(listId: UUID) async throws -> [ListItemDTO]
     func reorder(listId: UUID, orderedItemIds: [UUID]) async throws -> [ListItemDTO]
     func deleteItem(id: UUID) async throws

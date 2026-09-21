@@ -106,13 +106,14 @@ import Testing
         let world = try await TestWorld.make()
         let repository = world.repositories.plans
         let plan = try await makePlan(world)
-        var step = try await repository.addStep(planId: plan.id, draft: PlanStepDraft(title: "Pack"))
+        let step = try await repository.addStep(planId: plan.id, draft: PlanStepDraft(title: "Pack"))
         _ = try await repository.addStep(planId: plan.id, draft: PlanStepDraft(title: "Print the tickets"))
 
-        step.title = "Pack the carry-on"
-        step.assigneeMemberId = world.partner.id
-        step.dueAt = Date(timeIntervalSince1970: 1_800_000_000)
-        let updated = try await repository.updateStep(step)
+        var edited = step
+        edited.title = "Pack the carry-on"
+        edited.assigneeMemberId = world.partner.id
+        edited.dueAt = Date(timeIntervalSince1970: 1_800_000_000)
+        let updated = try await repository.updateStep(edited, from: step)
         #expect(updated.id == step.id)
         #expect(updated.title == "Pack the carry-on")
         #expect(updated.assigneeMemberId == world.partner.id)

@@ -63,12 +63,18 @@ public enum TaskIntentRunner {
     @discardableResult
     public static func toggleShoppingItem(
         itemId: UUID,
+        showedChecked: Bool,
         persistence: IntentPersistence = .shared,
         now: Date = Date()
     ) async throws -> ListItemDTO {
         let repositories = persistence.controller().repositories
         let memberId = try? await persistence.currentMemberId()
-        let item = try await repositories.lists.toggleItem(itemId: itemId, memberId: memberId, at: now)
+        let item = try await repositories.lists.setItemChecked(
+            itemId: itemId,
+            showedChecked == false,
+            memberId: memberId,
+            at: now
+        )
         WidgetReloader.reloadNow()
         return item
     }

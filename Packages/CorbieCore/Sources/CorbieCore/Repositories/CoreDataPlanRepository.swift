@@ -36,20 +36,43 @@ public struct CoreDataPlanRepository: PlanRepository {
         }
     }
 
-    public func update(_ plan: PlanDTO) async throws -> PlanDTO {
-        try await access.write { context in
-            let entity: Plan = try ManagedFetch.require(Plan.entityName, id: plan.id, in: context)
-            entity.title = plan.title
-            entity.type = plan.type
-            entity.isOpenEnded = plan.isOpenEnded
-            entity.targetAmount = plan.isOpenEnded ? 0 : plan.targetAmount
-            entity.currency = plan.currency
-            entity.savedAmount = plan.savedAmount
-            entity.startAt = plan.startAt
-            entity.endAt = plan.endAt
-            entity.note = plan.note
-            entity.status = plan.status
-            return PlanDTO(entity)
+    public func update(_ edited: PlanDTO, from original: PlanDTO) async throws -> PlanDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("plan title is empty")
+        }
+        let movesGoal = changes.changed(\.isOpenEnded) || changes.changed(\.targetAmount)
+        if movesGoal, edited.isOpenEnded == false, edited.targetAmount < 0 {
+            throw CorbieError.invalidInput("plan amounts cannot be negative")
+        }
+        let movesDates = changes.changed(\.startAt) || changes.changed(\.endAt)
+        return try await access.write { context in
+            let plan: Plan = try ManagedFetch.require(Plan.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in plan.title = title }
+            changes.write(\.type) { plan.type = $0 }
+            if movesGoal {
+                plan.isOpenEnded = edited.isOpenEnded
+                plan.targetAmount = edited.isOpenEnded ? 0 : edited.targetAmount
+            }
+            changes.write(\.currency) { plan.currency = $0 }
+            if movesDates {
+                plan.startAt = edited.startAt
+                plan.endAt = edited.endAt
+            }
+            changes.write(\.note) { plan.note = $0 }
+            return PlanDTO(plan)
+        }
+    }
+
+    public func setSavedAmount(planId: UUID, _ amount: Double) async throws -> PlanDTO {
+        guard amount >= 0 else {
+            throw CorbieError.invalidInput("plan amounts cannot be negative")
+        }
+        return try await access.write { context in
+            let plan: Plan = try ManagedFetch.require(Plan.entityName, id: planId, in: context)
+            if plan.savedAmount != amount { plan.savedAmount = amount }
+            return PlanDTO(plan)
         }
     }
 
@@ -151,15 +174,19 @@ public struct CoreDataPlanRepository: PlanRepository {
         }
     }
 
-    public func updateStep(_ step: PlanStepDTO) async throws -> PlanStepDTO {
-        try await access.write { context in
-            let entity: PlanStep = try ManagedFetch.require(PlanStep.entityName, id: step.id, in: context)
-            entity.title = step.title
-            entity.note = step.note
-            entity.assigneeMemberId = step.assigneeMemberId
-            entity.dueAt = step.dueAt
-            entity.sortIndex = Int32(step.sortIndex)
-            return PlanStepDTO(entity)
+    public func updateStep(_ edited: PlanStepDTO, from original: PlanStepDTO) async throws -> PlanStepDTO {
+        let changes = try FieldChanges(edited, from: original)
+        let title = edited.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if changes.changed(\.title), title.isEmpty {
+            throw CorbieError.invalidInput("plan step title is empty")
+        }
+        return try await access.write { context in
+            let step: PlanStep = try ManagedFetch.require(PlanStep.entityName, id: edited.id, in: context)
+            changes.write(\.title) { _ in step.title = title }
+            changes.write(\.note) { step.note = $0 }
+            changes.write(\.assigneeMemberId) { step.assigneeMemberId = $0 }
+            changes.write(\.dueAt) { step.dueAt = $0 }
+            return PlanStepDTO(step)
         }
     }
 

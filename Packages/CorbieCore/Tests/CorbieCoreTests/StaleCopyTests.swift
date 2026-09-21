@@ -353,6 +353,222 @@ import Testing
         #expect(unpicked.price == 24)
     }
 
+    @Test func aStalePlanEditKeepsTheSavedAmountAndTheStatusFromElsewhere() async throws {
+        let world = try await TestWorld.make()
+        let plans = world.repositories.plans
+        let stale = try await plans.create(
+            PlanDraft(
+                spaceId: world.space.id,
+                title: "Lisbon",
+                type: .trip,
+                targetAmount: 2000,
+                currency: "USD",
+                savedAmount: 300
+            )
+        )
+        _ = try await plans.addExpense(
+            planId: stale.id,
+            draft: PlanExpenseDraft(amount: 150, currency: "USD", addedByMemberId: world.partner.id)
+        )
+        try await OtherContext.change(Plan.entityName, id: stale.id, in: world.controller) { (plan: Plan) in
+            plan.savedAmount = 800
+            plan.status = .completed
+        }
+
+        var edited = stale
+        edited.note = "window seats"
+        let saved = try await plans.update(edited, from: stale)
+
+        #expect(saved.note == "window seats")
+        #expect(saved.savedAmount == 800)
+        #expect(saved.status == .completed)
+        #expect(saved.addedAmount == 150)
+        #expect(saved.targetAmount == 2000)
+    }
+
+    @Test func noPlanUpdateWritesTheSavedAmountOrTheStatus() async throws {
+        let world = try await TestWorld.make()
+        let plans = world.repositories.plans
+        let original = try await plans.create(
+            PlanDraft(spaceId: world.space.id, title: "Sofa", targetAmount: 900, currency: "EUR", savedAmount: 100)
+        )
+
+        var edited = original
+        edited.title = "Green sofa"
+        edited.savedAmount = 5000
+        edited.status = .archived
+        let saved = try await plans.update(edited, from: original)
+
+        #expect(saved.title == "Green sofa")
+        #expect(saved.savedAmount == 100)
+        #expect(saved.status == .active)
+        let moved = try await plans.setSavedAmount(planId: original.id, 250)
+        let completed = try await plans.setStatus(planId: original.id, status: .completed)
+        #expect(moved.savedAmount == 250)
+        #expect(completed.status == .completed)
+        #expect(completed.savedAmount == 250)
+        #expect(completed.title == "Green sofa")
+    }
+
+    @Test func aStaleStepEditKeepsThePartnersTakeDoneAndOrder() async throws {
+        let world = try await TestWorld.make()
+        let plans = world.repositories.plans
+        let plan = try await plans.create(PlanDraft(spaceId: world.space.id, title: "Move", targetAmount: 500))
+        let stale = try await plans.addStep(planId: plan.id, draft: PlanStepDraft(title: "Book the van"))
+        let other = try await plans.addStep(planId: plan.id, draft: PlanStepDraft(title: "Buy boxes"))
+        _ = try await plans.reorderSteps(planId: plan.id, orderedStepIds: [other.id, stale.id])
+        let partnerId = world.partner.id
+        try await OtherContext.change(PlanStep.entityName, id: stale.id, in: world.controller) { (step: PlanStep) in
+            step.assigneeMemberId = partnerId
+            step.isDone = true
+            step.doneByMemberId = partnerId
+            step.doneAt = newer
+        }
+
+        var edited = stale
+        edited.note = "the big one"
+        let saved = try await plans.updateStep(edited, from: stale)
+
+        #expect(saved.note == "the big one")
+        #expect(saved.title == "Book the van")
+        #expect(saved.assigneeMemberId == partnerId)
+        #expect(saved.isDone)
+        #expect(saved.doneByMemberId == partnerId)
+        #expect(saved.sortIndex == 1)
+    }
+
+    @Test func aStaleListEditKeepsWhoCanTickFromElsewhere() async throws {
+        let world = try await TestWorld.make()
+        let lists = world.repositories.lists
+        let stale = try await lists.create(
+            ChecklistDraft(
+                spaceId: world.space.id,
+                title: "Lisbon",
+                template: .places,
+                createdByMemberId: world.me.id
+            )
+        )
+        try await OtherContext.change(ChecklistList.entityName, id: stale.id, in: world.controller) { (list: ChecklistList) in
+            list.anyoneCanCheck = false
+            list.subtitle = "in May"
+        }
+
+        var edited = stale
+        edited.title = "Lisbon and Porto"
+        let saved = try await lists.update(edited, from: stale)
+
+        #expect(saved.title == "Lisbon and Porto")
+        #expect(saved.anyoneCanCheck == false)
+        #expect(saved.subtitle == "in May")
+        #expect(saved.template == .places)
+    }
+
+    @Test func aStaleItemEditKeepsTheTickTheOrderAndThePlaceFromElsewhere() async throws {
+        let world = try await TestWorld.make()
+        let lists = world.repositories.lists
+        let list = try await lists.create(ChecklistDraft(spaceId: world.space.id, title: "Lisbon", template: .places))
+        let stale = try await lists.addItem(listId: list.id, draft: ListItemDraft(title: "Time Out Market"))
+        let other = try await lists.addItem(listId: list.id, draft: ListItemDraft(title: "Belem tower"))
+        _ = try await lists.reorder(listId: list.id, orderedItemIds: [other.id, stale.id])
+        let partnerId = world.partner.id
+        try await OtherContext.change(ListItem.entityName, id: stale.id, in: world.controller) { (item: ListItem) in
+            item.isChecked = true
+            item.checkedByMemberId = partnerId
+            item.checkedAt = newer
+            item.placeName = "Time Out Market Lisboa"
+            item.address = "Av. 24 de Julho 49"
+            item.latitude = 38.7069
+            item.longitude = -9.1459
+        }
+
+        var edited = stale
+        edited.note = "go before noon"
+        let saved = try await lists.updateItem(edited, from: stale)
+
+        #expect(saved.note == "go before noon")
+        #expect(saved.isChecked)
+        #expect(saved.checkedByMemberId == partnerId)
+        #expect(saved.checkedAt == newer)
+        #expect(saved.sortIndex == 1)
+        #expect(saved.placeName == "Time Out Market Lisboa")
+        #expect(saved.address == "Av. 24 de Julho 49")
+        #expect(saved.latitude == 38.7069)
+        #expect(saved.longitude == -9.1459)
+    }
+
+    @Test func aPlaceChosenInTheEditorReplacesTheWholePlace() async throws {
+        let world = try await TestWorld.make()
+        let lists = world.repositories.lists
+        let list = try await lists.create(ChecklistDraft(spaceId: world.space.id, title: "Lisbon", template: .places))
+        let stale = try await lists.addItem(
+            listId: list.id,
+            draft: ListItemDraft(
+                title: "Coffee",
+                placeName: "Fabrica",
+                address: "Rua das Flores",
+                latitude: 38.71,
+                longitude: -9.14
+            )
+        )
+        try await OtherContext.change(ListItem.entityName, id: stale.id, in: world.controller) { (item: ListItem) in
+            item.address = "Rua das Flores 63"
+        }
+
+        var edited = stale
+        edited.placeName = "Hello Kristof"
+        edited.address = nil
+        edited.latitude = 38.712
+        edited.longitude = -9.147
+        let saved = try await lists.updateItem(edited, from: stale)
+
+        #expect(saved.placeName == "Hello Kristof")
+        #expect(saved.address == nil)
+        #expect(saved.latitude == 38.712)
+        #expect(saved.longitude == -9.147)
+    }
+
+    @Test func noStepOrItemEditMovesTheRowOrTicksIt() async throws {
+        let world = try await TestWorld.make()
+        let plans = world.repositories.plans
+        let lists = world.repositories.lists
+        let plan = try await plans.create(PlanDraft(spaceId: world.space.id, title: "Move", targetAmount: 500))
+        let step = try await plans.addStep(planId: plan.id, draft: PlanStepDraft(title: "Book the van"))
+        let list = try await lists.create(ChecklistDraft(spaceId: world.space.id, title: "Groceries"))
+        let item = try await lists.addItem(listId: list.id, draft: ListItemDraft(title: "Milk"))
+
+        var editedStep = step
+        editedStep.title = "Book the big van"
+        editedStep.sortIndex = 7
+        editedStep.isDone = true
+        var editedItem = item
+        editedItem.title = "Oat milk"
+        editedItem.sortIndex = 7
+        editedItem.isChecked = true
+        let savedStep = try await plans.updateStep(editedStep, from: step)
+        let savedItem = try await lists.updateItem(editedItem, from: item)
+
+        #expect(savedStep.title == "Book the big van")
+        #expect(savedStep.sortIndex == step.sortIndex)
+        #expect(savedStep.isDone == false)
+        #expect(savedItem.title == "Oat milk")
+        #expect(savedItem.sortIndex == item.sortIndex)
+        #expect(savedItem.isChecked == false)
+    }
+
+    @Test func settingATickTwiceKeepsTheFirstOne() async throws {
+        let world = try await TestWorld.make()
+        let lists = world.repositories.lists
+        let list = try await lists.create(ChecklistDraft(spaceId: world.space.id, title: "Groceries"))
+        let item = try await lists.addItem(listId: list.id, draft: ListItemDraft(title: "Milk"))
+
+        let first = try await lists.setItemChecked(itemId: item.id, true, memberId: world.partner.id, at: older)
+        let second = try await lists.setItemChecked(itemId: item.id, true, memberId: world.me.id, at: newer)
+
+        #expect(first.isChecked)
+        #expect(second.checkedByMemberId == world.partner.id)
+        #expect(second.checkedAt == older)
+    }
+
     @Test func anEditedCopyOfAnotherRowIsRefused() async throws {
         let world = try await TestWorld.make()
         let tasks = world.repositories.tasks

@@ -25,7 +25,17 @@ final class PlanEditorViewModel {
     private(set) var isSaving = false
     private(set) var currencies: [String] = FXService.baseCurrencies
 
+    private struct LoadedControls {
+        var kind: Kind
+        var targetAmount: Double
+        var savedAmount: Double
+        var hasDates: Bool
+        var startAt: Date
+        var endAt: Date
+    }
+
     @ObservationIgnored private let existing: PlanDTO?
+    @ObservationIgnored private var loaded: LoadedControls?
     @ObservationIgnored private var environment: AppEnvironment?
     @ObservationIgnored private var didConfigure = false
 
@@ -42,6 +52,14 @@ final class PlanEditorViewModel {
         startAt = plan.startAt ?? plan.endAt ?? Date()
         endAt = plan.endAt ?? plan.startAt ?? Date()
         note = plan.note ?? ""
+        loaded = LoadedControls(
+            kind: kind,
+            targetAmount: targetAmount,
+            savedAmount: savedAmount,
+            hasDates: hasDates,
+            startAt: startAt,
+            endAt: endAt
+        )
     }
 
     var isEditing: Bool { existing != nil }
@@ -87,14 +105,22 @@ final class PlanEditorViewModel {
         var edited = plan
         edited.title = trimmedTitle
         edited.type = type
-        edited.isOpenEnded = isOpenEnded
-        edited.targetAmount = isOpenEnded ? 0 : targetAmount
-        edited.savedAmount = savedAmount
+        if isGoalEdited {
+            edited.isOpenEnded = isOpenEnded
+            edited.targetAmount = isOpenEnded ? 0 : targetAmount
+        }
         edited.currency = currency
-        edited.startAt = hasDates ? startAt : nil
-        edited.endAt = hasDates ? endAt : nil
+        if isDateRangeEdited {
+            edited.startAt = hasDates ? startAt : nil
+            edited.endAt = hasDates ? endAt : nil
+        }
         edited.note = trimmedNote
         return edited
+    }
+
+    var editedSavedAmount: Double? {
+        guard let loaded, savedAmount != loaded.savedAmount else { return nil }
+        return savedAmount
     }
 
     func save() async -> Bool {
@@ -104,7 +130,10 @@ final class PlanEditorViewModel {
         defer { isSaving = false }
         do {
             if let existing {
-                _ = try await environment.repositories.plans.update(updated(existing))
+                _ = try await environment.repositories.plans.update(updated(existing), from: existing)
+                if let editedSavedAmount {
+                    _ = try await environment.repositories.plans.setSavedAmount(planId: existing.id, editedSavedAmount)
+                }
             } else {
                 let created = try await environment.repositories.plans.create(
                     draft(spaceId: space.id, createdByMemberId: environment.currentMember?.id)
@@ -116,6 +145,16 @@ final class PlanEditorViewModel {
             environment.report(error)
             return false
         }
+    }
+
+    private var isGoalEdited: Bool {
+        guard let loaded else { return true }
+        return kind != loaded.kind || targetAmount != loaded.targetAmount
+    }
+
+    private var isDateRangeEdited: Bool {
+        guard let loaded else { return true }
+        return hasDates != loaded.hasDates || startAt != loaded.startAt || endAt != loaded.endAt
     }
 
     private var trimmedTitle: String {

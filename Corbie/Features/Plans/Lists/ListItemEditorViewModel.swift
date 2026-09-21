@@ -61,15 +61,15 @@ final class ListItemEditorViewModel {
         isSaving = true
         defer { isSaving = false }
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
-        var updated = item
-        updated.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        updated.note = trimmedNote.isEmpty ? nil : trimmedNote
-        updated.placeName = placeName
-        updated.address = address
-        updated.latitude = latitude
-        updated.longitude = longitude
+        var edited = item
+        edited.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        edited.note = trimmedNote.isEmpty ? nil : trimmedNote
+        edited.placeName = placeName
+        edited.address = address
+        edited.latitude = latitude
+        edited.longitude = longitude
         do {
-            _ = try await environment.repositories.lists.updateItem(updated)
+            _ = try await environment.repositories.lists.updateItem(edited, from: item)
             return true
         } catch {
             environment.report(error)
