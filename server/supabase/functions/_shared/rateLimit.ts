@@ -1,3 +1,4 @@
+import { saltedDigest } from "./hash.ts";
 import { ApiError } from "./respond.ts";
 import { serviceClient } from "./supabase.ts";
 
@@ -21,21 +22,6 @@ export const buckets = {
 function trimmed(value: string | null): string | null {
   const result = value?.trim() ?? "";
   return result.length > 0 ? result : null;
-}
-
-async function saltedDigest(value: string): Promise<string> {
-  const salt = Deno.env.get("RATE_LIMIT_SALT") ?? "";
-  if (salt.length === 0) throw new ApiError("internal", "Server is missing RATE_LIMIT_SALT");
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(salt),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"],
-  );
-  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
-  return [...new Uint8Array(signature)].map((byte) => byte.toString(16).padStart(2, "0")).join("")
-    .slice(0, 32);
 }
 
 function callerAddress(req: Request): string | null {

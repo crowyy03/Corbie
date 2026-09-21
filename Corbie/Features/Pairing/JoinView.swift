@@ -55,13 +55,17 @@ struct JoinView: View {
             }
 
             if model.isWorking {
-                HStack(spacing: CorbieSpacing.s) {
+                VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
                     ProgressView()
                         .tint(palette.accent)
-                    Text("pairing.join.working")
+                    Text(verbatim: model.step?.title ?? String(localized: "pairing.join.working"))
                         .corbieMono()
                         .foregroundStyle(palette.text2)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .contentTransition(.opacity)
+                        .animation(.default, value: model.step)
                 }
+                .accessibilityElement(children: .combine)
             }
 
             Spacer()

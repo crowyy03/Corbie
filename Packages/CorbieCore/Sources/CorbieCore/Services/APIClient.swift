@@ -81,7 +81,7 @@ public struct APIClient: Sendable {
             method: .get,
             path: "\(Path.inviteRedeem)/\(normalized)",
             authenticated: false,
-            anonymous: false
+            anonymous: true
         )
         return try decode(InviteShare.self, from: response)
     }

@@ -82,7 +82,7 @@ cd ~/Desktop/codding/Corbie/server
 supabase db push
 ```
 
-It lists the six migrations it is about to apply and asks for confirmation. Add `< /dev/null` to
+It lists the migrations the project does not have yet (all eight on a new project) and asks for confirmation. Add `< /dev/null` to
 take the default. Dry run first with `supabase db push --dry-run` if you want to see the list without
 applying anything.
 
@@ -95,6 +95,8 @@ Applying migration 0003_entitlement_ordering.sql...
 Applying migration 0004_cohort_views.sql...
 Applying migration 0005_entitlement_statuses.sql...
 Applying migration 0006_app_config.sql...
+Applying migration 0007_rate_limit_keys_without_addresses.sql...
+Applying migration 0008_invite_supersede_and_redeemer.sql...
 Finished supabase db push.
 ```
 
@@ -118,6 +120,11 @@ select tablename from pg_tables where schemaname = 'public' order by 1;
 
 select key, value from public.app_config;
 -- monetization_enabled | false
+
+select column_name from information_schema.columns
+where table_schema = 'public' and table_name = 'invites'
+  and column_name in ('superseded_at', 'redeemed_by') order by 1;
+-- redeemed_by, superseded_at
 
 select table_name from information_schema.views where table_schema = 'analytics' order by 1;
 -- entitlement_status, first_open_cohort, onboarding_funnel, paired_ratio, retention_d1_d7_d30
@@ -143,6 +150,11 @@ workspace `deno.json` by itself: every function fails with `Relative import path
 not prefixed with / or ./ or ../`. `--import-map` hands it the import map; with Docker running the flag
 is harmless.
 
+Apply migration 0008 before deploying `invite` and `invite-redeem` from 2026-09-21 on: both read and
+write `superseded_at` and `redeemed_by`, and without the columns every invite and every redeem answers
+`500 internal`. The older functions keep working on the new columns, so the migration can go first
+with no downtime.
+
 With no function named, it deploys all ten: `session`, `invite`, `invite-redeem`, `parse`, `fx`,
 `config`, `events`, `entitlement`, `apple-revoke`, `appstore-notifications`. It reads
 `verify_jwt = false` per function from `supabase/config.toml`, which is what makes the gateway let
@@ -163,17 +175,17 @@ Ten rows, each with status `ACTIVE` and `verify_jwt` false.
 Dashboard, Project Settings, Edge Functions, Secrets, **Add new secret**. Use the dashboard rather
 than `supabase secrets set` for the private key: the CLI form puts the value in your shell history.
 
-| Secret                   | What it is for                                                                                                                                                        | Where the value comes from                                                                                                                                                      | Blocked?                         |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `SESSION_SECRET`         | HMAC key that signs the 180-day Corbie session token, so the app does not have to hold a short-lived Apple token. Every protected endpoint verifies against it.       | `openssl rand -base64 48`. Rotated on 2026-09-17 because the earlier local copy was lost; the value lives only in your password manager. Changing it signs everyone out.        | set                              |
-| `RATE_LIMIT_SALT`        | HMAC key for the rate limit bucket key, so `rate_limits` holds a digest of the caller's IP and never the address. Without it every rate-limited endpoint answers 500. | `openssl rand -base64 48`, once, set before the functions that read it are deployed. Nobody needs to read it back; rotating it only resets the buckets.                         | set                              |
-| `APPLE_CLIENT_ID`        | The `aud` claim demanded of Apple identity tokens.                                                                                                                    | `app.corbie`                                                                                                                                                                    | set                              |
-| `APPLE_BUNDLE_ID`        | The bundle App Store notifications must name, so another app's notifications are refused.                                                                             | `app.corbie`                                                                                                                                                                    | set                              |
-| `APPLE_ENV`              | Which App Store environment this project accepts. A notification from the other one is rejected.                                                                      | `Sandbox` while testing, `Production` for the shipping project. Set `Sandbox` now.                                                                                              | set                              |
-| `APPLE_TEAM_ID`          | Signs the client secret used to revoke a Sign in with Apple credential on account deletion.                                                                           | Apple Developer, Membership details, Team ID.                                                                                                                                   | **blocked on the Apple account** |
-| `APPLE_KEY_ID`           | Same signature, names which key signed it.                                                                                                                            | Apple Developer, Certificates Identifiers and Profiles, Keys, the key with Sign in with Apple enabled.                                                                          | **blocked on the Apple account** |
-| `APPLE_PRIVATE_KEY`      | Same signature, the key itself.                                                                                                                                       | The `.p8` file Apple lets you download exactly once when you create that key. Paste the whole file including the BEGIN and END lines; real newlines and `\n` escapes both work. | **blocked on the Apple account** |
-| `INSTAGRAM_OEMBED_TOKEN` | Lets the wish parser read Instagram and TikTok links through oEmbed.                                                                                                  | A Meta app access token. Optional: without it those two sites fall back to a bare link and every other shop still parses.                                                       | optional, leave empty            |
+| Secret                   | What it is for                                                                                                                                                                                                                               | Where the value comes from                                                                                                                                                                                                                 | Blocked?                         |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
+| `SESSION_SECRET`         | HMAC key that signs the 180-day Corbie session token, so the app does not have to hold a short-lived Apple token. Every protected endpoint verifies against it.                                                                              | `openssl rand -base64 48`. Rotated on 2026-09-17 because the earlier local copy was lost; the value lives only in your password manager. Changing it signs everyone out.                                                                   | set                              |
+| `RATE_LIMIT_SALT`        | HMAC key for the rate limit bucket key and for `invites.redeemed_by`, so `rate_limits` holds a digest of the caller's IP and never the address, and `invites` a digest of the device id. Without it every rate-limited endpoint answers 500. | `openssl rand -base64 48`, once, set before the functions that read it are deployed. Nobody needs to read it back; rotating it resets the buckets, and a device that redeemed a code in the fifteen minutes before cannot redeem it again. | set                              |
+| `APPLE_CLIENT_ID`        | The `aud` claim demanded of Apple identity tokens.                                                                                                                                                                                           | `app.corbie`                                                                                                                                                                                                                               | set                              |
+| `APPLE_BUNDLE_ID`        | The bundle App Store notifications must name, so another app's notifications are refused.                                                                                                                                                    | `app.corbie`                                                                                                                                                                                                                               | set                              |
+| `APPLE_ENV`              | Which App Store environment this project accepts. A notification from the other one is rejected.                                                                                                                                             | `Sandbox` while testing, `Production` for the shipping project. Set `Sandbox` now.                                                                                                                                                         | set                              |
+| `APPLE_TEAM_ID`          | Signs the client secret used to revoke a Sign in with Apple credential on account deletion.                                                                                                                                                  | Apple Developer, Membership details, Team ID.                                                                                                                                                                                              | **blocked on the Apple account** |
+| `APPLE_KEY_ID`           | Same signature, names which key signed it.                                                                                                                                                                                                   | Apple Developer, Certificates Identifiers and Profiles, Keys, the key with Sign in with Apple enabled.                                                                                                                                     | **blocked on the Apple account** |
+| `APPLE_PRIVATE_KEY`      | Same signature, the key itself.                                                                                                                                                                                                              | The `.p8` file Apple lets you download exactly once when you create that key. Paste the whole file including the BEGIN and END lines; real newlines and `\n` escapes both work.                                                            | **blocked on the Apple account** |
+| `INSTAGRAM_OEMBED_TOKEN` | Lets the wish parser read Instagram and TikTok links through oEmbed.                                                                                                                                                                         | A Meta app access token. Optional: without it those two sites fall back to a bare link and every other shop still parses.                                                                                                                  | optional, leave empty            |
 
 Do not set these four, they are injected into every function automatically and the CLI refuses names
 that start with `SUPABASE_`: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
@@ -232,20 +244,23 @@ pending. The simulator cannot do it either: it has no iCloud account.
 
 ### What each check proves
 
-| Check                                   | Proves                                                                                                     |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `GET /fx?base=USD`                      | The function runs, reached Postgres with the injected service role key, and called the upstream rate feed. |
-| `GET /fx?base=XX`                       | Input validation and the shared error shape.                                                               |
-| `GET /config`                           | The monetization flag is readable without auth and `app_config` exists.                                    |
-| `POST /parse`                           | Outbound fetching, the shop adapters and the parse cache.                                                  |
-| `POST /events`                          | The analytics allowlist and the insert path.                                                               |
-| `GET /invite-redeem/ZZZZZZ`             | Unknown codes are a clean 404, not a crash.                                                                |
-| `GET /entitlement/{id}` without a token | Auth is enforced inside the function, so `verify_jwt = false` did not open a hole.                         |
-| `OPTIONS /fx`                           | No CORS surface: browsers get 405.                                                                         |
-| `POST /invite` with a session token     | Session tokens work end to end, and a code is written to the database.                                     |
-| `GET /invite-redeem/{code}` twice       | The pairing flow: first call returns the share link, second is 410 redeemed.                               |
-| `GET /entitlement/{id}` with a token    | An unknown space answers `status: none` rather than failing.                                               |
-| `POST /session` with a session token    | A session token cannot mint another session token.                                                         |
+| Check                                                                       | Proves                                                                                                     |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `GET /fx?base=USD`                                                          | The function runs, reached Postgres with the injected service role key, and called the upstream rate feed. |
+| `GET /fx?base=XX`                                                           | Input validation and the shared error shape.                                                               |
+| `GET /config`                                                               | The monetization flag is readable without auth and `app_config` exists.                                    |
+| `POST /parse`                                                               | Outbound fetching, the shop adapters and the parse cache.                                                  |
+| `POST /events`                                                              | The analytics allowlist and the insert path.                                                               |
+| `GET /invite-redeem/ZZZZZZ`                                                 | Unknown codes are a clean 404, not a crash.                                                                |
+| `GET /entitlement/{id}` without a token                                     | Auth is enforced inside the function, so `verify_jwt = false` did not open a hole.                         |
+| `OPTIONS /fx`                                                               | No CORS surface: browsers get 405.                                                                         |
+| `POST /invite` with a session token                                         | Session tokens work end to end, and a code is written to the database.                                     |
+| `POST /invite` twice for one space                                          | The second code supersedes the first.                                                                      |
+| `GET /invite-redeem/{first code}`                                           | A replaced code answers 410 superseded, not expired.                                                       |
+| `GET /invite-redeem/{second code}` from one device, twice                   | The pairing flow, and a retry from the same device gets the same share link again.                         |
+| `GET /invite-redeem/{second code}` from another device or with no device id | 409 redeemed.                                                                                              |
+| `GET /entitlement/{id}` with a token                                        | An unknown space answers `status: none` rather than failing.                                               |
+| `POST /session` with a session token                                        | A session token cannot mint another session token.                                                         |
 
 ## Turning monetization on
 

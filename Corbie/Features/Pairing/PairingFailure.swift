@@ -4,6 +4,7 @@ import Foundation
 enum PairingFailure: String, Error, Equatable, CaseIterable {
     case notFound
     case expired
+    case superseded
     case redeemed
     case throttled
     case signedOutOfICloud
@@ -31,6 +32,7 @@ enum PairingFailure: String, Error, Equatable, CaseIterable {
         }
         if let api = error as? APIError {
             if api.isNotFound { return .notFound }
+            if api.isSuperseded { return .superseded }
             if api.isExpired { return .expired }
             if api.isRedeemed { return .redeemed }
             if api.isRateLimited { return .throttled }
@@ -54,6 +56,7 @@ enum PairingFailure: String, Error, Equatable, CaseIterable {
         switch self {
         case .notFound: return String(localized: "pairing.join.error.notfound")
         case .expired: return String(localized: "pairing.join.error.expired")
+        case .superseded: return String(localized: "pairing.join.error.superseded")
         case .redeemed: return String(localized: "pairing.join.error.redeemed")
         case .throttled: return String(localized: "pairing.join.error.throttled")
         case .signedOutOfICloud: return String(localized: "pairing.error.icloud.signedout")

@@ -78,7 +78,9 @@ final class PairingInviteTests: XCTestCase {
     func testPairingFailureNamesWhatTheServerSaid() {
         XCTAssertEqual(PairingFailure.kind(for: serverError(status: 404, code: "not_found")), .notFound)
         XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "expired")), .expired)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 409, code: "redeemed")), .redeemed)
         XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "redeemed")), .redeemed)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "superseded")), .superseded)
         XCTAssertEqual(PairingFailure.kind(for: serverError(status: 429, code: "rate_limited")), .throttled)
         XCTAssertEqual(PairingFailure.kind(for: serverError(status: 401, code: "unauthorized")), .signInAgain)
         XCTAssertEqual(PairingFailure.kind(for: CorbieError.cloudKit("no account")), .iCloud)
@@ -115,6 +117,130 @@ final class PairingInviteTests: XCTestCase {
             seen.insert(message)
         }
         XCTAssertGreaterThanOrEqual(seen.count, PairingFailure.allCases.count - 1)
+    }
+
+    func testASupersededCodeSaysANewerCodeReplacedIt() {
+        let superseded = PairingFailure.superseded.message
+        XCTAssertNotEqual(superseded, PairingFailure.expired.message)
+        XCTAssertNotEqual(superseded, PairingFailure.redeemed.message)
+        XCTAssertFalse(superseded.hasPrefix("pairing."))
+    }
+
+    @MainActor
+    func testReopeningTheInviteShowsTheLiveCodeInsteadOfMintingAnother() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["FYDW7C", "JHQ6FU", "XAQ5Y9"], expiresAt: now.addingTimeInterval(15 * 60))
+        let environment = AppEnvironment.preview()
+
+        let first = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await first.appear()
+        for minutesLater in [1.0, 5.0, 14.0] {
+            let reopened = InviteViewModel(
+                environment: environment,
+                spaceId: spaceId,
+                store: store,
+                minter: minter,
+                now: { now.addingTimeInterval(minutesLater * 60) }
+            )
+            await reopened.appear()
+            XCTAssertEqual(reopened.phase, .ready)
+            XCTAssertEqual(reopened.code, "FYDW7C")
+            XCTAssertEqual(reopened.expiresAt, first.expiresAt)
+        }
+        XCTAssertEqual(minter.minted, ["FYDW7C"])
+    }
+
+    @MainActor
+    func testNewCodeReplacesTheLiveCode() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["FYDW7C", "JHQ6FU"], expiresAt: now.addingTimeInterval(15 * 60))
+        let environment = AppEnvironment.preview()
+
+        let model = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await model.appear()
+        await model.makeNewCode()
+
+        XCTAssertEqual(minter.minted, ["FYDW7C", "JHQ6FU"])
+        XCTAssertEqual(model.code, "JHQ6FU")
+        XCTAssertEqual(store.live(for: spaceId, at: now)?.code, "JHQ6FU")
+
+        let reopened = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await reopened.appear()
+        XCTAssertEqual(reopened.code, "JHQ6FU")
+        XCTAssertEqual(minter.minted.count, 2)
+    }
+
+    @MainActor
+    func testAnExpiredCodeOrOneForAnotherSpaceIsReplacedOnOpen() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["JHQ6FU", "XAQ5Y9"], expiresAt: now.addingTimeInterval(15 * 60))
+        let environment = AppEnvironment.preview()
+
+        store.save(LiveInvite(code: "FYDW7C", expiresAt: now, spaceId: spaceId))
+        let afterExpiry = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await afterExpiry.appear()
+        XCTAssertEqual(afterExpiry.code, "JHQ6FU")
+
+        let otherSpace = UUID()
+        let elsewhere = InviteViewModel(environment: environment, spaceId: otherSpace, store: store, minter: minter, now: { now })
+        await elsewhere.appear()
+        XCTAssertEqual(elsewhere.code, "XAQ5Y9")
+        XCTAssertNil(store.live(for: spaceId, at: now))
+        XCTAssertEqual(minter.minted, ["JHQ6FU", "XAQ5Y9"])
+    }
+
+    @MainActor
+    func testANewCodeThatFailsDoesNotBringTheOldCodeBack() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["FYDW7C"], expiresAt: now.addingTimeInterval(15 * 60))
+        let environment = AppEnvironment.preview()
+
+        let model = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await model.appear()
+        await model.makeNewCode()
+
+        XCTAssertEqual(model.phase, .failed)
+        XCTAssertNil(model.code)
+        XCTAssertNil(store.live(for: spaceId, at: now))
+    }
+
+    func testTheLiveCodeSurvivesInTheSharedDefaults() throws {
+        let now = Date()
+        let spaceId = UUID()
+        let invite = LiveInvite(code: "K7M2QX", expiresAt: now.addingTimeInterval(60), spaceId: spaceId)
+        LiveInviteStore(suiteName: suiteName).save(invite)
+
+        let reread = LiveInviteStore(suiteName: suiteName)
+        XCTAssertEqual(reread.live(for: spaceId, at: now), invite)
+        XCTAssertNil(reread.live(for: spaceId, at: now.addingTimeInterval(60)))
+        XCTAssertNil(reread.live(for: UUID(), at: now))
+        reread.forget()
+        XCTAssertNil(reread.live(for: spaceId, at: now))
+    }
+
+    func testEveryJoinStepHasItsOwnLineAndLogName() {
+        let steps = JoinViewModel.Step.allCases
+        XCTAssertEqual(steps.count, 6)
+        XCTAssertEqual(Set(steps.map(\.title)).count, steps.count)
+        XCTAssertEqual(Set(steps.map(\.logName)).count, steps.count)
+        for step in steps {
+            XCTAssertFalse(step.title.hasPrefix("pairing."), "\(step) shows a raw key")
+            XCTAssertTrue(step.logName.hasPrefix("join: "))
+        }
+    }
+
+    func testStepDurationsAreLoggedInWholeMilliseconds() {
+        XCTAssertEqual(PairingStepLog.milliseconds(.milliseconds(1234)), 1234)
+        XCTAssertEqual(PairingStepLog.milliseconds(.seconds(40) + .microseconds(999)), 40000)
+        XCTAssertEqual(PairingStepLog.milliseconds(.zero), 0)
     }
 
     func testSessionExchangeSeparatesAuthFromNetworkFailures() {
@@ -163,4 +289,25 @@ final class PairingInviteTests: XCTestCase {
 
 private extension Locale {
     static let posix = Locale(identifier: "en_US_POSIX")
+}
+
+@MainActor
+private final class ScriptedMinter: InviteMinting {
+    private var codes: [String]
+    private let expiresAt: Date
+    private(set) var minted: [String] = []
+
+    init(codes: [String], expiresAt: Date) {
+        self.codes = codes
+        self.expiresAt = expiresAt
+    }
+
+    func mint(spaceId: UUID) async throws -> InviteCode {
+        guard codes.isEmpty == false else {
+            throw CorbieError.network("no answer")
+        }
+        let code = codes.removeFirst()
+        minted.append(code)
+        return InviteCode(code: code, expiresAt: expiresAt)
+    }
 }

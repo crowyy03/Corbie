@@ -1,6 +1,9 @@
 # Every way pairing can fail, and how to tell which one happened
 
-Written on 2026-09-19 after a two device pairing attempt that failed with nothing on screen.
+Written on 2026-09-19 after a two device pairing attempt that failed with nothing on screen. Updated
+on 2026-09-21 after the next one: the owner tapped Invite three times because nothing seemed to happen,
+which made three codes (FYDW7C, JHQ6FU, XAQ5Y9), and the partner kept typing one that a newer code had
+already killed and was told it had expired.
 
 Every step below now says something on screen and writes one line to the device log. Open Console on
 a Mac, select the iPhone, filter on `app.corbie`, and read the four categories:
@@ -27,6 +30,19 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 | `POST /invite` | Offline, or the server answered 5xx | "No answer from the network." | `invite failed as network` |
 | `POST /invite` | The build carries no server URL | "This build has no server address." | `invite failed as serverMissing` |
 | All good | | the six character code and the countdown | `invite: code <CODE> is ready` |
+| Opening the invite screen again | A live code exists for this space | the same code and what is left of its fifteen minutes, nothing new is made | `invite: showing the live code <CODE> again` |
+| Opening the invite screen again | The stored code expired, or belongs to another space | a new code | `invite: code <CODE> is ready` |
+| "New code" | The person asks for another code | a new code; the line under the button says the old one stops working at once | `invite: code <CODE> is ready` |
+
+The live code (code, expiry, space id) is kept in the App Group defaults under
+`corbie.pairing.liveInvite`, so closing the sheet or killing the app does not lose it. Only "New code",
+"Try again" after a failure, or a missing or expired code makes a new one. Asking for a new code
+forgets the stored one first, so a request that fails halfway never brings back a code the server may
+already have replaced.
+
+Timings, one line each, category `pairing`: `invite: create the share took <n> ms` (the CloudKit share)
+and `invite: POST /invite took <n> ms`. Each also writes `<name> started` when it begins and
+`<name> failed after <n> ms` when it throws.
 
 ## The partner joins with the code
 
@@ -34,8 +50,10 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 | --- | --- | --- | --- |
 | Before anything | Not signed in to iCloud, or iCloud busy | the same two sentences as above | `join failed as signedOutOfICloud` / `iCloudBusy` |
 | `GET /invite-redeem` | Wrong code | "No space answers to that code." | `join failed as notFound` |
-| `GET /invite-redeem` | Older than fifteen minutes | "That code expired. Ask for a new one." | `join failed as expired` |
-| `GET /invite-redeem` | Already used | "That code was already used. Ask for a new one." | `join failed as redeemed` |
+| `GET /invite-redeem` | A newer code of the same space replaced it (`410 superseded`) | "A newer code replaced this one. Use the code on your partner's screen now." | `join failed as superseded` |
+| `GET /invite-redeem` | Used by another phone, or by this one more than fifteen minutes ago (`409 redeemed`) | "That code was already used. Ask for a new one." | `join failed as redeemed` |
+| `GET /invite-redeem` | Older than fifteen minutes (`410 expired`) | "That code expired. Ask for a new one." | `join failed as expired` |
+| `GET /invite-redeem` | This phone redeemed it less than fifteen minutes ago (the app was killed during the join) | nothing, the join carries on with the same share | `join: redeem the code took <n> ms` |
 | `GET /invite-redeem` | Too many tries | "Too many tries. Wait a minute." | `join failed as throttled` |
 | The stored invite | The row carries no share link | "That invite is gone from iCloud. Ask for a new code." | `join failed as shareMissing` |
 | `fetchShareMetadata` | The share or its zone is gone on the server | "That invite is gone from iCloud. Ask for a new code." | `fetch share metadata: missing: CKError <n>`, then `join failed as shareMissing` |
@@ -45,6 +63,26 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 | Waiting for the space | The shared space does not arrive within 15 seconds | "iCloud has not sent the space yet. Stay online and try again." | `join failed as spaceLate` |
 | Saving the member row | Saved, but iCloud did not confirm the upload within 20 seconds | "You are in. Your partner sees you once iCloud syncs." | `join: member upload not confirmed` |
 | All good | | "You two are connected" | `join: member upload finished` |
+
+## What the partner sees while joining
+
+The spinner has the step it is on under it, and every step writes `<name> started` when it begins and
+`<name> took <n> ms` or `<name> failed after <n> ms` when it ends, so a device session gives the real
+time of the metadata fetch and of `acceptShare`.
+
+| Step on screen | Log name | What runs |
+| --- | --- | --- |
+| checking the code | `join: redeem the code` | `GET /invite-redeem/{code}` with `X-Anon-Id` |
+| finding the invite in iCloud | `join: fetch share metadata` | `CloudKitSharing.fetchShareMetadata` |
+| finding the invite in iCloud | `join: check the share owner` | `isOwnShare`, the same iCloud account check |
+| accepting the invite | `join: accept share` | `CloudKitSharing.acceptShare` |
+| waiting for the space from iCloud | `join: wait for the space` | up to 30 reads, 500 ms apart |
+| waiting for the space from iCloud | `join: drop the local space` | deleting the partner's own empty space |
+| saving you to the space | `join: save the member` | the member row and the together-since date |
+| saving you to the space | `join: reload the session` | `AppEnvironment.reloadSession` |
+| waiting for the upload to iCloud | `join: wait for the member upload` | up to 20 seconds for the export |
+
+Before the first step (the checks for a local space and the iCloud account) the line reads "joining".
 
 ## Storage, which breaks everything quietly
 
@@ -72,4 +110,6 @@ private folder that the widgets and the share extension could not see.
 - A partner who accepts the share from the Messages link rather than the code goes through
   `Router`, not through this path, and only the CloudKit errors above are surfaced there.
 - None of this ran on two real phones yet. The lines above come from reading the code and from the
-  simulator.
+  simulator. The 2026-09-21 changes (the live code, "New code", `superseded`, the same phone retry,
+  the steps and their timings) are covered by unit and server tests only; the server half needs
+  migration 0008 and a function deploy before a phone can see it.

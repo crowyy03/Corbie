@@ -22,10 +22,22 @@ final class InviteViewModel {
 
     @ObservationIgnored private let environment: AppEnvironment
     @ObservationIgnored private let spaceId: UUID
+    @ObservationIgnored private let store: LiveInviteStore
+    @ObservationIgnored private let minter: any InviteMinting
+    @ObservationIgnored private let now: () -> Date
 
-    init(environment: AppEnvironment, spaceId: UUID) {
+    init(
+        environment: AppEnvironment,
+        spaceId: UUID,
+        store: LiveInviteStore = LiveInviteStore(),
+        minter: (any InviteMinting)? = nil,
+        now: @escaping () -> Date = Date.init
+    ) {
         self.environment = environment
         self.spaceId = spaceId
+        self.store = store
+        self.minter = minter ?? CloudInviteMinter(environment: environment)
+        self.now = now
     }
 
     var shareMessage: String {
@@ -43,24 +55,28 @@ final class InviteViewModel {
         return countdown(at: date)?.isExpired == false
     }
 
-    func generate() async {
+    func appear() async {
+        guard phase != .working else { return }
+        if let live = store.live(for: spaceId, at: now()) {
+            show(live)
+            InviteViewModel.log.notice("invite: showing the live code \(live.code, privacy: .public) again")
+            return
+        }
+        await makeNewCode()
+    }
+
+    func makeNewCode() async {
         guard phase != .working else { return }
         phase = .working
         code = nil
         expiresAt = nil
         failure = nil
+        store.forget()
         do {
-            try await requireICloud()
-            InviteViewModel.log.notice("invite: asking CloudKit for the share of \(self.spaceId, privacy: .public)")
-            let share = try await environment.sharing.share(space: spaceId)
-            guard let url = share.url else {
-                throw PairingFailure.sharePending
-            }
-            InviteViewModel.log.notice("invite: share url is ready, asking the server for a code")
-            let invite = try await environment.apiClient.createInvite(spaceId: spaceId, shareURL: url)
-            code = invite.code
-            expiresAt = invite.expiresAt
-            phase = .ready
+            let invite = try await minter.mint(spaceId: spaceId)
+            let live = LiveInvite(code: invite.code, expiresAt: invite.expiresAt, spaceId: spaceId)
+            store.save(live)
+            show(live)
             InviteViewModel.log.notice("invite: code \(invite.code, privacy: .public) is ready")
             environment.analytics.record(.inviteCreated)
         } catch {
@@ -77,11 +93,10 @@ final class InviteViewModel {
         }
     }
 
-    private func requireICloud() async throws {
-        switch await environment.sharing.iCloudAccount() {
-        case .available, .unknown: return
-        case .missing: throw PairingFailure.signedOutOfICloud
-        case .busy: throw PairingFailure.iCloudBusy
-        }
+    private func show(_ live: LiveInvite) {
+        code = live.code
+        expiresAt = live.expiresAt
+        failure = nil
+        phase = .ready
     }
 }

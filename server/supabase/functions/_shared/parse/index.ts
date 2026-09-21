@@ -33,6 +33,20 @@ export function extractFields(html: string, host: string): ProductFields {
   return adapter ? mergeFields(adapter.extract(doc), generic) : generic;
 }
 
+export function landedOffProduct(requested: URL, landed: URL): boolean {
+  const isProductPath = adapterForHost(hostOf(requested))?.isProductPath;
+  if (!isProductPath) return false;
+  return isProductPath(requested.pathname) && !isProductPath(landed.pathname);
+}
+
+function landedUrl(response: Response, requested: string): URL {
+  try {
+    return new URL(response.url.length > 0 ? response.url : requested);
+  } catch {
+    return new URL(requested);
+  }
+}
+
 function absolute(candidate: string | null, base: string): string | null {
   if (!candidate) return null;
   try {
@@ -128,7 +142,7 @@ export async function parseLink(
     return bare;
   }
 
-  if (!response.ok) {
+  if (!response.ok || landedOffProduct(new URL(canonicalURL), landedUrl(response, canonicalURL))) {
     await response.body?.cancel();
     return bare;
   }

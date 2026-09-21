@@ -139,6 +139,16 @@ from the person's own address, which is what the competitors appear to do, and r
 say today that the client calls no third party, and it hands the shop the person's IP address, which
 is what opening the link in Safari would do anyway. Not in v1.
 
+Zara does not need the datacenter to refuse: it answers every client, a home address with the iPhone
+Safari header set included, with an Akamai Bot Manager challenge page instead of the product. The
+page is a `200` of about 2 KB with a `bm-verify` token, a meta refresh back to the same URL carrying
+that token, an empty `<title>`, and no `og:` tags or JSON-LD; only a browser that runs its script is
+let through to the product page. Rechecked on 2026-09-21 with curl and the iPhone Safari headers:
+`200`, 2262 bytes, `bm-verify`, refresh after 5 seconds. The server reads nothing from that page, so
+nothing is cached and the person fills the wish in by hand, as above. For the v1.1 fallback this means
+the phone has to load the page in a hidden `WKWebView` and read the tags once the challenge has passed;
+fetching it with `URLSession` gets the same challenge page the server gets.
+
 ### A widget tick or a shared wish reaches the partner only after the app runs
 
 Since 2026-09-17 only the app syncs with iCloud (`docs/DECISIONS.md`, persistence fix round A). The

@@ -45,6 +45,7 @@ check() {
 }
 
 anon=$(uuidgen | tr 'A-Z' 'a-z')
+other_anon=$(uuidgen | tr 'A-Z' 'a-z')
 space=$(uuidgen | tr 'A-Z' 'a-z')
 
 code=$(call GET "/fx?base=USD")
@@ -56,7 +57,7 @@ check "GET /fx?base=XX (bad code)" 400 invalid_request "$code"
 code=$(call GET /config)
 check "GET /config" 200 monetizationEnabled "$code"
 
-code=$(call POST /parse -H 'content-type: application/json' -d '{"url":"https://www.ikea.com/us/en/p/billy-bookcase-white-00263850/"}')
+code=$(call POST /parse -H 'content-type: application/json' -d '{"url":"https://www.ikea.com/us/en/p/billy-bookcase-black-oak-effect-00477337/"}')
 check "POST /parse" 200 canonicalURL "$code"
 
 code=$(call POST /parse -H 'content-type: application/json' -d '{"url":"not a url"}')
@@ -78,18 +79,29 @@ code=$(call GET /fx -X OPTIONS)
 check "OPTIONS /fx" 405 invalid_request "$code"
 
 if [ -n "$TOKEN" ]; then
-  code=$(call POST /invite -H 'content-type: application/json' -H "authorization: Bearer $TOKEN" -d "{\"spaceId\":\"$space\",\"shareURL\":\"https://www.icloud.com/share/corbie-smoke-test\"}")
+  invite_body="{\"spaceId\":\"$space\",\"shareURL\":\"https://www.icloud.com/share/corbie-smoke-test\"}"
+  code=$(call POST /invite -H 'content-type: application/json' -H "authorization: Bearer $TOKEN" -d "$invite_body")
   check "POST /invite (session token)" 201 '"code"' "$code"
+  replaced=$(grep -o '"code":"[A-Z0-9]*"' "$body_file" | head -1 | cut -d'"' -f4)
+  code=$(call POST /invite -H 'content-type: application/json' -H "authorization: Bearer $TOKEN" -d "$invite_body")
+  check "POST /invite (a second code for the same space)" 201 '"code"' "$code"
   invite=$(grep -o '"code":"[A-Z0-9]*"' "$body_file" | head -1 | cut -d'"' -f4)
 
-  if [ -n "$invite" ]; then
-    code=$(call "GET" "/invite-redeem/$invite")
+  if [ -n "$replaced" ] && [ -n "$invite" ]; then
+    code=$(call "GET" "/invite-redeem/$replaced" -H "x-anon-id: $anon")
+    check "GET /invite-redeem/{replaced code}" 410 superseded "$code"
+    code=$(call "GET" "/invite-redeem/$invite" -H "x-anon-id: $anon")
     check "GET /invite-redeem/{fresh code}" 200 shareURL "$code"
+    code=$(call "GET" "/invite-redeem/$invite" -H "x-anon-id: $anon")
+    check "GET /invite-redeem/{same code, same device}" 200 shareURL "$code"
+    code=$(call "GET" "/invite-redeem/$invite" -H "x-anon-id: $other_anon")
+    check "GET /invite-redeem/{same code, other device}" 409 redeemed "$code"
     code=$(call "GET" "/invite-redeem/$invite")
-    check "GET /invite-redeem/{same code again}" 410 redeemed "$code"
+    check "GET /invite-redeem/{same code, no device id}" 409 redeemed "$code"
   else
-    record "GET /invite-redeem/{fresh code}" "200 shareURL" "no code issued" FAIL
-    record "GET /invite-redeem/{same code again}" "410 redeemed" "no code issued" FAIL
+    for name in "GET /invite-redeem/{replaced code}" "GET /invite-redeem/{fresh code}" "GET /invite-redeem/{same code, same device}" "GET /invite-redeem/{same code, other device}" "GET /invite-redeem/{same code, no device id}"; do
+      record "$name" "a code to redeem" "no code issued" FAIL
+    done
   fi
 
   code=$(call GET "/entitlement/$space" -H "authorization: Bearer $TOKEN")
@@ -108,7 +120,7 @@ if [ -n "$TOKEN" ]; then
     record "POST /apple-revoke" "204 with a real authorization code" "$code $body" FAIL
   fi
 else
-  for name in "POST /invite (session token)" "GET /invite-redeem/{fresh code}" "GET /invite-redeem/{same code again}" "GET /entitlement/{id} (session token)" "POST /session (session token refused)" "POST /apple-revoke"; do
+  for name in "POST /invite (session token)" "POST /invite (a second code for the same space)" "GET /invite-redeem/{replaced code}" "GET /invite-redeem/{fresh code}" "GET /invite-redeem/{same code, same device}" "GET /invite-redeem/{same code, other device}" "GET /invite-redeem/{same code, no device id}" "GET /entitlement/{id} (session token)" "POST /session (session token refused)" "POST /apple-revoke"; do
     record "$name" "needs a session token" "not run, no token given" pending
   done
 fi

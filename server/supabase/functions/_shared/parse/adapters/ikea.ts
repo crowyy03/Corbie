@@ -12,6 +12,7 @@ const screenReaderPrice = [
 const integerParts = [".pip-temp-price__integer", ".pip-price__integer"];
 const decimalParts = [".pip-temp-price__decimal", ".pip-price__decimal"];
 const currencyParts = [".pip-temp-price__currency-symbol", ".pip-price__currency-symbol"];
+const productPath = /\/p\/[^/]+/;
 
 function assemblePrice(doc: HTMLDocument): string | null {
   const whole = textOfAny(doc, integerParts);
@@ -24,6 +25,7 @@ function assemblePrice(doc: HTMLDocument): string | null {
 export const ikeaAdapter: Adapter = {
   source: "ikea",
   matches: (host) => host === "ikea.com" || host.endsWith(".ikea.com"),
+  isProductPath: (path) => productPath.test(path),
   extract(doc: HTMLDocument): ProductFields {
     const title = textOfAny(doc, [
       ".pip-header-section__title--big",

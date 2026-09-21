@@ -55,6 +55,7 @@ public enum ServerErrorCode: String, Sendable, Equatable, CaseIterable, Codable 
     case invalidRequest = "invalid_request"
     case notFound = "not_found"
     case expired
+    case superseded
     case redeemed
     case rateLimited = "rate_limited"
     case upstreamFailed = "upstream_failed"
@@ -108,6 +109,7 @@ public struct APIError: Error, Sendable, Equatable {
     public var isRateLimited: Bool { status == 429 || code == .rateLimited }
     public var isNotFound: Bool { status == 404 || code == .notFound }
     public var isExpired: Bool { code == .expired }
+    public var isSuperseded: Bool { code == .superseded }
     public var isRedeemed: Bool { code == .redeemed }
 
     public var corbieError: CorbieError {

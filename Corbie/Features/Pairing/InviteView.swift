@@ -38,7 +38,7 @@ struct InviteView: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.vertical, CorbieSpacing.xl)
         }
-        .task { await model.generate() }
+        .task { await model.appear() }
     }
 
     @ViewBuilder private func codeCard(at date: Date) -> some View {
@@ -62,6 +62,9 @@ struct InviteView: View {
                         .accessibilityLabel(Text("pairing.invite.code.label"))
                         .accessibilityValue(Text(verbatim: InviteCodeFormat.spelledOut(model.code ?? "")))
                     countdownLine(at: date)
+                    if model.isShareable(at: date) {
+                        newCodeAction
+                    }
                 case .failed:
                     Text(verbatim: model.failure ?? String(localized: "pairing.invite.failed.note"))
                         .corbieMono()
@@ -93,7 +96,7 @@ struct InviteView: View {
                 shareButton
             } else if model.phase != .working {
                 PrimaryButton(title: String(localized: "pairing.invite.retry")) {
-                    Task { await model.generate() }
+                    Task { await model.makeNewCode() }
                 }
             }
 
@@ -111,6 +114,28 @@ struct InviteView: View {
             }
             .buttonStyle(.plain)
         }
+    }
+
+    private var newCodeAction: some View {
+        VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
+            Button {
+                Task { await model.makeNewCode() }
+            } label: {
+                Text("pairing.invite.new")
+                    .corbieBody()
+                    .fontWeight(.semibold)
+                    .foregroundStyle(palette.text)
+                    .frame(minHeight: CorbieMetrics.minimumTapTarget)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint(Text("pairing.invite.new.note"))
+            Text("pairing.invite.new.note")
+                .corbieMono()
+                .foregroundStyle(palette.text2)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.top, CorbieSpacing.s)
     }
 
     private var shareButton: some View {

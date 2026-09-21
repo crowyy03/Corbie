@@ -3,6 +3,7 @@ export type ErrorCode =
   | "invalid_request"
   | "not_found"
   | "expired"
+  | "superseded"
   | "redeemed"
   | "rate_limited"
   | "upstream_failed"
@@ -13,7 +14,8 @@ const statusByCode: Record<ErrorCode, number> = {
   invalid_request: 400,
   not_found: 404,
   expired: 410,
-  redeemed: 410,
+  superseded: 410,
+  redeemed: 409,
   rate_limited: 429,
   upstream_failed: 502,
   internal: 500,

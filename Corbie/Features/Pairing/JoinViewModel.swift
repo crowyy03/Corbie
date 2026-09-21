@@ -24,6 +24,37 @@ final class JoinViewModel {
         }
     }
 
+    enum Step: Equatable, CaseIterable {
+        case checkingCode
+        case findingInvite
+        case accepting
+        case waitingForSpace
+        case savingYou
+        case waitingForUpload
+
+        var title: String {
+            switch self {
+            case .checkingCode: return String(localized: "pairing.join.step.code")
+            case .findingInvite: return String(localized: "pairing.join.step.invite")
+            case .accepting: return String(localized: "pairing.join.step.accept")
+            case .waitingForSpace: return String(localized: "pairing.join.step.space")
+            case .savingYou: return String(localized: "pairing.join.step.member")
+            case .waitingForUpload: return String(localized: "pairing.join.step.upload")
+            }
+        }
+
+        var logName: String {
+            switch self {
+            case .checkingCode: return "join: redeem the code"
+            case .findingInvite: return "join: fetch share metadata"
+            case .accepting: return "join: accept share"
+            case .waitingForSpace: return "join: wait for the space"
+            case .savingYou: return "join: save the member"
+            case .waitingForUpload: return "join: wait for the member upload"
+            }
+        }
+    }
+
     static let spaceArrivalAttempts = 30
     static let spaceArrivalDelay = Duration.milliseconds(500)
     static let memberUploadTimeout = Duration.seconds(20)
@@ -34,6 +65,7 @@ final class JoinViewModel {
     private(set) var phase: Phase = .editing
     private(set) var failure: String?
     private(set) var block: Block?
+    private(set) var step: Step?
 
     @ObservationIgnored private let environment: AppEnvironment
     @ObservationIgnored private let appState: AppState
@@ -73,8 +105,10 @@ final class JoinViewModel {
         failure = nil
         do {
             try await join()
+            step = nil
             phase = .joined
         } catch {
+            step = nil
             phase = .editing
             guard block == nil else { return }
             let kind = PairingFailure.kind(for: error)
@@ -97,28 +131,43 @@ final class JoinViewModel {
             throw CorbieError.invalidInput("local space cannot be replaced")
         }
         try await requireICloud()
-        JoinViewModel.log.notice("join: redeeming the code on the server")
-        let share = try await redeemedShare()
+        let share = try await run(.checkingCode) {
+            try await redeemedShare()
+        }
         guard let url = share.shareLink else {
             throw PairingFailure.shareMissing
         }
-        JoinViewModel.log.notice("join: asking CloudKit for the share behind the link")
-        let metadata = try await environment.sharing.fetchShareMetadata(from: url)
-        guard await environment.sharing.isOwnShare(metadata) == false else {
+        let metadata = try await run(.findingInvite) {
+            try await environment.sharing.fetchShareMetadata(from: url)
+        }
+        let isOwnShare = await PairingStepLog.measure("join: check the share owner") {
+            await environment.sharing.isOwnShare(metadata)
+        }
+        guard isOwnShare == false else {
             throw PairingFailure.ownAccount
         }
-        JoinViewModel.log.notice("join: accepting the share")
-        try await environment.sharing.acceptShare(metadata: metadata)
-        JoinViewModel.log.notice("join: waiting for the space to arrive from iCloud")
-        let joined = try await waitForJoinedSpace(id: share.spaceId)
-        try await dropLocalSpace(joinedId: joined.id)
+        try await run(.accepting) {
+            try await environment.sharing.acceptShare(metadata: metadata)
+        }
+        let joined = try await run(.waitingForSpace) {
+            try await waitForJoinedSpace(id: share.spaceId)
+        }
+        try await PairingStepLog.measure("join: drop the local space") {
+            try await dropLocalSpace(joinedId: joined.id)
+        }
         let upload = environment.persistence.stack.watchUpload(of: .sharedStore)
-        try await adoptMember(appleUserID: appleUserID, in: joined)
-        try await carryTogetherSince(into: joined)
+        try await run(.savingYou) {
+            try await adoptMember(appleUserID: appleUserID, in: joined)
+            try await carryTogetherSince(into: joined)
+        }
         environment.analytics.record(.inviteRedeemed)
         appState.selectedTab = .today
-        await environment.reloadSession()
-        let uploaded = await upload.finished(within: JoinViewModel.memberUploadTimeout)
+        await PairingStepLog.measure("join: reload the session") {
+            await environment.reloadSession()
+        }
+        let uploaded = await run(.waitingForUpload) {
+            await upload.finished(within: JoinViewModel.memberUploadTimeout)
+        }
         JoinViewModel.log.notice("join: member upload \(uploaded ? "finished" : "not confirmed", privacy: .public)")
         environment.toasts.show(
             message: uploaded
@@ -133,6 +182,11 @@ final class JoinViewModel {
         case .missing: throw PairingFailure.signedOutOfICloud
         case .busy: throw PairingFailure.iCloudBusy
         }
+    }
+
+    private func run<T>(_ step: Step, _ work: () async throws -> T) async rethrows -> T {
+        self.step = step
+        return try await PairingStepLog.measure(step.logName, work)
     }
 
     private func blockingReason() async -> Block? {

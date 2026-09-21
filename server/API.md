@@ -6,12 +6,12 @@ The server never sees couple data. It stores invite codes (15 min TTL), entitlem
 
 ## Headers
 
-| Header          | Where                                                         | Value                                                                                                                                                                                                                                                                                                                                                                                                              |
-| --------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Authorization` | `session`, `invite`, `entitlement`, `apple-revoke`            | `Bearer <token>`. Either an Apple identity token (RS256 JWT from Sign in with Apple, verified against Apple JWKS, `iss` `https://appleid.apple.com`, `aud` `app.corbie`) or a Corbie session token issued by `POST /session` (HS256 JWT, `iss` `corbie`). Apple identity tokens live about ten minutes, so the client exchanges one for a session token right after sign-in and uses the session token afterwards. |
-| `X-Anon-Id`     | `events` (required), `parse`, `fx`, `config` (rate limit key) | device-local UUID, not linked to Apple ID                                                                                                                                                                                                                                                                                                                                                                          |
-| `X-App-Version` | all                                                           | `MARKETING_VERSION (BUILD)`                                                                                                                                                                                                                                                                                                                                                                                        |
-| `Content-Type`  | POST                                                          | `application/json`                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Header          | Where                                                                                              | Value                                                                                                                                                                                                                                                                                                                                                                                                              |
+| --------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Authorization` | `session`, `invite`, `entitlement`, `apple-revoke`                                                 | `Bearer <token>`. Either an Apple identity token (RS256 JWT from Sign in with Apple, verified against Apple JWKS, `iss` `https://appleid.apple.com`, `aud` `app.corbie`) or a Corbie session token issued by `POST /session` (HS256 JWT, `iss` `corbie`). Apple identity tokens live about ten minutes, so the client exchanges one for a session token right after sign-in and uses the session token afterwards. |
+| `X-Anon-Id`     | `events` (required), `parse`, `fx`, `config` (rate limit key), `invite-redeem` (same device retry) | device-local UUID, not linked to Apple ID                                                                                                                                                                                                                                                                                                                                                                          |
+| `X-App-Version` | all                                                                                                | `MARKETING_VERSION (BUILD)`                                                                                                                                                                                                                                                                                                                                                                                        |
+| `Content-Type`  | POST                                                                                               | `application/json`                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 No CORS headers are sent: the client is a native app and no browser origin is allowed. `OPTIONS` is answered with `405`.
 
@@ -19,9 +19,9 @@ Every response carries `cache-control: no-store` and `x-content-type-options: no
 
 ## Errors
 
-Every non-2xx response is `{"error": "<code>", "message": "<human text>"}`. Codes: `unauthorized`, `invalid_request`, `not_found`, `expired`, `redeemed`, `rate_limited`, `upstream_failed`, `internal`.
+Every non-2xx response is `{"error": "<code>", "message": "<human text>"}`. Codes: `unauthorized`, `invalid_request`, `not_found`, `expired`, `superseded`, `redeemed`, `rate_limited`, `upstream_failed`, `internal`.
 
-Status per code: `unauthorized` 401, `invalid_request` 400, `not_found` 404, `expired` 410, `redeemed` 410, `rate_limited` 429, `upstream_failed` 502, `internal` 500. A request with the wrong HTTP method is `invalid_request` with status `405`.
+Status per code: `unauthorized` 401, `invalid_request` 400, `not_found` 404, `expired` 410, `superseded` 410, `redeemed` 409, `rate_limited` 429, `upstream_failed` 502, `internal` 500. A request with the wrong HTTP method is `invalid_request` with status `405`.
 
 ## Rate limits
 
@@ -61,7 +61,7 @@ The session token is an HS256 JWT signed with the `SESSION_SECRET` secret: claim
 
 ### POST `/invite`
 
-Auth required. Creates a new invite code for a space and invalidates any previous active code for the same space.
+Auth required. Creates a new invite code for a space. Every older code of that space that is still live (not redeemed, not superseded, not expired) is marked superseded at that moment: its `expires_at` stays as it was, and redeeming it answers `410 superseded` from then on, so the partner hears that a newer code exists rather than that the code ran out.
 
 Request: `{"spaceId": "<uuid>", "shareURL": "https://www.icloud.com/share/..."}`
 
@@ -71,11 +71,13 @@ Code alphabet: `ABCDEFGHJKMNPQRSTUVWXYZ23456789`, 6 characters. TTL 15 minutes.
 
 ### GET `/invite-redeem/{code}`
 
-No auth (the code is the secret). Returns the share URL once and marks the invite redeemed.
+No auth (the code is the secret). Returns the share URL and marks the invite redeemed by the caller.
+
+Optional header `X-Anon-Id` (the device UUID). The server keeps only its salted digest in `redeemed_by`. The same `X-Anon-Id` asking again for the same code within 15 minutes of the first redeem gets the same `200` again, even when the code's own 15 minutes are over by then, so a join that was interrupted after the redeem (the app killed while CloudKit was still accepting) can be retried with the same code. Any other caller, or the same one later than that, gets `409 redeemed`. Without `X-Anon-Id` a code is single use: the second call is `409 redeemed`. A malformed `X-Anon-Id` is `400 invalid_request`.
 
 Response `200`: `{"shareURL": "https://www.icloud.com/share/...", "spaceId": "<uuid>"}`
 
-`404 not_found` unknown code, `410 expired`, `410 redeemed`.
+Checked in this order: `404 not_found` unknown code, `410 superseded` a newer code of the same space replaced it, `409 redeemed` used by someone else (or by this device more than 15 minutes ago), `410 expired` older than 15 minutes. The client keys on the error code, not the status; `redeemed` was `410` before 2026-09-21.
 
 ### POST `/parse`
 
@@ -97,7 +99,7 @@ Response `200`:
 }
 ```
 
-`source` is one of `amazon`, `target`, `etsy`, `sephora`, `nordstrom`, `zara`, `ikea`, `instagram`, `tiktok`, `generic`. Any field except `canonicalURL` and `source` may be `null`. For `instagram` and `tiktok` the function uses oEmbed: `imageURL` and `author` are filled, `title` and `price` are `null`. Cached 24 h by SHA-256 of the normalized URL. Upstream timeout 8 s; on failure returns `200` with only `canonicalURL` and `source` so the client falls back to manual entry. A URL that points inside a network rather than at a shop is treated as such a failure and is never fetched.
+`source` is one of `amazon`, `target`, `etsy`, `sephora`, `nordstrom`, `zara`, `ikea`, `instagram`, `tiktok`, `generic`. Any field except `canonicalURL` and `source` may be `null`. For `instagram` and `tiktok` the function uses oEmbed: `imageURL` and `author` are filled, `title` and `price` are `null`. Cached 24 h by SHA-256 of the normalized URL. Upstream timeout 8 s; on failure returns `200` with only `canonicalURL` and `source` so the client falls back to manual entry. The same bare answer comes back when a product link is redirected somewhere that is not a product: IKEA sends a product that is not sold in that country to the category page (`/us/en/cat/products-products/`), which would otherwise read as a product called "Products". A URL that points inside a network rather than at a shop is treated as such a failure and is never fetched.
 
 ### GET `/fx?base=USD`
 
@@ -171,7 +173,7 @@ Both paths hand the endpoint the same subject, the SHA-256 hex of the Apple `sub
 
 Nothing about a session token is written down, so an individual token cannot be revoked before its 180 days run out; rotating `SESSION_SECRET` invalidates every issued token at once. Without `SESSION_SECRET` set, `POST /session` answers `500 internal` and a session token is refused with `401 unauthorized`, which sends the client back to Sign in with Apple rather than letting an unverifiable token through.
 
-**Invite.** `shareURL` must be `https` on `icloud.com` or a subdomain; anything else is `invalid_request`. Creating a code first expires every unredeemed code for that space, then inserts, retrying up to five times on a code collision. `invite-redeem` claims the row with a conditional update, so two devices racing the same code get one `200` and one `410 redeemed`. A code that is not six characters of the alphabet is `404 not_found`, same as an unknown code, so the endpoint does not tell a guesser which codes are well formed.
+**Invite.** `shareURL` must be `https` on `icloud.com` or a subdomain; anything else is `invalid_request`. Creating a code inserts it first, retrying up to five times on a code collision, and only then sets `superseded_at` on the space's live codes created before it, so a failed insert never leaves the space without a working code and two codes made at the same moment do not kill each other. `invite-redeem` claims the row with one conditional update (`redeemed_at is null`, `superseded_at is null`, not expired) that also writes `redeemed_by`; a caller whose claim finds the row already taken reads it again and gets the answer for what the winner did, so two devices racing the same code get one `200` and one `409 redeemed`, and one device racing itself gets two `200`. `redeemed_by` is the HMAC-SHA256 of `X-Anon-Id` under `RATE_LIMIT_SALT`, cut to 32 hex characters, the same helper as the rate limit key (`_shared/hash.ts`); a check constraint keeps anything else out of the column. A code that is not six characters of the alphabet is `404 not_found`, same as an unknown code, so the endpoint does not tell a guesser which codes are well formed.
 
 **Parse.** The fetch carries the header set mobile Safari sends (`user-agent` of an iPhone, `accept`,
 `upgrade-insecure-requests`, the four `sec-fetch-*` headers) and an `accept-language` built from the
@@ -179,6 +181,14 @@ country of the host, so a `.de` shop is asked in German and a `.com` shop in Eng
 datacenter addresses still answer `403`; that is an address block, not a header one
 (`docs/KNOWN_ISSUES.md`). A result with neither a title nor an image is not written to `parse_cache`,
 so a later attempt reaches the shop again instead of replaying the failure for 24 hours.
+
+A shop adapter may name its product paths (`isProductPath`; IKEA: a `/p/` segment). When the pasted
+link is a product path and the page the redirects end on is not, the answer is the bare result and
+nothing is cached. The rule looks at the final URL rather than at the page, because IKEA's own
+product pages no longer carry the `pip-` classes the adapter reads (checked 2026-09-21: they are
+`pipcom-` now), and a category such as `/us/en/cat/billy-bookcases-58288/` carries two dozen JSON-LD
+`Product` entries, so "no product markers" would call a real product page a category and a category
+a product.
 
 Before any fetch, and again on every redirect hop, the target is checked: only `http` and `https`, no explicit port other than 443, no bare IP address, no `localhost`, `.local`, `.internal`, `.home.arpa` or `.onion` host, and no host that resolves to a loopback, private, link local, carrier grade NAT, multicast or reserved address in either family, IPv4 mapped addresses included. Redirects are followed by hand, at most five hops, so an allowed public host cannot bounce the fetch into the internal network. Where the runtime exposes no DNS resolver the name based checks still apply. A blocked URL degrades exactly like an unreachable one: `200` with only `canonicalURL` and `source`.
 

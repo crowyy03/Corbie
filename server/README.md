@@ -16,6 +16,8 @@ supabase/migrations/0003_*      entitlement ordering columns and their write fun
 supabase/migrations/0004_*      funnel and pairing views anchored on the first open
 supabase/migrations/0005_*      billing retry and grace statuses, entitlement status view
 supabase/migrations/0006_*      app_config table seeded with monetization_enabled = false
+supabase/migrations/0007_*      drops rate limit rows keyed by a raw address
+supabase/migrations/0008_*      superseded_at and redeemed_by on invites
 supabase/functions/_shared      auth, rate limit, responses, parsing, Apple crypto
 supabase/functions/<name>       one Deno.serve entry point per endpoint
 supabase/functions/config       public monetization flag, read from app_config
@@ -69,8 +71,12 @@ psql "$(supabase status -o env | grep DB_URL | cut -d= -f2- | tr -d '"')" -c \
   "insert into invites(code, space_id, share_url, expires_at)
    values ('K7M2QX', gen_random_uuid(), 'https://www.icloud.com/share/x', now() + interval '15 minutes');"
 
-curl "http://127.0.0.1:54321/functions/v1/invite-redeem/K7M2QX"
+curl -H "X-Anon-Id: 11111111-1111-4111-8111-111111111111" \
+  "http://127.0.0.1:54321/functions/v1/invite-redeem/K7M2QX"
 ```
+
+The same call again within 15 minutes answers the same share; with another `X-Anon-Id`, or with
+none, it answers `409 redeemed`.
 
 Stop with `supabase stop`. Reset the database to the migrations with `supabase db reset`.
 
@@ -84,25 +90,25 @@ deno fmt --check
 deno lint
 ```
 
-The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the session token round trip together with the expiry, tamper and missing secret cases, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, the parse address guard, the App Store status mapping, event validation with PII dropping, the error envelope, and the monetization flag answering 500 rather than `false` when the database fails or holds a non-boolean.
+The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the session token round trip together with the expiry, tamper and missing secret cases, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, invite supersede and the same device redeem retry against an in-memory store, the parse address guard, an IKEA product link redirected to a category coming back bare, the App Store status mapping, event validation with PII dropping, the error envelope, and the monetization flag answering 500 rather than `false` when the database fails or holds a non-boolean.
 
 ## Secrets
 
 Set in the Supabase dashboard, or `supabase secrets set --env-file .env`.
 
-| Name                        | Used by                                            | Notes                                                                |
-| --------------------------- | -------------------------------------------------- | -------------------------------------------------------------------- |
-| `SUPABASE_URL`              | every function                                     | injected by the platform                                             |
-| `SUPABASE_SERVICE_ROLE_KEY` | every function                                     | injected by the platform; the only key that can touch the tables     |
-| `SESSION_SECRET`            | every endpoint that requires auth                  | signs and checks the session token; rotating it signs everyone out   |
-| `RATE_LIMIT_SALT`           | every rate-limited endpoint                        | HMAC key for the rate limit bucket key, so no IP is stored; required |
-| `APPLE_CLIENT_ID`           | `session`, `invite`, `entitlement`, `apple-revoke` | defaults to `app.corbie`; the `aud` an identity token must carry     |
-| `APPLE_TEAM_ID`             | `apple-revoke`                                     | ten character team id                                                |
-| `APPLE_KEY_ID`              | `apple-revoke`                                     | key id of the Sign in with Apple key                                 |
-| `APPLE_PRIVATE_KEY`         | `apple-revoke`                                     | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted           |
-| `APPLE_ENV`                 | `appstore-notifications`                           | `Sandbox` or `Production`; a payload from the other one is refused   |
-| `APPLE_BUNDLE_ID`           | `appstore-notifications`                           | defaults to `app.corbie`; a payload for another app is dropped       |
-| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                            | optional; without it Instagram links return only url and source      |
+| Name                        | Used by                                            | Notes                                                                                                          |
+| --------------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `SUPABASE_URL`              | every function                                     | injected by the platform                                                                                       |
+| `SUPABASE_SERVICE_ROLE_KEY` | every function                                     | injected by the platform; the only key that can touch the tables                                               |
+| `SESSION_SECRET`            | every endpoint that requires auth                  | signs and checks the session token; rotating it signs everyone out                                             |
+| `RATE_LIMIT_SALT`           | every rate-limited endpoint                        | HMAC key for the rate limit bucket key and the invite `redeemed_by`, so no IP or device id is stored; required |
+| `APPLE_CLIENT_ID`           | `session`, `invite`, `entitlement`, `apple-revoke` | defaults to `app.corbie`; the `aud` an identity token must carry                                               |
+| `APPLE_TEAM_ID`             | `apple-revoke`                                     | ten character team id                                                                                          |
+| `APPLE_KEY_ID`              | `apple-revoke`                                     | key id of the Sign in with Apple key                                                                           |
+| `APPLE_PRIVATE_KEY`         | `apple-revoke`                                     | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted                                                     |
+| `APPLE_ENV`                 | `appstore-notifications`                           | `Sandbox` or `Production`; a payload from the other one is refused                                             |
+| `APPLE_BUNDLE_ID`           | `appstore-notifications`                           | defaults to `app.corbie`; a payload for another app is dropped                                                 |
+| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                            | optional; without it Instagram links return only url and source                                                |
 
 `APPLE_PRIVATE_KEY` never leaves the Supabase secret store, and nothing here belongs in the app binary.
 

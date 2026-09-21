@@ -101,23 +101,52 @@ final class BundleAnchor {}
 
     @Test func redeemInviteUppercasesTheCodeAndSurfacesRedeemed() async throws {
         let transport = FakeTransport([
-            .json(#"{"error":"redeemed","message":"This code has already been used"}"#, status: 410)
+            .json(#"{"error":"redeemed","message":"This code has already been used"}"#, status: 409)
         ])
         let client = NetTestSupport.client(transport: transport)
         do {
             _ = try await client.redeemInvite(code: " k7m2qx ")
             Issue.record("expected a failure")
         } catch let failure as APIError {
-            #expect(failure.status == 410)
+            #expect(failure.status == 409)
             #expect(failure.isRedeemed)
             #expect(failure.isExpired == false)
+            #expect(failure.isSuperseded == false)
             #expect(failure.envelope?.message == "This code has already been used")
-            #expect(failure.corbieError == CorbieError.network("410 redeemed: This code has already been used"))
+            #expect(failure.corbieError == CorbieError.network("409 redeemed: This code has already been used"))
         }
         let request = try #require(transport.lastRequest)
         #expect(request.method == .get)
         #expect(request.url.absoluteString.hasSuffix("/invite-redeem/K7M2QX"))
         #expect(request.header("Authorization") == nil)
+    }
+
+    @Test func redeemInviteSendsTheDeviceIdSoARetryGetsTheSameShare() async throws {
+        let transport = FakeTransport(
+            json: #"{"shareURL":"https://www.icloud.com/share/abc","spaceId":"1c2b8e3a-4d5f-4a6b-8c7d-9e0f1a2b3c4d"}"#
+        )
+        let client = NetTestSupport.client(transport: transport, anonId: "6f1e4a1e-0d5f-4e0e-9a54-1a5c1a2b3c4d")
+        _ = try await client.redeemInvite(code: "K7M2QX")
+        let request = try #require(transport.lastRequest)
+        #expect(request.header("X-Anon-Id") == "6f1e4a1e-0d5f-4e0e-9a54-1a5c1a2b3c4d")
+        #expect(request.header("Authorization") == nil)
+    }
+
+    @Test func redeemInviteTellsASupersededCodeFromAnExpiredOne() async throws {
+        let transport = FakeTransport([
+            .json(#"{"error":"superseded","message":"A newer code replaced this one"}"#, status: 410)
+        ])
+        let client = NetTestSupport.client(transport: transport)
+        do {
+            _ = try await client.redeemInvite(code: "FYDW7C")
+            Issue.record("expected a failure")
+        } catch let failure as APIError {
+            #expect(failure.status == 410)
+            #expect(failure.code == .superseded)
+            #expect(failure.isSuperseded)
+            #expect(failure.isExpired == false)
+            #expect(failure.isRedeemed == false)
+        }
     }
 
     @Test func redeemInviteDecodesTheShareURL() async throws {
