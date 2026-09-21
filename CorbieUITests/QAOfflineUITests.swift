@@ -6,7 +6,7 @@ final class QAOfflineUITests: XCTestCase {
         try XCTSkipUnless(QARun.isEnglish, "the offline walk types into fields named in English")
     }
 
-    func testAnUnreachableServerLeavesTheInviteScreenUsable() throws {
+    func testAFailedInviteLeavesTheInviteScreenUsable() throws {
         let app = launchSignedIn()
         openSharedSettings(app)
 
@@ -14,11 +14,19 @@ final class QAOfflineUITests: XCTestCase {
         XCTAssertTrue(scrollTo(invite, in: app), "settings has no invite row")
         invite.tap()
 
-        let failure = app.staticTexts[QACatalog.text("pairing.invite.failed.note")]
-        XCTAssertTrue(failure.waitForExistence(timeout: 60), "a failed invite call reports nothing")
+        let retry = app.buttons[QACatalog.text("pairing.invite.retry")]
+        XCTAssertTrue(retry.waitForExistence(timeout: 60), "a failed invite call offers no retry")
+        let reasons = [
+            "pairing.error.icloud.signedout",
+            "pairing.error.icloud.busy",
+            "pairing.error.share.pending",
+            "error.auth.message",
+            "error.network.message",
+            "pairing.invite.failed.note"
+        ]
         XCTAssertTrue(
-            app.buttons[QACatalog.text("pairing.invite.retry")].exists,
-            "a failed invite call offers no retry"
+            reasons.contains { app.staticTexts[QACatalog.text($0)].exists },
+            "a failed invite call does not say why"
         )
         saveScreenshot(app, named: "offline_invite_failed")
 

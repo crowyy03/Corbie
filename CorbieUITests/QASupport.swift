@@ -483,6 +483,15 @@ extension XCTestCase {
         app.buttons[QAText.save].tap()
     }
 
+    func birthdayOffset(near target: Int, within range: ClosedRange<Int>) -> Int {
+        let calendar = Calendar.current
+        let byDistance = range.sorted { abs($0 - target) < abs($1 - target) }
+        return byDistance.first { offset in
+            let date = calendar.date(byAdding: .day, value: offset, to: Date()) ?? Date()
+            return calendar.component(.day, from: date) <= QASupportLimits.lastDayTheMenuShowsUnscrolled
+        } ?? target
+    }
+
     func uniqueTitle(_ prefix: String) -> String {
         "\(prefix) \(Int(Date().timeIntervalSince1970 * 1000) % 1_000_000)"
     }
@@ -494,4 +503,8 @@ extension XCTestCase {
         let month = parts.month ?? 1
         return (month, parts.day ?? 1, DateFormatter().monthSymbols[month - 1])
     }
+}
+
+enum QASupportLimits {
+    static let lastDayTheMenuShowsUnscrolled = 22
 }

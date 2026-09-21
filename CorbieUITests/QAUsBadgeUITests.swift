@@ -16,7 +16,7 @@ final class QAUsBadgeUITests: XCTestCase {
         openUsHub(app)
         openUsTile(app, key: "us.hub.people")
         let name = uniqueTitle("Anna")
-        addPerson(app, name: name, birthdayDaysFromNow: 7)
+        addPerson(app, name: name, birthdayDaysFromNow: birthdayOffset(near: 7, within: 2 ... 13))
         XCTAssertTrue(app.anyElement(labelContaining: name).waitForExistence(timeout: 30), "the person did not save")
         closeUsHub(app)
 

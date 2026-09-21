@@ -198,7 +198,7 @@ final class SmokeTabsUITests: XCTestCase {
         openUsTile(app, key: "us.hub.people")
 
         let name = uniqueTitle("Anna")
-        addPerson(app, name: name, birthdayDaysFromNow: 30)
+        addPerson(app, name: name, birthdayDaysFromNow: birthdayOffset(near: 30, within: 25 ... 40))
 
         XCTAssertTrue(
             app.anyElement(labelContaining: name).waitForExistence(timeout: 30),
