@@ -59,15 +59,20 @@ struct QuestionSmallWidgetView: View {
             if entry.snapshot.isPremium == false {
                 LockedWidgetView()
             } else if let text = entry.snapshot.text {
+                let progressLine = WidgetQuestionText.progressLine(entry.snapshot)
                 VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
-                    WidgetHeading(text: String(localized: "widget.question.heading"))
+                    WidgetQuestionHeading(snapshot: entry.snapshot)
                     Text(text)
                         .corbieBody()
                         .foregroundStyle(palette.text)
-                        .lineLimit(4)
+                        .lineLimit(progressLine == nil ? 4 : 3)
                         .minimumScaleFactor(0.7)
                     Spacer(minLength: 0)
-                    WidgetQuestionDots(snapshot: entry.snapshot)
+                    if let progressLine {
+                        WidgetQuestionProgress(snapshot: entry.snapshot, line: progressLine)
+                    } else {
+                        WidgetQuestionDots(snapshot: entry.snapshot)
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .widgetURL(CorbieRoute.question.url)
@@ -89,16 +94,20 @@ struct QuestionMediumWidgetView: View {
                 LockedWidgetView()
             } else if let text = entry.snapshot.text {
                 VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
-                    WidgetHeading(text: String(localized: "widget.question.heading"))
+                    WidgetQuestionHeading(snapshot: entry.snapshot)
                     Text(text)
                         .corbieBody()
                         .foregroundStyle(palette.text)
                         .lineLimit(3)
                         .minimumScaleFactor(0.8)
                     Spacer(minLength: 0)
-                    HStack(alignment: .top, spacing: CorbieSpacing.m) {
-                        WidgetQuestionStatus(member: entry.snapshot.viewer, isViewer: true)
-                        WidgetQuestionStatus(member: entry.snapshot.partner, isViewer: false)
+                    if let progressLine = WidgetQuestionText.progressLine(entry.snapshot) {
+                        WidgetQuestionProgress(snapshot: entry.snapshot, line: progressLine)
+                    } else {
+                        HStack(alignment: .top, spacing: CorbieSpacing.m) {
+                            WidgetQuestionStatus(member: entry.snapshot.viewer, isViewer: true)
+                            WidgetQuestionStatus(member: entry.snapshot.partner, isViewer: false)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -108,6 +117,45 @@ struct QuestionMediumWidgetView: View {
                     .widgetURL(CorbieRoute.question.url)
             }
         }
+    }
+}
+
+struct WidgetQuestionHeading: View {
+    @Environment(\.palette) private var palette
+    let snapshot: QuestionSnapshot
+
+    var body: some View {
+        HStack(alignment: .center, spacing: CorbieSpacing.xs) {
+            WidgetHeading(text: String(localized: "widget.question.heading"))
+            Spacer(minLength: 0)
+            if snapshot.status?.showsTodayDot == true {
+                Circle()
+                    .fill(palette.accent)
+                    .frame(width: CorbieSpacing.xs, height: CorbieSpacing.xs)
+                    .accessibilityElement()
+                    .accessibilityLabel(Text(WidgetQuestionText.waitingDotLabel(snapshot.partner)))
+            }
+        }
+    }
+}
+
+struct WidgetQuestionProgress: View {
+    @Environment(\.palette) private var palette
+    let snapshot: QuestionSnapshot
+    let line: String
+
+    var body: some View {
+        Text(line)
+            .corbieMono()
+            .foregroundStyle(color)
+            .lineLimit(2)
+            .minimumScaleFactor(0.8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var color: Color {
+        guard snapshot.status?.progress == .unanswered(partnerAnswered: true) else { return palette.text2 }
+        return palette.member(storedKey: snapshot.partner?.colorKey)
     }
 }
 
@@ -173,10 +221,34 @@ enum WidgetQuestionText {
         if isViewer {
             return String(localized: answered ? "question.status.you.answered" : "question.status.you.writing")
         }
-        let given = member?.name ?? ""
-        let name = given.isEmpty ? String(localized: "member.name.partner") : given
         let key: String.LocalizationValue = answered ? "question.status.answered" : "question.status.writing"
-        return String.localizedStringWithFormat(String(localized: key), name)
+        return String.localizedStringWithFormat(String(localized: key), name(member))
+    }
+
+    static func progressLine(_ snapshot: QuestionSnapshot) -> String? {
+        guard let progress = snapshot.status?.progress else { return nil }
+        let partner = name(snapshot.partner)
+        switch progress {
+        case .unanswered(partnerAnswered: false):
+            return nil
+        case .unanswered(partnerAnswered: true):
+            return String.localizedStringWithFormat(String(localized: "question.status.yourturn"), partner)
+        case .waitingForPartner:
+            return String.localizedStringWithFormat(String(localized: "question.status.waiting"), partner)
+        case .revealUnread:
+            return String.localizedStringWithFormat(String(localized: "question.status.tosee"), partner)
+        case .revealRead:
+            return String(localized: "question.status.both")
+        }
+    }
+
+    static func waitingDotLabel(_ partner: WidgetQuestionMember?) -> String {
+        String.localizedStringWithFormat(String(localized: "question.dot.waiting"), name(partner))
+    }
+
+    private static func name(_ member: WidgetQuestionMember?) -> String {
+        let given = member?.name ?? ""
+        return given.isEmpty ? String(localized: "member.name.partner") : given
     }
 }
 
@@ -184,7 +256,9 @@ enum WidgetQuestionText {
 #Preview("Question small", as: .systemSmall) {
     QuestionSmallWidget()
 } timeline: {
-    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: true))
+    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: false, partnerAnswered: false))
+    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: true, partnerAnswered: false))
+    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: true, partnerAnswered: true))
     QuestionEntry.placeholder
     QuestionEntry(date: Date(), snapshot: QuestionSnapshot.blank(isPremium: false))
 }
@@ -192,7 +266,11 @@ enum WidgetQuestionText {
 #Preview("Question medium", as: .systemMedium) {
     QuestionMediumWidget()
 } timeline: {
-    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: true))
-    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: false))
+    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: false, partnerAnswered: true))
+    QuestionEntry(date: Date(), snapshot: WidgetPreviewData.question(viewerAnswered: true, partnerAnswered: true))
+    QuestionEntry(
+        date: Date(),
+        snapshot: WidgetPreviewData.question(viewerAnswered: true, partnerAnswered: true, revealRead: true)
+    )
 }
 #endif

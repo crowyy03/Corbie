@@ -8,6 +8,7 @@ public protocol QuestionRepository: Sendable {
     func nudge(dailyQuestionId: UUID, memberId: UUID, at date: Date) async throws -> DailyQuestionDTO
     func history(spaceId: UUID, viewerMemberId: UUID?, search: String?) async throws -> [DailyQuestionDTO]
     func markSeen(memberId: UUID, dayKey: String) async throws -> MemberDTO
+    func markRevealRead(memberId: UUID, dayKey: String) async throws -> MemberDTO
 }
 
 extension QuestionRepository {

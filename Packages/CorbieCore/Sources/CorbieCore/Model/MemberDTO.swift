@@ -14,6 +14,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
     public var lastRecapSeenAt: Date?
     public var lastUsVisitAt: Date?
     public var lastQuestionSeenDayKey: String?
+    public var revealReadDays: RevealReadDays
     public var notificationPrefs: NotificationPrefs
 
     public init(
@@ -30,6 +31,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
         lastRecapSeenAt: Date? = nil,
         lastUsVisitAt: Date? = nil,
         lastQuestionSeenDayKey: String? = nil,
+        revealReadDays: RevealReadDays = RevealReadDays(),
         notificationPrefs: NotificationPrefs = .allEnabled
     ) {
         self.id = id
@@ -45,6 +47,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
         self.lastRecapSeenAt = lastRecapSeenAt
         self.lastUsVisitAt = lastUsVisitAt
         self.lastQuestionSeenDayKey = lastQuestionSeenDayKey
+        self.revealReadDays = revealReadDays
         self.notificationPrefs = notificationPrefs
     }
 
@@ -63,6 +66,7 @@ public struct MemberDTO: Sendable, Codable, Identifiable, Equatable {
             lastRecapSeenAt: member.lastRecapSeenAt,
             lastUsVisitAt: member.lastUsVisitAt,
             lastQuestionSeenDayKey: member.lastQuestionSeenDayKey,
+            revealReadDays: member.revealReadDays,
             notificationPrefs: member.notificationPrefs
         )
     }

@@ -52,9 +52,15 @@ struct QuestionHistoryView: View {
     private func row(_ day: DailyQuestionDTO) -> some View {
         Card {
             VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
-                Text(copy.day(of: day))
-                    .corbieMono()
-                    .foregroundStyle(palette.text2)
+                HStack(alignment: .center, spacing: CorbieSpacing.xs) {
+                    Text(copy.day(of: day))
+                        .corbieMono()
+                        .foregroundStyle(palette.text2)
+                    Spacer(minLength: 0)
+                    if environment.questionStatus(of: day)?.showsHistoryDot == true {
+                        unreadDot
+                    }
+                }
                 Text(copy.text(of: day) ?? day.questionId)
                     .corbieBody()
                     .fontWeight(.semibold)
@@ -72,6 +78,14 @@ struct QuestionHistoryView: View {
                 }
             }
         }
+    }
+
+    private var unreadDot: some View {
+        Circle()
+            .fill(palette.accent)
+            .frame(width: CorbieSpacing.xs, height: CorbieSpacing.xs)
+            .accessibilityElement()
+            .accessibilityLabel(Text(QuestionCopy.waitingDotLabel(partnerName: environment.partnerName)))
     }
 
     @ViewBuilder private func answerLine(_ answer: QuestionAnswerDTO) -> some View {

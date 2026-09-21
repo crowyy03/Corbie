@@ -296,6 +296,7 @@ public struct QuestionSnapshot: Sendable, Codable, Equatable {
     public let viewer: WidgetQuestionMember?
     public let partner: WidgetQuestionMember?
     public let isRevealed: Bool
+    public let status: QuestionStatus?
     public let isPremium: Bool
 
     public init(
@@ -303,17 +304,19 @@ public struct QuestionSnapshot: Sendable, Codable, Equatable {
         viewer: WidgetQuestionMember?,
         partner: WidgetQuestionMember?,
         isRevealed: Bool,
+        status: QuestionStatus?,
         isPremium: Bool
     ) {
         self.text = text
         self.viewer = viewer
         self.partner = partner
         self.isRevealed = isRevealed
+        self.status = status
         self.isPremium = isPremium
     }
 
     public static func blank(isPremium: Bool) -> QuestionSnapshot {
-        QuestionSnapshot(text: nil, viewer: nil, partner: nil, isRevealed: false, isPremium: isPremium)
+        QuestionSnapshot(text: nil, viewer: nil, partner: nil, isRevealed: false, status: nil, isPremium: isPremium)
     }
 }
 

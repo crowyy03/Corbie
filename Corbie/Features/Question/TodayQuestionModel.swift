@@ -2,6 +2,11 @@ import CorbieCore
 import Foundation
 import Observation
 
+struct TodayQuestionLayout: Equatable {
+    let questionId: UUID?
+    let isCompact: Bool
+}
+
 @MainActor
 @Observable
 final class TodayQuestionModel {
@@ -24,6 +29,15 @@ final class TodayQuestionModel {
     var hasAnswered: Bool {
         guard let question, let memberId = environment?.currentMember?.id else { return false }
         return question.hasAnswered(memberId)
+    }
+
+    var status: QuestionStatus? {
+        guard let question, let environment else { return nil }
+        return environment.questionStatus(of: question, now: now())
+    }
+
+    var layout: TodayQuestionLayout {
+        TodayQuestionLayout(questionId: question?.id, isCompact: status?.progress.isCompact ?? false)
     }
 
     func start(_ environment: AppEnvironment, center: NotificationCenter = .default) async {

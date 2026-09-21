@@ -44,5 +44,6 @@ struct QuestionDayView: View {
         .background(palette.bg)
         .navigationTitle(String(localized: "question.history.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .task { await environment.markRevealRead(question) }
     }
 }

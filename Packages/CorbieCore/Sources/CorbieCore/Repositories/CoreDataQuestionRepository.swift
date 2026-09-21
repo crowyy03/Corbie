@@ -164,6 +164,16 @@ public struct CoreDataQuestionRepository: QuestionRepository {
         }
     }
 
+    public func markRevealRead(memberId: UUID, dayKey: String) async throws -> MemberDTO {
+        try await access.write { context in
+            let member: Member = try ManagedFetch.require(Member.entityName, id: memberId, in: context)
+            let stored = member.revealReadDays
+            let read = stored.adding(dayKey)
+            if read != stored { member.revealReadDays = read }
+            return MemberDTO(member)
+        }
+    }
+
     private static func cleaned(_ text: String) throws -> String {
         let body = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard body.isEmpty == false else {

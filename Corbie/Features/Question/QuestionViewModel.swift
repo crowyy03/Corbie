@@ -73,6 +73,7 @@ final class QuestionViewModel {
         }
         await markSeen()
         recordRevealIfShown()
+        await markRevealReadIfShown()
     }
 
     func detach(center: NotificationCenter = .default) {
@@ -111,7 +112,7 @@ final class QuestionViewModel {
                 environment.analytics.record(.questionAnswered)
             }
             isWriting = false
-            apply(updated)
+            await apply(updated)
         } catch {
             environment.report(error)
         }
@@ -127,7 +128,7 @@ final class QuestionViewModel {
             )
             environment.analytics.record(.questionNudgeSent)
             environment.toasts.show(message: String(localized: "question.nudge.sent"))
-            apply(updated)
+            await apply(updated)
         } catch {
             environment.report(error)
         }
@@ -141,16 +142,17 @@ final class QuestionViewModel {
                 viewerMemberId: viewerMemberId,
                 now: now()
             ), stored.id == question.id else { return }
-            apply(stored)
+            await apply(stored)
         } catch {
             environment.report(error)
         }
     }
 
-    private func apply(_ updated: DailyQuestionDTO) {
+    private func apply(_ updated: DailyQuestionDTO) async {
         question = updated
         onChanged?(updated)
         recordRevealIfShown()
+        await markRevealReadIfShown()
     }
 
     private func markSeen() async {
@@ -169,6 +171,11 @@ final class QuestionViewModel {
         } catch {
             environment.report(error)
         }
+    }
+
+    private func markRevealReadIfShown() async {
+        guard let environment, question.isRevealed, isWriting == false else { return }
+        await environment.markRevealRead(question, now: now())
     }
 
     private func recordRevealIfShown() {

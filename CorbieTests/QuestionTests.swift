@@ -29,3 +29,16 @@ final class QuestionDraftTests: XCTestCase {
         XCTAssertTrue(model.canSave)
     }
 }
+
+final class QuestionStatusCopyTests: XCTestCase {
+    func testEachStateReadsItsOwnStatusLine() {
+        XCTAssertEqual(QuestionCopy.status(.unanswered(partnerAnswered: true), partnerName: "Sofia"), "Sofia answered · your turn")
+        XCTAssertEqual(QuestionCopy.status(.waitingForPartner, partnerName: "Sofia"), "You answered · waiting for Sofia")
+        XCTAssertEqual(QuestionCopy.status(.revealUnread, partnerName: "Sofia"), "Sofia answered · tap to see")
+        XCTAssertEqual(QuestionCopy.status(.revealRead, partnerName: "Sofia"), "Both answered")
+    }
+
+    func testTheDotSaysWhoseAnswerIsWaiting() {
+        XCTAssertEqual(QuestionCopy.waitingDotLabel(partnerName: "Sofia"), "Sofia's answer is waiting")
+    }
+}

@@ -208,6 +208,7 @@
 		A249BB0691EA7088FC1302C2 /* DebugNotificationsSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F3BF70895FDD72F871CC8D /* DebugNotificationsSections.swift */; };
 		A32F476FC51A2B6653B9B2BD /* TaskDueNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF49097E308A5FF88580BA3F /* TaskDueNotifications.swift */; };
 		A3D3C02D63C9D9AC75218159 /* CapsulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815989F852AADFD5B458253D /* CapsulesViewModel.swift */; };
+		A793AFB3665E2951DD34256E /* QuestionRevealTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B2EA3AB66287A3E5D36AE /* QuestionRevealTracking.swift */; };
 		A9A82C6FDD9B9A1DE38F0B3A /* ShareWishViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EF99805F9035D7CE01C2CC /* ShareWishViewModel.swift */; };
 		A9B1A60370ECDE4B949D7FF8 /* FreeTasksWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585F84E7EC1022E7CF2528A /* FreeTasksWidget.swift */; };
 		ABD60C7343C2E8DA7C63EE30 /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B467B418B6CA6F01D20083 /* EventDetailViewModel.swift */; };
@@ -531,6 +532,7 @@
 		95073597AB82A548EAAE7530 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		9512875C4E49F5ECC719D92B /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
 		959EE65EBD753A48BAF1BA0D /* TodayPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayPresentationTests.swift; sourceTree = "<group>"; };
+		967B2EA3AB66287A3E5D36AE /* QuestionRevealTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRevealTracking.swift; sourceTree = "<group>"; };
 		973B64492EF7395AC5877F5D /* WishEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishEditorViewModel.swift; sourceTree = "<group>"; };
 		97CD4FE2DC9B6D290F37FDBC /* SettingsNotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewModel.swift; sourceTree = "<group>"; };
 		98DD3D9757471CF6CFFE5BD9 /* JoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinView.swift; sourceTree = "<group>"; };
@@ -828,6 +830,7 @@
 				D3BF40ADDD34430919F6A2DE /* QuestionDayView.swift */,
 				585E9803C252913DFA69DC26 /* QuestionHistoryView.swift */,
 				90E57DE9A4EE81F38354145B /* QuestionHistoryViewModel.swift */,
+				967B2EA3AB66287A3E5D36AE /* QuestionRevealTracking.swift */,
 				7956C0329744682F3FCE2D10 /* QuestionView.swift */,
 				142BCC988BA356F5B277224C /* QuestionViewModel.swift */,
 				0E64BE1E1C8E5DF4CC1C2639 /* TodayQuestionCard.swift */,
@@ -1662,6 +1665,7 @@
 				594A4CF200F52CA83C738879 /* QuestionDayView.swift in Sources */,
 				4E5796B8603B109F0D49D2FF /* QuestionHistoryView.swift in Sources */,
 				D1D200F93931145644BF82FB /* QuestionHistoryViewModel.swift in Sources */,
+				A793AFB3665E2951DD34256E /* QuestionRevealTracking.swift in Sources */,
 				9B798B9023C12431A1642F5F /* QuestionView.swift in Sources */,
 				482283A4E37942443EE9A728 /* QuestionViewModel.swift in Sources */,
 				71A28A4D7C48D522AA5B8507 /* RecapCard.swift in Sources */,

@@ -32,6 +32,7 @@ public enum CorbieModel {
         member.attribute("lastRecapSeenAt", .dateAttributeType)
         member.attribute("lastUsVisitAt", .dateAttributeType)
         member.attribute("lastQuestionSeenDayKey", .stringAttributeType)
+        member.attribute("revealReadDayKeysData", .binaryDataAttributeType)
         member.attribute("notificationPrefsData", .binaryDataAttributeType)
 
         let task = ModelEntity(TaskItem.entityName, TaskItem.self)

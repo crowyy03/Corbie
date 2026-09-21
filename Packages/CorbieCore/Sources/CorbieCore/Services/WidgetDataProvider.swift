@@ -275,6 +275,12 @@ public struct WidgetDataProvider: Sendable {
             viewer: questionMember(viewer, question: question),
             partner: context.partner.map { questionMember($0, question: question) },
             isRevealed: question.isRevealed,
+            status: QuestionStatus(
+                question: question,
+                todayKey: QuestionStatus.todayKey(now: now, space: context.space),
+                viewer: viewer,
+                partnerId: context.partner?.id
+            ),
             isPremium: context.isPremium
         )
     }

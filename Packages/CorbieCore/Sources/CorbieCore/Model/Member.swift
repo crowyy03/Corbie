@@ -16,12 +16,18 @@ public final class Member: NSManagedObject {
     @NSManaged public var lastRecapSeenAt: Date?
     @NSManaged public var lastUsVisitAt: Date?
     @NSManaged public var lastQuestionSeenDayKey: String?
+    @NSManaged public var revealReadDayKeysData: Data?
     @NSManaged public var notificationPrefsData: Data?
     @NSManaged public var space: Space?
 
     public var notificationPrefs: NotificationPrefs {
         get { JSONValue.decode(NotificationPrefs.self, from: notificationPrefsData) ?? .allEnabled }
         set { notificationPrefsData = JSONValue.encode(newValue) }
+    }
+
+    public var revealReadDays: RevealReadDays {
+        get { JSONValue.decode(RevealReadDays.self, from: revealReadDayKeysData) ?? RevealReadDays() }
+        set { revealReadDayKeysData = JSONValue.encode(newValue) }
     }
 
     public override func awakeFromInsert() {

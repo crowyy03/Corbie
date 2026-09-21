@@ -20,8 +20,9 @@ enum WidgetPreviewData {
         }
     }
 
-    static func question(viewerAnswered: Bool) -> QuestionSnapshot {
-        QuestionSnapshot(
+    static func question(viewerAnswered: Bool, partnerAnswered: Bool, revealRead: Bool = false) -> QuestionSnapshot {
+        let today = QuestionSelector.dayKey(for: Date(), timeZone: .current)
+        return QuestionSnapshot(
             text: "What made you laugh today",
             viewer: WidgetQuestionMember(
                 name: "Ilya",
@@ -31,9 +32,16 @@ enum WidgetPreviewData {
             partner: WidgetQuestionMember(
                 name: "Sofia",
                 colorKey: MemberColorSlot.partnerDefault.rawValue,
-                hasAnswered: false
+                hasAnswered: partnerAnswered
             ),
-            isRevealed: false,
+            isRevealed: viewerAnswered && partnerAnswered,
+            status: QuestionStatus(
+                dayKey: today,
+                todayKey: today,
+                viewerAnswered: viewerAnswered,
+                partnerAnswered: partnerAnswered,
+                readDays: RevealReadDays(revealRead ? [today] : [])
+            ),
             isPremium: true
         )
     }

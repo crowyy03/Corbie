@@ -35,4 +35,23 @@ struct QuestionCopy {
         guard let date = dayKeys.date(from: question.dayKey) else { return question.dayKey }
         return days.string(from: date)
     }
+
+    static func status(_ progress: QuestionProgress, partnerName: String) -> String {
+        switch progress {
+        case .unanswered(partnerAnswered: true):
+            return String.localizedStringWithFormat(String(localized: "question.status.yourturn"), partnerName)
+        case .unanswered(partnerAnswered: false):
+            return String(localized: "question.status.you.writing")
+        case .waitingForPartner:
+            return String.localizedStringWithFormat(String(localized: "question.status.waiting"), partnerName)
+        case .revealUnread:
+            return String.localizedStringWithFormat(String(localized: "question.status.tosee"), partnerName)
+        case .revealRead:
+            return String(localized: "question.status.both")
+        }
+    }
+
+    static func waitingDotLabel(partnerName: String) -> String {
+        String.localizedStringWithFormat(String(localized: "question.dot.waiting"), partnerName)
+    }
 }

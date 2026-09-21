@@ -44,12 +44,23 @@ public struct UsBadgeRule: Sendable {
             || hasWishFromPartner(input)
             || hasGiftToPick(input, now: now)
             || hasQuestionToAnswer(input)
+            || hasRevealToRead(input, now: now)
     }
 
     private func hasQuestionToAnswer(_ input: UsBadgeInput) -> Bool {
         guard input.space.isPaired, let question = input.question else { return false }
         return question.hasAnswered(input.viewer.id) == false
             && input.viewer.lastQuestionSeenDayKey != question.dayKey
+    }
+
+    private func hasRevealToRead(_ input: UsBadgeInput, now: Date) -> Bool {
+        guard input.space.isPaired, let question = input.question else { return false }
+        return QuestionStatus(
+            question: question,
+            todayKey: QuestionStatus.todayKey(now: now, space: input.space),
+            viewer: input.viewer,
+            partnerId: input.partner?.id
+        ).showsTodayDot
     }
 
     private func hasCapsuleToOpen(_ input: UsBadgeInput, now: Date) -> Bool {
