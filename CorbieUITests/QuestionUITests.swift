@@ -37,10 +37,16 @@ final class QuestionUITests: XCTestCase {
         saveScreenshot(app, named: "question_answered")
 
         app.buttons[QAText.done].firstMatch.tap()
+        let waiting = QACatalog.text("question.status.waiting", QACatalog.text("member.name.partner"))
         XCTAssertTrue(
-            app.buttons[QACatalog.text("question.action.yours")].firstMatch.waitForExistence(timeout: 30),
+            app.button(labelContaining: waiting).waitForExistence(timeout: 30),
+            "Today does not show the answered question as waiting for the partner"
+        )
+        XCTAssertTrue(
+            app.buttons[QACatalog.text("question.action.answer")].firstMatch.waitForNonExistence(timeout: 10),
             "Today still offers to answer a question that is answered"
         )
+        saveScreenshot(app, named: "question_today_waiting")
 
         openUsHub(app)
         openUsTile(app, key: "us.hub.questions")
