@@ -40,7 +40,7 @@ async function readCache(base: string): Promise<FxRow | null> {
 }
 
 async function fetchRates(base: string): Promise<FrankfurterResponse> {
-  const response = await fetch(`https://api.frankfurter.app/latest?base=${base}`, {
+  const response = await fetch(`https://api.frankfurter.dev/v1/latest?base=${base}`, {
     signal: AbortSignal.timeout(upstreamTimeoutMs),
     headers: { accept: "application/json" },
   });
