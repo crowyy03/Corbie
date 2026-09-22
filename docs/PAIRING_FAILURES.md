@@ -33,12 +33,24 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 | Opening the invite screen again | A live code exists for this space | the same code and what is left of its fifteen minutes, nothing new is made | `invite: showing the live code <CODE> again` |
 | Opening the invite screen again | The stored code expired, or belongs to another space | a new code | `invite: code <CODE> is ready` |
 | "New code" | The person asks for another code | a new code; the line under the button says the old one stops working at once | `invite: code <CODE> is ready` |
+| While the screen is open | The partner joins | the code, the countdown and "New code" give way to "<Name> joined", and 1.5 seconds later (at once with Reduce Motion) the screen closes on Today | `invite: partner joined` |
+| Opening the invite screen again | The partner joined while it was closed | "<Name> joined" straight away, then Today | `invite: partner joined` |
+| Onboarding | The partner row cannot be read from the local store | the code stays, nothing reacts | `invite: partner lookup failed: <reason>` |
 
-The live code (code, expiry, space id) is kept in the App Group defaults under
-`corbie.pairing.liveInvite`, so closing the sheet or killing the app does not lose it. Only "New code",
-"Try again" after a failure, or a missing or expired code makes a new one. Asking for a new code
-forgets the stored one first, so a request that fails halfway never brings back a code the server may
-already have replaced.
+The live code (code, expiry, space id, and the partner already in the space when it was made, if any)
+is kept in the App Group defaults under `corbie.pairing.liveInvite`, so closing the sheet or killing the
+app does not lose it. Only "New code", "Try again" after a failure, or a missing or expired code makes a
+new one. Asking for a new code forgets the stored one first, so a request that fails halfway never
+brings back a code the server may already have replaced. A partner joining forgets it too, since it
+has been used.
+
+The screen does not ask iCloud about the partner, it watches what the app already knows. Signed in
+(Settings, the Today empty state), that is the session's partner, which `AppEnvironment` picks up on
+the next synced change or on foreground. In onboarding there is no session yet, so the onboarding reads
+the space's partner row when the invite step opens and again on every change that arrives from iCloud.
+Only a member of this space counts, and not the one who was already there when the code was made: a
+phone that joins another space does not see its own old invite flip, and a space that already had a
+partner keeps showing its code.
 
 Timings, one line each, category `pairing`: `invite: create the share took <n> ms` (the CloudKit share)
 and `invite: POST /invite took <n> ms`. Each also writes `<name> started` when it begins and
@@ -105,11 +117,13 @@ private folder that the widgets and the share extension could not see.
 
 ## What is still not covered
 
-- The owner's invite screen does not react when the partner joins: the session reloads on the next
-  synced change or foreground, and the code screen has no "waiting for your partner" state.
+- The owner's invite screen reacts only as fast as the app learns about the partner: signed in, on
+  the next synced change or foreground; in onboarding, on the next change merged from iCloud. There is
+  still no "waiting for your partner" line while the code is up.
 - A partner who accepts the share from the Messages link rather than the code goes through
   `Router`, not through this path, and only the CloudKit errors above are surfaced there.
 - None of this ran on two real phones yet. The lines above come from reading the code and from the
   simulator. The 2026-09-21 changes (the live code, "New code", `superseded`, the same phone retry,
   the steps and their timings) are covered by unit and server tests only; the server half needs
-  migration 0008 and a function deploy before a phone can see it.
+  migration 0008 and a function deploy before a phone can see it. The owner's joined state
+  (2026-09-22) is covered by unit tests only and has not run in the simulator either.

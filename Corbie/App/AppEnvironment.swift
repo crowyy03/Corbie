@@ -237,6 +237,13 @@ final class AppEnvironment {
         Task { await premiumGate.refresh(spaceId: context.space.id) }
         Task { await publishBusyTimes() }
         Task { await reconcilePartnerMembership() }
+        Task { try? await UnsupportedCurrencyRepair(repositories: repositories).run(spaceId: context.space.id) }
+        Task { await consolidateQuestionDuplicates() }
+    }
+
+    func consolidateQuestionDuplicates() async {
+        guard let spaceId = space?.id else { return }
+        _ = try? await repositories.questions.consolidateDuplicates(spaceId: spaceId)
     }
 
     private var arePartnerChecksPaused: Bool { partnerCheckPauses > 0 }
@@ -549,9 +556,12 @@ extension AppEnvironment {
 
 #if DEBUG
 extension AppEnvironment {
-    static func preview(transport: (any HTTPTransport)? = nil) -> AppEnvironment {
+    static func preview(
+        persistence: PersistenceController = .preview,
+        transport: (any HTTPTransport)? = nil
+    ) -> AppEnvironment {
         AppEnvironment(
-            persistence: .preview,
+            persistence: persistence,
             secrets: InMemorySecretStore(),
             anonymousIdentity: .inMemory(),
             notificationClient: PreviewNotificationClient(),
@@ -562,6 +572,18 @@ extension AppEnvironment {
     static func previewSignedOut() -> AppEnvironment {
         let environment = AppEnvironment.preview()
         environment.session = .signedOut
+        return environment
+    }
+
+    static func previewSignedIn(
+        persistence: PersistenceController,
+        space: SpaceDTO,
+        member: MemberDTO,
+        partner: MemberDTO?,
+        transport: (any HTTPTransport)? = nil
+    ) -> AppEnvironment {
+        let environment = AppEnvironment.preview(persistence: persistence, transport: transport)
+        environment.session = .signedIn(SessionContext(space: space, member: member, partner: partner))
         return environment
     }
 

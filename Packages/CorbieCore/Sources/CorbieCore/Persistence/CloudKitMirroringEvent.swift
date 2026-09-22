@@ -16,6 +16,7 @@ public struct CloudKitMirroringEvent: Sendable, Equatable {
     public let endedAt: Date?
     public let succeeded: Bool
     public let failure: String?
+    var errorReport: CloudKitErrorReport?
 
     public init(
         kind: Kind,
@@ -47,6 +48,7 @@ public struct CloudKitMirroringEvent: Sendable, Equatable {
             failure: event.error?.localizedDescription,
             identifier: event.identifier
         )
+        errorReport = event.error.map(CloudKitErrorReport.init)
     }
 
     func isFinished(_ kind: Kind, of storeIdentifier: String?, startedAtOrAfter marker: Date) -> Bool {

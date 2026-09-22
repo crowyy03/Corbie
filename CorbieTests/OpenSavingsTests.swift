@@ -5,8 +5,14 @@ import XCTest
 final class OpenSavingsTests: XCTestCase {
     private let usd = Locale(identifier: "en_US")
     private let space = UUID()
+    private let october = Date(timeIntervalSince1970: 1_760_000_000)
 
-    private func openPlan(saved: Double = 0, added: Double = 0, expenses: Int = 0) -> PlanDTO {
+    private func openPlan(
+        saved: Double = 0,
+        added: Double = 0,
+        expenses: Int = 0,
+        createdAt: Date? = nil
+    ) -> PlanDTO {
         PlanDTO(
             id: UUID(),
             title: "The pot",
@@ -15,6 +21,7 @@ final class OpenSavingsTests: XCTestCase {
             savedAmount: saved,
             addedAmount: added,
             isOpenEnded: true,
+            createdAt: createdAt,
             expenseCount: expenses
         )
     }
@@ -87,14 +94,26 @@ final class OpenSavingsTests: XCTestCase {
     }
 
     func testTheOpenCardCountsContributionsAndNamesTheMonthItStarted() {
-        let october = Date(timeIntervalSince1970: 1_760_000_000)
         XCTAssertEqual(planContributions(count: 1), "1 contribution")
         XCTAssertEqual(planContributions(count: 6), "6 contributions")
         XCTAssertEqual(
-            planOpenSubtitle(startedAt: october, contributionCount: 6, locale: usd),
+            planOpenSubtitle(for: openPlan(added: 600, expenses: 6, createdAt: october), locale: usd),
             "since October 2025 \u{b7} 6 contributions"
         )
-        XCTAssertEqual(planOpenSubtitle(startedAt: nil, contributionCount: 0, locale: usd), "0 contributions")
+        XCTAssertEqual(planOpenSubtitle(for: openPlan(), locale: usd), "no contributions yet")
+    }
+
+    func testAStartingAmountIsNamedAndNotCountedAsAContribution() {
+        XCTAssertEqual(
+            planOpenSubtitle(for: openPlan(saved: 1240, createdAt: october), locale: usd),
+            "since October 2025 \u{b7} $1,240 to start, no contributions yet"
+        )
+        XCTAssertEqual(planOpenSubtitle(for: openPlan(saved: 1240), locale: usd), "$1,240 to start, no contributions yet")
+        XCTAssertEqual(
+            planOpenSubtitle(for: openPlan(saved: 1240, added: 300, expenses: 3, createdAt: october), locale: usd),
+            "since October 2025 \u{b7} 3 contributions"
+        )
+        XCTAssertEqual(planContributions(count: 0), "no contributions yet")
     }
 
     func testAnOpenPlanShowsNoProgressAndNoOverspend() {

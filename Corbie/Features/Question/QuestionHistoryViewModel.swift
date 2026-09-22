@@ -10,6 +10,15 @@ final class QuestionHistoryViewModel {
     var search = ""
 
     @ObservationIgnored private var hasRecordedOpen = false
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
+
+    func reloadOnStoreChanges(_ environment: AppEnvironment) {
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self, weak environment] in
+            guard let self, let environment else { return }
+            await load(environment)
+        }
+    }
 
     func load(_ environment: AppEnvironment) async {
         guard let space = environment.space else {

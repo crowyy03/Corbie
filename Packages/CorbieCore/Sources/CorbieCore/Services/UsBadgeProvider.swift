@@ -11,7 +11,7 @@ public final class UsBadgeProvider {
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "us-badge")
     @ObservationIgnored private var viewed: Viewed?
-    @ObservationIgnored private var reloads: Task<Void, Never>?
+    @ObservationIgnored private var reloads: StoreChangeSubscription?
 
     private struct Viewed {
         var space: SpaceDTO
@@ -39,13 +39,10 @@ public final class UsBadgeProvider {
         await recompute()
     }
 
-    public func observeReloads(center: NotificationCenter = .default) {
+    public func observeReloads() {
         guard reloads == nil else { return }
-        let reloaded = center.notifications(named: WidgetReloadRequest.notificationName).map { _ in () }
-        reloads = Task { [weak self] in
-            for await _ in reloaded {
-                await self?.recompute()
-            }
+        reloads = repositories.changes.subscribe { [weak self] in
+            await self?.recompute()
         }
     }
 

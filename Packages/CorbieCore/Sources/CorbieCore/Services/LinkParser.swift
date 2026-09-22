@@ -68,12 +68,17 @@ public struct LinkParser: Sendable {
             let canonical = payload.canonicalLink ?? normalized
             let imageURL = payload.imageLink
             let imageData = await self.imageData(for: imageURL)
+            let currency = LinkParser.trimmed(payload.currency)?.uppercased()
+            let isCurrencySupported = currency.map(SupportedCurrencies.contains) ?? true
+            if let currency, isCurrencySupported == false, payload.price != nil {
+                WishLinkLog.priceInUnsupportedCurrency(normalized, currency: currency)
+            }
             return ParsedLink(
                 canonicalURL: canonical,
                 source: LinkParser.source(from: payload.source),
                 title: LinkParser.trimmed(payload.title),
-                price: payload.price,
-                currency: LinkParser.trimmed(payload.currency)?.uppercased(),
+                price: isCurrencySupported ? payload.price : nil,
+                currency: isCurrencySupported ? currency : nil,
                 imageURL: imageURL,
                 imageData: imageData
             )

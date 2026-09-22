@@ -55,6 +55,7 @@ struct UsHubView: View {
         }
         .background(palette.bg)
         .task {
+            model.reloadOnStoreChanges(environment)
             await model.load(environment)
         }
         .task {

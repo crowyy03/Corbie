@@ -88,6 +88,7 @@ public protocol PeopleRepository: Sendable {
     func addGiftIdea(personId: UUID, draft: GiftIdeaDraft) async throws -> GiftIdeaDTO
     func updateGiftIdea(_ edited: GiftIdeaDTO, from original: GiftIdeaDTO) async throws -> GiftIdeaDTO
     func setGiftIdeaDone(ideaId: UUID, isDone: Bool) async throws -> GiftIdeaDTO
+    func replaceUnsupportedGiftIdeaCurrencies(spaceId: UUID) async throws -> Int
     func giftIdeas(personId: UUID) async throws -> [GiftIdeaDTO]
     func deleteGiftIdea(id: UUID) async throws
 }

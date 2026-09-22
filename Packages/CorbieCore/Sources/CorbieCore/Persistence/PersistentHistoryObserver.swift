@@ -10,6 +10,7 @@ final class PersistentHistoryObserver: @unchecked Sendable {
     private let container: NSPersistentContainer
     private let author: TransactionAuthor
     private let defaults: UserDefaults
+    private let changes: StoreChanges?
     private let cleanupCutoff: CleanupCutoff?
     private let holdsRecordsUntilHandled: Bool
     private let lock = NSLock()
@@ -21,12 +22,14 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         container: NSPersistentContainer,
         author: TransactionAuthor,
         defaults: UserDefaults = .corbieShared,
+        changes: StoreChanges? = nil,
         cleanupCutoff: CleanupCutoff? = nil,
         holdsRecordsUntilHandled: Bool = false
     ) {
         self.container = container
         self.author = author
         self.defaults = defaults
+        self.changes = changes
         self.cleanupCutoff = cleanupCutoff
         self.holdsRecordsUntilHandled = holdsRecordsUntilHandled
     }
@@ -79,8 +82,25 @@ final class PersistentHistoryObserver: @unchecked Sendable {
 
     @discardableResult
     func process() throws -> Int {
+        let (harvest, currentHandler) = try harvestHistory()
+        for change in harvest.merges {
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: change, into: [container.viewContext])
+        }
+        if harvest.merges.isEmpty == false {
+            WidgetReloadRequest.post()
+            RemoteChangesMerged.post()
+            changes?.post(
+                StoreChange(origin: .elsewhere, entityNames: Set(harvest.records.compactMap(\.entityName)))
+            )
+        }
+        if harvest.records.isEmpty == false, let currentHandler {
+            currentHandler(harvest.records)
+        }
+        return harvest.merges.count
+    }
+
+    private func harvestHistory() throws -> (Harvest, (@Sendable ([RemoteChangeRecord]) -> Void)?) {
         lock.lock()
-        let currentHandler = handler
         defer { lock.unlock() }
         let context = container.newBackgroundContext()
         context.transactionAuthor = author.rawValue
@@ -92,24 +112,13 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         } catch {
             throw CorbieError.persistence(error.localizedDescription)
         }
-        for change in harvest.merges {
-            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: change, into: [container.viewContext])
-        }
         if let token = harvest.token {
             store(token)
         }
-        if harvest.merges.isEmpty == false {
-            WidgetReloadRequest.post()
-            RemoteChangesMerged.post()
+        if harvest.records.isEmpty == false, handler == nil, holdsRecordsUntilHandled {
+            heldRecords.append(contentsOf: harvest.records)
         }
-        if harvest.records.isEmpty == false {
-            if let currentHandler {
-                currentHandler(harvest.records)
-            } else if holdsRecordsUntilHandled {
-                heldRecords.append(contentsOf: harvest.records)
-            }
-        }
-        return harvest.merges.count
+        return (harvest, handler)
     }
 
     private struct Harvest {

@@ -96,6 +96,13 @@ public struct CoreDataSpaceRepository: SpaceRepository {
         }
     }
 
+    public func replaceUnsupportedDisplayCurrency(spaceId: UUID) async throws -> Int {
+        try await access.replaceUnsupportedCurrencies(
+            in: [UnsupportedCurrencyRows(entityName: Space.entityName, currencyKey: "displayCurrency", spaceIdKeyPath: "id")],
+            spaceId: spaceId
+        )
+    }
+
     public func setCreatorIfUnset(spaceId: UUID, memberId: UUID) async throws -> SpaceDTO {
         try await writeSpace(spaceId) { space in
             guard space.creatorMemberId == nil else { return }

@@ -128,6 +128,38 @@ import Testing
         #expect(try await repository.lists(spaceId: world.space.id).count == 1)
     }
 
+    @Test func twoPinnedShoppingListsFromTwoPhonesBecomeTheEarlierOneWithAllItems() async throws {
+        let world = try await TestWorld.make()
+        let repository = world.repositories.lists
+        let mine = try await repository.create(
+            ChecklistDraft(spaceId: world.space.id, title: "Shopping", template: .shopping, isPinnedShopping: true)
+        )
+        try await Task.sleep(for: .milliseconds(20))
+        let theirs = try await repository.create(
+            ChecklistDraft(spaceId: world.space.id, title: "Einkaufen", template: .shopping, isPinnedShopping: true)
+        )
+        _ = try await repository.addItem(listId: mine.id, draft: ListItemDraft(title: "Milk"))
+        _ = try await repository.addItem(listId: theirs.id, draft: ListItemDraft(title: "Bread"))
+
+        let kept = try await repository.pinnedShoppingList(
+            spaceId: world.space.id,
+            title: "Shopping",
+            createdByMemberId: world.me.id
+        )
+
+        #expect(kept.id == mine.id)
+        let lists = try await repository.lists(spaceId: world.space.id)
+        #expect(lists.map(\.id) == [mine.id])
+        #expect(Set(try await repository.items(listId: mine.id).map(\.title)) == ["Milk", "Bread"])
+        #expect(try world.count("ListItem") == 2)
+        let again = try await repository.pinnedShoppingList(
+            spaceId: world.space.id,
+            title: "Shopping",
+            createdByMemberId: world.partner.id
+        )
+        #expect(again.id == mine.id)
+    }
+
     @Test func deletingAListRemovesItsItems() async throws {
         let world = try await TestWorld.make()
         let repository = world.repositories.lists

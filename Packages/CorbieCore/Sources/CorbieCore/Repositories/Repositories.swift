@@ -14,8 +14,10 @@ public struct Repositories: Sendable {
     public let people: any PeopleRepository
     public let questions: any QuestionRepository
     public let chores: any ChoreRepository
+    public let changes: StoreChanges
 
     public init(stack: CoreDataStack) {
+        changes = stack.changes
         spaces = CoreDataSpaceRepository(stack: stack)
         members = CoreDataMemberRepository(stack: stack)
         tasks = CoreDataTaskRepository(stack: stack)

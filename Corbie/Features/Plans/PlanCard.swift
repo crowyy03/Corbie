@@ -61,7 +61,7 @@ struct PlanCard: View {
 
     private var summary: String {
         guard plan.isOpenEnded else { return totals.savedOfTarget() }
-        return planOpenSubtitle(startedAt: plan.createdAt, contributionCount: plan.expenseCount)
+        return planOpenSubtitle(for: plan)
     }
 
     private var footer: some View {

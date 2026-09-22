@@ -24,6 +24,13 @@ public enum WishLinkLog {
         )
     }
 
+    public static func priceInUnsupportedCurrency(_ link: URL, currency: String) {
+        let host = link.host() ?? "none"
+        log.notice(
+            "link price left out host=\(host, privacy: .public) unsupported currency=\(currency, privacy: .public)"
+        )
+    }
+
     public static func failed(_ link: URL, error: any Error, reader: Reader) {
         let host = link.host() ?? "none"
         let reason = (error as? CorbieError)?.failureReason ?? error.localizedDescription

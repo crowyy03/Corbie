@@ -94,7 +94,7 @@ public struct CoreDataListRepository: ListRepository {
                 sort: [NSSortDescriptor(key: "createdAt", ascending: true)],
                 in: context
             )
-            if let pinned = existing.first {
+            if let pinned = CoreDataListRepository.keepOnePinned(existing, in: context) {
                 return ChecklistListDTO(pinned)
             }
             let space: Space = try ManagedFetch.require(Space.entityName, id: spaceId, in: context)
@@ -255,5 +255,22 @@ public struct CoreDataListRepository: ListRepository {
             )
             return remaining.filter { $0.isDeleted == false }.map(ListItemDTO.init)
         }
+    }
+
+    private static func keepOnePinned(_ pinned: [ChecklistList], in context: NSManagedObjectContext) -> ChecklistList? {
+        let ordered = pinned.sorted { lhs, rhs in
+            let left = lhs.createdAt ?? .distantPast
+            let right = rhs.createdAt ?? .distantPast
+            if left != right { return left < right }
+            return (lhs.id?.uuidString ?? "") < (rhs.id?.uuidString ?? "")
+        }
+        guard let kept = ordered.first else { return nil }
+        for duplicate in ordered.dropFirst() {
+            for item in duplicate.items {
+                item.list = kept
+            }
+            context.delete(duplicate)
+        }
+        return kept
     }
 }

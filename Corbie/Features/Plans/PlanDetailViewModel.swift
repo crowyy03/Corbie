@@ -16,6 +16,7 @@ final class PlanDetailViewModel {
 
     @ObservationIgnored private let planId: UUID
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(planId: UUID) {
         self.planId = planId
@@ -33,6 +34,10 @@ final class PlanDetailViewModel {
 
     func attach(_ environment: AppEnvironment) {
         self.environment = environment
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self] in
+            await self?.load()
+        }
     }
 
     func load() async {

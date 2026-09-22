@@ -17,13 +17,13 @@ final class PlanEditorViewModel {
     var type: PlanType = .other
     var targetAmount: Double = 0
     var savedAmount: Double = 0
-    var currency = "USD"
+    var currency = SupportedCurrencies.defaultCode
     var hasDates = false
     var startAt = Date()
     var endAt = Date()
     var note = ""
     private(set) var isSaving = false
-    private(set) var currencies: [String] = FXService.baseCurrencies
+    let currencies = SupportedCurrencies.codes
 
     private struct LoadedControls {
         var kind: Kind
@@ -47,7 +47,7 @@ final class PlanEditorViewModel {
         type = plan.type
         targetAmount = plan.targetAmount
         savedAmount = plan.savedAmount
-        currency = plan.currency
+        currency = SupportedCurrencies.codeOrDefault(plan.currency)
         hasDates = plan.startAt != nil || plan.endAt != nil
         startAt = plan.startAt ?? plan.endAt ?? Date()
         endAt = plan.endAt ?? plan.startAt ?? Date()
@@ -75,11 +75,6 @@ final class PlanEditorViewModel {
         self.environment = environment
         guard didConfigure == false else { return }
         didConfigure = true
-        var codes = environment.fx.supportedCurrencies()
-        if codes.contains(currency) == false {
-            codes.insert(currency, at: 0)
-        }
-        currencies = codes
         if existing == nil, let space = environment.space {
             currency = space.displayCurrency
         }

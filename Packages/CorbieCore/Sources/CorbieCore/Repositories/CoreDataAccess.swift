@@ -9,14 +9,17 @@ struct CoreDataAccess: Sendable {
     }
 
     func write<T: Sendable>(_ body: @escaping @Sendable (NSManagedObjectContext) throws -> T) async throws -> T {
-        let value = try await run { context in
+        let (value, touched) = try await run { context in
             let result = try body(context)
+            var touched: Set<String> = []
             if context.hasChanges {
+                touched = StoreChange.pending(in: context)
                 try context.save()
             }
-            return result
+            return (result, touched)
         }
         WidgetReloadRequest.post()
+        stack.changes.post(StoreChange(origin: .thisProcess, entityNames: touched))
         return value
     }
 

@@ -34,9 +34,11 @@ final class CapsulesViewModel {
     var sheet: CapsuleSheet?
 
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     func load(_ environment: AppEnvironment) async {
         self.environment = environment
+        reloadOnStoreChanges(environment)
         defer { isLoading = false }
         guard let space = environment.space else {
             capsules = []
@@ -102,6 +104,14 @@ final class CapsulesViewModel {
                 prefs: member.notificationPrefs,
                 now: now
             )
+        }
+    }
+
+    private func reloadOnStoreChanges(_ environment: AppEnvironment) {
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self, weak environment] in
+            guard let self, let environment else { return }
+            await load(environment)
         }
     }
 }

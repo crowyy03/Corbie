@@ -21,6 +21,7 @@ final class ListDetailViewModel {
 
     @ObservationIgnored private let listId: UUID
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(listId: UUID) {
         self.listId = listId
@@ -36,6 +37,10 @@ final class ListDetailViewModel {
 
     func attach(_ environment: AppEnvironment) {
         self.environment = environment
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self] in
+            await self?.load()
+        }
     }
 
     func load() async {

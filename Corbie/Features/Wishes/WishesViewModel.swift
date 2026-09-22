@@ -15,9 +15,15 @@ final class WishesViewModel {
     @ObservationIgnored private var attemptedParse: Set<UUID> = []
     @ObservationIgnored private var ratesTask: Task<Void, Never>?
     @ObservationIgnored private var didPickInitialFilter = false
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     func configure(_ environment: AppEnvironment) {
         self.environment = environment
+        if storeChanges == nil {
+            storeChanges = environment.repositories.changes.subscribe { [weak self] in
+                await self?.load()
+            }
+        }
         guard didPickInitialFilter == false, environment.isSignedIn else { return }
         didPickInitialFilter = true
         filter = WishesFilter.defaultSelection(isPaired: environment.isPaired)
@@ -59,7 +65,7 @@ final class WishesViewModel {
         guard let environment, let money = WishPricing.money(for: wish) else { return nil }
         return WishPricing.approximate(
             money,
-            in: environment.space?.displayCurrency ?? "USD",
+            in: environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode,
             rates: rates[money.currency]
         )
     }

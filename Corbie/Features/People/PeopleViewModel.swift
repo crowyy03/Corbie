@@ -30,9 +30,14 @@ final class PeopleViewModel {
     var editor: PersonEditorMode?
 
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     func bind(_ environment: AppEnvironment) {
         self.environment = environment
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self] in
+            await self?.load()
+        }
     }
 
     func load() async {

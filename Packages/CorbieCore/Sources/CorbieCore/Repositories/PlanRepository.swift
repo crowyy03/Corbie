@@ -18,7 +18,7 @@ public struct PlanDraft: Sendable, Equatable {
         title: String,
         type: PlanType = .other,
         targetAmount: Double = 0,
-        currency: String = "USD",
+        currency: String = SupportedCurrencies.defaultCode,
         savedAmount: Double = 0,
         isOpenEnded: Bool = false,
         startAt: Date? = nil,
@@ -89,6 +89,7 @@ public protocol PlanRepository: Sendable {
     func update(_ edited: PlanDTO, from original: PlanDTO) async throws -> PlanDTO
     func setSavedAmount(planId: UUID, _ amount: Double) async throws -> PlanDTO
     func setStatus(planId: UUID, status: PlanStatus) async throws -> PlanDTO
+    func replaceUnsupportedCurrencies(spaceId: UUID) async throws -> Int
     func plan(id: UUID) async throws -> PlanDTO?
     func plans(spaceId: UUID, statuses: [PlanStatus]) async throws -> [PlanDTO]
     func delete(id: UUID) async throws

@@ -34,9 +34,14 @@ final class PlansViewModel {
     private(set) var isLoaded = false
 
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     func attach(_ environment: AppEnvironment) {
         self.environment = environment
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self] in
+            await self?.load()
+        }
     }
 
     var activePlans: [PlanDTO] {
@@ -98,7 +103,7 @@ final class PlansViewModel {
 
     private func loadLists(space: SpaceDTO, environment: AppEnvironment) async throws -> [ChecklistListDTO] {
         let stored = try await environment.repositories.lists.lists(spaceId: space.id)
-        guard stored.contains(where: \.isPinnedShopping) == false else { return stored }
+        guard stored.filter(\.isPinnedShopping).count != 1 else { return stored }
         _ = try await environment.repositories.lists.pinnedShoppingList(
             spaceId: space.id,
             title: PlansCopy.text("lists.shopping.title"),

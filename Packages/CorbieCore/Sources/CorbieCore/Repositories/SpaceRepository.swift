@@ -9,6 +9,7 @@ public protocol SpaceRepository: Sendable {
     func setTogetherSinceIfUnset(spaceId: UUID, _ date: Date) async throws -> SpaceDTO
     func setWeddingDate(spaceId: UUID, _ date: Date?) async throws -> SpaceDTO
     func setDisplayCurrency(spaceId: UUID, _ code: String) async throws -> SpaceDTO
+    func replaceUnsupportedDisplayCurrency(spaceId: UUID) async throws -> Int
     func setCreatorIfUnset(spaceId: UUID, memberId: UUID) async throws -> SpaceDTO
     func setSubscription(
         spaceId: UUID,
@@ -20,7 +21,7 @@ public protocol SpaceRepository: Sendable {
 }
 
 extension SpaceRepository {
-    public func create(displayCurrency: String = "USD", creatorMemberId: UUID? = nil) async throws -> SpaceDTO {
+    public func create(displayCurrency: String = SupportedCurrencies.defaultCode, creatorMemberId: UUID? = nil) async throws -> SpaceDTO {
         try await create(displayCurrency: displayCurrency, creatorMemberId: creatorMemberId, now: Date())
     }
 }

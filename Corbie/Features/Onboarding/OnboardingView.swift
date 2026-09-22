@@ -44,10 +44,13 @@ struct OnboardingView: View {
         if let space = model.space {
             InviteView(
                 environment: environment,
+                appState: appState,
                 spaceId: space.id,
+                partner: model.storedPartner,
                 onHasCode: { model.openJoin() },
                 onDone: { Task { await model.finish() } }
             )
+            .task { await model.followStoredPartner() }
         } else {
             ProgressView()
                 .tint(palette.accent)

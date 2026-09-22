@@ -221,6 +221,7 @@ struct ChoresView: View {
     private func makeModel() -> ChoresViewModel {
         let created = ChoresViewModel(
             repository: environment.repositories.chores,
+            changes: environment.repositories.changes,
             analytics: environment.analytics
         )
         created.onError = { error in

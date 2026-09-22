@@ -132,6 +132,7 @@ struct RootView: View {
             askForReviewIfEarned()
             Task { await environment.refreshEntitlement() }
             Task { await partnerWatcher.check(environment) }
+            Task { await environment.consolidateQuestionDuplicates() }
             Task {
                 await environment.reconcilePartnerMembership(
                     serverCheckInterval: AppEnvironment.partnerCheckIntervalOnForeground

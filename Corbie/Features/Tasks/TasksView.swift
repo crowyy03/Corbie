@@ -237,6 +237,7 @@ struct TasksView: View {
     private func makeModel() -> TasksViewModel {
         let created = TasksViewModel(
             repository: environment.repositories.tasks,
+            changes: environment.repositories.changes,
             notifications: TaskDueNotifications(scheduler: environment.notifications),
             analytics: environment.analytics
         )

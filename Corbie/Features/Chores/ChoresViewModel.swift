@@ -14,6 +14,8 @@ final class ChoresViewModel {
     @ObservationIgnored var onError: ((any Error) -> Void)?
 
     @ObservationIgnored private let repository: any ChoreRepository
+    @ObservationIgnored private let changes: StoreChanges
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
     @ObservationIgnored private let catalog: ChoreCatalog
     @ObservationIgnored private let analytics: any AnalyticsRecording
     @ObservationIgnored private let now: @Sendable () -> Date
@@ -23,6 +25,7 @@ final class ChoresViewModel {
 
     init(
         repository: any ChoreRepository,
+        changes: StoreChanges,
         catalog: ChoreCatalog = .bundled,
         analytics: any AnalyticsRecording,
         calendar: Calendar = .current,
@@ -30,6 +33,7 @@ final class ChoresViewModel {
         now: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.repository = repository
+        self.changes = changes
         self.catalog = catalog
         self.analytics = analytics
         self.calendar = calendar
@@ -52,6 +56,11 @@ final class ChoresViewModel {
 
     func apply(_ context: ChoresContext) async {
         self.context = context
+        if storeChanges == nil {
+            storeChanges = changes.subscribe { [weak self] in
+                await self?.load()
+            }
+        }
         await load()
     }
 

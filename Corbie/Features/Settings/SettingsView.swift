@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Environment(\.palette) private var palette
 
     @Environment(AppEnvironment.self) private var environment
+    @Environment(AppState.self) private var appState
     @Environment(\.openURL) private var openURL
     @State private var model = SettingsViewModel()
     @State private var sheet: SettingsSheet?
@@ -364,7 +365,12 @@ struct SettingsView: View {
         switch destination {
         case .invite:
             NavigationStack {
-                InviteView(environment: environment, spaceId: environment.space?.id ?? UUID()) {
+                InviteView(
+                    environment: environment,
+                    appState: appState,
+                    spaceId: environment.space?.id ?? UUID(),
+                    partner: environment.partner
+                ) {
                     sheet = nil
                 }
             }

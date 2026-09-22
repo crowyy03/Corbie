@@ -20,7 +20,7 @@ final class WishEditorViewModel {
     var link = ""
     var title = ""
     var priceText = ""
-    var currency = "USD"
+    var currency = SupportedCurrencies.defaultCode
     var priority: WishPriority = .want
     var note = ""
     var isForMe = false
@@ -28,7 +28,7 @@ final class WishEditorViewModel {
     private(set) var parseState: ParseState = .idle
     private(set) var localImage: Data?
     private(set) var imageURL: String?
-    private(set) var currencies: [String] = []
+    let currencies = SupportedCurrencies.codes
     private(set) var isSaving = false
     private(set) var isEditing = false
 
@@ -53,12 +53,7 @@ final class WishEditorViewModel {
         guard didConfigure == false else { return }
         didConfigure = true
         self.environment = environment
-        currencies = WishEditorViewModel.currencyOptions(
-            spaceCurrency: environment.space?.displayCurrency,
-            supported: environment.fx.supportedCurrencies(),
-            wishCurrency: request.wish?.currency
-        )
-        currency = currencies.first ?? "USD"
+        currency = environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode
         if let wish = request.wish {
             existing = wish
             isEditing = true
@@ -66,7 +61,7 @@ final class WishEditorViewModel {
             lastParsedLink = link.isEmpty ? nil : link
             title = wish.title
             if let price = wish.price { priceText = WishPricing.text(from: price) }
-            currency = Money.currencyCode(wish.currency) ?? currency
+            if let code = wish.currency, currencies.contains(code) { currency = code }
             priority = wish.priority
             note = wish.note ?? ""
             localImage = wish.localImage
@@ -167,22 +162,6 @@ final class WishEditorViewModel {
         }
     }
 
-    nonisolated static func currencyOptions(
-        spaceCurrency: String?,
-        supported: [String],
-        wishCurrency: String?
-    ) -> [String] {
-        var codes: [String] = []
-        for candidate in [spaceCurrency, wishCurrency] {
-            guard let code = Money.currencyCode(candidate), codes.contains(code) == false else { continue }
-            codes.append(code)
-        }
-        for code in supported.compactMap(Money.currencyCode) where codes.contains(code) == false {
-            codes.append(code)
-        }
-        return codes.isEmpty ? ["USD"] : codes
-    }
-
     private func parse(_ url: URL) async {
         guard let environment else { return }
         lastParsedLink = url.absoluteString
@@ -215,8 +194,7 @@ final class WishEditorViewModel {
         }
         if WishText.clean(priceText).isEmpty, let price = parsed.price {
             priceText = WishPricing.text(from: price)
-            if let code = Money.currencyCode(parsed.currency) {
-                if currencies.contains(code) == false { currencies.append(code) }
+            if let code = parsed.currency, currencies.contains(code) {
                 currency = code
             }
         }

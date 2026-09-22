@@ -134,17 +134,17 @@ final class PairingInviteTests: XCTestCase {
         let minter = ScriptedMinter(codes: ["FYDW7C", "JHQ6FU", "XAQ5Y9"], expiresAt: now.addingTimeInterval(15 * 60))
         let environment = AppEnvironment.preview()
 
-        let first = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
-        await first.appear()
+        let first = inviteModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await first.appear(partner: nil, reduceMotion: true)
         for minutesLater in [1.0, 5.0, 14.0] {
-            let reopened = InviteViewModel(
+            let reopened = inviteModel(
                 environment: environment,
                 spaceId: spaceId,
                 store: store,
                 minter: minter,
                 now: { now.addingTimeInterval(minutesLater * 60) }
             )
-            await reopened.appear()
+            await reopened.appear(partner: nil, reduceMotion: true)
             XCTAssertEqual(reopened.phase, .ready)
             XCTAssertEqual(reopened.code, "FYDW7C")
             XCTAssertEqual(reopened.expiresAt, first.expiresAt)
@@ -160,16 +160,16 @@ final class PairingInviteTests: XCTestCase {
         let minter = ScriptedMinter(codes: ["FYDW7C", "JHQ6FU"], expiresAt: now.addingTimeInterval(15 * 60))
         let environment = AppEnvironment.preview()
 
-        let model = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
-        await model.appear()
+        let model = inviteModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await model.appear(partner: nil, reduceMotion: true)
         await model.makeNewCode()
 
         XCTAssertEqual(minter.minted, ["FYDW7C", "JHQ6FU"])
         XCTAssertEqual(model.code, "JHQ6FU")
         XCTAssertEqual(store.live(for: spaceId, at: now)?.code, "JHQ6FU")
 
-        let reopened = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
-        await reopened.appear()
+        let reopened = inviteModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await reopened.appear(partner: nil, reduceMotion: true)
         XCTAssertEqual(reopened.code, "JHQ6FU")
         XCTAssertEqual(minter.minted.count, 2)
     }
@@ -182,14 +182,14 @@ final class PairingInviteTests: XCTestCase {
         let minter = ScriptedMinter(codes: ["JHQ6FU", "XAQ5Y9"], expiresAt: now.addingTimeInterval(15 * 60))
         let environment = AppEnvironment.preview()
 
-        store.save(LiveInvite(code: "FYDW7C", expiresAt: now, spaceId: spaceId))
-        let afterExpiry = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
-        await afterExpiry.appear()
+        store.save(LiveInvite(code: "FYDW7C", expiresAt: now, spaceId: spaceId, existingPartnerId: nil))
+        let afterExpiry = inviteModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await afterExpiry.appear(partner: nil, reduceMotion: true)
         XCTAssertEqual(afterExpiry.code, "JHQ6FU")
 
         let otherSpace = UUID()
-        let elsewhere = InviteViewModel(environment: environment, spaceId: otherSpace, store: store, minter: minter, now: { now })
-        await elsewhere.appear()
+        let elsewhere = inviteModel(environment: environment, spaceId: otherSpace, store: store, minter: minter, now: { now })
+        await elsewhere.appear(partner: nil, reduceMotion: true)
         XCTAssertEqual(elsewhere.code, "XAQ5Y9")
         XCTAssertNil(store.live(for: spaceId, at: now))
         XCTAssertEqual(minter.minted, ["JHQ6FU", "XAQ5Y9"])
@@ -203,8 +203,8 @@ final class PairingInviteTests: XCTestCase {
         let minter = ScriptedMinter(codes: ["FYDW7C"], expiresAt: now.addingTimeInterval(15 * 60))
         let environment = AppEnvironment.preview()
 
-        let model = InviteViewModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
-        await model.appear()
+        let model = inviteModel(environment: environment, spaceId: spaceId, store: store, minter: minter, now: { now })
+        await model.appear(partner: nil, reduceMotion: true)
         await model.makeNewCode()
 
         XCTAssertEqual(model.phase, .failed)
@@ -215,7 +215,7 @@ final class PairingInviteTests: XCTestCase {
     func testTheLiveCodeSurvivesInTheSharedDefaults() throws {
         let now = Date()
         let spaceId = UUID()
-        let invite = LiveInvite(code: "K7M2QX", expiresAt: now.addingTimeInterval(60), spaceId: spaceId)
+        let invite = LiveInvite(code: "K7M2QX", expiresAt: now.addingTimeInterval(60), spaceId: spaceId, existingPartnerId: UUID())
         LiveInviteStore(suiteName: suiteName).save(invite)
 
         let reread = LiveInviteStore(suiteName: suiteName)
@@ -224,6 +224,217 @@ final class PairingInviteTests: XCTestCase {
         XCTAssertNil(reread.live(for: UUID(), at: now))
         reread.forget()
         XCTAssertNil(reread.live(for: spaceId, at: now))
+    }
+
+    func testACodeStoredBeforeThePartnerFieldStillReads() throws {
+        let now = Date()
+        let spaceId = UUID()
+        let stored: [String: Any] = [
+            "code": "K7M2QX",
+            "expiresAt": now.addingTimeInterval(60).timeIntervalSinceReferenceDate,
+            "spaceId": spaceId.uuidString
+        ]
+        UserDefaults(suiteName: suiteName)?.set(
+            try JSONSerialization.data(withJSONObject: stored),
+            forKey: LiveInviteStore.storageKey
+        )
+
+        let live = try XCTUnwrap(LiveInviteStore(suiteName: suiteName).live(for: spaceId, at: now))
+        XCTAssertEqual(live.code, "K7M2QX")
+        XCTAssertNil(live.existingPartnerId)
+    }
+
+    @MainActor
+    func testThePartnerArrivingSwitchesTheInviteToJoinedAndMovesToToday() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["FYDW7C", "JHQ6FU"], expiresAt: now.addingTimeInterval(15 * 60))
+        let appState = awayFromToday()
+        var leaves = 0
+        let model = inviteModel(
+            environment: AppEnvironment.preview(),
+            spaceId: spaceId,
+            store: store,
+            minter: minter,
+            now: { now },
+            appState: appState,
+            leave: { leaves += 1 }
+        )
+
+        await model.appear(partner: nil, reduceMotion: true)
+        XCTAssertEqual(model.phase, .ready)
+        XCTAssertEqual(leaves, 0)
+
+        await model.apply(partner: partner(named: "Anna", in: spaceId), reduceMotion: true)
+
+        XCTAssertEqual(model.phase, .joined)
+        XCTAssertEqual(model.joinedLine, InviteViewModel.joinedLine(name: "Anna"))
+        XCTAssertNil(model.code)
+        XCTAssertNil(model.countdown(at: now))
+        XCTAssertFalse(model.isShareable(at: now))
+        XCTAssertNil(store.live(for: spaceId, at: now))
+        XCTAssertEqual(appState.selectedTab, .today)
+        XCTAssertFalse(appState.isUsHubPresented)
+        XCTAssertEqual(leaves, 1)
+
+        await model.makeNewCode()
+        await model.apply(partner: partner(named: "Anna", in: spaceId), reduceMotion: true)
+        XCTAssertEqual(model.phase, .joined)
+        XCTAssertEqual(minter.minted, ["FYDW7C"])
+        XCTAssertEqual(leaves, 1)
+    }
+
+    @MainActor
+    func testOpeningTheInviteAfterThePartnerJoinedGoesStraightToJoined() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["JHQ6FU"], expiresAt: now.addingTimeInterval(15 * 60))
+        let appState = awayFromToday()
+        var leaves = 0
+        store.save(
+            LiveInvite(code: "FYDW7C", expiresAt: now.addingTimeInterval(10 * 60), spaceId: spaceId, existingPartnerId: nil)
+        )
+        let model = inviteModel(
+            environment: AppEnvironment.preview(),
+            spaceId: spaceId,
+            store: store,
+            minter: minter,
+            now: { now },
+            appState: appState,
+            leave: { leaves += 1 }
+        )
+
+        await model.appear(partner: partner(named: "Anna", in: spaceId), reduceMotion: true)
+
+        XCTAssertEqual(model.phase, .joined)
+        XCTAssertNil(model.code)
+        XCTAssertNil(model.countdown(at: now))
+        XCTAssertTrue(minter.minted.isEmpty)
+        XCTAssertNil(store.live(for: spaceId, at: now))
+        XCTAssertEqual(appState.selectedTab, .today)
+        XCTAssertEqual(leaves, 1)
+    }
+
+    @MainActor
+    func testAPartnerWhoWasThereBeforeTheCodeDoesNotCountAsJoined() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["FYDW7C"], expiresAt: now.addingTimeInterval(15 * 60))
+        let environment = AppEnvironment.preview()
+        let appState = awayFromToday()
+        var leaves = 0
+        let anna = partner(named: "Anna", in: spaceId)
+
+        let model = inviteModel(
+            environment: environment,
+            spaceId: spaceId,
+            store: store,
+            minter: minter,
+            now: { now },
+            appState: appState,
+            leave: { leaves += 1 }
+        )
+        await model.appear(partner: anna, reduceMotion: true)
+        await model.apply(partner: anna, reduceMotion: true)
+        XCTAssertEqual(model.phase, .ready)
+        XCTAssertEqual(model.code, "FYDW7C")
+
+        let reopened = inviteModel(
+            environment: environment,
+            spaceId: spaceId,
+            store: store,
+            minter: minter,
+            now: { now },
+            appState: appState,
+            leave: { leaves += 1 }
+        )
+        await reopened.appear(partner: anna, reduceMotion: true)
+        XCTAssertEqual(reopened.phase, .ready)
+        XCTAssertEqual(reopened.code, "FYDW7C")
+        XCTAssertEqual(minter.minted, ["FYDW7C"])
+        XCTAssertEqual(appState.selectedTab, .plans)
+        XCTAssertEqual(leaves, 0)
+
+        await reopened.apply(partner: partner(named: "Bo", in: spaceId), reduceMotion: true)
+        XCTAssertEqual(reopened.phase, .joined)
+        XCTAssertEqual(leaves, 1)
+    }
+
+    @MainActor
+    func testAPartnerOfAnotherSpaceLeavesTheInviteAlone() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = ScriptedMinter(codes: ["FYDW7C"], expiresAt: now.addingTimeInterval(15 * 60))
+        let appState = awayFromToday()
+        var leaves = 0
+        let model = inviteModel(
+            environment: AppEnvironment.preview(),
+            spaceId: spaceId,
+            store: store,
+            minter: minter,
+            now: { now },
+            appState: appState,
+            leave: { leaves += 1 }
+        )
+
+        await model.appear(partner: nil, reduceMotion: true)
+        await model.apply(partner: partner(named: "Anna", in: UUID()), reduceMotion: true)
+
+        XCTAssertEqual(model.phase, .ready)
+        XCTAssertEqual(model.code, "FYDW7C")
+        XCTAssertEqual(store.live(for: spaceId, at: now)?.code, "FYDW7C")
+        XCTAssertEqual(appState.selectedTab, .plans)
+        XCTAssertEqual(leaves, 0)
+    }
+
+    @MainActor
+    func testACodeStillBeingMadeIsDroppedWhenThePartnerJoins() async {
+        let now = Date()
+        let spaceId = UUID()
+        let store = LiveInviteStore(suiteName: suiteName)
+        let minter = HeldMinter(code: "FYDW7C", expiresAt: now.addingTimeInterval(15 * 60))
+        var leaves = 0
+        let model = inviteModel(
+            environment: AppEnvironment.preview(),
+            spaceId: spaceId,
+            store: store,
+            minter: minter,
+            now: { now },
+            leave: { leaves += 1 }
+        )
+
+        let appearing = Task { await model.appear(partner: nil, reduceMotion: true) }
+        for _ in 0 ..< 100 where minter.isHolding == false {
+            await Task.yield()
+        }
+        XCTAssertEqual(model.phase, .working)
+
+        await model.apply(partner: partner(named: "Anna", in: spaceId), reduceMotion: true)
+        minter.release()
+        await appearing.value
+
+        XCTAssertEqual(model.phase, .joined)
+        XCTAssertNil(model.code)
+        XCTAssertNil(store.live(for: spaceId, at: now))
+        XCTAssertEqual(leaves, 1)
+    }
+
+    @MainActor
+    func testTheJoinedLineNamesThePartnerOrFallsBack() {
+        let named = InviteViewModel.joinedLine(name: "Anna")
+        XCTAssertTrue(named.contains("Anna"))
+        XCTAssertFalse(named.hasPrefix("pairing."))
+
+        let fallback = InviteViewModel.joinedLine(name: nil)
+        XCTAssertFalse(fallback.isEmpty)
+        XCTAssertFalse(fallback.hasPrefix("pairing."))
+        XCTAssertFalse(fallback.contains("%@"))
+        XCTAssertEqual(InviteViewModel.joinedLine(name: ""), fallback)
+        XCTAssertEqual(InviteViewModel.joinedLine(name: "  "), fallback)
     }
 
     func testEveryJoinStepHasItsOwnLineAndLogName() {
@@ -285,6 +496,39 @@ final class PairingInviteTests: XCTestCase {
             detail: code
         )
     }
+
+    @MainActor
+    private func inviteModel(
+        environment: AppEnvironment,
+        spaceId: UUID,
+        store: LiveInviteStore,
+        minter: any InviteMinting,
+        now: @escaping () -> Date,
+        appState: AppState? = nil,
+        leave: @escaping () -> Void = {}
+    ) -> InviteViewModel {
+        InviteViewModel(
+            environment: environment,
+            appState: appState ?? AppState(),
+            spaceId: spaceId,
+            store: store,
+            minter: minter,
+            now: now,
+            leave: leave
+        )
+    }
+
+    @MainActor
+    private func awayFromToday() -> AppState {
+        let appState = AppState()
+        appState.selectedTab = .plans
+        appState.isUsHubPresented = true
+        return appState
+    }
+
+    private func partner(named name: String?, in spaceId: UUID) -> MemberDTO {
+        MemberDTO(id: UUID(), spaceId: spaceId, displayName: name)
+    }
 }
 
 private extension Locale {
@@ -309,5 +553,27 @@ private final class ScriptedMinter: InviteMinting {
         let code = codes.removeFirst()
         minted.append(code)
         return InviteCode(code: code, expiresAt: expiresAt)
+    }
+}
+
+@MainActor
+private final class HeldMinter: InviteMinting {
+    private let invite: InviteCode
+    private var held: CheckedContinuation<Void, Never>?
+
+    init(code: String, expiresAt: Date) {
+        invite = InviteCode(code: code, expiresAt: expiresAt)
+    }
+
+    var isHolding: Bool { held != nil }
+
+    func mint(spaceId: UUID) async throws -> InviteCode {
+        await withCheckedContinuation { held = $0 }
+        return invite
+    }
+
+    func release() {
+        held?.resume()
+        held = nil
     }
 }

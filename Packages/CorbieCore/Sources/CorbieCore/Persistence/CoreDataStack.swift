@@ -12,12 +12,14 @@ public final class CoreDataStack: @unchecked Sendable {
     public let author: TransactionAuthor
     public let mirroring: StoreMirroring
     public let loadFailure: (any Error)?
+    public let changes: StoreChanges
 
     private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "persistence")
 
     private let history: PersistentHistoryObserver?
     private let runningImports: CloudKitRunningImports?
     private let exportLedger: CloudKitExportLedger?
+    private let cloudKitActivity: CloudKitActivityLog?
 
     public var viewContext: NSManagedObjectContext { container.viewContext }
 
@@ -36,12 +38,16 @@ public final class CoreDataStack: @unchecked Sendable {
         )
     }
 
-    public convenience init(storesIn directory: URL, author: TransactionAuthor = .tests) {
+    public convenience init(
+        storesIn directory: URL,
+        author: TransactionAuthor = .tests,
+        historyDefaults: UserDefaults? = nil
+    ) {
         self.init(
             directory: directory,
             author: author,
             mirroring: .disabled,
-            historyDefaults: nil,
+            historyDefaults: historyDefaults,
             requiresAppGroup: false
         )
     }
@@ -61,19 +67,27 @@ public final class CoreDataStack: @unchecked Sendable {
         let container = CoreDataStack.makeContainer(mirroring: mirroring)
         container.persistentStoreDescriptions = CoreDataStack.storeDescriptions(in: directory, mirroring: mirroring)
         self.container = container
+        let cloudKitActivity = mirroring == .cloudKit
+            ? historyDefaults.flatMap { CloudKitActivityLog.mirroring(container, defaults: $0) }
+            : nil
+        self.cloudKitActivity = cloudKitActivity
         let appGroupFailure = requiresAppGroup ? CoreDataStack.appGroupFailure() : nil
         loadFailure = CoreDataStack.load(container) ?? appGroupFailure
         CoreDataStack.configure(container.viewContext, author: author)
+        let changes = StoreChanges()
+        self.changes = changes
         history = historyDefaults.map { defaults in
             PersistentHistoryObserver(
                 container: container,
                 author: author,
                 defaults: defaults,
+                changes: changes,
                 cleanupCutoff: exportLedger.map(CoreDataStack.cleanupAfterUpload),
                 holdsRecordsUntilHandled: mirroring == .cloudKit
             )
         }
         history?.start()
+        cloudKitActivity?.start()
     }
 
     public init(inMemoryAuthor author: TransactionAuthor = .tests) {
@@ -87,9 +101,11 @@ public final class CoreDataStack: @unchecked Sendable {
         self.container = container
         loadFailure = CoreDataStack.load(container)
         CoreDataStack.configure(container.viewContext, author: author)
+        changes = StoreChanges()
         history = nil
         runningImports = nil
         exportLedger = nil
+        cloudKitActivity = nil
     }
 
     private static func cleanupAfterUpload(_ ledger: CloudKitExportLedger) -> PersistentHistoryObserver.CleanupCutoff {

@@ -35,6 +35,7 @@ final class GiftIdeaEditorViewModel {
     var priceText: String
     var currency: String
     var note: String
+    let currencies = SupportedCurrencies.codes
     private(set) var linkState: LinkState = .idle
     private(set) var isSaving = false
 
@@ -58,16 +59,8 @@ final class GiftIdeaEditorViewModel {
     func bind(_ environment: AppEnvironment) {
         self.environment = environment
         if currency.isEmpty {
-            currency = environment.space?.displayCurrency ?? Locale.current.currency?.identifier ?? "USD"
+            currency = environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode
         }
-    }
-
-    var currencies: [String] {
-        var codes = environment?.fx.supportedCurrencies() ?? FXService.baseCurrencies
-        if codes.contains(currency) == false, currency.isEmpty == false {
-            codes.insert(currency, at: 0)
-        }
-        return codes
     }
 
     var isParsing: Bool { linkState == .loading }
@@ -99,7 +92,7 @@ final class GiftIdeaEditorViewModel {
             if let price = parsed.price, priceText.isEmpty {
                 priceText = price.formatted(.number.precision(.fractionLength(0...2)))
             }
-            if let parsedCurrency = parsed.currency {
+            if let parsedCurrency = parsed.currency, currencies.contains(parsedCurrency) {
                 currency = parsedCurrency
             }
             linkState = parsed.title == nil && parsed.price == nil ? .failed : .idle

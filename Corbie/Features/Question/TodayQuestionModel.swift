@@ -16,7 +16,7 @@ final class TodayQuestionModel {
     @ObservationIgnored private let copy: QuestionCopy
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var environment: AppEnvironment?
-    @ObservationIgnored private var reloadObserver: (any NSObjectProtocol)?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
     @ObservationIgnored private var shownDayKey: String?
 
     init(copy: QuestionCopy = QuestionCopy(), now: @escaping @Sendable () -> Date = { Date() }) {
@@ -40,24 +40,18 @@ final class TodayQuestionModel {
         TodayQuestionLayout(questionId: question?.id, isCompact: status?.progress.isCompact ?? false)
     }
 
-    func start(_ environment: AppEnvironment, center: NotificationCenter = .default) async {
+    func start(_ environment: AppEnvironment) async {
         self.environment = environment
-        if reloadObserver == nil {
-            reloadObserver = center.addObserver(
-                forName: WidgetReloadRequest.notificationName,
-                object: nil,
-                queue: nil
-            ) { [weak self] _ in
-                Task { @MainActor in await self?.refresh() }
+        if storeChanges == nil {
+            storeChanges = environment.repositories.changes.subscribe { [weak self] in
+                await self?.refresh()
             }
         }
         await open()
     }
 
-    func stopObserving(center: NotificationCenter = .default) {
-        guard let reloadObserver else { return }
-        center.removeObserver(reloadObserver)
-        self.reloadObserver = nil
+    func stopObserving() {
+        storeChanges = nil
     }
 
     func open() async {

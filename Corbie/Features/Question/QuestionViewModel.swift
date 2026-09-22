@@ -24,7 +24,7 @@ final class QuestionViewModel {
 
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var environment: AppEnvironment?
-    @ObservationIgnored private var reloadObserver: (any NSObjectProtocol)?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
     @ObservationIgnored private var hasRecordedReveal = false
 
     init(question: DailyQuestionDTO, text: String, now: @escaping @Sendable () -> Date = { Date() }) {
@@ -58,17 +58,13 @@ final class QuestionViewModel {
 
     var charactersLeft: Int { max(0, QuestionAnswerDTO.maxLength - draft.count) }
 
-    func attach(_ environment: AppEnvironment, center: NotificationCenter = .default) async {
+    func attach(_ environment: AppEnvironment) async {
         self.environment = environment
         isWriting = ownAnswer == nil
         draft = ownAnswer?.text ?? ""
-        if reloadObserver == nil {
-            reloadObserver = center.addObserver(
-                forName: WidgetReloadRequest.notificationName,
-                object: nil,
-                queue: nil
-            ) { [weak self] _ in
-                Task { @MainActor in await self?.refresh() }
+        if storeChanges == nil {
+            storeChanges = environment.repositories.changes.subscribe { [weak self] in
+                await self?.refresh()
             }
         }
         await markSeen()
@@ -76,10 +72,8 @@ final class QuestionViewModel {
         await markRevealReadIfShown()
     }
 
-    func detach(center: NotificationCenter = .default) {
-        guard let reloadObserver else { return }
-        center.removeObserver(reloadObserver)
-        self.reloadObserver = nil
+    func detach() {
+        storeChanges = nil
     }
 
     func startEditing() {
@@ -141,7 +135,7 @@ final class QuestionViewModel {
                 spaceId: space.id,
                 viewerMemberId: viewerMemberId,
                 now: now()
-            ), stored.id == question.id else { return }
+            ), stored.dayKey == question.dayKey else { return }
             await apply(stored)
         } catch {
             environment.report(error)

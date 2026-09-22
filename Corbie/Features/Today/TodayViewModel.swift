@@ -36,7 +36,7 @@ final class TodayViewModel {
     @ObservationIgnored private let analytics: any AnalyticsRecording
     @ObservationIgnored private let calendar: Calendar
     @ObservationIgnored private let now: @Sendable () -> Date
-    @ObservationIgnored private var reloadObserver: (any NSObjectProtocol)?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
     @ObservationIgnored private var hasRecordedOpen = false
     @ObservationIgnored private var hasRecordedRecap = false
     @ObservationIgnored private var recapStamp: RecapScheduleStamp?
@@ -81,23 +81,15 @@ final class TodayViewModel {
         }
     }
 
-    func startObserving(center: NotificationCenter = .default) {
-        guard reloadObserver == nil else { return }
-        reloadObserver = center.addObserver(
-            forName: WidgetReloadRequest.notificationName,
-            object: nil,
-            queue: nil
-        ) { [weak self] _ in
-            Task { @MainActor in
-                await self?.load()
-            }
+    func startObserving() {
+        guard storeChanges == nil else { return }
+        storeChanges = repositories.changes.subscribe { [weak self] in
+            await self?.load()
         }
     }
 
-    func stopObserving(center: NotificationCenter = .default) {
-        guard let reloadObserver else { return }
-        center.removeObserver(reloadObserver)
-        self.reloadObserver = nil
+    func stopObserving() {
+        storeChanges = nil
     }
 
     func toggle(_ entry: TodayEntry) async {

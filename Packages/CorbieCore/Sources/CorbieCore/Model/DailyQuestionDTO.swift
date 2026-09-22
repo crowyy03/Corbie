@@ -36,20 +36,41 @@ public struct DailyQuestionDTO: Sendable, Codable, Identifiable, Equatable {
     }
 
     public init(_ question: DailyQuestion, viewerMemberId: UUID?, memberCount: Int) {
-        let answered = Set(question.answers.compactMap(\.memberId))
-        let revealed = memberCount >= 2 && answered.count >= memberCount
-        let ordered = question.answers.sorted { ($0.createdAt ?? .distantPast) < ($1.createdAt ?? .distantPast) }
         self.init(
-            id: question.id ?? UUID(),
+            question,
+            answers: Array(question.answers),
+            nudgedByMemberId: question.nudgedByMemberId,
+            nudgedAt: question.nudgedAt,
+            viewerMemberId: viewerMemberId,
+            memberCount: memberCount
+        )
+    }
+
+    init(
+        _ question: DailyQuestion,
+        answers: [QuestionAnswer],
+        nudgedByMemberId: UUID?,
+        nudgedAt: Date?,
+        viewerMemberId: UUID?,
+        memberCount: Int
+    ) {
+        let questionId = question.id ?? UUID()
+        let answered = Set(answers.compactMap(\.memberId))
+        let revealed = memberCount >= 2 && answered.count >= memberCount
+        let ordered = answers.sorted { ($0.createdAt ?? .distantPast) < ($1.createdAt ?? .distantPast) }
+        self.init(
+            id: questionId,
             spaceId: question.space?.id,
             questionId: question.questionId ?? "",
             dayKey: question.dayKey ?? "",
-            nudgedByMemberId: question.nudgedByMemberId,
-            nudgedAt: question.nudgedAt,
+            nudgedByMemberId: nudgedByMemberId,
+            nudgedAt: nudgedAt,
             createdAt: question.createdAt,
             answers: ordered.map { answer in
                 let isOwn = answer.memberId != nil && answer.memberId == viewerMemberId
-                return QuestionAnswerDTO(answer, hidingText: revealed == false && isOwn == false)
+                var dto = QuestionAnswerDTO(answer, hidingText: revealed == false && isOwn == false)
+                dto.dailyQuestionId = questionId
+                return dto
             },
             isRevealed: revealed
         )

@@ -58,13 +58,11 @@ struct CalendarView: View {
             UsPillButton()
         }
         .task {
+            model.reloadOnStoreChanges(environment)
             await model.load(environment)
         }
         .refreshable {
             await model.load(environment)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: WidgetReloadRequest.notificationName)) { _ in
-            model.scheduleReload(environment)
         }
         .onChange(of: appState.route) {
             consumeRoute()

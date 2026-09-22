@@ -418,6 +418,7 @@ private struct ChoreFixture {
         let stamp = moment ?? now
         return ChoresViewModel(
             repository: repository,
+            changes: controller.repositories.changes,
             analytics: analytics,
             defaults: defaults,
             now: { stamp }

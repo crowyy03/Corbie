@@ -7,8 +7,8 @@ import Observation
 final class SettingsViewModel {
     var profile = ProfileDraft()
     var weddingDate: Date?
-    var displayCurrency = "USD"
-    var currencies: [String] = []
+    var displayCurrency = SupportedCurrencies.defaultCode
+    let currencies = SupportedCurrencies.codes
     var exportURL: URL?
     var isWorking = false
     private(set) var isSavingName = false
@@ -42,7 +42,6 @@ final class SettingsViewModel {
 
     func attach(_ environment: AppEnvironment) {
         self.environment = environment
-        currencies = environment.fx.supportedCurrencies()
         reloadFromSession()
     }
 
@@ -54,10 +53,7 @@ final class SettingsViewModel {
         if pendingCommits == 0 {
             profile = stored
             weddingDate = environment.space?.weddingDate
-            displayCurrency = environment.space?.displayCurrency ?? "USD"
-            if currencies.contains(displayCurrency) == false {
-                currencies.insert(displayCurrency, at: 0)
-            }
+            displayCurrency = environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode
         }
         profile.displayName = pendingName ?? stored.displayName
     }

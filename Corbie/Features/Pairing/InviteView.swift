@@ -3,18 +3,25 @@ import SwiftUI
 
 struct InviteView: View {
     @Environment(\.palette) private var palette
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var model: InviteViewModel
+    private let partner: MemberDTO?
     private let onHasCode: (() -> Void)?
     private let onDone: () -> Void
 
     init(
         environment: AppEnvironment,
+        appState: AppState,
         spaceId: UUID,
+        partner: MemberDTO?,
         onHasCode: (() -> Void)? = nil,
         onDone: @escaping () -> Void
     ) {
-        _model = State(initialValue: InviteViewModel(environment: environment, spaceId: spaceId))
+        _model = State(
+            initialValue: InviteViewModel(environment: environment, appState: appState, spaceId: spaceId, leave: onDone)
+        )
+        self.partner = partner
         self.onHasCode = onHasCode
         self.onDone = onDone
     }
@@ -38,7 +45,14 @@ struct InviteView: View {
             .padding(.horizontal, CorbieSpacing.l)
             .padding(.vertical, CorbieSpacing.xl)
         }
-        .task { await model.appear() }
+        .task { await model.appear(partner: partner, reduceMotion: reduceMotion) }
+        .onChange(of: partner) { _, partner in
+            Task { await model.apply(partner: partner, reduceMotion: reduceMotion) }
+        }
+        .onChange(of: model.phase) { _, phase in
+            guard phase == .joined, let line = model.joinedLine else { return }
+            announce(line)
+        }
     }
 
     @ViewBuilder private func codeCard(at date: Date) -> some View {
@@ -69,6 +83,11 @@ struct InviteView: View {
                     Text(verbatim: model.failure ?? String(localized: "pairing.invite.failed.note"))
                         .corbieMono()
                         .foregroundStyle(palette.text2)
+                case .joined:
+                    Text(verbatim: model.joinedLine ?? "")
+                        .corbieIntroTitle()
+                        .foregroundStyle(palette.text)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -91,6 +110,12 @@ struct InviteView: View {
     }
 
     @ViewBuilder private func actions(at date: Date) -> some View {
+        if model.phase != .joined {
+            waitingActions(at: date)
+        }
+    }
+
+    private func waitingActions(at date: Date) -> some View {
         VStack(spacing: CorbieSpacing.s) {
             if model.isShareable(at: date) {
                 shareButton
@@ -138,6 +163,12 @@ struct InviteView: View {
         .padding(.top, CorbieSpacing.s)
     }
 
+    private func announce(_ line: String) {
+        var announcement = AttributedString(line)
+        announcement.accessibilitySpeechAnnouncementPriority = .high
+        AccessibilityNotification.Announcement(announcement).post()
+    }
+
     private var shareButton: some View {
         ShareLink(item: model.shareMessage) {
             Text("pairing.invite.share")
@@ -158,7 +189,7 @@ struct InviteView: View {
 
 #if DEBUG
 #Preview {
-    InviteView(environment: .preview(), spaceId: UUID(), onHasCode: {}, onDone: {})
+    InviteView(environment: .preview(), appState: AppState(), spaceId: UUID(), partner: nil, onHasCode: {}, onDone: {})
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(CorbieTheme.sand.palette.bg)
 }

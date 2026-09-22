@@ -10,6 +10,7 @@ final class VoteViewModel {
     private(set) var isSaving = false
 
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(vote: VoteDTO) {
         self.vote = vote
@@ -18,6 +19,10 @@ final class VoteViewModel {
     func attach(_ environment: AppEnvironment) {
         self.environment = environment
         syncSelection()
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self] in
+            await self?.refresh()
+        }
     }
 
     var outcome: VoteOutcome {

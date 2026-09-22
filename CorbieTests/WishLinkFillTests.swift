@@ -44,6 +44,29 @@ final class WishLinkFillTests: XCTestCase {
         XCTAssertEqual(transport.imageRequests, 1)
     }
 
+    func testAPriceInRublesFillsTheTitleAndThePhotoButNotThePrice() async throws {
+        let rubles = """
+        {"price":7990,"title":"BILLY bookcase","author":null,"source":"ikea","currency":"RUB",
+        "imageURL":"\(imageLink)","canonicalURL":"\(canonical)"}
+        """
+        let transport = StubTransport(parseResponse: rubles, imageLink: imageLink, image: pngData())
+        let environment = AppEnvironment.previewSignedIn(transport: transport)
+        let model = WishEditorViewModel()
+        model.configure(environment, request: WishEditorRequest(wish: nil, link: pasted))
+        let startingCurrency = model.currency
+
+        try await waitUntil("the parse finishes") { model.parseState != .parsing && model.title.isEmpty == false }
+
+        XCTAssertEqual(model.title, "BILLY bookcase")
+        XCTAssertEqual(model.imageURL, imageLink)
+        XCTAssertNotNil(model.localImage)
+        XCTAssertEqual(model.parseState, .idle)
+        XCTAssertTrue(model.priceText.isEmpty, "a price in a currency the app does not offer must not be filled")
+        XCTAssertEqual(model.currency, startingCurrency)
+        XCTAssertEqual(model.currencies, SupportedCurrencies.codes)
+        XCTAssertNil(environment.toasts.current)
+    }
+
     func testAServerThatRefusesTheLinkTellsThePerson() async throws {
         let transport = StubTransport(parseResponse: nil, imageLink: imageLink, image: Data())
         let environment = AppEnvironment.previewSignedIn(transport: transport)

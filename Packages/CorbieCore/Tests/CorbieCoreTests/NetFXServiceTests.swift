@@ -161,17 +161,6 @@ import Testing
         }
     }
 
-    @Test func supportedCurrenciesPutTheLocaleCurrencyFirst() {
-        let name = "fx-currencies"
-        let defaults = makeDefaults(name)
-        defer { defaults.removePersistentDomain(forName: "corbie.tests." + name) }
-
-        let service = FXService(client: NetTestSupport.client(transport: FakeTransport(json: ratesJSON)), defaults: defaults)
-        #expect(service.supportedCurrencies(for: Locale(identifier: "en_US")) == ["USD", "EUR", "GBP", "CHF", "CAD"])
-        #expect(service.supportedCurrencies(for: Locale(identifier: "de_DE")) == ["EUR", "USD", "GBP", "CHF", "CAD"])
-        #expect(service.supportedCurrencies(for: Locale(identifier: "pl_PL")) == ["PLN", "USD", "EUR", "GBP", "CHF", "CAD"])
-    }
-
     @Test func moneyFormatsWithTheGivenLocale() {
         let dollars = Money(amount: Decimal(string: "2400") ?? 0, currency: "usd")
         #expect(dollars.currency == "USD")

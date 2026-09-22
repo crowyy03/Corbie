@@ -9,6 +9,19 @@ public protocol QuestionRepository: Sendable {
     func history(spaceId: UUID, viewerMemberId: UUID?, search: String?) async throws -> [DailyQuestionDTO]
     func markSeen(memberId: UUID, dayKey: String) async throws -> MemberDTO
     func markRevealRead(memberId: UUID, dayKey: String) async throws -> MemberDTO
+    func consolidateDuplicates(spaceId: UUID, now: Date) async throws -> QuestionConsolidation
+}
+
+public struct QuestionConsolidation: Sendable, Equatable {
+    public static let nothing = QuestionConsolidation(rows: 0, days: 0)
+
+    public let rows: Int
+    public let days: Int
+
+    public init(rows: Int, days: Int) {
+        self.rows = rows
+        self.days = days
+    }
 }
 
 extension QuestionRepository {
@@ -26,5 +39,9 @@ extension QuestionRepository {
 
     public func history(spaceId: UUID, viewerMemberId: UUID? = nil) async throws -> [DailyQuestionDTO] {
         try await history(spaceId: spaceId, viewerMemberId: viewerMemberId, search: nil)
+    }
+
+    public func consolidateDuplicates(spaceId: UUID) async throws -> QuestionConsolidation {
+        try await consolidateDuplicates(spaceId: spaceId, now: Date())
     }
 }

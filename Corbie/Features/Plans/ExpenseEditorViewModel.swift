@@ -11,11 +11,10 @@ final class ExpenseEditorViewModel {
     var note = ""
     var date = Date()
     private(set) var isSaving = false
-    private(set) var currencies: [String] = FXService.baseCurrencies
+    let currencies = SupportedCurrencies.codes
 
     @ObservationIgnored private let plan: PlanDTO
     @ObservationIgnored private var environment: AppEnvironment?
-    @ObservationIgnored private var didConfigure = false
 
     init(plan: PlanDTO) {
         self.plan = plan
@@ -32,13 +31,6 @@ final class ExpenseEditorViewModel {
 
     func attach(_ environment: AppEnvironment) {
         self.environment = environment
-        guard didConfigure == false else { return }
-        didConfigure = true
-        var codes = environment.fx.supportedCurrencies()
-        if codes.contains(plan.currency) == false {
-            codes.insert(plan.currency, at: 0)
-        }
-        currencies = codes
     }
 
     func draft(rate: Double, addedByMemberId: UUID?) -> PlanExpenseDraft {

@@ -68,6 +68,7 @@ public protocol WishRepository: Sendable {
     func update(_ edited: WishDTO, from original: WishDTO) async throws -> WishDTO
     func fillEmptyFields(wishId: UUID, parsedFrom link: String, with parsed: ParsedLink) async throws -> WishDTO
     func fulfil(wishId: UUID, at date: Date) async throws -> WishDTO
+    func replaceUnsupportedCurrencies(spaceId: UUID) async throws -> Int
     func wish(id: UUID) async throws -> WishDTO?
     func wishes(_ query: WishQuery) async throws -> [WishDTO]
     func pendingParse(spaceId: UUID) async throws -> [WishDTO]

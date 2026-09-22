@@ -84,6 +84,39 @@ import Testing
         #expect(link.imageData != nil)
     }
 
+    @Test func aPriceInAnUnsupportedCurrencyIsLeftOutAndTheRestIsKept() async throws {
+        let api = FakeTransport(json: payload(title: "Чайник", price: 7990, currency: "rub"))
+        let images = FakeTransport([.binary(NetTestSupport.pngImage(width: 400, height: 400))])
+        let parser = LinkParser(client: NetTestSupport.client(transport: api), imageTransport: images)
+        let link = try await parser.parse(rawURL: "https://www.amazon.com/dp/B0")
+
+        #expect(link.title == "Чайник")
+        #expect(link.imageURL?.absoluteString == "https://images.example.com/a.png")
+        #expect(link.imageData != nil)
+        #expect(link.price == nil)
+        #expect(link.currency == nil)
+        #expect(link.isEmpty == false)
+    }
+
+    @Test func aSupportedCurrencyKeepsItsPrice() async throws {
+        let api = FakeTransport(json: payload(price: 129, currency: " jpy "))
+        let parser = LinkParser(client: NetTestSupport.client(transport: api), downloadsImages: false)
+        let link = try await parser.parse(rawURL: "https://www.amazon.com/dp/B0")
+
+        #expect(link.price == 129)
+        #expect(link.currency == "JPY")
+    }
+
+    @Test func anUnsupportedCurrencyWithoutAPriceIsDroppedToo() async throws {
+        let api = FakeTransport(json: payload(price: nil, currency: "INR"))
+        let parser = LinkParser(client: NetTestSupport.client(transport: api), downloadsImages: false)
+        let link = try await parser.parse(rawURL: "https://www.amazon.com/dp/B0")
+
+        #expect(link.title == "Product name")
+        #expect(link.price == nil)
+        #expect(link.currency == nil)
+    }
+
     @Test func aFailedImageDownloadDoesNotFailTheParse() async throws {
         let api = FakeTransport(json: payload())
         let images = FakeTransport([.urlFailure(.cannotConnectToHost)])

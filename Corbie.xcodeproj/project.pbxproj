@@ -212,6 +212,7 @@
 		A32F476FC51A2B6653B9B2BD /* TaskDueNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF49097E308A5FF88580BA3F /* TaskDueNotifications.swift */; };
 		A376FD29366565D004ADF314 /* LiveInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B62133717012F86CDF3F77F /* LiveInvite.swift */; };
 		A3D3C02D63C9D9AC75218159 /* CapsulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815989F852AADFD5B458253D /* CapsulesViewModel.swift */; };
+		A76EDFA672BB0F5AE3B12ED1 /* CurrencyPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB510C03812D7EA7EAE4BB7 /* CurrencyPickerTests.swift */; };
 		A793AFB3665E2951DD34256E /* QuestionRevealTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B2EA3AB66287A3E5D36AE /* QuestionRevealTracking.swift */; };
 		A9A82C6FDD9B9A1DE38F0B3A /* ShareWishViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EF99805F9035D7CE01C2CC /* ShareWishViewModel.swift */; };
 		A9B1A60370ECDE4B949D7FF8 /* FreeTasksWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585F84E7EC1022E7CF2528A /* FreeTasksWidget.swift */; };
@@ -263,6 +264,7 @@
 		D4C3F1CF248245D1B494B406 /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DD3D9757471CF6CFFE5BD9 /* JoinView.swift */; };
 		D4C674E1C3B30311FB894257 /* PaywallCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04876049147DC7C6025E8AEA /* PaywallCheckout.swift */; };
 		D50A87ED2DC1655DA1E48276 /* PaywallScreensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D981C8D672C3CF9436674480 /* PaywallScreensUITests.swift */; };
+		D57478A49DEC415C89BF4DE2 /* ChoreHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D44F4A9DA06A706178AB17 /* ChoreHistoryViewModel.swift */; };
 		D63A48A7562D0408A06BC3FC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAB8066EDC1CFB3F04F2A48 /* SwiftUI.framework */; };
 		D674219F0A31FAD5343EF43C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CF488061D0361B0ED868BF /* SettingsView.swift */; };
 		D788D59AD464EF29444EF62D /* TodayChoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40E837078C0555D9D1DCEC3 /* TodayChoreModel.swift */; };
@@ -282,12 +284,14 @@
 		E130DFF240CC55180A8CBBDB /* CalendarGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF901EFB9E1A61567D187B4F /* CalendarGrid.swift */; };
 		E32AF678642BF3322E2DDD5A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36368046A5FAB01754781EFA /* Router.swift */; };
 		E426C2AB2CF93F9337147892 /* TrialOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC545914B3B08889DEFB11CA /* TrialOfferView.swift */; };
+		E42826F50D69A1E7ABF64D04 /* StoreChangeRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2267F65D09DA111C6C6776B /* StoreChangeRefreshTests.swift */; };
 		E4A087C50283A6A5ADD72A6A /* SettingsSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00600C78BED302A74F3C1772 /* SettingsSubscriptionStatus.swift */; };
 		E55B68CADE8854CA069D8B3E /* LocalizationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A0FD0A2EAD737BA53858D /* LocalizationUITests.swift */; };
 		E57440C9A06757548B8CB3F1 /* ListMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6763F106517FD86B72D462BE /* ListMapView.swift */; };
 		E5AF45FE29769ABA728C0F23 /* WishesNetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30149451909A590CD6B976E8 /* WishesNetworkMonitor.swift */; };
 		E7FCACA4C27DBF8F77CFE218 /* ExpenseEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C9CE3648CACAEF49793FA /* ExpenseEditorViewModel.swift */; };
 		E802BA38F4C6F2C5E0A66A0A /* CorbieShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C73DC210F1F8DCF9C9B1BAB /* CorbieShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E91C492657C200DB9A462F74 /* ChoreSplitOfferModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FF6443BE35BCD84F559317 /* ChoreSplitOfferModel.swift */; };
 		EA95CDB039DA1F58783BB622 /* QARelativeDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062DF1A1AB7A3DF299FFA27B /* QARelativeDateTests.swift */; };
 		ED19D80A7495A443C9374642 /* VotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCFA0F6937648268B4472D3 /* VotesViewModel.swift */; };
 		ED6F2FFEA5598A686F220983 /* AddToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8965137EA487DC01422332 /* AddToolbarItem.swift */; };
@@ -528,6 +532,7 @@
 		8E3EE6CAC5B63264B789ED48 /* OnboardingProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProfileTests.swift; sourceTree = "<group>"; };
 		8E78157B2B33516F0939FE1A /* InviteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteView.swift; sourceTree = "<group>"; };
 		8F8965137EA487DC01422332 /* AddToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToolbarItem.swift; sourceTree = "<group>"; };
+		8FB510C03812D7EA7EAE4BB7 /* CurrencyPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPickerTests.swift; sourceTree = "<group>"; };
 		90ADE6250AAF49C178458519 /* VoteEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteEditorViewModel.swift; sourceTree = "<group>"; };
 		90E57DE9A4EE81F38354145B /* QuestionHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionHistoryViewModel.swift; sourceTree = "<group>"; };
 		9114E5B63C0D4C2E0478DF75 /* PeopleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleViewModel.swift; sourceTree = "<group>"; };
@@ -599,6 +604,7 @@
 		D3BF40ADDD34430919F6A2DE /* QuestionDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDayView.swift; sourceTree = "<group>"; };
 		D439758E7E6D75110C77131A /* CorbieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorbieApp.swift; sourceTree = "<group>"; };
 		D440CE1D2023999DEDE9AD96 /* TodayPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayPresentation.swift; sourceTree = "<group>"; };
+		D4FF6443BE35BCD84F559317 /* ChoreSplitOfferModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreSplitOfferModel.swift; sourceTree = "<group>"; };
 		D5591E8B5A048FBB1A76EAED /* CapsulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsulesView.swift; sourceTree = "<group>"; };
 		D58F3D8A46202A453F18201F /* CapsuleRowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleRowState.swift; sourceTree = "<group>"; };
 		D5BAE6C658C5951759EDF1FC /* TasksViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewModelTests.swift; sourceTree = "<group>"; };
@@ -640,6 +646,8 @@
 		F01825688B7A6B74AB8404E6 /* SystemCalendarEventEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemCalendarEventEditor.swift; sourceTree = "<group>"; };
 		F12C77054F80369939EF3D61 /* LegalPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalPage.swift; sourceTree = "<group>"; };
 		F19335503693FB28063C6B82 /* ChoreStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreStateTests.swift; sourceTree = "<group>"; };
+		F2267F65D09DA111C6C6776B /* StoreChangeRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreChangeRefreshTests.swift; sourceTree = "<group>"; };
+		F2D44F4A9DA06A706178AB17 /* ChoreHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreHistoryViewModel.swift; sourceTree = "<group>"; };
 		F3310A390D9FFD7E738C5CFF /* UsHubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsHubViewModel.swift; sourceTree = "<group>"; };
 		F40E837078C0555D9D1DCEC3 /* TodayChoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayChoreModel.swift; sourceTree = "<group>"; };
 		F43BC912363D3C11DCD49E3C /* TodayUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayUITests.swift; sourceTree = "<group>"; };
@@ -917,12 +925,14 @@
 			children = (
 				2AC52E10D8B07E816C050D37 /* ChoreCopy.swift */,
 				B72281BC47603B01AFFAC763 /* ChoreHistoryView.swift */,
+				F2D44F4A9DA06A706178AB17 /* ChoreHistoryViewModel.swift */,
 				AFC8311E6A6D237AB342AA29 /* ChoreListBuilderView.swift */,
 				2E3DA7B47B9ECFEA626AFF0B /* ChoreListBuilderViewModel.swift */,
 				029E0CF88C13C70011994C9C /* ChoreRatingView.swift */,
 				58F2FAC6BDE82C52538D5873 /* ChoreRatingViewModel.swift */,
 				F88A7B9C7A3D22BC9254167E /* ChoreRevealView.swift */,
 				E520ADE4ABC941D0A47EBE0E /* ChoreRevealViewModel.swift */,
+				D4FF6443BE35BCD84F559317 /* ChoreSplitOfferModel.swift */,
 				89E4A857992BB684ED06377B /* ChoreSplitPresentation.swift */,
 				3FE3C81F70AD8B1959812C9E /* ChoreSplitState.swift */,
 				1500968EDD22F12EDEFBD926 /* ChoresView.swift */,
@@ -1001,6 +1011,7 @@
 				DD1BC6BCD269C8582E9260CB /* ChoreFlowTests.swift */,
 				F19335503693FB28063C6B82 /* ChoreStateTests.swift */,
 				63C91467F3D6D9CD88D8374D /* CoreResourceBundleTests.swift */,
+				8FB510C03812D7EA7EAE4BB7 /* CurrencyPickerTests.swift */,
 				D8A4200AFAA023966D3FBDB4 /* FreeTimeCorbieEventPublisherTests.swift */,
 				025448DC8DE14E31514EAF21 /* FreeTimeCorbieEventTests.swift */,
 				0D3B7467B81283668E794972 /* FreeTimeRowTextTests.swift */,
@@ -1026,6 +1037,7 @@
 				D91E5CA4C8AC59A50A8070CC /* SettingsNotificationTests.swift */,
 				1D688A263B95FEDA84123054 /* SettingsRouteTests.swift */,
 				09AB371691F42D784DFEFA95 /* SettingsStatusTests.swift */,
+				F2267F65D09DA111C6C6776B /* StoreChangeRefreshTests.swift */,
 				A3803B5743FAF9C101EDEA66 /* SupportMailTests.swift */,
 				2D923BE0154ECDD8036DCC4D /* TasksSubtitleFormatterTests.swift */,
 				D5BAE6C658C5951759EDF1FC /* TasksViewModelTests.swift */,
@@ -1506,6 +1518,7 @@
 				4F590D3435878D277B57F1A7 /* ChoreFlowTests.swift in Sources */,
 				D7AFA7C590AD947D75FD4BE9 /* ChoreStateTests.swift in Sources */,
 				CFE6EB57670B6FD4C0B3EFEA /* CoreResourceBundleTests.swift in Sources */,
+				A76EDFA672BB0F5AE3B12ED1 /* CurrencyPickerTests.swift in Sources */,
 				C00DEB34F11A01C512D2C33F /* FreeTimeCorbieEventPublisherTests.swift in Sources */,
 				209B9A9903E63A502860AA7C /* FreeTimeCorbieEventTests.swift in Sources */,
 				95ABC89B0042E6DD8557F604 /* FreeTimeRowTextTests.swift in Sources */,
@@ -1531,6 +1544,7 @@
 				511C1E27601EC15B0A9AB332 /* SettingsNotificationTests.swift in Sources */,
 				5E2C01F39FEFF11BE7FE9980 /* SettingsRouteTests.swift in Sources */,
 				31B1805E34395ACEE0855767 /* SettingsStatusTests.swift in Sources */,
+				E42826F50D69A1E7ABF64D04 /* StoreChangeRefreshTests.swift in Sources */,
 				96FCFEC4ED2038099276B92D /* SupportMailTests.swift in Sources */,
 				B65C5E297D2BD2BA85E0EEBB /* TasksSubtitleFormatterTests.swift in Sources */,
 				DF00BF1979A39EA45E30F329 /* TasksViewModelTests.swift in Sources */,
@@ -1575,12 +1589,14 @@
 				B660D036BEE72A1DD5240366 /* ChecklistCard.swift in Sources */,
 				5077931FA40962D9C8241F97 /* ChoreCopy.swift in Sources */,
 				6EEB3E57542169999F244D99 /* ChoreHistoryView.swift in Sources */,
+				D57478A49DEC415C89BF4DE2 /* ChoreHistoryViewModel.swift in Sources */,
 				6E1CDAF127E6797B97646B75 /* ChoreListBuilderView.swift in Sources */,
 				BE0D0D27BA45E1791231A9A7 /* ChoreListBuilderViewModel.swift in Sources */,
 				2B4B84D0BBD43A31476F47BB /* ChoreRatingView.swift in Sources */,
 				A17AA994A22D6CB50C799604 /* ChoreRatingViewModel.swift in Sources */,
 				BCB4D2B4736E8AF1C945DD66 /* ChoreRevealView.swift in Sources */,
 				5D84C7AE51C2DE240FF616F2 /* ChoreRevealViewModel.swift in Sources */,
+				E91C492657C200DB9A462F74 /* ChoreSplitOfferModel.swift in Sources */,
 				80F00DF42023E086B5F7D184 /* ChoreSplitPresentation.swift in Sources */,
 				FF4CAF86EA948C9B47342108 /* ChoreSplitState.swift in Sources */,
 				2A8EEE444CF56699AA29A86B /* ChoreSwipe.swift in Sources */,

@@ -205,6 +205,19 @@ public struct CoreDataPeopleRepository: PeopleRepository {
         }
     }
 
+    public func replaceUnsupportedGiftIdeaCurrencies(spaceId: UUID) async throws -> Int {
+        try await access.replaceUnsupportedCurrencies(
+            in: [
+                UnsupportedCurrencyRows(
+                    entityName: GiftIdea.entityName,
+                    currencyKey: "currency",
+                    spaceIdKeyPath: "person.space.id"
+                )
+            ],
+            spaceId: spaceId
+        )
+    }
+
     public func giftIdeas(personId: UUID) async throws -> [GiftIdeaDTO] {
         try await access.read { context in
             let ideas: [GiftIdea] = try ManagedFetch.all(

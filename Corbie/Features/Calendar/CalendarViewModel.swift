@@ -8,7 +8,6 @@ final class CalendarViewModel {
     static let upcomingLimit = 20
     static let upcomingHorizonDays = 365
     static let defaultStartHour = 19
-    static let reloadDebounce = Duration.milliseconds(250)
 
     private(set) var grid: CalendarGrid
     private(set) var entries: [CalendarEntry] = []
@@ -23,7 +22,7 @@ final class CalendarViewModel {
     @ObservationIgnored let calendar: Calendar
     @ObservationIgnored let formatting: CalendarFormatting
     @ObservationIgnored private let clock: @Sendable () -> Date
-    @ObservationIgnored private var reloadTask: Task<Void, Never>?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(
         calendar: Calendar = .current,
@@ -88,12 +87,11 @@ final class CalendarViewModel {
         return calendar.date(bySettingHour: Self.defaultStartHour, minute: 0, second: 0, of: day) ?? day
     }
 
-    func scheduleReload(_ environment: AppEnvironment) {
-        reloadTask?.cancel()
-        reloadTask = Task { [weak self] in
-            try? await Task.sleep(for: Self.reloadDebounce)
-            guard Task.isCancelled == false else { return }
-            await self?.load(environment)
+    func reloadOnStoreChanges(_ environment: AppEnvironment) {
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self, weak environment] in
+            guard let self, let environment else { return }
+            await load(environment)
         }
     }
 

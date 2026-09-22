@@ -84,6 +84,20 @@ public struct CoreDataPlanRepository: PlanRepository {
         }
     }
 
+    public func replaceUnsupportedCurrencies(spaceId: UUID) async throws -> Int {
+        try await access.replaceUnsupportedCurrencies(
+            in: [
+                UnsupportedCurrencyRows(entityName: Plan.entityName, currencyKey: "currency", spaceIdKeyPath: "space.id"),
+                UnsupportedCurrencyRows(
+                    entityName: PlanExpense.entityName,
+                    currencyKey: "currency",
+                    spaceIdKeyPath: "plan.space.id"
+                )
+            ],
+            spaceId: spaceId
+        )
+    }
+
     public func plan(id: UUID) async throws -> PlanDTO? {
         try await access.read { context in
             let plan: Plan? = try ManagedFetch.first(Plan.entityName, id: id, in: context)

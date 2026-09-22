@@ -246,6 +246,7 @@ private struct Fixture {
         let stamp = now
         return TasksViewModel(
             repository: controller.repositories.tasks,
+            changes: controller.repositories.changes,
             notifications: TaskDueNotifications(
                 scheduler: NotificationScheduler(client: PreviewNotificationClient())
             ),

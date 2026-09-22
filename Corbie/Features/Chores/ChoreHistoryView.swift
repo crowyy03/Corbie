@@ -5,20 +5,19 @@ struct ChoreHistoryView: View {
     @Environment(\.palette) private var palette
     @Environment(AppEnvironment.self) private var environment
 
-    @State private var sets: [ChoreSetDTO] = []
-    @State private var hasLoaded = false
+    @State private var model = ChoreHistoryViewModel()
 
     private let copy = ChoreCopy()
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: CorbieSpacing.l) {
-                if sets.isEmpty {
-                    if hasLoaded {
+                if model.sets.isEmpty {
+                    if model.hasLoaded {
                         empty
                     }
                 } else {
-                    ForEach(sets) { set in
+                    ForEach(model.sets) { set in
                         past(set)
                     }
                 }
@@ -29,7 +28,10 @@ struct ChoreHistoryView: View {
         .background(palette.bg)
         .navigationTitle(String(localized: "chore.history.title"))
         .navigationBarTitleDisplayMode(.large)
-        .task { await load() }
+        .task {
+            model.attach(environment)
+            await model.load()
+        }
     }
 
     private var empty: some View {
@@ -54,20 +56,5 @@ struct ChoreHistoryView: View {
                 ).lists
             )
         }
-    }
-
-    private func load() async {
-        guard let space = environment.space else {
-            hasLoaded = true
-            return
-        }
-        do {
-            sets = try await environment.repositories.chores
-                .history(spaceId: space.id, viewerMemberId: environment.currentMember?.id)
-                .filter { $0.appliedAt != nil }
-        } catch {
-            environment.report(error)
-        }
-        hasLoaded = true
     }
 }

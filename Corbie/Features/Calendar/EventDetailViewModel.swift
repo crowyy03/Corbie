@@ -18,6 +18,7 @@ final class EventDetailViewModel {
     @ObservationIgnored let calendar: Calendar
     @ObservationIgnored let formatting: CalendarFormatting
     @ObservationIgnored let systemStore = EKEventStore()
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(eventId: UUID, calendar: Calendar = .current, locale: Locale = .current) {
         self.eventId = eventId
@@ -39,6 +40,14 @@ final class EventDetailViewModel {
     var entry: CalendarEntry? {
         guard let event else { return nil }
         return CalendarEntry(event: event, calendar: calendar)
+    }
+
+    func reloadOnStoreChanges(_ environment: AppEnvironment) {
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self, weak environment] in
+            guard let self, let environment else { return }
+            await load(environment)
+        }
     }
 
     func load(_ environment: AppEnvironment) async {

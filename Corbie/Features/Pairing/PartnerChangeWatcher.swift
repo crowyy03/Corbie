@@ -4,8 +4,8 @@ import Foundation
 struct PartnerChangeWatcher: Sendable {
     @MainActor
     func observe(_ environment: AppEnvironment) async {
+        let changes = environment.repositories.changes.stream()
         await check(environment)
-        let changes = NotificationCenter.default.notifications(named: WidgetReloadRequest.notificationName)
         for await _ in changes {
             await check(environment)
         }

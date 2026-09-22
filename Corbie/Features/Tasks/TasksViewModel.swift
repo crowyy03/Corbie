@@ -60,15 +60,18 @@ final class TasksViewModel {
     @ObservationIgnored private let notifications: TaskDueNotifications
     @ObservationIgnored private let analytics: any AnalyticsRecording
     @ObservationIgnored private let now: @Sendable () -> Date
-    @ObservationIgnored private var reloadObserver: (any NSObjectProtocol)?
+    @ObservationIgnored private let changes: StoreChanges
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(
         repository: any TaskRepository,
+        changes: StoreChanges,
         notifications: TaskDueNotifications,
         analytics: any AnalyticsRecording,
         now: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.repository = repository
+        self.changes = changes
         self.notifications = notifications
         self.analytics = analytics
         self.now = now
@@ -177,23 +180,15 @@ final class TasksViewModel {
         }
     }
 
-    func startObserving(center: NotificationCenter = .default) {
-        guard reloadObserver == nil else { return }
-        reloadObserver = center.addObserver(
-            forName: WidgetReloadRequest.notificationName,
-            object: nil,
-            queue: nil
-        ) { [weak self] _ in
-            Task { @MainActor in
-                await self?.load()
-            }
+    func startObserving() {
+        guard storeChanges == nil else { return }
+        storeChanges = changes.subscribe { [weak self] in
+            await self?.load()
         }
     }
 
-    func stopObserving(center: NotificationCenter = .default) {
-        guard let reloadObserver else { return }
-        center.removeObserver(reloadObserver)
-        self.reloadObserver = nil
+    func stopObserving() {
+        storeChanges = nil
     }
 
     func take(_ task: TaskDTO) async {

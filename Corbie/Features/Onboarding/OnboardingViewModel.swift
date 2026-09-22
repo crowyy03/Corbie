@@ -1,15 +1,12 @@
 import CorbieCore
 import Foundation
 import Observation
+import os
 
 enum OnboardingStepIndex {
     static let introPageCount = 3
     static let profile = 3
     static let invite = 4
-}
-
-private enum OnboardingFallback {
-    static let currency = "USD"
 }
 
 @MainActor
@@ -29,6 +26,9 @@ final class OnboardingViewModel {
     private(set) var space: SpaceDTO?
     private(set) var member: MemberDTO?
     private(set) var joinCode: String?
+    private(set) var storedPartner: MemberDTO?
+
+    private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "pairing")
 
     @ObservationIgnored private let environment: AppEnvironment
     @ObservationIgnored private let appState: AppState
@@ -122,6 +122,7 @@ final class OnboardingViewModel {
             environment.report(error)
             return
         }
+        await loadStoredPartner()
         recordStep(OnboardingStepIndex.invite)
         step = .invite
     }
@@ -137,12 +138,21 @@ final class OnboardingViewModel {
             environment.report(error)
             return
         }
+        await loadStoredPartner()
         recordStep(OnboardingStepIndex.invite)
         step = .invite
     }
 
     func openJoin() {
         step = .join
+    }
+
+    func followStoredPartner() async {
+        let changes = environment.repositories.changes.stream()
+        await loadStoredPartner()
+        for await change in changes where change.origin == .elsewhere {
+            await loadStoredPartner()
+        }
     }
 
     func finish() async {
@@ -163,6 +173,15 @@ final class OnboardingViewModel {
             try await environment.exchangeSessionToken(authorizationCode: authorizationCode)
         } catch {
             environment.report(error)
+        }
+    }
+
+    private func loadStoredPartner() async {
+        guard let space, let member else { return }
+        do {
+            storedPartner = try await environment.repositories.members.partner(of: member.id, spaceId: space.id)
+        } catch {
+            OnboardingViewModel.log.error("invite: partner lookup failed: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -224,9 +243,8 @@ final class OnboardingViewModel {
     }
 
     private func makeSpace() async throws -> SpaceDTO {
-        let currency = Locale.current.currency?.identifier ?? OnboardingFallback.currency
         let created = try await environment.repositories.spaces.create(
-            displayCurrency: currency,
+            displayCurrency: SupportedCurrencies.defaultCode,
             creatorMemberId: nil,
             now: Date()
         )

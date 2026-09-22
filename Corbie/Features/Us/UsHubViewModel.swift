@@ -13,6 +13,15 @@ final class UsHubViewModel {
     private(set) var choreLine = ""
 
     @ObservationIgnored private let choreCopy = ChoreCopy()
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
+
+    func reloadOnStoreChanges(_ environment: AppEnvironment) {
+        guard storeChanges == nil else { return }
+        storeChanges = environment.repositories.changes.subscribe { [weak self, weak environment] in
+            guard let self, let environment else { return }
+            await load(environment)
+        }
+    }
 
     func load(_ environment: AppEnvironment, now: Date = Date()) async {
         guard let space = environment.space else {

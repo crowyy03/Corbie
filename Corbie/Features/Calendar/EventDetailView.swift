@@ -51,10 +51,8 @@ struct EventDetailView: View {
             }
         }
         .task {
+            model.reloadOnStoreChanges(environment)
             await model.load(environment)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: WidgetReloadRequest.notificationName)) { _ in
-            Task { await model.load(environment) }
         }
         .onChange(of: model.isDeleted) {
             if model.isDeleted { dismiss() }

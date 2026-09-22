@@ -68,7 +68,7 @@ public struct WishDTO: Sendable, Codable, Identifiable, Equatable {
             imageURL: wish.imageURL,
             localImage: wish.localImage,
             price: wish.price?.doubleValue,
-            currency: wish.currency,
+            currency: wish.currency.map(SupportedCurrencies.codeOrDefault),
             priority: wish.priority,
             note: wish.note,
             source: wish.source,

@@ -142,7 +142,13 @@ public final class CloudKitSharing {
                 throw CorbieError.cloudKit(error.localizedDescription)
             }
         }
-        try await purgeZone(share.recordID.zoneID, in: shared, container: container, missingZoneIsPurged: true)
+        try await purgeZone(
+            share.recordID.zoneID,
+            in: shared,
+            container: container,
+            reason: .leave,
+            missingZoneIsPurged: true
+        )
     }
 
     public func removeDepartedMembers(space spaceId: UUID, ownerMemberId: UUID) async throws -> [UUID] {
@@ -208,7 +214,13 @@ public final class CloudKitSharing {
         var firstFailure: (any Error)?
         for zoneID in zoneIDs {
             do {
-                try await purgeZone(zoneID, in: privateStore, container: container, missingZoneIsPurged: true)
+                try await purgeZone(
+                    zoneID,
+                    in: privateStore,
+                    container: container,
+                    reason: .deleteAccount,
+                    missingZoneIsPurged: true
+                )
             } catch {
                 CloudKitSharing.log.error(
                     "purging \(zoneID.zoneName, privacy: .public) failed: \(error.localizedDescription, privacy: .public)"
@@ -295,11 +307,23 @@ public final class CloudKitSharing {
         _ zoneID: CKRecordZone.ID,
         in store: NSPersistentStore,
         container: NSPersistentCloudKitContainer,
+        reason: ZonePurgeReason,
         missingZoneIsPurged: Bool = false
     ) async throws {
+        let label = StoreScope.allCases.first { stack.store(for: $0) === store }?.rawValue ?? SyncLog.unknown
+        let zoneName = zoneID.zoneName
+        SyncLog.write(SyncLog.purgeAskedLine(store: label, zone: zoneName, reason: reason))
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
             container.purgeObjectsAndRecordsInZone(with: zoneID, in: store) { _, error in
-                if let error, (missingZoneIsPurged && CloudKitSharing.isMissingZone(error)) == false {
+                let countsAsPurged = error.map { missingZoneIsPurged && CloudKitSharing.isMissingZone($0) } ?? true
+                SyncLog.write(SyncLog.purgeResultLine(
+                    store: label,
+                    zone: zoneName,
+                    reason: reason,
+                    error: error,
+                    zoneWasMissing: error != nil && countsAsPurged
+                ))
+                if let error, countsAsPurged == false {
                     continuation.resume(throwing: CorbieError.cloudKit(error.localizedDescription))
                 } else {
                     continuation.resume()

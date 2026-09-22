@@ -58,6 +58,8 @@ import Testing
         #expect(yen.formatted(locale: Locale(identifier: "de_DE")).hasPrefix("2.400"))
         #expect(yen.formatted(locale: Locale(identifier: "en_US")).contains("2,400"))
         #expect(yen.approximate(locale: Locale(identifier: "en_US")).hasPrefix("\u{2248} "))
+        #expect(Money(amount: 1572.7, currency: "JPY").formatted(locale: Locale(identifier: "en_US")) == "\u{A5}1,573")
+        #expect(Money(amount: 1572.7, currency: "CHF").formatted(locale: Locale(identifier: "en_US")).hasSuffix("1,572.70"))
     }
 
     @Test func shortDateLeadsWithTheDayOutsideAmericanEnglish() {

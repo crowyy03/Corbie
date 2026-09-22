@@ -36,6 +36,7 @@ struct QuestionHistoryView: View {
         .navigationBarTitleDisplayMode(.large)
         .searchable(text: $model.search, prompt: Text("question.history.search"))
         .task(id: model.search) {
+            model.reloadOnStoreChanges(environment)
             await model.load(environment)
         }
     }

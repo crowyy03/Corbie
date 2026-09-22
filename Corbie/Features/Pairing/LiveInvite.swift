@@ -5,6 +5,7 @@ struct LiveInvite: Codable, Equatable {
     let code: String
     let expiresAt: Date
     let spaceId: UUID
+    let existingPartnerId: UUID?
 }
 
 struct LiveInviteStore {

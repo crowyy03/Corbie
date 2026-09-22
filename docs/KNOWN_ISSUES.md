@@ -162,8 +162,12 @@ background.
 Reproduce: two paired phones, Corbie closed on A. Tick a task on A's Tasks widget. B does not change
 until A opens Corbie. `docs/TWO_DEVICE_TEST_SESSION.md` step 8.
 
-Fix, if the delay matters: have the extensions ask the app to run (a background task request or a
-push), which v1 does not do.
+Accepted for v1 on 2026-09-22: no background export is planned. The share extension and the widgets
+run no CloudKit mirroring on purpose (one syncing process per store), and a wish saved from the share
+sheet waits in the store until Corbie next runs on that phone. On a device session the `sync` log
+shows `export ok store=private zone=com.apple.coredata.cloudkit.share.<id> Wish +1 ~0 -0` (`store=shared`
+on the partner's phone) only after Corbie is opened, not when the share sheet closes
+(`docs/TWO_DEVICE_SYNC_CHECKLIST.md`).
 
 ### Leaving can stop halfway
 
@@ -203,6 +207,15 @@ When a partner leaves and the removal of their row did not upload in time, the o
 the row itself, but only on launch, on returning to the foreground, or after a synced change. An owner
 who keeps Corbie open on one screen with no incoming changes keeps seeing the old partner until one of
 those happens.
+
+### A parsed price without a currency takes the picker's currency
+
+The server returns a price with `currency: null` when the page shows neither a code nor a symbol it
+knows. The wish editor, the share extension and the background retry then label it with the currency
+the picker shows, the space currency, so a shop in another currency can come in under the wrong sign.
+Prices in a known currency outside the eight are already left out (`docs/DECISIONS.md`, 2026-09-22).
+Leaving out every price without a currency would also drop the correct ones from shops in the space's
+own currency; not decided.
 
 ## Цены на экранах оплаты не проверяются автотестом
 

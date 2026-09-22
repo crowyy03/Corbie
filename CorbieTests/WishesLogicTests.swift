@@ -107,17 +107,6 @@ final class WishesLogicTests: XCTestCase {
         XCTAssertEqual(WishParseRetry.candidates(in: wishes, attempted: [], isOnline: true, limit: 2).count, 2)
     }
 
-    func testCurrencyOptionsPutTheSpaceCurrencyFirst() {
-        let options = WishEditorViewModel.currencyOptions(
-            spaceCurrency: "eur",
-            supported: ["USD", "EUR", "GBP"],
-            wishCurrency: "chf"
-        )
-
-        XCTAssertEqual(options, ["EUR", "CHF", "USD", "GBP"])
-        XCTAssertEqual(WishEditorViewModel.currencyOptions(spaceCurrency: nil, supported: [], wishCurrency: nil), ["USD"])
-    }
-
     private func wish(
         owner: UUID,
         price: Double? = nil,

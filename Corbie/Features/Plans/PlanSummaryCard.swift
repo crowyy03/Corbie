@@ -60,7 +60,7 @@ struct PlanSummaryCard: View {
                 .foregroundStyle(palette.text)
                 .lineLimit(1)
                 .minimumScaleFactor(0.4)
-            Text(planOpenSubtitle(startedAt: plan.createdAt, contributionCount: plan.expenseCount))
+            Text(planOpenSubtitle(for: plan))
                 .corbieMono()
                 .foregroundStyle(palette.text2)
         }

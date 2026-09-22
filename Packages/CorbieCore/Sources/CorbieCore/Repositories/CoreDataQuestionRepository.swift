@@ -18,8 +18,9 @@ public struct CoreDataQuestionRepository: QuestionRepository {
             let space: Space = try ManagedFetch.require(Space.entityName, id: spaceId, in: context)
             let zone = TimeZone(identifier: space.anchorTimeZone ?? "") ?? .current
             let dayKey = QuestionSelector.dayKey(for: now, timeZone: zone)
-            if let existing = CoreDataQuestionRepository.merged(dayKey: dayKey, in: space, context: context) {
-                return DailyQuestionDTO(existing, viewerMemberId: viewerMemberId, memberCount: space.members.count)
+            if let day = QuestionDayMerge(rows: space.questions.filter { $0.dayKey == dayKey }) {
+                day.apply(deletingDuplicates: false, in: context)
+                return day.dto(viewerMemberId: viewerMemberId, memberCount: space.members.count)
             }
             let seed = space.questionSeed == 0
                 ? QuestionSelector.seed(forSpaceId: spaceId)
@@ -50,11 +51,8 @@ public struct CoreDataQuestionRepository: QuestionRepository {
             }
             let zone = TimeZone(identifier: space.anchorTimeZone ?? "") ?? .current
             let dayKey = QuestionSelector.dayKey(for: now, timeZone: zone)
-            let sameDay = space.questions
-                .filter { $0.dayKey == dayKey }
-                .sorted { ($0.id?.uuidString ?? "") < ($1.id?.uuidString ?? "") }
-            guard let question = sameDay.first else { return nil }
-            return DailyQuestionDTO(question, viewerMemberId: viewerMemberId, memberCount: space.members.count)
+            let day = QuestionDayMerge(rows: space.questions.filter { $0.dayKey == dayKey })
+            return day?.dto(viewerMemberId: viewerMemberId, memberCount: space.members.count)
         }
     }
 
@@ -71,17 +69,17 @@ public struct CoreDataQuestionRepository: QuestionRepository {
                 id: dailyQuestionId,
                 in: context
             )
-            guard question.answers.contains(where: { $0.memberId == memberId }) == false else {
+            let day = try CoreDataQuestionRepository.day(of: question)
+            guard day.answers.contains(where: { $0.memberId == memberId }) == false else {
                 throw CorbieError.invalidInput("this member already answered today")
             }
             let answer = QuestionAnswer(context: context)
-            context.assign(answer, toStoreOf: question)
-            answer.dailyQuestion = question
+            context.assign(answer, toStoreOf: day.canonical)
+            answer.dailyQuestion = day.canonical
             answer.memberId = memberId
             answer.text = body
             answer.createdAt = date
-            return DailyQuestionDTO(
-                question,
+            return try CoreDataQuestionRepository.day(of: day.canonical).dto(
                 viewerMemberId: memberId,
                 memberCount: question.space?.members.count ?? 0
             )
@@ -105,8 +103,7 @@ public struct CoreDataQuestionRepository: QuestionRepository {
             guard let question = answer.dailyQuestion else {
                 throw CorbieError.notFound("DailyQuestion for answer \(answerId)")
             }
-            return DailyQuestionDTO(
-                question,
+            return try CoreDataQuestionRepository.day(of: question).dto(
                 viewerMemberId: answer.memberId,
                 memberCount: question.space?.members.count ?? 0
             )
@@ -121,13 +118,16 @@ public struct CoreDataQuestionRepository: QuestionRepository {
                 in: context
             )
             let memberCount = question.space?.members.count ?? 0
-            let dto = DailyQuestionDTO(question, viewerMemberId: memberId, memberCount: memberCount)
-            guard dto.canNudge(as: memberId) else {
+            let day = try CoreDataQuestionRepository.day(of: question)
+            guard day.dto(viewerMemberId: memberId, memberCount: memberCount).canNudge(as: memberId) else {
                 throw CorbieError.invalidInput("there is nothing to nudge about today")
             }
-            question.nudgedByMemberId = memberId
-            question.nudgedAt = date
-            return DailyQuestionDTO(question, viewerMemberId: memberId, memberCount: memberCount)
+            day.canonical.nudgedByMemberId = memberId
+            day.canonical.nudgedAt = date
+            return try CoreDataQuestionRepository.day(of: day.canonical).dto(
+                viewerMemberId: memberId,
+                memberCount: memberCount
+            )
         }
     }
 
@@ -140,12 +140,11 @@ public struct CoreDataQuestionRepository: QuestionRepository {
             let questions: [DailyQuestion] = try ManagedFetch.all(
                 DailyQuestion.entityName,
                 predicate: ManagedFetch.spaceRelation(spaceId),
-                sort: [NSSortDescriptor(key: "dayKey", ascending: false)],
                 in: context
             )
-            let all = questions.map {
-                DailyQuestionDTO($0, viewerMemberId: viewerMemberId, memberCount: memberCount)
-            }
+            let all = QuestionDayMerge.days(of: questions)
+                .sorted { ($0.dayKey ?? "") > ($1.dayKey ?? "") }
+                .map { $0.dto(viewerMemberId: viewerMemberId, memberCount: memberCount) }
             guard let needle = search?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
                   needle.isEmpty == false else { return all }
             return all.filter { question in
@@ -174,6 +173,60 @@ public struct CoreDataQuestionRepository: QuestionRepository {
         }
     }
 
+    public func consolidateDuplicates(spaceId: UUID, now: Date) async throws -> QuestionConsolidation {
+        do {
+            let isPending = try await access.read { context in
+                try CoreDataQuestionRepository.consolidationDays(spaceId: spaceId, now: now, in: context)
+                    .contains { $0.day.needsWrite(deletingDuplicates: $0.deletesDuplicates) }
+            }
+            guard isPending else { return .nothing }
+            let result = try await access.write { context in
+                try CoreDataQuestionRepository.consolidate(spaceId: spaceId, now: now, in: context)
+            }
+            if result.rows > 0 {
+                SyncLog.logger.notice(
+                    "question consolidation merged \(result.rows, privacy: .public) rows over \(result.days, privacy: .public) days"
+                )
+            }
+            return result
+        } catch {
+            SyncLog.logger.error("question consolidation failed: \(error.localizedDescription, privacy: .public)")
+            throw error
+        }
+    }
+
+    static func consolidate(spaceId: UUID, now: Date, in context: NSManagedObjectContext) throws -> QuestionConsolidation {
+        var rows = 0
+        var days = 0
+        for (day, deletesDuplicates) in try consolidationDays(spaceId: spaceId, now: now, in: context)
+        where day.needsWrite(deletingDuplicates: deletesDuplicates) {
+            let folded = day.apply(deletingDuplicates: deletesDuplicates, in: context)
+            rows += folded
+            days += folded > 0 ? 1 : 0
+        }
+        return QuestionConsolidation(rows: rows, days: days)
+    }
+
+    private static func firstOpenDayKey(now: Date, timeZone: TimeZone) -> String {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: now) ?? now
+        return QuestionSelector.dayKey(for: yesterday, timeZone: timeZone)
+    }
+
+    private static func consolidationDays(
+        spaceId: UUID,
+        now: Date,
+        in context: NSManagedObjectContext
+    ) throws -> [(day: QuestionDayMerge, deletesDuplicates: Bool)] {
+        guard let space: Space = try ManagedFetch.first(Space.entityName, id: spaceId, in: context) else { return [] }
+        let zone = TimeZone(identifier: space.anchorTimeZone ?? "") ?? .current
+        let firstOpenDay = firstOpenDayKey(now: now, timeZone: zone)
+        return QuestionDayMerge.days(of: space.questions).map { day in
+            (day, day.dayKey.map { $0 < firstOpenDay } ?? false)
+        }
+    }
+
     private static func cleaned(_ text: String) throws -> String {
         let body = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard body.isEmpty == false else {
@@ -182,23 +235,10 @@ public struct CoreDataQuestionRepository: QuestionRepository {
         return String(body.prefix(QuestionAnswerDTO.maxLength))
     }
 
-    private static func merged(dayKey: String, in space: Space, context: NSManagedObjectContext) -> DailyQuestion? {
-        let sameDay = space.questions
-            .filter { $0.dayKey == dayKey }
-            .sorted { ($0.id?.uuidString ?? "") < ($1.id?.uuidString ?? "") }
-        guard let keeper = sameDay.first else { return nil }
-        for duplicate in sameDay.dropFirst() {
-            for answer in duplicate.answers {
-                let alreadyAnswered = keeper.answers.contains { $0.memberId == answer.memberId }
-                if alreadyAnswered {
-                    context.delete(answer)
-                } else {
-                    answer.dailyQuestion = keeper
-                }
-            }
-            context.delete(duplicate)
+    private static func day(of question: DailyQuestion) throws -> QuestionDayMerge {
+        guard let day = QuestionDayMerge.day(of: question) else {
+            throw CorbieError.notFound("DailyQuestion \(question.id?.uuidString ?? "")")
         }
-        context.processPendingChanges()
-        return keeper
+        return day
     }
 }

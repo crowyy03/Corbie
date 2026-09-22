@@ -133,13 +133,20 @@ func planStepsBadge(done: Int, total: Int, locale: Locale = .current) -> String?
     )
 }
 
-func planContributions(count: Int) -> String {
-    String.localizedStringWithFormat(String(localized: "plans.card.contributions"), count)
+func planContributions(count: Int, startingAmount: String? = nil) -> String {
+    if count > 0 {
+        return String.localizedStringWithFormat(String(localized: "plans.card.contributions"), count)
+    }
+    guard let startingAmount else { return String(localized: "plans.card.contributions.none") }
+    return String(format: String(localized: "plans.card.contributions.start"), startingAmount)
 }
 
-func planOpenSubtitle(startedAt: Date?, contributionCount: Int, locale: Locale = .current) -> String {
-    let contributions = planContributions(count: contributionCount)
-    guard let startedAt else { return contributions }
+func planOpenSubtitle(for plan: PlanDTO, locale: Locale = .current) -> String {
+    let startingAmount = plan.savedAmount > 0
+        ? Money(amount: plan.savedAmount, currency: plan.currency).formatted(locale: locale)
+        : nil
+    let contributions = planContributions(count: plan.expenseCount, startingAmount: startingAmount)
+    guard let startedAt = plan.createdAt else { return contributions }
     return String.localizedStringWithFormat(
         String(localized: "plans.card.open.since"),
         startedAt.formatted(.dateTime.month(.wide).year().locale(locale)),

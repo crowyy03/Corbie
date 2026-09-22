@@ -9,7 +9,7 @@ final class TodayChoreModel {
 
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var environment: AppEnvironment?
-    @ObservationIgnored private var reloadObserver: (any NSObjectProtocol)?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(now: @escaping @Sendable () -> Date = { Date() }) {
         self.now = now
@@ -17,24 +17,18 @@ final class TodayChoreModel {
 
     var isVisible: Bool { state.waitsForViewer }
 
-    func start(_ environment: AppEnvironment, center: NotificationCenter = .default) async {
+    func start(_ environment: AppEnvironment) async {
         self.environment = environment
-        if reloadObserver == nil {
-            reloadObserver = center.addObserver(
-                forName: WidgetReloadRequest.notificationName,
-                object: nil,
-                queue: nil
-            ) { [weak self] _ in
-                Task { @MainActor in await self?.load() }
+        if storeChanges == nil {
+            storeChanges = environment.repositories.changes.subscribe { [weak self] in
+                await self?.load()
             }
         }
         await load()
     }
 
-    func stopObserving(center: NotificationCenter = .default) {
-        guard let reloadObserver else { return }
-        center.removeObserver(reloadObserver)
-        self.reloadObserver = nil
+    func stopObserving() {
+        storeChanges = nil
     }
 
     func load() async {

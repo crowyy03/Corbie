@@ -87,13 +87,17 @@ final class FreeTimeViewModel {
 
     @ObservationIgnored private let locale: Locale
     @ObservationIgnored private let now: @Sendable () -> Date
+    @ObservationIgnored private let calendarAccess: () -> CalendarAccess
     @ObservationIgnored private var environment: AppEnvironment?
+    @ObservationIgnored private var storeChanges: StoreChangeSubscription?
 
     init(
         locale: Locale = .current,
         calendar: Calendar = .current,
+        calendarAccess: @escaping () -> CalendarAccess = { CalendarAccess.current },
         now: @escaping @Sendable () -> Date = { Date() }
     ) {
+        self.calendarAccess = calendarAccess
         var configured = calendar
         configured.locale = locale
         self.calendar = configured
@@ -114,6 +118,11 @@ final class FreeTimeViewModel {
 
     func open(_ environment: AppEnvironment) async {
         self.environment = environment
+        if storeChanges == nil {
+            storeChanges = environment.repositories.changes.subscribe { [weak self] in
+                await self?.load()
+            }
+        }
         environment.analytics.record(.freetimeOpened)
         if BusyTimesPrivacyNotice.hasBeenSeen == false, sheet == nil {
             sheet = .privacy
@@ -141,7 +150,7 @@ final class FreeTimeViewModel {
             apply(.unreadable)
             return
         }
-        if member.sharesBusyTimes, CalendarAccess.current == .denied {
+        if member.sharesBusyTimes, calendarAccess() == .denied {
             apply(.calendarDenied)
             return
         }

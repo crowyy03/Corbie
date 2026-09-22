@@ -31,11 +31,12 @@ public struct Money: Sendable, Equatable, Hashable, Codable {
         formatter.numberStyle = .currency
         formatter.locale = locale
         formatter.currencyCode = currency
+        let fractionDigits = min(2, formatter.maximumFractionDigits)
         var whole = Decimal()
         var value = amount
         NSDecimalRound(&whole, &value, 0, .plain)
-        formatter.minimumFractionDigits = whole == amount ? 0 : 2
-        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = whole == amount ? 0 : fractionDigits
+        formatter.maximumFractionDigits = fractionDigits
         let number = NSDecimalNumber(decimal: amount)
         return formatter.string(from: number) ?? "\(number) \(currency)"
     }
@@ -126,7 +127,6 @@ final class FXDefaults: @unchecked Sendable {
 public struct FXService: Sendable {
     public static let cacheTTL: TimeInterval = 24 * 60 * 60
     public static let cacheKeyPrefix = "corbie.fx.rates."
-    public static let baseCurrencies = ["USD", "EUR", "GBP", "CHF", "CAD"]
 
     private let client: APIClient
     private let defaults: FXDefaults
@@ -199,14 +199,6 @@ public struct FXService: Sendable {
         try await convert(amount: FXMath.decimal(from: amount), from: from, to: to)
     }
 
-    public func supportedCurrencies(for locale: Locale = .current) -> [String] {
-        var codes = FXService.baseCurrencies
-        guard let local = FXService.currencyCode(for: locale)?.uppercased() else { return codes }
-        codes.removeAll { $0 == local }
-        codes.insert(local, at: 0)
-        return codes
-    }
-
     public func cachedRates(base: String) -> FXRates? {
         let key = FXService.cacheKeyPrefix + base.uppercased()
         guard let data = defaults.data(forKey: key) else { return nil }
@@ -220,9 +212,5 @@ public struct FXService: Sendable {
     private func store(_ rates: FXRates) {
         guard let data = try? CorbieJSON.encoder.encode(rates) else { return }
         defaults.set(data, forKey: FXService.cacheKeyPrefix + rates.base)
-    }
-
-    static func currencyCode(for locale: Locale) -> String? {
-        locale.currency?.identifier
     }
 }

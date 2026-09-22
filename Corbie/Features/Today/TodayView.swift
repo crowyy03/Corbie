@@ -242,7 +242,12 @@ struct TodayView: View {
             PlanEditorView(plan: nil)
         case .invite:
             NavigationStack {
-                InviteView(environment: environment, spaceId: environment.space?.id ?? UUID()) {
+                InviteView(
+                    environment: environment,
+                    appState: appState,
+                    spaceId: environment.space?.id ?? UUID(),
+                    partner: environment.partner
+                ) {
                     quickAction = nil
                 }
             }

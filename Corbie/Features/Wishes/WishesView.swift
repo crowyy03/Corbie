@@ -38,9 +38,6 @@ struct WishesView: View {
         .onChange(of: environment.session) { _, _ in
             Task { await reload() }
         }
-        .onReceive(NotificationCenter.default.publisher(for: WidgetReloadRequest.notificationName)) { _ in
-            Task { await viewModel.load() }
-        }
         .onChange(of: appState.route) { _, _ in
             consumeRoute()
         }
