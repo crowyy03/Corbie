@@ -47,7 +47,7 @@ Feature folders: `Features/Tasks/TasksView.swift`, `TasksViewModel.swift`, `Task
 1. Read the relevant spec sections. List assumptions.
 2. Plan files to add/change (bullet list).
 3. Implement. Keep PR-sized: one module per prompt.
-4. Build with `xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 15' build test` and fix all warnings you introduced.
+4. Build with `xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Main' build test` and fix all warnings you introduced.
 5. Report: what was built, what was deferred, how to verify manually (steps), open questions.
 
 ## Don'ts
