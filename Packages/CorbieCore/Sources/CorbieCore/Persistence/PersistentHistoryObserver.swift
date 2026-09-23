@@ -82,24 +82,6 @@ final class PersistentHistoryObserver: @unchecked Sendable {
 
     @discardableResult
     func process() throws -> Int {
-        let (harvest, currentHandler) = try harvestHistory()
-        for change in harvest.merges {
-            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: change, into: [container.viewContext])
-        }
-        if harvest.merges.isEmpty == false {
-            WidgetReloadRequest.post()
-            RemoteChangesMerged.post()
-            changes?.post(
-                StoreChange(origin: .elsewhere, entityNames: Set(harvest.records.compactMap(\.entityName)))
-            )
-        }
-        if harvest.records.isEmpty == false, let currentHandler {
-            currentHandler(harvest.records)
-        }
-        return harvest.merges.count
-    }
-
-    private func harvestHistory() throws -> (Harvest, (@Sendable ([RemoteChangeRecord]) -> Void)?) {
         lock.lock()
         defer { lock.unlock() }
         let context = container.newBackgroundContext()
@@ -115,10 +97,31 @@ final class PersistentHistoryObserver: @unchecked Sendable {
         if let token = harvest.token {
             store(token)
         }
-        if harvest.records.isEmpty == false, handler == nil, holdsRecordsUntilHandled {
-            heldRecords.append(contentsOf: harvest.records)
+        if harvest.merges.isEmpty == false {
+            mergeIntoViewContext(harvest.merges)
+            WidgetReloadRequest.post()
+            RemoteChangesMerged.post()
+            changes?.post(
+                StoreChange(origin: .elsewhere, entityNames: Set(harvest.records.compactMap(\.entityName)))
+            )
         }
-        return (harvest, handler)
+        if harvest.records.isEmpty == false {
+            if let handler {
+                handler(harvest.records)
+            } else if holdsRecordsUntilHandled {
+                heldRecords.append(contentsOf: harvest.records)
+            }
+        }
+        return harvest.merges.count
+    }
+
+    private func mergeIntoViewContext(_ merges: [[AnyHashable: Any]]) {
+        let viewContext = container.viewContext
+        viewContext.perform {
+            for change in merges {
+                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: change, into: [viewContext])
+            }
+        }
     }
 
     private struct Harvest {
