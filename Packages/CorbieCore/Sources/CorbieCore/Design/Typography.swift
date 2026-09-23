@@ -3,6 +3,7 @@ import SwiftUI
 public enum CorbieFont {
     public static let screenTitleSize: CGFloat = 34
     public static let introTitleSize: CGFloat = 28
+    public static let cardTitleSize: CGFloat = 22
     public static let sectionCapsSize: CGFloat = 12
     public static let bodySize: CGFloat = 17
     public static let captionSize: CGFloat = 13
@@ -25,6 +26,16 @@ struct CorbieScreenTitleStyle: ViewModifier {
 
 struct CorbieIntroTitleStyle: ViewModifier {
     @ScaledMetric(relativeTo: .title) private var size: CGFloat = CorbieFont.introTitleSize
+
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: size, weight: .bold, design: .default))
+            .tracking(CorbieFont.screenTitleTracking)
+    }
+}
+
+struct CorbieCardTitleStyle: ViewModifier {
+    @ScaledMetric(relativeTo: .title2) private var size: CGFloat = CorbieFont.cardTitleSize
 
     func body(content: Content) -> some View {
         content
@@ -85,6 +96,10 @@ public extension View {
 
     func corbieIntroTitle() -> some View {
         modifier(CorbieIntroTitleStyle())
+    }
+
+    func corbieCardTitle() -> some View {
+        modifier(CorbieCardTitleStyle())
     }
 
     func corbieSectionCaps() -> some View {

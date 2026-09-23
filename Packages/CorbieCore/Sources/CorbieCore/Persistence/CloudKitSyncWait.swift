@@ -98,3 +98,15 @@ public struct CloudKitUploadWatch: Sendable {
     }
 }
 
+public struct CloudKitImportWatch: Sendable {
+    private let wait: CloudKitSyncWait
+
+    init(wait: CloudKitSyncWait) {
+        self.wait = wait
+    }
+
+    public func outcome(within timeout: Duration) async -> CloudKitSyncOutcome {
+        await wait.outcome(within: timeout)
+    }
+}
+

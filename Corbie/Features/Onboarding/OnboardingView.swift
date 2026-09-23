@@ -33,6 +33,8 @@ struct OnboardingView: View {
             OnboardingIntroView(model: model)
         case .profile:
             OnboardingProfileView(model: model)
+        case .checkingICloud:
+            checkingICloud
         case .invite:
             inviteStep
         case .join:
@@ -54,6 +56,23 @@ struct OnboardingView: View {
         } else {
             ProgressView()
                 .tint(palette.accent)
+        }
+    }
+
+    private var checkingICloud: some View {
+        VStack(spacing: CorbieSpacing.s) {
+            ProgressView()
+                .tint(palette.accent)
+            Text("onboarding.invite.checking")
+                .corbieMono()
+                .foregroundStyle(palette.text2)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.horizontal, CorbieSpacing.l)
+        .accessibilityElement(children: .combine)
+        .onAppear {
+            AccessibilityNotification.Announcement(String(localized: "onboarding.invite.checking")).post()
         }
     }
 

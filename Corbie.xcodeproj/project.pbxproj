@@ -46,6 +46,7 @@
 		208259F8CFB118EE74DCFC8F /* LaunchPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E6B7CDF5D87215753B0C11 /* LaunchPlaceholderView.swift */; };
 		209B9A9903E63A502860AA7C /* FreeTimeCorbieEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025448DC8DE14E31514EAF21 /* FreeTimeCorbieEventTests.swift */; };
 		223BC84E1DB2B99845AEFB2B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3E4A0A3F89DBDFE33E84D872 /* Localizable.xcstrings */; };
+		230AC6427C9C60538E852F6A /* ICloudPartnerWait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8538B07C59FC6EA05A396202 /* ICloudPartnerWait.swift */; };
 		23351D35BCA2BB7EF9A75D2A /* CapsuleOpenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D95AA96ABA38AC940470E6D /* CapsuleOpenViewModel.swift */; };
 		2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4C53D909635203AB2D2A89 /* PreviewSupport.swift */; };
 		24C9999E7AF39592DFC9850B /* UsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F3366F97984A781DC3953 /* UsView.swift */; };
@@ -539,6 +540,7 @@
 		83E68716AC348C23CA7C9F09 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		84CAF36BE84CF8A3356F426A /* CalendarAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAccess.swift; sourceTree = "<group>"; };
 		84CEC60BF1C006BE472982D2 /* CalendarMergeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMergeTests.swift; sourceTree = "<group>"; };
+		8538B07C59FC6EA05A396202 /* ICloudPartnerWait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICloudPartnerWait.swift; sourceTree = "<group>"; };
 		86CF488061D0361B0ED868BF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		87AFE443D217AFF2EE9C5AA6 /* MemberPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberPresentation.swift; sourceTree = "<group>"; };
 		8827801FCFEA5A0361B2A7B4 /* MapPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPlace.swift; sourceTree = "<group>"; };
@@ -882,6 +884,7 @@
 				7F34A975F7C63F52666B4A75 /* AppleCredentialMonitor.swift */,
 				1196F0108C0225357C38AF96 /* AppleSignInCredential.swift */,
 				4283052EE5213ECB22C847E5 /* CorbieMarkView.swift */,
+				8538B07C59FC6EA05A396202 /* ICloudPartnerWait.swift */,
 				B3E6B7CDF5D87215753B0C11 /* LaunchPlaceholderView.swift */,
 				C5D04B351F97F903984804F4 /* OnboardingIntroView.swift */,
 				9DC1BF52E7D1EB8473DEB11A /* OnboardingProfileView.swift */,
@@ -1649,6 +1652,7 @@
 				39361CD7786F483E5EE4ED67 /* FreeTimeViewModel.swift in Sources */,
 				C53B1453563E379043E04D6F /* GiftIdeaEditorView.swift in Sources */,
 				C39A5EDD95EF272FA70F1584 /* GiftIdeaEditorViewModel.swift in Sources */,
+				230AC6427C9C60538E852F6A /* ICloudPartnerWait.swift in Sources */,
 				80D3B5DE353AD343171F3179 /* InviteCodeFormat.swift in Sources */,
 				4427EA433F78FBAEAB71E1F3 /* InviteCountdown.swift in Sources */,
 				DB49A62A8AAC99403F012178 /* InviteLink.swift in Sources */,

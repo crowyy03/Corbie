@@ -74,7 +74,7 @@ struct WishCardView: View {
             HStack(alignment: .top, spacing: CorbieSpacing.xs) {
                 ownerDotOnFirstLine
                 Text(wish.title)
-                    .corbieIntroTitle()
+                    .corbieCardTitle()
                     .foregroundStyle(palette.text)
                     .lineLimit(stacksText ? 4 : 2)
                     .multilineTextAlignment(.leading)
@@ -89,7 +89,7 @@ struct WishCardView: View {
 
     private var ownerDotOnFirstLine: some View {
         Text(verbatim: " ")
-            .corbieIntroTitle()
+            .corbieCardTitle()
             .hidden()
             .frame(width: CorbieMetrics.memberDotSize)
             .overlay { MemberDot(slot: ownerSlot) }

@@ -505,6 +505,149 @@ final class PairingInviteTests: XCTestCase {
     }
 
     @MainActor
+    func testThePartnerArrivingWhileOnboardingWaitsForICloudSkipsTheInviteStep() async throws {
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        _ = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let onboarding = await signedInOnboarding(persistence: persistence)
+
+        let continuing = Task { await onboarding.model.continueFromProfile() }
+        try await until("the wait for iCloud") { onboarding.isWaitingForICloud }
+        onboarding.clock.advance(by: .seconds(1))
+        let partner = try await addMember(
+            appleUserId: "tests.partner",
+            named: "Anna",
+            slot: .rose,
+            to: space,
+            in: persistence
+        )
+        persistence.stack.changes.post(StoreChange(origin: .elsewhere, entityNames: ["Member"]))
+        await continuing.value
+
+        XCTAssertEqual(onboarding.imports.watchedSpaceIds, [space.id])
+        XCTAssertNotEqual(onboarding.model.step, .invite)
+        XCTAssertEqual(onboarding.model.storedPartner?.id, partner.id)
+        XCTAssertNil(LiveInviteStore().live(for: space.id, at: Date()))
+        XCTAssertEqual(onboarding.appState.selectedTab, .today)
+        XCTAssertTrue(onboarding.environment.isSignedIn)
+        XCTAssertEqual(onboarding.environment.partner?.id, partner.id)
+        XCTAssertEqual(onboarding.clock.sleeperCount, 0)
+    }
+
+    @MainActor
+    func testOnboardingShowsTheInviteStepWhenNothingArrivesBeforeTheCeiling() async throws {
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        _ = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let onboarding = await signedInOnboarding(persistence: persistence)
+
+        let continuing = Task { await onboarding.model.continueFromProfile() }
+        try await until("the wait for iCloud") { onboarding.isWaitingForICloud }
+        onboarding.clock.advance(by: ICloudPartnerWait.ceiling - .milliseconds(1))
+        try await until("the progress") { onboarding.model.step == .checkingICloud }
+        onboarding.clock.advance(by: .milliseconds(1))
+        await continuing.value
+
+        XCTAssertEqual(onboarding.model.step, .invite)
+        XCTAssertNil(onboarding.model.storedPartner)
+        XCTAssertEqual(onboarding.clock.elapsed, ICloudPartnerWait.ceiling)
+        XCTAssertEqual(onboarding.appState.selectedTab, .plans)
+        XCTAssertFalse(onboarding.environment.isSignedIn)
+    }
+
+    @MainActor
+    func testAFinishedImportWithoutThePartnerShowsTheInviteStepBeforeTheCeiling() async throws {
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        _ = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let onboarding = await signedInOnboarding(persistence: persistence)
+
+        let continuing = Task { await onboarding.model.continueFromProfile() }
+        try await until("the wait for iCloud") { onboarding.isWaitingForICloud }
+        onboarding.clock.advance(by: .milliseconds(200))
+        XCTAssertEqual(onboarding.model.step, .profile)
+        onboarding.imports.watch.finish(.finished)
+        await continuing.value
+
+        XCTAssertEqual(onboarding.model.step, .invite)
+        XCTAssertNil(onboarding.model.storedPartner)
+        XCTAssertEqual(onboarding.clock.elapsed, .milliseconds(200))
+        XCTAssertEqual(onboarding.clock.sleeperCount, 0)
+        onboarding.clock.advance(by: ICloudPartnerWait.ceiling)
+        XCTAssertEqual(onboarding.model.step, .invite)
+    }
+
+    @MainActor
+    func testASpaceMadeOnThisPhoneDuringOnboardingNeverWaitsForICloud() async throws {
+        let persistence = PersistenceController.inMemory()
+        let onboarding = await signedInOnboarding(persistence: persistence)
+        XCTAssertNotNil(onboarding.model.space)
+        onboarding.model.profile.displayName = "Ilya"
+
+        let continuing = Task { await onboarding.model.continueFromProfile() }
+        try await until("the invite step") { onboarding.model.step == .invite }
+        await continuing.value
+
+        XCTAssertTrue(onboarding.imports.watchedSpaceIds.isEmpty)
+        XCTAssertEqual(onboarding.imports.accountChecks, 0)
+        XCTAssertEqual(onboarding.clock.elapsed, .zero)
+        XCTAssertEqual(onboarding.clock.sleeperCount, 0)
+    }
+
+    @MainActor
+    func testOnboardingDoesNotWaitWithoutMirroringOrAnICloudAccount() async throws {
+        for account in [CloudKitSharing.ICloudAccount.missing, .busy] {
+            let persistence = PersistenceController.inMemory()
+            let space = try await makeSpace(in: persistence)
+            _ = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+            let onboarding = await signedInOnboarding(persistence: persistence)
+            onboarding.imports.account = account
+
+            let continuing = Task { await onboarding.model.continueFromProfile() }
+            try await until("the invite step") { onboarding.model.step == .invite }
+            await continuing.value
+
+            XCTAssertEqual(onboarding.imports.accountChecks, 1, "\(account)")
+            XCTAssertEqual(onboarding.clock.elapsed, .zero, "\(account)")
+            XCTAssertEqual(onboarding.clock.sleeperCount, 0, "\(account)")
+        }
+
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        _ = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let onboarding = await signedInOnboarding(persistence: persistence)
+        onboarding.imports.isMirrored = false
+        await onboarding.model.continueFromProfile()
+
+        XCTAssertEqual(onboarding.model.step, .invite)
+        XCTAssertTrue(onboarding.imports.watchedSpaceIds.isEmpty)
+        XCTAssertEqual(onboarding.imports.accountChecks, 0)
+    }
+
+    @MainActor
+    func testTheICloudProgressShowsOnlyWhileTheWaitRunsPastItsDelay() async throws {
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        _ = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let onboarding = await signedInOnboarding(persistence: persistence)
+        XCTAssertEqual(onboarding.model.step, .profile)
+
+        let continuing = Task { await onboarding.model.continueFromProfile() }
+        try await until("the wait for iCloud") { onboarding.isWaitingForICloud }
+        onboarding.clock.advance(by: ICloudPartnerWait.progressDelay - .milliseconds(1))
+        XCTAssertEqual(onboarding.model.step, .profile)
+
+        onboarding.clock.advance(by: .milliseconds(1))
+        try await until("the progress") { onboarding.model.step == .checkingICloud }
+
+        onboarding.imports.watch.finish(.finished)
+        await continuing.value
+        XCTAssertEqual(onboarding.model.step, .invite)
+        onboarding.clock.advance(by: ICloudPartnerWait.ceiling)
+        XCTAssertEqual(onboarding.model.step, .invite)
+    }
+
+    @MainActor
     func testTheJoinedLineNamesThePartnerOrFallsBack() {
         let named = InviteViewModel.joinedLine(name: "Anna")
         XCTAssertTrue(named.contains("Anna"))
@@ -622,6 +765,33 @@ final class PairingInviteTests: XCTestCase {
         ).member
     }
 
+    @MainActor
+    private func signedInOnboarding(persistence: PersistenceController) async -> WaitingOnboarding {
+        let environment = AppEnvironment.preview(persistence: persistence, transport: OfflineTransport())
+        let appState = awayFromToday()
+        let imports = ScriptedImports()
+        let clock = ManualClock()
+        let model = OnboardingViewModel(
+            environment: environment,
+            appState: appState,
+            partnerWait: ICloudPartnerWait(imports: imports, clock: clock)
+        )
+        await model.signIn(credential: appleCredential(userIdentifier: "tests.me"))
+        return WaitingOnboarding(model: model, environment: environment, appState: appState, imports: imports, clock: clock)
+    }
+
+    @MainActor
+    private func until(_ what: String, _ condition: () -> Bool) async throws {
+        let deadline = Date().addingTimeInterval(5)
+        while condition() == false {
+            guard Date() < deadline else {
+                XCTFail("gave up waiting for \(what)")
+                throw CancellationError()
+            }
+            try await Task.sleep(for: .milliseconds(5))
+        }
+    }
+
     private func appleCredential(userIdentifier: String) -> AppleSignInCredential {
         AppleSignInCredential(
             userIdentifier: userIdentifier,
@@ -694,5 +864,142 @@ private final class HeldMinter: InviteMinting {
     func release() {
         held?.resume()
         held = nil
+    }
+}
+
+@MainActor
+private struct WaitingOnboarding {
+    let model: OnboardingViewModel
+    let environment: AppEnvironment
+    let appState: AppState
+    let imports: ScriptedImports
+    let clock: ManualClock
+
+    var isWaitingForICloud: Bool {
+        imports.watch.isWaiting && clock.sleeperCount == 2
+    }
+}
+
+@MainActor
+private final class ScriptedImports: SpaceImportWatching {
+    var isMirrored = true
+    var account: CloudKitSharing.ICloudAccount = .available
+    let watch = HeldImport()
+    private(set) var watchedSpaceIds: [UUID] = []
+    private(set) var accountChecks = 0
+
+    func iCloudAccount() async -> CloudKitSharing.ICloudAccount {
+        accountChecks += 1
+        return account
+    }
+
+    func watchImport(intoStoreHolding spaceId: UUID) async -> (any SpaceImportWatch)? {
+        watchedSpaceIds.append(spaceId)
+        return watch
+    }
+}
+
+private final class HeldImport: SpaceImportWatch, @unchecked Sendable {
+    private let lock = NSLock()
+    private var result: CloudKitSyncOutcome?
+    private var waiter: CheckedContinuation<CloudKitSyncOutcome, Never>?
+
+    var isWaiting: Bool { lock.withLock { waiter != nil } }
+
+    func outcome(within timeout: Duration) async -> CloudKitSyncOutcome {
+        await withTaskCancellationHandler {
+            await withCheckedContinuation { continuation in
+                let settled: CloudKitSyncOutcome? = lock.withLock {
+                    if let result { return result }
+                    if Task.isCancelled { return .timedOut }
+                    waiter = continuation
+                    return nil
+                }
+                if let settled {
+                    continuation.resume(returning: settled)
+                }
+            }
+        } onCancel: {
+            finish(.timedOut)
+        }
+    }
+
+    func finish(_ outcome: CloudKitSyncOutcome) {
+        let waiting: CheckedContinuation<CloudKitSyncOutcome, Never>? = lock.withLock {
+            guard result == nil else { return nil }
+            result = outcome
+            defer { waiter = nil }
+            return waiter
+        }
+        waiting?.resume(returning: outcome)
+    }
+}
+
+private final class ManualClock: Clock, @unchecked Sendable {
+    struct Instant: InstantProtocol {
+        var offset: Duration
+
+        func advanced(by duration: Duration) -> Instant {
+            Instant(offset: offset + duration)
+        }
+
+        func duration(to other: Instant) -> Duration {
+            other.offset - offset
+        }
+
+        static func < (lhs: Instant, rhs: Instant) -> Bool {
+            lhs.offset < rhs.offset
+        }
+    }
+
+    private struct Sleeper {
+        let deadline: Instant
+        let continuation: CheckedContinuation<Void, any Error>
+    }
+
+    private let lock = NSLock()
+    private var current = Instant(offset: .zero)
+    private var sleepers: [UUID: Sleeper] = [:]
+
+    var now: Instant { lock.withLock { current } }
+
+    var minimumResolution: Duration { .zero }
+
+    var elapsed: Duration { now.offset }
+
+    var sleeperCount: Int { lock.withLock { sleepers.count } }
+
+    func sleep(until deadline: Instant, tolerance: Duration?) async throws {
+        let id = UUID()
+        try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+                let early: Result<Void, any Error>? = lock.withLock {
+                    if Task.isCancelled { return .failure(CancellationError()) }
+                    if deadline <= current { return .success(()) }
+                    sleepers[id] = Sleeper(deadline: deadline, continuation: continuation)
+                    return nil
+                }
+                if let early {
+                    continuation.resume(with: early)
+                }
+            }
+        } onCancel: {
+            let cancelled = lock.withLock { sleepers.removeValue(forKey: id) }
+            cancelled?.continuation.resume(throwing: CancellationError())
+        }
+    }
+
+    func advance(by duration: Duration) {
+        let due: [Sleeper] = lock.withLock {
+            current = current.advanced(by: duration)
+            let due = sleepers.filter { $0.value.deadline <= current }
+            for id in due.keys {
+                sleepers[id] = nil
+            }
+            return Array(due.values)
+        }
+        for sleeper in due {
+            sleeper.continuation.resume()
+        }
     }
 }

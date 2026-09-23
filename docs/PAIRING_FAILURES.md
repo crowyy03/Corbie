@@ -22,6 +22,8 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 | Step | What goes wrong | What the person sees | Log line |
 | --- | --- | --- | --- |
 | Onboarding, before the invite step | The space already has two members: the local store holds a partner row beside this member (the second phone of someone already paired) | no invite step: after the profile step, or after backing out of a code, onboarding goes straight to Today; no code is made, no share is asked for, nothing is stored | `invite: step skipped, the space already has two members` |
+| Onboarding, before the invite step | The store has the space but no partner row yet (a second phone still importing) | the screen stays as it is with Continue disabled; after 0.4 s a spinner with "checking iCloud" takes its place. The wait ends at the first of: the partner row lands (then the row above: Today, no code), an import into the store that holds the space finishes and a re-read still finds no partner, or 3 seconds. The last two open the invite step as before | `invite: waited <n> ms for iCloud, partner found`, `... partner none`, `... partner none, import failed: <reason>` or `... timed out` |
+| Onboarding, before the invite step | Waiting cannot help: the space was made on this phone during this onboarding, the build does not mirror to CloudKit (tests, previews), or iCloud has no account or is temporarily unavailable | the invite step at once, as before | `invite: waited <n> ms for iCloud, skipped, <reason>` with `space made on this phone`, `no CloudKit mirroring`, `no iCloud account` or `iCloud busy` |
 | Before anything | Not signed in to iCloud | "Sign in to iCloud on this iPhone, then try again." | `invite failed as signedOutOfICloud` |
 | Before anything | iCloud account temporarily unavailable | "iCloud is not ready on this iPhone. Try again in a minute." | `invite failed as iCloudBusy` |
 | `CloudKitSharing.share` | CloudKit refuses to make the share (network, quota, anything) | the sentence for that reason | `share create: <reason>: CKError <n> <text>` |
@@ -36,7 +38,7 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 | "New code" | The person asks for another code | a new code; the line under the button says the old one stops working at once | `invite: code <CODE> is ready` |
 | While the screen is open | The partner joins | the code, the countdown and "New code" give way to "<Name> joined", and 1.5 seconds later (at once with Reduce Motion) the screen closes on Today | `invite: partner joined` |
 | Opening the invite screen again | The partner joined while it was closed | "<Name> joined" straight away, then Today | `invite: partner joined` |
-| Onboarding | The partner row cannot be read from the local store | the code stays, nothing reacts | `invite: partner lookup failed: <reason>` |
+| Onboarding | The partner row cannot be read from the local store | the code stays, nothing reacts; during the wait for iCloud a failed read counts as no partner | `invite: partner lookup failed: <reason>` |
 
 The live code (code, expiry, space id, and the partner already in the space when it was made, if any)
 is kept in the App Group defaults under `corbie.pairing.liveInvite`, so closing the sheet or killing the
@@ -49,8 +51,11 @@ The screen does not ask iCloud about the partner, it watches what the app alread
 (Settings, the Today empty state), that is the session's partner, which `AppEnvironment` picks up on
 the next synced change or on foreground. In onboarding there is no session yet, so the onboarding reads
 the space's partner row from the local store before it would open the invite step. When one is there
-it skips the step (the first row above); otherwise it opens the step and reads the row again on every
-change that arrives from iCloud. Only a member of this space counts, and not the one who was already
+it skips the step (the first row above). When none is there and waiting can help, it waits up to 3
+seconds for iCloud (the second row): it reads the row again on every stored change and when an import
+into the store that holds the space finishes. An import already running when the wait starts counts,
+since the space row usually lands in the middle of one; one that finished before does not. Then it
+opens the step and reads the row again on every change that arrives from iCloud. Only a member of this space counts, and not the one who was already
 there when the code was made, so a phone that joins another space does not see its own old invite
 flip. A space that already has two members does not get this screen from anywhere: onboarding skips
 it, and Settings and the Today empty state offer the invite only while there is no partner.
@@ -131,8 +136,10 @@ private folder that the widgets and the share extension could not see.
   migration 0008 and a function deploy before a phone can see it. The owner's joined state
   (2026-09-22) is covered by unit tests only and has not run in the simulator either. The onboarding
   skip for a space of two (2026-09-22) has unit tests that compile; they had not run when it was written.
-- The onboarding skip only knows what the local store holds when the profile step ends. A second phone
-  that has the space but not yet the partner row still shows the invite step and makes a code; when
-  the row arrives the screen says "<Name> joined" and moves to Today, the right place with the wrong
-  sentence. A second phone that has not received the space at all yet makes a new space of its own,
-  as before.
+  The same holds for the wait for iCloud before the invite step (2026-09-23).
+- Onboarding waits at most 3 seconds for iCloud before the invite step (2026-09-23). A second phone
+  whose partner row arrives later than that, or after an import into its store finished without it,
+  still shows the invite step and makes a code; when the row arrives the screen says "<Name> joined"
+  and moves to Today, the right place with the wrong sentence. How often 3 seconds is enough on a real
+  second phone is not known yet: nothing of the wait ran on a device. A second phone that has not
+  received the space at all yet makes a new space of its own, as before.

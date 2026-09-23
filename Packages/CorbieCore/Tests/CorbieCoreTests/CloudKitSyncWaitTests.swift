@@ -153,6 +153,41 @@ import Testing
     }
 }
 
+@Suite struct CloudKitImportWatchTests {
+    @Test func aStackWithoutMirroringHasNoImportToWatch() async throws {
+        let stack = CoreDataStack(inMemoryAuthor: .tests)
+        let spaceId = try insertSpace(into: try #require(stack.store(for: .privateStore)), stack: stack)
+        #expect(await stack.watchImport(intoStoreHolding: spaceId) == nil)
+    }
+
+    @Test func theWatchedStoreIsTheOneHoldingTheSpace() async throws {
+        let directory = URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent("corbie-import-watch-" + UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let stack = CoreDataStack(storesIn: directory)
+        #expect(stack.loadFailure == nil)
+
+        let owned = try insertSpace(into: try #require(stack.store(for: .privateStore)), stack: stack)
+        let joined = try insertSpace(into: try #require(stack.store(for: .sharedStore)), stack: stack)
+
+        #expect(await stack.scope(holdingSpace: owned) == .privateStore)
+        #expect(await stack.scope(holdingSpace: joined) == .sharedStore)
+        #expect(await stack.scope(holdingSpace: UUID()) == nil)
+    }
+
+    private func insertSpace(into store: NSPersistentStore, stack: CoreDataStack) throws -> UUID {
+        let context = stack.newBackgroundContext()
+        return try context.performAndWait {
+            let space = Space(context: context)
+            context.assign(space, to: store)
+            space.createdAt = Date()
+            try context.save()
+            return try #require(space.id)
+        }
+    }
+}
+
 enum CloudKitEventPosting {
     static func post(_ event: CloudKitMirroringEvent, on center: NotificationCenter) {
         center.post(

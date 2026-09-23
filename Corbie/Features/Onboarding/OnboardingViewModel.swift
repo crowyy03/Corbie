@@ -15,6 +15,7 @@ final class OnboardingViewModel {
     enum Step: Equatable {
         case intro
         case profile
+        case checkingICloud
         case invite
         case join
     }
@@ -32,11 +33,17 @@ final class OnboardingViewModel {
 
     @ObservationIgnored private let environment: AppEnvironment
     @ObservationIgnored private let appState: AppState
+    @ObservationIgnored private let partnerWait: ICloudPartnerWait
     @ObservationIgnored private var recordedSteps: Set<Int> = []
+    @ObservationIgnored private var spaceMadeHereId: UUID?
 
-    init(environment: AppEnvironment, appState: AppState) {
+    init(environment: AppEnvironment, appState: AppState, partnerWait: ICloudPartnerWait? = nil) {
         self.environment = environment
         self.appState = appState
+        self.partnerWait = partnerWait ?? ICloudPartnerWait(
+            imports: CloudKitSpaceImports(stack: environment.persistence.stack, sharing: environment.sharing),
+            clock: ContinuousClock()
+        )
     }
 
     var partnerSlot: MemberColorSlot? { environment.partner?.colorSlot }
@@ -165,13 +172,37 @@ final class OnboardingViewModel {
 
     private func showInviteStepOrLeave() async {
         await loadStoredPartner()
+        if storedPartner == nil {
+            await waitForPartnerFromICloud()
+        }
         guard storedPartner == nil else {
             OnboardingViewModel.log.notice("invite: step skipped, the space already has two members")
             await leaveOnboarding()
             return
         }
+        guard joinCode == nil else {
+            step = .join
+            return
+        }
         recordStep(OnboardingStepIndex.invite)
         step = .invite
+    }
+
+    private func waitForPartnerFromICloud() async {
+        guard let space else { return }
+        await partnerWait.run(
+            spaceId: space.id,
+            spaceMadeHere: space.id == spaceMadeHereId,
+            changes: environment.repositories.changes,
+            partnerIsStored: { [weak self] in
+                guard let self else { return false }
+                await loadStoredPartner()
+                return storedPartner != nil
+            },
+            onSlow: { [weak self] in
+                self?.step = .checkingICloud
+            }
+        )
     }
 
     private func leaveOnboarding() async {
@@ -260,6 +291,7 @@ final class OnboardingViewModel {
             now: Date()
         )
         environment.analytics.record(.spaceCreated)
+        spaceMadeHereId = created.id
         return created
     }
 }

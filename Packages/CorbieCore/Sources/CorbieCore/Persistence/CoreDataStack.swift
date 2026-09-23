@@ -157,6 +157,22 @@ public final class CoreDataStack: @unchecked Sendable {
         )
     }
 
+    public func watchImport(intoStoreHolding spaceId: UUID) async -> CloudKitImportWatch? {
+        guard runningImports != nil else { return nil }
+        let scope = await scope(holdingSpace: spaceId)
+        return importWait(for: scope, arrivedAt: Date()).map(CloudKitImportWatch.init)
+    }
+
+    func scope(holdingSpace spaceId: UUID) async -> StoreScope? {
+        let context = newBackgroundContext()
+        let storeIdentifier = await context.perform {
+            let space: Space? = try? ManagedFetch.first(Space.entityName, id: spaceId, in: context)
+            return space?.objectID.persistentStore?.identifier
+        }
+        guard let storeIdentifier else { return nil }
+        return StoreScope.allCases.first { store(for: $0)?.identifier == storeIdentifier }
+    }
+
     public func reloadStores() throws {
         if let failure = CoreDataStack.load(container) {
             throw CorbieError.persistence(failure.localizedDescription)
@@ -266,12 +282,16 @@ public final class CoreDataStack: @unchecked Sendable {
         }
     }
 
+    private static let oneStoreLoadAtATime = NSLock()
+
     private static func load(_ container: NSPersistentContainer) -> (any Error)? {
         var failure: (any Error)?
-        container.loadPersistentStores { _, error in
-            if let error {
-                failure = error
-                log.error("store load failed: \(error.localizedDescription, privacy: .public)")
+        oneStoreLoadAtATime.withLock {
+            container.loadPersistentStores { _, error in
+                if let error {
+                    failure = error
+                    log.error("store load failed: \(error.localizedDescription, privacy: .public)")
+                }
             }
         }
         return failure
