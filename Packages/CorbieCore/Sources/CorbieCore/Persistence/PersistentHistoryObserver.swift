@@ -117,11 +117,16 @@ final class PersistentHistoryObserver: @unchecked Sendable {
 
     private func mergeIntoViewContext(_ merges: [[AnyHashable: Any]]) {
         let viewContext = container.viewContext
+        let batch = ObjectIDChanges(changes: merges)
         viewContext.perform {
-            for change in merges {
+            for change in batch.changes {
                 NSManagedObjectContext.mergeChanges(fromRemoteContextSave: change, into: [viewContext])
             }
         }
+    }
+
+    private struct ObjectIDChanges: @unchecked Sendable {
+        let changes: [[AnyHashable: Any]]
     }
 
     private struct Harvest {
