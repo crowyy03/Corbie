@@ -216,7 +216,7 @@ Then regenerate and build:
 ```bash
 cd ~/Desktop/codding/Corbie
 xcodegen generate
-xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17' build
+xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Main' build
 ```
 
 The setting reaches the app and the share extension through their Info plists, and

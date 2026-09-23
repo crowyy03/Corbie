@@ -65,6 +65,7 @@ string.
 
 ```
 xcodegen generate
+xcrun simctl create "iPhone 17 Pro Max QA" "iPhone 17 Pro Max"
 xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max QA' \
   -derivedDataPath /tmp/corbie-dd-qa build-for-testing
 
@@ -76,7 +77,13 @@ TEST_RUNNER_CORBIE_UI_LARGE_TEXT=0 \
 TEST_RUNNER_CORBIE_UI_APPEARANCE=light \
 xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max QA' \
   -derivedDataPath /tmp/corbie-dd-qa -only-testing:CorbieUITests test-without-building
+
+xcrun simctl delete "iPhone 17 Pro Max QA"
 ```
+
+The machine keeps one simulator, iPhone 17 Main, for day-to-day builds and tests. The QA passes make a
+throwaway iPhone 17 Pro Max for the largest screen and delete it at the end, so uninstalling the app there
+never touches iPhone 17 Main.
 
 `CORBIE_SCREENSHOT_PREFIX` still prefixes a file name if it is set; the runs below give each pass its
 own directory instead, so the same screenshot name can be compared across devices and appearances.

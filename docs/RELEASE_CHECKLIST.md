@@ -91,6 +91,7 @@ scripts/lint_style.sh
 scripts/check_translations.sh
 cd Packages/CorbieCore && swift build && swift test
 cd server && deno test -A
+xcrun simctl create "iPhone 17 Pro Max QA" "iPhone 17 Pro Max"
 xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max QA' \
   -derivedDataPath /tmp/corbie-dd-qa build
 xcodebuild -scheme Corbie -configuration Release \
@@ -100,6 +101,7 @@ xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pr
 xcrun simctl uninstall "iPhone 17 Pro Max QA" app.corbie
 xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max QA' \
   -derivedDataPath /tmp/corbie-dd-qa -only-testing:CorbieUITests test
+xcrun simctl delete "iPhone 17 Pro Max QA"
 ```
 
 On 2026-09-09 that reads: four gates ok (`check_colors.sh` joined the list with the theme engine), 579 core tests, 112 server

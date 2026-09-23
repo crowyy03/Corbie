@@ -22,7 +22,7 @@ xcodegen generate
 ## Build and test
 
 ```sh
-xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 15' build test
+xcodebuild -scheme Corbie -destination 'platform=iOS Simulator,name=iPhone 17 Main' build test
 ```
 
 `scripts/build.sh` wraps the same command (it regenerates the project first and accepts extra `xcodebuild` actions,
