@@ -30,6 +30,13 @@ struct WishCardView: View {
 
     static let imageSide: CGFloat = 110
     static let markSide: CGFloat = 44
+    private static let ownerDotRing: CGFloat = CorbieMetrics.hairline * 2
+    private static let ownerDotSide: CGFloat = CorbieMetrics.memberDotSize + ownerDotRing * 2
+    private static let ownerDotInset: CGFloat = CorbieRadius.card - ownerDotSide / 2
+
+    static func stacksText(at size: DynamicTypeSize) -> Bool {
+        size >= .xxxLarge
+    }
 
     let wish: WishDTO
     let approximate: Money?
@@ -38,7 +45,7 @@ struct WishCardView: View {
 
     private var money: Money? { WishPricing.money(for: wish) }
 
-    private var stacksText: Bool { dynamicTypeSize.isAccessibilitySize }
+    private var stacksText: Bool { WishCardView.stacksText(at: dynamicTypeSize) }
 
     private var imageShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: CorbieRadius.card, style: .continuous)
@@ -66,33 +73,32 @@ struct WishCardView: View {
             .frame(width: WishCardView.imageSide, height: WishCardView.imageSide)
             .clipShape(imageShape)
             .overlay(imageShape.strokeBorder(palette.border, lineWidth: CorbieMetrics.hairline))
+            .overlay(alignment: .bottomTrailing) {
+                ownerDot
+                    .padding(WishCardView.ownerDotInset)
+            }
             .accessibilityHidden(true)
+    }
+
+    private var ownerDot: some View {
+        MemberDot(slot: ownerSlot)
+            .padding(WishCardView.ownerDotRing)
+            .background(Circle().fill(palette.surface))
     }
 
     private var details: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xs) {
-            HStack(alignment: .top, spacing: CorbieSpacing.xs) {
-                ownerDotOnFirstLine
-                Text(wish.title)
-                    .corbieCardTitle()
-                    .foregroundStyle(palette.text)
-                    .lineLimit(stacksText ? 4 : 2)
-                    .multilineTextAlignment(.leading)
-            }
+            Text(wish.title)
+                .corbieCardTitle()
+                .foregroundStyle(palette.text)
+                .lineLimit(stacksText ? 4 : 2)
+                .multilineTextAlignment(.leading)
             price
             if wish.priority.showsPill {
                 WishPriorityPill(priority: wish.priority)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var ownerDotOnFirstLine: some View {
-        Text(verbatim: " ")
-            .corbieCardTitle()
-            .hidden()
-            .frame(width: CorbieMetrics.memberDotSize)
-            .overlay { MemberDot(slot: ownerSlot) }
     }
 
     @ViewBuilder private var price: some View {
@@ -141,13 +147,26 @@ struct WishCardView: View {
 }
 
 #if DEBUG
-#Preview("Wish card") {
-    PreviewThemes {
+private struct WishCardPreviewColumn: View {
+    var body: some View {
         VStack(spacing: CorbieSpacing.m) {
             ForEach(WishPreviewState.allCases) { state in
                 WishCardPreview(state: state)
             }
         }
     }
+}
+
+#Preview("Wish card") {
+    PreviewThemes {
+        WishCardPreviewColumn()
+    }
+}
+
+#Preview("Wish card, xxxLarge") {
+    PreviewThemes {
+        WishCardPreviewColumn()
+    }
+    .dynamicTypeSize(.xxxLarge)
 }
 #endif

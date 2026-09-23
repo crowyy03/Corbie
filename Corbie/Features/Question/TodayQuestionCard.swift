@@ -96,17 +96,8 @@ struct TodayQuestionCard: View {
     }
 
     private var full: some View {
-        VStack(alignment: .leading, spacing: CorbieSpacing.m) {
-            Text(model.text ?? "")
-                .corbieScreenTitle()
-                .foregroundStyle(palette.text)
-                .lineLimit(3)
-                .minimumScaleFactor(0.6)
-                .fixedSize(horizontal: false, vertical: true)
-            fullStatus
-            PrimaryButton(title: callToAction) {
-                wantsAnswering = true
-            }
+        TodayQuestionFull(text: model.text ?? "", status: fullStatus, callToAction: callToAction) {
+            wantsAnswering = true
         }
     }
 
@@ -136,31 +127,27 @@ struct TodayQuestionCard: View {
         QuestionCopy.status(model.status?.progress ?? .waitingForPartner, partnerName: environment.partnerName)
     }
 
-    @ViewBuilder private var fullStatus: some View {
+    private var fullStatus: TodayQuestionFullStatus {
         if model.status?.progress == .unanswered(partnerAnswered: true) {
-            Text(QuestionCopy.status(.unanswered(partnerAnswered: true), partnerName: environment.partnerName))
-                .corbieCaption()
-                .fontWeight(.semibold)
-                .foregroundStyle(memberColor(environment.partner?.id))
-                .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-            HStack(alignment: .top, spacing: CorbieSpacing.m) {
-                column(memberId: environment.currentMember?.id, isViewer: true)
-                if environment.isPaired {
-                    column(memberId: environment.partner?.id, isViewer: false)
-                }
-            }
+            return .yourTurn(
+                line: QuestionCopy.status(.unanswered(partnerAnswered: true), partnerName: environment.partnerName),
+                color: memberColor(environment.partner?.id)
+            )
         }
+        var columns = [column(memberId: environment.currentMember?.id, isViewer: true)]
+        if environment.isPaired {
+            columns.append(column(memberId: environment.partner?.id, isViewer: false))
+        }
+        return .columns(columns)
     }
 
-    private func column(memberId: UUID?, isViewer: Bool) -> some View {
+    private func column(memberId: UUID?, isViewer: Bool) -> TodayQuestionColumn {
         let answered = model.question?.hasAnswered(memberId) ?? false
-        return Text(statusLine(memberId: memberId, isViewer: isViewer, answered: answered))
-            .corbieCaption()
-            .fontWeight(answered ? .semibold : .regular)
-            .foregroundStyle(answered ? memberColor(memberId) : palette.text2)
-            .multilineTextAlignment(.leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
+        return TodayQuestionColumn(
+            line: statusLine(memberId: memberId, isViewer: isViewer, answered: answered),
+            answered: answered,
+            color: memberColor(memberId)
+        )
     }
 
     private func memberColor(_ memberId: UUID?) -> Color {
@@ -180,6 +167,84 @@ struct TodayQuestionCard: View {
         if model.hasAnswered == false { return String(localized: "question.action.answer") }
         if model.question?.isRevealed == true { return String(localized: "question.action.see") }
         return String(localized: "question.action.yours")
+    }
+}
+
+struct TodayQuestionColumn {
+    let line: String
+    let answered: Bool
+    let color: Color
+}
+
+enum TodayQuestionFullStatus {
+    case yourTurn(line: String, color: Color)
+    case columns([TodayQuestionColumn])
+}
+
+struct TodayQuestionFull: View {
+    @Environment(\.palette) private var palette
+
+    let text: String
+    let status: TodayQuestionFullStatus
+    let callToAction: String
+    let answer: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: CorbieSpacing.m) {
+            TodayQuestionTitle(text: text)
+            statusView
+            PrimaryButton(title: callToAction, action: answer)
+        }
+    }
+
+    @ViewBuilder private var statusView: some View {
+        switch status {
+        case let .yourTurn(line, color):
+            Text(line)
+                .corbieCaption()
+                .fontWeight(.semibold)
+                .foregroundStyle(color)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        case let .columns(columns):
+            HStack(alignment: .top, spacing: CorbieSpacing.m) {
+                ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
+                    Text(column.line)
+                        .corbieCaption()
+                        .fontWeight(column.answered ? .semibold : .regular)
+                        .foregroundStyle(column.answered ? column.color : palette.text2)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+        }
+    }
+}
+
+struct TodayQuestionTitle: View {
+    static let smallestScale = CorbieFont.bodySize / CorbieFont.screenTitleSize
+
+    static func lineLimit(for size: DynamicTypeSize) -> Int {
+        switch size {
+        case .xSmall, .small, .medium, .large: return 3
+        case .xLarge, .xxLarge, .xxxLarge: return 4
+        case .accessibility1: return 5
+        default: return 6
+        }
+    }
+
+    @Environment(\.palette) private var palette
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .corbieScreenTitle()
+            .foregroundStyle(palette.text)
+            .lineLimit(Self.lineLimit(for: dynamicTypeSize))
+            .minimumScaleFactor(Self.smallestScale)
+            .truncationMode(.tail)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
 

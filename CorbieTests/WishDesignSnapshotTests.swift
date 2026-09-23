@@ -10,12 +10,17 @@ final class WishDesignSnapshotTests: XCTestCase {
     func testTheCardRendersInEveryThemeAndState() throws {
         for theme in CorbieTheme.allCases {
             for state in WishPreviewState.allCases {
-                let card = WishCardPreview(state: state)
-                    .padding(.horizontal, CorbieSpacing.m)
-                    .padding(.vertical, CorbieSpacing.xs)
-                    .frame(width: screen.width)
-                    .background(theme.palette.bg)
-                try render(card, theme: theme, height: nil, name: "wish_card_\(theme.rawValue)_\(state.rawValue)")
+                try render(card(state, theme: theme), theme: theme, height: nil, name: "wish_card_\(theme.rawValue)_\(state.rawValue)")
+            }
+        }
+    }
+
+    func testTheCardRendersAtXxxLargeInEveryThemeAndState() throws {
+        for theme in CorbieTheme.allCases {
+            for state in WishPreviewState.allCases {
+                let card = card(state, theme: theme)
+                    .dynamicTypeSize(.xxxLarge)
+                try render(card, theme: theme, height: nil, name: "wish_card_\(theme.rawValue)_\(state.rawValue)_xxxl")
             }
         }
     }
@@ -28,6 +33,14 @@ final class WishDesignSnapshotTests: XCTestCase {
                 try render(detail, theme: theme, height: screen.height, name: "wish_detail_\(theme.rawValue)_\(state.rawValue)")
             }
         }
+    }
+
+    private func card(_ state: WishPreviewState, theme: CorbieTheme) -> some View {
+        WishCardPreview(state: state)
+            .padding(.horizontal, CorbieSpacing.m)
+            .padding(.vertical, CorbieSpacing.xs)
+            .frame(width: screen.width)
+            .background(theme.palette.bg)
     }
 
     private func render<Content: View>(_ content: Content, theme: CorbieTheme, height: CGFloat?, name: String) throws {

@@ -114,6 +114,14 @@ final class WishesLogicTests: XCTestCase {
         XCTAssertFalse(WishDTO(id: UUID()).priority.showsPill)
     }
 
+    func testTheCardStacksItsTextUnderThePhotoFromXxxLarge() {
+        XCTAssertFalse(WishCardView.stacksText(at: .large))
+        XCTAssertFalse(WishCardView.stacksText(at: .xxLarge))
+        XCTAssertTrue(WishCardView.stacksText(at: .xxxLarge))
+        XCTAssertTrue(WishCardView.stacksText(at: .accessibility1))
+        XCTAssertTrue(WishCardView.stacksText(at: .accessibility5))
+    }
+
     func testTheLinkRowShowsHostAndPathWithoutSchemeOrQuery() throws {
         let listing = try XCTUnwrap(URL(string: "https://www.etsy.com/listing/1184/linen-apron/?ref=shop_home"))
         let root = try XCTUnwrap(URL(string: "https://example.com/"))
