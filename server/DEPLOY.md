@@ -182,9 +182,9 @@ than `supabase secrets set` for the private key: the CLI form puts the value in 
 | `APPLE_CLIENT_ID`        | The `aud` claim demanded of Apple identity tokens.                                                                                                                                                                                           | `app.corbie`                                                                                                                                                                                                                               | set                              |
 | `APPLE_BUNDLE_ID`        | The bundle App Store notifications must name, so another app's notifications are refused.                                                                                                                                                    | `app.corbie`                                                                                                                                                                                                                               | set                              |
 | `APPLE_ENV`              | Which App Store environment this project accepts. A notification from the other one is rejected.                                                                                                                                             | `Sandbox` while testing, `Production` for the shipping project. Set `Sandbox` now.                                                                                                                                                         | set                              |
-| `APPLE_TEAM_ID`          | Signs the client secret used to revoke a Sign in with Apple credential on account deletion.                                                                                                                                                  | Apple Developer, Membership details, Team ID.                                                                                                                                                                                              | **blocked on the Apple account** |
-| `APPLE_KEY_ID`           | Same signature, names which key signed it.                                                                                                                                                                                                   | Apple Developer, Certificates Identifiers and Profiles, Keys, the key with Sign in with Apple enabled.                                                                                                                                     | **blocked on the Apple account** |
-| `APPLE_PRIVATE_KEY`      | Same signature, the key itself.                                                                                                                                                                                                              | The `.p8` file Apple lets you download exactly once when you create that key. Paste the whole file including the BEGIN and END lines; real newlines and `\n` escapes both work.                                                            | **blocked on the Apple account** |
+| `APPLE_TEAM_ID`          | Signs the client secret used to revoke a Sign in with Apple credential on account deletion.                                                                                                                                                  | Apple Developer, Membership details, Team ID.                                                                                                                                                                                              | set                              |
+| `APPLE_KEY_ID`           | Same signature, names which key signed it.                                                                                                                                                                                                   | Apple Developer, Certificates Identifiers and Profiles, Keys, the key with Sign in with Apple enabled.                                                                                                                                     | set                              |
+| `APPLE_PRIVATE_KEY`      | Same signature, the key itself.                                                                                                                                                                                                              | The `.p8` file Apple lets you download exactly once when you create that key. Paste the whole file including the BEGIN and END lines; real newlines and `\n` escapes both work.                                                            | set                              |
 | `INSTAGRAM_OEMBED_TOKEN` | Lets the wish parser read Instagram and TikTok links through oEmbed.                                                                                                                                                                         | A Meta app access token. Optional: without it those two sites fall back to a bare link and every other shop still parses.                                                                                                                  | optional, leave empty            |
 
 Do not set these four, they are injected into every function automatically and the CLI refuses names
@@ -192,7 +192,13 @@ that start with `SUPABASE_`: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERV
 `SUPABASE_DB_URL`. The smoke test proves they arrived: if `/fx` answers 200, the function reached the
 database with the service role key.
 
-What the three blocked secrets cost you until the Apple account exists: `POST /apple-revoke` answers
+The three Apple key secrets are set. Checked on 2026-09-22 with the smoke test: `POST /apple-revoke`
+with the smoke test's fake authorization code answers `502 Apple did not accept the authorization code`,
+so the function reads the key, signs the client secret and reaches Apple. Before the key was set again
+it answered `500` because the key could not be read. Only a real account deletion on a device can
+produce the `204`.
+
+What the secrets cost when they are missing: `POST /apple-revoke` answers
 `500 Server is missing APPLE_TEAM_ID`, so deleting an account removes the data but leaves the Apple
 credential granted. Nothing else degrades.
 
@@ -309,10 +315,10 @@ Working end to end once steps 1 to 7 are done: invite codes, link parsing for wi
 the monetization flag, anonymous analytics with its four views, entitlement reads, the per-IP rate
 limiter, and the nightly purge.
 
-Still blocked, all on the Apple Developer account: `POST /session` (needs a real identity token),
-`POST /apple-revoke` (needs the `.p8`), and App Store Server Notifications, which are what write
-entitlement rows in the first place. Until then every paying state comes from the local StoreKit
-transaction on the device, which is what the app already falls back to. When the account exists, set
-the three Apple secrets, put
-`https://<ref>.supabase.co/functions/v1/appstore-notifications` into App Store Connect as the
-notification URL for both Sandbox and Production, and flip `APPLE_ENV` on the production project.
+`POST /session` and `POST /apple-revoke` have their Apple secrets (section 5); they are exercised end
+to end only by a real sign in and a real account deletion on a device. Still open: App Store Server
+Notifications, which are what write entitlement rows in the first place. Until they arrive every
+paying state comes from the local StoreKit transaction on the device, which is what the app already
+falls back to. To turn them on, put `https://<ref>.supabase.co/functions/v1/appstore-notifications`
+into App Store Connect as the notification URL for both Sandbox and Production, and flip `APPLE_ENV`
+on the production project.

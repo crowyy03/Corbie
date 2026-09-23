@@ -122,9 +122,7 @@ final class OnboardingViewModel {
             environment.report(error)
             return
         }
-        await loadStoredPartner()
-        recordStep(OnboardingStepIndex.invite)
-        step = .invite
+        await showInviteStepOrLeave()
     }
 
     func cancelJoin() async {
@@ -138,9 +136,7 @@ final class OnboardingViewModel {
             environment.report(error)
             return
         }
-        await loadStoredPartner()
-        recordStep(OnboardingStepIndex.invite)
-        step = .invite
+        await showInviteStepOrLeave()
     }
 
     func openJoin() {
@@ -164,6 +160,21 @@ final class OnboardingViewModel {
         } catch {
             environment.report(error)
         }
+        await leaveOnboarding()
+    }
+
+    private func showInviteStepOrLeave() async {
+        await loadStoredPartner()
+        guard storedPartner == nil else {
+            OnboardingViewModel.log.notice("invite: step skipped, the space already has two members")
+            await leaveOnboarding()
+            return
+        }
+        recordStep(OnboardingStepIndex.invite)
+        step = .invite
+    }
+
+    private func leaveOnboarding() async {
         appState.selectedTab = .today
         await environment.reloadSession()
     }

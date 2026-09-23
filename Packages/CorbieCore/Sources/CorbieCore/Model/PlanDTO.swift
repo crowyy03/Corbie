@@ -87,6 +87,10 @@ public struct PlanDTO: Sendable, Codable, Identifiable, Equatable {
 
     public var totalSavedAmount: Double { savedAmount + addedAmount }
 
+    public var startingAmount: Money? {
+        savedAmount > 0 ? Money(amount: savedAmount, currency: currency) : nil
+    }
+
     public var leftAmount: Double {
         guard isOpenEnded == false else { return 0 }
         return max(0, targetAmount - totalSavedAmount)

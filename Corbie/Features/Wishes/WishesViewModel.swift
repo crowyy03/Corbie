@@ -61,6 +61,10 @@ final class WishesViewModel {
         filter = WishesFilter.defaultSelection(isPaired: environment?.isPaired ?? false)
     }
 
+    func wish(id: UUID) -> WishDTO? {
+        active.first { $0.id == id } ?? fulfilled.first { $0.id == id }
+    }
+
     func approximate(for wish: WishDTO) -> Money? {
         guard let environment, let money = WishPricing.money(for: wish) else { return nil }
         return WishPricing.approximate(
@@ -119,24 +123,13 @@ final class WishesViewModel {
     }
 
     func markGifted(_ wish: WishDTO) async {
-        guard let environment, environment.premiumGate.require(.edit) else { return }
-        do {
-            _ = try await environment.repositories.wishes.fulfil(wishId: wish.id)
-            environment.analytics.record(.wishFulfilled)
-            await load()
-        } catch {
-            environment.report(error)
-        }
+        guard let environment, await WishActions(environment: environment).fulfil(wish.id) else { return }
+        await load()
     }
 
     func delete(_ wish: WishDTO) async {
-        guard let environment, environment.premiumGate.require(.edit) else { return }
-        do {
-            try await environment.repositories.wishes.delete(id: wish.id)
-            await load()
-        } catch {
-            environment.report(error)
-        }
+        guard let environment, await WishActions(environment: environment).delete(wish.id) else { return }
+        await load()
     }
 
     private func refreshRates(for wishes: [WishDTO], displayCurrency: String) {

@@ -107,6 +107,57 @@ final class WishesLogicTests: XCTestCase {
         XCTAssertEqual(WishParseRetry.candidates(in: wishes, attempted: [], isOnline: true, limit: 2).count, 2)
     }
 
+    func testOnlyAPriorityOtherThanTheDefaultShowsAPill() {
+        XCTAssertTrue(WishPriority.must.showsPill)
+        XCTAssertTrue(WishPriority.someday.showsPill)
+        XCTAssertFalse(WishPriority.want.showsPill)
+        XCTAssertFalse(WishDTO(id: UUID()).priority.showsPill)
+    }
+
+    func testTheLinkRowShowsHostAndPathWithoutSchemeOrQuery() throws {
+        let listing = try XCTUnwrap(URL(string: "https://www.etsy.com/listing/1184/linen-apron/?ref=shop_home"))
+        let root = try XCTUnwrap(URL(string: "https://example.com/"))
+
+        XCTAssertEqual(WishDetailText.link(listing), "etsy.com/listing/1184/linen-apron")
+        XCTAssertEqual(WishDetailText.link(root), "example.com")
+    }
+
+    func testOnlyAWebLinkCanBeOpened() {
+        XCTAssertEqual(
+            WishDetailText.pageURL(of: wish(owner: me, url: "https://www.etsy.com/listing/1"))?.host(),
+            "www.etsy.com"
+        )
+        XCTAssertNil(WishDetailText.pageURL(of: wish(owner: me, url: nil)))
+        XCTAssertNil(WishDetailText.pageURL(of: wish(owner: me, url: "not a link")))
+        XCTAssertNil(WishDetailText.pageURL(of: wish(owner: me, url: "ftp://files.example.com/list")))
+    }
+
+    func testTheAddedLineCapitalisesTheNameAndShowsTheYearOnlyForAnotherYear() {
+        let english = Locale(identifier: "en_US")
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC") ?? .current
+        let now = Date(timeIntervalSince1970: 1_790_164_800)
+        let thisYear = Date(timeIntervalSince1970: 1_788_523_200)
+        let lastYear = Date(timeIntervalSince1970: 1_766_577_600)
+
+        XCTAssertEqual(
+            WishDetailText.added(ownerName: "you", createdAt: thisYear, now: now, locale: english, calendar: calendar),
+            "You \u{00B7} September 4"
+        )
+        XCTAssertEqual(
+            WishDetailText.added(ownerName: "Sofia", createdAt: lastYear, now: now, locale: english, calendar: calendar),
+            "Sofia \u{00B7} December 24, 2025"
+        )
+        XCTAssertEqual(WishDetailText.added(ownerName: "you", createdAt: nil, now: now, locale: english), "You")
+    }
+
+    func testTheHeroGrowsOnlyWhilePulledDown() {
+        XCTAssertEqual(WishDetailMetrics.heroStretch(height: 340, pull: 0), 1)
+        XCTAssertEqual(WishDetailMetrics.heroStretch(height: 340, pull: -120), 1)
+        XCTAssertEqual(WishDetailMetrics.heroStretch(height: 340, pull: 170), 1.5, accuracy: 0.0001)
+        XCTAssertEqual(WishDetailMetrics.heroHeight(screenHeight: 852), 341)
+    }
+
     private func wish(
         owner: UUID,
         price: Double? = nil,

@@ -142,16 +142,26 @@ func planContributions(count: Int, startingAmount: String? = nil) -> String {
 }
 
 func planOpenSubtitle(for plan: PlanDTO, locale: Locale = .current) -> String {
-    let startingAmount = plan.savedAmount > 0
-        ? Money(amount: plan.savedAmount, currency: plan.currency).formatted(locale: locale)
-        : nil
-    let contributions = planContributions(count: plan.expenseCount, startingAmount: startingAmount)
+    let contributions = planContributions(
+        count: plan.expenseCount,
+        startingAmount: plan.startingAmount?.formatted(locale: locale)
+    )
     guard let startedAt = plan.createdAt else { return contributions }
     return String.localizedStringWithFormat(
         String(localized: "plans.card.open.since"),
         startedAt.formatted(.dateTime.month(.wide).year().locale(locale)),
         contributions
     )
+}
+
+func planCompactLine(for plan: TodayPlan) -> String {
+    guard plan.isOpenEnded else {
+        return String(format: String(localized: "plans.card.progress"), plan.savedText, plan.targetText)
+    }
+    guard plan.expenseCount == 0, let startingAmount = plan.startingAmountText else {
+        return planContributions(count: plan.expenseCount)
+    }
+    return String(format: String(localized: "plans.card.contributions.start.short"), startingAmount)
 }
 
 func planStepDue(

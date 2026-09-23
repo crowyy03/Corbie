@@ -11,13 +11,14 @@ final class OpenSavingsTests: XCTestCase {
         saved: Double = 0,
         added: Double = 0,
         expenses: Int = 0,
-        createdAt: Date? = nil
+        createdAt: Date? = nil,
+        currency: String = "USD"
     ) -> PlanDTO {
         PlanDTO(
             id: UUID(),
             title: "The pot",
             type: .other,
-            currency: "USD",
+            currency: currency,
             savedAmount: saved,
             addedAmount: added,
             isOpenEnded: true,
@@ -114,6 +115,32 @@ final class OpenSavingsTests: XCTestCase {
             "since October 2025 \u{b7} 3 contributions"
         )
         XCTAssertEqual(planContributions(count: 0), "no contributions yet")
+    }
+
+    func testTheCompactLineOfAStartedPlanCarriesTheAmount() {
+        let line = planCompactLine(for: TodayPlan(openPlan(saved: 1240), locale: usd))
+        XCTAssertTrue(line.contains("$1,240"))
+        XCTAssertEqual(line, "$1,240 to start")
+
+        let euros = TodayPlan(openPlan(saved: 1240, currency: "EUR"), locale: Locale(identifier: "de_DE"))
+        XCTAssertEqual(planCompactLine(for: euros), "1.240\u{a0}\u{20ac} to start")
+    }
+
+    func testTheCompactLineKeepsItsTextInTheOtherStates() {
+        XCTAssertEqual(planCompactLine(for: TodayPlan(openPlan(), locale: usd)), "no contributions yet")
+        XCTAssertEqual(
+            planCompactLine(for: TodayPlan(openPlan(added: 600, expenses: 6), locale: usd)),
+            "6 contributions"
+        )
+        XCTAssertEqual(
+            planCompactLine(for: TodayPlan(openPlan(saved: 1240, added: 50, expenses: 1), locale: usd)),
+            "1 contribution"
+        )
+
+        let lisbon = PlanDTO(id: UUID(), title: "Lisbon", type: .trip, targetAmount: 5000, currency: "USD", savedAmount: 2400)
+        XCTAssertEqual(planCompactLine(for: TodayPlan(lisbon, locale: usd)), "$2,400 of $5,000")
+        let untouched = PlanDTO(id: UUID(), title: "Lisbon", type: .trip, targetAmount: 5000, currency: "USD")
+        XCTAssertEqual(planCompactLine(for: TodayPlan(untouched, locale: usd)), "$0 of $5,000")
     }
 
     func testAnOpenPlanShowsNoProgressAndNoOverspend() {

@@ -89,8 +89,8 @@ struct CompactPlanCard: View {
     let showsSteps: Bool
     let open: () -> Void
 
-    private var amount: String {
-        String(format: String(localized: "plans.card.progress"), plan.savedText, plan.targetText)
+    private var line: String {
+        planCompactLine(for: plan)
     }
 
     private var steps: String? {
@@ -120,21 +120,18 @@ struct CompactPlanCard: View {
                             .foregroundStyle(palette.text)
                             .lineLimit(1)
                             .minimumScaleFactor(0.5)
-                        Text(planContributions(count: plan.expenseCount))
-                            .corbieMono()
-                            .foregroundStyle(palette.text2)
-                            .lineLimit(1)
                     } else {
                         ProgressBar(
                             value: plan.progress,
                             accessibilityLabel: String(localized: "plans.card.progress.label"),
-                            accessibilityValue: amount
+                            accessibilityValue: line
                         )
-                        Text(amount)
-                            .corbieMono()
-                            .foregroundStyle(palette.text2)
-                            .lineLimit(1)
                     }
+                    Text(line)
+                        .corbieMono()
+                        .foregroundStyle(palette.text2)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                     if showsSteps {
                         Text(steps ?? "")
                             .corbieMono()

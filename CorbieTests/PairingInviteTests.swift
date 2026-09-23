@@ -424,6 +424,87 @@ final class PairingInviteTests: XCTestCase {
     }
 
     @MainActor
+    func testOnboardingSkipsTheInviteStepWhenTheSpaceAlreadyHasTwoMembers() async throws {
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        let me = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let partner = try await addMember(
+            appleUserId: "tests.partner",
+            named: "Anna",
+            slot: .rose,
+            to: space,
+            in: persistence
+        )
+        let environment = AppEnvironment.preview(persistence: persistence, transport: OfflineTransport())
+        let appState = awayFromToday()
+        let model = OnboardingViewModel(environment: environment, appState: appState)
+
+        await model.signIn(credential: appleCredential(userIdentifier: "tests.me"))
+        XCTAssertEqual(model.step, .profile)
+
+        await model.continueFromProfile()
+
+        XCTAssertNotEqual(model.step, .invite)
+        XCTAssertEqual(model.storedPartner?.id, partner.id)
+        XCTAssertNil(LiveInviteStore().live(for: space.id, at: Date()))
+        XCTAssertEqual(appState.selectedTab, .today)
+        XCTAssertTrue(environment.isSignedIn)
+        XCTAssertEqual(environment.currentMember?.id, me.id)
+        XCTAssertEqual(environment.partner?.id, partner.id)
+    }
+
+    @MainActor
+    func testOnboardingStillShowsTheInviteStepForASpaceOfOne() async throws {
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        let me = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let environment = AppEnvironment.preview(persistence: persistence, transport: OfflineTransport())
+        let appState = awayFromToday()
+        let model = OnboardingViewModel(environment: environment, appState: appState)
+
+        await model.signIn(credential: appleCredential(userIdentifier: "tests.me"))
+        await model.continueFromProfile()
+
+        XCTAssertEqual(model.step, .invite)
+        XCTAssertNil(model.storedPartner)
+        XCTAssertEqual(model.space?.id, space.id)
+        XCTAssertEqual(model.member?.id, me.id)
+        XCTAssertEqual(appState.selectedTab, .plans)
+        XCTAssertFalse(environment.isSignedIn)
+    }
+
+    @MainActor
+    func testBackingOutOfACodeAlsoSkipsTheInviteStepInAPairedSpace() async throws {
+        let persistence = PersistenceController.inMemory()
+        let space = try await makeSpace(in: persistence)
+        _ = try await addMember(appleUserId: "tests.me", named: "Ilya", slot: .teal, to: space, in: persistence)
+        let partner = try await addMember(
+            appleUserId: "tests.partner",
+            named: "Anna",
+            slot: .rose,
+            to: space,
+            in: persistence
+        )
+        let environment = AppEnvironment.preview(persistence: persistence, transport: OfflineTransport())
+        let appState = awayFromToday()
+        let model = OnboardingViewModel(environment: environment, appState: appState)
+
+        model.adopt(joinCode: "K7M2QX")
+        await model.signIn(credential: appleCredential(userIdentifier: "tests.me"))
+        await model.continueFromProfile()
+        XCTAssertEqual(model.step, .join)
+
+        await model.cancelJoin()
+
+        XCTAssertNotEqual(model.step, .invite)
+        XCTAssertNil(model.joinCode)
+        XCTAssertEqual(model.storedPartner?.id, partner.id)
+        XCTAssertNil(LiveInviteStore().live(for: space.id, at: Date()))
+        XCTAssertEqual(appState.selectedTab, .today)
+        XCTAssertTrue(environment.isSignedIn)
+    }
+
+    @MainActor
     func testTheJoinedLineNamesThePartnerOrFallsBack() {
         let named = InviteViewModel.joinedLine(name: "Anna")
         XCTAssertTrue(named.contains("Anna"))
@@ -518,6 +599,38 @@ final class PairingInviteTests: XCTestCase {
         )
     }
 
+    private func makeSpace(in persistence: PersistenceController) async throws -> SpaceDTO {
+        try await persistence.repositories.spaces.create(
+            displayCurrency: SupportedCurrencies.defaultCode,
+            creatorMemberId: nil,
+            now: Date()
+        )
+    }
+
+    private func addMember(
+        appleUserId: String,
+        named name: String,
+        slot: MemberColorSlot,
+        to space: SpaceDTO,
+        in persistence: PersistenceController
+    ) async throws -> MemberDTO {
+        try await persistence.repositories.members.upsertCurrentMember(
+            appleUserId: appleUserId,
+            spaceId: space.id,
+            draft: MemberDraft(displayName: name, colorKey: slot.rawValue),
+            theme: .sand
+        ).member
+    }
+
+    private func appleCredential(userIdentifier: String) -> AppleSignInCredential {
+        AppleSignInCredential(
+            userIdentifier: userIdentifier,
+            identityToken: nil,
+            authorizationCode: nil,
+            displayName: nil
+        )
+    }
+
     @MainActor
     private func awayFromToday() -> AppState {
         let appState = AppState()
@@ -533,6 +646,12 @@ final class PairingInviteTests: XCTestCase {
 
 private extension Locale {
     static let posix = Locale(identifier: "en_US_POSIX")
+}
+
+private struct OfflineTransport: HTTPTransport {
+    func send(_ request: HTTPRequest) async throws -> HTTPResponse {
+        throw URLError(.notConnectedToInternet)
+    }
 }
 
 @MainActor

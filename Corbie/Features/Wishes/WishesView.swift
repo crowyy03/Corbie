@@ -11,6 +11,7 @@ struct WishesView: View {
     @State private var viewModel = WishesViewModel()
     @State private var network = WishesNetworkMonitor()
     @State private var editor: WishEditorRequest?
+    @State private var openedWishId: UUID?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -26,6 +27,10 @@ struct WishesView: View {
             WishEditorView(request: request) {
                 await viewModel.load()
             }
+        }
+        .navigationDestination(item: $openedWishId) { id in
+            let wish = viewModel.wish(id: id)
+            WishDetailView(wishId: id, wish: wish, approximate: wish.flatMap(viewModel.approximate(for:)))
         }
         .task {
             network.start()
@@ -141,7 +146,7 @@ struct WishesView: View {
 
     private func row(_ wish: WishDTO) -> some View {
         Button {
-            startEditing(wish)
+            openedWishId = wish.id
         } label: {
             WishCardView(
                 wish: wish,
@@ -155,9 +160,9 @@ struct WishesView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(
             EdgeInsets(
-                top: CorbieSpacing.xxs,
+                top: CorbieSpacing.xs,
                 leading: CorbieSpacing.m,
-                bottom: CorbieSpacing.xxs,
+                bottom: CorbieSpacing.xs,
                 trailing: CorbieSpacing.m
             )
         )
@@ -194,11 +199,6 @@ struct WishesView: View {
     private func startCreating(link: String?) {
         guard environment.premiumGate.require(.create) else { return }
         editor = WishEditorRequest(wish: nil, link: link)
-    }
-
-    private func startEditing(_ wish: WishDTO) {
-        guard environment.premiumGate.require(.edit) else { return }
-        editor = WishEditorRequest(wish: wish, link: nil)
     }
 
     private func pasteFromClipboard() {

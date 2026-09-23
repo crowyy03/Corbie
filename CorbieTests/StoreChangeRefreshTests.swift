@@ -204,6 +204,42 @@ final class StoreChangeRefreshTests: XCTestCase {
         try await arrives("the wish in Wishes") { model.active.contains { $0.title == "Linen shirt" } }
     }
 
+    func testAnOpenWishShowsWhatThePartnerChanged() async throws {
+        let wish = try await world.environment.repositories.wishes.create(
+            WishDraft(spaceId: world.space.id, ownerMemberId: world.me.id, title: "Linen shirt")
+        )
+        let model = WishDetailViewModel(wishId: wish.id, wish: wish)
+        model.attach(world.environment)
+        await model.load()
+
+        try await world.fromPartner {
+            var retitled = wish
+            retitled.title = "Linen shirt, sand"
+            _ = try await $0.wishes.update(retitled, from: wish)
+            _ = try await $0.wishes.fulfil(wishId: wish.id)
+        }
+
+        try await arrives("the new title and the fulfilment on the open wish") {
+            model.wish?.title == "Linen shirt, sand" && model.wish?.isFulfilled == true
+        }
+    }
+
+    func testAnOpenWishGoesBackWhenThePartnerDeletesIt() async throws {
+        let wish = try await world.environment.repositories.wishes.create(
+            WishDraft(spaceId: world.space.id, ownerMemberId: world.me.id, title: "Linen shirt")
+        )
+        let model = WishDetailViewModel(wishId: wish.id, wish: wish)
+        model.attach(world.environment)
+        await model.load()
+        XCTAssertFalse(model.isGone)
+
+        try await world.fromPartner {
+            try await $0.wishes.delete(id: wish.id)
+        }
+
+        try await arrives("the open wish leaving after the partner deleted it") { model.isGone }
+    }
+
     func testPlansShowAPlanAndAListThatArriveFromThePartner() async throws {
         let model = PlansViewModel()
         model.attach(world.environment)
@@ -508,6 +544,8 @@ enum StoreChangeCoverage {
         "Calendar/CalendarImportViewModel.swift": .snapshot(reason: "a one-off import from the device calendar"),
         "Wishes/WishesViewModel.swift": .refreshes(test: "testWishesShowAWishThatArrivesFromThePartner"),
         "Wishes/WishEditorViewModel.swift": editsACopy,
+        "Wishes/WishDetailViewModel.swift": .refreshes(test: "testAnOpenWishShowsWhatThePartnerChanged"),
+        "Wishes/WishActions.swift": .snapshot(reason: "fulfils or deletes a wish for the list and the detail, shows nothing"),
         "Plans/PlansViewModel.swift": .refreshes(test: "testPlansShowAPlanAndAListThatArriveFromThePartner"),
         "Plans/PlanDetailViewModel.swift": .refreshes(test: "testAPlanShowsAStepThatArrivesFromThePartner"),
         "Plans/PlanEditorViewModel.swift": editsACopy,

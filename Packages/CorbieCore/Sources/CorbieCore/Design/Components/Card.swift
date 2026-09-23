@@ -2,12 +2,18 @@ import SwiftUI
 
 public struct Card<Content: View>: View {
     private let isHighlighted: Bool
+    private let padding: CGFloat
     private let content: Content
 
     @Environment(\.palette) private var palette
 
-    public init(isHighlighted: Bool = false, @ViewBuilder content: () -> Content) {
+    public init(
+        isHighlighted: Bool = false,
+        padding: CGFloat = CorbieSpacing.m,
+        @ViewBuilder content: () -> Content
+    ) {
         self.isHighlighted = isHighlighted
+        self.padding = padding
         self.content = content()
     }
 
@@ -17,7 +23,7 @@ public struct Card<Content: View>: View {
 
     public var body: some View {
         content
-            .padding(CorbieSpacing.m)
+            .padding(padding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background {
                 ZStack {

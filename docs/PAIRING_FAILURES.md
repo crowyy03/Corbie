@@ -21,6 +21,7 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 
 | Step | What goes wrong | What the person sees | Log line |
 | --- | --- | --- | --- |
+| Onboarding, before the invite step | The space already has two members: the local store holds a partner row beside this member (the second phone of someone already paired) | no invite step: after the profile step, or after backing out of a code, onboarding goes straight to Today; no code is made, no share is asked for, nothing is stored | `invite: step skipped, the space already has two members` |
 | Before anything | Not signed in to iCloud | "Sign in to iCloud on this iPhone, then try again." | `invite failed as signedOutOfICloud` |
 | Before anything | iCloud account temporarily unavailable | "iCloud is not ready on this iPhone. Try again in a minute." | `invite failed as iCloudBusy` |
 | `CloudKitSharing.share` | CloudKit refuses to make the share (network, quota, anything) | the sentence for that reason | `share create: <reason>: CKError <n> <text>` |
@@ -47,10 +48,12 @@ has been used.
 The screen does not ask iCloud about the partner, it watches what the app already knows. Signed in
 (Settings, the Today empty state), that is the session's partner, which `AppEnvironment` picks up on
 the next synced change or on foreground. In onboarding there is no session yet, so the onboarding reads
-the space's partner row when the invite step opens and again on every change that arrives from iCloud.
-Only a member of this space counts, and not the one who was already there when the code was made: a
-phone that joins another space does not see its own old invite flip, and a space that already had a
-partner keeps showing its code.
+the space's partner row from the local store before it would open the invite step. When one is there
+it skips the step (the first row above); otherwise it opens the step and reads the row again on every
+change that arrives from iCloud. Only a member of this space counts, and not the one who was already
+there when the code was made, so a phone that joins another space does not see its own old invite
+flip. A space that already has two members does not get this screen from anywhere: onboarding skips
+it, and Settings and the Today empty state offer the invite only while there is no partner.
 
 Timings, one line each, category `pairing`: `invite: create the share took <n> ms` (the CloudKit share)
 and `invite: POST /invite took <n> ms`. Each also writes `<name> started` when it begins and
@@ -126,4 +129,10 @@ private folder that the widgets and the share extension could not see.
   simulator. The 2026-09-21 changes (the live code, "New code", `superseded`, the same phone retry,
   the steps and their timings) are covered by unit and server tests only; the server half needs
   migration 0008 and a function deploy before a phone can see it. The owner's joined state
-  (2026-09-22) is covered by unit tests only and has not run in the simulator either.
+  (2026-09-22) is covered by unit tests only and has not run in the simulator either. The onboarding
+  skip for a space of two (2026-09-22) has unit tests that compile; they had not run when it was written.
+- The onboarding skip only knows what the local store holds when the profile step ends. A second phone
+  that has the space but not yet the partner row still shows the invite step and makes a code; when
+  the row arrives the screen says "<Name> joined" and moves to Today, the right place with the wrong
+  sentence. A second phone that has not received the space at all yet makes a new space of its own,
+  as before.

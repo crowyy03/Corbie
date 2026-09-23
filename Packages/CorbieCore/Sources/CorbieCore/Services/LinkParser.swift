@@ -68,17 +68,13 @@ public struct LinkParser: Sendable {
             let canonical = payload.canonicalLink ?? normalized
             let imageURL = payload.imageLink
             let imageData = await self.imageData(for: imageURL)
-            let currency = LinkParser.trimmed(payload.currency)?.uppercased()
-            let isCurrencySupported = currency.map(SupportedCurrencies.contains) ?? true
-            if let currency, isCurrencySupported == false, payload.price != nil {
-                WishLinkLog.priceInUnsupportedCurrency(normalized, currency: currency)
-            }
+            let pricing = LinkParser.pricing(of: payload, link: normalized, page: canonical)
             return ParsedLink(
                 canonicalURL: canonical,
                 source: LinkParser.source(from: payload.source),
                 title: LinkParser.trimmed(payload.title),
-                price: isCurrencySupported ? payload.price : nil,
-                currency: isCurrencySupported ? currency : nil,
+                price: pricing.price,
+                currency: pricing.currency,
                 imageURL: imageURL,
                 imageData: imageData
             )
@@ -113,6 +109,29 @@ public struct LinkParser: Sendable {
         let lowered = raw.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if lowered == "generic" { return .store }
         return WishSource(rawValue: lowered) ?? .store
+    }
+
+    private static func pricing(
+        of payload: ParsedLinkPayload,
+        link: URL,
+        page: URL
+    ) -> (price: Double?, currency: String?) {
+        if let currency = trimmed(payload.currency)?.uppercased() {
+            if SupportedCurrencies.contains(currency) {
+                return (payload.price, currency)
+            }
+            if payload.price != nil {
+                WishLinkLog.priceInUnsupportedCurrency(link, currency: currency)
+            }
+            return (nil, nil)
+        }
+        guard let price = payload.price else { return (nil, nil) }
+        guard let inferred = LinkCurrencyInference.match(for: page) else {
+            WishLinkLog.priceWithoutCurrency(link, page: page)
+            return (nil, nil)
+        }
+        WishLinkLog.priceCurrencyInferred(link, page: page, inferred: inferred)
+        return (price, inferred.currency)
     }
 
     private static func trimmed(_ value: String?) -> String? {

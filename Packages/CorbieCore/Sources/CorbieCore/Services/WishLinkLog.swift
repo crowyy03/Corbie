@@ -31,6 +31,29 @@ public enum WishLinkLog {
         )
     }
 
+    public static func priceCurrencyInferred(_ link: URL, page: URL, inferred: LinkCurrencyInference.Match) {
+        let host = link.host() ?? "none"
+        let canonicalHost = page.host() ?? "none"
+        log.notice(
+            """
+            link price kept host=\(host, privacy: .public) canonical=\(canonicalHost, privacy: .public) \
+            currency=none inferred=\(inferred.currency, privacy: .public) \
+            from=\(inferred.source.rawValue, privacy: .public)
+            """
+        )
+    }
+
+    public static func priceWithoutCurrency(_ link: URL, page: URL) {
+        let host = link.host() ?? "none"
+        let canonicalHost = page.host() ?? "none"
+        log.notice(
+            """
+            link price left out host=\(host, privacy: .public) canonical=\(canonicalHost, privacy: .public) \
+            currency=none inferred=none
+            """
+        )
+    }
+
     public static func failed(_ link: URL, error: any Error, reader: Reader) {
         let host = link.host() ?? "none"
         let reason = (error as? CorbieError)?.failureReason ?? error.localizedDescription

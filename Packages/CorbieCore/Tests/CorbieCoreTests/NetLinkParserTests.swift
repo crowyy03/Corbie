@@ -23,6 +23,7 @@ import Testing
 
 @Suite struct NetLinkParserTests {
     private func payload(
+        canonicalURL: String = "https://www.amazon.com/dp/B0",
         source: String = "amazon",
         title: String? = "Product name",
         price: Double? = 24.99,
@@ -33,7 +34,7 @@ import Testing
         let encoder = { (value: String?) in value.map { "\"\($0)\"" } ?? "null" }
         let priceText = price.map { "\($0)" } ?? "null"
         return """
-        {"canonicalURL":"https://www.amazon.com/dp/B0","source":"\(source)","title":\(encoder(title)),\
+        {"canonicalURL":"\(canonicalURL)","source":"\(source)","title":\(encoder(title)),\
         "price":\(priceText),"currency":\(encoder(currency)),"imageURL":\(encoder(imageURL)),\
         "author":\(encoder(author))}
         """
@@ -117,6 +118,73 @@ import Testing
         #expect(link.currency == nil)
     }
 
+    private func parseWithoutCurrency(
+        canonicalURL: String,
+        rawURL: String? = nil,
+        currency: String? = nil
+    ) async throws -> ParsedLink {
+        let api = FakeTransport(json: payload(canonicalURL: canonicalURL, price: 40, currency: currency))
+        let images = FakeTransport([.binary(NetTestSupport.pngImage(width: 400, height: 400))])
+        let parser = LinkParser(client: NetTestSupport.client(transport: api), imageTransport: images)
+        return try await parser.parse(rawURL: rawURL ?? canonicalURL)
+    }
+
+    private func expectPriceLeftOutWithTitleAndImage(_ link: ParsedLink) {
+        #expect(link.price == nil)
+        #expect(link.currency == nil)
+        #expect(link.title == "Product name")
+        #expect(link.imageURL?.absoluteString == "https://images.example.com/a.png")
+        #expect(link.imageData != nil)
+        #expect(link.isEmpty == false)
+    }
+
+    @Test func aPathLocaleWinsOverTheHost() async throws {
+        let link = try await parseWithoutCurrency(canonicalURL: "https://www.example.ca/us/en/p/lamp")
+        #expect(link.price == 40)
+        #expect(link.currency == "USD")
+    }
+
+    @Test func aHostSuffixFillsWhenThePathSaysNothing() async throws {
+        let link = try await parseWithoutCurrency(canonicalURL: "https://www.amazon.co.uk/dp/B0")
+        #expect(link.price == 40)
+        #expect(link.currency == "GBP")
+    }
+
+    @Test func theCurrencyIsReadFromTheLinkTheServerLandedOn() async throws {
+        let link = try await parseWithoutCurrency(
+            canonicalURL: "https://www.amazon.de/dp/B0",
+            rawURL: "https://amzn.eu/d/abc"
+        )
+        #expect(link.price == 40)
+        #expect(link.currency == "EUR")
+    }
+
+    @Test func aLanguageOnlySegmentInfersNothing() async throws {
+        let link = try await parseWithoutCurrency(canonicalURL: "https://shop.example.com/en/p/lamp")
+        expectPriceLeftOutWithTitleAndImage(link)
+    }
+
+    @Test(arguments: [
+        "https://allegro.pl/oferta/lamp-1",
+        "https://www.example.co.uk/en-in/p/lamp",
+        "https://www.amazon.com/dp/B0"
+    ])
+    func noSupportedCurrencyInTheLinkLeavesThePriceOut(canonicalURL: String) async throws {
+        let link = try await parseWithoutCurrency(canonicalURL: canonicalURL)
+        expectPriceLeftOutWithTitleAndImage(link)
+    }
+
+    @Test func aSupportedCurrencyFromThePageIsNeverOverwritten() async throws {
+        let link = try await parseWithoutCurrency(canonicalURL: "https://www.amazon.co.uk/dp/B0", currency: "usd")
+        #expect(link.price == 40)
+        #expect(link.currency == "USD")
+    }
+
+    @Test func anUnsupportedCurrencyFromThePageIsNotReplacedByTheLink() async throws {
+        let link = try await parseWithoutCurrency(canonicalURL: "https://www.amazon.de/dp/B0", currency: "RUB")
+        expectPriceLeftOutWithTitleAndImage(link)
+    }
+
     @Test func aFailedImageDownloadDoesNotFailTheParse() async throws {
         let api = FakeTransport(json: payload())
         let images = FakeTransport([.urlFailure(.cannotConnectToHost)])
@@ -159,6 +227,71 @@ import Testing
             _ = try await parser.parse(rawURL: "  ")
         }
         #expect(api.requestCount == 0)
+    }
+}
+
+@Suite struct NetLinkCurrencyInferenceTests {
+    @Test(arguments: [
+        ("https://www.zara.com/us/en/lamp-p1.html", "USD"),
+        ("https://www.lego.com/en-gb/product/lamp", "GBP"),
+        ("https://www.apple.com/uk/shop/product/lamp", "GBP"),
+        ("https://www2.hm.com/de_de/productpage.1.html", "EUR"),
+        ("https://www.nike.com/de/t/shoe", "EUR"),
+        ("https://www.ikea.com/ca/fr/p/lamp", "CAD"),
+        ("https://www.lego.com/fr-CH/product/lamp", "CHF"),
+        ("https://www.example.com/ch_fr/p/lamp", "CHF"),
+        ("https://www.example.com/en/au/p/lamp", "AUD"),
+        ("https://www.bol.com/be/nl/p/lamp", "EUR"),
+        ("https://www.example.ca/us/p/lamp", "USD"),
+        ("https://www.example.de/gb/p/lamp", "GBP")
+    ])
+    func aCountryInThePathGivesItsCurrency(url: String, currency: String) throws {
+        let match = try #require(LinkCurrencyInference.match(for: URL(string: url)!))
+        #expect(match == LinkCurrencyInference.Match(currency: currency, source: .path))
+    }
+
+    @Test(arguments: [
+        ("https://www.amazon.co.uk/dp/B0", "GBP"),
+        ("https://www.amazon.com.au/dp/B0", "AUD"),
+        ("https://shop.example.co.nz/p/lamp", "NZD"),
+        ("https://www.amazon.co.jp/dp/B0", "JPY"),
+        ("https://www.amazon.ca/dp/B0", "CAD"),
+        ("https://www.example.ch/p/lamp", "CHF"),
+        ("https://www.amazon.de/dp/B0", "EUR"),
+        ("https://www.example.fr/p/lamp", "EUR"),
+        ("https://www.example.it/p/lamp", "EUR"),
+        ("https://www.example.ie/p/lamp", "EUR"),
+        ("https://www.example.at/p/lamp", "EUR"),
+        ("https://shop.example.us/p/lamp", "USD"),
+        ("https://www.galaxus.ch/de/s1/product/lamp-1", "CHF"),
+        ("https://www.canadiantire.ca/fr/pdp/lamp", "CAD"),
+        ("https://www.example.es/ca/p/lamp", "EUR"),
+        ("https://www.example.co.uk/cy/p/lamp", "GBP"),
+        ("https://www.example.co.uk/en/p/lamp", "GBP")
+    ])
+    func theHostSuffixFillsWhenThePathNamesNoCountry(url: String, currency: String) throws {
+        let match = try #require(LinkCurrencyInference.match(for: URL(string: url)!))
+        #expect(match == LinkCurrencyInference.Match(currency: currency, source: .host))
+    }
+
+    @Test(arguments: [
+        "https://www.amazon.com/dp/B0",
+        "https://www.example.com/en/p/lamp",
+        "https://www.example.com/ja/p/lamp",
+        "https://www.amazon.com/-/es/dp/B0",
+        "https://allegro.pl/oferta/lamp-1",
+        "https://www.example.co.uk/en-in/p/lamp",
+        "https://www.ikea.com/pl/pl/p/lamp",
+        "https://rozetka.com.ua/uk/lamp/p1/",
+        "https://www.example.eu/p/lamp",
+        "https://www.example.com"
+    ])
+    func noSupportedCountryInfersNothing(url: String) {
+        #expect(LinkCurrencyInference.match(for: URL(string: url)!) == nil)
+    }
+
+    @Test func everyCountryMapsToASupportedCurrency() {
+        #expect(Set(LinkCurrencyInference.currencyByCountry.values) == Set(SupportedCurrencies.codes))
     }
 }
 

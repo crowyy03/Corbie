@@ -208,14 +208,16 @@ the row itself, but only on launch, on returning to the foreground, or after a s
 who keeps Corbie open on one screen with no incoming changes keeps seeing the old partner until one of
 those happens.
 
-### A parsed price without a currency takes the picker's currency
+### A bare `$` on a Canadian or Australian shop comes back as US dollars
 
-The server returns a price with `currency: null` when the page shows neither a code nor a symbol it
-knows. The wish editor, the share extension and the background retry then label it with the currency
-the picker shows, the space currency, so a shop in another currency can come in under the wrong sign.
-Prices in a known currency outside the eight are already left out (`docs/DECISIONS.md`, 2026-09-22).
-Leaving out every price without a currency would also drop the correct ones from shops in the space's
-own currency; not decided.
+A price without a currency now takes its currency from the link or is left out (`docs/DECISIONS.md`,
+2026-09-22, "a price without a currency takes its currency from the link"). A currency the server
+returns always wins, though, and the server reads a bare `$` as USD (`_shared/parse/price.ts`,
+`detectCurrency`). For Amazon the adapter's price text comes before the page's structured data
+(`extractFields` and `mergeFields`), so `$49.99` on amazon.ca should arrive as USD and stay USD in the
+app. This is from reading the code; it has not been checked against a live page. The app cannot tell
+a `$` guess from a real `USD` code. The fix belongs on the server (leave the currency empty for a bare
+`$`, or say it came from a symbol); not decided.
 
 ## Цены на экранах оплаты не проверяются автотестом
 

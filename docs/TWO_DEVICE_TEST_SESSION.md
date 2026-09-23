@@ -106,7 +106,9 @@ From `docs/KNOWN_ISSUES.md`:
 
 From other docs and the Debug build:
 
-- While `APPLE_TEAM_ID`, `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` are not set, `POST /session` cannot
+- The three Apple key secrets are set and `/apple-revoke` reaches Apple (smoke test, 2026-09-22,
+  `server/DEPLOY.md` section 5). If they are ever unset: while `APPLE_TEAM_ID`, `APPLE_KEY_ID` and
+  `APPLE_PRIVATE_KEY` are not set, `POST /session` cannot
   turn the sign-in code into a refresh token, so the phone stores none and deleting the account sends
   no revoke at all. Set the three secrets before the phones sign in for this session; a phone that
   signed in earlier has to sign out and in again to get a token. See also open question 4.
