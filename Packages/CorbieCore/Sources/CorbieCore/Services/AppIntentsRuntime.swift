@@ -10,12 +10,41 @@ public final class IntentPersistence: @unchecked Sendable {
     private let lock = NSLock()
     private var storedController: PersistenceController?
     private var storedIdentity: MemberIdentity?
+    #if DEBUG
+    private let screenshotModeFlag: ScreenshotModeFlag?
+    private let screenshotModeStore: ScreenshotModeStore
+    private var screenshotMode: ScreenshotModeIntents?
+    #endif
 
+    #if DEBUG
+    public convenience init() {
+        self.init(screenshotModeFlag: ScreenshotModeFlag(), screenshotModeStore: ScreenshotModeStore())
+    }
+
+    public init(screenshotModeFlag: ScreenshotModeFlag?, screenshotModeStore: ScreenshotModeStore) {
+        self.screenshotModeFlag = screenshotModeFlag
+        self.screenshotModeStore = screenshotModeStore
+    }
+    #else
     public init() { }
+    #endif
+
+    public static func pinned(to controller: PersistenceController, identity: MemberIdentity) -> IntentPersistence {
+        #if DEBUG
+        let pinned = IntentPersistence(screenshotModeFlag: nil, screenshotModeStore: ScreenshotModeStore())
+        #else
+        let pinned = IntentPersistence()
+        #endif
+        pinned.use(controller: controller, identity: identity)
+        return pinned
+    }
 
     public func controller() -> PersistenceController {
         lock.lock()
         defer { lock.unlock() }
+        #if DEBUG
+        if let screenshotMode = currentScreenshotMode() { return screenshotMode.controller }
+        #endif
         if let storedController { return storedController }
         let created = PersistenceController.appGroupWithoutMirroring(author: .widgets)
         storedController = created
@@ -25,6 +54,9 @@ public final class IntentPersistence: @unchecked Sendable {
     public func identity() -> MemberIdentity {
         lock.lock()
         defer { lock.unlock() }
+        #if DEBUG
+        if let screenshotMode = currentScreenshotMode() { return screenshotMode.identity }
+        #endif
         if let storedIdentity { return storedIdentity }
         let created = MemberIdentity()
         storedIdentity = created
@@ -33,24 +65,62 @@ public final class IntentPersistence: @unchecked Sendable {
 
     public func use(controller: PersistenceController, identity: MemberIdentity? = nil) {
         lock.lock()
+        defer { lock.unlock() }
+        #if DEBUG
+        if let session = controller.screenshotModeSession {
+            screenshotMode = ScreenshotModeIntents(
+                session: session,
+                controller: controller,
+                identity: identity ?? MemberIdentity(store: ScreenshotModeSecretStore.signedInAsAlex())
+            )
+            return
+        }
+        #endif
         storedController = controller
         if let identity {
             storedIdentity = identity
         }
-        lock.unlock()
     }
 
     public func reset() {
         lock.lock()
         storedController = nil
         storedIdentity = nil
+        #if DEBUG
+        screenshotMode = nil
+        #endif
         lock.unlock()
     }
 
     public func currentMemberId() async throws -> UUID? {
         try await identity().currentMember(in: controller().stack)?.id
     }
+
+    #if DEBUG
+    private func currentScreenshotMode() -> ScreenshotModeIntents? {
+        guard let session = screenshotModeFlag?.session else {
+            screenshotMode = nil
+            return nil
+        }
+        if let screenshotMode, screenshotMode.session == session { return screenshotMode }
+        let opened = ScreenshotModeIntents(
+            session: session,
+            controller: screenshotModeStore.open(session: session, author: .widgets),
+            identity: MemberIdentity(store: ScreenshotModeSecretStore.signedInAsAlex())
+        )
+        screenshotMode = opened
+        return opened
+    }
+    #endif
 }
+
+#if DEBUG
+private struct ScreenshotModeIntents {
+    let session: String
+    let controller: PersistenceController
+    let identity: MemberIdentity
+}
+#endif
 
 public final class WidgetReloader: @unchecked Sendable {
     public static let shared = WidgetReloader()

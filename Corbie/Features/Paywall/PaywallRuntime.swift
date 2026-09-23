@@ -18,8 +18,8 @@ struct PaywallRuntime: ViewModifier {
     private func startListening() async {
         let environment = environment
         await environment.store.attachAnalytics(environment.analytics)
-        await environment.store.startListening { _ in
-            await environment.refreshEntitlement()
+        await environment.store.startListening { [weak environment] _ in
+            await environment?.refreshEntitlement()
         }
     }
 

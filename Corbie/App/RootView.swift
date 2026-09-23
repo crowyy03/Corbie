@@ -144,7 +144,7 @@ struct RootView: View {
     private func offerTheTrialOnce() async {
         await environment.refreshEntitlement()
         let state = environment.premiumGate.state
-        guard TrialOfferFlag.mayClaim(state), TrialOfferFlag().claim() else { return }
+        guard TrialOfferFlag.mayClaim(state), TrialOfferFlag(defaults: environment.defaults).claim() else { return }
         isTrialOfferPresented = state.isPremium == false
     }
 

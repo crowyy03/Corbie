@@ -37,7 +37,7 @@ struct FreeTimePrivacySheet: View {
     }
 
     private func accept() {
-        BusyTimesPrivacyNotice.markSeen()
+        BusyTimesPrivacyNotice.markSeen(in: environment.defaults)
         Task {
             await BusyTimesSharing.set(true, in: environment)
             dismiss()
@@ -45,7 +45,7 @@ struct FreeTimePrivacySheet: View {
     }
 
     private func decline() {
-        BusyTimesPrivacyNotice.markSeen()
+        BusyTimesPrivacyNotice.markSeen(in: environment.defaults)
         dismiss()
     }
 }

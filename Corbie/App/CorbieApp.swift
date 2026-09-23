@@ -11,10 +11,7 @@ struct CorbieApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ThemedRoot(appState: appDelegate.appState, environment: appDelegate.environment)
-                .task {
-                    await appDelegate.environment.bootstrap()
-                }
+            root
                 .onOpenURL { url in
                     appDelegate.appState.open(Router.route(for: url))
                 }
@@ -24,9 +21,20 @@ struct CorbieApp: App {
                 }
         }
     }
+
+    @ViewBuilder private var root: some View {
+        #if DEBUG
+        ScreenshotModeRoot(screenshotMode: appDelegate.screenshotMode, appState: appDelegate.appState)
+        #else
+        ThemedRoot(appState: appDelegate.appState, environment: appDelegate.environment)
+            .task {
+                await appDelegate.environment.bootstrap()
+            }
+        #endif
+    }
 }
 
-private struct ThemedRoot: View {
+struct ThemedRoot: View {
     let appState: AppState
     let environment: AppEnvironment
 
@@ -59,6 +67,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
     private(set) lazy var environment = AppDelegate.makeEnvironment()
     private(set) lazy var appState = AppState()
+    #if DEBUG
+    private(set) lazy var screenshotMode = ScreenshotModeSwitch(real: environment, appState: appState)
+    #endif
 
     func application(
         _ application: UIApplication,
@@ -66,6 +77,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = self
         environment.startProcess()
+        #if DEBUG
+        screenshotMode.start()
+        #endif
         application.registerForRemoteNotifications()
         return true
     }
@@ -120,12 +134,12 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     private func perform(_ response: NotificationResponse) async {
         switch NotificationRouting.outcome(for: response) {
         case let .takeTask(taskId):
-            await write {
-                try await TaskIntentRunner.take(taskId: taskId)
+            await write { persistence in
+                try await TaskIntentRunner.take(taskId: taskId, persistence: persistence)
             }
         case let .completeTask(taskId):
-            await write {
-                try await TaskIntentRunner.markDone(taskId: taskId)
+            await write { persistence in
+                try await TaskIntentRunner.markDone(taskId: taskId, persistence: persistence)
                 await self.environment.notifications.cancelTaskDueToday(taskId: taskId)
             }
         case let .open(route):
@@ -135,10 +149,11 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         }
     }
 
-    private func write(_ body: () async throws -> Void) async {
+    private func write(_ body: (IntentPersistence) async throws -> Void) async {
         await environment.processReady()
+        let persistence = IntentPersistence.pinned(to: environment.persistence, identity: environment.identity)
         do {
-            try await body()
+            try await body(persistence)
         } catch {
             environment.report(error)
         }

@@ -28,11 +28,11 @@ enum BusyTimesSharing {
 enum BusyTimesPrivacyNotice {
     static let defaultsKey = "corbie.freetime.privacynotice.seen"
 
-    static var hasBeenSeen: Bool {
-        UserDefaults.corbieShared.bool(forKey: defaultsKey)
+    static func hasBeenSeen(in defaults: UserDefaults) -> Bool {
+        defaults.bool(forKey: defaultsKey)
     }
 
-    static func markSeen() {
-        UserDefaults.corbieShared.set(true, forKey: defaultsKey)
+    static func markSeen(in defaults: UserDefaults) {
+        defaults.set(true, forKey: defaultsKey)
     }
 }

@@ -341,3 +341,35 @@ period on the paywall are a manual check until a test plan carries the configura
   (Settings, Apple ID, Password and Security, Apps using your Apple ID, Corbie, Stop using).
 - Dynamic Type at the largest accessibility size on a 4.7 inch device.
 - VoiceOver on the Tasks list, the paywall and the vote screen.
+
+## 10. Screenshot mode
+
+Debug builds only: Us pill, Settings, Developer, "Enter screenshot mode". The app swaps to a second
+environment on a local store in `<app group>/ScreenshotMode/<session>/` with Alex and Nora's demo
+data; "Leave screenshot mode" in the same place swaps back to the real space.
+
+Automated:
+
+| Check | Where | What it proves |
+| --- | --- | --- |
+| `ScreenshotModeTests` (20) | `Packages/CorbieCore/Tests` | The seed matches the brief against a fixed today (2026-09-23 10:30 Berlin): names, colours, together since, Nora's birthday in 12 days, USD, the six tasks with their takers and due days, the four wishes with prices and priorities, the three plans with their totals and four contributions, the revealed chore split, the two sealed capsules, today's question answered by both with the reveal read. The engine gives dishes to Nora, the trash to Alex and rotates the bathroom, ironing and the fridge for 200 random id sets. The demo stack has no CloudKit container or options, sits outside the real stores, keeps its history tokens out of the app group defaults and refuses to share. Entering and leaving through `ScreenshotModeLifecycle` leaves an on-disk real store and its history as they were, and the app group defaults (one suite for the flag and the real stack, as on the device) change only by `screenshotMode.session` while the mode is on and not at all after leaving. Re-entering never lets a widget reload reopen the wiped session. A relaunch on the same day resumes, on a later day it reseeds. `IntentPersistence` follows the flag in both directions, for a process that was handed the demo stack and for one that opens it itself; the one pinned for notification actions stays on the real stack. |
+| `ScreenshotModeSwitchTests` | `CorbieTests` | The same round trip through `ScreenshotModeSwitch` and real `AppEnvironment`s: the demo environment signs in as Alex with Nora as partner, has its own secrets, StoreKit service and stack, shares the theme, cannot share the space and posts no invite, keeps its invite code in its own defaults, and refuses to delete the account or leave the space. The real member shares busy times and has an event ahead, and the parked real environment still publishes nothing; after leaving the same call publishes both kinds. Leaving brings back the real environment, its session, its untouched store and the app group defaults as they were. The launch argument enters fresh, a relaunch with the flag on resumes the same session, `off` leaves. |
+| `ScreenshotModeDebugBuildTests` | `CorbieTests` | The Debug binaries carry the markers the Release check searches for. |
+| "Check Release carries no screenshot mode" build phase and `scripts/check_release_screenshot_mode.sh` | Every non-Debug build, and by hand | No screenshot-mode symbol, string or file in the Release app or its extensions: `strings` and `nm` on the binaries, the bytes of every file as UTF-8 and UTF-16, and the file names. See `docs/RELEASE_CHECKLIST.md`, Release configuration. |
+
+The two `CorbieTests` classes ran and passed on iPhone 17 Main on 2026-09-24 with the full app suite.
+
+By hand, on iPhone 17 Main with a Debug build installed from Xcode:
+
+1. `scripts/screenshot_mode.sh on` boots the simulator if needed, sets the status bar to 9:41 with a
+   full battery (not charging, so no green bolt), 3 wifi bars and 4 cellular bars, and relaunches the app with
+   `-corbie-screenshot-mode on`. The app opens on Today with the demo data, seeded fresh.
+2. Check Today (the two taken tasks and two free ones due today or tomorrow, Nora's birthday in 12
+   days, the question card answered and read), Tasks, Wishes (Nora's four, placeholders unless
+   `DemoAssets/` has photos, see `DemoAssets/README.md`), Plans ("$2,400 of $5,000", "$680 of $900",
+   Rainy day with four contributions), Us (the chore split revealed, two sealed capsules).
+3. Add a home screen widget: it shows the demo data too. Theme changes made in the mode stay after
+   leaving, because the theme is a device setting shared by both environments.
+4. `scripts/screenshot_mode.sh off`, or Developer, "Leave screenshot mode": the real space comes back
+   as it was and the widgets follow after their reload. Only the script clears the status bar.
+5. A link shared into Corbie from Safari while the mode is on lands in the real space, not the demo.

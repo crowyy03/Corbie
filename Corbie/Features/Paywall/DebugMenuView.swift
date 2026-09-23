@@ -42,6 +42,7 @@ struct DebugMenuView: View {
 
     var body: some View {
         List {
+            ScreenshotModeSection()
             Section {
                 ForEach(DebugMenuEntitlementRow.all) { entry in
                     row(entry.title) {

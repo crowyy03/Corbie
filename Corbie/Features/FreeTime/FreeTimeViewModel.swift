@@ -124,7 +124,7 @@ final class FreeTimeViewModel {
             }
         }
         environment.analytics.record(.freetimeOpened)
-        if BusyTimesPrivacyNotice.hasBeenSeen == false, sheet == nil {
+        if BusyTimesPrivacyNotice.hasBeenSeen(in: environment.defaults) == false, sheet == nil {
             sheet = .privacy
         }
         await environment.publishBusyTimes()

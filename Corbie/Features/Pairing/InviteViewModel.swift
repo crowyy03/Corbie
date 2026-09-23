@@ -38,7 +38,7 @@ final class InviteViewModel {
         environment: AppEnvironment,
         appState: AppState,
         spaceId: UUID,
-        store: LiveInviteStore = LiveInviteStore(),
+        store: LiveInviteStore? = nil,
         minter: (any InviteMinting)? = nil,
         now: @escaping () -> Date = Date.init,
         leave: @escaping () -> Void
@@ -46,7 +46,7 @@ final class InviteViewModel {
         self.environment = environment
         self.appState = appState
         self.spaceId = spaceId
-        self.store = store
+        self.store = store ?? LiveInviteStore(defaults: environment.defaults)
         self.minter = minter ?? CloudInviteMinter(environment: environment)
         self.now = now
         self.leave = leave

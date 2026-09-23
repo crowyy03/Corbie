@@ -11,10 +11,14 @@ struct LiveInvite: Codable, Equatable {
 struct LiveInviteStore {
     static let storageKey = "corbie.pairing.liveInvite"
 
-    private let suiteName: String
+    private let defaults: UserDefaults
 
     init(suiteName: String = CorbieIdentifiers.appGroup) {
-        self.suiteName = suiteName
+        self.init(defaults: UserDefaults(suiteName: suiteName) ?? .standard)
+    }
+
+    init(defaults: UserDefaults) {
+        self.defaults = defaults
     }
 
     func live(for spaceId: UUID, at now: Date) -> LiveInvite? {
@@ -33,9 +37,5 @@ struct LiveInviteStore {
 
     func forget() {
         defaults.removeObject(forKey: LiveInviteStore.storageKey)
-    }
-
-    private var defaults: UserDefaults {
-        UserDefaults(suiteName: suiteName) ?? .standard
     }
 }

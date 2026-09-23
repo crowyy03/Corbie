@@ -46,6 +46,38 @@ targets:
       - name: Check colors
         script: "\"$PROJECT_DIR/scripts/check_colors.sh\""
         basedOnDependencyAnalysis: false
+    postBuildScripts:
+      - name: Copy demo assets in Debug
+        script: |
+          [ "$CONFIGURATION" = "Debug" ] || exit 0
+          target="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/DemoAssets"
+          rm -rf "$target"
+          for file in "$PROJECT_DIR"/DemoAssets/*; do
+            [ -f "$file" ] || continue
+            name="$(basename "$file")"
+            [ "$name" = "README.md" ] && continue
+            lower="$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')"
+            case "${lower%.*}" in
+              wool-coat | ceramics-class | noise-cancelling-headphones | linen-bedding-set) known_name=yes ;;
+              *) known_name=no ;;
+            esac
+            case "${lower##*.}" in
+              jpg | jpeg | png | heic) known_type=yes ;;
+              *) known_type=no ;;
+            esac
+            if [ "$known_name" = no ] || [ "$known_type" = no ]; then
+              echo "warning: DemoAssets/$name is not used, see DemoAssets/README.md for the names and types"
+              continue
+            fi
+            mkdir -p "$target"
+            cp "$file" "$target/$lower"
+          done
+        basedOnDependencyAnalysis: false
+      - name: Check Release carries no screenshot mode
+        script: |
+          [ "$CONFIGURATION" = "Debug" ] && exit 0
+          "$PROJECT_DIR/scripts/scan_screenshot_mode_markers.sh" "$TARGET_BUILD_DIR/$WRAPPER_NAME"
+        basedOnDependencyAnalysis: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.corbie

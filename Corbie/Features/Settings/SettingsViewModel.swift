@@ -152,6 +152,7 @@ final class SettingsViewModel {
 
     func leaveSpace() async {
         guard let environment, let space = environment.space, let member = environment.currentMember else { return }
+        guard mayChangeTheAccount(in: environment) else { return }
         isLeaving = true
         defer { isLeaving = false }
         await environment.withPartnerChecksPaused {
@@ -167,6 +168,7 @@ final class SettingsViewModel {
 
     func deleteAccount() async {
         guard let environment, let space = environment.space, let member = environment.currentMember else { return }
+        guard mayChangeTheAccount(in: environment) else { return }
         isDeleting = true
         defer { isDeleting = false }
         let accountPlan = SettingsAccountPlan.decide(space: space, memberId: member.id)
@@ -183,6 +185,16 @@ final class SettingsViewModel {
             await revokeApple(environment)
             await environment.wipeLocalState()
         }
+    }
+
+    private func mayChangeTheAccount(in environment: AppEnvironment) -> Bool {
+        #if DEBUG
+        if environment.isScreenshotMode {
+            environment.report(ScreenshotModeRefusal.accountChange)
+            return false
+        }
+        #endif
+        return true
     }
 
     private func deleteCloudKitData(

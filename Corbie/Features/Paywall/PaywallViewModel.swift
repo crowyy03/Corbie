@@ -62,6 +62,12 @@ final class PaywallViewModel {
             environment.analytics.record(.purchaseFailed(reason: .noSpace))
             return false
         }
+        #if DEBUG
+        if environment.isScreenshotMode {
+            environment.report(ScreenshotModeRefusal.purchase)
+            return false
+        }
+        #endif
         isWorking = true
         message = nil
         defer { isWorking = false }

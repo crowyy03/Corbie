@@ -28,6 +28,7 @@ enum DebugLaunch {
             ["", "-wal", "-shm"].map { directory.appendingPathComponent(name + $0) }
         }
         _ = StoreReset.removeFiles(at: stores)
+        ScreenshotModeStore().wipe()
         let keychain = KeychainStore()
         let keys = [
             MemberIdentity.appleUserIDKey,

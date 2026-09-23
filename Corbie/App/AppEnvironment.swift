@@ -48,8 +48,12 @@ final class AppEnvironment {
     @ObservationIgnored let linkParser: LinkParser
     @ObservationIgnored let notifications: NotificationScheduler
     @ObservationIgnored let remoteChanges: RemoteChangeNotifier
-    @ObservationIgnored let reviewPrompt = ReviewPromptTracker()
+    @ObservationIgnored let reviewPrompt: ReviewPromptTracker
     @ObservationIgnored let sessionService: SessionService
+    @ObservationIgnored let defaults: UserDefaults
+    @ObservationIgnored private let intents: IntentPersistence
+    @ObservationIgnored private let storageProbe: @MainActor () -> StorageHealth?
+    @ObservationIgnored private let deviceCalendar: (any DeviceCalendarSource)?
 
     @ObservationIgnored private(set) var busyPublisher: BusyPublisher?
     @ObservationIgnored private var corbieEventBusyPublisher: CorbieEventBusyPublisher?
@@ -71,6 +75,9 @@ final class AppEnvironment {
     @ObservationIgnored private var partnerCheckPauses = 0
     @ObservationIgnored private(set) var storage: StorageHealth?
     @ObservationIgnored private var partnerCheckedOnServerAt: Date?
+    #if DEBUG
+    @ObservationIgnored var isParkedForScreenshotMode = false
+    #endif
 
     init(
         persistence: PersistenceController = .shared,
@@ -78,11 +85,24 @@ final class AppEnvironment {
         anonymousIdentity: AnonymousIdentity = .shared,
         notificationClient: any NotificationCenterClient = SystemNotificationCenterClient(),
         store: StoreService = .shared,
-        transport: (any HTTPTransport)? = nil
+        localEntitlements: (any LocalEntitlementProviding)? = nil,
+        transport: (any HTTPTransport)? = nil,
+        defaults: UserDefaults = .corbieShared,
+        analyticsDelivery: AnalyticsDelivery = AppEnvironment.analyticsDelivery,
+        analyticsStorage: any AnalyticsStorage = FileAnalyticsStorage(),
+        theme: ThemeProvider? = nil,
+        intents: IntentPersistence = .shared,
+        storageProbe: @escaping @MainActor () -> StorageHealth? = { StorageProbe.run(process: "app") },
+        deviceCalendar: (any DeviceCalendarSource)? = nil
     ) {
         self.persistence = persistence
         repositories = persistence.repositories
         self.secrets = secrets
+        self.defaults = defaults
+        self.intents = intents
+        self.storageProbe = storageProbe
+        self.deviceCalendar = deviceCalendar
+        reviewPrompt = ReviewPromptTracker(defaults: defaults)
         identity = MemberIdentity(store: secrets)
         self.anonymousIdentity = anonymousIdentity
         sharing = CloudKitSharing(stack: persistence.stack)
@@ -98,7 +118,12 @@ final class AppEnvironment {
         )
         apiClient = client
         sessionService = SessionService(configuration: client.configuration)
-        analytics = Analytics(client: client, identity: anonymousIdentity, delivery: AppEnvironment.analyticsDelivery)
+        analytics = Analytics(
+            client: client,
+            storage: analyticsStorage,
+            identity: anonymousIdentity,
+            delivery: analyticsDelivery
+        )
         self.store = store
         let scheduler = NotificationScheduler(client: notificationClient)
         notifications = scheduler
@@ -107,7 +132,7 @@ final class AppEnvironment {
             spaces: persistence.repositories.spaces,
             monetization: ServerMonetizationFlag(client: client),
             store: secrets,
-            local: store,
+            local: localEntitlements ?? store,
             notifications: scheduler
         )
         entitlements = entitlementService
@@ -117,7 +142,7 @@ final class AppEnvironment {
             entitlements: entitlementService
         )
         usBadge = UsBadgeProvider(repositories: repositories)
-        fx = FXService(client: client)
+        fx = FXService(client: client, defaults: defaults)
         linkParser = LinkParser(client: client, imageTransport: serverTransport)
         remoteChanges = RemoteChangeNotifier(
             stack: persistence.stack,
@@ -125,11 +150,13 @@ final class AppEnvironment {
             reminders: PartnerProgressReminders(
                 chores: persistence.repositories.chores,
                 questions: persistence.repositories.questions,
-                scheduler: scheduler
-            )
+                scheduler: scheduler,
+                defaults: defaults
+            ),
+            defaults: defaults
         )
         toasts = ToastCenter()
-        theme = ThemeProvider()
+        self.theme = theme ?? ThemeProvider()
     }
 
     var space: SpaceDTO? {
@@ -157,9 +184,9 @@ final class AppEnvironment {
     func startProcess() {
         guard processStart == nil else { return }
         apiClient.configuration.announce(process: "app")
-        storage = StorageProbe.run(process: "app")
+        storage = storageProbe()
         processStartedInBackground = UIApplication.shared.applicationState == .background
-        IntentPersistence.shared.use(controller: persistence, identity: identity)
+        intents.use(controller: persistence, identity: identity)
         WidgetReloader.shared.start()
         processStart = Task { await prepareProcess() }
     }
@@ -341,7 +368,7 @@ final class AppEnvironment {
     }
 
     func publishBusyTimes(force: Bool = false) async {
-        guard case let .signedIn(context) = session else { return }
+        guard mayPublishBusyTimes, case let .signedIn(context) = session else { return }
         do {
             try await repositories.busyIntervals.purge(before: Date())
         } catch {
@@ -382,7 +409,7 @@ final class AppEnvironment {
 
     private func startBusyPublishing(spaceId: UUID) {
         let store = RepositoryBusyIntervalStore(repository: repositories.busyIntervals, spaceId: spaceId)
-        busyPublisher = BusyPublisher(source: SystemDeviceCalendarSource(), store: store)
+        busyPublisher = BusyPublisher(source: deviceCalendar ?? SystemDeviceCalendarSource(), store: store)
         corbieEventBusyPublisher = CorbieEventBusyPublisher(events: repositories.events, store: store)
         observeBusySources()
     }
@@ -411,8 +438,16 @@ final class AppEnvironment {
         )
     }
 
+    private var mayPublishBusyTimes: Bool {
+        #if DEBUG
+        return isParkedForScreenshotMode == false
+        #else
+        return true
+        #endif
+    }
+
     private func deviceCalendarChanged() async {
-        guard case let .signedIn(context) = session, let busyPublisher else { return }
+        guard mayPublishBusyTimes, case let .signedIn(context) = session, let busyPublisher else { return }
         await busyPublisher.calendarStoreChanged(
             memberId: context.member.id,
             sharesBusyTimes: context.member.sharesBusyTimes
@@ -522,7 +557,7 @@ final class AppEnvironment {
         try? secrets.removeValue(for: Self.appleRefreshTokenKey)
         anonymousIdentity.reset()
         do {
-            try StoreReset(stack: persistence.stack).wipe()
+            try StoreReset(stack: persistence.stack, defaults: defaults).wipe()
         } catch {
             report(error)
         }

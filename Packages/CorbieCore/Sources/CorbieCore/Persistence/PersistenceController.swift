@@ -9,11 +9,25 @@ public final class PersistenceController: Sendable {
 
     public let stack: CoreDataStack
     public let repositories: Repositories
+    #if DEBUG
+    public let screenshotModeSession: String?
+    #endif
 
     public init(stack: CoreDataStack) {
         self.stack = stack
         repositories = Repositories(stack: stack)
+        #if DEBUG
+        screenshotModeSession = nil
+        #endif
     }
+
+    #if DEBUG
+    init(stack: CoreDataStack, screenshotModeSession: String) {
+        self.stack = stack
+        repositories = Repositories(stack: stack)
+        self.screenshotModeSession = screenshotModeSession
+    }
+    #endif
 
     public static func inMemory(author: TransactionAuthor = .tests) -> PersistenceController {
         PersistenceController(stack: CoreDataStack(inMemoryAuthor: author))
