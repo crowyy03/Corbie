@@ -109,10 +109,10 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 - `GET /invite-redeem/:code` — получить shareURL, пометить redeemed
 - `POST /parse` — {url} → {title, price, currency, imageURL, source}. OG + JSON-LD + адаптеры (amazon, target, etsy, sephora, nordstrom, zara, ikea) + oEmbed для instagram/tiktok. Таймаут 8 с, кэш 24 ч по URL.
 - `GET /fx?base=USD` — курсы с кэшем 12 ч (источник: Frankfurter/ECB)
-- `POST /appstore-notifications` — App Store Server Notifications V2 из sandbox и production на один URL: верифицируем JWS, окружение берём из подписанного payload, пишем строку подписки и привязываем её к spaceId из `appAccountToken`
-- `GET /entitlement/:spaceId` — статус для клиента в окружении, которое доказывает заголовок `X-App-Transaction` (без него или с непроверяемым - Production)
-- `POST /entitlement/sync` — {spaceId, signedTransaction}: сверка с App Store Server API и перенос подписки на spaceId через Set App Account Token
-- `POST /appstore-reconcile` — раз в сутки (или вручную с service role key): перепроверка подписок и повтор недоставленных уведомлений
+- `POST /appstore-notifications` - App Store Server Notifications V2 из sandbox и production на один URL: верифицируем JWS, окружение берём из подписанного payload, пишем строку подписки и привязываем её к spaceId из `appAccountToken`
+- `GET /entitlement/:spaceId` - статус для клиента в окружении, которое доказывает заголовок `X-App-Transaction` (без него или с непроверяемым - Production)
+- `POST /entitlement/sync` - {spaceId, signedTransaction}: сверка с App Store Server API и перенос подписки на spaceId через Set App Account Token
+- `POST /appstore-reconcile` - раз в сутки (или вручную с service role key): перепроверка подписок и повтор недоставленных уведомлений
 - `POST /events` — батч анонимных событий
 
 ### Безопасность
