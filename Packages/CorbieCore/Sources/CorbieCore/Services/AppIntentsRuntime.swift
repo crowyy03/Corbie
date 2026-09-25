@@ -10,6 +10,7 @@ public final class IntentPersistence: @unchecked Sendable {
     private let lock = NSLock()
     private var storedController: PersistenceController?
     private var storedIdentity: MemberIdentity?
+    private var storedMonetization: MonetizationFlagStore?
     #if DEBUG
     private let screenshotModeFlag: ScreenshotModeFlag?
     private let screenshotModeStore: ScreenshotModeStore
@@ -63,6 +64,18 @@ public final class IntentPersistence: @unchecked Sendable {
         return created
     }
 
+    public func monetization() -> MonetizationFlagStore {
+        lock.lock()
+        defer { lock.unlock() }
+        return storedMonetization ?? MonetizationFlagStore()
+    }
+
+    public func use(monetization: MonetizationFlagStore) {
+        lock.lock()
+        storedMonetization = monetization
+        lock.unlock()
+    }
+
     public func use(controller: PersistenceController, identity: MemberIdentity? = nil) {
         lock.lock()
         defer { lock.unlock() }
@@ -86,6 +99,7 @@ public final class IntentPersistence: @unchecked Sendable {
         lock.lock()
         storedController = nil
         storedIdentity = nil
+        storedMonetization = nil
         #if DEBUG
         screenshotMode = nil
         #endif

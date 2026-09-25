@@ -23,8 +23,8 @@ struct ShareWishView: View {
                         Text("share.stage.nosession")
                             .corbieBody()
                             .foregroundStyle(palette.text)
-                    case .readOnly:
-                        Text("share.stage.readonly")
+                    case let .readOnly(cause):
+                        Text(LocalizedStringKey(cause.shareLineKey))
                             .corbieBody()
                             .foregroundStyle(palette.text)
                     case .ready:

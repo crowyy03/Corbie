@@ -14,7 +14,7 @@ if usesExternalSwiftTesting {
 let package = Package(
     name: "CorbieCore",
     defaultLocalization: "en",
-    platforms: [.iOS(.v17), .macOS(.v14)],
+    platforms: [.iOS("17.2"), .macOS("14.2")],
     products: [
         .library(name: "CorbieCore", targets: ["CorbieCore"])
     ],

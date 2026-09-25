@@ -10,8 +10,8 @@ public final class Space: NSManagedObject {
     @NSManaged public var togetherSince: Date?
     @NSManaged public var weddingDate: Date?
     @NSManaged public var displayCurrency: String?
-    @NSManaged public var subscriptionStatusRaw: String?
-    @NSManaged public var subscriptionExpiresAt: Date?
+    @NSManaged public var productionSubscriptionStatusRaw: String?
+    @NSManaged public var productionSubscriptionExpiresAt: Date?
     @NSManaged public var subscriptionPayerMemberId: UUID?
     @NSManaged public var anchorTimeZone: String?
     @NSManaged public var questionSeed: Int64
@@ -31,8 +31,13 @@ public final class Space: NSManagedObject {
     @NSManaged public var choreSets: Set<ChoreSet>
 
     public var subscriptionStatus: SubscriptionStatus {
-        get { SubscriptionStatus(rawValue: subscriptionStatusRaw ?? "") ?? .none }
-        set { subscriptionStatusRaw = newValue.rawValue }
+        get { SubscriptionStatus(rawValue: productionSubscriptionStatusRaw ?? "") ?? .none }
+        set { productionSubscriptionStatusRaw = newValue.rawValue }
+    }
+
+    public var subscriptionExpiresAt: Date? {
+        get { productionSubscriptionExpiresAt }
+        set { productionSubscriptionExpiresAt = newValue }
     }
 
     public override func awakeFromInsert() {

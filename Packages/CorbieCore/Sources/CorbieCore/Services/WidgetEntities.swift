@@ -2,7 +2,6 @@
 import AppIntents
 import Foundation
 
-@available(iOS 17.0, macOS 14.0, *)
 public struct CorbieEventEntity: AppEntity, Identifiable, Sendable {
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "intent.entity.event.type")
     public static let defaultQuery = CorbieEventQuery()
@@ -30,7 +29,6 @@ public struct CorbieEventEntity: AppEntity, Identifiable, Sendable {
     }
 }
 
-@available(iOS 17.0, macOS 14.0, *)
 public struct CorbieEventQuery: EntityQuery, Sendable {
     private let persistence: IntentPersistence
 
@@ -55,7 +53,6 @@ public struct CorbieEventQuery: EntityQuery, Sendable {
     }
 }
 
-@available(iOS 17.0, macOS 14.0, *)
 public struct CorbiePlanEntity: AppEntity, Identifiable, Sendable {
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "intent.entity.plan.type")
     public static let defaultQuery = CorbiePlanQuery()
@@ -82,7 +79,6 @@ public struct CorbiePlanEntity: AppEntity, Identifiable, Sendable {
     }
 }
 
-@available(iOS 17.0, macOS 14.0, *)
 public struct CorbiePlanQuery: EntityQuery, Sendable {
     private let persistence: IntentPersistence
 
@@ -107,7 +103,6 @@ public struct CorbiePlanQuery: EntityQuery, Sendable {
     }
 }
 
-@available(iOS 17.0, macOS 14.0, *)
 public enum CountdownSourceOption: String, AppEnum, Sendable {
     case anniversary
     case wedding
@@ -124,7 +119,6 @@ public enum CountdownSourceOption: String, AppEnum, Sendable {
     ]
 }
 
-@available(iOS 17.0, macOS 14.0, *)
 public enum LockCircularModeOption: String, AppEnum, Sendable {
     case daysTogether
     case planRing

@@ -44,7 +44,7 @@ enum ScreenshotModeRefusal: LocalizedError, Equatable {
 }
 
 struct ScreenshotModeLocalEntitlements: LocalEntitlementProviding {
-    func currentEntitlement() async -> LocalEntitlement? { nil }
+    func subscriptions() async -> [StoreSubscription] { [] }
 }
 
 struct ScreenshotModeNotificationClient: NotificationCenterClient {

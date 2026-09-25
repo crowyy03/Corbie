@@ -133,6 +133,7 @@ final class AppEnvironment {
             monetization: ServerMonetizationFlag(client: client),
             store: secrets,
             local: localEntitlements ?? store,
+            appTransaction: store,
             notifications: scheduler
         )
         entitlements = entitlementService
@@ -250,7 +251,7 @@ final class AppEnvironment {
             startBusyPublishing(spaceId: space.id)
             await updateNotificationAudience()
             await resyncNotificationBacklog()
-            premiumGate.update(await entitlements.cachedState(space: space))
+            premiumGate.apply(await entitlements.cachedResolution(space: space))
             return context
         } catch {
             session = .signedOut

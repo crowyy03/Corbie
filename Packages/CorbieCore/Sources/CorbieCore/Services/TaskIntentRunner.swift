@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(AppIntents)
+import AppIntents
+#endif
 
 public enum IntentNotifications {
     // UNUserNotificationCenter.current() raises when the process has no bundle identity
@@ -12,7 +15,26 @@ public enum IntentNotifications {
     }
 }
 
+public enum PaywallRouteRequest {
+    public static let notificationName = Notification.Name(CorbieIdentifiers.bundleID + ".paywall-route")
+
+    public static func post() {
+        NotificationCenter.default.post(name: notificationName, object: nil)
+    }
+}
+
 public enum TaskIntentRunner {
+    public static func isReadOnly(persistence: IntentPersistence = .shared, now: Date = Date()) async -> Bool {
+        let monetization = persistence.monetization()
+        let widgets = WidgetDataProvider(
+            controller: persistence.controller(),
+            identity: persistence.identity(),
+            monetization: monetization
+        )
+        guard let context = try? await widgets.context(now: now) else { return monetization.isEnabled }
+        return context.isPremium == false
+    }
+
     @discardableResult
     public static func markDone(
         taskId: UUID,
@@ -86,3 +108,11 @@ public enum TaskIntentRunner {
         return id
     }
 }
+
+#if canImport(AppIntents)
+extension ForegroundContinuableIntent {
+    func continueOnThePaywall() -> AppIntentError {
+        needsToContinueInForegroundError(continuation: { PaywallRouteRequest.post() })
+    }
+}
+#endif

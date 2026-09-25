@@ -16,6 +16,7 @@ final class PaywallScreensTests: XCTestCase {
             SubscriptionOfferMath.applySavings(to: [
                 SubscriptionOffer(
                     product: .monthly,
+                    productId: "test.monthly",
                     displayPrice: (Decimal(string: monthly) ?? 0).formatted(style),
                     price: Decimal(string: monthly) ?? 0,
                     priceFormatStyle: style,
@@ -23,6 +24,7 @@ final class PaywallScreensTests: XCTestCase {
                 ),
                 SubscriptionOffer(
                     product: .yearly,
+                    productId: "test.yearly",
                     displayPrice: (Decimal(string: yearly) ?? 0).formatted(style),
                     price: Decimal(string: yearly) ?? 0,
                     priceFormatStyle: style,
@@ -93,14 +95,23 @@ final class PaywallScreensTests: XCTestCase {
         XCTAssertEqual(PaywallCopy.callToAction(for: week), "Try 7 days free")
     }
 
-    func testTheComparisonHeaderChangesOnlyAfterTheTrialEnded() {
-        XCTAssertEqual(PaywallCopy.headerKey(.trialEnded), "paywall.compare.expired")
+    func testTheComparisonHeaderSaysWhatEnded() {
+        XCTAssertEqual(PaywallCopy.headerKey(.readOnly, cause: .trialEnded), "paywall.compare.trialended")
         XCTAssertEqual(
-            PaywallCopy.text("paywall.compare.expired"),
+            PaywallCopy.text("paywall.compare.trialended"),
             "Your trial has ended. Everything you made is still here."
         )
-        for reason in PaywallReason.allCases where reason != .trialEnded {
-            XCTAssertEqual(PaywallCopy.headerKey(reason), "paywall.headline")
+        XCTAssertEqual(PaywallCopy.headerKey(.readOnly, cause: .subscriptionEnded), "paywall.compare.subscriptionended")
+        XCTAssertEqual(
+            PaywallCopy.text("paywall.compare.subscriptionended"),
+            "Your subscription has ended. Everything you made is still here."
+        )
+        XCTAssertEqual(PaywallCopy.headerKey(.readOnly, cause: .neverSubscribed), "paywall.headline")
+        XCTAssertEqual(PaywallCopy.headerKey(.readOnly, cause: nil), "paywall.headline")
+        for reason in PaywallReason.allCases where reason != .readOnly {
+            for cause in ReadOnlyCause.allCases {
+                XCTAssertEqual(PaywallCopy.headerKey(reason, cause: cause), "paywall.headline")
+            }
         }
     }
 

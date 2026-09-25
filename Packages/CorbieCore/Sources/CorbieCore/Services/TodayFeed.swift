@@ -17,6 +17,14 @@ public enum TodayQuickAction: String, Sendable, Equatable, CaseIterable, Identif
     case invite
 
     public var id: String { rawValue }
+
+    public var premiumAction: PremiumAction? {
+        switch self {
+        case .task, .plan: return .create
+        case .date: return .calendar
+        case .invite: return nil
+        }
+    }
 }
 
 public struct TodayPlan: Sendable, Codable, Equatable, Identifiable {

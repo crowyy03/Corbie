@@ -92,8 +92,8 @@ What the two answers mean:
   phone number and email, and shows them on the app's product page in EU storefronts.
 - **Not a trader**: you are not acting for business purposes.
 
-An individual who plans to sell subscriptions is, on the ordinary reading of the Act, a trader,
-even while v1 is free. Answering "not a trader" to keep the address private would be an inaccurate
+An individual who sells subscriptions is, on the ordinary reading of the Act, a trader, and v1 is
+paid from day one. Answering "not a trader" to keep the address private would be an inaccurate
 declaration. Because availability already excludes every EU storefront, there is no EU product page
 for the contact details to appear on; the practical cost of answering "trader" today is the
 verification step. If the EU is ever added to availability, the details become public on those
@@ -101,3 +101,12 @@ pages, which is the moment to consider a business address or a registered agent.
 
 This is a reading of the rule, not legal advice. If the address question matters, ask the finance
 and operations chat or an accountant before you answer.
+
+## 5. Subscriptions, notifications and the In-App Purchase key
+
+v1 is paid from day one, so the two subscriptions, their 14-day introductory offer, Billing Grace
+Period, the two notification URLs, the In-App Purchase key with its four Supabase secrets
+(`APPSTORE_ISSUER_ID`, `APPSTORE_KEY_ID`, `APPSTORE_PRIVATE_KEY`, `APPSTORE_APP_APPLE_ID` =
+`6812410537`) and the License Agreement all have to exist before the sandbox test and the
+submission. The steps, in order, are in `docs/RELEASE_CHECKLIST.md`, "App Store Connect before
+submission". The sandbox test itself is `docs/TEST_PLAN.md` section 7.

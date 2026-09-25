@@ -2,7 +2,6 @@
 import AppIntents
 import Foundation
 
-@available(iOS 17.0, macOS 14.0, *)
 public struct CountdownConfigurationIntent: WidgetConfigurationIntent {
     public static let title: LocalizedStringResource = "intent.countdown.title"
     public static let description = IntentDescription("intent.countdown.description")
@@ -35,7 +34,6 @@ public struct CountdownConfigurationIntent: WidgetConfigurationIntent {
     }
 }
 
-@available(iOS 17.0, macOS 14.0, *)
 public struct PlanProgressConfigurationIntent: WidgetConfigurationIntent {
     public static let title: LocalizedStringResource = "intent.plan.title"
     public static let description = IntentDescription("intent.plan.description")
@@ -53,7 +51,6 @@ public struct PlanProgressConfigurationIntent: WidgetConfigurationIntent {
     public var planId: UUID? { plan?.id }
 }
 
-@available(iOS 17.0, macOS 14.0, *)
 public struct LockCircularConfigurationIntent: WidgetConfigurationIntent {
     public static let title: LocalizedStringResource = "intent.lock.title"
     public static let description = IntentDescription("intent.lock.description")

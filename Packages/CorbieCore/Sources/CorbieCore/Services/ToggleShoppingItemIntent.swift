@@ -2,8 +2,7 @@
 import AppIntents
 import Foundation
 
-@available(iOS 17.0, macOS 14.0, *)
-public struct ToggleShoppingItemIntent: AppIntent {
+public struct ToggleShoppingItemIntent: AppIntent, ForegroundContinuableIntent {
     public static let title: LocalizedStringResource = "intent.shopping.toggle.title"
     public static let isDiscoverable = false
 
@@ -24,6 +23,7 @@ public struct ToggleShoppingItemIntent: AppIntent {
     }
 
     public func perform() async throws -> some IntentResult {
+        guard await TaskIntentRunner.isReadOnly() == false else { throw continueOnThePaywall() }
         try await TaskIntentRunner.toggleShoppingItem(
             itemId: TaskIntentRunner.identifier(itemID),
             showedChecked: showedChecked

@@ -53,11 +53,11 @@ import Testing
         .recapOpened,
         .widgetAdded(kind: "DaysTogether"),
         .trialOfferShown,
-        .trialStarted(product: .yearly),
-        .comparisonShown(reason: .trialEnded),
-        .planSelected(product: .yearly),
-        .purchaseStarted(product: .yearly),
-        .purchaseCompleted(product: .yearly, isTrial: true),
+        .trialStarted(productId: "app.corbie.yearly"),
+        .comparisonShown(reason: .readOnly),
+        .planSelected(productId: "app.corbie.yearly"),
+        .purchaseStarted(productId: "app.corbie.yearly"),
+        .purchaseCompleted(productId: "app.corbie.yearly", isTrial: true),
         .purchaseFailed(reason: .unverified),
         .restoreTapped,
         .readonlyHit(feature: .create),
@@ -102,10 +102,10 @@ import Testing
     }
 
     @Test func thePaywallEventsCarryTheProductAndTheScreen() {
-        #expect(AnalyticsEvent.trialStarted(product: .yearly).props == ["product": .string("app.corbie.yearly")])
-        #expect(AnalyticsEvent.planSelected(product: .monthly).props == ["product": .string("app.corbie.monthly")])
-        #expect(AnalyticsEvent.purchaseStarted(product: .monthly).props == ["product": .string("app.corbie.monthly")])
-        #expect(AnalyticsEvent.purchaseCompleted(product: .yearly, isTrial: true).props == [
+        #expect(AnalyticsEvent.trialStarted(productId: "app.corbie.yearly").props == ["product": .string("app.corbie.yearly")])
+        #expect(AnalyticsEvent.planSelected(productId: "app.corbie.monthly").props == ["product": .string("app.corbie.monthly")])
+        #expect(AnalyticsEvent.purchaseStarted(productId: "app.corbie.monthly").props == ["product": .string("app.corbie.monthly")])
+        #expect(AnalyticsEvent.purchaseCompleted(productId: "app.corbie.yearly", isTrial: true).props == [
             "product": .string("app.corbie.yearly"),
             "is_trial": .flag(true)
         ])
@@ -124,7 +124,7 @@ import Testing
         #expect(
             AnalyticsEvent.freetimeEmpty(reason: .noSlots).props == ["reason": .string("no_slots")]
         )
-        #expect(AnalyticsEvent.comparisonShown(reason: .trialEnded).props == ["reason": .string("trial_ended")])
+        #expect(AnalyticsEvent.comparisonShown(reason: .readOnly).props == ["reason": .string("read_only")])
         #expect(AnalyticsEvent.onboardingStep(3).props == ["step": .number(3)])
         #expect(AnalyticsEvent.appOpen.props.isEmpty)
         #expect(

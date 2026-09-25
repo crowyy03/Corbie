@@ -5,13 +5,21 @@ import XCTest
 final class PaywallCopyTests: XCTestCase {
     private let dollars = Decimal.FormatStyle.Currency(code: "USD", locale: Locale(identifier: "en_US"))
 
-    private func offer(_ product: CorbieProduct, _ price: String, display: String, savings: Int? = nil) -> SubscriptionOffer {
+    private func offer(
+        _ product: CorbieProduct,
+        _ price: String,
+        display: String,
+        savings: Int? = nil,
+        trialDays: Int? = nil
+    ) -> SubscriptionOffer {
         SubscriptionOffer(
             product: product,
+            productId: "test.\(product.rawValue)",
             displayPrice: display,
             price: Decimal(string: price) ?? 0,
             priceFormatStyle: dollars,
-            savingsPercent: savings
+            savingsPercent: savings,
+            eligibleFreeTrialDays: trialDays
         )
     }
 
@@ -28,8 +36,8 @@ final class PaywallCopyTests: XCTestCase {
 
     func testTrialReasonsSayWhatHappened() {
         XCTAssertEqual(PaywallCopy.reasonKey(.trialEnding), "paywall.reason.trialending")
-        XCTAssertEqual(PaywallCopy.reasonKey(.trialEnded), "paywall.reason.trialended")
-        XCTAssertEqual(PaywallCopy.reasonText(.trialEnded), "The trial is over. The calendar and Today still work.")
+        XCTAssertEqual(PaywallCopy.reasonKey(.readOnly), "paywall.reason.readonly")
+        XCTAssertEqual(PaywallCopy.reasonText(.readOnly), "The calendar and Today work without a subscription.")
     }
 
     func testEveryValueRowResolves() {
@@ -80,11 +88,41 @@ final class PaywallCopyTests: XCTestCase {
 
     func testTheLegalTextIsTheFullDisclosure() {
         for product in CorbieProduct.allCases {
-            let text = PaywallCopy.text(PaywallCopy.legalKey(product))
-            XCTAssertTrue(text.contains("Apple ID"), "\(product) is missing the billing account")
-            XCTAssertTrue(text.contains("auto-renew"), "\(product) is missing the renewal terms")
-            XCTAssertTrue(text.contains("24 hours"), "\(product) is missing the cancellation window")
+            for key in [PaywallCopy.legalKey(product), PaywallCopy.trialLegalKey(product)] {
+                let text = PaywallCopy.text(key)
+                XCTAssertTrue(text.contains("Apple ID"), "\(key) is missing the billing account")
+                XCTAssertTrue(text.contains("auto-renew"), "\(key) is missing the renewal terms")
+                XCTAssertTrue(text.contains("24 hours"), "\(key) is missing the cancellation window")
+            }
         }
+    }
+
+    func testATrialOfferSaysHowLongItIsFreeAndWhatItCostsAfter() {
+        let yearly = PaywallCopy.legalText(for: offer(.yearly, "29.99", display: "$29.99", trialDays: 14))
+        XCTAssertTrue(yearly.hasPrefix("14 days free, then $29.99 a year."), yearly)
+        XCTAssertTrue(yearly.contains("charged when the trial ends"), yearly)
+        XCTAssertFalse(yearly.contains("when you confirm"), yearly)
+
+        let monthly = PaywallCopy.legalText(for: offer(.monthly, "4.99", display: "4,99 €", trialDays: 14))
+        XCTAssertTrue(monthly.hasPrefix("14 days free, then 4,99 € a month."), monthly)
+
+        let noTrial = PaywallCopy.legalText(for: offer(.yearly, "29.99", display: "$29.99"))
+        XCTAssertTrue(noTrial.contains("charged when you confirm"), noTrial)
+        XCTAssertFalse(noTrial.contains("free"), noTrial)
+    }
+
+    func testTheLegalLineNeverCarriesAnAmountOfItsOwn() {
+        for product in CorbieProduct.allCases {
+            for key in [PaywallCopy.legalKey(product), PaywallCopy.trialLegalKey(product)] {
+                let text = PaywallCopy.text(key)
+                XCTAssertNil(text.range(of: #"\d+[.,]\d{2}"#, options: .regularExpression), "\(key) prints an amount")
+            }
+        }
+    }
+
+    func testRestoreSaysWhatItFound() {
+        XCTAssertEqual(PaywallCopy.restoreText(.restored), "Subscription restored.")
+        XCTAssertEqual(PaywallCopy.restoreText(.nothingToRestore), "Nothing to restore on this Apple ID.")
     }
 
     func testTheLegalLinksPointAtOurPages() {

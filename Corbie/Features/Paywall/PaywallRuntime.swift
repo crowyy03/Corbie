@@ -18,13 +18,22 @@ struct PaywallRuntime: ViewModifier {
     private func startListening() async {
         let environment = environment
         await environment.store.attachAnalytics(environment.analytics)
-        await environment.store.startListening { [weak environment] _ in
-            await environment?.refreshEntitlement()
+        await environment.store.startListening { [weak environment] subscription in
+            await environment?.syncAndRefresh(after: subscription)
         }
     }
 
     private func refresh() async {
         await environment.refreshEntitlement()
+    }
+}
+
+extension AppEnvironment {
+    func syncAndRefresh(after subscription: StoreSubscription?) async {
+        if let subscription, let spaceId = space?.id, subscription.appAccountToken == spaceId {
+            await entitlements.syncPurchase(signedTransaction: subscription.signedTransaction, spaceId: spaceId)
+        }
+        await refreshEntitlement()
     }
 }
 

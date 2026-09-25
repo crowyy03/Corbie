@@ -71,11 +71,11 @@ public enum AnalyticsEvent: Sendable, Equatable {
     case recapOpened
     case widgetAdded(kind: String)
     case trialOfferShown
-    case trialStarted(product: CorbieProduct)
+    case trialStarted(productId: String)
     case comparisonShown(reason: PaywallReason)
-    case planSelected(product: CorbieProduct)
-    case purchaseStarted(product: CorbieProduct)
-    case purchaseCompleted(product: CorbieProduct, isTrial: Bool)
+    case planSelected(productId: String)
+    case purchaseStarted(productId: String)
+    case purchaseCompleted(productId: String, isTrial: Bool)
     case purchaseFailed(reason: PurchaseFailureReason)
     case restoreTapped
     case readonlyHit(feature: PremiumAction)
@@ -180,10 +180,10 @@ public enum AnalyticsEvent: Sendable, Equatable {
             return ["kind": .string(AnalyticsEvent.slug(kind))]
         case let .comparisonShown(reason):
             return ["reason": .string(reason.rawValue)]
-        case let .trialStarted(product), let .planSelected(product), let .purchaseStarted(product):
-            return ["product": .string(product.identifier)]
-        case let .purchaseCompleted(product, isTrial):
-            return ["product": .string(product.identifier), "is_trial": .flag(isTrial)]
+        case let .trialStarted(productId), let .planSelected(productId), let .purchaseStarted(productId):
+            return ["product": .string(productId)]
+        case let .purchaseCompleted(productId, isTrial):
+            return ["product": .string(productId), "is_trial": .flag(isTrial)]
         case let .purchaseFailed(reason):
             return ["reason": .string(reason.rawValue)]
         case let .readonlyHit(feature):

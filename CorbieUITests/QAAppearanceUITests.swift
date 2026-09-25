@@ -82,9 +82,16 @@ final class QAAppearanceUITests: XCTestCase {
     }
 
     private func showsRenewalTerms(_ app: XCUIApplication) -> Bool {
-        let sentences = ["paywall.legal.generic", "paywall.legal.monthly", "paywall.legal.yearly"]
+        let sentences = [
+            "paywall.legal.generic",
+            "paywall.legal.monthly",
+            "paywall.legal.yearly",
+            "paywall.legal.monthly.trial",
+            "paywall.legal.yearly.trial"
+        ]
             .compactMap { key -> String? in
                 QACatalog.text(key)
+                    .replacingOccurrences(of: #"%(\d+\$)?(lld|@)"#, with: "%@", options: .regularExpression)
                     .components(separatedBy: "%@")
                     .max(by: { $0.count < $1.count })?
                     .trimmingCharacters(in: .whitespaces)

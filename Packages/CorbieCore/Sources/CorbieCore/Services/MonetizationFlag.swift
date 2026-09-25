@@ -32,7 +32,7 @@ public struct MonetizationFlagStore: Sendable {
             return forced.isEnabled
         }
         #endif
-        return fetchedValue ?? false
+        return fetchedValue ?? true
     }
 
     public func record(_ enabled: Bool) {

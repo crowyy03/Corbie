@@ -87,11 +87,11 @@ final class BundleAnchor {}
         let transport = FakeTransport(json: "{}")
         let client = NetTestSupport.client(transport: transport, appleToken: nil)
         await #expect(throws: APIError.self) {
-            _ = try await client.entitlement(spaceId: UUID())
+            _ = try await client.entitlement(spaceId: UUID(), appTransaction: nil)
         }
         #expect(transport.requestCount == 0)
         do {
-            _ = try await client.entitlement(spaceId: UUID())
+            _ = try await client.entitlement(spaceId: UUID(), appTransaction: nil)
         } catch let failure as APIError {
             #expect(failure.kind == .missingAppleToken)
             #expect(failure.isUnauthorized)
@@ -191,18 +191,64 @@ final class BundleAnchor {}
             json: #"{"spaceId":"\#(space.uuidString.lowercased())","status":"none","productId":null,"expiresAt":null,"updatedAt":"2026-09-05T10:00:00.123Z"}"#
         )
         let client = NetTestSupport.client(transport: transport)
-        let payload = try await client.entitlement(spaceId: space)
+        let payload = try await client.entitlement(spaceId: space, appTransaction: nil)
         #expect(payload.status == .none)
         #expect(payload.productId == nil)
+        #expect(payload.environment == nil)
         #expect(payload.updatedAt == NetTestSupport.date("2026-09-05T10:00:00.123Z"))
         let request = try #require(transport.lastRequest)
         #expect(request.url.absoluteString.hasSuffix("/entitlement/\(space.uuidString.lowercased())"))
+        #expect(request.headers[APIClient.appTransactionHeader] == nil)
+    }
+
+    @Test func entitlementCarriesTheAppTransactionAndReadsTheEnvironment() async throws {
+        let space = UUID()
+        let transport = FakeTransport(
+            json: #"{"spaceId":"\#(space.uuidString.lowercased())","environment":"Sandbox","status":"active","productId":"app.corbie.yearly","expiresAt":"2026-10-05T10:00:00Z","updatedAt":null}"#
+        )
+        let client = NetTestSupport.client(transport: transport)
+        let payload = try await client.entitlement(spaceId: space, appTransaction: "signed.app.transaction")
+        #expect(payload.environment == .sandbox)
+        #expect(payload.status == .active)
+        let request = try #require(transport.lastRequest)
+        #expect(request.method == .get)
+        #expect(request.headers["X-App-Transaction"] == "signed.app.transaction")
+        #expect(request.headers["Authorization"] == "Bearer apple-token")
+    }
+
+    @Test func syncPostsTheSignedTransactionForTheSpace() async throws {
+        let space = UUID()
+        let transport = FakeTransport(
+            json: #"{"spaceId":"\#(space.uuidString.lowercased())","environment":"Production","status":"active","productId":"app.corbie.monthly","expiresAt":"2026-10-05T10:00:00Z","updatedAt":null,"reconciled":false}"#
+        )
+        let client = NetTestSupport.client(transport: transport)
+        let payload = try await client.syncEntitlement(
+            spaceId: space,
+            signedTransaction: "signed.transaction",
+            appTransaction: "signed.app.transaction"
+        )
+        #expect(payload.environment == .production)
+        #expect(payload.status == .active)
+        let request = try #require(transport.lastRequest)
+        #expect(request.method == .post)
+        #expect(request.url.absoluteString.hasSuffix("/functions/v1/entitlement/sync"))
+        #expect(request.headers["X-App-Transaction"] == "signed.app.transaction")
+        let body = try #require(request.body)
+        let decoded = try #require(try JSONSerialization.jsonObject(with: body) as? [String: String])
+        #expect(decoded == ["spaceId": space.uuidString.lowercased(), "signedTransaction": "signed.transaction"])
     }
 
     @Test func entitlementFallsBackToNoneForAnUnknownStatus() throws {
         let raw = Data(#"{"spaceId":"1c2b8e3a-4d5f-4a6b-8c7d-9e0f1a2b3c4d","status":"paused"}"#.utf8)
         let payload = try CorbieJSON.decoder.decode(EntitlementPayload.self, from: raw)
         #expect(payload.status == .none)
+    }
+
+    @Test func anUnknownEnvironmentIsReadAsNone() throws {
+        let raw = Data(#"{"spaceId":"1c2b8e3a-4d5f-4a6b-8c7d-9e0f1a2b3c4d","status":"active","environment":"Staging"}"#.utf8)
+        let payload = try CorbieJSON.decoder.decode(EntitlementPayload.self, from: raw)
+        #expect(payload.environment == nil)
+        #expect(ServerEntitlement(payload: payload).environment == nil)
     }
 
     @Test func eventsPostsTheBatchAndRefusesMoreThanFifty() async throws {

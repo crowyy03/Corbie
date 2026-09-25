@@ -70,6 +70,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     #if DEBUG
     private(set) lazy var screenshotMode = ScreenshotModeSwitch(real: environment, appState: appState)
     #endif
+    private var paywallRouteRequests: (any NSObjectProtocol)?
 
     func application(
         _ application: UIApplication,
@@ -77,6 +78,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = self
         environment.startProcess()
+        openThePaywallWhenAnIntentAsks()
+        Task { await keepTaskActionsInStepWithAccess() }
         #if DEBUG
         screenshotMode.start()
         #endif
@@ -151,11 +154,35 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
     private func write(_ body: (IntentPersistence) async throws -> Void) async {
         await environment.processReady()
+        guard environment.premiumGate.require(.edit) else { return }
         let persistence = IntentPersistence.pinned(to: environment.persistence, identity: environment.identity)
         do {
             try await body(persistence)
         } catch {
             environment.report(error)
+        }
+    }
+
+    private func keepTaskActionsInStepWithAccess() async {
+        await environment.processReady()
+        let gate = environment.premiumGate
+        let readOnly = withObservationTracking {
+            gate.isReadOnly
+        } onChange: { [weak self] in
+            Task { @MainActor in await self?.keepTaskActionsInStepWithAccess() }
+        }
+        await environment.notifications.registerCategories(readOnly: readOnly)
+    }
+
+    private func openThePaywallWhenAnIntentAsks() {
+        paywallRouteRequests = NotificationCenter.default.addObserver(
+            forName: PaywallRouteRequest.notificationName,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.appState.open(.paywall)
+            }
         }
     }
 }

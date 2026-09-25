@@ -1,22 +1,51 @@
 import Foundation
 
 public enum CorbieProduct: String, Sendable, Equatable, CaseIterable, Codable {
-    case monthly = "app.corbie.monthly"
-    case yearly = "app.corbie.yearly"
-
-    public static let identifiers = CorbieProduct.allCases.map(\.rawValue)
-
-    public init?(identifier: String) {
-        self.init(rawValue: identifier.trimmingCharacters(in: .whitespacesAndNewlines))
-    }
-
-    public var identifier: String { rawValue }
+    case monthly
+    case yearly
 
     public var monthsPerPeriod: Int {
         switch self {
         case .monthly: return 1
         case .yearly: return 12
         }
+    }
+}
+
+public struct StoreProductIdentifiers: Sendable, Equatable {
+    public static let monthlyInfoKey = "CORBIE_MONTHLY_PRODUCT_ID"
+    public static let yearlyInfoKey = "CORBIE_YEARLY_PRODUCT_ID"
+
+    private let byProduct: [CorbieProduct: String]
+
+    public init(monthly: String, yearly: String) {
+        self.init(byProduct: [.monthly: monthly, .yearly: yearly])
+    }
+
+    public init(bundle: Bundle) {
+        self.init(byProduct: [
+            .monthly: bundle.object(forInfoDictionaryKey: StoreProductIdentifiers.monthlyInfoKey) as? String,
+            .yearly: bundle.object(forInfoDictionaryKey: StoreProductIdentifiers.yearlyInfoKey) as? String
+        ].compactMapValues { $0 })
+    }
+
+    private init(byProduct: [CorbieProduct: String]) {
+        self.byProduct = byProduct
+            .mapValues { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { $0.value.isEmpty == false }
+    }
+
+    public var all: [String] {
+        CorbieProduct.allCases.compactMap { byProduct[$0] }
+    }
+
+    public func identifier(for product: CorbieProduct) -> String? {
+        byProduct[product]
+    }
+
+    public func product(for identifier: String) -> CorbieProduct? {
+        let trimmed = identifier.trimmingCharacters(in: .whitespacesAndNewlines)
+        return byProduct.first { $0.value == trimmed }?.key
     }
 }
 
@@ -46,6 +75,7 @@ public enum StoreRenewalState: String, Sendable, Equatable, CaseIterable, Codabl
 
 public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
     public let product: CorbieProduct
+    public let productId: String
     public let displayPrice: String
     public let price: Decimal
     public let priceFormatStyle: Decimal.FormatStyle.Currency?
@@ -54,6 +84,7 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
 
     public init(
         product: CorbieProduct,
+        productId: String,
         displayPrice: String,
         price: Decimal,
         priceFormatStyle: Decimal.FormatStyle.Currency? = nil,
@@ -61,6 +92,7 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
         eligibleFreeTrialDays: Int? = nil
     ) {
         self.product = product
+        self.productId = productId
         self.displayPrice = displayPrice
         self.price = price
         self.priceFormatStyle = priceFormatStyle
@@ -68,11 +100,12 @@ public struct SubscriptionOffer: Sendable, Equatable, Identifiable {
         self.eligibleFreeTrialDays = eligibleFreeTrialDays
     }
 
-    public var id: String { product.rawValue }
+    public var id: String { productId }
 
     public func withSavings(_ percent: Int?) -> SubscriptionOffer {
         SubscriptionOffer(
             product: product,
+            productId: productId,
             displayPrice: displayPrice,
             price: price,
             priceFormatStyle: priceFormatStyle,
@@ -125,7 +158,12 @@ public enum SubscriptionOfferMath {
 }
 
 public enum PurchaseOutcome: Sendable, Equatable {
-    case success(LocalEntitlement)
+    case success(signedTransaction: String)
     case pending
     case cancelled
+}
+
+public enum RestoreOutcome: Sendable, Equatable {
+    case restored
+    case nothingToRestore
 }

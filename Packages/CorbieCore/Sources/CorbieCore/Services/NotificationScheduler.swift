@@ -118,8 +118,8 @@ public actor NotificationScheduler {
         await client.authorizationStatus()
     }
 
-    public func registerCategories() async {
-        await client.registerCategories(NotificationCategories.all)
+    public func registerCategories(readOnly: Bool = false) async {
+        await client.registerCategories(NotificationCategories.all(readOnly: readOnly))
     }
 
     public func pendingIdentifiers() async -> [String] {

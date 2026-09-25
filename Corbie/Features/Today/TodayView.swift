@@ -322,11 +322,8 @@ struct TodayView: View {
 
     private func start(quickAction kind: TodayQuickAction, model: TodayViewModel) {
         model.record(quickAction: kind)
-        switch kind {
-        case .task, .date, .plan:
-            guard environment.premiumGate.require(.create) else { return }
-        case .invite:
-            break
+        if let action = kind.premiumAction {
+            guard environment.premiumGate.require(action) else { return }
         }
         quickAction = kind
     }

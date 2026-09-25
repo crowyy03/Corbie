@@ -45,16 +45,19 @@ PERSONNES
 Les anniversaires qui comptent et les idées cadeau que vous avez notées. Deux semaines avant, Corbie le dit une fois, et dit aussi si quelque chose est choisi.
 
 BILAN DU DIMANCHE
-Le dimanche soir, Corbie compte la semaine : ce que chacun a terminé, comment les projets ont bougé, ce qui arrive ensuite. Cela ne coûte rien et reste gratuit après l'essai.
+Le dimanche soir, Corbie compte la semaine : ce que chacun a terminé, comment les projets ont bougé, ce qui arrive ensuite. Cela ne coûte rien, avec ou sans abonnement.
 
 WIDGETS
 Treize. Jours ensemble, la prochaine date, trois tâches à cocher depuis l'écran d'accueil, la liste de courses, un projet et où vous en êtes. Sur l'écran verrouillé aussi.
 
 UN ABONNEMENT
-Un abonnement couvre vous deux. Sept jours offerts, puis 5,99 par mois ou 39,99 par an. Inviter votre partenaire est toujours gratuit. À la fin de l'essai, le calendrier, Aujourd'hui et le bilan de la semaine continuent.
+Un abonnement vous couvre tous les deux, au mois ou à l'année. Les nouveaux abonnés ont 14 jours d'essai gratuit, puis l'abonnement se renouvelle automatiquement chaque mois ou chaque année. Résiliable à tout moment dans Réglages. Inviter votre partenaire est toujours gratuit. Sans abonnement, le calendrier, Aujourd'hui et le bilan de la semaine continuent.
 
 CONFIDENTIALITÉ
 Pas de pub. Aucun SDK tiers. Vos données restent dans votre iCloud, pas sur nos serveurs.
+
+Terms: https://yourcorbie.app/terms
+Privacy: https://yourcorbie.app/privacy
 
 ## What's new - 1.0
 Première version.

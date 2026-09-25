@@ -127,13 +127,19 @@ final class SettingsViewModel {
         }
     }
 
+    var isRestoring: Bool {
+        environment?.premiumGate.isRestoring ?? false
+    }
+
     func restorePurchases() async {
         guard let environment else { return }
-        isWorking = true
-        defer { isWorking = false }
+        let store = environment.store
         do {
-            try await environment.store.restore()
-            await environment.refreshEntitlement()
+            let outcome = try await environment.premiumGate.restore(spaceId: environment.space?.id) {
+                try await store.restore()
+            }
+            guard let outcome else { return }
+            environment.toasts.show(message: PaywallCopy.restoreText(outcome))
         } catch {
             environment.report(error)
         }

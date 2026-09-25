@@ -45,16 +45,19 @@ PEOPLE
 The birthdays that matter and the gift ideas you saved. Two weeks before the date Corbie says something, once, and tells you whether anything is picked.
 
 SUNDAY RECAP
-On Sunday evening Corbie counts the week: what each of you closed, how the plans moved, what is coming. It costs nothing and stays free after the trial.
+On Sunday evening Corbie counts the week: what each of you closed, how the plans moved, what is coming. It costs nothing, with or without a subscription.
 
 WIDGETS
 Thirteen of them. Days together, the next date, three tasks you tick from the home screen, the shopping list, a plan and how far you got. Lock screen too.
 
 ONE SUBSCRIPTION
-One plan covers both of you. Seven days free, then 4.99 a month or 29.99 a year. Inviting your partner is always free. When the trial ends the calendar, Today and the weekly recap keep working.
+One subscription covers both of you, monthly or yearly. New subscribers get a 14-day free trial, then it renews automatically every month or every year. Cancel anytime in Settings. Inviting your partner is always free. Without a subscription the calendar, Today and the weekly recap keep working.
 
 PRIVACY
 No ads. No third-party SDKs. Your data lives in your iCloud, not on our servers.
+
+Terms: https://yourcorbie.app/terms
+Privacy: https://yourcorbie.app/privacy
 
 ## What's new - 1.0
 First release.

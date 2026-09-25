@@ -34,7 +34,7 @@ public enum PremiumAction: String, Sendable, Equatable, CaseIterable, Codable {
 
 public enum PaywallReason: String, Sendable, Equatable, CaseIterable, Codable {
     case trialEnding = "trial_ending"
-    case trialEnded = "trial_ended"
+    case readOnly = "read_only"
     case settings
     case create
     case edit
@@ -69,6 +69,8 @@ public final class PremiumGate {
     public nonisolated static let trialNoticeDays = 2
 
     public private(set) var state: EntitlementState
+    public private(set) var readOnlyCause: ReadOnlyCause?
+    public private(set) var isRestoring = false
     public var pendingPaywall: PaywallRequest?
 
     @ObservationIgnored private let analytics: any AnalyticsRecording
@@ -124,24 +126,46 @@ public final class PremiumGate {
     }
 
     public func update(_ newState: EntitlementState) {
+        apply(EntitlementResolution(state: newState))
+    }
+
+    public func apply(_ resolution: EntitlementResolution) {
         let wasInGracePeriod = PremiumGate.isGrace(state)
-        state = newState
-        if PremiumGate.isGrace(newState), wasInGracePeriod == false {
+        state = resolution.state
+        readOnlyCause = resolution.readOnlyCause
+        if PremiumGate.isGrace(resolution.state), wasInGracePeriod == false {
             analytics.record(.gracePeriodEntered)
         }
-        if newState.isPremium {
+        if resolution.state.isPremium {
             pendingPaywall = nil
         }
     }
 
     public func refresh(spaceId: UUID) async {
         guard let entitlements else { return }
-        update(await entitlements.refresh(spaceId: spaceId))
+        apply(await entitlements.refreshResolution(spaceId: spaceId))
     }
 
     public func refreshWithoutSpace() async {
         guard let entitlements else { return }
         update(await entitlements.refreshWithoutSpace())
+    }
+
+    public func restore(
+        spaceId: UUID?,
+        syncWithAppStore: @Sendable () async throws -> Void
+    ) async throws -> RestoreOutcome? {
+        guard isRestoring == false, let entitlements else { return nil }
+        isRestoring = true
+        defer { isRestoring = false }
+        try await syncWithAppStore()
+        let outcome = await entitlements.reconcileAfterRestore(spaceId: spaceId)
+        if let spaceId {
+            await refresh(spaceId: spaceId)
+        } else {
+            await refreshWithoutSpace()
+        }
+        return outcome
     }
 
     private static func isGrace(_ state: EntitlementState) -> Bool {

@@ -2,8 +2,7 @@
 import AppIntents
 import Foundation
 
-@available(iOS 17.0, macOS 14.0, *)
-public struct TakeTaskIntent: AppIntent {
+public struct TakeTaskIntent: AppIntent, ForegroundContinuableIntent {
     public static let title: LocalizedStringResource = "intent.task.take.title"
     public static let isDiscoverable = false
 
@@ -19,6 +18,7 @@ public struct TakeTaskIntent: AppIntent {
     }
 
     public func perform() async throws -> some IntentResult {
+        guard await TaskIntentRunner.isReadOnly() == false else { throw continueOnThePaywall() }
         try await TaskIntentRunner.take(taskId: TaskIntentRunner.identifier(taskID))
         return .result()
     }

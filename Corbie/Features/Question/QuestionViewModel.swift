@@ -81,10 +81,16 @@ final class QuestionViewModel {
         isWriting = true
     }
 
+    var writeAction: PremiumAction { ownAnswer == nil ? .create : .edit }
+
+    func requestWriteAccess() {
+        environment?.premiumGate.require(writeAction)
+    }
+
     func save() async {
         guard let environment, let memberId = viewerMemberId, canSave else { return }
         let existing = ownAnswer
-        guard environment.premiumGate.require(existing == nil ? .create : .edit) else { return }
+        guard environment.premiumGate.require(writeAction) else { return }
         isSaving = true
         defer { isSaving = false }
         do {

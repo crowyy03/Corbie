@@ -391,4 +391,20 @@ import Testing
         let result = try await feed(world)
         #expect(result.isPaired == false)
     }
+
+    @MainActor
+    @Test func addingADateFromTodayStaysFreeLikeTheCalendarTab() throws {
+        let analytics = RecordingAnalytics()
+        let readOnly = PremiumGate(state: .readOnly, analytics: analytics)
+        let dateAction = try #require(TodayQuickAction.date.premiumAction)
+        #expect(dateAction == .calendar)
+        #expect(readOnly.require(dateAction))
+        #expect(readOnly.pendingPaywall == nil)
+        #expect(analytics.events.isEmpty)
+
+        #expect(TodayQuickAction.task.premiumAction == .create)
+        #expect(TodayQuickAction.plan.premiumAction == .create)
+        #expect(TodayQuickAction.invite.premiumAction == nil)
+        #expect(readOnly.require(.create) == false)
+    }
 }

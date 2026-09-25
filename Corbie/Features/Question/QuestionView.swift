@@ -75,8 +75,19 @@ struct QuestionView: View {
                     .frame(minHeight: 160)
                     .padding(CorbieSpacing.xs)
                     .corbieFieldBox()
-                    .disabled(environment.premiumGate.isReadOnly)
                     .accessibilityLabel(Text("question.editor.label"))
+                    .accessibilityHidden(environment.premiumGate.isReadOnly)
+                    .overlay {
+                        if environment.premiumGate.isReadOnly {
+                            Button {
+                                model.requestWriteAccess()
+                            } label: {
+                                Color.clear.contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(Text("question.editor.label"))
+                        }
+                    }
             }
             PrimaryButton(title: String(localized: "common.action.save")) {
                 Task { await model.save() }

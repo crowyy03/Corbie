@@ -6,9 +6,12 @@ import Testing
 @Suite struct NetStoreServiceTests {
     private let dollars = Decimal.FormatStyle.Currency(code: "USD", locale: Locale(identifier: "en_US"))
 
+    private let identifiers = StoreProductIdentifiers(monthly: "app.corbie.monthly", yearly: "app.corbie.yearly")
+
     private func offer(_ product: CorbieProduct, _ price: String, display: String) -> SubscriptionOffer {
         SubscriptionOffer(
             product: product,
+            productId: identifiers.identifier(for: product) ?? "",
             displayPrice: display,
             price: Decimal(string: price) ?? 0,
             priceFormatStyle: dollars
@@ -16,12 +19,39 @@ import Testing
     }
 
     @Test func productIdentifiersMapBothWays() {
-        #expect(CorbieProduct.identifiers == ["app.corbie.monthly", "app.corbie.yearly"])
-        #expect(CorbieProduct(identifier: "app.corbie.yearly") == .yearly)
-        #expect(CorbieProduct(identifier: " app.corbie.monthly ") == .monthly)
-        #expect(CorbieProduct(identifier: "app.corbie.lifetime") == nil)
+        #expect(identifiers.all == ["app.corbie.monthly", "app.corbie.yearly"])
+        #expect(identifiers.product(for: "app.corbie.yearly") == .yearly)
+        #expect(identifiers.product(for: " app.corbie.monthly ") == .monthly)
+        #expect(identifiers.product(for: "app.corbie.lifetime") == nil)
+        #expect(identifiers.identifier(for: .monthly) == "app.corbie.monthly")
         #expect(CorbieProduct.monthly.monthsPerPeriod == 1)
         #expect(CorbieProduct.yearly.monthsPerPeriod == 12)
+    }
+
+    @Test func productIdentifiersComeFromTheBundleInfo() throws {
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("corbie-store-\(UUID().uuidString).bundle")
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let info: [String: Any] = [
+            "CFBundleIdentifier": "app.corbie.tests.store.\(UUID().uuidString)",
+            StoreProductIdentifiers.monthlyInfoKey: " shop.monthly ",
+            StoreProductIdentifiers.yearlyInfoKey: "shop.yearly"
+        ]
+        let plist = try PropertyListSerialization.data(fromPropertyList: info, format: .xml, options: 0)
+        try plist.write(to: folder.appendingPathComponent("Info.plist"))
+        let bundle = try #require(Bundle(url: folder))
+
+        let configured = StoreProductIdentifiers(bundle: bundle)
+        #expect(configured.all == ["shop.monthly", "shop.yearly"])
+        #expect(configured.product(for: "shop.yearly") == .yearly)
+        #expect(StoreService(productIdentifiers: configured).productIdentifiers == configured)
+    }
+
+    @Test func aBundleWithoutProductIdentifiersOffersNothing() {
+        let missing = StoreProductIdentifiers(bundle: Bundle(for: BundleMarker.self))
+        #expect(missing.all.isEmpty)
+        #expect(missing.product(for: "app.corbie.yearly") == nil)
+        #expect(StoreProductIdentifiers(monthly: " ", yearly: "app.corbie.yearly").all == ["app.corbie.yearly"])
     }
 
     @Test func theYearlyPlanSavesHalfTheMonthlyPrice() {
@@ -68,6 +98,7 @@ import Testing
         ])
         #expect(sorted.map(\.product) == [.yearly, .monthly])
         #expect(sorted.first?.id == "app.corbie.yearly")
+        #expect(sorted.first?.productId == "app.corbie.yearly")
     }
 
     @Test func aLocalEntitlementKnowsWhenItIsStillGood() {
@@ -92,6 +123,7 @@ import Testing
         let offers = SubscriptionOfferMath.applySavings(to: [
             SubscriptionOffer(
                 product: .monthly,
+                productId: "app.corbie.monthly",
                 displayPrice: "$4.99",
                 price: Decimal(string: "4.99") ?? 0,
                 priceFormatStyle: dollars,
@@ -99,6 +131,7 @@ import Testing
             ),
             SubscriptionOffer(
                 product: .yearly,
+                productId: "app.corbie.yearly",
                 displayPrice: "$29.99",
                 price: Decimal(string: "29.99") ?? 0,
                 priceFormatStyle: dollars,
@@ -126,9 +159,22 @@ import Testing
         let older = LocalEntitlement(productId: "app.corbie.monthly", expiresAt: now.addingTimeInterval(86_400))
         let newer = LocalEntitlement(productId: "app.corbie.yearly", expiresAt: now.addingTimeInterval(360 * 86_400))
         let forever = LocalEntitlement(productId: "app.corbie.yearly")
-        #expect(StoreService.isNewer(newer, than: older))
-        #expect(StoreService.isNewer(older, than: newer) == false)
-        #expect(StoreService.isNewer(older, than: nil))
-        #expect(StoreService.isNewer(forever, than: newer))
+        #expect(LocalEntitlement.isNewer(newer, than: older))
+        #expect(LocalEntitlement.isNewer(older, than: newer) == false)
+        #expect(LocalEntitlement.isNewer(older, than: nil))
+        #expect(LocalEntitlement.isNewer(forever, than: newer))
+    }
+
+    @Test func theEnvironmentNamesMatchTheServer() {
+        #expect(StoreEnvironment.allCases.map(\.rawValue) == ["Production", "Sandbox", "Xcode"])
+        #expect(StoreEnvironmentRule.readable(nil) == .production)
+        #expect(StoreEnvironmentRule.mayWriteMirror(nil) == false)
+        let sandbox = AppTransactionProof(environment: .sandbox, signedAppTransaction: "jws")
+        let production = AppTransactionProof(environment: .production, signedAppTransaction: "jws")
+        #expect(StoreEnvironmentRule.readable(sandbox) == .sandbox)
+        #expect(StoreEnvironmentRule.mayWriteMirror(sandbox) == false)
+        #expect(StoreEnvironmentRule.mayWriteMirror(production))
     }
 }
+
+private final class BundleMarker {}

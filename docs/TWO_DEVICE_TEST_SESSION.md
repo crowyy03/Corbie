@@ -38,7 +38,7 @@ Do all of this before the session starts. Budget 45 minutes.
 
 | # | Check | Why |
 | --- | --- | --- |
-| 1 | Two iPhones on iOS 17 or later, Developer Mode on (Settings, Privacy & Security, Developer Mode). | Xcode installs Debug builds only with Developer Mode on. Interactive widgets need iOS 17 (`project.yml`, deployment target 17.0). |
+| 1 | Two iPhones on iOS 17.2 or later, Developer Mode on (Settings, Privacy & Security, Developer Mode). | Xcode installs Debug builds only with Developer Mode on. Interactive widgets need iOS 17 (`project.yml`, deployment target 17.2). |
 | 2 | Each phone signed in to iCloud with its own Apple ID. iCloud Drive on. After the first launch, Settings, your name, iCloud, apps using iCloud: Corbie on. | Both stores sync through container `iCloud.app.corbie` (`CoreDataStack.storeDescriptions`). Sign in with Apple uses the Apple ID of the phone. |
 | 3 | Same language (English) and region on both. Settings, General, Date & Time: "Set Automatically" on. | The question of the day is picked per language (`QuestionCopy`). Step 10 compares the text. |
 | 4 | Low Power Mode off. Low Data Mode off for Wi-Fi and cellular. Background App Refresh on, and on for Corbie. Focus off. | Partner changes arrive as silent pushes (`UIBackgroundModes: remote-notification` in `project.yml`). iOS holds them back in these modes. |

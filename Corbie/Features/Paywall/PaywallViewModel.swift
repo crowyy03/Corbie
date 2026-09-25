@@ -28,6 +28,10 @@ final class PaywallViewModel {
         stage == .ready && selectedOffer != nil && isWorking == false
     }
 
+    var isRestoring: Bool {
+        environment?.premiumGate.isRestoring ?? false
+    }
+
     func load(_ environment: AppEnvironment) async {
         self.environment = environment
         guard offers.isEmpty else { return }
@@ -52,7 +56,8 @@ final class PaywallViewModel {
     func select(_ product: CorbieProduct) {
         guard isWorking == false, selection != product else { return }
         selection = product
-        environment?.analytics.record(.planSelected(product: product))
+        guard let productId = selectedOffer?.productId else { return }
+        environment?.analytics.record(.planSelected(productId: productId))
     }
 
     func purchase() async -> Bool {
@@ -74,7 +79,8 @@ final class PaywallViewModel {
         do {
             let outcome = try await environment.store.purchase(offer.product, appAccountToken: space.id)
             switch outcome {
-            case .success:
+            case let .success(signedTransaction):
+                await environment.entitlements.syncPurchase(signedTransaction: signedTransaction, spaceId: space.id)
                 await environment.refreshEntitlement()
                 environment.toasts.show(message: PaywallCopy.text("paywall.state.purchased"))
                 return true
@@ -96,15 +102,21 @@ final class PaywallViewModel {
         isWorking = true
         message = nil
         defer { isWorking = false }
+        let store = environment.store
         do {
-            try await environment.store.restore()
-            await environment.refreshEntitlement()
-            guard environment.premiumGate.isPremium else {
-                message = PaywallCopy.text("paywall.state.restore.empty")
+            let outcome = try await environment.premiumGate.restore(spaceId: environment.space?.id) {
+                try await store.restore()
+            }
+            switch outcome {
+            case .restored:
+                environment.toasts.show(message: PaywallCopy.restoreText(.restored))
+                return environment.premiumGate.isPremium
+            case .nothingToRestore:
+                message = PaywallCopy.restoreText(.nothingToRestore)
+                return false
+            case nil:
                 return false
             }
-            environment.toasts.show(message: PaywallCopy.text("paywall.state.restored"))
-            return true
         } catch {
             message = error.localizedDescription
             environment.report(error)

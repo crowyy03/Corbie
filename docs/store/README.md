@@ -31,17 +31,27 @@ page ("Add Language"), then paste each file into its own language.
   Brand book section 3 and 5.
 - The first three lines of the description carry the value. On the store page everything after
   about three lines is behind "more", and most people never tap it.
+- No amount of money appears in any listing. The base prices are set once in App Store Connect
+  in US dollars and every other storefront gets Apple's automatic equivalent in its own currency,
+  so a number printed here would be wrong somewhere. The app shows the real price from StoreKit.
+- The subscription block states the terms only: one subscription for both, monthly or yearly, a
+  14-day free trial for new subscribers, automatic renewal every month or every year, cancel
+  anytime in Settings, and what keeps working without a subscription.
+- Every description ends with these two lines, in English in all five files, word for word:
+  `Terms: https://yourcorbie.app/terms` and `Privacy: https://yourcorbie.app/privacy`.
 
 ## What still has to be checked by hand
 
-- The prices printed in the descriptions come from spec section 10: the English listing says
-  4.99 and 29.99, the four European listings say 5,99 and 39,99. The price tier chosen in
-  App Store Connect has to match those lines in every storefront the listing serves, and the
-  German, Spanish, French and Italian listings each serve more than one country.
+- The trial length in the listings (14 days) has to match the introductory offer set on both
+  subscriptions in App Store Connect. If the offer changes, all five files change with it.
 - Screenshot captions are the copy for six screens: widgets on the home screen, Today, tasks,
   wishes, a plan with its prep list, and the subscription. The image work is separate; the
   captions here are what goes on the art. Shared free time and the Sunday recap are described
   in the text but have no screenshot of their own yet.
-- The free tier after the trial is the calendar, Today (view only) and the weekly recap. Every
-  listing says so in the subscription block; if that changes, all five files change with it.
+- Without a subscription the calendar, Today (view only) and the weekly recap keep working.
+  Every listing says so in the subscription block; if that changes, all five files change with it.
+- The Terms of Use link also goes into App Store Connect: App Information, License Agreement
+  (keep Apple's standard EULA or paste a custom one), and the description line above. Apple asks
+  for the Terms of Use and the Privacy Policy links in the metadata of every app with
+  subscriptions.
 - Age rating 4+, categories Lifestyle (primary) and Productivity (secondary), per spec 12.

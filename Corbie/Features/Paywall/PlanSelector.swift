@@ -96,12 +96,14 @@ struct PlanSelector: View {
         SubscriptionOfferMath.applySavings(to: [
             SubscriptionOffer(
                 product: .monthly,
+                productId: "preview.monthly",
                 displayPrice: "$4.99",
                 price: Decimal(string: "4.99") ?? 0,
                 priceFormatStyle: style
             ),
             SubscriptionOffer(
                 product: .yearly,
+                productId: "preview.yearly",
                 displayPrice: "$29.99",
                 price: Decimal(string: "29.99") ?? 0,
                 priceFormatStyle: style,

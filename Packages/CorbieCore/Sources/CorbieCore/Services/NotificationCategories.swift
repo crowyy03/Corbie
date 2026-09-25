@@ -10,21 +10,23 @@ public enum NotificationCategories {
         public static let castVote = "CORBIE_VOTE_CAST"
     }
 
-    public static let taskCategory = NotificationCategoryDescriptor(
-        identifier: task,
-        actions: [
-            NotificationActionDescriptor(
-                identifier: Action.takeTask,
-                titleKey: "notification.action.task.take",
-                opensApp: false
-            ),
-            NotificationActionDescriptor(
-                identifier: Action.completeTask,
-                titleKey: "notification.action.task.done",
-                opensApp: false
-            )
-        ]
-    )
+    public static func taskCategory(readOnly: Bool) -> NotificationCategoryDescriptor {
+        NotificationCategoryDescriptor(
+            identifier: task,
+            actions: [
+                NotificationActionDescriptor(
+                    identifier: Action.takeTask,
+                    titleKey: "notification.action.task.take",
+                    opensApp: readOnly
+                ),
+                NotificationActionDescriptor(
+                    identifier: Action.completeTask,
+                    titleKey: "notification.action.task.done",
+                    opensApp: readOnly
+                )
+            ]
+        )
+    }
 
     public static let voteCategory = NotificationCategoryDescriptor(
         identifier: vote,
@@ -37,7 +39,9 @@ public enum NotificationCategories {
         ]
     )
 
-    public static let all: [NotificationCategoryDescriptor] = [taskCategory, voteCategory]
+    public static func all(readOnly: Bool) -> [NotificationCategoryDescriptor] {
+        [taskCategory(readOnly: readOnly), voteCategory]
+    }
 }
 
 public enum NotificationStrings {

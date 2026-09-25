@@ -78,7 +78,7 @@ struct PaywallCheckout: View {
                     if await model.restore() { onPurchase() }
                 }
             }
-            .disabled(model.isWorking)
+            .disabled(model.isWorking || model.isRestoring)
             ForEach(LegalPage.allCases) { page in
                 linkButton(title: PaywallCopy.text(page.paywallTitleKey)) {
                     model.openedLink = page

@@ -288,36 +288,138 @@ force it by backgrounding the app. Record any row that differs.
    Expected: both changes survive; last writer wins per field, and the task does not appear twice.
 4. Repeat step 1 with the app killed between the edit and the reconnect.
 
-## 7. Sandbox purchases, by hand
+## 7. Sandbox purchases, the founder's checklist
 
-Needs a sandbox Apple ID (App Store Connect, Users and Access, Sandbox Testers), signed in under
-Settings, Developer, Sandbox Apple Account on the device. Products come from App Store Connect, so
-this cannot run before the two subscriptions exist there. Locally, `Products.storekit` reproduces the
-same two products for the Run action only.
+Run it on two phones in one space: phone A pays, phone B is the partner and never buys. Each step
+says what both phones must show and which SQL reads the server's own row, so a broken server path
+cannot hide behind a phone that looks right. Apple's pages this relies on: Testing in-app purchases
+with sandbox (developer.apple.com/documentation/storekit/testing-in-app-purchases-with-sandbox),
+Testing failing subscription renewals and in-app purchases
+(developer.apple.com/documentation/storekit/testing-failing-subscription-renewals-and-in-app-purchases),
+Testing refund requests (developer.apple.com/documentation/storekit/testing-refund-requests) and
+Manage Sandbox Apple Account settings
+(developer.apple.com/help/app-store-connect/test-in-app-purchases/manage-sandbox-apple-account-settings).
 
-1. **Monthly.** Paywall, pick Monthly, Continue. Expected: the sandbox sheet shows the monthly price
-   and "1 Month", the purchase confirms within 10 s, the paywall closes and Shared settings reads
-   "Active until ...". The partner phone unlocks within 60 s without buying anything.
-2. **Yearly.** Same with Yearly. Expected: the "Save 50%" badge on the card matches the real prices,
-   and the small print names the yearly price, the yearly period, the Apple ID and the 24 hour window.
-3. **Restore.** Delete the app, reinstall, sign in, open the paywall, "Restore purchases". Expected:
-   "Subscription restored" and the paywall closes. On a fresh Apple ID with nothing to restore the
-   line reads "Nothing to restore on this Apple ID" and the paywall stays open.
-4. **Expiry to read only.** In the sandbox a monthly subscription renews every 5 minutes and expires
-   after six renewals; use App Store Connect to cancel instead. Expected after the entitlement
-   refresh (app foreground): the banner "Trial over. The calendar and Today still work.", the plus
-   button on Tasks raises the paywall, the calendar keeps working, and nothing is deleted.
-5. **Partner entitlement.** Buy on phone A only. Expected on phone B within 60 s of foregrounding:
-   premium, with no purchase of its own, because the entitlement is fetched by space id.
-6. **Upgrade.** With monthly active on phone A, buy Yearly. Expected: StoreKit offers the upgrade, the
-   old subscription is replaced, and Shared settings shows the new expiry.
-7. **Ask to buy.** With a sandbox account that has Ask to Buy on, buy anything. Expected: the paywall
-   shows "This purchase is waiting for approval. Corbie unlocks as soon as it goes through." and the
-   app stays usable.
+### Before the first run
 
-Every purchase must carry `appAccountToken = Space.id`
-(`Packages/CorbieCore/Sources/CorbieCore/Services/StoreService.swift:58`). Check in App Store Connect
-that the transaction carries the token, otherwise the server cannot map it to the space.
+- App Store Connect is set up as in `docs/RELEASE_CHECKLIST.md`, "App Store Connect before
+  submission", steps 1 to 9: both subscriptions with the 14-day intro offer, Billing Grace Period
+  on for the sandbox, both notification URLs, the In-App Purchase key and its secrets. Product
+  changes can take up to an hour to reach the sandbox.
+- Two Sandbox Apple Accounts, one per phone: App Store Connect, Users and Access, Sandbox, Test
+  Accounts, the add button. They are not the iCloud accounts the phones pair with; those stay the
+  two real Apple IDs.
+- Both phones run a Debug build from Xcode with the StoreKit file switched off: Product, Scheme,
+  Edit Scheme, Run, Options, StoreKit Configuration: None. With `Products.storekit` attached the
+  purchase stays inside Xcode, reaches neither Apple nor the server, and nothing below can be
+  checked. `xcodegen generate` attaches the file again, so check the setting after every
+  regeneration. The Developer menu this checklist uses exists only in Debug builds.
+- Sign each phone into its sandbox account: Settings, Developer, Sandbox Apple Account, Sign In.
+  Apple adds that row after the first purchase attempt in a development build, so if it is missing,
+  open the paywall and tap the button once. The purchase sheet then reads `[Environment: Sandbox]`.
+- Renewal speed: App Store Connect, Users and Access, Sandbox, click the account, Subscription
+  Renewal Rate, or on the phone Settings, Developer, Sandbox Apple Account, Manage, Account
+  Settings. Keep Apple's default, "Renewal every 5 minutes": a monthly subscription renews every
+  5 minutes, a yearly one every hour, billing retry lasts 10 minutes and the grace period
+  5 minutes. Apple's table does not list a 2-week period, so time the trial in step 1 once and
+  write it here. The sandbox renews a subscription up to 12 times, then it expires.
+- Start clean: Clear Purchase History on both sandbox accounts, on the phone (Settings, Developer,
+  Sandbox Apple Account, Manage, Account Settings, Clear Purchase History, then sign out of the
+  sandbox account and back in) or in App Store Connect (Users and Access, Sandbox, select the
+  accounts, Clear Purchase History). Afterwards both accounts are eligible for the intro offer
+  again. On the same Account Settings page "Allow Purchases & Renewals" must be on.
+- The space id: Us pill, Settings, Developer; the first line under Subscription reads
+  `space: <id>`. The SQL below runs in the Supabase dashboard, SQL Editor, and reads:
+
+```sql
+select environment, original_transaction_id, product_id, status, expires_at,
+       grace_period_expires_at, auto_renew, offer_type, revoked_at, checked_at, updated_at
+from public.subscriptions
+where space_id = '<space id>'
+order by updated_at desc;
+
+select * from public.space_entitlements where space_id = '<space id>';
+```
+
+The first query shows every subscription the server holds for the space, the second the one row
+per environment the app is answered with. A Debug or TestFlight build reads only the `Sandbox`
+row. Neither build writes or reads the subscription fields of the iCloud Space record (only
+App Store builds do), so phone B can no longer unlock through iCloud during these steps; the SQL
+still proves the row itself.
+
+### Steps
+
+1. **Purchase with the trial on A, B unlocks without buying.** On A open the paywall. The button
+   reads "Try 14 days free"; buy the monthly plan. Expected on A: the sheet shows the sandbox
+   marker, the paywall closes, Settings shows the trial line, "Trial, N days left" (N is 0 or 1
+   in the sandbox, where the trial lasts minutes). On B, bring the app to the foreground within a
+   minute: no banner, the plus in Tasks opens the editor. The widgets on both phones stay locked:
+   in Debug and TestFlight builds they read only the App Store status of the Space record, which
+   these builds never write, so a sandbox purchase cannot unlock them. That is the point of the
+   rule, not a failure. SQL: one row, `environment` `Sandbox`, `status` `active`, `offer_type` 1
+   (Apple's code for an introductory offer), `product_id` `app.corbie.monthly`, `expires_at` at
+   the end of the sandbox trial; `space_entitlements` has a `Sandbox` row and no `Production`
+   row.
+2. **Restore on a clean install.** Delete the app from A, run it again from Xcode, sign in, then
+   paywall, Restore purchases. Expected on A: "Subscription restored.", premium again. B does not
+   change. SQL: the same row, still linked to the space, with `checked_at` at the moment of the
+   restore: the phone sent its transaction and the server asked Apple about it rather than taking
+   the phone's word. An empty or old `checked_at` means the server could not reach Apple; check
+   the four `APPSTORE_*` secrets.
+3. **Cancel, expiry, read-only.** Let the trial turn into a paid period first (one renewal; SQL
+   `offer_type` is empty again). Then cancel on A: Settings, Developer, Sandbox Apple Account,
+   Manage, Subscriptions, the Corbie subscription, Cancel Subscription. Apple's own page only
+   says "managing subscriptions in Settings"; the Subscriptions row inside the sandbox Manage
+   page comes from a RevenueCat community answer and was not checked on a phone here. Wait for
+   the period to run out, then bring both apps to the foreground. Expected on both phones: the
+   banner "Subscription ended. The calendar and Today still work." (cancelled during the trial, A
+   says "Trial over. ..." instead, while B still says "Subscription ended.": in these builds B
+   learns about a trial only from the Space record, which they do not read), the plus in Tasks
+   raises the paywall, the Calendar tab adds and edits a date, "Add a date" on Today opens the
+   date editor without a paywall, answering and revealing a vote works, tapping the answer box of
+   the question of the day raises the paywall, nothing is deleted and nothing is hidden. Tap Done
+   on a task notification: the app opens on the paywall and the task stays open. Widget buttons
+   cannot be reached this way, since the widgets of these builds are locked from the start (step
+   1). To try them in read-only on a Debug build: Developer, Force monetization off, wait until a
+   Tasks or Shopping widget shows its checkboxes, Developer, Force monetization on, then tap a
+   checkbox before the widget redraws: the app opens on the paywall and nothing is ticked. If the
+   widget already shows the locked face, the redraw came first; repeat. SQL: `status` `expired`,
+   `auto_renew` false.
+4. **Refund through the Developer row.** Buy again on A, then Us pill, Settings, Developer,
+   "Request a refund". The footer names the transaction and says whether it was bought for this
+   space. On Apple's sheet pick any reason and submit; the sandbox approves it on its own.
+   Expected on both phones after the next foreground: read-only with the "Subscription ended."
+   banner. SQL: `status` `revoked`, `revoked_at` set. Decline path: repeat, and on the sheet
+   choose Other and type `DECLINE`; Apple sends `REFUND_DECLINED` and nothing changes, `status`
+   stays `active`.
+5. **Billing retry and grace.** Needs Billing Grace Period with the sandbox selected in App Store
+   Connect. With an active subscription on A, turn off Settings, Developer, Sandbox Apple Account,
+   Manage, Account Settings, "Allow Purchases & Renewals". This is Apple's current switch for
+   failing renewals; it applies to every device and every subscription of that sandbox account
+   until it is turned back on. At the next renewal: both phones stay premium, Settings on A reads
+   "Payment is being retried until ...", SQL `status` `in_grace_period` with
+   `grace_period_expires_at` set. After the grace period: both read-only, SQL `in_billing_retry`.
+   Turn the switch back on: the next retry succeeds, both premium, SQL `active`. Leave the switch
+   on when done, or every later purchase on that account fails.
+6. **An Apple ID that used the intro offer sees Subscribe.** After step 1 the sandbox account on A
+   has used its intro offer. With nothing active, open the paywall on A: the button reads
+   "Subscribe", no "14 days free" anywhere, and the sheet charges from the first day. On B, whose
+   sandbox account never bought, the same paywall offers "Try 14 days free": eligibility is per
+   Apple ID, so a pair can take two trials, one per partner. That is Apple's rule, not a bug.
+7. **A TestFlight purchase never unlocks an App Store build.** Before launch, with a TestFlight
+   build on A (TestFlight purchases are sandbox purchases, renewed daily, up to 6 times): buy on A,
+   then check that it reached only the sandbox. SQL: the row has `environment` `Sandbox` and
+   `select * from public.space_entitlement('<space id>', 'Production')` returns nothing. In the
+   CloudKit Console (icloud.developer.apple.com, container `iCloud.app.corbie`, Production, act as
+   A's iCloud account, the Space record in the shared zone) `CD_productionSubscriptionStatusRaw` is
+   still `none`. After launch, with the App Store build on B in the same space: B stays read-only
+   while A's TestFlight subscription runs, in the app and on the widgets.
+
+Every purchase carries `appAccountToken = Space.id`: the SQL row carrying the space id is the proof,
+because the server links a transaction to a space only through that token.
+
+Not in this checklist: switching between monthly and yearly (both products share one level in the
+group, so Apple treats it as a crossgrade that starts at the next renewal date) and Ask to Buy.
 
 ## 8. The paywall with prices, by hand
 

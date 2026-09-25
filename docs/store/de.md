@@ -45,16 +45,19 @@ PERSONEN
 Die Geburtstage, die zählen, und die Geschenkideen, die ihr gespeichert habt. Zwei Wochen vorher sagt Corbie einmal Bescheid und dazu, ob schon etwas steht.
 
 SONNTAGSRÜCKBLICK
-Am Sonntagabend zählt Corbie die Woche: was jeder von euch erledigt hat, wie sich die Pläne bewegt haben, was ansteht. Kostet nichts und bleibt auch nach dem Test frei.
+Am Sonntagabend zählt Corbie die Woche: was jeder von euch erledigt hat, wie sich die Pläne bewegt haben, was ansteht. Kostet nichts, mit oder ohne Abo.
 
 WIDGETS
 Dreizehn Stück. Tage zusammen, der nächste Termin, drei Aufgaben zum Abhaken vom Homescreen, die Einkaufsliste, ein Plan und wie weit ihr seid. Auch auf dem Sperrbildschirm.
 
 EIN ABO
-Ein Abo deckt euch beide ab. Sieben Tage frei, danach 5,99 im Monat oder 39,99 im Jahr. Die Einladung kostet nie etwas. Nach dem Test laufen Kalender, Heute und der Wochenrückblick weiter.
+Ein Abo deckt euch beide ab, monatlich oder jährlich. Neue Abonnenten testen 14 Tage kostenlos, danach verlängert sich das Abo automatisch jeden Monat oder jedes Jahr. Jederzeit in den Einstellungen kündbar. Die Einladung kostet nie etwas. Ohne Abo laufen Kalender, Heute und der Wochenrückblick weiter.
 
 DATENSCHUTZ
 Keine Werbung. Keine fremden SDKs. Eure Daten liegen in eurer iCloud, nicht auf unseren Servern.
+
+Terms: https://yourcorbie.app/terms
+Privacy: https://yourcorbie.app/privacy
 
 ## What's new - 1.0
 Erste Version.

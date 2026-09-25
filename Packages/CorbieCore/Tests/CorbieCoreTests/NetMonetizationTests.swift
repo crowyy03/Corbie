@@ -3,11 +3,11 @@ import Testing
 @testable import CorbieCore
 
 @Suite struct NetMonetizationFlagTests {
-    @Test func aFlagThatWasNeverFetchedIsOff() {
+    @Test func aFlagThatWasNeverFetchedIsOn() {
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
         #expect(store.fetchedValue == nil)
-        #expect(store.isEnabled == false)
+        #expect(store.isEnabled)
     }
 
     @Test func theServerAnswerIsStoredForTheExtensionsToRead() async {
@@ -23,7 +23,7 @@ import Testing
         #expect(transport.lastRequest?.headers["Authorization"] == nil)
     }
 
-    @Test func aFailedFetchBeforeAnyAnswerStaysFree() async {
+    @Test func aFailedFetchBeforeAnyAnswerCountsAsPaid() async {
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
         let flag = ServerMonetizationFlag(
@@ -31,8 +31,15 @@ import Testing
             store: store
         )
 
-        #expect(await flag.refresh() == false)
+        #expect(await flag.refresh())
         #expect(store.fetchedValue == nil)
+    }
+
+    @Test func aStoredFreeAnswerStillWinsOverTheDefault() {
+        let (store, suiteName) = MonetizationTestSupport.freshStore()
+        defer { MonetizationTestSupport.remove(suiteName: suiteName) }
+        store.record(false)
+        #expect(store.isEnabled == false)
     }
 
     @Test func aFailedFetchKeepsAPaidAnswerRatherThanFallingBackToFree() async {
@@ -116,7 +123,7 @@ import Testing
     private func service(
         world: TestWorld,
         monetizationEnabled: Bool,
-        local: LocalEntitlement? = nil,
+        local: [StoreSubscription] = [],
         notifications: NotificationScheduler? = nil
     ) -> EntitlementService {
         EntitlementService(
@@ -125,6 +132,7 @@ import Testing
             monetization: FixedMonetization(isEnabled: monetizationEnabled),
             store: InMemorySecretStore(),
             local: StubLocalEntitlements(local),
+            appTransaction: StubAppTransaction.production,
             notifications: notifications,
             now: { NetTestSupport.date("2026-09-20T10:00:00Z") }
         )
@@ -142,12 +150,13 @@ import Testing
 
     @Test func monetizationOffIgnoresALapsedSubscription() async throws {
         let world = try await TestWorld.make()
-        let lapsed = LocalEntitlement(
-            productId: "app.corbie.yearly",
-            renewal: .expired,
-            expiresAt: NetTestSupport.date("2026-08-01T10:00:00Z")
+        let lapsed = SubscriptionTestSupport.record(
+            for: world.space.id,
+            purchasedAt: NetTestSupport.date("2026-07-01T10:00:00Z"),
+            expiresAt: NetTestSupport.date("2026-08-01T10:00:00Z"),
+            renewal: .expired
         )
-        let state = await service(world: world, monetizationEnabled: false, local: lapsed)
+        let state = await service(world: world, monetizationEnabled: false, local: [lapsed])
             .refresh(spaceId: world.space.id)
         #expect(state == .monetizationOff)
     }
@@ -181,8 +190,13 @@ import Testing
         #expect(state == .readOnly)
 
         let endsAt = NetTestSupport.date("2026-10-04T10:00:00Z")
-        let trial = LocalEntitlement(productId: "app.corbie.yearly", expiresAt: endsAt, isInIntroOffer: true)
-        let trialState = await service(world: world, monetizationEnabled: true, local: trial)
+        let trial = SubscriptionTestSupport.record(
+            for: world.space.id,
+            purchasedAt: NetTestSupport.date("2026-09-20T10:00:00Z"),
+            expiresAt: endsAt,
+            isInIntroOffer: true
+        )
+        let trialState = await service(world: world, monetizationEnabled: true, local: [trial])
             .refresh(spaceId: world.space.id)
         #expect(trialState == .trial(daysLeft: 14, endsAt: endsAt))
     }

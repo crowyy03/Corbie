@@ -2,8 +2,7 @@
 import AppIntents
 import Foundation
 
-@available(iOS 17.0, macOS 14.0, *)
-public struct ToggleTaskDoneIntent: AppIntent {
+public struct ToggleTaskDoneIntent: AppIntent, ForegroundContinuableIntent {
     public static let title: LocalizedStringResource = "intent.task.done.title"
     public static let isDiscoverable = false
 
@@ -19,6 +18,7 @@ public struct ToggleTaskDoneIntent: AppIntent {
     }
 
     public func perform() async throws -> some IntentResult {
+        guard await TaskIntentRunner.isReadOnly() == false else { throw continueOnThePaywall() }
         try await TaskIntentRunner.markDone(
             taskId: TaskIntentRunner.identifier(taskID),
             notifications: IntentNotifications.client()

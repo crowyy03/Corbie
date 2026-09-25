@@ -6,7 +6,7 @@ One subscription covers both partners, and the everyday parts live in home scree
 ## Requirements
 
 - macOS 14 or newer
-- Xcode 16 or newer (iOS 17.0 deployment target)
+- Xcode 16 or newer (iOS 17.2 deployment target)
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
 - Deno 2 and the Supabase CLI for `server/`
 
@@ -75,4 +75,5 @@ has to be done once by the account holder:
   `https://corbie.app/.well-known/`.
 - **App Store Connect products.** `app.corbie.monthly` at 4.99 USD and `app.corbie.yearly` at 29.99 USD in one
   subscription group. `Products.storekit` mirrors them for local StoreKit testing.
-- **App Store Server Notifications.** Separate sandbox and production URLs pointing at the Supabase function.
+- **App Store Server Notifications.** One URL for both sandbox and production, the Supabase
+  `appstore-notifications` function; it keeps the two environments apart by the signed payload.

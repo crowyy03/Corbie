@@ -15659,19 +15659,89 @@
         }
       }
     },
-    "paywall.banner.readonly": {
-      "extractionState": "stale",
+    "paywall.banner.readonly.ended": {
+      "extractionState": "manual",
       "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription ended. The calendar and Today still work."
+          }
+        },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Test vorbei. Kalender und Heute laufen weiter."
+            "value": "Abo beendet. Kalender und Heute laufen weiter."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La suscripción terminó. El calendario y Hoy siguen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnement terminé. Le calendrier et Aujourd'hui continuent."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbonamento finito. Il calendario e Oggi continuano."
+          }
+        }
+      }
+    },
+    "paywall.banner.readonly.never": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No subscription yet. The calendar and Today are free."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Abo. Kalender und Heute sind gratis."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay suscripción. El calendario y Hoy son gratis."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore d'abonnement. Le calendrier et Aujourd'hui sont gratuits."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ancora nessun abbonamento. Il calendario e Oggi sono gratis."
+          }
+        }
+      }
+    },
+    "paywall.banner.readonly.trial": {
+      "extractionState": "manual",
+      "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Trial over. The calendar and Today still work."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test vorbei. Kalender und Heute laufen weiter."
           }
         },
         "es": {
@@ -15820,41 +15890,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "paywall.compare.expired": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Testphase ist vorbei. Alles Angelegte ist noch da."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your trial has ended. Everything you made is still here."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu prueba ha terminado. Todo lo que hicisteis sigue aquí."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Votre essai est terminé. Tout ce que vous avez fait est toujours là."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La tua prova è finita. Tutto quello che avete fatto è ancora qui."
           }
         }
       }
@@ -16312,6 +16347,76 @@
         }
       }
     },
+    "paywall.compare.subscriptionended": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your subscription has ended. Everything you made is still here."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Abo ist beendet. Alles Angelegte ist noch da."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu suscripción ha terminado. Todo lo que hicisteis sigue aquí."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre abonnement est terminé. Tout ce que vous avez fait est toujours là."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo abbonamento è finito. Tutto quello che avete fatto è ancora qui."
+          }
+        }
+      }
+    },
+    "paywall.compare.trialended": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your trial has ended. Everything you made is still here."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Testphase ist vorbei. Alles Angelegte ist noch da."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu prueba ha terminado. Todo lo que hicisteis sigue aquí."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre essai est terminé. Tout ce que vous avez fait est toujours là."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La tua prova è finita. Tutto quello che avete fatto è ancora qui."
+          }
+        }
+      }
+    },
     "paywall.cta.subscribe": {
       "extractionState": "stale",
       "localizations": {
@@ -16486,6 +16591,41 @@
         }
       }
     },
+    "paywall.legal.monthly.trial": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld days free, then %2$@ a month. Your Apple ID is charged when the trial ends and every month after that, unless you turn auto-renew off at least 24 hours before the trial or the month ends. Manage it in App Store settings."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Tage gratis, danach %2$@ im Monat. Deine Apple-ID wird am Ende des Tests belastet und danach jeden Monat, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Monats ausschaltest. Verwaltung in den App-Store-Einstellungen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld días gratis, después %2$@ al mes. Se cobra a tu Apple ID al acabar la prueba y luego cada mes, salvo que desactives la renovación automática al menos 24 horas antes de que acabe la prueba o el mes. Se gestiona en los ajustes de la App Store."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld jours gratuits, puis %2$@ par mois. Votre identifiant Apple est débité à la fin de l'essai, puis chaque mois, sauf si vous désactivez le renouvellement automatique au moins 24 heures avant la fin de l'essai ou du mois. Gestion dans les réglages de l'App Store."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld giorni gratis, poi %2$@ al mese. L'addebito sul tuo Apple ID avviene alla fine della prova e poi ogni mese, a meno che tu non disattivi il rinnovo automatico almeno 24 ore prima della fine della prova o del mese. Si gestisce nelle impostazioni dell'App Store."
+          }
+        }
+      }
+    },
     "paywall.legal.yearly": {
       "extractionState": "stale",
       "localizations": {
@@ -16517,6 +16657,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Corbie Premium costa %@ all'anno. L'addebito sul tuo Apple ID avviene alla conferma e poi ogni anno, a meno che tu non disattivi il rinnovo automatico almeno 24 ore prima della fine dell'anno. Si gestisce nelle impostazioni dell'App Store."
+          }
+        }
+      }
+    },
+    "paywall.legal.yearly.trial": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld days free, then %2$@ a year. Your Apple ID is charged when the trial ends and every year after that, unless you turn auto-renew off at least 24 hours before the trial or the year ends. Manage it in App Store settings."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Tage gratis, danach %2$@ im Jahr. Deine Apple-ID wird am Ende des Tests belastet und danach jedes Jahr, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Jahres ausschaltest. Verwaltung in den App-Store-Einstellungen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld días gratis, después %2$@ al año. Se cobra a tu Apple ID al acabar la prueba y luego cada año, salvo que desactives la renovación automática al menos 24 horas antes de que acabe la prueba o el año. Se gestiona en los ajustes de la App Store."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld jours gratuits, puis %2$@ par an. Votre identifiant Apple est débité à la fin de l'essai, puis chaque année, sauf si vous désactivez le renouvellement automatique au moins 24 heures avant la fin de l'essai ou de l'année. Gestion dans les réglages de l'App Store."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld giorni gratis, poi %2$@ all'anno. L'addebito sul tuo Apple ID avviene alla fine della prova e poi ogni anno, a meno che tu non disattivi il rinnovo automatico almeno 24 ore prima della fine della prova o dell'anno. Si gestisce nelle impostazioni dell'App Store."
           }
         }
       }
@@ -16941,6 +17116,41 @@
         }
       }
     },
+    "paywall.reason.readonly": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The calendar and Today work without a subscription."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalender und Heute gehen auch ohne Abo."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El calendario y Hoy funcionan sin suscripción."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le calendrier et Aujourd'hui marchent sans abonnement."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il calendario e Oggi funzionano senza abbonamento."
+          }
+        }
+      }
+    },
     "paywall.reason.settings": {
       "extractionState": "stale",
       "localizations": {
@@ -16972,41 +17182,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Un piano copre tutti e due."
-          }
-        }
-      }
-    },
-    "paywall.reason.trialended": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Der Test ist vorbei. Kalender und Heute laufen weiter."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The trial is over. The calendar and Today still work."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La prueba se ha acabado. El calendario y Hoy siguen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'essai est terminé. Le calendrier et Aujourd'hui continuent."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La prova è finita. Il calendario e Oggi continuano."
           }
         }
       }
@@ -28065,18 +28240,89 @@
         }
       }
     },
-    "share.stage.readonly": {
+    "share.stage.readonly.ended": {
+      "extractionState": "manual",
       "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your subscription has ended. Open Corbie to keep adding wishes."
+          }
+        },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dein Test ist vorbei. Öffne Corbie, um weiter Wünsche zu sammeln."
+            "value": "Dein Abo ist beendet. Öffne Corbie, um weiter Wünsche zu sammeln."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu suscripción ha terminado. Abre Corbie para seguir añadiendo deseos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre abonnement est terminé. Ouvrez Corbie pour continuer à ajouter des souhaits."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo abbonamento è finito. Apri Corbie per continuare ad aggiungere desideri."
+          }
+        }
+      }
+    },
+    "share.stage.readonly.never": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adding wishes comes with the subscription. Open Corbie to see the plans."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wünsche anlegen kommt mit dem Abo. Öffne Corbie, um die Abos zu sehen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir deseos viene con la suscripción. Abre Corbie para ver los planes."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter des souhaits vient avec l'abonnement. Ouvrez Corbie pour voir les offres."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungere desideri viene con l'abbonamento. Apri Corbie per vedere i piani."
+          }
+        }
+      }
+    },
+    "share.stage.readonly.trial": {
+      "extractionState": "manual",
+      "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Your trial is over. Open Corbie to keep adding wishes."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Test ist vorbei. Öffne Corbie, um weiter Wünsche zu sammeln."
           }
         },
         "es": {

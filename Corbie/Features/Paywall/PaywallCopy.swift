@@ -52,7 +52,7 @@ enum PaywallCopy {
     static func reasonKey(_ reason: PaywallReason) -> String {
         switch reason {
         case .trialEnding: return "paywall.reason.trialending"
-        case .trialEnded: return "paywall.reason.trialended"
+        case .readOnly: return "paywall.reason.readonly"
         case .settings: return "paywall.reason.settings"
         case .create: return "paywall.reason.create"
         case .edit: return "paywall.reason.edit"
@@ -78,6 +78,13 @@ enum PaywallCopy {
         }
     }
 
+    static func trialLegalKey(_ product: CorbieProduct) -> String {
+        switch product {
+        case .monthly: return "paywall.legal.monthly.trial"
+        case .yearly: return "paywall.legal.yearly.trial"
+        }
+    }
+
     static func text(_ key: String) -> String {
         String(localized: String.LocalizationValue(key))
     }
@@ -86,12 +93,27 @@ enum PaywallCopy {
         text(reasonKey(reason))
     }
 
-    static func headerKey(_ reason: PaywallReason) -> String {
-        reason == .trialEnded ? "paywall.compare.expired" : "paywall.headline"
+    static func headerKey(_ reason: PaywallReason, cause: ReadOnlyCause?) -> String {
+        guard reason == .readOnly else { return "paywall.headline" }
+        switch cause ?? .neverSubscribed {
+        case .neverSubscribed: return "paywall.headline"
+        case .subscriptionEnded: return "paywall.compare.subscriptionended"
+        case .trialEnded: return "paywall.compare.trialended"
+        }
     }
 
     static func legalText(for offer: SubscriptionOffer) -> String {
-        String(format: text(legalKey(offer.product)), offer.displayPrice)
+        guard let days = offer.eligibleFreeTrialDays else {
+            return String(format: text(legalKey(offer.product)), offer.displayPrice)
+        }
+        return String.localizedStringWithFormat(text(trialLegalKey(offer.product)), days, offer.displayPrice)
+    }
+
+    static func restoreText(_ outcome: RestoreOutcome) -> String {
+        switch outcome {
+        case .restored: return text("paywall.state.restored")
+        case .nothingToRestore: return text("paywall.state.restore.empty")
+        }
     }
 
     static func callToAction(for offer: SubscriptionOffer?) -> String {

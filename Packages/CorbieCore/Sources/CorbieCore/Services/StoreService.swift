@@ -1,14 +1,22 @@
 import Foundation
 import StoreKit
 
-public actor StoreService: LocalEntitlementProviding {
+public actor StoreService: LocalEntitlementProviding, AppTransactionProviding {
     public static let shared = StoreService()
+
+    public nonisolated let productIdentifiers: StoreProductIdentifiers
 
     private var analytics: (any AnalyticsRecording)?
     private var products: [CorbieProduct: Product] = [:]
     private var updates: Task<Void, Never>?
+    private var restoring: Task<Void, any Error>?
+    private let appTransaction = StoreKitAppTransaction()
 
-    public init(analytics: (any AnalyticsRecording)? = nil) {
+    public init(
+        productIdentifiers: StoreProductIdentifiers = StoreProductIdentifiers(bundle: .main),
+        analytics: (any AnalyticsRecording)? = nil
+    ) {
+        self.productIdentifiers = productIdentifiers
         self.analytics = analytics
     }
 
@@ -20,12 +28,16 @@ public actor StoreService: LocalEntitlementProviding {
         self.analytics = analytics
     }
 
+    public func appTransactionProof() async -> AppTransactionProof? {
+        await appTransaction.appTransactionProof()
+    }
+
     public func loadProducts() async throws -> [CorbieProduct: Product] {
         do {
-            let loaded = try await Product.products(for: CorbieProduct.identifiers)
+            let loaded = try await Product.products(for: productIdentifiers.all)
             var mapped: [CorbieProduct: Product] = [:]
             for product in loaded {
-                guard let known = CorbieProduct(identifier: product.id) else { continue }
+                guard let known = productIdentifiers.product(for: product.id) else { continue }
                 mapped[known] = product
             }
             products = mapped
@@ -42,6 +54,7 @@ public actor StoreService: LocalEntitlementProviding {
             offers.append(
                 SubscriptionOffer(
                     product: product,
+                    productId: storeProduct.id,
                     displayPrice: storeProduct.displayPrice,
                     price: storeProduct.price,
                     priceFormatStyle: storeProduct.priceFormatStyle,
@@ -52,21 +65,13 @@ public actor StoreService: LocalEntitlementProviding {
         return SubscriptionOfferMath.sorted(SubscriptionOfferMath.applySavings(to: offers))
     }
 
-    public func eligibleFreeTrialDays(_ product: CorbieProduct) async throws -> Int? {
-        let loaded = try await loadedProducts()
-        guard let storeProduct = loaded[product] else {
-            throw CorbieError.notFound("product \(product.identifier) is not available")
-        }
-        return await eligibleFreeTrialDays(for: storeProduct)
-    }
-
     public func purchase(_ product: CorbieProduct, appAccountToken: UUID) async throws -> PurchaseOutcome {
         let loaded = try await loadedProducts()
         guard let storeProduct = loaded[product] else {
             analytics?.record(.purchaseFailed(reason: .unavailable))
-            throw CorbieError.notFound("product \(product.identifier) is not available")
+            throw CorbieError.notFound("product \(product.rawValue) is not available")
         }
-        analytics?.record(.purchaseStarted(product: product))
+        analytics?.record(.purchaseStarted(productId: storeProduct.id))
         let result: Product.PurchaseResult
         do {
             result = try await storeProduct.purchase(options: [.appAccountToken(appAccountToken)])
@@ -84,12 +89,12 @@ public actor StoreService: LocalEntitlementProviding {
                 throw error
             }
             await transaction.finish()
-            let entitlement = StoreService.entitlement(from: transaction, status: nil)
-            if entitlement.isInIntroOffer {
-                analytics?.record(.trialStarted(product: product))
+            let isTrial = StoreService.isInIntroOffer(transaction)
+            if isTrial {
+                analytics?.record(.trialStarted(productId: storeProduct.id))
             }
-            analytics?.record(.purchaseCompleted(product: product, isTrial: entitlement.isInIntroOffer))
-            return .success(entitlement)
+            analytics?.record(.purchaseCompleted(productId: storeProduct.id, isTrial: isTrial))
+            return .success(signedTransaction: verification.jwsRepresentation)
         case .pending:
             return .pending
         case .userCancelled:
@@ -100,43 +105,47 @@ public actor StoreService: LocalEntitlementProviding {
     }
 
     public func restore() async throws {
-        analytics?.record(.restoreTapped)
+        let running = restoring ?? startRestoring()
+        defer {
+            if restoring == running { restoring = nil }
+        }
         do {
-            try await AppStore.sync()
+            try await running.value
         } catch {
             throw CorbieError.network("restore failed: \(error)")
         }
     }
 
-    public func currentEntitlement() async -> LocalEntitlement? {
-        if let group = await subscriptionGroupID(),
-           let statuses = try? await Product.SubscriptionInfo.status(for: group) {
-            var best: LocalEntitlement?
-            for status in statuses {
-                guard let candidate = StoreService.entitlement(from: status) else { continue }
-                if StoreService.isNewer(candidate, than: best) { best = candidate }
-            }
-            if best != nil { return best }
-        }
-        var best: LocalEntitlement?
-        for await result in Transaction.currentEntitlements {
-            guard let transaction = try? StoreService.verified(result),
-                  CorbieProduct(identifier: transaction.productID) != nil
-            else { continue }
-            let candidate = StoreService.entitlement(from: transaction, status: nil)
-            guard candidate.renewal != .revoked else { continue }
-            if StoreService.isNewer(candidate, than: best) { best = candidate }
-        }
-        return best
+    private func startRestoring() -> Task<Void, any Error> {
+        analytics?.record(.restoreTapped)
+        let running = Task { try await AppStore.sync() }
+        restoring = running
+        return running
     }
 
-    public func startListening(onChange: @escaping @Sendable (LocalEntitlement?) async -> Void) {
+    public func subscriptions() async -> [StoreSubscription] {
+        if let group = await subscriptionGroupID(),
+           let statuses = try? await Product.SubscriptionInfo.status(for: group) {
+            let fromStatuses = statuses.compactMap { status in
+                subscription(from: status.transaction, status: status)
+            }
+            if fromStatuses.isEmpty == false { return fromStatuses }
+        }
+        var current: [StoreSubscription] = []
+        for await result in Transaction.currentEntitlements {
+            guard let record = subscription(from: result, status: nil) else { continue }
+            current.append(record)
+        }
+        return current
+    }
+
+    public func startListening(onTransaction: @escaping @Sendable (StoreSubscription?) async -> Void) {
         guard updates == nil else { return }
         updates = Task { [weak self] in
             for await update in Transaction.updates {
                 guard let transaction = try? StoreService.verified(update) else { continue }
                 await transaction.finish()
-                await onChange(await self?.currentEntitlement() ?? nil)
+                await onTransaction(await self?.subscription(from: update, status: nil))
             }
         }
     }
@@ -166,6 +175,29 @@ public actor StoreService: LocalEntitlementProviding {
         )
     }
 
+    private func subscription(
+        from result: VerificationResult<Transaction>,
+        status: Product.SubscriptionInfo.Status?
+    ) -> StoreSubscription? {
+        guard let transaction = try? StoreService.verified(result),
+              productIdentifiers.product(for: transaction.productID) != nil,
+              let environment = StoreEnvironment(transaction.environment)
+        else { return nil }
+        let renewal = status.flatMap { try? StoreService.verified($0.renewalInfo) }
+        return StoreSubscription(
+            transactionId: transaction.id,
+            productId: transaction.productID,
+            appAccountToken: transaction.appAccountToken,
+            environment: environment,
+            purchasedAt: transaction.purchaseDate,
+            expiresAt: transaction.expirationDate,
+            renewal: StoreService.renewalState(status?.state, isRevoked: transaction.revocationDate != nil),
+            gracePeriodExpiresAt: renewal?.gracePeriodExpirationDate,
+            isInIntroOffer: StoreService.isInIntroOffer(transaction),
+            signedTransaction: result.jwsRepresentation
+        )
+    }
+
     static func unit(of period: Product.SubscriptionPeriod) -> SubscriptionPeriodUnit {
         switch period.unit {
         case .day: return .day
@@ -185,24 +217,6 @@ public actor StoreService: LocalEntitlementProviding {
         }
     }
 
-    static func entitlement(from status: Product.SubscriptionInfo.Status) -> LocalEntitlement? {
-        guard let transaction = try? StoreService.verified(status.transaction),
-              CorbieProduct(identifier: transaction.productID) != nil
-        else { return nil }
-        return StoreService.entitlement(from: transaction, status: status)
-    }
-
-    static func entitlement(from transaction: Transaction, status: Product.SubscriptionInfo.Status?) -> LocalEntitlement {
-        let renewal = status.flatMap { try? StoreService.verified($0.renewalInfo) }
-        return LocalEntitlement(
-            productId: transaction.productID,
-            renewal: StoreService.renewalState(status?.state, isRevoked: transaction.revocationDate != nil),
-            expiresAt: transaction.expirationDate,
-            gracePeriodExpiresAt: renewal?.gracePeriodExpirationDate,
-            isInIntroOffer: StoreService.isInIntroOffer(transaction)
-        )
-    }
-
     static func renewalState(_ state: Product.SubscriptionInfo.RenewalState?, isRevoked: Bool) -> StoreRenewalState {
         if isRevoked { return .revoked }
         guard let state else { return .subscribed }
@@ -216,14 +230,6 @@ public actor StoreService: LocalEntitlementProviding {
     }
 
     static func isInIntroOffer(_ transaction: Transaction) -> Bool {
-        guard #available(iOS 17.2, macOS 14.2, *) else { return false }
-        return transaction.offer?.type == .introductory
-    }
-
-    static func isNewer(_ candidate: LocalEntitlement, than current: LocalEntitlement?) -> Bool {
-        guard let current else { return true }
-        guard let candidateExpiry = candidate.expiresAt else { return true }
-        guard let currentExpiry = current.expiresAt else { return false }
-        return candidateExpiry > currentExpiry
+        transaction.offer?.type == .introductory
     }
 }

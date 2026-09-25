@@ -7,10 +7,13 @@ public struct APIClient: Sendable {
         public static let parse = "parse"
         public static let fx = "fx"
         public static let entitlement = "entitlement"
+        public static let entitlementSync = "entitlement/sync"
         public static let events = "events"
         public static let appleRevoke = "apple-revoke"
         public static let config = "config"
     }
+
+    public static let appTransactionHeader = "X-App-Transaction"
 
     public let configuration: ServerConfiguration
 
@@ -122,10 +125,28 @@ public struct APIClient: Sendable {
         return try decode(ConfigPayload.self, from: response)
     }
 
-    public func entitlement(spaceId: UUID) async throws -> EntitlementPayload {
+    public func entitlement(spaceId: UUID, appTransaction: String?) async throws -> EntitlementPayload {
         let response = try await send(
             method: .get,
             path: "\(Path.entitlement)/\(spaceId.uuidString.lowercased())",
+            headers: APIClient.appTransactionHeaders(appTransaction),
+            authenticated: true,
+            anonymous: false
+        )
+        return try decode(EntitlementPayload.self, from: response)
+    }
+
+    public func syncEntitlement(
+        spaceId: UUID,
+        signedTransaction: String,
+        appTransaction: String?
+    ) async throws -> EntitlementPayload {
+        let body = EntitlementSyncBody(spaceId: spaceId.uuidString.lowercased(), signedTransaction: signedTransaction)
+        let response = try await send(
+            method: .post,
+            path: Path.entitlementSync,
+            body: try encode(body),
+            headers: APIClient.appTransactionHeaders(appTransaction),
             authenticated: true,
             anonymous: false
         )
@@ -159,16 +180,22 @@ public struct APIClient: Sendable {
         )
     }
 
+    private static func appTransactionHeaders(_ signed: String?) -> [String: String] {
+        guard let signed, signed.isEmpty == false else { return [:] }
+        return [appTransactionHeader: signed]
+    }
+
     private func send(
         method: HTTPMethod,
         path: String,
         query: [URLQueryItem] = [],
         body: Data? = nil,
+        headers extraHeaders: [String: String] = [:],
         authenticated: Bool,
         anonymous: Bool
     ) async throws -> HTTPResponse {
         guard configuration.isNotConfigured == false else { throw APIError.notConfigured }
-        var headers = ["X-App-Version": appVersion, "Accept": "application/json"]
+        var headers = extraHeaders.merging(["X-App-Version": appVersion, "Accept": "application/json"]) { _, fixed in fixed }
         if body != nil {
             headers["Content-Type"] = "application/json"
         }

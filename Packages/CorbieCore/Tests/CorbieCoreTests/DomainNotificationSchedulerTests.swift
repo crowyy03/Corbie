@@ -288,6 +288,25 @@ import Testing
         ])
         let vote = registered.first { $0.identifier == NotificationCategories.vote }
         #expect(vote?.actions.map(\.identifier) == [NotificationCategories.Action.castVote])
+        #expect(task?.actions.allSatisfy { $0.opensApp == false } == true)
+    }
+
+    @Test func inAReadOnlySpaceTakeAndDoneOpenTheAppInsteadOfWritingInTheBackground() async {
+        let center = FakeNotificationCenter()
+        await scheduler(center).registerCategories(readOnly: true)
+        let readOnly = await center.categories
+        let task = readOnly.first { $0.identifier == NotificationCategories.task }
+        #expect(task?.actions.map(\.identifier) == [
+            NotificationCategories.Action.takeTask,
+            NotificationCategories.Action.completeTask
+        ])
+        #expect(task?.actions.allSatisfy(\.opensApp) == true)
+        let vote = readOnly.first { $0.identifier == NotificationCategories.vote }
+        #expect(vote == NotificationCategories.voteCategory)
+
+        await scheduler(center).registerCategories(readOnly: false)
+        let premium = await center.categories
+        #expect(premium.first { $0.identifier == NotificationCategories.task }?.actions.contains(where: \.opensApp) == false)
     }
 
     @Test func everyKindMapsToAPreferenceExceptTheTrialNotice() {

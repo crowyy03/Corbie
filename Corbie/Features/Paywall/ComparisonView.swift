@@ -39,7 +39,7 @@ struct ComparisonView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: CorbieSpacing.xxs) {
-            Text(LocalizedStringKey(PaywallCopy.headerKey(request.reason)))
+            Text(LocalizedStringKey(PaywallCopy.headerKey(request.reason, cause: environment.premiumGate.readOnlyCause)))
                 .corbieBody()
                 .fontWeight(.semibold)
                 .foregroundStyle(palette.text)
@@ -98,8 +98,8 @@ struct ComparisonView: View {
 }
 
 #if DEBUG
-#Preview("After the trial") {
-    ComparisonView(request: PaywallRequest(reason: .trialEnded)) {}
+#Preview("Read only") {
+    ComparisonView(request: PaywallRequest(reason: .readOnly)) {}
         .environment(AppEnvironment.previewSignedIn())
 }
 

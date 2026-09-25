@@ -1,6 +1,8 @@
 #if DEBUG
 import CorbieCore
+import StoreKit
 import SwiftUI
+import UIKit
 
 @MainActor
 @Observable
@@ -24,6 +26,13 @@ final class DebugMenuViewModel {
         DebugMonetizationOverride.store(override)
         await environment.refreshEntitlement()
         lastAction = label
+    }
+
+    func requestRefund(spaceId: UUID?) async {
+        guard isWorking == false else { return }
+        isWorking = true
+        defer { isWorking = false }
+        lastAction = await DebugRefundRequest.start(spaceId: spaceId)
     }
 
     func clearEntitlementCache(_ environment: AppEnvironment) async {
@@ -53,6 +62,7 @@ struct DebugMenuView: View {
                     await model.force(nil as DebugEntitlementOverride?, environment, label: "override cleared")
                 }
                 row("Clear the entitlement cache") { await model.clearEntitlementCache(environment) }
+                row("Request a refund") { await model.requestRefund(spaceId: environment.space?.id) }
             } header: {
                 Text(verbatim: "Subscription")
             } footer: {
@@ -114,7 +124,10 @@ struct DebugMenuView: View {
     }
 
     private var state: String {
-        var lines = ["state: \(environment.premiumGate.state)"]
+        var lines = [
+            "space: \(environment.space?.id.uuidString.lowercased() ?? "none")",
+            "state: \(environment.premiumGate.state)"
+        ]
         if let endsAt = environment.premiumGate.trialEndsAt {
             lines.append("trial ends: \(endsAt.formatted(date: .abbreviated, time: .shortened))")
         }
@@ -125,6 +138,39 @@ struct DebugMenuView: View {
             lines.append(lastAction)
         }
         return lines.joined(separator: "\n")
+    }
+}
+
+enum DebugRefundRequest {
+    @MainActor
+    static func start(spaceId: UUID?) async -> String {
+        guard let transaction = await latestSubscriptionTransaction() else {
+            return "refund: no verified subscription transaction on this Apple ID"
+        }
+        guard let scene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first(where: { $0.activationState == .foregroundActive })
+        else {
+            return "refund: no active window"
+        }
+        let owner = spaceId != nil && transaction.appAccountToken == spaceId ? "this space" : "another space"
+        let target = "\(transaction.productID) \(transaction.id), bought for \(owner)"
+        do {
+            let status = try await StoreKit.Transaction.beginRefundRequest(for: transaction.id, in: scene)
+            return "refund \(status == .success ? "requested" : "cancelled"): \(target)"
+        } catch {
+            return "refund failed: \(error.localizedDescription), \(target)"
+        }
+    }
+
+    private static func latestSubscriptionTransaction() async -> StoreKit.Transaction? {
+        var latest: StoreKit.Transaction?
+        for productId in StoreProductIdentifiers(bundle: .main).all {
+            guard case let .verified(transaction)? = await StoreKit.Transaction.latest(for: productId) else { continue }
+            if let current = latest, current.purchaseDate >= transaction.purchaseDate { continue }
+            latest = transaction
+        }
+        return latest
     }
 }
 

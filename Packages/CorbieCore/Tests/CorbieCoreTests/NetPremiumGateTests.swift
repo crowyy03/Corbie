@@ -114,6 +114,48 @@ import Testing
         #expect(analytics.names == ["grace_period_entered", "grace_period_entered"])
     }
 
+    @Test func theGateKeepsWhyTheSpaceIsReadOnly() {
+        let readOnly = gate(.premium(source: .storeKit, expiresAt: nil), analytics: RecordingAnalytics())
+        #expect(readOnly.readOnlyCause == nil)
+        readOnly.apply(EntitlementResolution(state: .readOnly, readOnlyCause: .trialEnded))
+        #expect(readOnly.readOnlyCause == .trialEnded)
+        readOnly.update(.readOnly)
+        #expect(readOnly.readOnlyCause == .neverSubscribed)
+        readOnly.apply(EntitlementResolution(state: .premium(source: .server, expiresAt: nil), readOnlyCause: .subscriptionEnded))
+        #expect(readOnly.readOnlyCause == nil)
+    }
+
+    @Test func onlyOneRestoreRunsAtATime() async throws {
+        let world = try await TestWorld.make()
+        let entitlements = EntitlementService(
+            client: NetTestSupport.client(transport: FakeTransport(json: SubscriptionTestSupport.payload(
+                world.space.id,
+                status: "none",
+                expiresAt: nil
+            ))),
+            spaces: world.repositories.spaces,
+            monetization: FixedMonetization(isEnabled: true),
+            store: InMemorySecretStore(),
+            local: StubLocalEntitlements(),
+            appTransaction: StubAppTransaction.production
+        )
+        let gate = PremiumGate(state: .readOnly, analytics: RecordingAnalytics(), entitlements: entitlements)
+        let appStore = AppStoreSyncGate()
+        let first = Task { try await gate.restore(spaceId: world.space.id) { await appStore.waitForRelease() } }
+        await appStore.waitUntilStarted()
+        #expect(gate.isRestoring)
+        #expect(try await gate.restore(spaceId: world.space.id) { await appStore.waitForRelease() } == nil)
+        await appStore.release()
+        #expect(try await first.value == .nothingToRestore)
+        #expect(gate.isRestoring == false)
+        #expect(await appStore.calls == 1)
+
+        await #expect(throws: CorbieError.self) {
+            try await gate.restore(spaceId: world.space.id) { throw CorbieError.network("offline") }
+        }
+        #expect(gate.isRestoring == false)
+    }
+
     @Test func aPurchaseClosesAnOpenPaywall() {
         let analytics = RecordingAnalytics()
         let readOnly = gate(.readOnly, analytics: analytics)
@@ -123,6 +165,32 @@ import Testing
         #expect(readOnly.pendingPaywall == nil)
         #expect(readOnly.isPremium)
         #expect(readOnly.require(.edit))
+    }
+}
+
+private actor AppStoreSyncGate {
+    private(set) var calls = 0
+    private var started: [CheckedContinuation<Void, Never>] = []
+    private var waiting: [CheckedContinuation<Void, Never>] = []
+    private var isReleased = false
+
+    func waitForRelease() async {
+        calls += 1
+        started.forEach { $0.resume() }
+        started = []
+        guard isReleased == false else { return }
+        await withCheckedContinuation { waiting.append($0) }
+    }
+
+    func waitUntilStarted() async {
+        guard calls == 0 else { return }
+        await withCheckedContinuation { started.append($0) }
+    }
+
+    func release() {
+        isReleased = true
+        waiting.forEach { $0.resume() }
+        waiting = []
     }
 }
 

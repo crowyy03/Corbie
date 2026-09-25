@@ -245,19 +245,32 @@ public struct EntitlementPayload: Sendable, Equatable, Codable {
     public let productId: String?
     public let expiresAt: Date?
     public let updatedAt: Date?
+    public let environment: StoreEnvironment?
 
     public init(
         spaceId: UUID,
         status: EntitlementStatus,
         productId: String? = nil,
         expiresAt: Date? = nil,
-        updatedAt: Date? = nil
+        updatedAt: Date? = nil,
+        environment: StoreEnvironment? = nil
     ) {
         self.spaceId = spaceId
         self.status = status
         self.productId = productId
         self.expiresAt = expiresAt
         self.updatedAt = updatedAt
+        self.environment = environment
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        spaceId = try container.decode(UUID.self, forKey: .spaceId)
+        status = try container.decode(EntitlementStatus.self, forKey: .status)
+        productId = try container.decodeIfPresent(String.self, forKey: .productId)
+        expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
+        updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+        environment = try container.decodeIfPresent(String.self, forKey: .environment).flatMap(StoreEnvironment.init(rawValue:))
     }
 }
 
@@ -324,4 +337,9 @@ struct ParseRequestBody: Encodable, Sendable {
 
 struct AppleRevokeBody: Encodable, Sendable {
     let refreshToken: String
+}
+
+struct EntitlementSyncBody: Encodable, Sendable {
+    let spaceId: String
+    let signedTransaction: String
 }

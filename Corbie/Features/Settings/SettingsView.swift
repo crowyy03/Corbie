@@ -210,13 +210,31 @@ struct SettingsView: View {
                 guard let manageURL else { return }
                 openURL(manageURL)
             }
-            row(titleKey: "settings.subscription.restore") {
-                Task { await model.restorePurchases() }
-            }
+            restoreRow
         } header: {
             SectionCaps(text: String(localized: "settings.section.subscription"))
         }
         .listRowBackground(palette.surface)
+    }
+
+    private var restoreRow: some View {
+        Button {
+            Task { await model.restorePurchases() }
+        } label: {
+            HStack {
+                Text(String(localized: "settings.subscription.restore"))
+                    .corbieBody()
+                    .foregroundStyle(palette.text)
+                Spacer(minLength: 0)
+                if model.isRestoring {
+                    ProgressView()
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(model.isRestoring)
+        .frame(minHeight: CorbieMetrics.minimumTapTarget)
     }
 
     private var privacySection: some View {

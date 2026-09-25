@@ -45,16 +45,19 @@ PERSONAS
 Los cumpleaños que importan y las ideas de regalo que guardaste. Dos semanas antes Corbie avisa una vez y dice si ya hay algo elegido.
 
 RESUMEN DEL DOMINGO
-El domingo por la tarde Corbie cuenta la semana: qué ha cerrado cada uno, cómo se han movido los planes y qué viene después. No cuesta nada y sigue gratis tras la prueba.
+El domingo por la tarde Corbie cuenta la semana: qué ha cerrado cada uno, cómo se han movido los planes y qué viene después. No cuesta nada, con o sin suscripción.
 
 WIDGETS
 Trece. Días juntos, la siguiente fecha, tres tareas que marcas desde la pantalla de inicio, la lista de la compra, un plan y por dónde va. También en la pantalla bloqueada.
 
 UNA SUSCRIPCIÓN
-Un plan cubre a los dos. Siete días gratis y luego 5,99 al mes o 39,99 al año. Invitar a tu pareja siempre es gratis. Cuando se acaba la prueba siguen el calendario, Hoy y el resumen de la semana.
+Una suscripción cubre a los dos, mensual o anual. Quien se suscribe por primera vez tiene 14 días de prueba gratis; después se renueva automáticamente cada mes o cada año. Cancela cuando quieras en Ajustes. Invitar a tu pareja siempre es gratis. Sin suscripción siguen el calendario, Hoy y el resumen de la semana.
 
 PRIVACIDAD
 Sin anuncios. Sin SDK de terceros. Los datos están en tu iCloud, no en nuestros servidores.
+
+Terms: https://yourcorbie.app/terms
+Privacy: https://yourcorbie.app/privacy
 
 ## What's new - 1.0
 Primera versión.

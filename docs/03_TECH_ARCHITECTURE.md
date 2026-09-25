@@ -30,7 +30,7 @@
 | Слой | Выбор | Версия/примечание |
 |---|---|---|
 | Язык | Swift | 5.10+, strict concurrency где возможно |
-| UI | SwiftUI | iOS 17.0+ deployment target |
+| UI | SwiftUI | iOS 17.2+ deployment target |
 | Хранение | Core Data | SQLite store в App Group |
 | Синк | CloudKit via `NSPersistentCloudKitContainer` | private + shared DB, `CKShare` |
 | Виджеты | WidgetKit + App Intents | interactive widgets требуют iOS 17 |
@@ -100,7 +100,7 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 
 ### Таблицы
 - `invites(code pk, space_id, share_url, created_at, expires_at, redeemed_at)`
-- `entitlements(space_id pk, original_transaction_id, product_id, status, expires_at, payer_hash, updated_at)`
+- `subscriptions((environment, original_transaction_id) pk, space_id, product_id, status, expires_at, grace_period_expires_at, auto_renew, offer_type, latest_transaction_id, revoked_at, signed_date, last_notification_uuid, checked_at, updated_at)` - одна строка на подписку App Store; `space_entitlements` - лучшая подписка пространства в каждом окружении (миграция 0009)
 - `events(id, anon_id, name, props jsonb, ts, app_version, locale)` — партиции по месяцу, retention 30 дней сырых
 - `fx_rates(base, date, rates jsonb)` — кэш ЕЦБ
 
@@ -109,8 +109,10 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 - `GET /invite-redeem/:code` — получить shareURL, пометить redeemed
 - `POST /parse` — {url} → {title, price, currency, imageURL, source}. OG + JSON-LD + адаптеры (amazon, target, etsy, sephora, nordstrom, zara, ikea) + oEmbed для instagram/tiktok. Таймаут 8 с, кэш 24 ч по URL.
 - `GET /fx?base=USD` — курсы с кэшем 12 ч (источник: Frankfurter/ECB)
-- `POST /appstore-notifications` — App Store Server Notifications V2: верифицируем JWS, обновляем `entitlements` по `appAccountToken` = spaceId
-- `GET /entitlement/:spaceId` — статус для клиента
+- `POST /appstore-notifications` — App Store Server Notifications V2 из sandbox и production на один URL: верифицируем JWS, окружение берём из подписанного payload, пишем строку подписки и привязываем её к spaceId из `appAccountToken`
+- `GET /entitlement/:spaceId` — статус для клиента в окружении, которое доказывает заголовок `X-App-Transaction` (без него или с непроверяемым - Production)
+- `POST /entitlement/sync` — {spaceId, signedTransaction}: сверка с App Store Server API и перенос подписки на spaceId через Set App Account Token
+- `POST /appstore-reconcile` — раз в сутки (или вручную с service role key): перепроверка подписок и повтор недоставленных уведомлений
 - `POST /events` — батч анонимных событий
 
 ### Безопасность
@@ -122,11 +124,11 @@ Server: mark invite redeemed; delete after 15 min TTL regardless
 
 1. Продукты: `app.corbie.monthly` ($4,99), `app.corbie.yearly` ($29,99). Subscription group одна.
 2. При покупке передаём `appAccountToken = Space.id` (UUID) в `Product.purchase(options:)`.
-3. App Store Server Notifications V2 → микросервис → `entitlements[spaceId]`.
-4. Клиент: при старте и раз в час — `GET /entitlement/:spaceId`; результат кэшируется в `Space.subscriptionStatus/ExpiresAt` в CloudKit (виден партнёру даже офлайн).
-5. Локально на устройстве покупателя — ещё и `Transaction.currentEntitlements` (StoreKit 2) как быстрый путь.
+3. App Store Server Notifications V2 приходят в микросервис и пишутся в `subscriptions`, по строке на подписку и окружение; пространство видит лучшую из своих подписок.
+4. Клиент: при старте, при возврате в приложение и раз в час - `GET /entitlement/:spaceId` с заголовком `X-App-Transaction`; ответ кэшируется в Keychain вместе с окружением. Только сборка из App Store (окружение `AppTransaction` = production) пишет статус в поля `productionSubscriptionStatusRaw` и `productionSubscriptionExpiresAt` записи Space в CloudKit (виден партнёру даже офлайн); sandbox- и Xcode-сборки эти поля не пишут и не читают.
+5. Локально на устройстве покупателя - ещё и StoreKit 2 (`Product.SubscriptionInfo.status`, запасной путь `Transaction.currentEntitlements`) как быстрый путь, но в счёт идут только транзакции своего окружения с `appAccountToken` этого Space.id; активная подписка с другим токеном уходит в `POST /entitlement/sync`.
 6. Гейт: `isPremium = space.trialActive || entitlement.active`.
-7. Restore: `AppStore.sync()` + запрос entitlement.
+7. Restore: `AppStore.sync()`, затем `POST /entitlement/sync` и запрос entitlement.
 
 **Подводный камень:** партнёр, который не платил, не имеет транзакций в своём Apple ID — поэтому источник правды именно сервер по spaceId, а не StoreKit на устройстве.
 
@@ -234,7 +236,7 @@ Corbie/
 6. **Интерактивные виджеты** требуют `AppIntent` в общем модуле, доступном и app, и widget target.
 7. **Entitlement партнёра** — только через сервер по spaceId; StoreKit на его устройстве ничего не знает.
 8. **`appAccountToken`** передаём при покупке всегда, иначе сервер не сопоставит транзакцию с пространством.
-9. **App Store Server Notifications** нужны в sandbox и production отдельными URL.
+9. **App Store Server Notifications** из sandbox и production идут на один URL; сервер разводит их по окружению из подписанного payload, и sandbox-покупка никогда не читается production-сборкой как оплаченная.
 10. **Amazon-парсинг** нестабилен — всегда путь ручного ввода.
 11. **Первый день недели и форматы** — только через Locale; никаких хардкодов.
 12. **Разрешения** (уведомления, календарь, фото) — запрашивать в контексте, не на старте.

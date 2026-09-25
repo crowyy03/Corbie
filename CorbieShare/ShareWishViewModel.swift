@@ -25,7 +25,7 @@ final class ShareWishViewModel {
     enum Stage: Equatable {
         case loading
         case noSession
-        case readOnly
+        case readOnly(ReadOnlyCause)
         case ready
     }
 
@@ -124,10 +124,11 @@ final class ShareWishViewModel {
         let entitlements = EntitlementService(
             client: client,
             spaces: controller.repositories.spaces,
-            monetization: ServerMonetizationFlag(client: client)
+            monetization: ServerMonetizationFlag(client: client),
+            appTransaction: StoreKitAppTransaction()
         )
-        let state = await entitlements.cachedState(space: space)
-        stage = state.isPremium ? .ready : .readOnly
+        let resolution = await entitlements.cachedResolution(space: space)
+        stage = resolution.state.isPremium ? .ready : .readOnly(resolution.readOnlyCause ?? .neverSubscribed)
     }
 
     private func parse(_ url: URL) async {
@@ -159,5 +160,15 @@ final class ShareWishViewModel {
         }
         imageURL = parsed.imageURL?.absoluteString
         localImage = parsed.imageData
+    }
+}
+
+extension ReadOnlyCause {
+    var shareLineKey: String {
+        switch self {
+        case .neverSubscribed: return "share.stage.readonly.never"
+        case .subscriptionEnded: return "share.stage.readonly.ended"
+        case .trialEnded: return "share.stage.readonly.trial"
+        }
     }
 }

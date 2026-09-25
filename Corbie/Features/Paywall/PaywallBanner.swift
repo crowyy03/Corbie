@@ -3,14 +3,14 @@ import SwiftUI
 
 enum PaywallBannerState: Equatable {
     case trialEnding(daysLeft: Int)
-    case readOnly
+    case readOnly(ReadOnlyCause)
 
-    static func make(_ state: EntitlementState) -> PaywallBannerState? {
+    static func make(_ state: EntitlementState, cause: ReadOnlyCause?) -> PaywallBannerState? {
         switch state {
         case let .trial(daysLeft, _):
             return state.isTrialEndingSoon ? .trialEnding(daysLeft: daysLeft) : nil
         case .readOnly:
-            return .readOnly
+            return .readOnly(cause ?? .neverSubscribed)
         case .premium, .grace:
             return nil
         }
@@ -26,7 +26,7 @@ enum PaywallBannerState: Equatable {
     var reason: PaywallReason {
         switch self {
         case .trialEnding: return .trialEnding
-        case .readOnly: return .trialEnded
+        case .readOnly: return .readOnly
         }
     }
 
@@ -34,8 +34,8 @@ enum PaywallBannerState: Equatable {
         switch self {
         case .trialEnding:
             return PaywallCopy.text("paywall.banner.trial")
-        case .readOnly:
-            return PaywallCopy.text("paywall.banner.readonly")
+        case let .readOnly(cause):
+            return PaywallCopy.text(PaywallBannerState.readOnlyKey(cause))
         }
     }
 
@@ -44,7 +44,15 @@ enum PaywallBannerState: Equatable {
         case let .trialEnding(daysLeft):
             return String.localizedStringWithFormat(PaywallCopy.text("paywall.banner.trial.spoken"), daysLeft)
         case .readOnly:
-            return PaywallCopy.text("paywall.banner.readonly")
+            return message
+        }
+    }
+
+    static func readOnlyKey(_ cause: ReadOnlyCause) -> String {
+        switch cause {
+        case .neverSubscribed: return "paywall.banner.readonly.never"
+        case .subscriptionEnded: return "paywall.banner.readonly.ended"
+        case .trialEnded: return "paywall.banner.readonly.trial"
         }
     }
 }
@@ -53,7 +61,7 @@ struct PaywallBanner: View {
     @Environment(AppEnvironment.self) private var environment
 
     @ViewBuilder var body: some View {
-        if let state = PaywallBannerState.make(environment.premiumGate.state) {
+        if let state = PaywallBannerState.make(environment.premiumGate.state, cause: environment.premiumGate.readOnlyCause) {
             let actionTitle = String(localized: "paywall.banner.action")
             TrialBanner(
                 daysLeft: state.daysLeft,

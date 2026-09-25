@@ -112,13 +112,68 @@ final class RecordingAnalytics: AnalyticsRecording, @unchecked Sendable {
 }
 
 struct StubLocalEntitlements: LocalEntitlementProviding {
-    let value: LocalEntitlement?
+    let records: [StoreSubscription]
 
-    init(_ value: LocalEntitlement?) {
-        self.value = value
+    init(_ records: [StoreSubscription] = []) {
+        self.records = records
     }
 
-    func currentEntitlement() async -> LocalEntitlement? { value }
+    func subscriptions() async -> [StoreSubscription] { records }
+}
+
+struct StubAppTransaction: AppTransactionProviding {
+    static let production = StubAppTransaction(environment: .production)
+    static let sandbox = StubAppTransaction(environment: .sandbox)
+    static let xcode = StubAppTransaction(environment: .xcode)
+    static let unknown = StubAppTransaction(environment: nil)
+
+    let environment: StoreEnvironment?
+
+    var signed: String? { environment.map { "app-transaction-" + $0.rawValue.lowercased() } }
+
+    func appTransactionProof() async -> AppTransactionProof? {
+        guard let environment, let signed else { return nil }
+        return AppTransactionProof(environment: environment, signedAppTransaction: signed)
+    }
+}
+
+enum SubscriptionTestSupport {
+    static func record(
+        for spaceId: UUID?,
+        environment: StoreEnvironment = .production,
+        purchasedAt: Date,
+        expiresAt: Date?,
+        renewal: StoreRenewalState = .subscribed,
+        isInIntroOffer: Bool = false,
+        transactionId: UInt64 = 1,
+        productId: String = "app.corbie.yearly"
+    ) -> StoreSubscription {
+        StoreSubscription(
+            transactionId: transactionId,
+            productId: productId,
+            appAccountToken: spaceId,
+            environment: environment,
+            purchasedAt: purchasedAt,
+            expiresAt: expiresAt,
+            renewal: renewal,
+            isInIntroOffer: isInIntroOffer,
+            signedTransaction: "signed-transaction-\(transactionId)"
+        )
+    }
+
+    static func payload(
+        _ spaceId: UUID,
+        status: String,
+        expiresAt: String?,
+        environment: String? = "Production"
+    ) -> String {
+        let expiry = expiresAt.map { "\"\($0)\"" } ?? "null"
+        let origin = environment.map { "\"\($0)\"" } ?? "null"
+        return """
+        {"spaceId":"\(spaceId.uuidString.lowercased())","environment":\(origin),"status":"\(status)",\
+        "productId":"app.corbie.yearly","expiresAt":\(expiry),"updatedAt":"2026-09-05T10:00:00Z"}
+        """
+    }
 }
 
 enum NetTestSupport {

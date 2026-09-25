@@ -30,6 +30,32 @@ final class QuestionDraftTests: XCTestCase {
     }
 }
 
+@MainActor
+final class QuestionReadOnlyTests: XCTestCase {
+    func testTappingTheEditorOfAReadOnlySpaceRaisesThePaywall() async {
+        let environment = AppEnvironment.previewSignedIn()
+        environment.premiumGate.update(.readOnly)
+        let model = QuestionViewModel(question: DailyQuestionDTO(id: UUID()), text: "What made you laugh today")
+        await model.attach(environment)
+
+        model.requestWriteAccess()
+
+        XCTAssertEqual(environment.premiumGate.pendingPaywall?.reason, .create)
+        XCTAssertEqual(environment.premiumGate.pendingPaywall?.action, .create)
+    }
+
+    func testAPaidSpaceTypesWithoutAPaywall() async {
+        let environment = AppEnvironment.previewSignedIn()
+        environment.premiumGate.update(.premium(source: .storeKit, expiresAt: nil))
+        let model = QuestionViewModel(question: DailyQuestionDTO(id: UUID()), text: "What made you laugh today")
+        await model.attach(environment)
+
+        model.requestWriteAccess()
+
+        XCTAssertNil(environment.premiumGate.pendingPaywall)
+    }
+}
+
 final class QuestionStatusCopyTests: XCTestCase {
     func testEachStateReadsItsOwnStatusLine() {
         XCTAssertEqual(QuestionCopy.status(.unanswered(partnerAnswered: true), partnerName: "Sofia"), "Sofia answered · your turn")

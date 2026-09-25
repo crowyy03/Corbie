@@ -45,16 +45,19 @@ PERSONE
 I compleanni che contano e le idee regalo che hai salvato. Due settimane prima Corbie lo dice una volta, e dice anche se è già stato scelto qualcosa.
 
 RIEPILOGO DELLA DOMENICA
-La domenica sera Corbie conta la settimana: cosa ha chiuso ognuno di voi, come si sono mossi i progetti, cosa arriva dopo. Non costa niente e resta gratis dopo la prova.
+La domenica sera Corbie conta la settimana: cosa ha chiuso ognuno di voi, come si sono mossi i progetti, cosa arriva dopo. Non costa niente, con o senza abbonamento.
 
 WIDGET
 Tredici. Giorni insieme, la prossima data, tre attività da spuntare dalla schermata Home, la lista della spesa, un progetto e a che punto siete. Anche sulla schermata di blocco.
 
 UN ABBONAMENTO
-Un piano copre tutti e due. Sette giorni gratis, poi 5,99 al mese o 39,99 all'anno. Invitare il tuo partner è sempre gratis. Quando finisce la prova restano il calendario, Oggi e il riepilogo della settimana.
+Un abbonamento copre tutti e due, mensile o annuale. I nuovi abbonati hanno 14 giorni di prova gratuita, poi si rinnova automaticamente ogni mese o ogni anno. Disdici quando vuoi in Impostazioni. Invitare il tuo partner è sempre gratis. Senza abbonamento restano il calendario, Oggi e il riepilogo della settimana.
 
 PRIVACY
 Niente pubblicità. Nessun SDK di terze parti. I dati stanno nel tuo iCloud, non sui nostri server.
+
+Terms: https://yourcorbie.app/terms
+Privacy: https://yourcorbie.app/privacy
 
 ## What's new - 1.0
 Prima versione.

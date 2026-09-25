@@ -247,6 +247,26 @@ import Testing
         #expect(tapped.checkedByMemberId == nil)
     }
 
+    @Test func aSpaceWithAPaidMirrorMayWrite() async throws {
+        let world = try await makeWorld()
+        world.persistence.use(monetization: MonetizationTestSupport.enabled)
+        #expect(await TaskIntentRunner.isReadOnly(persistence: world.persistence, now: world.now) == false)
+    }
+
+    @Test func aSpaceWhoseSubscriptionEndedIsReadOnlyWhileMonetizationIsOn() async throws {
+        let world = try await makeWorld()
+        try await IntentAccessTestSupport.endSubscription(of: world.seed)
+        world.persistence.use(monetization: MonetizationTestSupport.enabled)
+        #expect(await TaskIntentRunner.isReadOnly(persistence: world.persistence, now: world.now))
+    }
+
+    @Test func monetizationOffNeverMakesTheSpaceReadOnly() async throws {
+        let world = try await makeWorld()
+        try await IntentAccessTestSupport.endSubscription(of: world.seed)
+        world.persistence.use(monetization: IntentAccessTestSupport.monetizationOff)
+        #expect(await TaskIntentRunner.isReadOnly(persistence: world.persistence, now: world.now) == false)
+    }
+
     @Test func identifiersMustBeUUIDs() throws {
         let id = UUID()
         #expect(try TaskIntentRunner.identifier(id.uuidString) == id)
@@ -266,6 +286,23 @@ import Testing
         reloader.stop(center: center)
         center.post(name: WidgetReloadRequest.notificationName, object: nil)
         #expect(counter.count == 2)
+    }
+}
+
+enum IntentAccessTestSupport {
+    static let monetizationOff: MonetizationFlagStore = {
+        let store = MonetizationFlagStore(suiteName: "corbie.tests.monetization.disabled")
+        store.record(false)
+        return store
+    }()
+
+    static func endSubscription(of seed: PreviewSeedResult) async throws {
+        _ = try await seed.controller.repositories.spaces.setSubscription(
+            spaceId: seed.space.id,
+            status: .expired,
+            expiresAt: nil,
+            payerMemberId: nil
+        )
     }
 }
 
@@ -315,6 +352,52 @@ import AppIntents
         let stored = try #require(try await lists.items(listId: seed.shoppingList.id).first { $0.id == open.id })
         #expect(stored.isChecked)
         #expect(stored.checkedByMemberId == seed.partner.id)
+    }
+
+    @Test func noIntentWritesWhenTheSubscriptionHasEnded() async throws {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let seed = try await PreviewSeed.make(now: now, calendar: calendar)
+        try await IntentAccessTestSupport.endSubscription(of: seed)
+        let identity = MemberIdentity(store: InMemorySecretStore())
+        try identity.setAppleUserID("preview.partner")
+        IntentPersistence.shared.use(controller: seed.controller, identity: identity)
+        IntentPersistence.shared.use(monetization: MonetizationTestSupport.enabled)
+        defer { IntentPersistence.shared.reset() }
+        let tasks = seed.controller.repositories.tasks
+        let lists = seed.controller.repositories.lists
+        let due = try #require(seed.tasks.first { $0.title == "Book the vet" })
+        let free = try #require(seed.tasks.first { $0.title == "Buy milk" })
+        let item = try #require(try await lists.items(listId: seed.shoppingList.id).first { $0.isChecked == false })
+
+        await #expect(throws: (any Error).self) {
+            _ = try await ToggleTaskDoneIntent(taskID: due.id).perform()
+        }
+        await #expect(throws: (any Error).self) {
+            _ = try await TakeTaskIntent(taskID: free.id).perform()
+        }
+        await #expect(throws: (any Error).self) {
+            _ = try await ToggleShoppingItemIntent(itemID: item.id, showedChecked: false).perform()
+        }
+
+        #expect(try await tasks.task(id: due.id)?.isDone == false)
+        #expect(try await tasks.task(id: free.id)?.assigneeMemberId == free.assigneeMemberId)
+        let stored = try #require(try await lists.items(listId: seed.shoppingList.id).first { $0.id == item.id })
+        #expect(stored.isChecked == false)
+    }
+
+    @Test func aPaidSpaceStillTakesATaskFromTheWidget() async throws {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let seed = try await PreviewSeed.make(now: now, calendar: calendar)
+        let identity = MemberIdentity(store: InMemorySecretStore())
+        try identity.setAppleUserID("preview.partner")
+        IntentPersistence.shared.use(controller: seed.controller, identity: identity)
+        IntentPersistence.shared.use(monetization: MonetizationTestSupport.enabled)
+        defer { IntentPersistence.shared.reset() }
+        let free = try #require(seed.tasks.first { $0.title == "Buy milk" })
+
+        _ = try await TakeTaskIntent(taskID: free.id).perform()
+
+        #expect(try await seed.controller.repositories.tasks.task(id: free.id)?.assigneeMemberId == seed.partner.id)
     }
 }
 #endif
