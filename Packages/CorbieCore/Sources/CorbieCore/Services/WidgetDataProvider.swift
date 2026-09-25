@@ -40,6 +40,8 @@ public struct WidgetDataProvider: Sendable {
     private let identity: MemberIdentity
     private let viewerMemberIdOverride: UUID?
     private let monetization: MonetizationFlagStore
+    private let device: DeviceEntitlementStore?
+    private let appTransaction: (any AppTransactionProviding)?
 
     public init(
         controller: PersistenceController,
@@ -47,7 +49,9 @@ public struct WidgetDataProvider: Sendable {
         locale: Locale = .current,
         identity: MemberIdentity = MemberIdentity(),
         viewerMemberId: UUID? = nil,
-        monetization: MonetizationFlagStore = MonetizationFlagStore()
+        monetization: MonetizationFlagStore = MonetizationFlagStore(),
+        device: DeviceEntitlementStore? = DeviceEntitlementStore(),
+        appTransaction: (any AppTransactionProviding)? = StoreKitAppTransaction()
     ) {
         self.controller = controller
         self.calendar = calendar
@@ -55,6 +59,8 @@ public struct WidgetDataProvider: Sendable {
         self.identity = identity
         viewerMemberIdOverride = viewerMemberId
         self.monetization = monetization
+        self.device = device
+        self.appTransaction = appTransaction
     }
 
     private var premiumWithoutSpace: Bool { monetization.isEnabled == false }
@@ -72,7 +78,21 @@ public struct WidgetDataProvider: Sendable {
             members: members,
             viewer: viewer,
             partner: partner,
-            isPremium: WidgetPremiumRule.isPremium(space: space, now: now, monetizationEnabled: monetization.isEnabled)
+            isPremium: await isPremium(space: space, now: now)
+        )
+    }
+
+    private func isPremium(space: SpaceDTO, now: Date) async -> Bool {
+        if WidgetPremiumRule.isPremium(space: space, now: now, monetizationEnabled: monetization.isEnabled) {
+            return true
+        }
+        guard let snapshot = device?.snapshot(spaceId: space.id, at: now) else { return false }
+        return WidgetPremiumRule.isPremium(
+            space: space,
+            now: now,
+            monetizationEnabled: monetization.isEnabled,
+            device: snapshot,
+            environment: StoreEnvironmentRule.readable(await appTransaction?.appTransactionProof())
         )
     }
 

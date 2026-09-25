@@ -134,6 +134,7 @@ final class AppEnvironment {
             store: secrets,
             local: localEntitlements ?? store,
             appTransaction: store,
+            device: DeviceEntitlementStore(defaults: defaults),
             notifications: scheduler
         )
         entitlements = entitlementService

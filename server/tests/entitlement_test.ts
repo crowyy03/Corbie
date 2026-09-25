@@ -345,12 +345,32 @@ Deno.test("sync leaves the token alone when Apple already has this space", async
   assertEquals(calls.map((call) => call.method), ["GET"]);
 });
 
-Deno.test("sync refuses a transaction from the other environment or a malformed request", async () => {
-  const sandboxPurchase = unsignedJws(purchase("Sandbox", "2000000006", spaceA));
-  const mismatch = await sync({ spaceId: spaceA, signedTransaction: sandboxPurchase }, null);
-  assertEquals(mismatch.status, 400);
-  assertEquals(mismatch.body.error, "invalid_request");
+Deno.test("a reviewer's sandbox purchase from a production-signed build is kept in Sandbox and never answers Production", async () => {
+  await database.reset();
+  const reviewerPurchase = unsignedJws(purchase("Sandbox", "2000000006", spaceA));
 
+  const fromReview = await sync({ spaceId: spaceA, signedTransaction: reviewerPurchase }, null);
+  assertEquals(fromReview.status, 200);
+  assertEquals(fromReview.body.environment, "Production");
+  assertEquals(fromReview.body.status, "none");
+  const stored = await database.subscription("2000000006");
+  assertEquals(stored?.environment, "Sandbox");
+  assertEquals(stored?.space_id, spaceA);
+
+  const appStore = await read(spaceA, null);
+  assertEquals(appStore.body.environment, "Production");
+  assertEquals(appStore.body.status, "none");
+
+  const reviewDeviceOnSandbox = await read(
+    spaceA,
+    appTransactionProof({ receiptType: "Sandbox", bundleId }),
+  );
+  assertEquals(reviewDeviceOnSandbox.body.environment, "Sandbox");
+  assertEquals(reviewDeviceOnSandbox.body.status, "active");
+});
+
+Deno.test("sync refuses a malformed request", async () => {
+  const sandboxPurchase = unsignedJws(purchase("Sandbox", "2000000007", spaceA));
   const noSpace = await sync({ signedTransaction: sandboxPurchase }, null);
   assertEquals(noSpace.status, 400);
 

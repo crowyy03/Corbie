@@ -10,6 +10,7 @@ public actor EntitlementService {
     private let store: (any SecretStore)?
     private let local: (any LocalEntitlementProviding)?
     private let appTransaction: (any AppTransactionProviding)?
+    private let device: DeviceEntitlementStore?
     private let notifications: NotificationScheduler?
     private let now: @Sendable () -> Date
 
@@ -22,6 +23,7 @@ public actor EntitlementService {
         store: (any SecretStore)? = KeychainStore(),
         local: (any LocalEntitlementProviding)? = nil,
         appTransaction: (any AppTransactionProviding)? = nil,
+        device: DeviceEntitlementStore? = nil,
         notifications: NotificationScheduler? = nil,
         now: @escaping @Sendable () -> Date = { Date() }
     ) {
@@ -31,6 +33,7 @@ public actor EntitlementService {
         self.store = store
         self.local = local
         self.appTransaction = appTransaction
+        self.device = device
         self.notifications = notifications
         self.now = now
     }
@@ -47,7 +50,7 @@ public actor EntitlementService {
         let environment = StoreEnvironmentRule.readable(proof)
         let moment = now()
         let space = try? await spaces.space(id: spaceId)
-        let subscriptions = LocalSubscriptions(await local?.subscriptions() ?? [], environment: environment)
+        let subscriptions = LocalSubscriptions(await local?.subscriptions() ?? [])
         var server = await serverEntitlement(spaceId: spaceId, proof: proof)
         if let moving = subscriptions.activeOutside(spaceId, at: moment),
            hasSynced(moving, spaceId: spaceId) == false,
@@ -64,9 +67,13 @@ public actor EntitlementService {
         )
         let resolved = EntitlementResolver.resolution(inputs)
         if StoreEnvironmentRule.mayWriteMirror(proof) {
-            await mirror(resolved, inputs: inputs, into: space)
+            let productionOnly = inputs.withLocal(subscriptions.production.entitlement(for: spaceId))
+            await mirror(EntitlementResolver.resolution(productionOnly), inputs: productionOnly, into: space)
         }
         let effective = EntitlementService.forced(resolved, now: moment)
+        if device?.record(effective.state, spaceId: spaceId, environment: environment, now: moment) == true {
+            WidgetReloadRequest.post()
+        }
         lastState = effective.state
         await scheduleTrialEnding(effective.state)
         return effective
@@ -89,15 +96,24 @@ public actor EntitlementService {
     public func cachedResolution(space: SpaceDTO) async -> EntitlementResolution {
         guard monetization.isEnabled else { return EntitlementResolution(state: .monetizationOff) }
         let proof = await appTransaction?.appTransactionProof()
+        let environment = StoreEnvironmentRule.readable(proof)
         let moment = now()
         let resolved = EntitlementResolver.resolution(
             EntitlementInputs(
-                environment: StoreEnvironmentRule.readable(proof),
+                environment: environment,
                 server: cachedEntitlement(spaceId: space.id),
                 space: MirroredEntitlement(space: space),
                 now: moment
             )
         )
+        if resolved.state.isReadOnly,
+           let snapshot = device?.snapshot(spaceId: space.id, at: moment),
+           snapshot.environment == environment {
+            return EntitlementService.forced(
+                EntitlementResolution(state: .premium(source: .storeKit, expiresAt: snapshot.premiumUntil)),
+                now: moment
+            )
+        }
         return EntitlementService.forced(resolved, now: moment)
     }
 
@@ -109,10 +125,7 @@ public actor EntitlementService {
     public func reconcileAfterRestore(spaceId: UUID?) async -> RestoreOutcome {
         let proof = await appTransaction?.appTransactionProof()
         let moment = now()
-        let subscriptions = LocalSubscriptions(
-            await local?.subscriptions() ?? [],
-            environment: StoreEnvironmentRule.readable(proof)
-        )
+        let subscriptions = LocalSubscriptions(await local?.subscriptions() ?? [])
         if let spaceId, let reconciling = subscriptions.toReconcile(for: spaceId, at: moment),
            await sync(reconciling.signedTransaction, spaceId: spaceId, proof: proof) != nil,
            reconciling.appAccountToken != spaceId {

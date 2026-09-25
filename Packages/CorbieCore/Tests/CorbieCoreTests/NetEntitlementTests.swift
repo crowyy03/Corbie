@@ -314,57 +314,61 @@ import Testing
     @Test func onlyATransactionForThisSpaceCounts() {
         let elsewhere = record(for: UUID(), purchasedDaysAgo: 1, expiresInDays: 29)
         let noToken = record(for: nil, purchasedDaysAgo: 1, expiresInDays: 29)
-        let local = LocalSubscriptions([elsewhere, noToken], environment: .production)
+        let local = LocalSubscriptions([elsewhere, noToken])
         #expect(local.entitlement(for: space) == nil)
 
         let here = record(for: space, purchasedDaysAgo: 1, expiresInDays: 29)
-        #expect(LocalSubscriptions([elsewhere, here], environment: .production).entitlement(for: space) == here.entitlement)
+        #expect(LocalSubscriptions([elsewhere, here]).entitlement(for: space) == here.entitlement)
     }
 
-    @Test func aTransactionFromAnotherEnvironmentNeverCounts() {
+    @Test func everyTransactionStoreKitReturnsCountsButOnlyProductionOnesReachTheMirror() {
         let sandbox = record(for: space, environment: .sandbox, purchasedDaysAgo: 1, expiresInDays: 29)
-        let xcode = record(for: space, environment: .xcode, purchasedDaysAgo: 1, expiresInDays: 29)
-        let production = LocalSubscriptions([sandbox, xcode], environment: .production)
-        #expect(production.entitlement(for: space) == nil)
-        #expect(production.active(at: now).isEmpty)
-        #expect(LocalSubscriptions([sandbox], environment: .sandbox).entitlement(for: space) == sandbox.entitlement)
+        let xcode = record(for: space, environment: .xcode, purchasedDaysAgo: 2, expiresInDays: 29)
+        let local = LocalSubscriptions([sandbox, xcode])
+        #expect(local.entitlement(for: space) == sandbox.entitlement)
+        #expect(local.active(at: now).count == 2)
+        #expect(local.production.entitlement(for: space) == nil)
+        #expect(local.production.active(at: now).isEmpty)
+
+        let paid = record(for: space, environment: .production, purchasedDaysAgo: 3, expiresInDays: 27)
+        #expect(LocalSubscriptions([sandbox, paid]).production.entitlement(for: space) == paid.entitlement)
     }
 
     @Test func aRevocationCountsOnlyForThisSpacesLatestTransaction() {
         let refundedEarlier = record(for: space, purchasedDaysAgo: 60, expiresInDays: -30, renewal: .revoked, transactionId: 1)
         let current = record(for: space, purchasedDaysAgo: 2, expiresInDays: 28, transactionId: 2)
         let refundedElsewhere = record(for: UUID(), purchasedDaysAgo: 1, expiresInDays: 29, renewal: .revoked, transactionId: 3)
-        let local = LocalSubscriptions([refundedEarlier, current, refundedElsewhere], environment: .production)
+        let local = LocalSubscriptions([refundedEarlier, current, refundedElsewhere])
         #expect(local.entitlement(for: space)?.renewal == .subscribed)
         #expect(EntitlementResolver.resolve(EntitlementInputs(local: local.entitlement(for: space), now: now)).isPremium)
 
         let refundedLatest = record(for: space, purchasedDaysAgo: 1, expiresInDays: 29, renewal: .revoked, transactionId: 4)
-        let refunded = LocalSubscriptions([current, refundedLatest], environment: .production)
+        let refunded = LocalSubscriptions([current, refundedLatest])
         #expect(refunded.entitlement(for: space)?.renewal == .revoked)
     }
 
     @Test func anActiveSubscriptionBoughtForAnotherSpaceIsTheOneToMove() {
         let solo = UUID()
         let bought = record(for: solo, purchasedDaysAgo: 3, expiresInDays: 11, isInIntroOffer: true)
-        let local = LocalSubscriptions([bought], environment: .production)
+        let local = LocalSubscriptions([bought])
         #expect(local.activeOutside(space, at: now) == bought)
         #expect(local.activeOutside(solo, at: now) == nil)
 
         let lapsed = record(for: solo, purchasedDaysAgo: 40, expiresInDays: -10)
-        #expect(LocalSubscriptions([lapsed], environment: .production).activeOutside(space, at: now) == nil)
+        #expect(LocalSubscriptions([lapsed]).activeOutside(space, at: now) == nil)
 
         let ownActive = record(for: space, purchasedDaysAgo: 1, expiresInDays: 29, transactionId: 2)
-        #expect(LocalSubscriptions([bought, ownActive], environment: .production).activeOutside(space, at: now) == nil)
+        #expect(LocalSubscriptions([bought, ownActive]).activeOutside(space, at: now) == nil)
     }
 
     @Test func restoreReconcilesThisSpacesSubscriptionOrMovesAnActiveOne() {
         let ownLapsed = record(for: space, purchasedDaysAgo: 40, expiresInDays: -10, renewal: .expired, transactionId: 1)
-        #expect(LocalSubscriptions([ownLapsed], environment: .production).toReconcile(for: space, at: now) == ownLapsed)
+        #expect(LocalSubscriptions([ownLapsed]).toReconcile(for: space, at: now) == ownLapsed)
 
         let activeElsewhere = record(for: UUID(), purchasedDaysAgo: 2, expiresInDays: 28, transactionId: 2)
-        let both = LocalSubscriptions([ownLapsed, activeElsewhere], environment: .production)
+        let both = LocalSubscriptions([ownLapsed, activeElsewhere])
         #expect(both.toReconcile(for: space, at: now) == activeElsewhere)
-        #expect(LocalSubscriptions([], environment: .production).toReconcile(for: space, at: now) == nil)
+        #expect(LocalSubscriptions([]).toReconcile(for: space, at: now) == nil)
     }
 }
 
@@ -377,6 +381,7 @@ import Testing
         secrets: InMemorySecretStore = InMemorySecretStore(),
         local: [StoreSubscription] = [],
         appTransaction: StubAppTransaction = .production,
+        device: DeviceEntitlementStore? = nil,
         notifications: NotificationScheduler? = nil,
         at moment: Date? = nil,
         retry: RetryPolicy = .default
@@ -389,6 +394,7 @@ import Testing
             store: secrets,
             local: StubLocalEntitlements(local),
             appTransaction: appTransaction,
+            device: device,
             notifications: notifications,
             now: { clock }
         )
@@ -637,9 +643,16 @@ import Testing
         }
     }
 
-    @Test func aSandboxEntitlementIsNeverPaidInAProductionBuild() async throws {
+    private func deviceStore() throws -> (DeviceEntitlementStore, () -> Void) {
+        let suite = "corbie-device-" + UUID().uuidString
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        return (DeviceEntitlementStore(defaults: defaults), { defaults.removePersistentDomain(forName: suite) })
+    }
+
+    @Test func aSandboxPurchaseNeverReachesARealAppStoreCustomer() async throws {
         let world = try await TestWorld.make()
-        let secrets = InMemorySecretStore()
+        let (device, dropDevice) = try deviceStore()
+        defer { dropDevice() }
         let sandboxExpiry = "2026-10-20T10:00:00Z"
         let sandboxPurchase = SubscriptionTestSupport.record(
             for: world.space.id,
@@ -651,30 +664,74 @@ import Testing
         let testFlight = service(
             world,
             transport: FakeTransport(json: payload(world.space.id, status: "active", expiresAt: sandboxExpiry, environment: "Sandbox")),
-            secrets: secrets,
             local: [sandboxPurchase],
-            appTransaction: .sandbox
+            appTransaction: .sandbox,
+            device: device
         )
         #expect(await testFlight.refresh(spaceId: world.space.id).isPremium)
-        #expect(await testFlight.cachedEntitlement(spaceId: world.space.id)?.environment == .sandbox)
+        let afterTestFlight = try #require(try await world.repositories.spaces.space(id: world.space.id))
+        #expect(afterTestFlight.subscriptionStatus == SubscriptionStatus.none, "a sandbox build wrote the iCloud mirror")
+        #expect(device.snapshot(spaceId: world.space.id, at: now)?.environment == .sandbox)
 
-        let appStore = service(
+        let partnerOnTheAppStore = service(
             world,
-            transport: FakeTransport(json: payload(world.space.id, status: "active", expiresAt: sandboxExpiry, environment: "Sandbox")),
-            secrets: secrets,
-            local: [sandboxPurchase]
+            transport: FakeTransport(json: payload(world.space.id, status: "active", expiresAt: sandboxExpiry, environment: "Sandbox"))
         )
-        let online = await appStore.refreshResolution(spaceId: world.space.id)
-        #expect(online.state == .readOnly)
-        #expect(online.readOnlyCause == .neverSubscribed)
+        let partner = await partnerOnTheAppStore.refreshResolution(spaceId: world.space.id)
+        #expect(partner.state == .readOnly)
+        #expect(partner.readOnlyCause == .neverSubscribed)
 
-        let offline = service(world, transport: unreachable(), secrets: secrets, local: [sandboxPurchase], retry: .noRetries)
-        #expect(await offline.refresh(spaceId: world.space.id) == .readOnly)
+        let sameDeviceNowOnTheAppStore = service(world, transport: unreachable(), device: device, retry: .noRetries)
+        #expect(await sameDeviceNowOnTheAppStore.cachedState(space: afterTestFlight) == .readOnly)
+        #expect(WidgetPremiumRule.isPremium(
+            space: afterTestFlight,
+            now: now,
+            monetizationEnabled: true,
+            device: device.snapshot(spaceId: world.space.id, at: now),
+            environment: .production
+        ) == false)
+    }
 
-        let stored = try #require(try await world.repositories.spaces.space(id: world.space.id))
-        #expect(stored.subscriptionStatus == .readonly)
-        #expect(await offline.cachedState(space: stored) == .readOnly)
-        #expect(WidgetPremiumRule.isPremium(space: stored, now: now, monetizationEnabled: true) == false)
+    @Test func aReviewersSandboxPurchaseUnlocksWhateverEnvironmentTheReviewBuildReports() async throws {
+        for review in [StubAppTransaction.production, .unknown, .sandbox] {
+            let world = try await TestWorld.make()
+            let (device, dropDevice) = try deviceStore()
+            defer { dropDevice() }
+            let expiry = NetTestSupport.date("2026-10-04T10:00:00Z")
+            let reviewerPurchase = SubscriptionTestSupport.record(
+                for: world.space.id,
+                environment: .sandbox,
+                purchasedAt: now,
+                expiresAt: expiry,
+                isInIntroOffer: true
+            )
+            let service = service(
+                world,
+                transport: FakeTransport(json: payload(world.space.id, status: "none", expiresAt: nil)),
+                local: [reviewerPurchase],
+                appTransaction: review,
+                device: device
+            )
+            let label = String(describing: review.environment)
+
+            let state = await service.refresh(spaceId: world.space.id)
+            #expect(state.isPremium, "a review build reporting \(label) ignored the reviewer's purchase")
+
+            let stored = try #require(try await world.repositories.spaces.space(id: world.space.id))
+            #expect(MirroredEntitlement(space: stored).isPremium(at: now) == false, "the sandbox purchase reached iCloud (\(label))")
+
+            let buildEnvironment = review.environment ?? .production
+            #expect(WidgetPremiumRule.isPremium(
+                space: stored,
+                now: now,
+                monetizationEnabled: true,
+                device: device.snapshot(spaceId: world.space.id, at: now),
+                environment: buildEnvironment
+            ), "the widgets stayed locked for the reviewer (\(label))")
+
+            let relaunch = self.service(world, transport: unreachable(), appTransaction: review, device: device, retry: .noRetries)
+            #expect(await relaunch.cachedState(space: stored).isPremium, "a relaunch showed read-only before the refresh (\(label))")
+        }
     }
 
     @Test func anActiveSubscriptionFromAnotherSpaceIsSyncedOncePerTransaction() async throws {
@@ -734,15 +791,15 @@ import Testing
         #expect(await service(world, transport: reconciled, local: [own]).reconcileAfterRestore(spaceId: world.space.id) == .restored)
         #expect(reconciled.lastRequest?.method == .post)
 
-        let sandboxOnly = SubscriptionTestSupport.record(
+        let reviewerPurchase = SubscriptionTestSupport.record(
             for: world.space.id,
             environment: .sandbox,
             purchasedAt: now,
             expiresAt: NetTestSupport.date("2026-10-20T10:00:00Z")
         )
-        let ignored = FakeTransport(json: payload(world.space.id, status: "none", expiresAt: nil))
-        #expect(await service(world, transport: ignored, local: [sandboxOnly]).reconcileAfterRestore(spaceId: world.space.id)
-            == .nothingToRestore)
-        #expect(ignored.requestCount == 0)
+        let review = FakeTransport(json: payload(world.space.id, status: "none", expiresAt: nil))
+        #expect(await service(world, transport: review, local: [reviewerPurchase]).reconcileAfterRestore(spaceId: world.space.id)
+            == .restored)
+        #expect(review.lastRequest?.method == .post)
     }
 }

@@ -107,18 +107,16 @@ async function syncEntitlement(req: Request, deps: EntitlementDeps): Promise<Res
   const body = await readJson<{ spaceId?: unknown; signedTransaction?: unknown }>(req);
   const spaceId = requireUuid(body.spaceId, "spaceId");
   const signedTransaction = requireSignedTransaction(body.signedTransaction);
-  const environment = await callerEnvironment(req, deps);
+  const callerIs = await callerEnvironment(req, deps);
 
   const transaction = await deps.verify<TransactionInfo>(signedTransaction);
   const originalTransactionId = transaction.originalTransactionId;
   if (!originalTransactionId || transaction.expiresDate === undefined) {
     throw new ApiError("invalid_request", "signedTransaction is not a subscription");
   }
-  if (normalizeEnvironment(transaction.environment) !== environment) {
-    throw new ApiError(
-      "invalid_request",
-      `signedTransaction is from ${transaction.environment}, this build is ${environment}`,
-    );
+  const environment = normalizeEnvironment(transaction.environment);
+  if (environment === null) {
+    throw new ApiError("invalid_request", "signedTransaction names no environment");
   }
   if (!sameEnvironmentAndApp(environment, deps.bundleId, transaction, null)) {
     throw new ApiError("invalid_request", "signedTransaction is for another app");
@@ -141,8 +139,8 @@ async function syncEntitlement(req: Request, deps: EntitlementDeps): Promise<Res
   await deps.store.linkSpace(key, spaceId);
   const reconciled = snapshot !== null && pointed;
 
-  const entitlement = await deps.store.entitlement(spaceId, environment);
-  return json({ ...entitlementBody(spaceId, environment, entitlement), reconciled });
+  const entitlement = await deps.store.entitlement(spaceId, callerIs);
+  return json({ ...entitlementBody(spaceId, callerIs, entitlement), reconciled });
 }
 
 export function entitlementHandler(deps: EntitlementDeps): (req: Request) => Promise<Response> {

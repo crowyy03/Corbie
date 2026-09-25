@@ -54,8 +54,12 @@ public struct StoreSubscription: Sendable, Equatable {
 public struct LocalSubscriptions: Sendable, Equatable {
     public let subscriptions: [StoreSubscription]
 
-    public init(_ subscriptions: [StoreSubscription], environment: StoreEnvironment) {
-        self.subscriptions = subscriptions.filter { $0.environment == environment }
+    public init(_ subscriptions: [StoreSubscription]) {
+        self.subscriptions = subscriptions
+    }
+
+    public var production: LocalSubscriptions {
+        LocalSubscriptions(subscriptions.filter { $0.environment == .production })
     }
 
     public func entitlement(for spaceId: UUID) -> LocalEntitlement? {

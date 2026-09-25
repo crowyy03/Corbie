@@ -189,6 +189,12 @@ public struct EntitlementInputs: Sendable, Equatable {
         self.now = now
     }
 
+    public func withLocal(_ local: LocalEntitlement?) -> EntitlementInputs {
+        var copy = self
+        copy.local = local
+        return copy
+    }
+
     public var readableServer: ServerEntitlement? {
         guard let server, server.environment == environment else { return nil }
         return server

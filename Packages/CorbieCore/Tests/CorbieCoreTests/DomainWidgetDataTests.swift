@@ -73,6 +73,44 @@ import Testing
         return World(provider: provider, seed: seed, now: now)
     }
 
+    @Test func theWidgetsAndIntentsFollowThisDevicesOwnPurchaseOnlyInTheSameEnvironment() async throws {
+        let now = DomainClock.date("2026-09-05 12:00", in: calendar)
+        let seed = try await PreviewSeed.make(now: now, calendar: calendar)
+        _ = try await seed.controller.repositories.spaces.setSubscription(
+            spaceId: seed.space.id,
+            status: SubscriptionStatus.none,
+            expiresAt: nil,
+            payerMemberId: nil
+        )
+        let suite = "corbie-widget-device-" + UUID().uuidString
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let device = DeviceEntitlementStore(defaults: defaults)
+        device.record(
+            .premium(source: .storeKit, expiresAt: now.addingTimeInterval(3600)),
+            spaceId: seed.space.id,
+            environment: .sandbox,
+            now: now
+        )
+
+        func isPremium(in build: StubAppTransaction) async throws -> Bool {
+            let provider = WidgetDataProvider(
+                controller: seed.controller,
+                calendar: calendar,
+                locale: locale,
+                viewerMemberId: seed.me.id,
+                monetization: MonetizationTestSupport.enabled,
+                device: device,
+                appTransaction: build
+            )
+            return try #require(try await provider.context(now: now)).isPremium
+        }
+
+        #expect(try await isPremium(in: .sandbox), "a reviewer or tester who bought on this device saw locked widgets")
+        #expect(try await isPremium(in: .production) == false, "a sandbox purchase unlocked an App Store build")
+        #expect(try await isPremium(in: .unknown) == false, "a sandbox purchase unlocked a build that could not prove its environment")
+    }
+
     @Test func theContextResolvesTheViewerAndThePartner() async throws {
         let world = try await makeWorld()
         let context = try #require(try await world.provider.context(now: world.now))

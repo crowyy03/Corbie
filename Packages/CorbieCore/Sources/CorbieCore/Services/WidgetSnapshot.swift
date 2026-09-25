@@ -411,6 +411,18 @@ public enum WidgetPremiumRule {
         guard monetizationEnabled else { return true }
         return MirroredEntitlement(space: space).isPremium(at: now)
     }
+
+    public static func isPremium(
+        space: SpaceDTO,
+        now: Date,
+        monetizationEnabled: Bool,
+        device: DeviceEntitlementSnapshot?,
+        environment: StoreEnvironment
+    ) -> Bool {
+        if isPremium(space: space, now: now, monetizationEnabled: monetizationEnabled) { return true }
+        guard let device, device.premiumUntil > now else { return false }
+        return device.environment == environment
+    }
 }
 
 public struct WidgetEventOption: Sendable, Codable, Equatable, Identifiable {
