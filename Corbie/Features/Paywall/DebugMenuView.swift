@@ -51,6 +51,13 @@ struct DebugMenuView: View {
 
     var body: some View {
         List {
+            Section {
+                Text(verbatim: state)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } header: {
+                Text(verbatim: "Status")
+            }
             ScreenshotModeSection()
             Section {
                 ForEach(DebugMenuEntitlementRow.all) { entry in
@@ -65,8 +72,6 @@ struct DebugMenuView: View {
                 row("Request a refund") { await model.requestRefund(spaceId: environment.space?.id) }
             } header: {
                 Text(verbatim: "Subscription")
-            } footer: {
-                Text(verbatim: state)
             }
             Section {
                 row("Follow the server flag") {
