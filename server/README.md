@@ -2,7 +2,7 @@
 
 Supabase project behind the app: invite codes, link parsing, FX rates, entitlements, anonymous analytics, the monetization flag. Postgres plus Deno edge functions, no other runtime.
 
-Couple data never reaches this server. It holds invite codes with a 15 minute TTL, one entitlement row per `spaceId`, anonymous events keyed by a device UUID, two caches, and the `app_config` row with the monetization flag.
+Couple data never reaches this server. It holds invite codes with a 15 minute TTL, one row per App Store subscription with the `spaceId` it pays for, anonymous events keyed by a device UUID, two caches, and the `app_config` row with the monetization flag.
 
 The request and response contract is `API.md`. Architecture sections 5, 6, 9, 13 and 14 in `docs/03_TECH_ARCHITECTURE.md` are the source of truth behind it.
 
@@ -18,13 +18,15 @@ supabase/migrations/0005_*      billing retry and grace statuses, entitlement st
 supabase/migrations/0006_*      app_config table seeded with monetization_enabled = false
 supabase/migrations/0007_*      drops rate limit rows keyed by a raw address
 supabase/migrations/0008_*      superseded_at and redeemed_by on invites
+supabase/migrations/0009_*      one row per subscription and environment, the best one per space
 supabase/functions/_shared      auth, rate limit, responses, parsing, Apple crypto
 supabase/functions/<name>       one Deno.serve entry point per endpoint
 supabase/functions/config       public monetization flag, read from app_config
+supabase/functions/appstore-reconcile  daily re-check against the App Store Server API
 tests/                          deno tests and fixture HTML
 ```
 
-Every function is deployed with `verify_jwt = false`. The Supabase gateway checks nothing; each function does its own check, because `session`, `invite`, `entitlement` and `apple-revoke` authenticate with an Apple identity token or with the Corbie session token that `session` issues, rather than with a Supabase JWT, and `appstore-notifications` authenticates with Apple's signature over the payload.
+Every function is deployed with `verify_jwt = false`. The Supabase gateway checks nothing; each function does its own check, because `session`, `invite`, `entitlement` and `apple-revoke` authenticate with an Apple identity token or with the Corbie session token that `session` issues, rather than with a Supabase JWT, `appstore-notifications` authenticates with Apple's signature over the payload, and `appstore-reconcile` takes only the service role key.
 
 ## Deploying
 
@@ -34,6 +36,8 @@ every secret and where its value comes from, pointing the app at it, and the smo
 `scripts/session-token.ts` mints a Corbie session token from `SESSION_SECRET` through the server's own
 code, so `invite`, `entitlement` and `apple-revoke` can be exercised without an Apple identity token.
 `scripts/smoke.sh <base-url> [token]` walks every endpoint and prints a pass table.
+`scripts/request-test-notification.ts Sandbox|Production` asks Apple for a `TEST` notification
+with the In-App Purchase key and prints whether it arrived.
 
 ## Local
 
@@ -90,27 +94,30 @@ deno fmt --check
 deno lint
 ```
 
-The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the session token round trip together with the expiry, tamper and missing secret cases, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, invite supersede and the same device redeem retry against an in-memory store, the parse address guard, an IKEA product link redirected to a category coming back bare, the App Store status mapping, event validation with PII dropping, the error envelope, and the monetization flag answering 500 rather than `false` when the database fails or holds a non-boolean.
+The tests cover the invite code alphabet, price parsing, URL normalization, every parse adapter against fixture HTML, oEmbed mapping with a mocked fetch, Apple identity token verification with a locally generated key, the session token round trip together with the expiry, tamper and missing secret cases, the Apple certificate chain machinery against the embedded root, the certificate authority and App Store leaf checks, the rate limit bucket key, invite supersede and the same device redeem retry against an in-memory store, the parse address guard, an IKEA product link redirected to a category coming back bare, the App Store status mapping, notification processing against a real Postgres (PGlite running every migration): both environments kept apart, the app id check, `data.status`, refunds of older and latest transactions, the no-op types, two subscriptions in one space; the entitlement endpoint's environment proof and sync with a mocked App Store Server API, with missing secrets and with Apple failing; the App Store Server API token claims and hosts; reconciliation and notification history replay; migration 0009 moving the old rows and granting nothing to `anon` or `authenticated`; event validation with PII dropping, the error envelope, and the monetization flag answering `true` for a missing row and 500 rather than a value when the database fails or holds a non-boolean.
 
 ## Secrets
 
 Set in the Supabase dashboard, or `supabase secrets set --env-file .env`.
 
-| Name                        | Used by                                            | Notes                                                                                                          |
-| --------------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `SUPABASE_URL`              | every function                                     | injected by the platform                                                                                       |
-| `SUPABASE_SERVICE_ROLE_KEY` | every function                                     | injected by the platform; the only key that can touch the tables                                               |
-| `SESSION_SECRET`            | every endpoint that requires auth                  | signs and checks the session token; rotating it signs everyone out                                             |
-| `RATE_LIMIT_SALT`           | every rate-limited endpoint                        | HMAC key for the rate limit bucket key and the invite `redeemed_by`, so no IP or device id is stored; required |
-| `APPLE_CLIENT_ID`           | `session`, `invite`, `entitlement`, `apple-revoke` | defaults to `app.corbie`; the `aud` an identity token must carry                                               |
-| `APPLE_TEAM_ID`             | `apple-revoke`                                     | ten character team id                                                                                          |
-| `APPLE_KEY_ID`              | `apple-revoke`                                     | key id of the Sign in with Apple key                                                                           |
-| `APPLE_PRIVATE_KEY`         | `apple-revoke`                                     | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted                                                     |
-| `APPLE_ENV`                 | `appstore-notifications`                           | `Sandbox` or `Production`; a payload from the other one is refused                                             |
-| `APPLE_BUNDLE_ID`           | `appstore-notifications`                           | defaults to `app.corbie`; a payload for another app is dropped                                                 |
-| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                            | optional; without it Instagram links return only url and source                                                |
+| Name                        | Used by                                                       | Notes                                                                                                                              |
+| --------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `SUPABASE_URL`              | every function                                                | injected by the platform                                                                                                           |
+| `SUPABASE_SERVICE_ROLE_KEY` | every function                                                | injected by the platform; the only key that can touch the tables                                                                   |
+| `SESSION_SECRET`            | every endpoint that requires auth                             | signs and checks the session token; rotating it signs everyone out                                                                 |
+| `RATE_LIMIT_SALT`           | every rate-limited endpoint                                   | HMAC key for the rate limit bucket key and the invite `redeemed_by`, so no IP or device id is stored; required                     |
+| `APPLE_CLIENT_ID`           | `session`, `invite`, `entitlement`, `apple-revoke`            | defaults to `app.corbie`; the `aud` an identity token must carry                                                                   |
+| `APPLE_TEAM_ID`             | `apple-revoke`                                                | ten character team id                                                                                                              |
+| `APPLE_KEY_ID`              | `apple-revoke`                                                | key id of the Sign in with Apple key                                                                                               |
+| `APPLE_PRIVATE_KEY`         | `apple-revoke`                                                | the `.p8` PKCS8 PEM; literal `\n` in the value is accepted                                                                         |
+| `APPLE_BUNDLE_ID`           | `appstore-notifications`, `entitlement`, `appstore-reconcile` | defaults to `app.corbie`; a payload for another app is dropped, and the `bid` of the App Store Server API token                    |
+| `APPSTORE_ISSUER_ID`        | `entitlement`, `appstore-reconcile`                           | In-App Purchase key issuer; without the three `APPSTORE_*` key secrets sync answers `reconciled: false` and reconcile does nothing |
+| `APPSTORE_KEY_ID`           | `entitlement`, `appstore-reconcile`                           | key id of the In-App Purchase key, not the Sign in with Apple key                                                                  |
+| `APPSTORE_PRIVATE_KEY`      | `entitlement`, `appstore-reconcile`                           | the In-App Purchase `.p8`; literal `\n` in the value is accepted                                                                   |
+| `APPSTORE_APP_APPLE_ID`     | `appstore-notifications`, `entitlement`, `appstore-reconcile` | defaults to `6812410537`; a Production payload for another app id is dropped                                                       |
+| `INSTAGRAM_OEMBED_TOKEN`    | `parse`                                                       | optional; without it Instagram links return only url and source                                                                    |
 
-`APPLE_PRIVATE_KEY` never leaves the Supabase secret store, and nothing here belongs in the app binary.
+`APPLE_PRIVATE_KEY` and `APPSTORE_PRIVATE_KEY` never leave the Supabase secret store, and nothing here belongs in the app binary.
 
 ## Deploy
 
@@ -120,9 +127,9 @@ supabase db push
 supabase functions deploy --import-map supabase/functions/deno.json
 ```
 
-`.github/workflows/supabase.yml` does both on a push to `main` that touches `server/**`, using the `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF` and `SUPABASE_DB_PASSWORD` repository secrets (`db push` opens a direct Postgres connection and cannot prompt for the password in CI), and runs the tests on pull requests.
+`.github/workflows/supabase.yml` runs formatting, lint, type check and tests on every push and pull request that touches `server/**`. It pushes migrations and deploys functions only when started by hand (Actions, Supabase, Run workflow on `main`, confirmation `deploy`), using the `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF` and `SUPABASE_DB_PASSWORD` repository secrets (`db push` opens a direct Postgres connection and cannot prompt for the password in CI). `DEPLOY.md` section 8 has the steps.
 
-Sandbox and production App Store notifications need different `APPLE_ENV` values, so they need two projects. Point the sandbox URL in App Store Connect at the project whose `APPLE_ENV` is `Sandbox`.
+One project takes App Store notifications from both environments at one URL; the environment comes from the signed payload and Sandbox and Production subscriptions never share a row.
 
 ## Analytics
 
@@ -132,8 +139,8 @@ The views live in the `analytics` schema, which is not exposed over the API:
 - `analytics.onboarding_funnel` - devices per onboarding step, by first-open week
 - `analytics.paired_ratio` - redeemed invites against created spaces, by first-open week
 - `analytics.retention_d1_d7_d30` - weekly cohort of first `app_open`, share back on day 1, 7 and 30
-- `analytics.entitlement_status` - spaces per subscription status, how many are unexpired, and when Apple last wrote to each status
+- `analytics.entitlement_status` - spaces per environment and subscription status, how many are unexpired, and when each status last changed
 
-There is no trial-to-paid view. The trial is an Apple introductory offer, so `trial_started` and `purchase_completed` are the same tap and the paid renewal never reaches the client: the only record of it is a `DID_RENEW` notification landing on `entitlements`.
+There is no trial-to-paid view. The trial is an Apple introductory offer, so `trial_started` and `purchase_completed` are the same tap and the paid renewal never reaches the client: the only record of it is a `DID_RENEW` notification landing on `subscriptions`.
 
 Raw events are kept 30 days. `purge_expired_rows()` runs nightly through `pg_cron` when the extension is available.

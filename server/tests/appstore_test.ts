@@ -1,11 +1,10 @@
 import { assertEquals } from "@std/assert";
 import {
-  expiresAtOf,
-  mapNotificationToStatus,
   matchesBundle,
   normalizeEnvironment,
-  payerHash,
   signedDateOf,
+  statusFromAppleCode,
+  statusFromNotificationType,
 } from "../supabase/functions/_shared/appstore.ts";
 
 const now = Date.UTC(2026, 8, 5, 10, 0, 0);
@@ -15,7 +14,7 @@ const past = now - 24 * 60 * 60 * 1000;
 Deno.test("renewal events with a future expiry are active", () => {
   for (const type of ["SUBSCRIBED", "DID_RENEW", "DID_CHANGE_RENEWAL_STATUS", "OFFER_REDEEMED"]) {
     assertEquals(
-      mapNotificationToStatus(type, undefined, { expiresDate: future }, {}, now),
+      statusFromNotificationType(type, undefined, { expiresDate: future }, {}, now),
       "active",
       type,
     );
@@ -24,14 +23,14 @@ Deno.test("renewal events with a future expiry are active", () => {
 
 Deno.test("a renewal event whose expiry already passed is expired", () => {
   assertEquals(
-    mapNotificationToStatus("DID_RENEW", undefined, { expiresDate: past }, {}, now),
+    statusFromNotificationType("DID_RENEW", undefined, { expiresDate: past }, {}, now),
     "expired",
   );
 });
 
 Deno.test("failed renewal inside the grace window is in_grace_period", () => {
   assertEquals(
-    mapNotificationToStatus(
+    statusFromNotificationType(
       "DID_FAIL_TO_RENEW",
       "GRACE_PERIOD",
       { expiresDate: past },
@@ -41,14 +40,14 @@ Deno.test("failed renewal inside the grace window is in_grace_period", () => {
     "in_grace_period",
   );
   assertEquals(
-    mapNotificationToStatus("DID_FAIL_TO_RENEW", "GRACE_PERIOD", { expiresDate: past }, {}, now),
+    statusFromNotificationType("DID_FAIL_TO_RENEW", "GRACE_PERIOD", { expiresDate: past }, {}, now),
     "in_grace_period",
   );
 });
 
 Deno.test("failed renewal that Apple is still retrying is in_billing_retry", () => {
   assertEquals(
-    mapNotificationToStatus(
+    statusFromNotificationType(
       "DID_FAIL_TO_RENEW",
       undefined,
       { expiresDate: past },
@@ -58,7 +57,7 @@ Deno.test("failed renewal that Apple is still retrying is in_billing_retry", () 
     "in_billing_retry",
   );
   assertEquals(
-    mapNotificationToStatus(
+    statusFromNotificationType(
       "DID_FAIL_TO_RENEW",
       "GRACE_PERIOD",
       { expiresDate: past },
@@ -71,11 +70,11 @@ Deno.test("failed renewal that Apple is still retrying is in_billing_retry", () 
 
 Deno.test("failed renewal with no grace window and no retry is expired", () => {
   assertEquals(
-    mapNotificationToStatus("DID_FAIL_TO_RENEW", undefined, { expiresDate: past }, {}, now),
+    statusFromNotificationType("DID_FAIL_TO_RENEW", undefined, { expiresDate: past }, {}, now),
     "expired",
   );
   assertEquals(
-    mapNotificationToStatus(
+    statusFromNotificationType(
       "DID_FAIL_TO_RENEW",
       "GRACE_PERIOD",
       { expiresDate: past },
@@ -87,21 +86,24 @@ Deno.test("failed renewal with no grace window and no retry is expired", () => {
 });
 
 Deno.test("expiry events are expired", () => {
-  assertEquals(mapNotificationToStatus("EXPIRED", "VOLUNTARY", {}, {}, now), "expired");
-  assertEquals(mapNotificationToStatus("GRACE_PERIOD_EXPIRED", undefined, {}, {}, now), "expired");
+  assertEquals(statusFromNotificationType("EXPIRED", "VOLUNTARY", {}, {}, now), "expired");
+  assertEquals(
+    statusFromNotificationType("GRACE_PERIOD_EXPIRED", undefined, {}, {}, now),
+    "expired",
+  );
 });
 
 Deno.test("refund and revoke are revoked", () => {
   assertEquals(
-    mapNotificationToStatus("REFUND", undefined, { expiresDate: future }, {}, now),
+    statusFromNotificationType("REFUND", undefined, { expiresDate: future }, {}, now),
     "revoked",
   );
   assertEquals(
-    mapNotificationToStatus("REVOKE", undefined, { expiresDate: future }, {}, now),
+    statusFromNotificationType("REVOKE", undefined, { expiresDate: future }, {}, now),
     "revoked",
   );
   assertEquals(
-    mapNotificationToStatus(
+    statusFromNotificationType(
       "DID_RENEW",
       undefined,
       { expiresDate: future, revocationDate: past },
@@ -114,34 +116,14 @@ Deno.test("refund and revoke are revoked", () => {
 
 Deno.test("an unknown notification type falls back to the transaction expiry", () => {
   assertEquals(
-    mapNotificationToStatus("TEST", undefined, { expiresDate: future }, {}, now),
+    statusFromNotificationType("TEST", undefined, { expiresDate: future }, {}, now),
     "active",
   );
   assertEquals(
-    mapNotificationToStatus("TEST", undefined, { expiresDate: past }, {}, now),
+    statusFromNotificationType("TEST", undefined, { expiresDate: past }, {}, now),
     "expired",
   );
-  assertEquals(mapNotificationToStatus("TEST", undefined, {}, {}, now), "none");
-});
-
-Deno.test("the two retry statuses report the grace expiry, the rest the transaction expiry", () => {
-  assertEquals(
-    expiresAtOf("in_grace_period", { expiresDate: past }, { gracePeriodExpiresDate: future }),
-    new Date(future).toISOString(),
-  );
-  assertEquals(
-    expiresAtOf("in_billing_retry", { expiresDate: past }, { gracePeriodExpiresDate: future }),
-    new Date(future).toISOString(),
-  );
-  assertEquals(
-    expiresAtOf("in_billing_retry", { expiresDate: past }, {}),
-    new Date(past).toISOString(),
-  );
-  assertEquals(
-    expiresAtOf("active", { expiresDate: future }, { gracePeriodExpiresDate: past }),
-    new Date(future).toISOString(),
-  );
-  assertEquals(expiresAtOf("expired", {}, {}), null);
+  assertEquals(statusFromNotificationType("TEST", undefined, {}, {}, now), "none");
 });
 
 Deno.test("environment is accepted only in the two spellings Apple uses", () => {
@@ -166,10 +148,28 @@ Deno.test("a bundle id is accepted only when it is missing or ours", () => {
   assertEquals(matchesBundle("com.attacker.app", "app.corbie"), false);
 });
 
-Deno.test("payer hash is stable and does not contain the transaction id", async () => {
-  const hash = await payerHash("2000000123456789");
-  assertEquals(hash, await payerHash("2000000123456789"));
-  assertEquals(hash?.length, 64);
-  assertEquals(hash?.includes("2000000123456789"), false);
-  assertEquals(await payerHash(undefined), null);
+Deno.test("apple's subscription status codes map one to one", () => {
+  assertEquals(statusFromAppleCode(1), "active");
+  assertEquals(statusFromAppleCode(2), "expired");
+  assertEquals(statusFromAppleCode(3), "in_billing_retry");
+  assertEquals(statusFromAppleCode(4), "in_grace_period");
+  assertEquals(statusFromAppleCode(5), "revoked");
+  assertEquals(statusFromAppleCode(6), null);
+  assertEquals(statusFromAppleCode(undefined), null);
+});
+
+Deno.test("without a status code a renewal event inside the grace window stays in grace", () => {
+  for (const type of ["DID_CHANGE_RENEWAL_STATUS", "DID_CHANGE_RENEWAL_PREF", "PRICE_INCREASE"]) {
+    assertEquals(
+      statusFromNotificationType(
+        type,
+        undefined,
+        { expiresDate: past },
+        { gracePeriodExpiresDate: future },
+        now,
+      ),
+      "in_grace_period",
+      type,
+    );
+  }
 });

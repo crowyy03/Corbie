@@ -78,6 +78,10 @@ verify_jwt = false
 enabled = true
 verify_jwt = false
 
+[functions.appstore-reconcile]
+enabled = true
+verify_jwt = false
+
 [functions.entitlement]
 enabled = true
 verify_jwt = false

@@ -1,58 +1,19 @@
+import { verifyAppleJws } from "../_shared/appleJws.ts";
+import { appleBundleId, appStoreAppAppleId } from "../_shared/appstore.ts";
+import { appStoreServerApiFromEnv } from "../_shared/appStoreServerApi.ts";
 import { requireUser } from "../_shared/auth.ts";
-import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
-import {
-  ApiError,
-  json,
-  pathSegments,
-  requireMethod,
-  requireUuid,
-  serve,
-} from "../_shared/respond.ts";
-import { serviceClient } from "../_shared/supabase.ts";
+import { entitlementHandler } from "../_shared/entitlementEndpoint.ts";
+import { enforceRateLimit } from "../_shared/rateLimit.ts";
+import { serve } from "../_shared/respond.ts";
+import { databaseSubscriptionStore } from "../_shared/subscriptions.ts";
 
-interface EntitlementRow {
-  space_id: string;
-  status: string;
-  product_id: string | null;
-  expires_at: string | null;
-  updated_at: string;
-}
-
-async function handle(req: Request): Promise<Response> {
-  requireMethod(req, "GET");
-  await enforceRateLimit(req, "entitlement", buckets.entitlement);
-  await requireUser(req);
-
-  const segments = pathSegments(req, "entitlement");
-  const spaceId = requireUuid(segments[0], "spaceId");
-
-  const { data, error } = await serviceClient()
-    .from("entitlements")
-    .select("space_id, status, product_id, expires_at, updated_at")
-    .eq("space_id", spaceId)
-    .maybeSingle<EntitlementRow>();
-  if (error) {
-    console.error("entitlement lookup failed", error);
-    throw new ApiError("internal", "Could not read the subscription");
-  }
-
-  if (!data) {
-    return json({
-      spaceId,
-      status: "none",
-      productId: null,
-      expiresAt: null,
-      updatedAt: null,
-    });
-  }
-
-  return json({
-    spaceId: data.space_id,
-    status: data.status,
-    productId: data.product_id,
-    expiresAt: data.expires_at,
-    updatedAt: data.updated_at,
-  });
-}
-
-serve(handle);
+serve(entitlementHandler({
+  verify: verifyAppleJws,
+  bundleId: appleBundleId(),
+  appAppleId: appStoreAppAppleId(),
+  store: databaseSubscriptionStore(),
+  appStoreApi: appStoreServerApiFromEnv(),
+  authenticate: (req) => requireUser(req),
+  limit: enforceRateLimit,
+  now: () => new Date(),
+}));

@@ -18,7 +18,7 @@ export function monetizationEnabledFrom(read: AppConfigRead): boolean {
     console.error("app_config read failed", read.error);
     throw new ApiError("internal", "Could not read the app config");
   }
-  if (!read.data) return false;
+  if (!read.data) return true;
   if (typeof read.data.value !== "boolean") {
     console.error(
       `app_config ${monetizationKey} is not a JSON boolean: ${JSON.stringify(read.data.value)}`,

@@ -75,6 +75,9 @@ check "GET /invite-redeem/ZZZZZZ" 404 not_found "$code"
 code=$(call GET "/entitlement/$space")
 check "GET /entitlement/{id} (no auth)" 401 unauthorized "$code"
 
+code=$(call POST /appstore-reconcile -H 'content-type: application/json' -d '{}')
+check "POST /appstore-reconcile (no service role key)" 401 unauthorized "$code"
+
 code=$(call GET /fx -X OPTIONS)
 check "OPTIONS /fx" 405 invalid_request "$code"
 
@@ -105,7 +108,10 @@ if [ -n "$TOKEN" ]; then
   fi
 
   code=$(call GET "/entitlement/$space" -H "authorization: Bearer $TOKEN")
-  check "GET /entitlement/{id} (session token)" 200 '"none"' "$code"
+  check "GET /entitlement/{id} (session token)" 200 '"environment":"Production","status":"none"' "$code"
+
+  code=$(call POST /entitlement/sync -H 'content-type: application/json' -H "authorization: Bearer $TOKEN" -d "{\"spaceId\":\"$space\",\"signedTransaction\":\"not-a-jws\"}")
+  check "POST /entitlement/sync (unsigned transaction)" 400 invalid_request "$code"
 
   code=$(call POST /session -H 'content-type: application/json' -H "authorization: Bearer $TOKEN" -d '{}')
   check "POST /session (session token refused)" 401 unauthorized "$code"
@@ -120,7 +126,7 @@ if [ -n "$TOKEN" ]; then
     record "POST /apple-revoke" "204 with a real authorization code" "$code $body" FAIL
   fi
 else
-  for name in "POST /invite (session token)" "POST /invite (a second code for the same space)" "GET /invite-redeem/{replaced code}" "GET /invite-redeem/{fresh code}" "GET /invite-redeem/{same code, same device}" "GET /invite-redeem/{same code, other device}" "GET /invite-redeem/{same code, no device id}" "GET /entitlement/{id} (session token)" "POST /session (session token refused)" "POST /apple-revoke"; do
+  for name in "POST /invite (session token)" "POST /invite (a second code for the same space)" "GET /invite-redeem/{replaced code}" "GET /invite-redeem/{fresh code}" "GET /invite-redeem/{same code, same device}" "GET /invite-redeem/{same code, other device}" "GET /invite-redeem/{same code, no device id}" "GET /entitlement/{id} (session token)" "POST /entitlement/sync (unsigned transaction)" "POST /session (session token refused)" "POST /apple-revoke"; do
     record "$name" "needs a session token" "not run, no token given" pending
   done
 fi

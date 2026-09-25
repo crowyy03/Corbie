@@ -37,8 +37,8 @@ Deno.test("a stored boolean is returned as it is", () => {
   assertEquals(monetizationEnabledFrom({ data: { value: false }, error: null }), false);
 });
 
-Deno.test("a missing row means monetization is off", () => {
-  assertEquals(monetizationEnabledFrom({ data: null, error: null }), false);
+Deno.test("a missing row means monetization is on", () => {
+  assertEquals(monetizationEnabledFrom({ data: null, error: null }), true);
 });
 
 Deno.test("a database error is an internal error, never a default false", () => {

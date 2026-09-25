@@ -12,6 +12,12 @@ on:
       - "server/**"
       - "docs/03_TECH_ARCHITECTURE.md"
       - ".github/workflows/supabase.yml"
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type deploy to push migrations and functions to the production project
+        required: true
+        type: string
 
 concurrency:
   group: supabase-${{ github.ref }}
@@ -45,8 +51,11 @@ jobs:
         run: deno test -A
 
   deploy:
-    name: Deploy
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: Deploy to production
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      inputs.confirm == 'deploy'
     needs: test
     runs-on: ubuntu-latest
     environment: production
@@ -57,23 +66,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Skip when the deploy secrets are not configured
-        if: env.SUPABASE_ACCESS_TOKEN == ''
-        run: echo "::notice::SUPABASE_ACCESS_TOKEN is not set, so this push was not deployed. Deploy by hand as server/DEPLOY.md describes."
+      - name: Stop when the deploy secrets are not configured
+        if: env.SUPABASE_ACCESS_TOKEN == '' || env.SUPABASE_PROJECT_REF == ''
+        run: |
+          echo "::error::SUPABASE_ACCESS_TOKEN or SUPABASE_PROJECT_REF is not set, nothing was deployed. Add them or deploy by hand as server/DEPLOY.md describes."
+          exit 1
 
       - uses: supabase/setup-cli@v1
-        if: env.SUPABASE_ACCESS_TOKEN != ''
         with:
           version: latest
 
       - name: Link project
-        if: env.SUPABASE_ACCESS_TOKEN != ''
         run: supabase link --project-ref "$SUPABASE_PROJECT_REF" -p "$SUPABASE_DB_PASSWORD"
 
       - name: Push migrations
-        if: env.SUPABASE_ACCESS_TOKEN != ''
         run: supabase db push -p "$SUPABASE_DB_PASSWORD"
 
       - name: Deploy functions
-        if: env.SUPABASE_ACCESS_TOKEN != ''
         run: supabase functions deploy --project-ref "$SUPABASE_PROJECT_REF" --import-map supabase/functions/deno.json

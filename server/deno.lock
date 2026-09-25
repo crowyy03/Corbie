@@ -5,6 +5,7 @@
     "jsr:@std/assert@1.0.14": "1.0.14",
     "jsr:@std/encoding@1.0.10": "1.0.10",
     "jsr:@std/internal@^1.0.10": "1.0.14",
+    "npm:@electric-sql/pglite@0.4.6": "0.4.6",
     "npm:@supabase/supabase-js@2.58.0": "2.58.0"
   },
   "jsr": {
@@ -25,6 +26,9 @@
     }
   },
   "npm": {
+    "@electric-sql/pglite@0.4.6": {
+      "integrity": "sha512-qmlmfN8UyKCee35qkV0r/MBp+Znl8FjBz7OpoglNvww3GJpw0/DLP0o1ZymvLNmcD5DTLOQdzKPtF8Hd3mdl1w=="
+    },
     "@supabase/auth-js@2.72.0": {
       "integrity": "sha512-4+bnUrtTDK1YD0/FCx2YtMiQH5FGu9Jlf4IQi5kcqRwRwqp2ey39V61nHNdH86jm3DIzz0aZKiWfTW8qXk1swQ==",
       "dependencies": [
@@ -113,7 +117,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1.0.14",
-      "jsr:@std/encoding@1.0.10"
+      "jsr:@std/encoding@1.0.10",
+      "npm:@electric-sql/pglite@0.4.6"
     ],
     "members": {
       "supabase/functions": {
