@@ -1,5 +1,6 @@
 import { emptyFields, type ParseSource, type ProductFields } from "./types.ts";
 import { browserUserAgent } from "./browserHeaders.ts";
+import { type Upstream, upstreamFailure } from "./upstream.ts";
 
 export interface OEmbedResponse {
   thumbnail_url?: string;
@@ -29,13 +30,18 @@ export function mapOEmbed(payload: OEmbedResponse): ProductFields {
   };
 }
 
+export interface OEmbedReading {
+  fields: ProductFields;
+  upstream: Upstream;
+}
+
 export async function fetchOEmbed(
   source: Extract<ParseSource, "instagram" | "tiktok">,
   url: string,
   fetchImpl: typeof fetch = fetch,
-): Promise<ProductFields> {
+): Promise<OEmbedReading> {
   const endpoint = oembedEndpoint(source, url);
-  if (!endpoint) return { ...emptyFields };
+  if (!endpoint) return { fields: { ...emptyFields }, upstream: "skipped" };
   try {
     const response = await fetchImpl(endpoint, {
       signal: AbortSignal.timeout(8000),
@@ -43,10 +49,13 @@ export async function fetchOEmbed(
     });
     if (!response.ok) {
       await response.body?.cancel();
-      return { ...emptyFields };
+      return { fields: { ...emptyFields }, upstream: response.status };
     }
-    return mapOEmbed(await response.json() as OEmbedResponse);
-  } catch {
-    return { ...emptyFields };
+    return {
+      fields: mapOEmbed(await response.json() as OEmbedResponse),
+      upstream: response.status,
+    };
+  } catch (cause) {
+    return { fields: { ...emptyFields }, upstream: upstreamFailure(cause) };
   }
 }

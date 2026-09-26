@@ -22,14 +22,12 @@ const amountSelectors = [
   'meta[property="product:price:amount"]',
   'meta[property="og:price:amount"]',
   'meta[name="og:price:amount"]',
-  'meta[itemprop="price"]',
 ];
 
 const currencySelectors = [
   'meta[property="product:price:currency"]',
   'meta[property="og:price:currency"]',
   'meta[name="og:price:currency"]',
-  'meta[itemprop="priceCurrency"]',
 ];
 
 const authorSelectors = [
@@ -38,9 +36,20 @@ const authorSelectors = [
   'meta[name="twitter:creator"]',
 ];
 
+const typeSelectors = ['meta[property="og:type"]', 'meta[name="og:type"]'];
+const productTypes = new Set(["product", "product.item"]);
+
+export function declaresProduct(doc: HTMLDocument): boolean {
+  const type = attrOfAny(doc, typeSelectors, "content");
+  return type !== null && productTypes.has(type.toLowerCase());
+}
+
+export function readSiteName(doc: HTMLDocument): string | null {
+  return attrOfAny(doc, ['meta[property="og:site_name"]', 'meta[name="og:site_name"]'], "content");
+}
+
 export function extractOpenGraph(doc: HTMLDocument): ProductFields {
-  const title = attrOfAny(doc, titleSelectors, "content") ??
-    doc.querySelector("title")?.textContent?.trim() ?? null;
+  const title = attrOfAny(doc, titleSelectors, "content");
   const imageURL = attrOfAny(doc, imageSelectors, "content");
   const rawAmount = attrOfAny(doc, amountSelectors, "content");
   const rawCurrency = attrOfAny(doc, currencySelectors, "content");
@@ -52,7 +61,7 @@ export function extractOpenGraph(doc: HTMLDocument): ProductFields {
 
   return {
     ...emptyFields,
-    title: title && title.length > 0 ? title : null,
+    title,
     price,
     currency: price === null ? null : currency,
     imageURL,

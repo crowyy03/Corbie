@@ -59,6 +59,8 @@ const knownCodes = new Set([
   "ZAR",
 ]);
 
+const codesWithoutMinorUnit = new Set(["JPY", "KRW"]);
+
 const prefixSymbols = ["CA$", "AU$", "NZ$", "HK$", "MX$", "US$", "R$", "C$", "A$", "S$"];
 
 export function detectCurrency(raw: string): string | null {
@@ -103,7 +105,18 @@ export function parseAmount(raw: string): number | null {
     }
   }
 
-  const amount = Number(digits);
+  return acceptAmount(Number(digits));
+}
+
+export function showsMinorUnit(raw: string): boolean {
+  return /\d[.,]\d{2}(?!\d)/.test(raw);
+}
+
+export function hasNoMinorUnit(currency: string | null): boolean {
+  return currency !== null && codesWithoutMinorUnit.has(currency);
+}
+
+export function acceptAmount(amount: number): number | null {
   if (!Number.isFinite(amount) || amount <= 0 || amount > 10_000_000) return null;
   return Math.round(amount * 100) / 100;
 }

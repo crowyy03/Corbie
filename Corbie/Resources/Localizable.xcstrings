@@ -38965,6 +38965,74 @@
         }
       }
     },
+    "wishes.editor.price.hint.unknown": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Währung des Shops ist nicht erkennbar. Trag den Preis in deiner Währung ein."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not tell the shop's currency. Enter the price in your currency."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido saber la moneda de la tienda. Escribe el precio en tu moneda."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de connaître la devise de la boutique. Saisissez le prix dans votre devise."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non si capisce la valuta del negozio. Inserisci il prezzo nella tua valuta."
+          }
+        }
+      }
+    },
+    "wishes.editor.price.hint.unsupported": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Shop gibt den Preis in %@ an. Trag ihn in deiner Währung ein."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The shop lists this in %@. Enter the price in your currency."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La tienda indica el precio en %@. Escríbelo en tu moneda."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La boutique affiche le prix en %@. Saisissez-le dans votre devise."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il negozio indica il prezzo in %@. Inseriscilo nella tua valuta."
+          }
+        }
+      }
+    },
     "wishes.editor.price.placeholder": {
       "localizations": {
         "de": {

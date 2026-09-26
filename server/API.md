@@ -109,7 +109,7 @@ Response `200`:
 }
 ```
 
-`source` is one of `amazon`, `target`, `etsy`, `sephora`, `nordstrom`, `zara`, `ikea`, `instagram`, `tiktok`, `generic`. Any field except `canonicalURL` and `source` may be `null`. For `instagram` and `tiktok` the function uses oEmbed: `imageURL` and `author` are filled, `title` and `price` are `null`. Cached 24 h by SHA-256 of the normalized URL. Upstream timeout 8 s; on failure returns `200` with only `canonicalURL` and `source` so the client falls back to manual entry. The same bare answer comes back when a product link is redirected somewhere that is not a product: IKEA sends a product that is not sold in that country to the category page (`/us/en/cat/products-products/`), which would otherwise read as a product called "Products". A URL that points inside a network rather than at a shop is treated as such a failure and is never fetched.
+`source` is one of `amazon`, `target`, `etsy`, `sephora`, `nordstrom`, `zara`, `ikea`, `uniqlo`, `instagram`, `tiktok`, `generic`. Any field except `canonicalURL` and `source` may be `null`. For `instagram` and `tiktok` the function uses oEmbed: `imageURL` and `author` are filled, `title` and `price` are `null`. A shop result is cached 24 h by SHA-256 of the normalized URL only when it has a title, an image, a price and a currency; an oEmbed result when it has its image. Upstream timeout 8 s; on failure returns `200` with only `canonicalURL` and `source` so the client falls back to manual entry. The same bare answer comes back when a product link is redirected somewhere that is not a product (IKEA sends a product that is not sold in that country to `/us/en/cat/products-products/`), and when the page is not a product page at all (Best Buy answers a `/site/` link from outside the US with a country selector). A URL that points inside a network rather than at a shop is treated as such a failure and is never fetched.
 
 ### GET `/fx?base=USD`
 
@@ -159,7 +159,7 @@ Response `200`: the `GET` body plus `"reconciled": true|false`.
 
 The server verifies the signed transaction against the Apple root and takes its `originalTransactionId` and environment. That environment must equal the one `X-App-Transaction` proves, otherwise `400 invalid_request`; an unverifiable transaction is `401 unauthorized`. It then asks the App Store Server API (Get All Subscription Statuses on the host of that environment) for the subscription's current state and stores it. When Apple's `appAccountToken` for the subscription is not `spaceId`, it calls Set App Account Token so that the current and future renewals carry `spaceId`, and links the row to `spaceId`: one subscription pays for exactly one space, and holding the purchaser's signed transaction is the authorization to move it.
 
-`reconciled` is `true` when Apple answered and, where needed, accepted the new token. When the API secrets are missing or Apple fails, the server applies the signed transaction itself (active while its `expiresDate` is ahead, revoked when it carries a `revocationDate`), still links the row to `spaceId`, and answers `200` with `reconciled: false`. Without the new token at Apple, a later renewal signed after the link can move the row back to the old space until the app syncs again.
+`reconciled` is `true` when Apple answered and, where needed, accepted the new token. The app treats a subscription as moved to the space only on `true`, and syncs it again on the next refresh otherwise. A transaction with no `appAccountToken` (an offer code, a purchase on the product page) is pointed at `spaceId` the same way as one bought for another space. When the API secrets are missing or Apple fails, the server applies the signed transaction itself (active while its `expiresDate` is ahead, revoked when it carries a `revocationDate`), still links the row to `spaceId`, and answers `200` with `reconciled: false`. Without the new token at Apple, a later renewal signed after the link can move the row back to the old space until the app syncs again.
 
 The app calls it after every successful purchase, after Restore Purchases, and when it finds its own active subscription whose `appAccountToken` is not the current space.
 
@@ -219,8 +219,55 @@ Nothing about a session token is written down, so an individual token cannot be 
 `upgrade-insecure-requests`, the four `sec-fetch-*` headers) and an `accept-language` built from the
 country of the host, so a `.de` shop is asked in German and a `.com` shop in English. Shops that block
 datacenter addresses still answer `403`; that is an address block, not a header one
-(`docs/KNOWN_ISSUES.md`). A result with neither a title nor an image is not written to `parse_cache`,
-so a later attempt reaches the shop again instead of replaying the failure for 24 hours.
+(`docs/KNOWN_ISSUES.md`). Only a complete shop result, title, image, price and currency, is written to
+`parse_cache`. A partial one is what a geo page, a bot page or a shop that prices in the browser
+gives, so a later attempt reaches the shop again instead of replaying the gap for 24 hours.
+
+Each field comes from the first reader that has it: the shop adapter, then JSON-LD, then Open Graph,
+then microdata (`[itemprop=price]` and `[itemprop=priceCurrency]`, from the `content` attribute or the
+text), then the `<title>` element for the title. Microdata counts only the page's product: the one
+`Product` item that sits in no other item except a `WebPage` or `ItemPage`, read directly or through
+its `Offer` items. With no such item it counts prices outside any item or inside `Offer` items only;
+with several such items, none. All the prices it counts must agree.
+
+The Amazon and Uniqlo adapters own the price: on their hosts JSON-LD, Open Graph and microdata are not
+asked for one, so the adapter's "no price" stands. The Amazon adapter reads the price only inside the
+product's own price block (`#corePrice_mobile_feature_div`, `#corePrice_feature_div`,
+`#corePriceDisplay_desktop_feature_div`, `#apex_desktop`, the old `#priceblock_*` ids), from the shown
+whole and fraction parts. Text without those parts (`.a-offscreen`, the old ids) is read only when it
+shows two decimals or the currency has no minor unit (JPY, KRW), because the mobile page's hidden text
+drops the decimal point (`EUR1403` for 14.03). An empty block gives no price. The Uniqlo adapter reads
+the price of the product the link names from `window.__PRELOADED_STATE__` (`/products/E455365-000/00`
+is entry `E455365-000-00`), the promo price over the base one.
+
+JSON-LD answers with the first `Product` or `ProductGroup` on the page, found at the top of a script,
+in `@graph` or in `mainEntity`; a product inside an `ItemList` is a list entry and is skipped. When it is
+a plain `Product`, later plain products with the same `@id` or the same name are the same product
+described again and fill in the fields it lacks; a product with another name never lends a field, and
+a group is always read alone.
+
+A `ProductGroup`, or a `Product` with `hasVariant`, answers for the variants the link names:
+an `url`, `@id` or `offers.url` equal to the link, or a `sku`, `mpn` or `productID` equal to a path
+segment or a dot separated part of one. Their title, image and price are used when all of them agree,
+titles compared without a trailing size when the link names more than one variant. When the link names
+none, the answer is the group's own name and image, with a price only when every variant has the same
+one. When no variant carries a price, the group's own offer is the price, unless it is a range
+(`lowPrice` other than `highPrice`). On such a page Open Graph, microdata and the `<title>` are not
+read, because they describe whichever variant the page shows first. A trailing site name
+(`" - Walmart.com"`, `" | UNIQLO US"`, `". Nike.com"`) is cut from the title when the part after one of
+`" - "`, `" | "`, `" : "` or `". "`, tried from the rightmost, is `og:site_name` or the host's brand,
+optionally followed by a two-letter region or the host's top-level label.
+
+A page with no JSON-LD product, no `og:type` of `product` or `product.item`, no price and no image is
+not a product page: the answer is the bare result and nothing is cached. A page that has only a
+`<title>` falls under this rule too. Every fetch logs one line:
+`parse host=walmart.com cache=miss upstream=200 page=product title=og price=microdata ms=1370`.
+`upstream` is the HTTP status or `timeout`, `guard` (a refused target: a bare address, a
+private name or network, a port other than 443), `unresolved` (the
+host has no address), `too-many-redirects` (more than five redirects), `error`, `non-html`, `redirect`
+(landed off a product path) or `skipped` (Instagram without a token); `page` is `product`,
+`not-product` or `unread`; `title` and `price` are `adapter`, `jsonld`, `og`, `microdata`,
+`title-tag` or `none`; a cache hit prints `-` for those four. The host is logged, never the link.
 
 A shop adapter may name its product paths (`isProductPath`; IKEA: a `/p/` segment). When the pasted
 link is a product path and the page the redirects end on is not, the answer is the bare result and
@@ -232,9 +279,9 @@ a product.
 
 Before any fetch, and again on every redirect hop, the target is checked: only `http` and `https`, no explicit port other than 443, no bare IP address, no `localhost`, `.local`, `.internal`, `.home.arpa` or `.onion` host, and no host that resolves to a loopback, private, link local, carrier grade NAT, multicast or reserved address in either family, IPv4 mapped addresses included. Redirects are followed by hand, at most five hops, so an allowed public host cannot bounce the fetch into the internal network. Where the runtime exposes no DNS resolver the name based checks still apply. A blocked URL degrades exactly like an unreachable one: `200` with only `canonicalURL` and `source`.
 
-The response body is read as a stream and abandoned once 3 MB have arrived, so an endless body cannot fill the worker's memory. The cache key is the SHA-256 of the canonical URL, so `/gp/product/ASIN?utm_source=x` and `/dp/ASIN` share one entry. Normalization strips `utm_*`, `fbclid`, `gclid`, `msclkid`, `igshid`, `ref`, `referrer` and friends everywhere, plus `tag`, `ascsubtag`, `linkCode`, `psc`, `th`, `qid` and the `pd_rd_*` / `pf_rd_*` family on Amazon, and rewrites Amazon product paths to `/dp/<ASIN>`. `a.co`, `amzn.to`, `amzn.eu` and `amzn.asia` are followed (max five hops) before normalizing. Responses are only cached when a title or an image was found, so a blocked page is retried next time rather than pinned for 24 h. A non-HTML content type is dropped.
+The response body is read as a stream and abandoned once 3 MB have arrived, so an endless body cannot fill the worker's memory. The cache key is the SHA-256 of the canonical URL, so `/gp/product/ASIN?utm_source=x` and `/dp/ASIN` share one entry. Normalization strips `utm_*`, `fbclid`, `gclid`, `msclkid`, `igshid`, `ref`, `referrer` and friends everywhere, plus `tag`, `ascsubtag`, `linkCode`, `psc`, `th`, `qid` and the `pd_rd_*` / `pf_rd_*` family on Amazon, and rewrites Amazon product paths to `/dp/<ASIN>`. `a.co`, `amzn.to`, `amzn.eu` and `amzn.asia` are followed (max five hops) before normalizing. A non-HTML content type is dropped.
 
-`currency` is `null` whenever `price` is `null`. The currency is read from `product:price:currency`, JSON-LD `priceCurrency`, a three letter code in the price text (`EUR23.89` included) or a symbol; when none of those is present the price is still returned with a `null` currency and the client must ask.
+`currency` is `null` whenever `price` is `null`. The currency is read from `product:price:currency`, JSON-LD `priceCurrency`, microdata `priceCurrency`, a three letter code in the price text (`EUR23.89` included) or a symbol; when none of those is present the price is still returned with a `null` currency and the client must ask.
 
 **oEmbed.** TikTok uses the public `https://www.tiktok.com/oembed` endpoint. Instagram's oEmbed needs a Facebook app token: set `INSTAGRAM_OEMBED_TOKEN` to enable it. Without the token an Instagram link returns only `canonicalURL` and `source`, which is the same fallback the client already handles.
 

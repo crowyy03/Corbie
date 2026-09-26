@@ -1,11 +1,17 @@
 import Foundation
 
+public enum PriceLeftOut: Sendable, Equatable {
+    case unsupportedCurrency(String)
+    case unknownCurrency
+}
+
 public struct ParsedLink: Sendable, Equatable {
     public let canonicalURL: URL
     public let source: WishSource
     public let title: String?
     public let price: Double?
     public let currency: String?
+    public let priceLeftOut: PriceLeftOut?
     public let imageURL: URL?
     public let imageData: Data?
 
@@ -15,6 +21,7 @@ public struct ParsedLink: Sendable, Equatable {
         title: String? = nil,
         price: Double? = nil,
         currency: String? = nil,
+        priceLeftOut: PriceLeftOut? = nil,
         imageURL: URL? = nil,
         imageData: Data? = nil
     ) {
@@ -23,6 +30,7 @@ public struct ParsedLink: Sendable, Equatable {
         self.title = title
         self.price = price
         self.currency = currency
+        self.priceLeftOut = priceLeftOut
         self.imageURL = imageURL
         self.imageData = imageData
     }
@@ -34,23 +42,27 @@ public struct ParsedLink: Sendable, Equatable {
 }
 
 public struct LinkParser: Sendable {
-    public static let timeout: TimeInterval = 8
+    public static let serverTimeout: TimeInterval = 15
+    public static let imageTimeout: TimeInterval = 5
     public static let maxImageDownloadBytes = 8_000_000
 
     private let client: APIClient
     private let imageTransport: any HTTPTransport
-    private let timeout: TimeInterval
+    private let serverTimeout: TimeInterval
+    private let imageTimeout: TimeInterval
     private let downloadsImages: Bool
 
     public init(
         client: APIClient,
         imageTransport: any HTTPTransport = URLSessionTransport(),
-        timeout: TimeInterval = LinkParser.timeout,
+        serverTimeout: TimeInterval = LinkParser.serverTimeout,
+        imageTimeout: TimeInterval = LinkParser.imageTimeout,
         downloadsImages: Bool = true
     ) {
         self.client = client
         self.imageTransport = imageTransport
-        self.timeout = timeout
+        self.serverTimeout = serverTimeout
+        self.imageTimeout = imageTimeout
         self.downloadsImages = downloadsImages
     }
 
@@ -58,27 +70,27 @@ public struct LinkParser: Sendable {
         guard let normalized = LinkParser.normalize(url.absoluteString) else {
             throw CorbieError.invalidInput("link is not a web address")
         }
-        return try await withDeadline(seconds: timeout) {
-            let payload: ParsedLinkPayload
+        let payload = try await withDeadline(seconds: serverTimeout) { [client] in
             do {
-                payload = try await client.parse(url: normalized)
+                return try await client.parse(url: normalized)
             } catch let failure as APIError {
                 throw failure.corbieError
             }
-            let canonical = payload.canonicalLink ?? normalized
-            let imageURL = payload.imageLink
-            let imageData = await self.imageData(for: imageURL)
-            let pricing = LinkParser.pricing(of: payload, link: normalized, page: canonical)
-            return ParsedLink(
-                canonicalURL: canonical,
-                source: LinkParser.source(from: payload.source),
-                title: LinkParser.trimmed(payload.title),
-                price: pricing.price,
-                currency: pricing.currency,
-                imageURL: imageURL,
-                imageData: imageData
-            )
         }
+        let canonical = payload.canonicalLink ?? normalized
+        let pricing = LinkParser.pricing(of: payload, link: normalized, page: canonical)
+        let imageURL = payload.imageLink
+        let imageData = await self.imageData(for: imageURL)
+        return ParsedLink(
+            canonicalURL: canonical,
+            source: LinkParser.source(from: payload.source),
+            title: LinkParser.trimmed(payload.title),
+            price: pricing.price,
+            currency: pricing.currency,
+            priceLeftOut: pricing.leftOut,
+            imageURL: imageURL,
+            imageData: imageData
+        )
     }
 
     public func parse(rawURL: String) async throws -> ParsedLink {
@@ -105,6 +117,37 @@ public struct LinkParser: Sendable {
         return components.url
     }
 
+    public static func firstLink(in text: String) -> URL? {
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+            return nil
+        }
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let matches = detector.matches(in: trimmed, range: NSRange(trimmed.startIndex..., in: trimmed))
+        for match in matches {
+            guard let scheme = match.url?.scheme?.lowercased(), scheme == "https" || scheme == "http",
+                  let range = Range(match.range, in: trimmed),
+                  let link = normalize(linkText(at: range, in: trimmed))
+            else { continue }
+            return link
+        }
+        return nil
+    }
+
+    public static func firstLink(url: URL?, text: @autoclosure () -> String?) -> URL? {
+        if let url, let link = normalize(url.absoluteString) { return link }
+        return text().flatMap(firstLink(in:))
+    }
+
+    private static func linkText(at range: Range<String.Index>, in text: String) -> String {
+        let isWholeText = range.lowerBound == text.startIndex && text.contains(where: \.isWhitespace) == false
+        if isWholeText { return text }
+        let found = text[range]
+        let opensWithBracket = range.lowerBound > text.startIndex && text[text.index(before: range.lowerBound)] == "("
+        let closesOneBracketTooMany = found.hasSuffix(")")
+            && found.filter { $0 == ")" }.count > found.filter { $0 == "(" }.count
+        return String(opensWithBracket && closesOneBracketTooMany ? found.dropLast() : found)
+    }
+
     public static func source(from raw: String) -> WishSource {
         let lowered = raw.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if lowered == "generic" { return .store }
@@ -115,23 +158,22 @@ public struct LinkParser: Sendable {
         of payload: ParsedLinkPayload,
         link: URL,
         page: URL
-    ) -> (price: Double?, currency: String?) {
+    ) -> (price: Double?, currency: String?, leftOut: PriceLeftOut?) {
         if let currency = trimmed(payload.currency)?.uppercased() {
             if SupportedCurrencies.contains(currency) {
-                return (payload.price, currency)
+                return (payload.price, currency, nil)
             }
-            if payload.price != nil {
-                WishLinkLog.priceInUnsupportedCurrency(link, currency: currency)
-            }
-            return (nil, nil)
+            guard payload.price != nil else { return (nil, nil, nil) }
+            WishLinkLog.priceInUnsupportedCurrency(link, currency: currency)
+            return (nil, nil, .unsupportedCurrency(currency))
         }
-        guard let price = payload.price else { return (nil, nil) }
+        guard let price = payload.price else { return (nil, nil, nil) }
         guard let inferred = LinkCurrencyInference.match(for: page) else {
             WishLinkLog.priceWithoutCurrency(link, page: page)
-            return (nil, nil)
+            return (nil, nil, .unknownCurrency)
         }
         WishLinkLog.priceCurrencyInferred(link, page: page, inferred: inferred)
-        return (price, inferred.currency)
+        return (price, inferred.currency, nil)
     }
 
     private static func trimmed(_ value: String?) -> String? {
@@ -142,8 +184,12 @@ public struct LinkParser: Sendable {
 
     private func imageData(for url: URL?) async -> Data? {
         guard downloadsImages, let url else { return nil }
-        guard let response = try? await imageTransport.send(HTTPRequest(method: .get, url: url)) else { return nil }
-        guard response.isSuccess, response.body.count <= LinkParser.maxImageDownloadBytes else { return nil }
+        let response = try? await withDeadline(seconds: imageTimeout) { [imageTransport] in
+            try await imageTransport.send(HTTPRequest(method: .get, url: url))
+        }
+        guard let response, response.isSuccess, response.body.count <= LinkParser.maxImageDownloadBytes else {
+            return nil
+        }
         return ImageDownsampler.downsample(response.body)?.data
     }
 }

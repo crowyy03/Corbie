@@ -1,9 +1,12 @@
 import { assertEquals } from "@std/assert";
 import {
+  acceptAmount,
   detectCurrency,
+  hasNoMinorUnit,
   normalizeCurrencyCode,
   parseAmount,
   parsePrice,
+  showsMinorUnit,
 } from "../supabase/functions/_shared/parse/price.ts";
 
 Deno.test("parses the price shapes named in the API contract", () => {
@@ -59,4 +62,32 @@ Deno.test("falls back to the currency the page declared", () => {
   assertEquals(normalizeCurrencyCode("€"), "EUR");
   assertEquals(normalizeCurrencyCode(null), null);
   assertEquals(normalizeCurrencyCode("dollars"), null);
+});
+
+Deno.test("a price text without a decimal part reads as whole units", () => {
+  assertEquals(parsePrice("EUR1403"), { amount: 1403, currency: "EUR" });
+});
+
+Deno.test("amounts are rounded to two decimals and must be positive", () => {
+  assertEquals(acceptAmount(14.03), 14.03);
+  assertEquals(acceptAmount(16.807), 16.81);
+  assertEquals(acceptAmount(0), null);
+  assertEquals(acceptAmount(Number.NaN), null);
+});
+
+Deno.test("a price text shows its minor unit only with two digits after the last separator", () => {
+  assertEquals(showsMinorUnit("$24.90"), true);
+  assertEquals(showsMinorUnit("24,90 €"), true);
+  assertEquals(showsMinorUnit("1.234,56 EUR"), true);
+  assertEquals(showsMinorUnit("EUR1403"), false);
+  assertEquals(showsMinorUnit("$1,234"), false);
+  assertEquals(showsMinorUnit("¥1,234"), false);
+});
+
+Deno.test("yen and won are the supported currencies without a minor unit", () => {
+  assertEquals(hasNoMinorUnit("JPY"), true);
+  assertEquals(hasNoMinorUnit("KRW"), true);
+  assertEquals(hasNoMinorUnit("EUR"), false);
+  assertEquals(hasNoMinorUnit("HUF"), false);
+  assertEquals(hasNoMinorUnit(null), false);
 });

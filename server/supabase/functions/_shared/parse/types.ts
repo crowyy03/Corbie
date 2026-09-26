@@ -6,6 +6,7 @@ export type ParseSource =
   | "nordstrom"
   | "zara"
   | "ikea"
+  | "uniqlo"
   | "instagram"
   | "tiktok"
   | "generic";
@@ -36,15 +37,39 @@ export const emptyFields: ProductFields = {
   author: null,
 };
 
-export function mergeFields(primary: ProductFields, fallback: ProductFields): ProductFields {
-  const currency = primary.price !== null
-    ? primary.currency ?? fallback.currency
-    : fallback.currency ?? primary.currency;
+export type FieldSource = "adapter" | "jsonld" | "og" | "microdata" | "title-tag" | "none";
+
+export interface SourcedFields {
+  source: Exclude<FieldSource, "none">;
+  fields: ProductFields;
+}
+
+export interface MergedFields {
+  fields: ProductFields;
+  titleFrom: FieldSource;
+  priceFrom: FieldSource;
+}
+
+export function mergeFields(readings: SourcedFields[]): MergedFields {
+  const firstWith = (key: keyof ProductFields) =>
+    readings.find((reading) => reading.fields[key] !== null);
+  const titled = firstWith("title");
+  const priced = firstWith("price");
+  const currency = priced
+    ? priced.fields.currency ??
+      readings.find((reading) => reading.fields.price !== null && reading.fields.currency !== null)
+        ?.fields.currency ??
+      null
+    : null;
   return {
-    title: primary.title ?? fallback.title,
-    price: primary.price ?? fallback.price,
-    currency: primary.price === null && fallback.price === null ? null : currency,
-    imageURL: primary.imageURL ?? fallback.imageURL,
-    author: primary.author ?? fallback.author,
+    fields: {
+      title: titled?.fields.title ?? null,
+      price: priced?.fields.price ?? null,
+      currency,
+      imageURL: firstWith("imageURL")?.fields.imageURL ?? null,
+      author: firstWith("author")?.fields.author ?? null,
+    },
+    titleFrom: titled?.source ?? "none",
+    priceFrom: priced?.source ?? "none",
   };
 }

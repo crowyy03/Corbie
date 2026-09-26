@@ -26,6 +26,7 @@ final class WishEditorViewModel {
     var isForMe = false
 
     private(set) var parseState: ParseState = .idle
+    private(set) var priceLeftOut: PriceLeftOut?
     private(set) var localImage: Data?
     private(set) var imageURL: String?
     let currencies = SupportedCurrencies.codes
@@ -37,12 +38,22 @@ final class WishEditorViewModel {
     @ObservationIgnored private var loadedIsForMe = false
     @ObservationIgnored private var source: WishSource = .manual
     @ObservationIgnored private var parseTask: Task<Void, Never>?
-    @ObservationIgnored private var lastParsedLink: String?
+    @ObservationIgnored private var settledLink: String?
     @ObservationIgnored private var didParseSucceed = false
     @ObservationIgnored private var didConfigure = false
 
     var canSave: Bool {
-        isSaving == false && (WishText.clean(title).isEmpty == false || LinkParser.normalize(link) != nil)
+        isSaving == false && (WishText.clean(title).isEmpty == false || linkInField != nil)
+    }
+
+    var priceHint: String? {
+        guard WishText.clean(priceText).isEmpty, let priceLeftOut else { return nil }
+        switch priceLeftOut {
+        case .unsupportedCurrency(let code):
+            return String(format: String(localized: "wishes.editor.price.hint.unsupported"), code)
+        case .unknownCurrency:
+            return String(localized: "wishes.editor.price.hint.unknown")
+        }
     }
 
     var screenTitle: String {
@@ -58,7 +69,7 @@ final class WishEditorViewModel {
             existing = wish
             isEditing = true
             link = wish.url ?? ""
-            lastParsedLink = link.isEmpty ? nil : link
+            settledLink = linkInField?.absoluteString
             title = wish.title
             if let price = wish.price { priceText = WishPricing.text(from: price) }
             if let code = wish.currency, currencies.contains(code) { currency = code }
@@ -80,17 +91,26 @@ final class WishEditorViewModel {
     func linkChanged() {
         parseTask?.cancel()
         parseState = .idle
-        guard let url = LinkParser.normalize(link) else {
+        let url = linkInField
+        if let url, url.absoluteString == settledLink { return }
+        settledLink = nil
+        priceLeftOut = nil
+        didParseSucceed = false
+        guard let url else {
             source = existing?.source ?? .manual
             return
         }
-        guard url.absoluteString != lastParsedLink else { return }
-        didParseSucceed = false
         parseTask = Task { [weak self] in
             try? await Task.sleep(for: .milliseconds(500))
             guard Task.isCancelled == false else { return }
             await self?.parse(url)
         }
+    }
+
+    func linkSubmitted() {
+        guard parseState != .parsing, didParseSucceed == false else { return }
+        settledLink = nil
+        linkChanged()
     }
 
     func setPhoto(_ data: Data?) {
@@ -113,7 +133,7 @@ final class WishEditorViewModel {
         parseTask?.cancel()
 
         let owner = isForMe ? me.id : (environment.partner?.id ?? me.id)
-        let canonicalLink = LinkParser.normalize(link)?.absoluteString
+        let canonicalLink = linkInField?.absoluteString
         let needsParse = canonicalLink != nil && didParseSucceed == false
         let price = WishPricing.amount(from: priceText)
         let cleanTitle = WishText.clean(title)
@@ -162,12 +182,16 @@ final class WishEditorViewModel {
         }
     }
 
+    private var linkInField: URL? {
+        LinkParser.firstLink(in: link)
+    }
+
     private func parse(_ url: URL) async {
         guard let environment else { return }
-        lastParsedLink = url.absoluteString
         parseState = .parsing
         do {
             let parsed = try await environment.linkParser.parse(url: url)
+            guard Task.isCancelled == false else { return }
             guard parsed.isEmpty == false else {
                 parseState = .failed
                 WishLinkLog.readEmpty(url, parsed: parsed, reader: .editor)
@@ -187,8 +211,9 @@ final class WishEditorViewModel {
 
     private func apply(_ parsed: ParsedLink) {
         link = parsed.canonicalURL.absoluteString
-        lastParsedLink = link
+        settledLink = linkInField?.absoluteString
         source = parsed.source
+        priceLeftOut = parsed.priceLeftOut
         if WishText.clean(title).isEmpty, let parsedTitle = parsed.title {
             title = parsedTitle
         }

@@ -55,7 +55,7 @@ Deno.test("tiktok links resolve through oembed with no title or price", async ()
     );
   };
 
-  const result = await parseLink(
+  const { result, trace } = await parseLink(
     "https://www.tiktok.com/@cafe.nordic/video/7300?utm_source=share",
     fetchImpl,
   );
@@ -69,6 +69,7 @@ Deno.test("tiktok links resolve through oembed with no title or price", async ()
     author: "cafe.nordic",
   });
   assertEquals(calls.length, 1);
+  assertEquals(trace, { upstream: 200, page: "unread", titleFrom: "none", priceFrom: "none" });
 });
 
 Deno.test("instagram without a token still returns the canonical url", async () => {
@@ -78,16 +79,25 @@ Deno.test("instagram without a token still returns the canonical url", async () 
     called += 1;
     return Promise.resolve(new Response("{}"));
   };
-  const result = await parseLink("https://www.instagram.com/p/ABC123/?igshid=9", fetchImpl);
+  const { result, trace } = await parseLink(
+    "https://www.instagram.com/p/ABC123/?igshid=9",
+    fetchImpl,
+  );
   assertEquals(result.canonicalURL, "https://www.instagram.com/p/ABC123");
   assertEquals(result.source, "instagram");
   assertEquals(result.imageURL, null);
   assertEquals(called, 0);
+  assertEquals(trace.upstream, "skipped");
 });
 
 Deno.test("a failing oembed upstream degrades to the bare result", async () => {
   const fetchImpl: typeof fetch = () => Promise.resolve(new Response("nope", { status: 500 }));
-  const result = await fetchOEmbed("tiktok", "https://www.tiktok.com/@a/video/1", fetchImpl);
-  assertEquals(result.imageURL, null);
-  assertEquals(result.author, null);
+  const { fields, upstream } = await fetchOEmbed(
+    "tiktok",
+    "https://www.tiktok.com/@a/video/1",
+    fetchImpl,
+  );
+  assertEquals(fields.imageURL, null);
+  assertEquals(fields.author, null);
+  assertEquals(upstream, 500);
 });

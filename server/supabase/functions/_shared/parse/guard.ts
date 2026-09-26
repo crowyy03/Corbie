@@ -1,6 +1,10 @@
 const maxRedirects = 5;
 const redirectStatuses = new Set([301, 302, 303, 307, 308]);
 
+export class GuardRefusal extends TypeError {}
+export class UnresolvedHost extends TypeError {}
+export class TooManyRedirects extends TypeError {}
+
 export type AddressResolver = (hostname: string) => Promise<string[] | null>;
 
 function parseIpv4(value: string): number[] | null {
@@ -112,20 +116,20 @@ export async function assertFetchable(
   resolve: AddressResolver = resolveAddresses,
 ): Promise<void> {
   if (url.protocol !== "https:" && url.protocol !== "http:") {
-    throw new TypeError("url must be http or https");
+    throw new GuardRefusal("url must be http or https");
   }
-  if (url.port.length > 0 && url.port !== "443") throw new TypeError("url port is not allowed");
+  if (url.port.length > 0 && url.port !== "443") throw new GuardRefusal("url port is not allowed");
 
   const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  if (host.length === 0) throw new TypeError("url has no host");
-  if (isAddressLiteral(host)) throw new TypeError("url must name a host, not an address");
-  if (isPrivateHostname(host)) throw new TypeError("url points inside a private network");
+  if (host.length === 0) throw new GuardRefusal("url has no host");
+  if (isAddressLiteral(host)) throw new GuardRefusal("url must name a host, not an address");
+  if (isPrivateHostname(host)) throw new GuardRefusal("url points inside a private network");
 
   const addresses = await resolve(host);
   if (addresses === null) return;
-  if (addresses.length === 0) throw new TypeError("url host does not resolve");
+  if (addresses.length === 0) throw new UnresolvedHost("url host does not resolve");
   for (const address of addresses) {
-    if (isPrivateAddress(address)) throw new TypeError("url points inside a private network");
+    if (isPrivateAddress(address)) throw new GuardRefusal("url points inside a private network");
   }
 }
 
@@ -145,7 +149,7 @@ export function safeFetchWith(
       await response.body?.cancel();
       current = new URL(location, current);
     }
-    throw new TypeError("url redirects too many times");
+    throw new TooManyRedirects("url redirects too many times");
   };
 }
 

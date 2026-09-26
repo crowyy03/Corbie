@@ -43,6 +43,7 @@ final class GiftIdeaEditorViewModel {
     @ObservationIgnored let mode: GiftIdeaEditorMode
     @ObservationIgnored private var environment: AppEnvironment?
     @ObservationIgnored private var parsedLink: String?
+    @ObservationIgnored private var linkBeingRead: String?
 
     init(personId: UUID, mode: GiftIdeaEditorMode) {
         self.personId = personId
@@ -76,30 +77,37 @@ final class GiftIdeaEditorViewModel {
     func parseLinkIfNeeded() async {
         guard let environment else { return }
         let raw = link.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard raw.isEmpty == false, raw != parsedLink else { return }
+        guard raw.isEmpty == false, raw != parsedLink, raw != linkBeingRead else { return }
         guard LinkParser.normalize(raw) != nil else {
+            linkBeingRead = nil
             linkState = .failed
             return
         }
+        linkBeingRead = raw
         linkState = .loading
-        do {
-            let parsed = try await environment.linkParser.parse(rawURL: raw)
-            link = parsed.canonicalURL.absoluteString
-            parsedLink = link
-            if let parsedTitle = parsed.title, title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                title = parsedTitle
-            }
-            if let price = parsed.price, priceText.isEmpty {
-                priceText = price.formatted(.number.precision(.fractionLength(0...2)))
-            }
+        let parsed = try? await environment.linkParser.parse(rawURL: raw)
+        guard linkBeingRead == raw else { return }
+        linkBeingRead = nil
+        guard link.trimmingCharacters(in: .whitespacesAndNewlines) == raw else {
+            linkState = .idle
+            return
+        }
+        guard let parsed, parsed.title != nil || parsed.price != nil else {
+            linkState = .failed
+            return
+        }
+        link = parsed.canonicalURL.absoluteString
+        parsedLink = link
+        if let parsedTitle = parsed.title, title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            title = parsedTitle
+        }
+        if let price = parsed.price, priceText.isEmpty {
+            priceText = price.formatted(.number.precision(.fractionLength(0...2)))
             if let parsedCurrency = parsed.currency, currencies.contains(parsedCurrency) {
                 currency = parsedCurrency
             }
-            linkState = parsed.title == nil && parsed.price == nil ? .failed : .idle
-        } catch {
-            parsedLink = raw
-            linkState = .failed
         }
+        linkState = .idle
     }
 
     func save() async -> Bool {

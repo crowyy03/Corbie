@@ -8,15 +8,6 @@ struct ShareInput: Sendable, Equatable {
     var text: String?
 
     var isEmpty: Bool { url == nil && (text?.isEmpty ?? true) }
-
-    static func firstLink(in text: String?) -> URL? {
-        guard let text else { return nil }
-        let tokens = text.split(whereSeparator: \.isWhitespace).map(String.init)
-        for token in tokens.reversed() {
-            if let url = LinkParser.normalize(token) { return url }
-        }
-        return nil
-    }
 }
 
 @MainActor
@@ -63,7 +54,7 @@ final class ShareWishViewModel {
 
     func start(_ input: ShareInput) async {
         didReadInput = true
-        link = input.url ?? ShareInput.firstLink(in: input.text)
+        link = LinkParser.firstLink(url: input.url, text: input.text)
         if link == nil, let text = input.text {
             title = WishText.clean(text)
         }

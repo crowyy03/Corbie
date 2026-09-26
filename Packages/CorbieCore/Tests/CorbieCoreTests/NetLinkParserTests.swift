@@ -96,6 +96,7 @@ import Testing
         #expect(link.imageData != nil)
         #expect(link.price == nil)
         #expect(link.currency == nil)
+        #expect(link.priceLeftOut == .unsupportedCurrency("RUB"))
         #expect(link.isEmpty == false)
     }
 
@@ -106,6 +107,7 @@ import Testing
 
         #expect(link.price == 129)
         #expect(link.currency == "JPY")
+        #expect(link.priceLeftOut == nil)
     }
 
     @Test func anUnsupportedCurrencyWithoutAPriceIsDroppedToo() async throws {
@@ -116,6 +118,7 @@ import Testing
         #expect(link.title == "Product name")
         #expect(link.price == nil)
         #expect(link.currency == nil)
+        #expect(link.priceLeftOut == nil, "there was no price to leave out")
     }
 
     private func parseWithoutCurrency(
@@ -129,9 +132,10 @@ import Testing
         return try await parser.parse(rawURL: rawURL ?? canonicalURL)
     }
 
-    private func expectPriceLeftOutWithTitleAndImage(_ link: ParsedLink) {
+    private func expectPriceLeftOutWithTitleAndImage(_ link: ParsedLink, because reason: PriceLeftOut) {
         #expect(link.price == nil)
         #expect(link.currency == nil)
+        #expect(link.priceLeftOut == reason)
         #expect(link.title == "Product name")
         #expect(link.imageURL?.absoluteString == "https://images.example.com/a.png")
         #expect(link.imageData != nil)
@@ -142,6 +146,7 @@ import Testing
         let link = try await parseWithoutCurrency(canonicalURL: "https://www.example.ca/us/en/p/lamp")
         #expect(link.price == 40)
         #expect(link.currency == "USD")
+        #expect(link.priceLeftOut == nil)
     }
 
     @Test func aHostSuffixFillsWhenThePathSaysNothing() async throws {
@@ -161,7 +166,7 @@ import Testing
 
     @Test func aLanguageOnlySegmentInfersNothing() async throws {
         let link = try await parseWithoutCurrency(canonicalURL: "https://shop.example.com/en/p/lamp")
-        expectPriceLeftOutWithTitleAndImage(link)
+        expectPriceLeftOutWithTitleAndImage(link, because: .unknownCurrency)
     }
 
     @Test(arguments: [
@@ -171,7 +176,7 @@ import Testing
     ])
     func noSupportedCurrencyInTheLinkLeavesThePriceOut(canonicalURL: String) async throws {
         let link = try await parseWithoutCurrency(canonicalURL: canonicalURL)
-        expectPriceLeftOutWithTitleAndImage(link)
+        expectPriceLeftOutWithTitleAndImage(link, because: .unknownCurrency)
     }
 
     @Test func aSupportedCurrencyFromThePageIsNeverOverwritten() async throws {
@@ -182,7 +187,7 @@ import Testing
 
     @Test func anUnsupportedCurrencyFromThePageIsNotReplacedByTheLink() async throws {
         let link = try await parseWithoutCurrency(canonicalURL: "https://www.amazon.de/dp/B0", currency: "RUB")
-        expectPriceLeftOutWithTitleAndImage(link)
+        expectPriceLeftOutWithTitleAndImage(link, because: .unsupportedCurrency("RUB"))
     }
 
     @Test func aFailedImageDownloadDoesNotFailTheParse() async throws {
@@ -192,6 +197,40 @@ import Testing
         let link = try await parser.parse(rawURL: "https://www.amazon.com/dp/B0")
         #expect(link.title == "Product name")
         #expect(link.imageData == nil)
+    }
+
+    @Test func aLatePhotoKeepsTheTitleThePriceAndThePhotoLink() async throws {
+        let api = FakeTransport(json: payload())
+        let images = FakeTransport([.binary(NetTestSupport.pngImage(width: 400, height: 400))], delay: 5)
+        let parser = LinkParser(
+            client: NetTestSupport.client(transport: api),
+            imageTransport: images,
+            imageTimeout: 0.05
+        )
+        let started = Date()
+        let link = try await parser.parse(rawURL: "https://www.amazon.com/dp/B0")
+
+        #expect(Date().timeIntervalSince(started) < 2, "the late photo was not cancelled at its deadline")
+        #expect(link.title == "Product name")
+        #expect(link.price == 24.99)
+        #expect(link.currency == "USD")
+        #expect(link.imageURL?.absoluteString == "https://images.example.com/a.png")
+        #expect(link.imageData == nil)
+    }
+
+    @Test func theServerAndThePhotoEachGetTheirOwnDeadline() async throws {
+        let api = FakeTransport([.json(payload())], delay: 0.6)
+        let images = FakeTransport([.binary(NetTestSupport.pngImage(width: 400, height: 400))], delay: 0.6)
+        let parser = LinkParser(
+            client: NetTestSupport.client(transport: api),
+            imageTransport: images,
+            serverTimeout: 1,
+            imageTimeout: 1
+        )
+        let link = try await parser.parse(rawURL: "https://www.amazon.com/dp/B0")
+
+        #expect(link.title == "Product name")
+        #expect(link.imageData != nil, "the photo must not share what is left of the server's deadline")
     }
 
     @Test func aServerFailureBecomesACorbieNetworkError() async throws {
@@ -209,7 +248,7 @@ import Testing
         let api = FakeTransport([.json(payload())], delay: 5)
         let parser = LinkParser(
             client: NetTestSupport.client(transport: api),
-            timeout: 0.05,
+            serverTimeout: 0.05,
             downloadsImages: false
         )
         do {
@@ -227,6 +266,90 @@ import Testing
             _ = try await parser.parse(rawURL: "  ")
         }
         #expect(api.requestCount == 0)
+    }
+}
+
+@Suite struct NetLinkFinderTests {
+    @Test(arguments: [
+        ("Stanley Quencher https://a.co/d/abc123", "https://a.co/d/abc123"),
+        ("Check this out https://www.target.com/p/x/-/A-1", "https://www.target.com/p/x/-/A-1"),
+        ("Stanley Quencher H2.0 FlowState 40 oz, 4.5 stars https://a.co/d/abc123", "https://a.co/d/abc123"),
+        ("https://a.co/d/abc123 3.5", "https://a.co/d/abc123"),
+        ("https://a.co/d/first and then https://www.amazon.com/dp/B0", "https://a.co/d/first"),
+        ("see (https://example.com/p/lamp).", "https://example.com/p/lamp"),
+        ("Look (https://a.co/d/abc) nice", "https://a.co/d/abc"),
+        ("(https://example.com/p/lamp_(red))", "https://example.com/p/lamp_(red)"),
+        ("see (https://example.com/p/lamp_(red)).", "https://example.com/p/lamp_(red)"),
+        ("Цена 7990 руб https://abcclothes.ru/catalog/bomber/", "https://abcclothes.ru/catalog/bomber/"),
+        ("file:///tmp/page.html https://zara.com/x", "https://zara.com/x"),
+        ("write to shop@example.com or open https://zara.com/x", "https://zara.com/x")
+    ])
+    func theFirstWebLinkInTheTextIsPicked(text: String, expected: String) {
+        #expect(LinkParser.firstLink(in: text)?.absoluteString == expected)
+    }
+
+    @Test(arguments: [
+        ("www.walmart.com/ip/1", "https://www.walmart.com/ip/1"),
+        ("a.co/d/abc123", "https://a.co/d/abc123"),
+        ("Look: amzn.eu/d/abc", "https://amzn.eu/d/abc"),
+        ("HTTP://zara.com/x", "http://zara.com/x")
+    ])
+    func aLinkWithoutASchemeGetsHTTPS(text: String, expected: String) {
+        #expect(LinkParser.firstLink(in: text)?.absoluteString == expected)
+    }
+
+    @Test(arguments: [
+        "https://www.ikea.com/us/en/p/billy-bookcase-white-00263850/",
+        "https://www.ikea.com/us/en/p/billy-bookcase-white-00263850",
+        "https://www.amazon.com/dp/B0CHWRXH8B",
+        "https://www2.hm.com/en_us/productpage.0685816001.html",
+        "https://www.bestbuy.com/site/apple-airpods-pro/6447382.p?skuId=6447382",
+        "https://it.louisvuitton.com/ita-it/prodotti/borsa-again-monogram-nvprod6550038v/M25877",
+        "https://www.etsy.com/listing/1371979456/handmade-ceramic-mug?ref=hp_rv-1",
+        "https://www.example.com/p/lamp_(red)",
+        "https://www.example.com/p/lamp.",
+        "https://www.example.com/p/lamp!",
+        "https://www.example.com/p/lamp)"
+    ])
+    func aTextThatIsOneLinkComesBackUnchanged(link: String) {
+        #expect(LinkParser.firstLink(in: link)?.absoluteString == link)
+        #expect(LinkParser.firstLink(in: "  \(link)\n")?.absoluteString == link)
+    }
+
+    @Test(arguments: [
+        "3.5",
+        "4.5 stars",
+        "v1.2",
+        "not a link",
+        "",
+        "   ",
+        "mail me at foo@bar.com",
+        "ftp://files.example.com/a",
+        "tel:+123456",
+        "http://example"
+    ])
+    func textWithoutAWebLinkGivesNothing(text: String) {
+        #expect(LinkParser.firstLink(in: text) == nil)
+    }
+
+    @Test func aWebURLIsTakenAsItIsAndTheTextIsNotRead() {
+        var textReads = 0
+        let text: () -> String? = {
+            textReads += 1
+            return "https://zara.com/x"
+        }
+        let link = LinkParser.firstLink(url: URL(string: "https://a.co/d/abc123"), text: text())
+        #expect(link?.absoluteString == "https://a.co/d/abc123")
+        #expect(textReads == 0)
+    }
+
+    @Test func aURLThatIsNotAWebLinkFallsThroughToTheText() {
+        let fileURL = URL(fileURLWithPath: "/tmp/page.html")
+        let zara = URL(string: "https://zara.com/x")
+        #expect(LinkParser.firstLink(url: fileURL, text: "Lamp https://zara.com/x") == zara)
+        #expect(LinkParser.firstLink(url: nil, text: "Lamp https://zara.com/x") == zara)
+        #expect(LinkParser.firstLink(url: fileURL, text: "3.5") == nil)
+        #expect(LinkParser.firstLink(url: nil, text: nil) == nil)
     }
 }
 

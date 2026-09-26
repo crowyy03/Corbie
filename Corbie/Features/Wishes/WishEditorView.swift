@@ -78,6 +78,9 @@ struct WishEditorView: View {
                     .onChange(of: viewModel.link) { _, _ in
                         viewModel.linkChanged()
                     }
+                    .onSubmit {
+                        viewModel.linkSubmitted()
+                    }
                 if viewModel.parseState == .parsing {
                     WishParseSkeleton()
                 }
@@ -125,7 +128,7 @@ struct WishEditorView: View {
     }
 
     private var priceField: some View {
-        FieldRow(label: String(localized: "wishes.editor.price")) {
+        FieldRow(label: String(localized: "wishes.editor.price"), hint: viewModel.priceHint) {
             HStack(spacing: CorbieSpacing.s) {
                 TextField(String(localized: "wishes.editor.price.placeholder"), text: $viewModel.priceText)
                     .textFieldStyle(.plain)

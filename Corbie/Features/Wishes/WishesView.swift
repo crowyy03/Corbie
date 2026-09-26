@@ -203,8 +203,7 @@ struct WishesView: View {
 
     private func pasteFromClipboard() {
         let pasteboard = UIPasteboard.general
-        let raw = pasteboard.url?.absoluteString ?? pasteboard.string ?? ""
-        guard let url = LinkParser.normalize(raw) else {
+        guard let url = LinkParser.firstLink(url: pasteboard.url, text: pasteboard.string) else {
             environment.toasts.show(message: String(localized: "wishes.paste.empty"))
             return
         }

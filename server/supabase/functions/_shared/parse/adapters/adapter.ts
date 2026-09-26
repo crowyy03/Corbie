@@ -5,8 +5,9 @@ import { emptyFields, type ParseSource, type ProductFields } from "../types.ts";
 export interface Adapter {
   source: ParseSource;
   matches(host: string): boolean;
+  ownsPrice?: boolean;
   isProductPath?(path: string): boolean;
-  extract(doc: HTMLDocument): ProductFields;
+  extract(doc: HTMLDocument, pageUrl: URL): ProductFields;
 }
 
 export interface SelectorSet {

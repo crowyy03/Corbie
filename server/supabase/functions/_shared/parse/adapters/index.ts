@@ -5,6 +5,7 @@ import { ikeaAdapter } from "./ikea.ts";
 import { nordstromAdapter } from "./nordstrom.ts";
 import { sephoraAdapter } from "./sephora.ts";
 import { targetAdapter } from "./target.ts";
+import { uniqloAdapter } from "./uniqlo.ts";
 import { zaraAdapter } from "./zara.ts";
 
 export type { Adapter };
@@ -17,6 +18,7 @@ export const adapters: Adapter[] = [
   nordstromAdapter,
   zaraAdapter,
   ikeaAdapter,
+  uniqloAdapter,
 ];
 
 export function adapterForHost(host: string): Adapter | null {
