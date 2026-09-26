@@ -208,7 +208,17 @@ private actor AppStoreSyncGate {
         #expect(DebugEntitlementOverride.gracePeriod.state(now: now) == .grace(
             expiresAt: now.addingTimeInterval(Double(DebugEntitlementOverride.gracePeriodDays) * 86_400)
         ))
-        #expect(DebugEntitlementOverride.allCases.count == 5)
+        #expect(DebugEntitlementOverride.trialEnded.state(now: now) == .readOnly)
+        #expect(DebugEntitlementOverride.subscriptionEnded.state(now: now) == .readOnly)
+        #expect(DebugEntitlementOverride.allCases.count == 7)
+    }
+
+    @Test func theEndedOverridesCarryTheirOwnReasonAndTheOthersKeepTheRealOne() {
+        #expect(DebugEntitlementOverride.trialEnded.readOnlyCause == .trialEnded)
+        #expect(DebugEntitlementOverride.subscriptionEnded.readOnlyCause == .subscriptionEnded)
+        for override in DebugEntitlementOverride.allCases where [.trialEnded, .subscriptionEnded].contains(override) == false {
+            #expect(override.readOnlyCause == nil, "\(override)")
+        }
     }
 
     @Test func onlyTheIneligibleOverrideTouchesTheIntroOffer() {

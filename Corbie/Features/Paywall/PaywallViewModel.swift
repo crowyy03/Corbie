@@ -1,6 +1,7 @@
 import CorbieCore
 import Foundation
 import Observation
+import os
 
 @MainActor
 @Observable
@@ -8,8 +9,11 @@ final class PaywallViewModel {
     enum Stage: Equatable {
         case loading
         case ready
+        case noPlans
         case unavailable
     }
+
+    private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "paywall")
 
     private(set) var stage: Stage = .loading
     private(set) var offers: [SubscriptionOffer] = []
@@ -41,9 +45,15 @@ final class PaywallViewModel {
             let loaded = try await environment.store.offers()
             offers = loaded
             selection = loaded.first?.product
-            stage = loaded.isEmpty ? .unavailable : .ready
+            stage = loaded.isEmpty ? .noPlans : .ready
+            if loaded.isEmpty {
+                let asked = StoreProductIdentifiers(bundle: .main).all.joined(separator: ", ")
+                PaywallViewModel.log.error("paywall: the App Store answered with none of \(asked, privacy: .public)")
+            }
         } catch {
             stage = .unavailable
+            let reason = (error as? LocalizedError)?.failureReason ?? error.localizedDescription
+            PaywallViewModel.log.error("paywall: loading the plans failed: \(reason, privacy: .public)")
             environment.report(error)
         }
     }

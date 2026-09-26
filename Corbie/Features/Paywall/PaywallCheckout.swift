@@ -49,10 +49,10 @@ struct PaywallCheckout: View {
             PlanSelector(offers: model.offers, selection: model.selection) { product in
                 model.select(product)
             }
-        case .unavailable:
+        case .noPlans, .unavailable:
             Card {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
-                    Text("paywall.state.unavailable")
+                    Text(LocalizedStringKey(model.stage == .noPlans ? "paywall.state.noplans" : "paywall.state.unavailable"))
                         .corbieBody()
                         .foregroundStyle(palette.text)
                     SecondaryButton(title: String(localized: "paywall.action.retry")) {

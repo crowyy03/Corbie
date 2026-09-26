@@ -242,6 +242,7 @@ final class AppEnvironment {
             guard let member = try await repositories.members.member(appleUserId: appleUserID),
                   let space = try await repositories.spaces.currentSpace(memberId: member.id)
             else {
+                forgetAppleUserWithoutMember()
                 session = .signedOut
                 premiumGate.update(entitlements.stateWithoutSpace())
                 return nil
@@ -481,6 +482,15 @@ final class AppEnvironment {
         try secrets.setString(token.token, for: Self.sessionTokenKey)
         if let refreshToken = token.appleRefreshToken, refreshToken.isEmpty == false {
             try secrets.setString(refreshToken, for: Self.appleRefreshTokenKey)
+        }
+    }
+
+    private func forgetAppleUserWithoutMember() {
+        do {
+            try identity.clear()
+            AppEnvironment.log.notice("apple user id forgotten: no member or space on this phone uses it")
+        } catch {
+            AppEnvironment.log.error("forgetting the apple user id failed: \(error.localizedDescription, privacy: .public)")
         }
     }
 

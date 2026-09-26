@@ -61,6 +61,8 @@ storage not probed yet
 no verified subscription transaction
 Forget the joint action flag
 Delete this space's share on the server
+Show the trial offer again
+End the subscription
 settings.developer
 onboarding.debug.signin
 continue without Apple ID

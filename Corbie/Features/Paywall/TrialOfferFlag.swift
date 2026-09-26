@@ -23,4 +23,10 @@ struct TrialOfferFlag {
         defaults.set(true, forKey: TrialOfferFlag.storageKey)
         return true
     }
+
+    #if DEBUG
+    func forget() {
+        defaults.removeObject(forKey: TrialOfferFlag.storageKey)
+    }
+    #endif
 }

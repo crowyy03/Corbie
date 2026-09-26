@@ -5,6 +5,8 @@ public enum DebugEntitlementOverride: String, Sendable, Equatable, CaseIterable,
     case premium
     case trialEnding = "trial_ending"
     case readOnly = "read_only"
+    case trialEnded = "trial_ended"
+    case subscriptionEnded = "subscription_ended"
     case introOfferUsed = "intro_offer_used"
     case gracePeriod = "grace_period"
 
@@ -32,12 +34,20 @@ public enum DebugEntitlementOverride: String, Sendable, Equatable, CaseIterable,
         case .trialEnding:
             let endsAt = now.addingTimeInterval(Double(PremiumGate.trialNoticeDays) * 86_400)
             return .trial(daysLeft: PremiumGate.trialNoticeDays, endsAt: endsAt)
-        case .readOnly:
+        case .readOnly, .trialEnded, .subscriptionEnded:
             return .readOnly
         case .gracePeriod:
             return .grace(expiresAt: now.addingTimeInterval(Double(DebugEntitlementOverride.gracePeriodDays) * 86_400))
         case .introOfferUsed:
             return nil
+        }
+    }
+
+    public var readOnlyCause: ReadOnlyCause? {
+        switch self {
+        case .trialEnded: return .trialEnded
+        case .subscriptionEnded: return .subscriptionEnded
+        case .premium, .trialEnding, .readOnly, .introOfferUsed, .gracePeriod: return nil
         }
     }
 

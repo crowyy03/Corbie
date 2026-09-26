@@ -138,6 +138,7 @@ final class PaywallCopyTests: XCTestCase {
         let keys = [
             "paywall.state.loading",
             "paywall.state.unavailable",
+            "paywall.state.noplans",
             "paywall.state.nospace",
             "paywall.state.pending",
             "paywall.state.purchased",

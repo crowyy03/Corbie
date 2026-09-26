@@ -121,13 +121,13 @@ struct RootView: View {
                 environment.premiumGate.dismissPaywall(screen: .comparison)
             }
         }
-        .fullScreenCover(isPresented: $isTrialOfferPresented) {
+        .fullScreenCover(isPresented: trialOfferOnScreen) {
             PaywallFlow { isTrialOfferPresented = false }
         }
         .sheet(item: $joinRequest) { request in
             JoinSheet(code: request.code)
         }
-        .task { await offerTheTrialOnce() }
+        .task(id: appState.trialOfferChecks) { await offerTheTrialOnce() }
         .task { await refreshEntitlementHourly() }
         .task { await partnerWatcher.observe(environment) }
         .task { await departureWatcher.observe(environment) }
@@ -143,6 +143,13 @@ struct RootView: View {
                 )
             }
         }
+    }
+
+    private var trialOfferOnScreen: Binding<Bool> {
+        Binding(
+            get: { isTrialOfferPresented && isUsHubOnScreen == false },
+            set: { isTrialOfferPresented = $0 }
+        )
     }
 
     private func offerTheTrialOnce() async {

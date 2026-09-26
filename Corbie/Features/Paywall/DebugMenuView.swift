@@ -16,8 +16,37 @@ final class DebugMenuViewModel {
         isWorking = true
         defer { isWorking = false }
         DebugEntitlementOverride.store(override)
+        if override != nil {
+            DebugMonetizationOverride.store(.on)
+        }
         await environment.refreshEntitlement()
-        lastAction = label
+        lastAction = override == nil ? label : "\(label), monetization forced on"
+    }
+
+    func openPaywall(_ environment: AppEnvironment) async {
+        guard isWorking == false else { return }
+        isWorking = true
+        defer { isWorking = false }
+        DebugMonetizationOverride.store(.on)
+        await environment.refreshEntitlement()
+        environment.premiumGate.presentPaywall(reason: .settings)
+        lastAction = "paywall opened, monetization forced on"
+    }
+
+    func showTrialOfferAgain(_ environment: AppEnvironment, appState: AppState) async {
+        guard isWorking == false else { return }
+        isWorking = true
+        defer { isWorking = false }
+        DebugMonetizationOverride.store(.on)
+        TrialOfferFlag(defaults: environment.defaults).forget()
+        await environment.refreshEntitlement()
+        guard environment.premiumGate.isPremium == false else {
+            lastAction = "trial offer armed again; it shows only when the state is not premium or trial"
+            return
+        }
+        appState.isUsHubPresented = false
+        appState.trialOfferChecks += 1
+        lastAction = "trial offer shown, monetization forced on"
     }
 
     func force(_ override: DebugMonetizationOverride?, _ environment: AppEnvironment, label: String) async {
@@ -65,6 +94,7 @@ final class DebugMenuViewModel {
 
 struct DebugMenuView: View {
     @Environment(AppEnvironment.self) private var environment
+    @Environment(AppState.self) private var appState
     @State private var model = DebugMenuViewModel()
 
     var body: some View {
@@ -86,10 +116,14 @@ struct DebugMenuView: View {
                 row("Follow the real subscription") {
                     await model.force(nil as DebugEntitlementOverride?, environment, label: "override cleared")
                 }
+                row("Open the paywall") { await model.openPaywall(environment) }
+                row("Show the trial offer again") { await model.showTrialOfferAgain(environment, appState: appState) }
                 row("Clear the entitlement cache") { await model.clearEntitlementCache(environment) }
                 row("Request a refund") { await model.requestRefund(spaceId: environment.space?.id) }
             } header: {
                 Text(verbatim: "Subscription")
+            } footer: {
+                Text(verbatim: "Forcing a state, opening the paywall or the trial offer also forces monetization on: a subscription state means nothing while it is off.")
             }
             Section {
                 row("Follow the server flag") {
@@ -155,15 +189,23 @@ struct DebugMenuView: View {
     }
 
     private var state: String {
+        let monetization = MonetizationFlagStore()
+        let gate = environment.premiumGate
         var lines = [
             "space: \(environment.space?.id.uuidString.lowercased() ?? "none")",
-            "state: \(environment.premiumGate.state)"
+            "monetization: \(monetization.isEnabled ? "on" : "off"), \(DebugMenuStatus.monetizationSource(monetization))",
+            "state: \(gate.state)"
         ]
-        if let endsAt = environment.premiumGate.trialEndsAt {
+        if let cause = gate.readOnlyCause {
+            lines.append("read-only because: \(cause.rawValue)")
+        }
+        if let endsAt = gate.trialEndsAt {
             lines.append("trial ends: \(endsAt.formatted(date: .abbreviated, time: .shortened))")
         }
         if let override = DebugEntitlementOverride.stored() {
-            lines.append("forced: \(override.rawValue)")
+            lines.append(DebugMenuStatus.overrideLine(override, monetizationOn: monetization.isEnabled))
+        } else {
+            lines.append("forced state: none, this is the real one")
         }
         if let lastAction = model.lastAction {
             lines.append(lastAction)
@@ -205,6 +247,23 @@ enum DebugRefundRequest {
     }
 }
 
+enum DebugMenuStatus {
+    static func monetizationSource(_ store: MonetizationFlagStore) -> String {
+        if let forced = DebugMonetizationOverride.stored() {
+            return "forced \(forced.rawValue) here"
+        }
+        guard let fetched = store.fetchedValue else { return "server never asked, counts as on" }
+        return "server says \(fetched ? "on" : "off")"
+    }
+
+    static func overrideLine(_ override: DebugEntitlementOverride, monetizationOn: Bool) -> String {
+        guard monetizationOn else {
+            return "forced: \(override.rawValue), ignored while monetization is off"
+        }
+        return "forced: \(override.rawValue), in effect"
+    }
+}
+
 struct DebugMenuEntitlementRow: Identifiable {
     let override: DebugEntitlementOverride
     let title: String
@@ -217,7 +276,8 @@ struct DebugMenuEntitlementRow: Identifiable {
             override: .trialEnding,
             title: "End the trial in \(PremiumGate.trialNoticeDays) days"
         ),
-        DebugMenuEntitlementRow(override: .readOnly, title: "Expire the trial"),
+        DebugMenuEntitlementRow(override: .trialEnded, title: "Expire the trial"),
+        DebugMenuEntitlementRow(override: .subscriptionEnded, title: "End the subscription"),
         DebugMenuEntitlementRow(override: .introOfferUsed, title: "Use up the intro offer"),
         DebugMenuEntitlementRow(override: .gracePeriod, title: "Force the grace period")
     ]
@@ -228,5 +288,6 @@ struct DebugMenuEntitlementRow: Identifiable {
         DebugMenuView()
     }
     .environment(AppEnvironment.previewSignedIn())
+    .environment(AppState())
 }
 #endif

@@ -17415,6 +17415,40 @@
         }
       }
     },
+    "paywall.state.noplans": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The App Store sent no plans for Corbie. Try again later."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der App Store hat keine Abos für Corbie geschickt. Versuch es später noch mal."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La App Store no ha enviado ningún plan de Corbie. Prueba más tarde."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'App Store n'a envoyé aucune offre pour Corbie. Réessayez plus tard."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'App Store non ha inviato nessun piano per Corbie. Riprova più tardi."
+          }
+        }
+      }
+    },
     "paywall.state.nospace": {
       "extractionState": "stale",
       "localizations": {

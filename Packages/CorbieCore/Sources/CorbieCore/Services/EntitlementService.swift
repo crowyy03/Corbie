@@ -171,8 +171,8 @@ public actor EntitlementService {
 
     private static func forced(_ resolved: EntitlementResolution, now: Date) -> EntitlementResolution {
         #if DEBUG
-        guard let forced = DebugEntitlementOverride.stored()?.state(now: now) else { return resolved }
-        return EntitlementResolution(state: forced, readOnlyCause: resolved.readOnlyCause)
+        guard let override = DebugEntitlementOverride.stored(), let forced = override.state(now: now) else { return resolved }
+        return EntitlementResolution(state: forced, readOnlyCause: override.readOnlyCause ?? resolved.readOnlyCause)
         #else
         return resolved
         #endif

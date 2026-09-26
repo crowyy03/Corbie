@@ -14,6 +14,7 @@ final class AppState {
     var selectedTab: Tab = .today
     var isUsHubPresented = false
     var route: Route?
+    var trialOfferChecks = 0
 
     func open(_ route: Route?) {
         guard let route else { return }
