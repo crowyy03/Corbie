@@ -150,7 +150,7 @@ struct OnboardingIntroView: View {
         Button {
             Task { await model.debugSignIn() }
         } label: {
-            Text("onboarding.debug.signin")
+            Text(verbatim: "continue without Apple ID (debug build)")
                 .corbieMono()
                 .foregroundStyle(palette.text2)
                 .frame(maxWidth: .infinity, minHeight: CorbieMetrics.minimumTapTarget)

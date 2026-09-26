@@ -350,7 +350,7 @@ struct SettingsView: View {
             NavigationLink {
                 DebugMenuView()
             } label: {
-                Text("settings.developer")
+                Text(verbatim: "Developer")
                     .corbieBody()
                     .foregroundStyle(palette.text)
             }

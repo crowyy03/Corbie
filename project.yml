@@ -78,10 +78,14 @@ targets:
             cp "$file" "$target/$lower"
           done
         basedOnDependencyAnalysis: false
-      - name: Check Release carries no screenshot mode
+      - name: Check the app is iPhone only
+        script: |
+          "$PROJECT_DIR/scripts/check_iphone_only.sh" "$TARGET_BUILD_DIR/$WRAPPER_NAME"
+        basedOnDependencyAnalysis: false
+      - name: Check Release carries no debug-only code
         script: |
           [ "$CONFIGURATION" = "Debug" ] && exit 0
-          "$PROJECT_DIR/scripts/scan_screenshot_mode_markers.sh" "$TARGET_BUILD_DIR/$WRAPPER_NAME"
+          "$PROJECT_DIR/scripts/scan_debug_markers.sh" "$TARGET_BUILD_DIR/$WRAPPER_NAME"
         basedOnDependencyAnalysis: false
     settings:
       base:

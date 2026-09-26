@@ -40,15 +40,39 @@ For February 14
 For our anniversary
 chops the onions
 nobody asks me anything
+DebugMenuView
+DebugMenuEntitlementRow
+DebugRefundRequest
+DebugNotificationsSections
+DebugLaunch
+DebugEntitlementOverride
+DebugMonetizationOverride
+-corbie-reset-store
+-corbie-entitlement
+-corbie-monetization
+corbie.debug.entitlement
+corbie.debug.monetization
+intro_offer_used
+debug.simulator.user
+Follow the real subscription
+Clear the entitlement cache
+monetization follows the server
+storage not probed yet
+no verified subscription transaction
+Forget the joint action flag
+Delete this space's share on the server
+settings.developer
+onboarding.debug.signin
+continue without Apple ID
 MARKERS
 
 if printf '%s\n' "$APP" "$ROOT" | grep -qF -f "$work/markers"; then
-    echo "error: scan_screenshot_mode_markers: $APP or $ROOT contains a marker, and build paths end up in the binary" >&2
+    echo "error: scan_debug_markers: $APP or $ROOT contains a marker, and build paths end up in the binary" >&2
     exit 2
 fi
 
 if [ ! -d "$APP" ]; then
-    echo "error: scan_screenshot_mode_markers: no app at $APP" >&2
+    echo "error: scan_debug_markers: no app at $APP" >&2
     exit 1
 fi
 
@@ -64,7 +88,7 @@ binary_count="$(wc -l <"$work/binaries" | tr -d ' ')"
 file_count="$(wc -l <"$work/files" | tr -d ' ')"
 marker_count="$(wc -l <"$work/markers" | tr -d ' ')"
 if [ "$binary_count" -eq 0 ]; then
-    echo "error: scan_screenshot_mode_markers: no Mach-O file found in $APP" >&2
+    echo "error: scan_debug_markers: no Mach-O file found in $APP" >&2
     exit 1
 fi
 
@@ -99,9 +123,9 @@ PY
 sed "s|^$APP/||" "$work/files" | grep -F -f "$work/markers" | sed 's/^/  file name: /' >>"$work/found" || true
 
 if [ -s "$work/found" ]; then
-    echo "error: scan_screenshot_mode_markers: $APP carries screenshot-mode code or demo data:" >&2
+    echo "error: scan_debug_markers: $APP carries debug-only code, developer tools or demo data:" >&2
     cat "$work/found" >&2
     exit 1
 fi
 
-echo "scan_screenshot_mode_markers: ok, none of $marker_count markers in $binary_count binaries (strings, nm), in the bytes of $file_count files (UTF-8, UTF-16) or in their names"
+echo "scan_debug_markers: ok, none of $marker_count markers in $binary_count binaries (strings, nm), in the bytes of $file_count files (UTF-8, UTF-16) or in their names"

@@ -12751,41 +12751,6 @@
         }
       }
     },
-    "onboarding.debug.signin": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ohne Apple-ID weiter (Debug-Build)"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "continue without Apple ID (debug build)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "seguir sin Apple ID (compilación de prueba)"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "continuer sans identifiant Apple (build de test)"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "continua senza Apple ID (build di test)"
-          }
-        }
-      }
-    },
     "onboarding.intro.page1.note": {
       "localizations": {
         "de": {
@@ -25656,41 +25621,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Matrimonio"
-          }
-        }
-      }
-    },
-    "settings.developer": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Entwickler"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Developer"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desarrollo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Développeur"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sviluppatore"
           }
         }
       }

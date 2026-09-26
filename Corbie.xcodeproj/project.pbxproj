@@ -1354,7 +1354,8 @@
 				D660C6E7A89F9F6A3C715A02 /* Frameworks */,
 				33542D83FCB36ED59530F935 /* Embed Foundation Extensions */,
 				EB460D2118B599626ECB7FAD /* Copy demo assets in Debug */,
-				2AE2DE5016A56A6438BF1442 /* Check Release carries no screenshot mode */,
+				3C261EE69213D1210894A478 /* Check the app is iPhone only */,
+				8E2CE22FCEB786AFD65F32A5 /* Check Release carries no debug-only code */,
 			);
 			buildRules = (
 			);
@@ -1550,25 +1551,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2AE2DE5016A56A6438BF1442 /* Check Release carries no screenshot mode */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Check Release carries no screenshot mode";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "[ \"$CONFIGURATION\" = \"Debug\" ] && exit 0\n\"$PROJECT_DIR/scripts/scan_screenshot_mode_markers.sh\" \"$TARGET_BUILD_DIR/$WRAPPER_NAME\"\n";
-		};
 		358FD794ACB62EBB77F991D6 /* Check colors */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1587,6 +1569,44 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PROJECT_DIR/scripts/check_colors.sh\"";
+		};
+		3C261EE69213D1210894A478 /* Check the app is iPhone only */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Check the app is iPhone only";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PROJECT_DIR/scripts/check_iphone_only.sh\" \"$TARGET_BUILD_DIR/$WRAPPER_NAME\"\n";
+		};
+		8E2CE22FCEB786AFD65F32A5 /* Check Release carries no debug-only code */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Check Release carries no debug-only code";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "[ \"$CONFIGURATION\" = \"Debug\" ] && exit 0\n\"$PROJECT_DIR/scripts/scan_debug_markers.sh\" \"$TARGET_BUILD_DIR/$WRAPPER_NAME\"\n";
 		};
 		EB460D2118B599626ECB7FAD /* Copy demo assets in Debug */ = {
 			isa = PBXShellScriptBuildPhase;
