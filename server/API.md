@@ -65,11 +65,17 @@ The session token is an HS256 JWT signed with the `SESSION_SECRET` secret: claim
 
 Auth required. Creates a new invite code for a space. Every older code of that space that is still live (not redeemed, not superseded, not expired) is marked superseded at that moment: its `expires_at` stays as it was, and redeeming it answers `410 superseded` from then on, so the partner hears that a newer code exists rather than that the code ran out.
 
-Request: `{"spaceId": "<uuid>", "shareURL": "https://www.icloud.com/share/..."}`
+Request: `{"spaceId": "<uuid>", "shareURL": "https://www.icloud.com/share/...", "cloudKitEnvironment": "production", "iCloudAccount": "<64 hex>"}`
+
+`cloudKitEnvironment` (`development` or `production`) is the CloudKit environment the owner's build writes to, and `iCloudAccount` is the SHA-256 hex of the owner's CloudKit user record name. Both are optional so older builds keep working; anything else in them is `400 invalid_request`. The server stores the environment as sent and only the salted digest of the account (`owner_account`, same HMAC as `redeemed_by`).
 
 Response `201`: `{"code": "K7M2QX", "expiresAt": "2026-09-05T12:15:00Z"}`
 
 Code alphabet: `ABCDEFGHJKMNPQRSTUVWXYZ23456789`, 6 characters. TTL 15 minutes.
+
+### DELETE `/invite/{spaceId}`
+
+Auth required. Expires every live code of the space at once (sets `expires_at` to now), so a code made before the owner deleted the account answers `410 expired` instead of handing out a share that no longer exists. Redeemed and superseded codes are left alone. Response `204`.
 
 ### GET `/invite-redeem/{code}`
 
@@ -77,9 +83,11 @@ No auth (the code is the secret). Returns the share URL and marks the invite red
 
 Optional header `X-Anon-Id` (the device UUID). The server keeps only its salted digest in `redeemed_by`. The same `X-Anon-Id` asking again for the same code within 15 minutes of the first redeem gets the same `200` again, even when the code's own 15 minutes are over by then, so a join that was interrupted after the redeem (the app killed while CloudKit was still accepting) can be retried with the same code. Any other caller, or the same one later than that, gets `409 redeemed`. Without `X-Anon-Id` a code is single use: the second call is `409 redeemed`. A malformed `X-Anon-Id` is `400 invalid_request`.
 
+Optional headers `X-CloudKit-Environment` (`development` or `production`) and `X-ICloud-Account` (SHA-256 hex of the joiner's CloudKit user record name). A malformed value is `400 invalid_request`.
+
 Response `200`: `{"shareURL": "https://www.icloud.com/share/...", "spaceId": "<uuid>"}`
 
-Checked in this order: `404 not_found` unknown code, `410 superseded` a newer code of the same space replaced it, `409 redeemed` used by someone else (or by this device more than 15 minutes ago), `410 expired` older than 15 minutes. The client keys on the error code, not the status; `redeemed` was `410` before 2026-09-21.
+Checked in this order: `404 not_found` unknown code, `410 superseded` a newer code of the same space replaced it, `409 redeemed` used by someone else (or by this device more than 15 minutes ago), `410 expired` older than 15 minutes, `409 environment_mismatch` the owner's build and the joiner's build write to different CloudKit environments, `409 same_icloud_account` the joiner is signed in to the owner's iCloud account. The last two are checked only when both sides sent the value, and before the code is claimed, so a refused code stays usable from the right phone. The client keys on the error code, not the status; `redeemed` was `410` before 2026-09-21.
 
 ### POST `/parse`
 

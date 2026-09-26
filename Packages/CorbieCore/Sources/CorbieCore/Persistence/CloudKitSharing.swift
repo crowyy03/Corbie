@@ -1,5 +1,6 @@
 import CloudKit
 import CoreData
+import CryptoKit
 import Foundation
 import os
 
@@ -15,52 +16,88 @@ public final class CloudKitSharing {
 
     private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "pairing")
 
+    public let environment: CloudKitEnvironment?
+
     private let stack: CoreDataStack
     private let members: CoreDataMemberRepository
     private let exportTimeout: Duration
 
-    public init(stack: CoreDataStack, exportTimeout: Duration = CloudKitSharing.memberExportTimeout) {
+    public init(
+        stack: CoreDataStack,
+        exportTimeout: Duration = CloudKitSharing.memberExportTimeout,
+        environment: CloudKitEnvironment? = CloudKitEnvironment.declared()
+    ) {
         self.stack = stack
         self.exportTimeout = exportTimeout
+        self.environment = environment
         members = CoreDataMemberRepository(stack: stack)
     }
 
     public func share(space spaceId: UUID) async throws -> CKShare {
         let container = try cloudKitContainer()
-        if let existing = try existingShare(for: spaceId) { return existing }
         guard let space = try space(with: spaceId, in: stack.viewContext) else {
             throw CorbieError.notFound("space \(spaceId)")
         }
         guard let store = stack.store(for: .privateStore) else {
             throw CorbieError.cloudKit("private store is not loaded")
         }
+        guard space.objectID.persistentStore === store else {
+            throw CorbieError.cloudKit("space \(spaceId) is shared with this phone, only its owner can invite")
+        }
+        let known = try knownShare(of: space, in: container)
         do {
-            let result = try await container.share([space], to: nil)
-            let share = result.1
-            share[CKShare.SystemFieldKey.title] = CloudKitSharing.shareTitle
-            share.publicPermission = .readWrite
-            let saved = try await container.persistUpdatedShare(share, in: store)
-            CloudKitSharing.log.notice(
-                "share for space \(spaceId, privacy: .public) saved, url \(saved.url == nil ? "pending" : "ready", privacy: .public)"
+            guard let known else {
+                let created = try await createShare(for: space, in: store, container: container)
+                logShare(created, spaceId: spaceId, origin: "created")
+                return created
+            }
+            let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).privateCloudDatabase
+            if let live = try await serverShare(known.recordID, in: database) {
+                logShare(live, spaceId: spaceId, origin: "checked on the server")
+                return live
+            }
+            CloudKitSharing.log.error(
+                """
+                share \(known.recordID.recordName, privacy: .public) of space \(spaceId, privacy: .public) \
+                is gone from the server, saving a new one in zone \(known.recordID.zoneID.zoneName, privacy: .public)
+                """
             )
-            return saved
-        } catch let error as CorbieError {
-            throw error
+            let recreated = try await recreateShare(in: known.recordID.zoneID, store: store, container: container)
+            logShare(recreated, spaceId: spaceId, origin: "made again")
+            return recreated
+        } catch let failure as CloudKitFailure {
+            CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public) environment \(self.environmentName, privacy: .public)")
+            throw failure
         } catch {
             let failure = CloudKitFailure(step: "share create", error: error)
-            CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
+            CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public) environment \(self.environmentName, privacy: .public)")
             throw failure
         }
+    }
+
+    public func inviteOrigin() async -> InviteOrigin {
+        InviteOrigin(environment: environment, iCloudAccount: await accountFingerprint())
+    }
+
+    public func accountFingerprint() async -> String? {
+        do {
+            let me = try await CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).userRecordID()
+            return CloudKitSharing.fingerprint(ofAccount: me.recordName)
+        } catch {
+            let failure = CloudKitFailure(step: "read the iCloud user", error: error)
+            CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
+            return nil
+        }
+    }
+
+    public nonisolated static func fingerprint(ofAccount recordName: String) -> String {
+        SHA256.hash(data: Data(recordName.utf8)).map { String(format: "%02x", $0) }.joined()
     }
 
     public func existingShare(for spaceId: UUID) throws -> CKShare? {
         let container = try cloudKitContainer()
         guard let space = try space(with: spaceId, in: stack.viewContext) else { return nil }
-        do {
-            return try container.fetchShares(matching: [space.objectID])[space.objectID]
-        } catch {
-            throw CorbieError.cloudKit(error.localizedDescription)
-        }
+        return try knownShare(of: space, in: container)
     }
 
     public func acceptShare(metadata: CKShare.Metadata) async throws {
@@ -83,34 +120,42 @@ public final class CloudKitSharing {
     }
 
     public func fetchShareMetadata(from url: URL) async throws -> CKShare.Metadata {
+        let link = ShareLinkLog.text(for: url)
+        let environmentName = self.environmentName
+        CloudKitSharing.log.notice(
+            "fetch share metadata: url \(link, privacy: .public) environment \(environmentName, privacy: .public)"
+        )
         let operation = CKFetchShareMetadataOperation(shareURLs: [url])
         operation.shouldFetchRootRecord = true
         return try await withCheckedThrowingContinuation { continuation in
-            let box = SingleResultBox<CKShare.Metadata>()
+            let box = SingleResultBox<Result<CKShare.Metadata, any Error>>()
             operation.perShareMetadataResultBlock = { _, result in
-                if case let .success(metadata) = result {
-                    box.value = metadata
-                }
+                box.value = result
             }
             operation.fetchShareMetadataResultBlock = { result in
-                switch result {
-                case .success:
-                    if let metadata = box.value {
-                        continuation.resume(returning: metadata)
-                    } else {
-                        let failure = CloudKitFailure(
-                            step: "fetch share metadata",
-                            reason: .missing,
-                            detail: "the share link carries no metadata"
-                        )
-                        CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
-                        continuation.resume(throwing: failure)
-                    }
-                case let .failure(error):
-                    let failure = CloudKitFailure(step: "fetch share metadata", error: error)
-                    CloudKitSharing.log.error("\(failure.failureReason ?? "", privacy: .public)")
-                    continuation.resume(throwing: failure)
+                let failure: CloudKitFailure
+                switch (result, box.value) {
+                case let (_, .success(metadata)?):
+                    continuation.resume(returning: metadata)
+                    return
+                case let (_, .failure(error)?):
+                    failure = CloudKitFailure(step: "fetch share metadata", error: error)
+                case let (.failure(error), nil):
+                    failure = CloudKitFailure(step: "fetch share metadata", error: error)
+                case (.success, nil):
+                    failure = CloudKitFailure(
+                        step: "fetch share metadata",
+                        reason: .other,
+                        detail: "CloudKit finished without an answer for the link"
+                    )
                 }
+                CloudKitSharing.log.error(
+                    """
+                    \(failure.failureReason ?? "", privacy: .public) url \(link, privacy: .public) \
+                    environment \(environmentName, privacy: .public)
+                    """
+                )
+                continuation.resume(throwing: failure)
             }
             CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).add(operation)
         }
@@ -273,12 +318,61 @@ public final class CloudKitSharing {
         } catch let error as CKError where CloudKitSharing.isMissingRecord(error) {
             return nil
         } catch {
-            throw CorbieError.cloudKit(error.localizedDescription)
+            throw CloudKitFailure(step: "share check", error: error)
         }
         guard let share = record as? CKShare else {
             throw CorbieError.cloudKit("record \(recordID.recordName) is not a share")
         }
         return share
+    }
+
+    private func knownShare(of space: Space, in container: NSPersistentCloudKitContainer) throws -> CKShare? {
+        do {
+            return try container.fetchShares(matching: [space.objectID])[space.objectID]
+        } catch {
+            throw CorbieError.cloudKit(error.localizedDescription)
+        }
+    }
+
+    private func createShare(
+        for space: Space,
+        in store: NSPersistentStore,
+        container: NSPersistentCloudKitContainer
+    ) async throws -> CKShare {
+        let (_, share, _) = try await container.share([space], to: nil)
+        share[CKShare.SystemFieldKey.title] = CloudKitSharing.shareTitle
+        share.publicPermission = .readWrite
+        return try await container.persistUpdatedShare(share, in: store)
+    }
+
+    private func recreateShare(
+        in zoneID: CKRecordZone.ID,
+        store: NSPersistentStore,
+        container: NSPersistentCloudKitContainer
+    ) async throws -> CKShare {
+        let share = CKShare(recordZoneID: zoneID)
+        share[CKShare.SystemFieldKey.title] = CloudKitSharing.shareTitle
+        share.publicPermission = .readWrite
+        do {
+            return try await container.persistUpdatedShare(share, in: store)
+        } catch {
+            throw CloudKitFailure(step: "share make again", error: error)
+        }
+    }
+
+    private var environmentName: String {
+        environment?.rawValue ?? "undeclared"
+    }
+
+    private func logShare(_ share: CKShare, spaceId: UUID, origin: String) {
+        let link = share.url.map(ShareLinkLog.text(for:)) ?? "pending"
+        CloudKitSharing.log.notice(
+            """
+            invite share \(origin, privacy: .public): space \(spaceId, privacy: .public) \
+            record \(share.recordID.recordName, privacy: .public) zone \(share.recordID.zoneID.zoneName, privacy: .public) \
+            url \(link, privacy: .public) environment \(self.environmentName, privacy: .public)
+            """
+        )
     }
 
     private func spaceZoneIDs(

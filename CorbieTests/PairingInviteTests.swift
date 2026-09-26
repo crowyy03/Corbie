@@ -76,16 +76,16 @@ final class PairingInviteTests: XCTestCase {
     }
 
     func testPairingFailureNamesWhatTheServerSaid() {
-        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 404, code: "not_found")), .notFound)
-        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "expired")), .expired)
-        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 409, code: "redeemed")), .redeemed)
-        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "redeemed")), .redeemed)
-        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "superseded")), .superseded)
-        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 429, code: "rate_limited")), .throttled)
-        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 401, code: "unauthorized")), .signInAgain)
-        XCTAssertEqual(PairingFailure.kind(for: CorbieError.cloudKit("no account")), .iCloud)
-        XCTAssertEqual(PairingFailure.kind(for: CorbieError.network("offline")), .network)
-        XCTAssertEqual(PairingFailure.kind(for: APIError(kind: .notConfigured, detail: "no url")), .serverMissing)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 404, code: "not_found"), side: .joining), .notFound)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "expired"), side: .joining), .expired)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 409, code: "redeemed"), side: .joining), .redeemed)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "redeemed"), side: .joining), .redeemed)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 410, code: "superseded"), side: .joining), .superseded)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 429, code: "rate_limited"), side: .joining), .throttled)
+        XCTAssertEqual(PairingFailure.kind(for: serverError(status: 401, code: "unauthorized"), side: .joining), .signInAgain)
+        XCTAssertEqual(PairingFailure.kind(for: CorbieError.cloudKit("no account"), side: .joining), .iCloud)
+        XCTAssertEqual(PairingFailure.kind(for: CorbieError.network("offline"), side: .joining), .network)
+        XCTAssertEqual(PairingFailure.kind(for: APIError(kind: .notConfigured, detail: "no url"), side: .joining), .serverMissing)
     }
 
     func testPairingFailureNamesWhatCloudKitSaid() {
@@ -98,11 +98,15 @@ final class PairingInviteTests: XCTestCase {
             (.networkFailure, .network),
             (.unknownItem, .shareMissing),
             (.zoneNotFound, .shareMissing),
-            (.internalError, .iCloud)
+            (.userDeletedZone, .shareMissing),
+            (.quotaExceeded, .iCloudFull),
+            (.internalError, .iCloudRefused),
+            (.permissionFailure, .iCloudRefused),
+            (.assetFileNotFound, .iCloudRefused)
         ]
         for (code, expected) in cases {
             let failure = CloudKitFailure(step: "accept share", error: CKError(code))
-            XCTAssertEqual(PairingFailure.kind(for: failure), expected, "\(code)")
+            XCTAssertEqual(PairingFailure.kind(for: failure, side: .joining), expected, "\(code)")
         }
     }
 

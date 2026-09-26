@@ -30,6 +30,11 @@ settings:
     SWIFT_TREAT_WARNINGS_AS_ERRORS: "NO"
     ENABLE_USER_SCRIPT_SANDBOXING: "YES"
     SWIFT_EMIT_LOC_STRINGS: "YES"
+  configs:
+    Debug:
+      CORBIE_CLOUDKIT_ENVIRONMENT: Development
+    Release:
+      CORBIE_CLOUDKIT_ENVIRONMENT: Production
 
 targets:
   Corbie:
@@ -92,6 +97,7 @@ targets:
       properties:
         CFBundleDisplayName: Corbie
         CORBIE_SERVER_URL: $(CORBIE_SERVER_URL)
+        CorbieCloudKitEnvironment: $(CORBIE_CLOUDKIT_ENVIRONMENT)
         CORBIE_MONTHLY_PRODUCT_ID: app.corbie.monthly
         CORBIE_YEARLY_PRODUCT_ID: app.corbie.yearly
         CFBundleShortVersionString: $(MARKETING_VERSION)

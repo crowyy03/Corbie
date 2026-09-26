@@ -9,6 +9,18 @@ export const redeemReplayWindowMs = 15 * 60 * 1000;
 const maxInsertAttempts = 5;
 const maxClaimAttempts = 2;
 
+export const cloudKitEnvironments = ["development", "production"] as const;
+export type CloudKitEnvironment = typeof cloudKitEnvironments[number];
+
+export interface InviteOrigin {
+  environment: CloudKitEnvironment | null;
+  account: string | null;
+}
+
+export interface Redeemer extends InviteOrigin {
+  device: string | null;
+}
+
 export interface InviteRow {
   code: string;
   space_id: string;
@@ -18,6 +30,8 @@ export interface InviteRow {
   superseded_at: string | null;
   redeemed_at: string | null;
   redeemed_by: string | null;
+  cloudkit_environment: CloudKitEnvironment | null;
+  owner_account: string | null;
 }
 
 export interface NewInvite {
@@ -26,6 +40,8 @@ export interface NewInvite {
   share_url: string;
   created_at: string;
   expires_at: string;
+  cloudkit_environment: CloudKitEnvironment | null;
+  owner_account: string | null;
 }
 
 export interface CreatedInvite {
@@ -41,6 +57,7 @@ export interface InviteShare {
 export interface InviteStore {
   insert(invite: NewInvite): Promise<"inserted" | "code_taken">;
   supersedeOlder(spaceId: string, createdAt: Date): Promise<void>;
+  expireLive(spaceId: string, now: Date): Promise<void>;
   find(code: string): Promise<InviteRow | null>;
   claim(code: string, redeemer: string | null, now: Date): Promise<InviteRow | null>;
 }
@@ -51,6 +68,7 @@ export async function createInvite(
   store: InviteStore,
   spaceId: string,
   shareURL: string,
+  origin: InviteOrigin,
   now: Date = new Date(),
   nextCode: () => string = generateInviteCode,
 ): Promise<CreatedInvite> {
@@ -63,6 +81,8 @@ export async function createInvite(
       share_url: shareURL,
       created_at: now.toISOString(),
       expires_at: expiresAt,
+      cloudkit_environment: origin.environment,
+      owner_account: origin.account,
     });
     if (outcome === "inserted") {
       await store.supersedeOlder(spaceId, now);
@@ -72,20 +92,64 @@ export async function createInvite(
   throw new ApiError("internal", "Could not create an invite");
 }
 
+export async function withdrawInvites(store: InviteStore, spaceId: string, now: Date = new Date()) {
+  await store.expireLive(spaceId, now);
+}
+
 export async function redeemerDigest(req: Request): Promise<string | null> {
   const header = req.headers.get("x-anon-id")?.trim() ?? "";
   if (header.length === 0) return null;
   return await saltedDigest(requireAnonId(header));
 }
 
-function isReplay(row: InviteRow, redeemer: string | null, now: Date): boolean {
-  if (redeemer === null || row.redeemed_at === null || row.redeemed_by !== redeemer) return false;
+export function cloudKitEnvironment(value: unknown): CloudKitEnvironment | null {
+  if (value === undefined || value === null || value === "") return null;
+  const known = cloudKitEnvironments.find((environment) => environment === value);
+  if (!known) {
+    throw new ApiError("invalid_request", "cloudKitEnvironment must be development or production");
+  }
+  return known;
+}
+
+const accountFingerprintPattern = /^[0-9a-f]{64}$/;
+
+export async function accountDigest(value: unknown): Promise<string | null> {
+  if (value === undefined || value === null || value === "") return null;
+  if (typeof value !== "string" || !accountFingerprintPattern.test(value)) {
+    throw new ApiError("invalid_request", "iCloudAccount must be a SHA-256 hex digest");
+  }
+  return await saltedDigest(value);
+}
+
+export async function redeemerOf(req: Request): Promise<Redeemer> {
+  return {
+    device: await redeemerDigest(req),
+    environment: cloudKitEnvironment(req.headers.get("x-cloudkit-environment")?.trim()),
+    account: await accountDigest(req.headers.get("x-icloud-account")?.trim().toLowerCase()),
+  };
+}
+
+function requireJoinable(row: InviteRow, redeemer: Redeemer): void {
+  const made = row.cloudkit_environment;
+  if (made !== null && redeemer.environment !== null && made !== redeemer.environment) {
+    throw new ApiError(
+      "environment_mismatch",
+      `This code was made in the ${made} iCloud environment`,
+    );
+  }
+  if (row.owner_account !== null && row.owner_account === redeemer.account) {
+    throw new ApiError("same_icloud_account", "This code comes from the same iCloud account");
+  }
+}
+
+function isReplay(row: InviteRow, device: string | null, now: Date): boolean {
+  if (device === null || row.redeemed_at === null || row.redeemed_by !== device) return false;
   return now.getTime() - new Date(row.redeemed_at).getTime() <= redeemReplayWindowMs;
 }
 
 export function redeemability(
   row: InviteRow | null,
-  redeemer: string | null,
+  redeemer: Redeemer,
   now: Date,
 ): Redeemability {
   if (!row) throw new ApiError("not_found", "This code does not exist");
@@ -93,10 +157,14 @@ export function redeemability(
     throw new ApiError("superseded", "A newer code replaced this one");
   }
   if (row.redeemed_at !== null) {
-    if (isReplay(row, redeemer, now)) return { kind: "replay", row };
+    if (isReplay(row, redeemer.device, now)) {
+      requireJoinable(row, redeemer);
+      return { kind: "replay", row };
+    }
     throw new ApiError("redeemed", "This code has already been used");
   }
   if (new Date(row.expires_at) <= now) throw new ApiError("expired", "This code has expired");
+  requireJoinable(row, redeemer);
   return { kind: "claim" };
 }
 
@@ -107,20 +175,20 @@ function shareOf(row: InviteRow): InviteShare {
 export async function redeemInvite(
   store: InviteStore,
   code: string,
-  redeemer: string | null,
+  redeemer: Redeemer,
   now: Date = new Date(),
 ): Promise<InviteShare> {
   for (let attempt = 0; attempt < maxClaimAttempts; attempt++) {
     const verdict = redeemability(await store.find(code), redeemer, now);
     if (verdict.kind === "replay") return shareOf(verdict.row);
-    const claimed = await store.claim(code, redeemer, now);
+    const claimed = await store.claim(code, redeemer.device, now);
     if (claimed) return shareOf(claimed);
   }
   throw new ApiError("redeemed", "This code has already been used");
 }
 
-const inviteColumns =
-  "code, space_id, share_url, created_at, expires_at, superseded_at, redeemed_at, redeemed_by";
+const inviteColumns = "code, space_id, share_url, created_at, expires_at, superseded_at, " +
+  "redeemed_at, redeemed_by, cloudkit_environment, owner_account";
 
 export const databaseInviteStore: InviteStore = {
   async insert(invite) {
@@ -144,6 +212,21 @@ export const databaseInviteStore: InviteStore = {
     if (error) {
       console.error("invite supersede failed", error);
       throw new ApiError("internal", "Could not create an invite");
+    }
+  },
+
+  async expireLive(spaceId, now) {
+    const moment = now.toISOString();
+    const { error } = await serviceClient()
+      .from("invites")
+      .update({ expires_at: moment })
+      .eq("space_id", spaceId)
+      .is("redeemed_at", null)
+      .is("superseded_at", null)
+      .gt("expires_at", moment);
+    if (error) {
+      console.error("invite withdraw failed", error);
+      throw new ApiError("internal", "Could not withdraw the invites");
     }
   },
 

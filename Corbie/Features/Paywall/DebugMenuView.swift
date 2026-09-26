@@ -1,4 +1,5 @@
 #if DEBUG
+import CloudKit
 import CorbieCore
 import StoreKit
 import SwiftUI
@@ -42,6 +43,23 @@ final class DebugMenuViewModel {
         await environment.entitlements.clearCache(spaceId: space.id)
         await environment.reloadSession()
         lastAction = "entitlement cache cleared"
+    }
+
+    func deleteServerShare(_ environment: AppEnvironment) async {
+        guard let space = environment.space, isWorking == false else { return }
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            guard let share = try environment.sharing.existingShare(for: space.id) else {
+                lastAction = "share: this space is not shared yet"
+                return
+            }
+            let database = CKContainer(identifier: CorbieIdentifiers.cloudKitContainer).privateCloudDatabase
+            _ = try await database.deleteRecord(withID: share.recordID)
+            lastAction = "share \(share.recordID.recordName) deleted on the server, this phone still remembers it"
+        } catch {
+            lastAction = "share delete failed: \(CloudKitFailure.describe(error))"
+        }
     }
 }
 
@@ -89,6 +107,13 @@ struct DebugMenuView: View {
                 Text(verbatim: monetizationState)
             }
             Section {
+                row("Delete this space's share on the server") { await model.deleteServerShare(environment) }
+            } header: {
+                Text(verbatim: "Pairing")
+            } footer: {
+                Text(verbatim: "The next invite code has to find the share gone and make a new one.")
+            }
+            Section {
                 Text(verbatim: serverState)
                     .textSelection(.enabled)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -116,6 +141,7 @@ struct DebugMenuView: View {
     private var serverState: String {
         """
         \(environment.apiClient.configuration.summary)
+        cloudkit \(environment.sharing.environment?.rawValue ?? "undeclared")
         version \(AppVersion.current())
         \(environment.storage?.summary ?? "storage not probed yet")
         """

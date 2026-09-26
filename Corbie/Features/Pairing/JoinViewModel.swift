@@ -71,7 +71,7 @@ final class JoinViewModel {
     @ObservationIgnored private let appState: AppState
     @ObservationIgnored private let localSpace: SpaceDTO?
     @ObservationIgnored private let profile: ProfileDraft
-    @ObservationIgnored private var redeemed: InviteShare?
+    @ObservationIgnored private let redemption: InviteRedemption
 
     init(
         environment: AppEnvironment,
@@ -85,6 +85,10 @@ final class JoinViewModel {
         self.localSpace = localSpace
         self.profile = profile
         self.code = InviteCodeFormat.sanitize(code ?? "")
+        redemption = InviteRedemption { code in
+            let origin = await environment.sharing.inviteOrigin()
+            return try await environment.apiClient.redeemInvite(code: code, origin: origin)
+        }
     }
 
     var isWorking: Bool { phase == .working }
@@ -111,8 +115,8 @@ final class JoinViewModel {
             step = nil
             phase = .editing
             guard block == nil else { return }
-            let kind = PairingFailure.kind(for: error)
-            failure = kind.message
+            let kind = PairingFailure.kind(for: error, side: .joining)
+            failure = PairingFailure.message(for: error, side: .joining)
             JoinViewModel.log.error(
                 """
                 join failed as \(kind.rawValue, privacy: .public): \
@@ -132,11 +136,12 @@ final class JoinViewModel {
         }
         try await requireICloud()
         let share = try await run(.checkingCode) {
-            try await redeemedShare()
+            try await redemption.share(for: code)
         }
         guard let url = share.shareLink else {
             throw PairingFailure.shareMissing
         }
+        JoinViewModel.log.notice("join: redeemed a link to space \(share.spaceId, privacy: .public)")
         let metadata = try await run(.findingInvite) {
             try await environment.sharing.fetchShareMetadata(from: url)
         }
@@ -196,13 +201,6 @@ final class JoinViewModel {
         return await probe.holdsContent(spaceId: localSpace.id) ? .content : nil
     }
 
-    private func redeemedShare() async throws -> InviteShare {
-        if let redeemed { return redeemed }
-        let share = try await environment.apiClient.redeemInvite(code: code)
-        redeemed = share
-        return share
-    }
-
     private func waitForJoinedSpace(id: UUID) async throws -> SpaceDTO {
         for attempt in 0 ..< JoinViewModel.spaceArrivalAttempts {
             if let space = try? await environment.repositories.spaces.space(id: id) {
@@ -241,5 +239,22 @@ final class JoinViewModel {
     private func carryTogetherSince(into space: SpaceDTO) async throws {
         guard let togetherSince = profile.togetherSince, space.togetherSince == nil else { return }
         _ = try await environment.repositories.spaces.setTogetherSinceIfUnset(spaceId: space.id, togetherSince)
+    }
+}
+
+@MainActor
+final class InviteRedemption {
+    private let redeem: (String) async throws -> InviteShare
+    private var redeemed: (code: String, share: InviteShare)?
+
+    init(redeem: @escaping (String) async throws -> InviteShare) {
+        self.redeem = redeem
+    }
+
+    func share(for code: String) async throws -> InviteShare {
+        if let redeemed, redeemed.code == code { return redeemed.share }
+        let share = try await redeem(code)
+        redeemed = (code, share)
+        return share
     }
 }

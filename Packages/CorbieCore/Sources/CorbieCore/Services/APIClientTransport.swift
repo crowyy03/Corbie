@@ -3,6 +3,7 @@ import Foundation
 public enum HTTPMethod: String, Sendable, Equatable, CaseIterable {
     case get = "GET"
     case post = "POST"
+    case delete = "DELETE"
 }
 
 public struct HTTPRequest: Sendable, Equatable {

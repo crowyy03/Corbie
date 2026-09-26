@@ -98,6 +98,7 @@ Applying migration 0006_app_config.sql...
 Applying migration 0007_rate_limit_keys_without_addresses.sql...
 Applying migration 0008_invite_supersede_and_redeemer.sql...
 Applying migration 0009_subscriptions.sql...
+Applying migration 0010_invite_origin.sql...
 Finished supabase db push.
 ```
 
@@ -124,8 +125,8 @@ select key, value from public.app_config;
 
 select column_name from information_schema.columns
 where table_schema = 'public' and table_name = 'invites'
-  and column_name in ('superseded_at', 'redeemed_by') order by 1;
--- redeemed_by, superseded_at
+  and column_name in ('superseded_at', 'redeemed_by', 'cloudkit_environment', 'owner_account') order by 1;
+-- cloudkit_environment, owner_account, redeemed_by, superseded_at
 
 select table_name from information_schema.views where table_schema = 'analytics' order by 1;
 -- entitlement_status, first_open_cohort, onboarding_funnel, paired_ratio, retention_d1_d7_d30

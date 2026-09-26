@@ -21,6 +21,8 @@ Deno.test("every error code maps to the status the contract promises", async () 
     expired: 410,
     superseded: 410,
     redeemed: 409,
+    environment_mismatch: 409,
+    same_icloud_account: 409,
     rate_limited: 429,
     upstream_failed: 502,
     internal: 500,

@@ -17,6 +17,13 @@ a Mac, select the iPhone, filter on `app.corbie`, and read the four categories:
 
 The log lines are English and fixed, so they can be grepped. The screen text is localized.
 
+Share links are logged in full only by Debug builds. A Release build logs the host and the first
+eight hex characters of the link's SHA-256 (`www.icloud.com #1a2b3c4d`): anyone holding the link can
+join the space, and device logs travel in sysdiagnoses. The same fingerprint on the owner and the
+joiner means they talked about the same share. The CloudKit environment on every share line comes
+from `CorbieCloudKitEnvironment` in the Info.plist, which the build configuration sets (Debug is
+Development, Release is Production), not from signing.
+
 ## The owner makes a code
 
 | Step | What goes wrong | What the person sees | Log line |
@@ -26,8 +33,10 @@ The log lines are English and fixed, so they can be grepped. The screen text is 
 | Onboarding, before the invite step | Waiting cannot help: the space was made on this phone during this onboarding, the build does not mirror to CloudKit (tests, previews), or iCloud has no account or is temporarily unavailable | the invite step at once, as before | `invite: waited <n> ms for iCloud, skipped, <reason>` with `space made on this phone`, `no CloudKit mirroring`, `no iCloud account` or `iCloud busy` |
 | Before anything | Not signed in to iCloud | "Sign in to iCloud on this iPhone, then try again." | `invite failed as signedOutOfICloud` |
 | Before anything | iCloud account temporarily unavailable | "iCloud is not ready on this iPhone. Try again in a minute." | `invite failed as iCloudBusy` |
-| `CloudKitSharing.share` | CloudKit refuses to make the share (network, quota, anything) | the sentence for that reason | `share create: <reason>: CKError <n> <text>` |
-| `CloudKitSharing.share` | The share saved but iCloud has not given it a URL yet | "iCloud has not published the invite link yet. Try again in a moment." | `share for space <id> saved, url pending`, then `invite failed as sharePending` |
+| `CloudKitSharing.share` | CloudKit refuses to make the share: quota, network, anything else | "iCloud storage is full. Free some space, then try again.", the network sentence, or "iCloud refused this invite (error <n>)." | `share create: <reason>: CKError <n> <text>; underlying <domain> <code> <text>` plus `environment <development/production>` |
+| `CloudKitSharing.share` | The space already has a share: it is fetched from the server before its URL goes to `/invite` | nothing, the code comes up | `invite share checked on the server: space <id> record <name> zone <zone> url <link> environment <env>` |
+| `CloudKitSharing.share` | The phone remembers a share the server no longer has | nothing when a new share saves in the same zone; "iCloud refused this invite (error <n>)." when it does not | `share <name> of space <id> is gone from the server, saving a new one in zone <zone>`, then `invite share made again: ...` or `share make again: <reason>: CKError <n>` |
+| `CloudKitSharing.share` | The share saved but iCloud has not given it a URL yet | "iCloud has not published the invite link yet. Try again in a moment." | `invite share created: ... url pending`, then `invite failed as sharePending` |
 | `POST /invite` | The session token is missing or no longer valid | "Sign in again to continue." | `invite failed as signInAgain` |
 | `POST /invite` | Thirty invites already made from this space | "Too many tries. Wait a minute." | `invite failed as throttled` |
 | `POST /invite` | Offline, or the server answered 5xx | "No answer from the network." | `invite failed as network` |
@@ -75,10 +84,15 @@ and `invite: POST /invite took <n> ms`. Each also writes `<name> started` when i
 | `GET /invite-redeem` | Older than fifteen minutes (`410 expired`) | "That code expired. Ask for a new one." | `join failed as expired` |
 | `GET /invite-redeem` | This phone redeemed it less than fifteen minutes ago (the app was killed during the join) | nothing, the join carries on with the same share | `join: redeem the code took <n> ms` |
 | `GET /invite-redeem` | Too many tries | "Too many tries. Wait a minute." | `join failed as throttled` |
-| The stored invite | The row carries no share link | "That invite is gone from iCloud. Ask for a new code." | `join failed as shareMissing` |
-| `fetchShareMetadata` | The share or its zone is gone on the server | "That invite is gone from iCloud. Ask for a new code." | `fetch share metadata: missing: CKError <n>`, then `join failed as shareMissing` |
-| `fetchShareMetadata` | Not signed in, or no network | the iCloud or network sentence | `fetch share metadata: notSignedIn|network: CKError <n>` |
-| Owner check | Both phones are on the same iCloud account | "That code comes from this same iCloud account. Pairing needs two." | `join failed as ownAccount` |
+| `GET /invite-redeem` | The code was made by a build on the other CloudKit environment (`409 environment_mismatch`); the code is not used up | "This code comes from a different build of Corbie. Both phones need the same one." | `join failed as environmentMismatch` |
+| `GET /invite-redeem` | The joiner is signed in to the owner's iCloud account (`409 same_icloud_account`); the code is not used up | "Both phones use the same iCloud account. Your partner needs their own." | `join failed as ownAccount` |
+| `GET /invite-redeem` | The owner deleted the account after making the code | "That code expired. Ask for a new one." | `join failed as expired` |
+| The stored invite | The row carries no share link | "This invite no longer works. Ask your partner for a new code." | `join failed as shareMissing` |
+| `fetchShareMetadata` | The share or its zone is gone on the server (`unknownItem`, `zoneNotFound`, `userDeletedZone`) | "This invite no longer works. Ask your partner for a new code." | `fetch share metadata: missing: CKError <n> <text>; underlying <domain> <code> <text> url <link> environment <env>`, then `join failed as shareMissing` |
+| `fetchShareMetadata` | Not signed in, or no network | the iCloud or network sentence | `fetch share metadata: notSignedIn|network: CKError <n> ...` |
+| `fetchShareMetadata` | Any other refusal (permission, participant verification, a server rejection) | "iCloud refused this invite (error <n>)." | `fetch share metadata: other: CKError <n> ...` |
+| `fetchShareMetadata` | CloudKit finished without saying anything about the link | "iCloud refused this invite." | `fetch share metadata: other: CloudKit finished without an answer for the link ...` |
+| Owner check | Both phones are on the same iCloud account and the share is alive | "Both phones use the same iCloud account. Your partner needs their own." | `join failed as ownAccount` |
 | `acceptShare` | CloudKit refuses the invitation | the sentence for that reason | `accept share: <reason>: CKError <n> <text>` |
 | Waiting for the space | The shared space does not arrive within 15 seconds | "iCloud has not sent the space yet. Stay online and try again." | `join failed as spaceLate` |
 | Saving the member row | Saved, but iCloud did not confirm the upload within 20 seconds | "You are in. Your partner sees you once iCloud syncs." | `join: member upload not confirmed` |
@@ -92,7 +106,7 @@ time of the metadata fetch and of `acceptShare`.
 
 | Step on screen | Log name | What runs |
 | --- | --- | --- |
-| checking the code | `join: redeem the code` | `GET /invite-redeem/{code}` with `X-Anon-Id` |
+| checking the code | `join: redeem the code` | the iCloud user read for the account check, then `GET /invite-redeem/{code}` with `X-Anon-Id`, `X-CloudKit-Environment` and `X-ICloud-Account`; a different code than last time asks the server again, the same code reuses the share it already got |
 | finding the invite in iCloud | `join: fetch share metadata` | `CloudKitSharing.fetchShareMetadata` |
 | finding the invite in iCloud | `join: check the share owner` | `isOwnShare`, the same iCloud account check |
 | accepting the invite | `join: accept share` | `CloudKitSharing.acceptShare` |
@@ -143,3 +157,10 @@ private folder that the widgets and the share extension could not see.
   and moves to Today, the right place with the wrong sentence. How often 3 seconds is enough on a real
   second phone is not known yet: nothing of the wait ran on a device. A second phone that has not
   received the space at all yet makes a new space of its own, as before.
+- The 2026-09-26 changes (the server check and remake of the share before `/invite`, the real CloudKit
+  error on the joiner, the environment and same-account refusals, withdrawing the codes on account
+  deletion) are covered by unit and server tests. Nothing of them ran against CloudKit: the simulator
+  has no iCloud account. Making a lost share again (`CKShare(recordZoneID:)` through
+  `persistUpdatedShare`) is untested; Developer, Pairing, "Delete this space's share on the server"
+  sets it up on a phone, and the next invite code must log `invite share made again` and join. The
+  server half needs migration 0010 and a deploy of `invite` and `invite-redeem`.

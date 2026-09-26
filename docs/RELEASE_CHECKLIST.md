@@ -113,8 +113,9 @@ needs.
    version page paste the description from `docs/store/<language>.md`; it already ends with the
    Terms and Privacy lines.
 9. Run the manual deploy job (see Release configuration, "Database migrations"): it pushes
-   migration 0009 and deploys the functions back to back, which matters because the functions
-   deployed before 0009 answer `500` once it runs. Without `SUPABASE_ACCESS_TOKEN` do the same by
+   migrations 0009 and 0010 and deploys the functions back to back, which matters because the functions
+   deployed before 0009 answer `500` once it runs, and `invite` deployed before 0010 cannot insert a
+   code. Without `SUPABASE_ACCESS_TOKEN` do the same by
    hand, `server/DEPLOY.md` steps 3 and 4. Check `select count(*) from public.subscriptions;`
    answers in the SQL editor, then delete the unused `APPLE_ENV` secret.
 10. Submit both subscriptions for review together with the build: on the version page, In-App

@@ -14,6 +14,8 @@ public struct APIClient: Sendable {
     }
 
     public static let appTransactionHeader = "X-App-Transaction"
+    public static let cloudKitEnvironmentHeader = "X-CloudKit-Environment"
+    public static let iCloudAccountHeader = "X-ICloud-Account"
 
     public let configuration: ServerConfiguration
 
@@ -63,8 +65,13 @@ public struct APIClient: Sendable {
         )
     }
 
-    public func createInvite(spaceId: UUID, shareURL: URL) async throws -> InviteCode {
-        let body = InviteRequestBody(spaceId: spaceId.uuidString.lowercased(), shareURL: shareURL.absoluteString)
+    public func createInvite(spaceId: UUID, shareURL: URL, origin: InviteOrigin) async throws -> InviteCode {
+        let body = InviteRequestBody(
+            spaceId: spaceId.uuidString.lowercased(),
+            shareURL: shareURL.absoluteString,
+            cloudKitEnvironment: origin.environment,
+            iCloudAccount: origin.iCloudAccount
+        )
         let response = try await send(
             method: .post,
             path: Path.invite,
@@ -75,7 +82,7 @@ public struct APIClient: Sendable {
         return try decode(InviteCode.self, from: response)
     }
 
-    public func redeemInvite(code: String) async throws -> InviteShare {
+    public func redeemInvite(code: String, origin: InviteOrigin) async throws -> InviteShare {
         let normalized = code.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         guard normalized.isEmpty == false else {
             throw APIError.invalidRequest("invite code is empty")
@@ -83,10 +90,20 @@ public struct APIClient: Sendable {
         let response = try await send(
             method: .get,
             path: "\(Path.inviteRedeem)/\(normalized)",
+            headers: APIClient.originHeaders(origin),
             authenticated: false,
             anonymous: true
         )
         return try decode(InviteShare.self, from: response)
+    }
+
+    public func withdrawInvites(spaceId: UUID) async throws {
+        _ = try await send(
+            method: .delete,
+            path: "\(Path.invite)/\(spaceId.uuidString.lowercased())",
+            authenticated: true,
+            anonymous: false
+        )
     }
 
     public func parse(url: URL) async throws -> ParsedLinkPayload {
@@ -178,6 +195,13 @@ public struct APIClient: Sendable {
             authenticated: true,
             anonymous: false
         )
+    }
+
+    private static func originHeaders(_ origin: InviteOrigin) -> [String: String] {
+        var headers: [String: String] = [:]
+        headers[cloudKitEnvironmentHeader] = origin.environment?.rawValue
+        headers[iCloudAccountHeader] = origin.iCloudAccount
+        return headers
     }
 
     private static func appTransactionHeaders(_ signed: String?) -> [String: String] {

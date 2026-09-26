@@ -1,5 +1,5 @@
 import { normalizeInviteCode } from "../_shared/inviteCode.ts";
-import { databaseInviteStore, redeemerDigest, redeemInvite } from "../_shared/invites.ts";
+import { databaseInviteStore, redeemerOf, redeemInvite } from "../_shared/invites.ts";
 import { buckets, enforceRateLimit } from "../_shared/rateLimit.ts";
 import { ApiError, json, pathSegments, requireMethod, serve } from "../_shared/respond.ts";
 
@@ -10,8 +10,7 @@ async function handle(req: Request): Promise<Response> {
   const code = normalizeInviteCode(pathSegments(req, "invite-redeem")[0] ?? "");
   if (!code) throw new ApiError("not_found", "This code does not exist");
 
-  const redeemer = await redeemerDigest(req);
-  return json(await redeemInvite(databaseInviteStore, code, redeemer));
+  return json(await redeemInvite(databaseInviteStore, code, await redeemerOf(req)));
 }
 
 serve(handle);

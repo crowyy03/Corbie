@@ -5,6 +5,8 @@ export type ErrorCode =
   | "expired"
   | "superseded"
   | "redeemed"
+  | "environment_mismatch"
+  | "same_icloud_account"
   | "rate_limited"
   | "upstream_failed"
   | "internal";
@@ -16,6 +18,8 @@ const statusByCode: Record<ErrorCode, number> = {
   expired: 410,
   superseded: 410,
   redeemed: 409,
+  environment_mismatch: 409,
+  same_icloud_account: 409,
   rate_limited: 429,
   upstream_failed: 502,
   internal: 500,

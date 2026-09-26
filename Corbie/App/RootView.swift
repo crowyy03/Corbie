@@ -36,6 +36,10 @@ struct RootView: View {
             }
             .task(id: appState.route) { consumeRoute() }
             .task(id: environment.session) { consumeRoute() }
+            .onChange(of: environment.session) { before, now in
+                guard case .signedIn = before, now == .signedOut else { return }
+                pendingJoinCode = nil
+            }
     }
 
     private func askForReviewIfEarned() {

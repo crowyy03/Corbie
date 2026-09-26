@@ -41,6 +41,8 @@
 	<string>$(CORBIE_SERVER_URL)</string>
 	<key>CORBIE_YEARLY_PRODUCT_ID</key>
 	<string>app.corbie.yearly</string>
+	<key>CorbieCloudKitEnvironment</key>
+	<string>$(CORBIE_CLOUDKIT_ENVIRONMENT)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSCalendarsFullAccessUsageDescription</key>

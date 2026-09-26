@@ -1,6 +1,7 @@
 import CorbieCore
 import Foundation
 import Observation
+import os
 
 @MainActor
 @Observable
@@ -14,6 +15,8 @@ final class SettingsViewModel {
     private(set) var isSavingName = false
     private(set) var isLeaving = false
     private(set) var isDeleting = false
+
+    private nonisolated static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "account")
 
     private var environment: AppEnvironment?
     private var savedName = ""
@@ -188,6 +191,9 @@ final class SettingsViewModel {
                 environment.report(failure)
                 return
             }
+            if accountPlan == .deleteSpace {
+                await withdrawInvites(of: space.id, environment)
+            }
             await revokeApple(environment)
             await environment.wipeLocalState()
         }
@@ -240,6 +246,19 @@ final class SettingsViewModel {
         pendingCommits -= 1
         guard pendingCommits == 0 else { return }
         reloadFromSession()
+    }
+
+    private func withdrawInvites(of spaceId: UUID, _ environment: AppEnvironment) async {
+        do {
+            try await environment.apiClient.withdrawInvites(spaceId: spaceId)
+        } catch {
+            SettingsViewModel.log.error(
+                """
+                withdrawing the invites of space \(spaceId, privacy: .public) failed, \
+                they run out in 15 minutes: \(error.localizedDescription, privacy: .public)
+                """
+            )
+        }
     }
 
     private func revokeApple(_ environment: AppEnvironment) async {

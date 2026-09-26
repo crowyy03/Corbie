@@ -6793,7 +6793,6 @@
       }
     },
     "error.auth.message": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -6898,7 +6897,6 @@
       }
     },
     "error.network.message": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -6933,7 +6931,6 @@
       }
     },
     "error.notconfigured.message": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -7073,7 +7070,6 @@
       }
     },
     "error.storage.message": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -13952,8 +13948,41 @@
         }
       }
     },
+    "pairing.error.environment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This code comes from a different build of Corbie. Both phones need the same one."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Code stammt aus einem anderen Build von Corbie. Beide iPhones brauchen denselben."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este código viene de otra compilación de Corbie. Los dos iPhone necesitan la misma."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce code vient d'un autre build de Corbie. Les deux iPhone ont besoin du même."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo codice viene da un'altra build di Corbie. Entrambi gli iPhone devono avere la stessa."
+          }
+        }
+      }
+    },
     "pairing.error.icloud.busy": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -13987,43 +14016,143 @@
         }
       }
     },
-    "pairing.error.icloud.ownaccount": {
-      "extractionState": "stale",
+    "pairing.error.icloud.full": {
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dieser Code stammt aus demselben iCloud-Account. Zum Verbinden braucht es zwei."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "That code comes from this same iCloud account. Pairing needs two."
+            "value": "iCloud storage is full. Free some space, then try again."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der iCloud-Speicher ist voll. Gib etwas Platz frei und versuche es erneut."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ese código viene de esta misma cuenta de iCloud. Para vincular hacen falta dos."
+            "value": "El almacenamiento de iCloud está lleno. Libera espacio y vuelve a intentarlo."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ce code vient du même compte iCloud. Il en faut deux pour se relier."
+            "value": "Le stockage iCloud est plein. Libère de l'espace, puis réessaie."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Questo codice arriva dallo stesso account iCloud. Per collegarsi ne servono due."
+            "value": "Lo spazio di iCloud è pieno. Libera un po' di spazio e riprova."
+          }
+        }
+      }
+    },
+    "pairing.error.icloud.ownaccount": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Both phones use the same iCloud account. Your partner needs their own."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beide iPhones nutzen denselben iCloud-Account. Die andere Person braucht einen eigenen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los dos iPhone usan la misma cuenta de iCloud. Tu pareja necesita la suya."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les deux iPhone utilisent le même compte iCloud. L'autre personne a besoin du sien."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrambi gli iPhone usano lo stesso account iCloud. Il tuo partner ne ha bisogno di uno suo."
+          }
+        }
+      }
+    },
+    "pairing.error.icloud.refused": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud refused this invite."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud hat diese Einladung abgelehnt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud ha rechazado esta invitación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud a refusé cette invitation."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud ha rifiutato questo invito."
+          }
+        }
+      }
+    },
+    "pairing.error.icloud.refused.code": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud refused this invite (error %lld)."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud hat diese Einladung abgelehnt (Fehler %lld)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud ha rechazado esta invitación (error %lld)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud a refusé cette invitation (erreur %lld)."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud ha rifiutato questo invito (errore %lld)."
           }
         }
       }
     },
     "pairing.error.icloud.signedout": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -14058,42 +14187,40 @@
       }
     },
     "pairing.error.share.missing": {
-      "extractionState": "stale",
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diese Einladung ist in iCloud nicht mehr da. Bitte um einen neuen Code."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "That invite is gone from iCloud. Ask for a new code."
+            "value": "This invite no longer works. Ask your partner for a new code."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Einladung funktioniert nicht mehr. Bitte die andere Person um einen neuen Code."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esa invitación ya no está en iCloud. Pide un código nuevo."
+            "value": "Esta invitación ya no funciona. Pide a tu pareja un código nuevo."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cette invitation n'est plus dans iCloud. Demande un nouveau code."
+            "value": "Cette invitation ne fonctionne plus. Demande un nouveau code à l'autre personne."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quell'invito non è più su iCloud. Chiedi un codice nuovo."
+            "value": "Questo invito non funziona più. Chiedi al tuo partner un codice nuovo."
           }
         }
       }
     },
     "pairing.error.share.pending": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -14128,7 +14255,6 @@
       }
     },
     "pairing.error.space.late": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -14809,7 +14935,6 @@
       }
     },
     "pairing.join.connected.pending": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -15662,16 +15787,16 @@
     "paywall.banner.readonly.ended": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Subscription ended. The calendar and Today still work."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Abo beendet. Kalender und Heute laufen weiter."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription ended. The calendar and Today still work."
           }
         },
         "es": {
@@ -15697,16 +15822,16 @@
     "paywall.banner.readonly.never": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No subscription yet. The calendar and Today are free."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Noch kein Abo. Kalender und Heute sind gratis."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No subscription yet. The calendar and Today are free."
           }
         },
         "es": {
@@ -15732,16 +15857,16 @@
     "paywall.banner.readonly.trial": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trial over. The calendar and Today still work."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Test vorbei. Kalender und Heute laufen weiter."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trial over. The calendar and Today still work."
           }
         },
         "es": {
@@ -16350,16 +16475,16 @@
     "paywall.compare.subscriptionended": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your subscription has ended. Everything you made is still here."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dein Abo ist beendet. Alles Angelegte ist noch da."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your subscription has ended. Everything you made is still here."
           }
         },
         "es": {
@@ -16385,16 +16510,16 @@
     "paywall.compare.trialended": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your trial has ended. Everything you made is still here."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Deine Testphase ist vorbei. Alles Angelegte ist noch da."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your trial has ended. Everything you made is still here."
           }
         },
         "es": {
@@ -16594,16 +16719,16 @@
     "paywall.legal.monthly.trial": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$lld days free, then %2$@ a month. Your Apple ID is charged when the trial ends and every month after that, unless you turn auto-renew off at least 24 hours before the trial or the month ends. Manage it in App Store settings."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld Tage gratis, danach %2$@ im Monat. Deine Apple-ID wird am Ende des Tests belastet und danach jeden Monat, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Monats ausschaltest. Verwaltung in den App-Store-Einstellungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld days free, then %2$@ a month. Your Apple ID is charged when the trial ends and every month after that, unless you turn auto-renew off at least 24 hours before the trial or the month ends. Manage it in App Store settings."
           }
         },
         "es": {
@@ -16664,16 +16789,16 @@
     "paywall.legal.yearly.trial": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$lld days free, then %2$@ a year. Your Apple ID is charged when the trial ends and every year after that, unless you turn auto-renew off at least 24 hours before the trial or the year ends. Manage it in App Store settings."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld Tage gratis, danach %2$@ im Jahr. Deine Apple-ID wird am Ende des Tests belastet und danach jedes Jahr, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Jahres ausschaltest. Verwaltung in den App-Store-Einstellungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld days free, then %2$@ a year. Your Apple ID is charged when the trial ends and every year after that, unless you turn auto-renew off at least 24 hours before the trial or the year ends. Manage it in App Store settings."
           }
         },
         "es": {
@@ -17119,16 +17244,16 @@
     "paywall.reason.readonly": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The calendar and Today work without a subscription."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Kalender und Heute gehen auch ohne Abo."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The calendar and Today work without a subscription."
           }
         },
         "es": {
@@ -24681,7 +24806,6 @@
       }
     },
     "question.status.you.writing": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -27325,7 +27449,6 @@
       }
     },
     "settings.subscription.restore": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -27456,13 +27579,13 @@
     "settings.support.address": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
+        "de": {
           "stringUnit": {
             "state": "translated",
             "value": "support@yourcorbie.app"
           }
         },
-        "de": {
+        "en": {
           "stringUnit": {
             "state": "translated",
             "value": "support@yourcorbie.app"
@@ -27491,16 +27614,16 @@
     "settings.support.body": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "\n\n\n---\nDevice: %1$@\nSystem: %2$@\nCorbie: %3$@ (%4$@)"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "\n\n\n---\nGerät: %1$@\nSystem: %2$@\nCorbie: %3$@ (%4$@)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\n\n\n---\nDevice: %1$@\nSystem: %2$@\nCorbie: %3$@ (%4$@)"
           }
         },
         "es": {
@@ -27526,13 +27649,13 @@
     "settings.support.subject": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
+        "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Corbie support"
           }
         },
-        "de": {
+        "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Corbie support"
@@ -27561,16 +27684,16 @@
     "settings.support.title": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contact support"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Support kontaktieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact support"
           }
         },
         "es": {
@@ -28243,16 +28366,16 @@
     "share.stage.readonly.ended": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your subscription has ended. Open Corbie to keep adding wishes."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dein Abo ist beendet. Öffne Corbie, um weiter Wünsche zu sammeln."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your subscription has ended. Open Corbie to keep adding wishes."
           }
         },
         "es": {
@@ -28278,16 +28401,16 @@
     "share.stage.readonly.never": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adding wishes comes with the subscription. Open Corbie to see the plans."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Wünsche anlegen kommt mit dem Abo. Öffne Corbie, um die Abos zu sehen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adding wishes comes with the subscription. Open Corbie to see the plans."
           }
         },
         "es": {
@@ -28313,16 +28436,16 @@
     "share.stage.readonly.trial": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your trial is over. Open Corbie to keep adding wishes."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dein Test ist vorbei. Öffne Corbie, um weiter Wünsche zu sammeln."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your trial is over. Open Corbie to keep adding wishes."
           }
         },
         "es": {
@@ -32194,16 +32317,16 @@
     "us.settings.note.free": {
       "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "names, dates and notifications"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Namen, Tage und Mitteilungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "names, dates and notifications"
           }
         },
         "es": {

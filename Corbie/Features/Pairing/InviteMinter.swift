@@ -18,8 +18,11 @@ struct CloudInviteMinter: InviteMinting {
         guard let url = share.url else {
             throw PairingFailure.sharePending
         }
+        let origin = await PairingStepLog.measure("invite: read the iCloud account") {
+            await environment.sharing.inviteOrigin()
+        }
         return try await PairingStepLog.measure("invite: POST /invite") {
-            try await environment.apiClient.createInvite(spaceId: spaceId, shareURL: url)
+            try await environment.apiClient.createInvite(spaceId: spaceId, shareURL: url, origin: origin)
         }
     }
 

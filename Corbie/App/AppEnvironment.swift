@@ -558,6 +558,7 @@ final class AppEnvironment {
         try? secrets.removeValue(for: Self.appleIdentityTokenKey)
         try? secrets.removeValue(for: Self.appleRefreshTokenKey)
         anonymousIdentity.reset()
+        LiveInviteStore(defaults: defaults).forget()
         do {
             try StoreReset(stack: persistence.stack, defaults: defaults).wipe()
         } catch {

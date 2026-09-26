@@ -54,6 +54,10 @@ import Testing
 
 final class BundleAnchor {}
 
+extension InviteOrigin {
+    static let unknown = InviteOrigin(environment: nil, iCloudAccount: nil)
+}
+
 @Suite struct NetAPIClientEndpointTests {
     @Test func createInviteSendsTheAppleTokenAndDecodesTheCode() async throws {
         let transport = FakeTransport(
@@ -64,7 +68,8 @@ final class BundleAnchor {}
         let space = UUID()
         let invite = try await client.createInvite(
             spaceId: space,
-            shareURL: URL(string: "https://www.icloud.com/share/abc")!
+            shareURL: URL(string: "https://www.icloud.com/share/abc")!,
+            origin: InviteOrigin(environment: .development, iCloudAccount: String(repeating: "c", count: 64))
         )
         #expect(invite.code == "K7M2QX")
         #expect(invite.expiresAt == NetTestSupport.date("2026-09-05T12:15:00Z"))
@@ -81,6 +86,60 @@ final class BundleAnchor {}
         let decoded = try #require(try JSONSerialization.jsonObject(with: body) as? [String: String])
         #expect(decoded["spaceId"] == space.uuidString.lowercased())
         #expect(decoded["shareURL"] == "https://www.icloud.com/share/abc")
+        #expect(decoded["cloudKitEnvironment"] == "development")
+        #expect(decoded["iCloudAccount"] == String(repeating: "c", count: 64))
+    }
+
+    @Test func anInviteFromAnOlderOriginSendsNoEnvironmentOrAccount() async throws {
+        let transport = FakeTransport(json: #"{"code":"K7M2QX","expiresAt":"2026-09-05T12:15:00Z"}"#, status: 201)
+        let client = NetTestSupport.client(transport: transport)
+        _ = try await client.createInvite(
+            spaceId: UUID(),
+            shareURL: URL(string: "https://www.icloud.com/share/abc")!,
+            origin: InviteOrigin(environment: nil, iCloudAccount: nil)
+        )
+        let request = try #require(transport.lastRequest)
+        let body = try #require(request.body)
+        let decoded = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(decoded["cloudKitEnvironment"] == nil)
+        #expect(decoded["iCloudAccount"] == nil)
+    }
+
+    @Test func withdrawingInvitesDeletesTheSpacesCodesWithTheToken() async throws {
+        let transport = FakeTransport([.empty(204)])
+        let client = NetTestSupport.client(transport: transport)
+        let space = UUID()
+        try await client.withdrawInvites(spaceId: space)
+        let request = try #require(transport.lastRequest)
+        #expect(request.method == .delete)
+        #expect(request.url.absoluteString.hasSuffix("/invite/\(space.uuidString.lowercased())"))
+        #expect(request.header("Authorization") == "Bearer apple-token")
+        #expect(request.body == nil)
+    }
+
+    @Test func redeemInviteSendsTheEnvironmentAndAccountAndNamesBothRefusals() async throws {
+        let transport = FakeTransport([
+            .json(#"{"error":"environment_mismatch","message":"made in development"}"#, status: 409),
+            .json(#"{"error":"same_icloud_account","message":"same account"}"#, status: 409)
+        ])
+        let client = NetTestSupport.client(transport: transport)
+        let origin = InviteOrigin(environment: .production, iCloudAccount: String(repeating: "d", count: 64))
+        do {
+            _ = try await client.redeemInvite(code: "K7M2QX", origin: origin)
+            Issue.record("expected a failure")
+        } catch let failure as APIError {
+            #expect(failure.isEnvironmentMismatch)
+            #expect(failure.isSameICloudAccount == false)
+        }
+        let request = try #require(transport.lastRequest)
+        #expect(request.header("X-CloudKit-Environment") == "production")
+        #expect(request.header("X-ICloud-Account") == String(repeating: "d", count: 64))
+        do {
+            _ = try await client.redeemInvite(code: "K7M2QX", origin: origin)
+            Issue.record("expected a failure")
+        } catch let failure as APIError {
+            #expect(failure.isSameICloudAccount)
+        }
     }
 
     @Test func anAuthenticatedCallWithoutATokenNeverReachesTheNetwork() async throws {
@@ -105,7 +164,7 @@ final class BundleAnchor {}
         ])
         let client = NetTestSupport.client(transport: transport)
         do {
-            _ = try await client.redeemInvite(code: " k7m2qx ")
+            _ = try await client.redeemInvite(code: " k7m2qx ", origin: .unknown)
             Issue.record("expected a failure")
         } catch let failure as APIError {
             #expect(failure.status == 409)
@@ -126,7 +185,7 @@ final class BundleAnchor {}
             json: #"{"shareURL":"https://www.icloud.com/share/abc","spaceId":"1c2b8e3a-4d5f-4a6b-8c7d-9e0f1a2b3c4d"}"#
         )
         let client = NetTestSupport.client(transport: transport, anonId: "6f1e4a1e-0d5f-4e0e-9a54-1a5c1a2b3c4d")
-        _ = try await client.redeemInvite(code: "K7M2QX")
+        _ = try await client.redeemInvite(code: "K7M2QX", origin: .unknown)
         let request = try #require(transport.lastRequest)
         #expect(request.header("X-Anon-Id") == "6f1e4a1e-0d5f-4e0e-9a54-1a5c1a2b3c4d")
         #expect(request.header("Authorization") == nil)
@@ -138,7 +197,7 @@ final class BundleAnchor {}
         ])
         let client = NetTestSupport.client(transport: transport)
         do {
-            _ = try await client.redeemInvite(code: "FYDW7C")
+            _ = try await client.redeemInvite(code: "FYDW7C", origin: .unknown)
             Issue.record("expected a failure")
         } catch let failure as APIError {
             #expect(failure.status == 410)
@@ -154,7 +213,7 @@ final class BundleAnchor {}
             json: #"{"shareURL":"https://www.icloud.com/share/abc","spaceId":"1c2b8e3a-4d5f-4a6b-8c7d-9e0f1a2b3c4d"}"#
         )
         let client = NetTestSupport.client(transport: transport)
-        let share = try await client.redeemInvite(code: "K7M2QX")
+        let share = try await client.redeemInvite(code: "K7M2QX", origin: .unknown)
         #expect(share.shareLink?.host == "www.icloud.com")
         #expect(share.spaceId.uuidString.lowercased() == "1c2b8e3a-4d5f-4a6b-8c7d-9e0f1a2b3c4d")
     }

@@ -57,6 +57,8 @@ public enum ServerErrorCode: String, Sendable, Equatable, CaseIterable, Codable 
     case expired
     case superseded
     case redeemed
+    case environmentMismatch = "environment_mismatch"
+    case sameICloudAccount = "same_icloud_account"
     case rateLimited = "rate_limited"
     case upstreamFailed = "upstream_failed"
     case internalFailure = "internal"
@@ -111,6 +113,8 @@ public struct APIError: Error, Sendable, Equatable {
     public var isExpired: Bool { code == .expired }
     public var isSuperseded: Bool { code == .superseded }
     public var isRedeemed: Bool { code == .redeemed }
+    public var isEnvironmentMismatch: Bool { code == .environmentMismatch }
+    public var isSameICloudAccount: Bool { code == .sameICloudAccount }
 
     public var corbieError: CorbieError {
         switch kind {
@@ -169,6 +173,16 @@ public struct InviteCode: Sendable, Equatable, Codable {
     public init(code: String, expiresAt: Date) {
         self.code = code
         self.expiresAt = expiresAt
+    }
+}
+
+public struct InviteOrigin: Sendable, Equatable {
+    public let environment: CloudKitEnvironment?
+    public let iCloudAccount: String?
+
+    public init(environment: CloudKitEnvironment?, iCloudAccount: String?) {
+        self.environment = environment
+        self.iCloudAccount = iCloudAccount
     }
 }
 
@@ -329,6 +343,8 @@ struct AnalyticsBatch: Codable, Sendable {
 struct InviteRequestBody: Encodable, Sendable {
     let spaceId: String
     let shareURL: String
+    let cloudKitEnvironment: CloudKitEnvironment?
+    let iCloudAccount: String?
 }
 
 struct ParseRequestBody: Encodable, Sendable {

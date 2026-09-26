@@ -118,9 +118,9 @@ final class InviteViewModel {
             environment.analytics.record(.inviteCreated)
         } catch {
             guard phase == .working else { return }
-            let kind = PairingFailure.kind(for: error)
+            let kind = PairingFailure.kind(for: error, side: .inviting)
             phase = .failed
-            failure = kind.message
+            failure = PairingFailure.message(for: error, side: .inviting)
             InviteViewModel.log.error(
                 """
                 invite failed as \(kind.rawValue, privacy: .public): \

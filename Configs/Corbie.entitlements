@@ -12,6 +12,8 @@
 	<array>
 		<string>applinks:yourcorbie.app</string>
 	</array>
+	<key>com.apple.developer.icloud-container-environment</key>
+	<string>$(CORBIE_CLOUDKIT_ENVIRONMENT)</string>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>iCloud.app.corbie</string>

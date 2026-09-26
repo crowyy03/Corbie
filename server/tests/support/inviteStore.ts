@@ -8,8 +8,10 @@ export class MemoryInviteStore implements InviteStore {
   readonly rows = new Map<string, InviteRow>();
   beforeNextClaim: (() => void) | null = null;
 
-  add(row: NewInvite & Partial<InviteRow>): void {
+  add(row: Omit<NewInvite, "cloudkit_environment" | "owner_account"> & Partial<InviteRow>): void {
     this.rows.set(row.code, {
+      cloudkit_environment: null,
+      owner_account: null,
       superseded_at: null,
       redeemed_at: null,
       redeemed_by: null,
@@ -36,6 +38,15 @@ export class MemoryInviteStore implements InviteStore {
       if (row.space_id === spaceId && new Date(row.created_at) < createdAt && live) {
         row.superseded_at = createdAt.toISOString();
       }
+    }
+    return Promise.resolve();
+  }
+
+  expireLive(spaceId: string, now: Date): Promise<void> {
+    for (const row of this.rows.values()) {
+      const live = row.redeemed_at === null && row.superseded_at === null &&
+        new Date(row.expires_at) > now;
+      if (row.space_id === spaceId && live) row.expires_at = now.toISOString();
     }
     return Promise.resolve();
   }
