@@ -139,7 +139,7 @@ final class PersonDetailViewModel {
 
     func priceText(_ idea: GiftIdeaDTO, locale: Locale = .current) -> String? {
         guard let price = idea.price else { return nil }
-        let currency = idea.currency ?? environment?.space?.displayCurrency ?? SupportedCurrencies.defaultCode
+        let currency = idea.currency ?? environment?.space?.displayCurrency ?? SupportedCurrencies.fallbackCode
         return Money(amount: price, currency: currency).formatted(locale: locale)
     }
 }

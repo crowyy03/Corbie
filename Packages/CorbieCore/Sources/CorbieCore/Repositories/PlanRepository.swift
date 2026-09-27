@@ -18,7 +18,7 @@ public struct PlanDraft: Sendable, Equatable {
         title: String,
         type: PlanType = .other,
         targetAmount: Double = 0,
-        currency: String = SupportedCurrencies.defaultCode,
+        currency: String = SupportedCurrencies.fallbackCode,
         savedAmount: Double = 0,
         isOpenEnded: Bool = false,
         startAt: Date? = nil,

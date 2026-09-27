@@ -37,7 +37,7 @@ public struct GiftIdeaDTO: Sendable, Codable, Identifiable, Equatable {
             title: idea.title ?? "",
             url: idea.url,
             price: idea.price?.doubleValue,
-            currency: idea.currency.map(SupportedCurrencies.codeOrDefault),
+            currency: idea.currency.map(SupportedCurrencies.codeOrFallback),
             note: idea.note,
             isDone: idea.isDone
         )

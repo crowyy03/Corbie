@@ -65,7 +65,7 @@ final class WishLinkFillTests: XCTestCase {
         XCTAssertEqual(model.parseState, .idle)
         XCTAssertTrue(model.priceText.isEmpty, "a price in a currency the app does not offer must not be filled")
         XCTAssertEqual(model.currency, startingCurrency)
-        XCTAssertEqual(model.currencies, SupportedCurrencies.codes)
+        XCTAssertEqual(model.currencyGroups, SupportedCurrencies.pickerGroups(for: .current))
         XCTAssertNil(environment.toasts.current)
         XCTAssertEqual(model.priceLeftOut, .unsupportedCurrency("RUB"))
         XCTAssertEqual(

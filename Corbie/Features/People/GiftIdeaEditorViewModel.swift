@@ -35,7 +35,7 @@ final class GiftIdeaEditorViewModel {
     var priceText: String
     var currency: String
     var note: String
-    let currencies = SupportedCurrencies.codes
+    let currencyGroups = SupportedCurrencies.pickerGroups(for: .current)
     private(set) var linkState: LinkState = .idle
     private(set) var isSaving = false
 
@@ -60,7 +60,7 @@ final class GiftIdeaEditorViewModel {
     func bind(_ environment: AppEnvironment) {
         self.environment = environment
         if currency.isEmpty {
-            currency = environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode
+            currency = environment.space?.displayCurrency ?? SupportedCurrencies.fallbackCode
         }
     }
 
@@ -103,7 +103,7 @@ final class GiftIdeaEditorViewModel {
         }
         if let price = parsed.price, priceText.isEmpty {
             priceText = price.formatted(.number.precision(.fractionLength(0...2)))
-            if let parsedCurrency = parsed.currency, currencies.contains(parsedCurrency) {
+            if let parsedCurrency = parsed.currency, SupportedCurrencies.contains(parsedCurrency) {
                 currency = parsedCurrency
             }
         }

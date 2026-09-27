@@ -30,7 +30,7 @@ struct ExpenseEditorView: View {
             )
             PlansCurrencyField(
                 label: String(localized: "plans.expense.field.currency"),
-                currencies: model.currencies,
+                currencyGroups: model.currencyGroups,
                 selection: $model.currency
             )
             if model.allowsWithdrawal {

@@ -748,7 +748,7 @@ final class PairingInviteTests: XCTestCase {
 
     private func makeSpace(in persistence: PersistenceController) async throws -> SpaceDTO {
         try await persistence.repositories.spaces.create(
-            displayCurrency: SupportedCurrencies.defaultCode,
+            displayCurrency: SupportedCurrencies.fallbackCode,
             creatorMemberId: nil,
             now: Date()
         )

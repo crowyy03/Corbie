@@ -165,9 +165,7 @@ struct SettingsView: View {
     private var spaceSection: some View {
         Section {
             Picker(selection: currencyBinding) {
-                ForEach(model.currencies, id: \.self) { code in
-                    Text(verbatim: code).tag(code)
-                }
+                CurrencyChoices(groups: model.currencyGroups)
             } label: {
                 Text("settings.space.currency")
                     .corbieBody()

@@ -11,7 +11,7 @@ final class ExpenseEditorViewModel {
     var note = ""
     var date = Date()
     private(set) var isSaving = false
-    let currencies = SupportedCurrencies.codes
+    let currencyGroups = SupportedCurrencies.pickerGroups(for: .current)
 
     @ObservationIgnored private let plan: PlanDTO
     @ObservationIgnored private var environment: AppEnvironment?

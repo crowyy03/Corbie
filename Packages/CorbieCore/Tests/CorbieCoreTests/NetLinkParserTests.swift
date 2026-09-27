@@ -111,7 +111,7 @@ import Testing
     }
 
     @Test func anUnsupportedCurrencyWithoutAPriceIsDroppedToo() async throws {
-        let api = FakeTransport(json: payload(price: nil, currency: "INR"))
+        let api = FakeTransport(json: payload(price: nil, currency: "UAH"))
         let parser = LinkParser(client: NetTestSupport.client(transport: api), downloadsImages: false)
         let link = try await parser.parse(rawURL: "https://www.amazon.com/dp/B0")
 
@@ -170,8 +170,8 @@ import Testing
     }
 
     @Test(arguments: [
-        "https://allegro.pl/oferta/lamp-1",
-        "https://www.example.co.uk/en-in/p/lamp",
+        "https://www.ozon.ru/product/lamp-1",
+        "https://www.example.co.uk/uk-ua/p/lamp",
         "https://www.amazon.com/dp/B0"
     ])
     func noSupportedCurrencyInTheLinkLeavesThePriceOut(canonicalURL: String) async throws {
@@ -366,7 +366,14 @@ import Testing
         ("https://www.example.com/en/au/p/lamp", "AUD"),
         ("https://www.bol.com/be/nl/p/lamp", "EUR"),
         ("https://www.example.ca/us/p/lamp", "USD"),
-        ("https://www.example.de/gb/p/lamp", "GBP")
+        ("https://www.example.de/gb/p/lamp", "GBP"),
+        ("https://www.apple.com/in/shop/product/lamp", "INR"),
+        ("https://www.example.co.uk/en-in/p/lamp", "INR"),
+        ("https://www.ikea.com/pl/pl/p/lamp", "PLN"),
+        ("https://www.zara.com/kr/ko/lamp-p1.html", "KRW"),
+        ("https://www.nike.com/mx/t/shoe", "MXN"),
+        ("https://www2.hm.com/pt_br/productpage.1.html", "BRL"),
+        ("https://www.ikea.com/za/en/p/lamp", "ZAR")
     ])
     func aCountryInThePathGivesItsCurrency(url: String, currency: String) throws {
         let match = try #require(LinkCurrencyInference.match(for: URL(string: url)!))
@@ -390,7 +397,16 @@ import Testing
         ("https://www.canadiantire.ca/fr/pdp/lamp", "CAD"),
         ("https://www.example.es/ca/p/lamp", "EUR"),
         ("https://www.example.co.uk/cy/p/lamp", "GBP"),
-        ("https://www.example.co.uk/en/p/lamp", "GBP")
+        ("https://www.example.co.uk/en/p/lamp", "GBP"),
+        ("https://allegro.pl/oferta/lamp-1", "PLN"),
+        ("https://www.amazon.com.br/dp/B0", "BRL"),
+        ("https://www.amazon.in/dp/B0", "INR"),
+        ("https://shop.example.co.kr/p/lamp", "KRW"),
+        ("https://www.amazon.com.mx/dp/B0", "MXN"),
+        ("https://www.lazada.sg/p/lamp", "SGD"),
+        ("https://shop.example.com.hk/p/lamp", "HKD"),
+        ("https://www.takealot.co.za/p/lamp", "ZAR"),
+        ("https://www.example.se/p/lamp", "SEK")
     ])
     func theHostSuffixFillsWhenThePathNamesNoCountry(url: String, currency: String) throws {
         let match = try #require(LinkCurrencyInference.match(for: URL(string: url)!))
@@ -402,10 +418,14 @@ import Testing
         "https://www.example.com/en/p/lamp",
         "https://www.example.com/ja/p/lamp",
         "https://www.amazon.com/-/es/dp/B0",
-        "https://allegro.pl/oferta/lamp-1",
-        "https://www.example.co.uk/en-in/p/lamp",
-        "https://www.ikea.com/pl/pl/p/lamp",
+        "https://www.ozon.ru/product/lamp-1",
+        "https://www.example.co.uk/uk-ua/p/lamp",
+        "https://www.ikea.com/ua/uk/p/lamp",
         "https://rozetka.com.ua/uk/lamp/p1/",
+        "https://shop.example.io/p/lamp",
+        "https://shop.example.co/p/lamp",
+        "https://shop.example.tv/p/lamp",
+        "https://shop.example.me/p/lamp",
         "https://www.example.eu/p/lamp",
         "https://www.example.com"
     ])

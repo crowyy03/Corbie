@@ -120,9 +120,7 @@ struct GiftIdeaEditorView: View {
                     .accessibilityLabel(Text("people.gift.price"))
 
                 Picker(selection: $model.currency) {
-                    ForEach(model.currencies, id: \.self) { code in
-                        Text(code).tag(code)
-                    }
+                    CurrencyChoices(groups: model.currencyGroups)
                 } label: {
                     Text("people.gift.currency")
                 }

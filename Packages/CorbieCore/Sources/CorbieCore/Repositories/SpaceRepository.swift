@@ -21,7 +21,7 @@ public protocol SpaceRepository: Sendable {
 }
 
 extension SpaceRepository {
-    public func create(displayCurrency: String = SupportedCurrencies.defaultCode, creatorMemberId: UUID? = nil) async throws -> SpaceDTO {
+    public func create(displayCurrency: String = SupportedCurrencies.fallbackCode, creatorMemberId: UUID? = nil) async throws -> SpaceDTO {
         try await create(displayCurrency: displayCurrency, creatorMemberId: creatorMemberId, now: Date())
     }
 }

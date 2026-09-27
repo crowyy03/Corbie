@@ -64,6 +64,7 @@
 		2DA7EB9F7EE6B7F0F2694128 /* ThemeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C8C67D6DEC89A0B89753D9 /* ThemeUITests.swift */; };
 		2F9A4308DE5B03AFFC9879CB /* TaskEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEC33DB56FB832D8B4FBA5E /* TaskEditorView.swift */; };
 		30408DE5B9DFF45A0CF2F91C /* QASettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833DE92EF338706B8E2DAA59 /* QASettingsUITests.swift */; };
+		30AEFC555C0926E23331A5CB /* CurrencyChoices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54903D1ED0C16A5E114215CF /* CurrencyChoices.swift */; };
 		312C63A42C5DAC57F621E347 /* ComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A3925E50335CDCDF66A139 /* ComparisonView.swift */; };
 		31B1805E34395ACEE0855767 /* SettingsStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AB371691F42D784DFEFA95 /* SettingsStatusTests.swift */; };
 		31E9B11E8CBE901C6DA8CE29 /* QAReadOnlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622674653C140150FE22DDCD /* QAReadOnlyUITests.swift */; };
@@ -495,6 +496,7 @@
 		4FDE33944B3097AA07725C83 /* AccountIdentityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountIdentityTests.swift; sourceTree = "<group>"; };
 		50D4206ADACBCE170578E69D /* PartnerDepartureWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerDepartureWatcher.swift; sourceTree = "<group>"; };
 		51923DECAF5B0D27F609B33E /* WishDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishDetailViewModel.swift; sourceTree = "<group>"; };
+		54903D1ED0C16A5E114215CF /* CurrencyChoices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyChoices.swift; sourceTree = "<group>"; };
 		55A2E5EDAD4EDC91BA498D3E /* ListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailView.swift; sourceTree = "<group>"; };
 		5759A0DB836C724CCDD7F406 /* CapsulesStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsulesStateTests.swift; sourceTree = "<group>"; };
 		585E9803C252913DFA69DC26 /* QuestionHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionHistoryView.swift; sourceTree = "<group>"; };
@@ -1111,6 +1113,7 @@
 			isa = PBXGroup;
 			children = (
 				8F8965137EA487DC01422332 /* AddToolbarItem.swift */,
+				54903D1ED0C16A5E114215CF /* CurrencyChoices.swift */,
 				7E4CEA4660F79E6824FAE29E /* EdgeSwipeBack.swift */,
 				F12C77054F80369939EF3D61 /* LegalPage.swift */,
 				8827801FCFEA5A0361B2A7B4 /* MapPlace.swift */,
@@ -1748,6 +1751,7 @@
 				312C63A42C5DAC57F621E347 /* ComparisonView.swift in Sources */,
 				11CF553549A59110E34D0FF3 /* CorbieApp.swift in Sources */,
 				E064C7BE58B9353B4C037B08 /* CorbieMarkView.swift in Sources */,
+				30AEFC555C0926E23331A5CB /* CurrencyChoices.swift in Sources */,
 				914D451CCA158D3DF47F9C66 /* DebugLaunch.swift in Sources */,
 				03916B26932EEB074C4763D1 /* DebugMenuView.swift in Sources */,
 				A249BB0691EA7088FC1302C2 /* DebugNotificationsSections.swift in Sources */,

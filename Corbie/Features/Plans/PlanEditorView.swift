@@ -51,7 +51,7 @@ struct PlanEditorView: View {
             }
             PlansCurrencyField(
                 label: String(localized: "plans.editor.field.currency"),
-                currencies: model.currencies,
+                currencyGroups: model.currencyGroups,
                 selection: $model.currency
             )
             PlansAmountField(

@@ -48,6 +48,35 @@ Deno.test("detects currency from symbol or code", () => {
   assertEquals(detectCurrency("299 SEK"), "SEK");
 });
 
+Deno.test("every currency of the rates feed is read from its code, and baht and peso from their signs", () => {
+  for (
+    const code of [
+      "BRL",
+      "CNY",
+      "CZK",
+      "DKK",
+      "HUF",
+      "IDR",
+      "ILS",
+      "INR",
+      "ISK",
+      "KRW",
+      "MXN",
+      "MYR",
+    ]
+  ) {
+    assertEquals(detectCurrency(`1 299 ${code}`), code);
+  }
+  for (const code of ["NOK", "PHP", "RON", "SGD", "THB", "TRY", "ZAR", "HKD", "NZD", "AUD"]) {
+    assertEquals(detectCurrency(`1 299 ${code}`), code);
+  }
+  assertEquals(detectCurrency("฿1,290"), "THB");
+  assertEquals(detectCurrency("₱1,290.00"), "PHP");
+  assertEquals(detectCurrency("R$ 1.290,00"), "BRL");
+  assertEquals(detectCurrency("₩129,000"), "KRW");
+  assertEquals(detectCurrency("₹1,299"), "INR");
+});
+
 Deno.test("a currency code glued to the amount is still detected", () => {
   assertEquals(parsePrice("EUR23.89"), { amount: 23.89, currency: "EUR" });
   assertEquals(parsePrice("23.89EUR"), { amount: 23.89, currency: "EUR" });
@@ -84,9 +113,10 @@ Deno.test("a price text shows its minor unit only with two digits after the last
   assertEquals(showsMinorUnit("¥1,234"), false);
 });
 
-Deno.test("yen and won are the supported currencies without a minor unit", () => {
+Deno.test("yen, won and the Icelandic krona are the supported currencies without a minor unit", () => {
   assertEquals(hasNoMinorUnit("JPY"), true);
   assertEquals(hasNoMinorUnit("KRW"), true);
+  assertEquals(hasNoMinorUnit("ISK"), true);
   assertEquals(hasNoMinorUnit("EUR"), false);
   assertEquals(hasNoMinorUnit("HUF"), false);
   assertEquals(hasNoMinorUnit(null), false);

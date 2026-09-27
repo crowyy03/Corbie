@@ -28,7 +28,29 @@ public enum LinkCurrencyInference {
         "AUD": ["au"],
         "NZD": ["nz"],
         "JPY": ["jp"],
-        "CHF": ["ch", "li"]
+        "CHF": ["ch", "li"],
+        "BRL": ["br"],
+        "CNY": ["cn"],
+        "CZK": ["cz"],
+        "DKK": ["dk"],
+        "HKD": ["hk"],
+        "HUF": ["hu"],
+        "IDR": ["id"],
+        "ILS": ["il"],
+        "INR": ["in"],
+        "ISK": ["is"],
+        "KRW": ["kr"],
+        "MXN": ["mx"],
+        "MYR": ["my"],
+        "NOK": ["no"],
+        "PHP": ["ph"],
+        "PLN": ["pl"],
+        "RON": ["ro"],
+        "SEK": ["se"],
+        "SGD": ["sg"],
+        "THB": ["th"],
+        "TRY": ["tr"],
+        "ZAR": ["za"]
     ]
 
     static let currencyByCountry: [String: String] = Dictionary(

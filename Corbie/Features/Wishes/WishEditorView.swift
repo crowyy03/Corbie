@@ -139,9 +139,7 @@ struct WishEditorView: View {
                     .accessibilityLabel(Text("wishes.editor.price"))
                 Menu {
                     Picker(String(localized: "wishes.editor.currency"), selection: $viewModel.currency) {
-                        ForEach(viewModel.currencies, id: \.self) { code in
-                            Text(code).tag(code)
-                        }
+                        CurrencyChoices(groups: viewModel.currencyGroups)
                     }
                 } label: {
                     Text(viewModel.currency)

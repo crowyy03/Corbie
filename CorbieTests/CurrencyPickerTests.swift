@@ -12,7 +12,7 @@ final class CurrencyPickerTests: XCTestCase {
         return environment
     }
 
-    func testEveryPickerOffersTheSameEightInTheSameOrder() throws {
+    func testEveryPickerOffersTheSameGroupsInTheSameOrder() throws {
         let environment = try environment(displayCurrency: "EUR")
         let plan = PlanDTO(id: UUID(), title: "Lisbon", currency: "EUR")
 
@@ -27,13 +27,14 @@ final class CurrencyPickerTests: XCTestCase {
         let giftEditor = GiftIdeaEditorViewModel(personId: UUID(), mode: .new)
         giftEditor.bind(environment)
 
-        let expected = ["USD", "EUR", "GBP", "CAD", "AUD", "NZD", "JPY", "CHF"]
-        XCTAssertEqual(settings.currencies, expected)
-        XCTAssertEqual(planEditor.currencies, expected)
-        XCTAssertEqual(expenseEditor.currencies, expected)
-        XCTAssertEqual(wishEditor.currencies, expected)
-        XCTAssertEqual(giftEditor.currencies, expected)
-        XCTAssertFalse(expected.contains("RUB"))
+        let expected = SupportedCurrencies.pickerGroups(for: .current)
+        XCTAssertEqual(Set(expected.flatMap { $0 }), Set(SupportedCurrencies.codes))
+        XCTAssertEqual(settings.currencyGroups, expected)
+        XCTAssertEqual(planEditor.currencyGroups, expected)
+        XCTAssertEqual(expenseEditor.currencyGroups, expected)
+        XCTAssertEqual(wishEditor.currencyGroups, expected)
+        XCTAssertEqual(giftEditor.currencyGroups, expected)
+        XCTAssertFalse(expected.flatMap { $0 }.contains("RUB"))
     }
 
     func testNewThingsStartOnTheSpaceCurrencyAndOnDollarsWithoutOne() throws {

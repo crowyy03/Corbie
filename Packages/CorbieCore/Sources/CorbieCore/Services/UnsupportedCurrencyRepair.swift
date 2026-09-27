@@ -19,7 +19,7 @@ public struct UnsupportedCurrencyRepair: Sendable {
                 + repositories.people.replaceUnsupportedGiftIdeaCurrencies(spaceId: spaceId)
             if replaced > 0 {
                 UnsupportedCurrencyRepair.log.notice(
-                    "replaced \(replaced, privacy: .public) unsupported currency codes with \(SupportedCurrencies.defaultCode, privacy: .public)"
+                    "replaced \(replaced, privacy: .public) unsupported currency codes with \(SupportedCurrencies.fallbackCode, privacy: .public)"
                 )
             }
             return replaced

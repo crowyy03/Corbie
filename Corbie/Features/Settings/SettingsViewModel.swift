@@ -8,8 +8,8 @@ import os
 final class SettingsViewModel {
     var profile = ProfileDraft()
     var weddingDate: Date?
-    var displayCurrency = SupportedCurrencies.defaultCode
-    let currencies = SupportedCurrencies.codes
+    var displayCurrency = SupportedCurrencies.fallbackCode
+    let currencyGroups = SupportedCurrencies.pickerGroups(for: .current)
     var exportURL: URL?
     var isWorking = false
     private(set) var isSavingName = false
@@ -56,7 +56,7 @@ final class SettingsViewModel {
         if pendingCommits == 0 {
             profile = stored
             weddingDate = environment.space?.weddingDate
-            displayCurrency = environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode
+            displayCurrency = environment.space?.displayCurrency ?? SupportedCurrencies.fallbackCode
         }
         profile.displayName = pendingName ?? stored.displayName
     }

@@ -17,13 +17,13 @@ final class PlanEditorViewModel {
     var type: PlanType = .other
     var targetAmount: Double = 0
     var savedAmount: Double = 0
-    var currency = SupportedCurrencies.defaultCode
+    var currency = SupportedCurrencies.fallbackCode
     var hasDates = false
     var startAt = Date()
     var endAt = Date()
     var note = ""
     private(set) var isSaving = false
-    let currencies = SupportedCurrencies.codes
+    let currencyGroups = SupportedCurrencies.pickerGroups(for: .current)
 
     private struct LoadedControls {
         var kind: Kind
@@ -47,7 +47,7 @@ final class PlanEditorViewModel {
         type = plan.type
         targetAmount = plan.targetAmount
         savedAmount = plan.savedAmount
-        currency = SupportedCurrencies.codeOrDefault(plan.currency)
+        currency = SupportedCurrencies.codeOrFallback(plan.currency)
         hasDates = plan.startAt != nil || plan.endAt != nil
         startAt = plan.startAt ?? plan.endAt ?? Date()
         endAt = plan.endAt ?? plan.startAt ?? Date()

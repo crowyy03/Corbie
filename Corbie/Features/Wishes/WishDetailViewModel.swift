@@ -68,7 +68,7 @@ final class WishDetailViewModel {
         guard let money = WishPricing.money(for: wish) else { return nil }
         return WishPricing.approximate(
             money,
-            in: environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode,
+            in: environment.space?.displayCurrency ?? SupportedCurrencies.fallbackCode,
             rates: environment.fx.cachedRates(base: money.currency)
         )
     }

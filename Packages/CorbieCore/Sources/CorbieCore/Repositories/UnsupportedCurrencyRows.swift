@@ -32,7 +32,7 @@ extension CoreDataAccess {
             var replaced = 0
             for row in rows {
                 for object in try context.fetch(row.request(spaceId: spaceId)) {
-                    object.setValue(SupportedCurrencies.defaultCode, forKey: row.currencyKey)
+                    object.setValue(SupportedCurrencies.fallbackCode, forKey: row.currencyKey)
                     replaced += 1
                 }
             }

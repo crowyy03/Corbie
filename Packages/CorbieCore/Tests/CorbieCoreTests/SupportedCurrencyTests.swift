@@ -4,42 +4,92 @@ import Testing
 @testable import CorbieCore
 
 @Suite struct SupportedCurrencyListTests {
-    @Test func theListIsTheCuratedEightInAFixedOrder() {
-        #expect(SupportedCurrencies.codes == ["USD", "EUR", "GBP", "CAD", "AUD", "NZD", "JPY", "CHF"])
-        #expect(SupportedCurrencies.defaultCode == "USD")
+    @Test func theListIsEveryCurrencyTheRatesFeedCarries() {
+        #expect(SupportedCurrencies.codes.count == 30)
+        #expect(Set(SupportedCurrencies.codes).count == 30)
+        for code in ["USD", "EUR", "GBP", "BRL", "INR", "KRW", "MXN", "SGD", "HKD", "ZAR", "JPY", "CHF"] {
+            #expect(SupportedCurrencies.contains(code), "\(code)")
+        }
+        #expect(SupportedCurrencies.fallbackCode == "USD")
+        #expect(SupportedCurrencies.common.allSatisfy(SupportedCurrencies.contains))
     }
 
-    @Test func rublesAreNeverOffered() {
-        #expect(SupportedCurrencies.codes.contains("RUB") == false)
-        #expect(SupportedCurrencies.contains("RUB") == false)
-        #expect(SupportedCurrencies.contains(" rub ") == false)
-        #expect(SupportedCurrencies.codeOrDefault("RUB") == "USD")
+    @Test func rublesAndCurrenciesTheFeedDropsAreNeverOffered() {
+        for code in ["RUB", " rub ", "UAH", "BGN", "AED"] {
+            #expect(SupportedCurrencies.contains(code) == false, "\(code)")
+        }
+        #expect(SupportedCurrencies.codeOrFallback("RUB") == "USD")
     }
 
-    @Test func aSupportedCodeIsKeptAndAnythingElseIsDollars() {
-        #expect(SupportedCurrencies.codeOrDefault(" eur ") == "EUR")
-        #expect(SupportedCurrencies.codeOrDefault("JPY") == "JPY")
-        #expect(SupportedCurrencies.codeOrDefault("PLN") == "USD")
-        #expect(SupportedCurrencies.codeOrDefault("") == "USD")
-        #expect(SupportedCurrencies.codeOrDefault(nil) == "USD")
+    @Test func aSupportedCodeIsKeptAndAnythingElseIsTheFallback() {
+        #expect(SupportedCurrencies.codeOrFallback(" eur ") == "EUR")
+        #expect(SupportedCurrencies.codeOrFallback("PLN") == "PLN")
+        #expect(SupportedCurrencies.codeOrFallback("krw") == "KRW")
+        #expect(SupportedCurrencies.codeOrFallback("UAH") == "USD")
+        #expect(SupportedCurrencies.codeOrFallback("") == "USD")
+        #expect(SupportedCurrencies.codeOrFallback(nil) == "USD")
     }
 
     @Test(arguments: [
-        ("ru_RU", "RUB", "1\u{A0}240\u{A0}$"),
-        ("de_DE", "EUR", "1.240\u{A0}$"),
-        ("ja_JP", "JPY", "$1,240")
+        ("en_US", "USD"),
+        ("pt_BR", "BRL"),
+        ("ko_KR", "KRW"),
+        ("en_IN", "INR"),
+        ("es_MX", "MXN"),
+        ("en_ZA", "ZAR"),
+        ("de_DE", "EUR"),
+        ("ja_JP", "JPY"),
+        ("en_SG", "SGD"),
+        ("zh_HK", "HKD"),
+        ("en_US@currency=EUR", "EUR"),
+        ("ru_RU", "USD"),
+        ("uk_UA", "USD"),
+        ("ar_AE", "USD"),
+        ("en", "USD")
     ])
-    func aNewSpaceIsInDollarsWhateverTheRegion(identifier: String, regionCurrency: String, dollars: String) async throws {
-        let locale = Locale(identifier: identifier)
-        #expect(locale.currency?.identifier == regionCurrency)
+    func aNewSpaceTakesTheRegionsCurrencyWhenItIsSupported(identifier: String, expected: String) {
+        #expect(SupportedCurrencies.defaultCode(for: Locale(identifier: identifier)) == expected)
+    }
 
+    @Test func ruRUFallsBackToDollarsBecauseRublesAreNotInTheFeed() {
+        let russia = Locale(identifier: "ru_RU")
+        #expect(russia.currency?.identifier == "RUB")
+        #expect(SupportedCurrencies.defaultCode(for: russia) == "USD")
+    }
+
+    @Test func theStoredFallbackStaysDollarsWhateverTheRegion() async throws {
         let controller = PersistenceController.inMemory()
         let space = try await controller.repositories.spaces.create()
         let plan = try await controller.repositories.plans.create(PlanDraft(spaceId: space.id, title: "The pot"))
-
         #expect(space.displayCurrency == "USD")
         #expect(plan.currency == "USD")
-        #expect(Money(amount: Decimal(1240), currency: space.displayCurrency).formatted(locale: locale) == dollars)
+    }
+
+    @Test func thePickerPutsTheDevicesCurrencyFirstThenTheCommonOnesThenTheRest() {
+        let brazil = SupportedCurrencies.pickerGroups(for: Locale(identifier: "pt_BR"))
+        #expect(brazil.count == 3)
+        #expect(brazil[0] == ["BRL"])
+        #expect(brazil[1] == SupportedCurrencies.common)
+        #expect(Set(brazil.flatMap { $0 }) == Set(SupportedCurrencies.codes))
+        #expect(brazil.flatMap { $0 }.count == SupportedCurrencies.codes.count)
+
+        let america = SupportedCurrencies.pickerGroups(for: Locale(identifier: "en_US"))
+        #expect(america[0] == ["USD"])
+        #expect(america[1] == ["EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "HKD", "SGD"])
+        let rest = america[2]
+        let names = rest.map { SupportedCurrencies.name(of: $0, in: Locale(identifier: "en_US")) }
+        #expect(names == names.sorted { $0.localizedStandardCompare($1) == .orderedAscending })
+    }
+
+    @Test func aDeviceInAnUnsupportedCurrencyStartsWithTheCommonOnes() {
+        let russia = SupportedCurrencies.pickerGroups(for: Locale(identifier: "ru_RU"))
+        #expect(russia.count == 2)
+        #expect(russia[0] == SupportedCurrencies.common)
+        #expect(russia.flatMap { $0 }.contains("RUB") == false)
+    }
+
+    @Test func aPickerRowNamesTheCurrencyAndShowsItsCode() {
+        #expect(SupportedCurrencies.label(of: "BRL", in: Locale(identifier: "en_US")) == "Brazilian Real (BRL)")
     }
 }
 
@@ -120,7 +170,7 @@ import Testing
         try await setStoredCurrency("RUB", Plan.entityName, id: rows.plan.id, in: world)
         try await setStoredCurrency("RUB", PlanExpense.entityName, id: rows.expense.id, in: world)
         try await setStoredCurrency("rub", Wish.entityName, id: rows.wish.id, in: world)
-        try await setStoredCurrency("PLN", GiftIdea.entityName, id: rows.idea.id, in: world)
+        try await setStoredCurrency("UAH", GiftIdea.entityName, id: rows.idea.id, in: world)
     }
 
     @Test func everyUnsupportedCodeInTheSpaceBecomesDollarsAndNoAmountMoves() async throws {

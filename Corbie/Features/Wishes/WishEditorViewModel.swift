@@ -20,7 +20,7 @@ final class WishEditorViewModel {
     var link = ""
     var title = ""
     var priceText = ""
-    var currency = SupportedCurrencies.defaultCode
+    var currency = SupportedCurrencies.fallbackCode
     var priority: WishPriority = .want
     var note = ""
     var isForMe = false
@@ -29,7 +29,7 @@ final class WishEditorViewModel {
     private(set) var priceLeftOut: PriceLeftOut?
     private(set) var localImage: Data?
     private(set) var imageURL: String?
-    let currencies = SupportedCurrencies.codes
+    let currencyGroups = SupportedCurrencies.pickerGroups(for: .current)
     private(set) var isSaving = false
     private(set) var isEditing = false
 
@@ -64,7 +64,7 @@ final class WishEditorViewModel {
         guard didConfigure == false else { return }
         didConfigure = true
         self.environment = environment
-        currency = environment.space?.displayCurrency ?? SupportedCurrencies.defaultCode
+        currency = environment.space?.displayCurrency ?? SupportedCurrencies.fallbackCode
         if let wish = request.wish {
             existing = wish
             isEditing = true
@@ -72,7 +72,7 @@ final class WishEditorViewModel {
             settledLink = linkInField?.absoluteString
             title = wish.title
             if let price = wish.price { priceText = WishPricing.text(from: price) }
-            if let code = wish.currency, currencies.contains(code) { currency = code }
+            if let code = wish.currency, SupportedCurrencies.contains(code) { currency = code }
             priority = wish.priority
             note = wish.note ?? ""
             localImage = wish.localImage
@@ -219,7 +219,7 @@ final class WishEditorViewModel {
         }
         if WishText.clean(priceText).isEmpty, let price = parsed.price {
             priceText = WishPricing.text(from: price)
-            if let code = parsed.currency, currencies.contains(code) {
+            if let code = parsed.currency, SupportedCurrencies.contains(code) {
                 currency = code
             }
         }

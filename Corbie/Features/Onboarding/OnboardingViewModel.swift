@@ -286,7 +286,7 @@ final class OnboardingViewModel {
 
     private func makeSpace() async throws -> SpaceDTO {
         let created = try await environment.repositories.spaces.create(
-            displayCurrency: SupportedCurrencies.defaultCode,
+            displayCurrency: SupportedCurrencies.defaultCode(for: .current),
             creatorMemberId: nil,
             now: Date()
         )

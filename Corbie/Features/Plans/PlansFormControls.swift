@@ -77,15 +77,13 @@ struct PlansCurrencyField: View {
     @Environment(\.palette) private var palette
 
     let label: String
-    let currencies: [String]
+    let currencyGroups: [[String]]
     @Binding var selection: String
 
     var body: some View {
         FieldRow(label: label) {
             Picker(label, selection: $selection) {
-                ForEach(currencies, id: \.self) { code in
-                    Text(code).tag(code)
-                }
+                CurrencyChoices(groups: currencyGroups)
             }
             .pickerStyle(.menu)
             .labelsHidden()

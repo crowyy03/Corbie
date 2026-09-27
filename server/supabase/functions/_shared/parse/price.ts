@@ -26,6 +26,8 @@ const currencyBySymbol: Record<string, string> = {
   "HK$": "HKD",
   "S$": "SGD",
   "MX$": "MXN",
+  "฿": "THB",
+  "₱": "PHP",
 };
 
 const knownCodes = new Set([
@@ -41,25 +43,30 @@ const knownCodes = new Set([
   "GBP",
   "HKD",
   "HUF",
+  "IDR",
   "ILS",
   "INR",
+  "ISK",
   "JPY",
   "KRW",
   "MXN",
+  "MYR",
   "NOK",
   "NZD",
+  "PHP",
   "PLN",
   "RON",
   "RUB",
   "SEK",
   "SGD",
+  "THB",
   "TRY",
   "UAH",
   "USD",
   "ZAR",
 ]);
 
-const codesWithoutMinorUnit = new Set(["JPY", "KRW"]);
+const codesWithoutMinorUnit = new Set(["ISK", "JPY", "KRW"]);
 
 const prefixSymbols = ["CA$", "AU$", "NZ$", "HK$", "MX$", "US$", "R$", "C$", "A$", "S$"];
 
