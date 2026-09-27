@@ -13,12 +13,16 @@ final class RecapPresentationTests: XCTestCase {
         RecapPresentation(locale: Locale(identifier: "en_US"), calendar: calendar)
     }
 
-    private func move(delta: Double, progress: Double = 0.48) -> RecapPlanMove {
+    private func move(delta: Double, progress: Double? = 0.48) -> RecapPlanMove {
         RecapPlanMove(planId: UUID(), title: "Japan", delta: delta, currency: "EUR", progress: progress)
     }
 
     func testAPlanLineCarriesTheTitleTheDeltaAndThePercent() {
         XCTAssertEqual(presentation.planLine(move(delta: 300)), "Japan +€300, 48%")
+    }
+
+    func testAnOpenPlanLineHasNoPercent() {
+        XCTAssertEqual(presentation.planLine(move(delta: 380, progress: nil)), "Japan +€380")
     }
 
     func testMoneyTakenBackReadsAsAMinus() {

@@ -95,9 +95,10 @@ final class OpenSavingsUITests: XCTestCase {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
+        let percentage = app.anyElement(labelContaining: "%")
         XCTAssertFalse(
-            app.anyElement(labelContaining: "%").exists,
-            "\(place) shows a percentage",
+            percentage.exists,
+            "\(place) shows a percentage: \(percentage.exists ? percentage.label : "")",
             file: file,
             line: line
         )

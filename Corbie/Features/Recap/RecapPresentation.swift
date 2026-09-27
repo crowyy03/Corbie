@@ -13,12 +13,15 @@ struct RecapPresentation {
     }
 
     func planLine(_ move: RecapPlanMove) -> String {
-        String(
+        guard let progress = move.progress else {
+            return String(format: String(localized: "recap.plan.line.open"), locale: locale, move.title, deltaText(move))
+        }
+        return String(
             format: String(localized: "recap.plan.line"),
             locale: locale,
             move.title,
             deltaText(move),
-            percentText(move.progress)
+            percentText(progress)
         )
     }
 

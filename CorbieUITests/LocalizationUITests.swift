@@ -27,7 +27,7 @@ final class LocalizationUITests: XCTestCase {
 
     private static let german = LocalizedRun(
         language: "de",
-        debugSignIn: "ohne Apple-ID weiter (Debug-Build)",
+        debugSignIn: "continue without Apple ID (debug build)",
         cont: "Weiter",
         later: "Sp\u{E4}ter",
         tabs: ["Heute", "Aufgaben", "Kalender", "W\u{FC}nsche", "Pl\u{E4}ne"],
@@ -38,7 +38,7 @@ final class LocalizationUITests: XCTestCase {
 
     private static let spanish = LocalizedRun(
         language: "es",
-        debugSignIn: "seguir sin Apple ID (compilaci\u{F3}n de prueba)",
+        debugSignIn: "continue without Apple ID (debug build)",
         cont: "Continuar",
         later: "Luego",
         tabs: ["Hoy", "Tareas", "Calendario", "Deseos", "Planes"],
@@ -49,7 +49,7 @@ final class LocalizationUITests: XCTestCase {
 
     private static let french = LocalizedRun(
         language: "fr",
-        debugSignIn: "continuer sans identifiant Apple (build de test)",
+        debugSignIn: "continue without Apple ID (debug build)",
         cont: "Continuer",
         later: "Plus tard",
         tabs: ["Aujourd'hui", "T\u{E2}ches", "Calendrier", "Souhaits", "Projets"],
@@ -60,7 +60,7 @@ final class LocalizationUITests: XCTestCase {
 
     private static let italian = LocalizedRun(
         language: "it",
-        debugSignIn: "continua senza Apple ID (build di test)",
+        debugSignIn: "continue without Apple ID (debug build)",
         cont: "Continua",
         later: "Pi\u{F9} tardi",
         tabs: ["Oggi", "Attivit\u{E0}", "Calendario", "Desideri", "Progetti"],

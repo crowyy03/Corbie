@@ -106,14 +106,14 @@ enum QAText {
     static var done: String { QACatalog.text("common.action.done") }
     static var later: String { QACatalog.text("pairing.invite.later") }
     static var cont: String { QACatalog.text("onboarding.profile.continue") }
-    static var debugSignIn: String { QACatalog.text("onboarding.debug.signin") }
+    static let debugSignIn = "continue without Apple ID (debug build)"
     static var usPill: String { QACatalog.text("us.pill.label") }
     static var usPillWithDot: String { QACatalog.text("us.pill.label.new") }
     static var sharedSettings: String { QACatalog.text("us.hub.settings") }
     static var settingsTitle: String { QACatalog.text("settings.title") }
     static var paywallHeadline: String { QACatalog.text("paywall.headline") }
     static var trialSkip: String { QACatalog.text("paywall.trial.skip") }
-    static var developerRow: String { QACatalog.text("settings.developer") }
+    static let developerRow = "Developer"
     static let developerTitle = "Developer"
     static let expireTrial = "Expire the trial"
 }

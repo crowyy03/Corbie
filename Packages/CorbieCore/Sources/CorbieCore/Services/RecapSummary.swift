@@ -112,9 +112,9 @@ public struct RecapPlanMove: Sendable, Equatable, Identifiable {
     public let title: String
     public let delta: Double
     public let currency: String
-    public let progress: Double
+    public let progress: Double?
 
-    public init(planId: UUID, title: String, delta: Double, currency: String, progress: Double) {
+    public init(planId: UUID, title: String, delta: Double, currency: String, progress: Double?) {
         self.planId = planId
         self.title = title
         self.delta = delta

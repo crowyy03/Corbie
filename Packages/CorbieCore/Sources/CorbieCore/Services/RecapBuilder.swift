@@ -89,7 +89,7 @@ public struct RecapBuilder: Sendable {
                     title: plan.title,
                     delta: delta,
                     currency: plan.currency,
-                    progress: plan.progress
+                    progress: plan.isOpenEnded ? nil : plan.progress
                 )
             }
             .sorted { lhs, rhs in
