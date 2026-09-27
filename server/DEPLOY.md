@@ -381,6 +381,22 @@ Each prints the send attempts Apple recorded and exits `0` on `SUCCESS`. The fun
 `TEST` notification `200` and logs `notification ignored: TEST changes nothing`, which is the
 function log line to look for under Edge Functions, `appstore-notifications`, Logs.
 
+The same check runs on the server with the secrets already set there, so no key file is needed on
+the Mac. `appstore-test-notification` takes the service role key (see section 10 for which one):
+
+```bash
+KEY="$(supabase projects api-keys --project-ref <ref> --reveal -o json | python3 -c 'import json,sys
+t=sys.stdin.read(); print(next(k["api_key"] for k in json.loads(t[t.index("["):]) if k.get("type")=="secret"))')"
+curl -s -X POST "https://<ref>.supabase.co/functions/v1/appstore-test-notification" \
+  -H "apikey: $KEY" -H "authorization: Bearer $KEY" -H "content-type: application/json" \
+  -d '{"environment":"Sandbox"}'
+```
+
+It answers `200` with `"delivered": true`, Apple's send attempts and the verified `TEST` payload, or
+`502` with what Apple recorded. On 2026-09-27 Sandbox answered `sendAttempts: ["SUCCESS"]`,
+`notificationType: TEST`, `environment: Sandbox`, `bundleId: app.corbie`. `SUCCESS` means
+`appstore-notifications` answered `200`, which it does only after the signature verified.
+
 ## 10. Daily reconciliation
 
 `appstore-reconcile` re-reads from Apple every subscription whose state could be stale and replays
@@ -389,22 +405,28 @@ key. By hand:
 
 ```bash
 curl -s -X POST "https://<ref>.supabase.co/functions/v1/appstore-reconcile" \
-  -H "authorization: Bearer <service role key>" -H "content-type: application/json" -d '{}'
+  -H "apikey: <secret key>" -H "authorization: Bearer <secret key>" \
+  -H "content-type: application/json" -d '{}'
 ```
 
 `{"days": 30}` in the body replays a longer window (at most 179 days in Production, 29 in Sandbox).
-Use the key the functions see as `SUPABASE_SERVICE_ROLE_KEY`: the `service_role` key under Project
-Settings, API Keys (on the Legacy tab if the dashboard shows both kinds). A `401` means it was a
-different key.
+Use the key the functions see as `SUPABASE_SERVICE_ROLE_KEY`. On this project that is the new
+secret key (`sb_secret_...`, Project Settings, API Keys), not the legacy `service_role` JWT: on
+2026-09-27 the SHA-256 digest `supabase secrets list` shows for `SUPABASE_SERVICE_ROLE_KEY` matched
+the secret key, and the legacy JWT got `401 This endpoint takes the service role key`. Send it both
+as `apikey` and as the bearer token (the gateway wants the `apikey` header for a new key):
+`-H "apikey: <secret key>" -H "authorization: Bearer <secret key>"`. `supabase projects api-keys`
+masks it unless `--reveal` is passed.
 
 The repo does not enable `pg_net`, so the daily run is not scheduled by any migration. To schedule
-it, run this once in the SQL Editor, with the project ref and the service role key filled in:
+it, run this once in the SQL Editor, with the project ref and the secret key (`sb_secret_...`, see
+above) filled in:
 
 ```sql
 create extension if not exists pg_net with schema extensions;
 select vault.create_secret('https://<ref>.supabase.co', 'corbie_project_url');
-select vault.create_secret('<service role key>', 'corbie_service_role_key');
-select cron.schedule('corbie_appstore_reconcile', '41 4 * * *', $$ select net.http_post(url := (select decrypted_secret from vault.decrypted_secrets where name = 'corbie_project_url') || '/functions/v1/appstore-reconcile', headers := jsonb_build_object('content-type', 'application/json', 'authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'corbie_service_role_key')), body := '{}'::jsonb, timeout_milliseconds := 150000); $$);
+select vault.create_secret('<secret key>', 'corbie_service_role_key');
+select cron.schedule('corbie_appstore_reconcile', '41 4 * * *', $$ select net.http_post(url := (select decrypted_secret from vault.decrypted_secrets where name = 'corbie_project_url') || '/functions/v1/appstore-reconcile', headers := jsonb_build_object('content-type', 'application/json', 'apikey', (select decrypted_secret from vault.decrypted_secrets where name = 'corbie_service_role_key'), 'authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'corbie_service_role_key')), body := '{}'::jsonb, timeout_milliseconds := 150000); $$);
 ```
 
 The key stays in Vault, encrypted, and never appears in the job text. Check with

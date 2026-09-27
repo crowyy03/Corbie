@@ -1,9 +1,10 @@
+import { verifyAppleJws } from "../supabase/functions/_shared/appleJws.ts";
 import { normalizeEnvironment } from "../supabase/functions/_shared/appstore.ts";
 import {
   AppStoreServerApi,
-  AppStoreServerApiError,
   appStoreServerApiKeyFromEnv,
 } from "../supabase/functions/_shared/appStoreServerApi.ts";
+import { requestAndAwaitTestNotification } from "../supabase/functions/_shared/testNotification.ts";
 
 const environment = normalizeEnvironment(Deno.args[0]);
 if (!environment) {
@@ -17,25 +18,10 @@ if (!key) {
   Deno.exit(2);
 }
 
-const api = new AppStoreServerApi(key, environment);
-const { testNotificationToken } = await api.requestTestNotification();
-if (!testNotificationToken) {
-  console.error("Apple accepted the request but sent no testNotificationToken");
-  Deno.exit(1);
-}
-console.log(`${environment} TEST notification requested, token ${testNotificationToken}`);
-
-for (let attempt = 0; attempt < 12; attempt++) {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  try {
-    const status = await api.getTestNotificationStatus(testNotificationToken);
-    const results = (status.sendAttempts ?? []).map((sent) => sent.sendAttemptResult);
-    console.log(`send attempts: ${results.join(", ") || "none yet"}`);
-    if (results.length > 0) Deno.exit(results.includes("SUCCESS") ? 0 : 1);
-  } catch (error) {
-    if (!(error instanceof AppStoreServerApiError) || error.status !== 404) throw error;
-    console.log("status not available yet");
-  }
-}
-console.error("no send attempt recorded within a minute");
-Deno.exit(1);
+const report = await requestAndAwaitTestNotification({
+  api: new AppStoreServerApi(key, environment),
+  verify: verifyAppleJws,
+  sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+});
+console.info(JSON.stringify(report, null, 2));
+Deno.exit(report.delivered ? 0 : 1);
