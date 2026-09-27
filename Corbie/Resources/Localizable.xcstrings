@@ -13915,16 +13915,16 @@
     },
     "pairing.error.environment": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This code comes from a different build of Corbie. Both phones need the same one."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Code stammt aus einem anderen Build von Corbie. Beide iPhones brauchen denselben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This code comes from a different build of Corbie. Both phones need the same one."
           }
         },
         "es": {
@@ -13983,16 +13983,16 @@
     },
     "pairing.error.icloud.full": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud storage is full. Free some space, then try again."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Der iCloud-Speicher ist voll. Gib etwas Platz frei und versuche es erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud storage is full. Free some space, then try again."
           }
         },
         "es": {
@@ -14017,16 +14017,16 @@
     },
     "pairing.error.icloud.ownaccount": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Both phones use the same iCloud account. Your partner needs their own."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Beide iPhones nutzen denselben iCloud-Account. Die andere Person braucht einen eigenen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Both phones use the same iCloud account. Your partner needs their own."
           }
         },
         "es": {
@@ -14051,16 +14051,16 @@
     },
     "pairing.error.icloud.refused": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud refused this invite."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "iCloud hat diese Einladung abgelehnt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud refused this invite."
           }
         },
         "es": {
@@ -14085,16 +14085,16 @@
     },
     "pairing.error.icloud.refused.code": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iCloud refused this invite (error %lld)."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "iCloud hat diese Einladung abgelehnt (Fehler %lld)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud refused this invite (error %lld)."
           }
         },
         "es": {
@@ -14153,16 +14153,16 @@
     },
     "pairing.error.share.missing": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This invite no longer works. Ask your partner for a new code."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Diese Einladung funktioniert nicht mehr. Bitte die andere Person um einen neuen Code."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This invite no longer works. Ask your partner for a new code."
           }
         },
         "es": {
@@ -17417,16 +17417,16 @@
     },
     "paywall.state.noplans": {
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The App Store sent no plans for Corbie. Try again later."
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Der App Store hat keine Abos für Corbie geschickt. Versuch es später noch mal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The App Store sent no plans for Corbie. Try again later."
           }
         },
         "es": {

@@ -52,9 +52,15 @@ struct PaywallCheckout: View {
         case .noPlans, .unavailable:
             Card {
                 VStack(alignment: .leading, spacing: CorbieSpacing.s) {
-                    Text(LocalizedStringKey(model.stage == .noPlans ? "paywall.state.noplans" : "paywall.state.unavailable"))
-                        .corbieBody()
-                        .foregroundStyle(palette.text)
+                    Group {
+                        if model.stage == .noPlans {
+                            Text("paywall.state.noplans")
+                        } else {
+                            Text("paywall.state.unavailable")
+                        }
+                    }
+                    .corbieBody()
+                    .foregroundStyle(palette.text)
                     SecondaryButton(title: String(localized: "paywall.action.retry")) {
                         Task { await model.reload(environment) }
                     }
