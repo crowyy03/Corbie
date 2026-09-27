@@ -71,10 +71,31 @@ public actor StoreService: LocalEntitlementProviding, AppTransactionProviding {
             analytics?.record(.purchaseFailed(reason: .unavailable))
             throw CorbieError.notFound("product \(product.rawValue) is not available")
         }
+        return try await purchase(storeProduct, options: [.appAccountToken(appAccountToken)])
+    }
+
+    @available(iOS 16.4, macOS 14.4, *)
+    public func purchase(_ intent: PurchaseIntent, appAccountToken: UUID) async throws -> PurchaseOutcome {
+        var options: Set<Product.PurchaseOption> = [.appAccountToken(appAccountToken)]
+        if #available(iOS 18.0, macOS 15.0, *), let offer = intent.offer {
+            switch offer.type {
+            case .winBack:
+                options.insert(.winBackOffer(offer))
+            case .introductory:
+                break
+            default:
+                analytics?.record(.purchaseFailed(reason: .unavailable))
+                throw CorbieError.invalidInput("a \(offer.type.rawValue) offer needs a signature Corbie does not make")
+            }
+        }
+        return try await purchase(intent.product, options: options)
+    }
+
+    private func purchase(_ storeProduct: Product, options: Set<Product.PurchaseOption>) async throws -> PurchaseOutcome {
         analytics?.record(.purchaseStarted(productId: storeProduct.id))
         let result: Product.PurchaseResult
         do {
-            result = try await storeProduct.purchase(options: [.appAccountToken(appAccountToken)])
+            result = try await storeProduct.purchase(options: options)
         } catch {
             analytics?.record(.purchaseFailed(reason: .storeError))
             throw CorbieError.network("purchase failed: \(error)")

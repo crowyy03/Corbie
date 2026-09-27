@@ -165,13 +165,15 @@ enum SubscriptionTestSupport {
         _ spaceId: UUID,
         status: String,
         expiresAt: String?,
-        environment: String? = "Production"
+        environment: String? = "Production",
+        reconciled: Bool? = nil
     ) -> String {
         let expiry = expiresAt.map { "\"\($0)\"" } ?? "null"
         let origin = environment.map { "\"\($0)\"" } ?? "null"
+        let sync = reconciled.map { ",\"reconciled\":\($0)" } ?? ""
         return """
         {"spaceId":"\(spaceId.uuidString.lowercased())","environment":\(origin),"status":"\(status)",\
-        "productId":"app.corbie.yearly","expiresAt":\(expiry),"updatedAt":"2026-09-05T10:00:00Z"}
+        "productId":"app.corbie.yearly","expiresAt":\(expiry),"updatedAt":"2026-09-05T10:00:00Z"\(sync)}
         """
     }
 }

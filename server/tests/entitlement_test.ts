@@ -262,6 +262,37 @@ Deno.test("sync points the subscription at the new space through Set App Account
   assertEquals(typeof row?.checked_at, "string");
 });
 
+Deno.test("a purchase that came without a token, like an offer code or a purchase on the product page, is pointed at the space that syncs it", async () => {
+  await database.reset();
+  await subscribe("Production", "1000000009");
+  const bought = purchase("Production", "1000000009");
+  const calls: RecordedCall[] = [];
+  const apple = withApple([
+    statuses("Production", {
+      originalTransactionId: "1000000009",
+      status: 1,
+      signedTransactionInfo: unsignedJws(bought),
+      signedRenewalInfo: unsignedJws({ autoRenewStatus: 1, environment: "Production" }),
+    }),
+    acceptToken,
+  ], calls);
+
+  const answer = await sync(
+    { spaceId: spaceA, signedTransaction: unsignedJws(bought) },
+    null,
+    apple,
+  );
+  assertEquals(answer.status, 200);
+  assertEquals(answer.body.status, "active");
+  assertEquals(answer.body.reconciled, true);
+  assertEquals(calls.map((call) => `${call.method} ${call.url}`), [
+    "GET https://api.storekit.apple.com/inApps/v1/subscriptions/1000000009",
+    "PUT https://api.storekit.apple.com/inApps/v1/transactions/1000000009/appAccountToken",
+  ]);
+  assertEquals(calls[1].body, { appAccountToken: spaceA });
+  assertEquals((await database.subscription("1000000009"))?.space_id, spaceA);
+});
+
 Deno.test("sync from a TestFlight build asks the sandbox host", async () => {
   await database.reset();
   const bought = purchase("Sandbox", "2000000002", spaceA);

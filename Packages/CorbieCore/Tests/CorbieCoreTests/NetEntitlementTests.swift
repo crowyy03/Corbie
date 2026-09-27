@@ -400,8 +400,14 @@ import Testing
         )
     }
 
-    private func payload(_ spaceId: UUID, status: String, expiresAt: String?, environment: String? = "Production") -> String {
-        SubscriptionTestSupport.payload(spaceId, status: status, expiresAt: expiresAt, environment: environment)
+    private func payload(
+        _ spaceId: UUID,
+        status: String,
+        expiresAt: String?,
+        environment: String? = "Production",
+        reconciled: Bool? = nil
+    ) -> String {
+        SubscriptionTestSupport.payload(spaceId, status: status, expiresAt: expiresAt, environment: environment, reconciled: reconciled)
     }
 
     private func unreachable() -> FakeTransport {
@@ -747,7 +753,7 @@ import Testing
         )
         let transport = FakeTransport([
             .json(payload(world.space.id, status: "none", expiresAt: nil)),
-            .json(payload(world.space.id, status: "active", expiresAt: "2026-10-04T10:00:00Z")),
+            .json(payload(world.space.id, status: "active", expiresAt: "2026-10-04T10:00:00Z", reconciled: true)),
             .json(payload(world.space.id, status: "active", expiresAt: "2026-10-04T10:00:00Z"))
         ])
         let service = service(world, transport: transport, secrets: secrets, local: [bought])
@@ -763,6 +769,36 @@ import Testing
 
         _ = await service.refresh(spaceId: world.space.id)
         #expect(transport.requests.filter { $0.method == .post }.count == 1)
+    }
+
+    @Test func aSubscriptionWithoutATokenIsAttachedToThisSpaceUntilAppleAcceptsIt() async throws {
+        let world = try await TestWorld.make()
+        let redeemedCode = SubscriptionTestSupport.record(
+            for: nil,
+            purchasedAt: now,
+            expiresAt: NetTestSupport.date("2026-10-20T10:00:00Z"),
+            transactionId: 9
+        )
+        let transport = FakeTransport([
+            .json(payload(world.space.id, status: "none", expiresAt: nil)),
+            .json(payload(world.space.id, status: "active", expiresAt: "2026-10-20T10:00:00Z", reconciled: false)),
+            .json(payload(world.space.id, status: "active", expiresAt: "2026-10-20T10:00:00Z")),
+            .json(payload(world.space.id, status: "active", expiresAt: "2026-10-20T10:00:00Z", reconciled: true)),
+            .json(payload(world.space.id, status: "active", expiresAt: "2026-10-20T10:00:00Z"))
+        ])
+        let service = service(world, transport: transport, local: [redeemedCode])
+
+        #expect(await service.refresh(spaceId: world.space.id).isPremium)
+        let first = try #require(transport.requests.last)
+        #expect(first.url.path.hasSuffix("/entitlement/sync"))
+        let body = try #require(try JSONSerialization.jsonObject(with: first.body ?? Data()) as? [String: String])
+        #expect(body == ["spaceId": world.space.id.uuidString.lowercased(), "signedTransaction": "signed-transaction-9"])
+
+        _ = await service.refresh(spaceId: world.space.id)
+        #expect(transport.requests.filter { $0.method == .post }.count == 2)
+
+        _ = await service.refresh(spaceId: world.space.id)
+        #expect(transport.requests.filter { $0.method == .post }.count == 2)
     }
 
     @Test func aPurchaseIsSyncedWithItsSignedTransaction() async throws {

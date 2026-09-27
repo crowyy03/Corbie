@@ -173,9 +173,11 @@
 		7D41F6D039348679B73D158E /* WishesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7398541694197694D6538882 /* WishesView.swift */; };
 		7DAFBCC3FD5C9619334EC7D6 /* PlansUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8E16554FFCB1BCD4F3E6B1 /* PlansUITests.swift */; };
 		7DC21B0EF7668A1CDFED8406 /* CalendarImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360555DCFA7F1221F921197B /* CalendarImportView.swift */; };
+		7DD8A88DCE4FDB8AAE03A6CF /* PurchaseIntentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D89D75F81FCA25D02CF5C7 /* PurchaseIntentQueue.swift */; };
 		7F96241286C5F7E112C9663C /* QAReleaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEE50115885F067C97C49EE /* QAReleaseTests.swift */; };
 		7FA9F58D781FA07BDBD0A4C0 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9512875C4E49F5ECC719D92B /* PaywallViewModel.swift */; };
 		8088044EE968505EB5E2A0AD /* PeopleDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC1E4E92969E872AF1BA575 /* PeopleDatesTests.swift */; };
+		8096847E73D8E573DEA54244 /* PurchaseIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1070145A2B49C83A717AA /* PurchaseIntentTests.swift */; };
 		80D3B5DE353AD343171F3179 /* InviteCodeFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926B91BC48AC2A4B9309E350 /* InviteCodeFormat.swift */; };
 		80F00DF42023E086B5F7D184 /* ChoreSplitPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E4A857992BB684ED06377B /* ChoreSplitPresentation.swift */; };
 		81DC9C522054DFD8696A3556 /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8284B3C3E95CC4A19650784C /* SupportMail.swift */; };
@@ -407,6 +409,7 @@
 		1196F0108C0225357C38AF96 /* AppleSignInCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInCredential.swift; sourceTree = "<group>"; };
 		11ACD7EC05CC64A10F10B1C4 /* FreeTimeRowText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeTimeRowText.swift; sourceTree = "<group>"; };
 		12B9A6165426178F13117673 /* WidgetPreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPreviewData.swift; sourceTree = "<group>"; };
+		12E1070145A2B49C83A717AA /* PurchaseIntentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseIntentTests.swift; sourceTree = "<group>"; };
 		1429A312F98A8B56A95C8AD7 /* UsCounters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsCounters.swift; sourceTree = "<group>"; };
 		142BCC988BA356F5B277224C /* QuestionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewModel.swift; sourceTree = "<group>"; };
 		1500968EDD22F12EDEFBD926 /* ChoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoresView.swift; sourceTree = "<group>"; };
@@ -674,6 +677,7 @@
 		E2297C1D1A45A74F1A7A47D2 /* WishCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishCardView.swift; sourceTree = "<group>"; };
 		E43FC976B60DFE22D03931DD /* FreeSlotsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeSlotsWidget.swift; sourceTree = "<group>"; };
 		E520ADE4ABC941D0A47EBE0E /* ChoreRevealViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreRevealViewModel.swift; sourceTree = "<group>"; };
+		E5D89D75F81FCA25D02CF5C7 /* PurchaseIntentQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseIntentQueue.swift; sourceTree = "<group>"; };
 		E608CE270F228EA4BE9A09F4 /* FreeTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeTimeViewModel.swift; sourceTree = "<group>"; };
 		E62FE938A6229D79811997DC /* GiftIdeaEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdeaEditorViewModel.swift; sourceTree = "<group>"; };
 		E6E23661E5D8D7037DB76090 /* TasksWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksWidget.swift; sourceTree = "<group>"; };
@@ -1074,6 +1078,7 @@
 				99ACECF1088DB58F38F21410 /* PeopleRelationTests.swift */,
 				9E54033DDF79F80BD0BEF522 /* PlanEditorEditsTests.swift */,
 				B310FDE0142B17C029F56392 /* PlansPresentationTests.swift */,
+				12E1070145A2B49C83A717AA /* PurchaseIntentTests.swift */,
 				062DF1A1AB7A3DF299FFA27B /* QARelativeDateTests.swift */,
 				FBEE50115885F067C97C49EE /* QAReleaseTests.swift */,
 				35B0703630E79C3A0343EF9C /* QuestionCardSnapshotTests.swift */,
@@ -1317,6 +1322,7 @@
 				D85AD04308291AD17BB2278E /* PaywallRuntime.swift */,
 				9512875C4E49F5ECC719D92B /* PaywallViewModel.swift */,
 				D083698A36E18A900605DCA2 /* PlanSelector.swift */,
+				E5D89D75F81FCA25D02CF5C7 /* PurchaseIntentQueue.swift */,
 				411D5A0F45974F509C47B26B /* TrialOfferFlag.swift */,
 				AC545914B3B08889DEFB11CA /* TrialOfferView.swift */,
 			);
@@ -1666,6 +1672,7 @@
 				32379CC93B091A54D77E977A /* PeopleRelationTests.swift in Sources */,
 				5A1491BB558E2C4EE889E18E /* PlanEditorEditsTests.swift in Sources */,
 				B4B7513B620D0E5E0A33FAAE /* PlansPresentationTests.swift in Sources */,
+				8096847E73D8E573DEA54244 /* PurchaseIntentTests.swift in Sources */,
 				EA95CDB039DA1F58783BB622 /* QARelativeDateTests.swift in Sources */,
 				7F96241286C5F7E112C9663C /* QAReleaseTests.swift in Sources */,
 				CDF1BF5C12600AAB2CA7A43F /* QuestionCardSnapshotTests.swift in Sources */,
@@ -1830,6 +1837,7 @@
 				2477AAA3A8BB276039D277ED /* PreviewSupport.swift in Sources */,
 				7D173F5C615BEB10309A6008 /* ProfileBirthdayPicker.swift in Sources */,
 				DAB655A1374F723007BADF04 /* ProfileDraft.swift in Sources */,
+				7DD8A88DCE4FDB8AAE03A6CF /* PurchaseIntentQueue.swift in Sources */,
 				43437B62EDE0BE1200A420DC /* QuestionAnswerCard.swift in Sources */,
 				B7593387C319A126B1C3A98F /* QuestionCopy.swift in Sources */,
 				594A4CF200F52CA83C738879 /* QuestionDayView.swift in Sources */,

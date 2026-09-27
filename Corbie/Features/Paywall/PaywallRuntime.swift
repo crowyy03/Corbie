@@ -1,4 +1,5 @@
 import CorbieCore
+import StoreKit
 import SwiftUI
 
 struct PaywallRuntime: ViewModifier {
@@ -8,7 +9,11 @@ struct PaywallRuntime: ViewModifier {
     func body(content: Content) -> some View {
         content
             .task { await startListening() }
-            .task(id: environment.space?.id) { await refresh() }
+            .task { await listenForPurchaseIntents() }
+            .task(id: environment.space?.id) {
+                await refresh()
+                await environment.purchaseIntents.buyWaiting(in: environment)
+            }
             .onChange(of: scenePhase) { _, phase in
                 guard phase == .active else { return }
                 Task { await refresh() }
@@ -20,6 +25,16 @@ struct PaywallRuntime: ViewModifier {
         await environment.store.attachAnalytics(environment.analytics)
         await environment.store.startListening { [weak environment] subscription in
             await environment?.syncAndRefresh(after: subscription)
+        }
+    }
+
+    private func listenForPurchaseIntents() async {
+        let environment = environment
+        for await intent in PurchaseIntent.intents {
+            await environment.purchaseIntents.receive(
+                PurchaseIntentQueue.Request(intent: intent, store: environment.store),
+                in: environment
+            )
         }
     }
 

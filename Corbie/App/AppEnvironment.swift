@@ -44,6 +44,7 @@ final class AppEnvironment {
     @ObservationIgnored let analytics: Analytics
     @ObservationIgnored let entitlements: EntitlementService
     @ObservationIgnored let store: StoreService
+    @ObservationIgnored let purchaseIntents = PurchaseIntentQueue()
     @ObservationIgnored let fx: FXService
     @ObservationIgnored let linkParser: LinkParser
     @ObservationIgnored let notifications: NotificationScheduler

@@ -260,6 +260,7 @@ public struct EntitlementPayload: Sendable, Equatable, Codable {
     public let expiresAt: Date?
     public let updatedAt: Date?
     public let environment: StoreEnvironment?
+    public let reconciled: Bool?
 
     public init(
         spaceId: UUID,
@@ -267,7 +268,8 @@ public struct EntitlementPayload: Sendable, Equatable, Codable {
         productId: String? = nil,
         expiresAt: Date? = nil,
         updatedAt: Date? = nil,
-        environment: StoreEnvironment? = nil
+        environment: StoreEnvironment? = nil,
+        reconciled: Bool? = nil
     ) {
         self.spaceId = spaceId
         self.status = status
@@ -275,6 +277,7 @@ public struct EntitlementPayload: Sendable, Equatable, Codable {
         self.expiresAt = expiresAt
         self.updatedAt = updatedAt
         self.environment = environment
+        self.reconciled = reconciled
     }
 
     public init(from decoder: Decoder) throws {
@@ -285,6 +288,7 @@ public struct EntitlementPayload: Sendable, Equatable, Codable {
         expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
         updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
         environment = try container.decodeIfPresent(String.self, forKey: .environment).flatMap(StoreEnvironment.init(rawValue:))
+        reconciled = try container.decodeIfPresent(Bool.self, forKey: .reconciled)
     }
 }
 

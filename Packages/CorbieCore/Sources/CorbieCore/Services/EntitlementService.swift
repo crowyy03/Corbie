@@ -55,8 +55,10 @@ public actor EntitlementService {
         if let moving = subscriptions.activeOutside(spaceId, at: moment),
            hasSynced(moving, spaceId: spaceId) == false,
            let moved = await sync(moving.signedTransaction, spaceId: spaceId, proof: proof) {
-            markSynced(moving, spaceId: spaceId)
-            server = moved
+            if moved.reconciled {
+                markSynced(moving, spaceId: spaceId)
+            }
+            server = moved.entitlement
         }
         let inputs = EntitlementInputs(
             environment: environment,
@@ -127,7 +129,7 @@ public actor EntitlementService {
         let moment = now()
         let subscriptions = LocalSubscriptions(await local?.subscriptions() ?? [])
         if let spaceId, let reconciling = subscriptions.toReconcile(for: spaceId, at: moment),
-           await sync(reconciling.signedTransaction, spaceId: spaceId, proof: proof) != nil,
+           await sync(reconciling.signedTransaction, spaceId: spaceId, proof: proof)?.reconciled == true,
            reconciling.appAccountToken != spaceId {
             markSynced(reconciling, spaceId: spaceId)
         }
@@ -189,7 +191,7 @@ public actor EntitlementService {
         }
     }
 
-    private func sync(_ signedTransaction: String, spaceId: UUID, proof: AppTransactionProof?) async -> ServerEntitlement? {
+    private func sync(_ signedTransaction: String, spaceId: UUID, proof: AppTransactionProof?) async -> SyncAnswer? {
         guard let payload = try? await client.syncEntitlement(
             spaceId: spaceId,
             signedTransaction: signedTransaction,
@@ -197,7 +199,7 @@ public actor EntitlementService {
         ) else { return nil }
         let entitlement = ServerEntitlement(payload: payload)
         cache(entitlement, spaceId: spaceId, proof: proof)
-        return entitlement
+        return SyncAnswer(entitlement: entitlement, reconciled: payload.reconciled == true)
     }
 
     private func cache(_ entitlement: ServerEntitlement, spaceId: UUID, proof: AppTransactionProof?) {
@@ -256,4 +258,9 @@ public actor EntitlementService {
         }
         _ = try? await notifications.scheduleTrialEnding(endsAt: endsAt, now: now())
     }
+}
+
+private struct SyncAnswer {
+    let entitlement: ServerEntitlement
+    let reconciled: Bool
 }

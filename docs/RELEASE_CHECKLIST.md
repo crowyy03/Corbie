@@ -95,6 +95,10 @@ needs.
    3 days rarely covers a card being replaced, and paid to paid keeps someone whose card fails at
    the end of the free trial from getting weeks more for free. Change it if you see it otherwise.
 7. Users and Access, Integrations, under Keys In-App Purchase, Generate In-App Purchase Key.
+   Without these secrets the server cannot call Set App Account Token, so a subscription bought
+   without Corbie's token (an offer code redeemed in the App Store, a purchase on the product page)
+   is never pointed at its space at Apple; the app keeps asking on every refresh until it is. On
+   2026-09-26 only `APPSTORE_APP_APPLE_ID` was set.
    Download the `.p8` file (Apple lets you download it once) and note the Key ID, and the Issuer ID
    shown above the key list. Then in the
    Supabase dashboard, Edge Functions, Secrets, add four secrets:
