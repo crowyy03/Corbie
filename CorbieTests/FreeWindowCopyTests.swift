@@ -37,12 +37,12 @@ final class FreeWindowCopyTests: XCTestCase {
         )
     }
 
-    func testSettingsShowTheSameLineAndOfferNoPlansInsideTheWindow() throws {
+    func testSettingsShowTheSameLineAndStillOfferThePlansInsideTheWindow() throws {
         let window = try window()
         let now = date("2026-09-21T10:00:00Z")
         let status = SettingsSubscriptionStatus(state: .freeWindow(window), now: now)
         XCTAssertEqual(status.text, FreeWindowCopy.line(endsAt: window.endsAt, now: now))
-        XCTAssertFalse(status.showsPlans)
+        XCTAssertTrue(status.showsPlans)
         XCTAssertTrue(SettingsSubscriptionStatus(state: .readOnly).showsPlans)
     }
 }

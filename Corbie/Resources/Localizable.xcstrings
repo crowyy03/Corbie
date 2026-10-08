@@ -16885,31 +16885,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld Tage gratis, danach %2$@ im Monat. Deine Apple-ID wird am Ende des Tests belastet und danach jeden Monat, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Monats ausschaltest. Verwaltung in den App-Store-Einstellungen."
+            "value": "Deine Apple-ID wird am Ende des Tests belastet und danach jeden Monat, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Monats ausschaltest. Verwaltung in den App-Store-Einstellungen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld days free, then %2$@ a month. Your Apple ID is charged when the trial ends and every month after that, unless you turn auto-renew off at least 24 hours before the trial or the month ends. Manage it in App Store settings."
+            "value": "Your Apple ID is charged when the trial ends and every month after that, unless you turn auto-renew off at least 24 hours before the trial or the month ends. Manage it in App Store settings."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld días gratis, después %2$@ al mes. Se cobra a tu Apple ID al acabar la prueba y luego cada mes, salvo que desactives la renovación automática al menos 24 horas antes de que acabe la prueba o el mes. Se gestiona en los ajustes de la App Store."
+            "value": "Se cobra a tu Apple ID al acabar la prueba y luego cada mes, salvo que desactives la renovación automática al menos 24 horas antes de que acabe la prueba o el mes. Se gestiona en los ajustes de la App Store."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld jours gratuits, puis %2$@ par mois. Votre identifiant Apple est débité à la fin de l'essai, puis chaque mois, sauf si vous désactivez le renouvellement automatique au moins 24 heures avant la fin de l'essai ou du mois. Gestion dans les réglages de l'App Store."
+            "value": "Votre identifiant Apple est débité à la fin de l'essai, puis chaque mois, sauf si vous désactivez le renouvellement automatique au moins 24 heures avant la fin de l'essai ou du mois. Gestion dans les réglages de l'App Store."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld giorni gratis, poi %2$@ al mese. L'addebito sul tuo Apple ID avviene alla fine della prova e poi ogni mese, a meno che tu non disattivi il rinnovo automatico almeno 24 ore prima della fine della prova o del mese. Si gestisce nelle impostazioni dell'App Store."
+            "value": "L'addebito sul tuo Apple ID avviene alla fine della prova e poi ogni mese, a meno che tu non disattivi il rinnovo automatico almeno 24 ore prima della fine della prova o del mese. Si gestisce nelle impostazioni dell'App Store."
           }
         }
       }
@@ -16955,31 +16955,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld Tage gratis, danach %2$@ im Jahr. Deine Apple-ID wird am Ende des Tests belastet und danach jedes Jahr, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Jahres ausschaltest. Verwaltung in den App-Store-Einstellungen."
+            "value": "Deine Apple-ID wird am Ende des Tests belastet und danach jedes Jahr, sofern du die automatische Verlängerung nicht spätestens 24 Stunden vor Ende des Tests oder des Jahres ausschaltest. Verwaltung in den App-Store-Einstellungen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld days free, then %2$@ a year. Your Apple ID is charged when the trial ends and every year after that, unless you turn auto-renew off at least 24 hours before the trial or the year ends. Manage it in App Store settings."
+            "value": "Your Apple ID is charged when the trial ends and every year after that, unless you turn auto-renew off at least 24 hours before the trial or the year ends. Manage it in App Store settings."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld días gratis, después %2$@ al año. Se cobra a tu Apple ID al acabar la prueba y luego cada año, salvo que desactives la renovación automática al menos 24 horas antes de que acabe la prueba o el año. Se gestiona en los ajustes de la App Store."
+            "value": "Se cobra a tu Apple ID al acabar la prueba y luego cada año, salvo que desactives la renovación automática al menos 24 horas antes de que acabe la prueba o el año. Se gestiona en los ajustes de la App Store."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld jours gratuits, puis %2$@ par an. Votre identifiant Apple est débité à la fin de l'essai, puis chaque année, sauf si vous désactivez le renouvellement automatique au moins 24 heures avant la fin de l'essai ou de l'année. Gestion dans les réglages de l'App Store."
+            "value": "Votre identifiant Apple est débité à la fin de l'essai, puis chaque année, sauf si vous désactivez le renouvellement automatique au moins 24 heures avant la fin de l'essai ou de l'année. Gestion dans les réglages de l'App Store."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$lld giorni gratis, poi %2$@ all'anno. L'addebito sul tuo Apple ID avviene alla fine della prova e poi ogni anno, a meno che tu non disattivi il rinnovo automatico almeno 24 ore prima della fine della prova o dell'anno. Si gestisce nelle impostazioni dell'App Store."
+            "value": "L'addebito sul tuo Apple ID avviene alla fine della prova e poi ogni anno, a meno che tu non disattivi il rinnovo automatico almeno 24 ore prima della fine della prova o dell'anno. Si gestisce nelle impostazioni dell'App Store."
           }
         }
       }

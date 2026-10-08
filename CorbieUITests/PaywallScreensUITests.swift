@@ -26,6 +26,16 @@ final class PaywallScreensUITests: XCTestCase {
             "a read-only banner showed inside the free window"
         )
         saveScreenshot(app, named: "free_window_today")
+
+        openSharedSettings(app)
+        let plans = settingsRow(app, "settings.subscription.plans")
+        XCTAssertTrue(scrollTo(plans, in: app), "settings hides the plans inside the free window")
+        saveScreenshot(app, named: "free_window_settings")
+        plans.tap()
+        let free = app.staticTexts
+            .matching(NSPredicate(format: "label LIKE[c] %@", QACatalog.text("paywall.compare.free")))
+            .firstMatch
+        XCTAssertTrue(free.waitForExistence(timeout: 30), "See plans did not open the plans inside the free window")
     }
 
     func testThePaywallShowsOnceWhenTheFreeWindowIsOverAndTheQuietLinkOpensTheComparison() {

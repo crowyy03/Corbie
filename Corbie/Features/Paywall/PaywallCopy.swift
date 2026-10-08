@@ -110,10 +110,10 @@ enum PaywallCopy {
     }
 
     static func legalText(for offer: SubscriptionOffer) -> String {
-        guard let days = offer.eligibleFreeTrialDays else {
+        guard offer.eligibleFreeTrialDays != nil else {
             return String(format: text(legalKey(offer.product)), offer.displayPrice)
         }
-        return String.localizedStringWithFormat(text(trialLegalKey(offer.product)), days, offer.displayPrice)
+        return text(trialLegalKey(offer.product))
     }
 
     static func restoreText(_ outcome: RestoreOutcome) -> String {

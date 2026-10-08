@@ -30,8 +30,7 @@ struct SettingsSubscriptionStatus: Equatable {
     }
 
     var showsPlans: Bool {
-        guard state.freeWindowEndsAt == nil else { return false }
-        return state.isPremium == false || state.trialDaysLeft != nil
+        state.isPremium == false || state.trialDaysLeft != nil || state.freeWindowEndsAt != nil
     }
 }
 

@@ -97,14 +97,19 @@ final class PaywallCopyTests: XCTestCase {
         }
     }
 
-    func testATrialOfferSaysHowLongItIsFreeAndWhatItCostsAfter() {
-        let yearly = PaywallCopy.legalText(for: offer(.yearly, "29.99", display: "$29.99", trialDays: 14))
-        XCTAssertTrue(yearly.hasPrefix("14 days free, then $29.99 a year."), yearly)
-        XCTAssertTrue(yearly.contains("charged when the trial ends"), yearly)
+    func testATrialOfferSaysHowLongItIsFreeAndWhatItCostsAfterOnlyOnce() {
+        let yearlyOffer = offer(.yearly, "29.99", display: "$29.99", trialDays: 14)
+        XCTAssertEqual(PaywallCopy.trialTerms(for: yearlyOffer), "14 days free, then $29.99/year")
+        let yearly = PaywallCopy.legalText(for: yearlyOffer)
+        XCTAssertTrue(yearly.hasPrefix("Your Apple ID is charged when the trial ends"), yearly)
+        XCTAssertTrue(yearly.contains("every year"), yearly)
+        XCTAssertFalse(yearly.contains("$29.99"), yearly)
+        XCTAssertFalse(yearly.contains("days free"), yearly)
         XCTAssertFalse(yearly.contains("when you confirm"), yearly)
 
-        let monthly = PaywallCopy.legalText(for: offer(.monthly, "4.99", display: "4,99 €", trialDays: 14))
-        XCTAssertTrue(monthly.hasPrefix("14 days free, then 4,99 € a month."), monthly)
+        let monthlyOffer = offer(.monthly, "4.99", display: "4,99 €", trialDays: 14)
+        XCTAssertEqual(PaywallCopy.trialTerms(for: monthlyOffer), "14 days free, then 4,99 €/month")
+        XCTAssertTrue(PaywallCopy.legalText(for: monthlyOffer).contains("every month"))
 
         let noTrial = PaywallCopy.legalText(for: offer(.yearly, "29.99", display: "$29.99"))
         XCTAssertTrue(noTrial.contains("charged when you confirm"), noTrial)
