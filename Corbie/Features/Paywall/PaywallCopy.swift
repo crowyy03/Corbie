@@ -78,6 +78,13 @@ enum PaywallCopy {
         }
     }
 
+    static func trialTermsKey(_ product: CorbieProduct) -> String {
+        switch product {
+        case .monthly: return "paywall.cta.trialterms.monthly"
+        case .yearly: return "paywall.cta.trialterms.yearly"
+        }
+    }
+
     static func trialLegalKey(_ product: CorbieProduct) -> String {
         switch product {
         case .monthly: return "paywall.legal.monthly.trial"
@@ -117,8 +124,13 @@ enum PaywallCopy {
     }
 
     static func callToAction(for offer: SubscriptionOffer?) -> String {
-        guard let days = offer?.eligibleFreeTrialDays else { return text("paywall.cta.subscribe") }
-        return String.localizedStringWithFormat(text("paywall.cta.trial"), days)
+        guard offer?.eligibleFreeTrialDays != nil else { return text("paywall.cta.subscribe") }
+        return text("paywall.cta.starttrial")
+    }
+
+    static func trialTerms(for offer: SubscriptionOffer?) -> String? {
+        guard let offer, let days = offer.eligibleFreeTrialDays else { return nil }
+        return String.localizedStringWithFormat(text(trialTermsKey(offer.product)), days, offer.displayPrice)
     }
 
     static func savingsBadge(for offer: SubscriptionOffer) -> String? {

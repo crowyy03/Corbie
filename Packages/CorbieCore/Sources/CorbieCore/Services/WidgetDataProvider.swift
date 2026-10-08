@@ -39,7 +39,7 @@ public struct WidgetDataProvider: Sendable {
     private let locale: Locale
     private let identity: MemberIdentity
     private let viewerMemberIdOverride: UUID?
-    private let monetization: MonetizationFlagStore
+    private let monetization: MonetizationConfigStore
     private let device: DeviceEntitlementStore?
     private let appTransaction: (any AppTransactionProviding)?
 
@@ -49,7 +49,7 @@ public struct WidgetDataProvider: Sendable {
         locale: Locale = .current,
         identity: MemberIdentity = MemberIdentity(),
         viewerMemberId: UUID? = nil,
-        monetization: MonetizationFlagStore = MonetizationFlagStore(),
+        monetization: MonetizationConfigStore = MonetizationConfigStore(),
         device: DeviceEntitlementStore? = DeviceEntitlementStore(),
         appTransaction: (any AppTransactionProviding)? = StoreKitAppTransaction()
     ) {
@@ -83,7 +83,8 @@ public struct WidgetDataProvider: Sendable {
     }
 
     private func isPremium(space: SpaceDTO, now: Date) async -> Bool {
-        if WidgetPremiumRule.isPremium(space: space, now: now, monetizationEnabled: monetization.isEnabled) {
+        let freeWindow = monetization.freeWindow(for: space, calendar: calendar)
+        if WidgetPremiumRule.isPremium(space: space, now: now, monetizationEnabled: monetization.isEnabled, freeWindow: freeWindow) {
             return true
         }
         guard let snapshot = device?.snapshot(spaceId: space.id, at: now) else { return false }
@@ -91,6 +92,7 @@ public struct WidgetDataProvider: Sendable {
             space: space,
             now: now,
             monetizationEnabled: monetization.isEnabled,
+            freeWindow: freeWindow,
             device: snapshot,
             environment: StoreEnvironmentRule.readable(await appTransaction?.appTransactionProof())
         )

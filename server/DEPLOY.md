@@ -296,46 +296,59 @@ pending. The simulator cannot do it either: it has no iCloud account.
 
 ## Turning monetization on
 
-The flag is one row in `app_config`. Migration 0006 creates it as `false`, and `GET /config`
-returns whatever the row holds, read fresh on every request. From 2026-09-25 a missing row counts as
-on, because v1 is paid from day one, and so does an app that never managed to fetch the flag. Update
-the row, never delete it: deleting it turns monetization on for everyone at once.
+Three rows in `app_config`, read fresh by `GET /config` on every request:
 
-To turn it on: Dashboard, SQL Editor, **New query**, paste and press **Run**:
+- `monetization_enabled`: read only by version 1.0. Migration 0006 created it as `false`. Leave it
+  `false`: 1.0 has no free window, so turning it on would put every 1.0 user straight on the paywall.
+- `monetization_v2_enabled`: read by 1.0.1 and later. Migration 0011 created it as `false`.
+- `free_days`: the free window of 1.0.1 and later, counted from the day the space was created.
+  Migration 0011 created it as `3`. `0` means no window.
+
+A missing flag row counts as on, and so does an app that never managed to fetch it; a missing
+`free_days` row counts as 3. Update the rows, never delete them: deleting `monetization_v2_enabled`
+turns monetization on for every 1.0.1 user at once.
+
+When 1.0.1 is out in the store, turn it on: Dashboard, SQL Editor, **New query**, paste and press
+**Run**:
 
 ```sql
-update public.app_config set value = 'true'::jsonb, updated_at = now() where key = 'monetization_enabled';
+update public.app_config set value = 'true'::jsonb, updated_at = now() where key = 'monetization_v2_enabled';
 ```
 
-Check the row in the same editor:
+Check the rows in the same editor:
 
 ```sql
-select key, value, updated_at from public.app_config;
+select key, value, updated_at from public.app_config order by key;
 ```
 
-It must show `monetization_enabled`, `true`, and an `updated_at` from a moment ago. No row at all
-means migration 0006 never ran: go back to step 3.
+It must show `monetization_v2_enabled`, `true`, an `updated_at` from a moment ago, and
+`monetization_enabled` still `false`. No `monetization_v2_enabled` row means migration 0011 never
+ran: go back to step 3.
 
-Then check what the app will see:
+Then check what the apps will see:
 
 ```bash
 curl -s "https://<ref>.supabase.co/functions/v1/config"
 ```
 
-It must print `{"monetizationEnabled":true}`.
+It must print `{"monetizationEnabled":false,"monetizationV2Enabled":true,"freeDays":3}`.
 
-To turn it off again, the same way:
+To turn it off again, the same statement with `'false'::jsonb`, and the same curl must print
+`"monetizationV2Enabled":false`.
+
+To change the window, for example to 7 days:
 
 ```sql
-update public.app_config set value = 'false'::jsonb, updated_at = now() where key = 'monetization_enabled';
+update public.app_config set value = '7'::jsonb, updated_at = now() where key = 'free_days';
 ```
 
-and the same `select` must show `false`, and the same curl must print
-`{"monetizationEnabled":false}`.
+It applies to every space, including those already counting: a space created five days ago is free
+again until the end of its seventh day.
 
-Only ever write `'true'::jsonb` or `'false'::jsonb`. Anything else, the string `'"true"'` or
-`'null'` included, makes the endpoint answer `500` with `"error":"internal"` instead of a value, on
-purpose: a broken value must never read as `false`.
+Only ever write `'true'::jsonb` or `'false'::jsonb` for a flag and a whole number such as `'3'::jsonb`
+for `free_days`. Anything else, the strings `'"true"'` or `'"3"'` and `'null'` included, makes the
+endpoint answer `500` with `"error":"internal"` instead of values, on purpose: a broken value must
+never read as `false`. While it answers `500`, every app keeps the values it fetched last.
 
 ## 8. Migrations and deploys from CI are manual
 

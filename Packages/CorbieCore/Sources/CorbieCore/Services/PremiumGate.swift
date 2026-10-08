@@ -97,6 +97,7 @@ public final class PremiumGate {
     public var isMonetizationOff: Bool { state.isMonetizationOff }
     public var trialDaysLeft: Int? { state.trialDaysLeft }
     public var trialEndsAt: Date? { state.trialEndsAt }
+    public var freeWindowEndsAt: Date? { state.freeWindowEndsAt }
 
     @discardableResult
     public func require(_ action: PremiumAction) -> Bool {
@@ -114,7 +115,7 @@ public final class PremiumGate {
     }
 
     public func presentPaywall(reason: PaywallReason) {
-        guard isMonetizationOff == false else { return }
+        guard isMonetizationOff == false, freeWindowEndsAt == nil else { return }
         pendingPaywall = PaywallRequest(id: makeId(), reason: reason, action: nil, requestedAt: now())
         analytics.record(.comparisonShown(reason: reason))
     }

@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import CorbieCore
 
-@Suite struct NetMonetizationFlagTests {
+@Suite struct NetMonetizationConfigTests {
     @Test func aFlagThatWasNeverFetchedIsOn() {
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
@@ -13,11 +13,12 @@ import Testing
     @Test func theServerAnswerIsStoredForTheExtensionsToRead() async {
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
-        let transport = FakeTransport(json: #"{"monetizationEnabled":true}"#)
-        let flag = ServerMonetizationFlag(client: NetTestSupport.client(transport: transport), store: store)
+        let transport = FakeTransport(json: #"{"monetizationEnabled":false,"monetizationV2Enabled":true,"freeDays":5}"#)
+        let flag = ServerMonetizationConfig(client: NetTestSupport.client(transport: transport), store: store)
 
         #expect(await flag.refresh())
-        #expect(MonetizationFlagStore(suiteName: suiteName).isEnabled)
+        #expect(MonetizationConfigStore(suiteName: suiteName).isEnabled)
+        #expect(MonetizationConfigStore(suiteName: suiteName).freeDays == 5)
         #expect(transport.lastRequest?.url.path.hasSuffix("/functions/v1/config") == true)
         #expect(transport.lastRequest?.method == .get)
         #expect(transport.lastRequest?.headers["Authorization"] == nil)
@@ -26,7 +27,7 @@ import Testing
     @Test func aFailedFetchBeforeAnyAnswerCountsAsPaid() async {
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
-        let flag = ServerMonetizationFlag(
+        let flag = ServerMonetizationConfig(
             client: NetTestSupport.client(transport: FakeTransport([.urlFailure(.notConnectedToInternet)]), retry: .noRetries),
             store: store
         )
@@ -46,7 +47,7 @@ import Testing
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
         store.record(true)
-        let flag = ServerMonetizationFlag(
+        let flag = ServerMonetizationConfig(
             client: NetTestSupport.client(transport: FakeTransport([.empty(500)]), retry: .noRetries),
             store: store
         )
@@ -59,8 +60,10 @@ import Testing
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
         store.record(true)
-        let flag = ServerMonetizationFlag(
-            client: NetTestSupport.client(transport: FakeTransport(json: #"{"monetizationEnabled":false}"#)),
+        let flag = ServerMonetizationConfig(
+            client: NetTestSupport.client(
+                transport: FakeTransport(json: #"{"monetizationEnabled":true,"monetizationV2Enabled":false,"freeDays":3}"#)
+            ),
             store: store
         )
 
@@ -73,11 +76,12 @@ import Testing
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
         let changes = ChangeCounter()
         let transport = FakeTransport([
-            .json(#"{"monetizationEnabled":false}"#),
-            .json(#"{"monetizationEnabled":false}"#),
-            .json(#"{"monetizationEnabled":true}"#),
+            .json(#"{"monetizationV2Enabled":false,"freeDays":3}"#),
+            .json(#"{"monetizationV2Enabled":false,"freeDays":3}"#),
+            .json(#"{"monetizationV2Enabled":true,"freeDays":3}"#),
+            .json(#"{"monetizationV2Enabled":true,"freeDays":4}"#),
         ])
-        let flag = ServerMonetizationFlag(
+        let flag = ServerMonetizationConfig(
             client: NetTestSupport.client(transport: transport),
             store: store,
             onChange: { changes.increment() }
@@ -89,21 +93,81 @@ import Testing
         #expect(changes.count == 1)
         _ = await flag.refresh()
         #expect(changes.count == 2)
+        _ = await flag.refresh()
+        #expect(changes.count == 3)
     }
 
     @Test func aMalformedAnswerChangesNothing() async {
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }
         store.record(true)
-        let flag = ServerMonetizationFlag(
-            client: NetTestSupport.client(transport: FakeTransport(json: #"{"monetizationEnabled":"yes"}"#)),
+        let flag = ServerMonetizationConfig(
+            client: NetTestSupport.client(transport: FakeTransport(json: #"{"monetizationV2Enabled":"yes","freeDays":3}"#)),
             store: store
         )
 
         #expect(await flag.refresh())
     }
 
+    @Test func theOldKeyNeverDecidesThisBuild() async {
+        let (store, suiteName) = MonetizationTestSupport.freshStore()
+        defer { MonetizationTestSupport.remove(suiteName: suiteName) }
+        UserDefaults(suiteName: suiteName)?.set(false, forKey: "corbie.monetization.enabled")
+        let flag = ServerMonetizationConfig(
+            client: NetTestSupport.client(transport: FakeTransport(json: #"{"monetizationEnabled":false}"#)),
+            store: store
+        )
+
+        #expect(await flag.refresh())
+        #expect(store.fetchedValue == nil)
+        #expect(store.isEnabled)
+    }
+
+    @Test func monetizationV2OffMakesTheBuildFreeWhateverTheOldKeySays() async {
+        let (store, suiteName) = MonetizationTestSupport.freshStore()
+        defer { MonetizationTestSupport.remove(suiteName: suiteName) }
+        let flag = ServerMonetizationConfig(
+            client: NetTestSupport.client(
+                transport: FakeTransport(json: #"{"monetizationEnabled":true,"monetizationV2Enabled":false,"freeDays":3}"#)
+            ),
+            store: store
+        )
+
+        #expect(await flag.refresh() == false)
+        #expect(store.isEnabled == false)
+    }
+
+    @Test func freeDaysThatWereNeverFetchedAreThree() {
+        let (store, suiteName) = MonetizationTestSupport.freshStore()
+        defer { MonetizationTestSupport.remove(suiteName: suiteName) }
+        #expect(store.fetchedFreeDays == nil)
+        #expect(store.freeDays == 3)
+    }
+
+    @Test func aFailedFetchKeepsTheLastFreeDays() async {
+        let (store, suiteName) = MonetizationTestSupport.freshStore()
+        defer { MonetizationTestSupport.remove(suiteName: suiteName) }
+        store.record(freeDays: 7)
+        let flag = ServerMonetizationConfig(
+            client: NetTestSupport.client(transport: FakeTransport([.empty(500)]), retry: .noRetries),
+            store: store
+        )
+
+        _ = await flag.refresh()
+        #expect(store.freeDays == 7)
+    }
+
     #if DEBUG
+    @Test func theDebugOverrideEndsTheFreeWindow() {
+        let (store, suiteName) = MonetizationTestSupport.freshStore()
+        defer { MonetizationTestSupport.remove(suiteName: suiteName) }
+        store.record(freeDays: 3)
+        DebugFreeWindowOverride.store(.ended, suiteName: suiteName)
+        #expect(store.freeDays == 0)
+        DebugFreeWindowOverride.store(nil, suiteName: suiteName)
+        #expect(store.freeDays == 3)
+    }
+
     @Test func theDebugOverrideWinsOverTheServerAnswer() {
         let (store, suiteName) = MonetizationTestSupport.freshStore()
         defer { MonetizationTestSupport.remove(suiteName: suiteName) }

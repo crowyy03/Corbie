@@ -693,6 +693,7 @@ import Testing
             space: afterTestFlight,
             now: now,
             monetizationEnabled: true,
+            freeWindow: nil,
             device: device.snapshot(spaceId: world.space.id, at: now),
             environment: .production
         ) == false)
@@ -731,6 +732,7 @@ import Testing
                 space: stored,
                 now: now,
                 monetizationEnabled: true,
+                freeWindow: nil,
                 device: device.snapshot(spaceId: world.space.id, at: now),
                 environment: buildEnvironment
             ), "the widgets stayed locked for the reviewer (\(label))")

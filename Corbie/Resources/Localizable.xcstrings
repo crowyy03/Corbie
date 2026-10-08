@@ -16507,6 +16507,41 @@
         }
       }
     },
+    "paywall.cta.starttrial": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis-Test starten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start free trial"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar la prueba gratis"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commencer l'essai gratuit"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inizia la prova gratis"
+          }
+        }
+      }
+    },
     "paywall.cta.subscribe": {
       "extractionState": "stale",
       "localizations": {
@@ -16542,37 +16577,200 @@
         }
       }
     },
-    "paywall.cta.trial": {
-      "extractionState": "stale",
+    "paywall.cta.trialterms.monthly": {
+      "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld Tage gratis testen"
+            "value": "%1$lld Tage gratis, danach %2$@/Monat"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Try %lld days free"
+            "value": "%1$lld days free, then %2$@/month"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Probar %lld días gratis"
+            "value": "%1$lld días gratis, después %2$@/mes"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Essayer %lld jours gratuits"
+            "value": "%1$lld jours gratuits, puis %2$@/mois"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prova %lld giorni gratis"
+            "value": "%1$lld giorni gratis, poi %2$@/mese"
+          }
+        }
+      }
+    },
+    "paywall.cta.trialterms.yearly": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Tage gratis, danach %2$@/Jahr"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld days free, then %2$@/year"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld días gratis, después %2$@/año"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld jours gratuits, puis %2$@/an"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld giorni gratis, poi %2$@/anno"
+          }
+        }
+      }
+    },
+    "paywall.freewindow.days": {
+      "localizations": {
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium ist noch %lld Tag gratis"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium ist noch %lld Tage gratis"
+                }
+              }
+            }
+          }
+        },
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium is free for %lld more day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium is free for %lld more days"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium es gratis %lld día más"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium es gratis %lld días más"
+                }
+              }
+            }
+          }
+        },
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium est gratuit encore %lld jour"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium est gratuit encore %lld jours"
+                }
+              }
+            }
+          }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium è gratis ancora per %lld giorno"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Premium è gratis ancora per %lld giorni"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "paywall.freewindow.tonight": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium ist bis heute Abend gratis"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium is free until tonight"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium es gratis hasta esta noche"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium est gratuit jusqu'à ce soir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium è gratis fino a stasera"
           }
         }
       }

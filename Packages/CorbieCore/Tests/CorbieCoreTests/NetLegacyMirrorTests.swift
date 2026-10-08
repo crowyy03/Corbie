@@ -61,7 +61,7 @@ import Testing
         let space = try #require(try await current.repositories.spaces.space(id: spaceId))
         #expect(space.subscriptionStatus == SubscriptionStatus.none)
         #expect(space.subscriptionExpiresAt == nil)
-        #expect(WidgetPremiumRule.isPremium(space: space, now: now, monetizationEnabled: true) == false)
+        #expect(WidgetPremiumRule.isPremium(space: space, now: now, monetizationEnabled: true, freeWindow: nil) == false)
         #expect(
             EntitlementResolver.resolve(EntitlementInputs(space: MirroredEntitlement(space: space), now: now)) == .readOnly
         )

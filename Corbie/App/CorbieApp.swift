@@ -130,6 +130,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         DebugLaunch.resetStoreIfRequested()
         DebugLaunch.applyEntitlementArgument()
         DebugLaunch.applyMonetizationArgument()
+        DebugLaunch.applyFreeWindowArgument()
         #endif
         return AppEnvironment()
     }

@@ -11,7 +11,7 @@ Object.defineProperty(Deno, "serve", {
     served.handler = handler;
   },
 });
-const { monetizationEnabledFrom } = await import("../supabase/functions/config/index.ts");
+const { configFrom } = await import("../supabase/functions/config/index.ts");
 Object.defineProperty(Deno, "serve", realServe);
 
 function callConfig(init: RequestInit = {}): Promise<Response> {
@@ -26,30 +26,74 @@ function closedLocalPort(): number {
   return port;
 }
 
-function assertInternal(read: Parameters<typeof monetizationEnabledFrom>[0]): void {
-  const error = assertThrows(() => monetizationEnabledFrom(read), ApiError) as ApiError;
+type ConfigRows = { key: string; value: unknown }[];
+
+function rows(values: Record<string, unknown>): ConfigRows {
+  return Object.entries(values).map(([key, value]) => ({ key, value }));
+}
+
+function read(values: Record<string, unknown>) {
+  return { data: rows(values), error: null };
+}
+
+function assertInternal(input: Parameters<typeof configFrom>[0]): void {
+  const error = assertThrows(() => configFrom(input), ApiError) as ApiError;
   assertEquals(error.code, "internal");
   assertEquals(error.status, 500);
 }
 
-Deno.test("a stored boolean is returned as it is", () => {
-  assertEquals(monetizationEnabledFrom({ data: { value: true }, error: null }), true);
-  assertEquals(monetizationEnabledFrom({ data: { value: false }, error: null }), false);
+Deno.test("stored values are returned as they are", () => {
+  assertEquals(
+    configFrom(read({ monetization_enabled: false, monetization_v2_enabled: true, free_days: 5 })),
+    { monetizationEnabled: false, monetizationV2Enabled: true, freeDays: 5 },
+  );
+  assertEquals(
+    configFrom(read({ monetization_enabled: true, monetization_v2_enabled: false, free_days: 3 })),
+    { monetizationEnabled: true, monetizationV2Enabled: false, freeDays: 3 },
+  );
 });
 
-Deno.test("a missing row means monetization is on", () => {
-  assertEquals(monetizationEnabledFrom({ data: null, error: null }), true);
+Deno.test("the two monetization keys never borrow each other's value", () => {
+  assertEquals(configFrom(read({ monetization_enabled: false })).monetizationV2Enabled, true);
+  assertEquals(configFrom(read({ monetization_v2_enabled: false })).monetizationEnabled, true);
 });
 
-Deno.test("a database error is an internal error, never a default false", () => {
+Deno.test("missing rows mean monetization is on and the window is three days", () => {
+  assertEquals(configFrom({ data: null, error: null }), {
+    monetizationEnabled: true,
+    monetizationV2Enabled: true,
+    freeDays: 3,
+  });
+  assertEquals(configFrom(read({})).freeDays, 3);
+});
+
+Deno.test("zero free days is a valid answer", () => {
+  assertEquals(configFrom(read({ free_days: 0 })).freeDays, 0);
+});
+
+Deno.test("a database error is an internal error, never a default", () => {
   assertInternal({ data: null, error: { message: "connection refused" } });
-  assertInternal({ data: { value: false }, error: { message: "partial read" } });
-  assertInternal({ data: { value: true }, error: { message: "partial read" } });
+  assertInternal({
+    data: rows({ monetization_v2_enabled: false }),
+    error: { message: "partial read" },
+  });
+  assertInternal({
+    data: rows({ monetization_enabled: true }),
+    error: { message: "partial read" },
+  });
 });
 
-Deno.test("a stored value that is not a JSON boolean is an internal error", () => {
-  for (const value of ["true", "false", 1, 0, null, {}, [], [true], { enabled: true }]) {
-    assertInternal({ data: { value }, error: null });
+Deno.test("a flag that is not a JSON boolean is an internal error", () => {
+  for (const key of ["monetization_enabled", "monetization_v2_enabled"]) {
+    for (const value of ["true", "false", 1, 0, null, {}, [], [true], { enabled: true }]) {
+      assertInternal(read({ [key]: value }));
+    }
+  }
+});
+
+Deno.test("free days that are not a whole number of days are an internal error", () => {
+  for (const value of ["3", 2.5, -1, true, null, {}, [3]]) {
+    assertInternal(read({ free_days: value }));
   }
 });
 
@@ -71,6 +115,8 @@ Deno.test("an unreachable database answers 500 internal, not a flag", async () =
     assertEquals(response.status, 500);
     assertEquals(body.error, "internal");
     assertEquals("monetizationEnabled" in body, false);
+    assertEquals("monetizationV2Enabled" in body, false);
+    assertEquals("freeDays" in body, false);
   } finally {
     Deno.env.delete("SUPABASE_URL");
     Deno.env.delete("SUPABASE_SERVICE_ROLE_KEY");

@@ -3,8 +3,12 @@ import Foundation
 
 struct SettingsSubscriptionStatus: Equatable {
     let state: EntitlementState
+    var now = Date()
 
     var text: String {
+        if let endsAt = state.freeWindowEndsAt {
+            return FreeWindowCopy.line(endsAt: endsAt, now: now)
+        }
         switch state {
         case let .trial(daysLeft, _):
             return String.localizedStringWithFormat(String(localized: "settings.subscription.trial"), daysLeft)
@@ -25,7 +29,10 @@ struct SettingsSubscriptionStatus: Equatable {
         }
     }
 
-    var showsPlans: Bool { state.isPremium == false || state.trialDaysLeft != nil }
+    var showsPlans: Bool {
+        guard state.freeWindowEndsAt == nil else { return false }
+        return state.isPremium == false || state.trialDaysLeft != nil
+    }
 }
 
 enum SettingsAccountPlan: Equatable {

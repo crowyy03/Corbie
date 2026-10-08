@@ -11,33 +11,33 @@ import Testing
 
     @Test func aRunningIntroTrialUnlocksTheWidgets() {
         let subject = space(status: .trial, expiresAt: now.addingTimeInterval(3600))
-        #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: true))
+        #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: true, freeWindow: nil))
         let over = space(status: .trial, expiresAt: now.addingTimeInterval(-3600))
-        #expect(WidgetPremiumRule.isPremium(space: over, now: now, monetizationEnabled: true) == false)
+        #expect(WidgetPremiumRule.isPremium(space: over, now: now, monetizationEnabled: true, freeWindow: nil) == false)
         let undated = space(status: .trial, expiresAt: nil)
-        #expect(WidgetPremiumRule.isPremium(space: undated, now: now, monetizationEnabled: true) == false)
+        #expect(WidgetPremiumRule.isPremium(space: undated, now: now, monetizationEnabled: true, freeWindow: nil) == false)
     }
 
     @Test func anActiveSubscriptionUnlocksUntilItExpires() {
         let live = space(status: .active, expiresAt: now.addingTimeInterval(86_400))
-        #expect(WidgetPremiumRule.isPremium(space: live, now: now, monetizationEnabled: true))
+        #expect(WidgetPremiumRule.isPremium(space: live, now: now, monetizationEnabled: true, freeWindow: nil))
         let lapsed = space(status: .active, expiresAt: now.addingTimeInterval(-1))
-        #expect(WidgetPremiumRule.isPremium(space: lapsed, now: now, monetizationEnabled: true) == false)
+        #expect(WidgetPremiumRule.isPremium(space: lapsed, now: now, monetizationEnabled: true, freeWindow: nil) == false)
         let openEnded = space(status: .active, expiresAt: nil)
-        #expect(WidgetPremiumRule.isPremium(space: openEnded, now: now, monetizationEnabled: true))
+        #expect(WidgetPremiumRule.isPremium(space: openEnded, now: now, monetizationEnabled: true, freeWindow: nil))
     }
 
     @Test func readOnlyAndNoneStayLocked() {
         for status in [SubscriptionStatus.none, .readonly, .expired] {
             let subject = space(status: status, expiresAt: now.addingTimeInterval(86_400))
-            #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: true) == false)
+            #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: true, freeWindow: nil) == false)
         }
     }
 
     @Test func monetizationOffUnlocksEveryWidgetWhateverTheSpaceSays() {
         for status in [SubscriptionStatus.none, .readonly, .expired, .trial, .active] {
             let subject = space(status: status, expiresAt: now.addingTimeInterval(-86_400))
-            #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: false))
+            #expect(WidgetPremiumRule.isPremium(space: subject, now: now, monetizationEnabled: false, freeWindow: nil))
         }
     }
 

@@ -5,6 +5,7 @@ public enum EntitlementSource: String, Sendable, Equatable, CaseIterable, Codabl
     case server
     case space
     case monetizationOff = "monetization_off"
+    case freeWindow = "free_window"
 }
 
 public enum EntitlementState: Sendable, Equatable {
@@ -25,6 +26,15 @@ public enum EntitlementState: Sendable, Equatable {
     public static let monetizationOff = EntitlementState.premium(source: .monetizationOff, expiresAt: nil)
 
     public var isMonetizationOff: Bool { self == .monetizationOff }
+
+    public static func freeWindow(_ window: FreeWindow) -> EntitlementState {
+        .premium(source: .freeWindow, expiresAt: window.endsAt)
+    }
+
+    public var freeWindowEndsAt: Date? {
+        guard case let .premium(.freeWindow, endsAt) = self else { return nil }
+        return endsAt
+    }
 
     public var trialDaysLeft: Int? {
         guard case let .trial(daysLeft, _) = self else { return nil }

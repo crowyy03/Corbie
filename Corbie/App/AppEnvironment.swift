@@ -131,7 +131,7 @@ final class AppEnvironment {
         let entitlementService = EntitlementService(
             client: client,
             spaces: persistence.repositories.spaces,
-            monetization: ServerMonetizationFlag(client: client),
+            monetization: ServerMonetizationConfig(client: client),
             store: secrets,
             local: localEntitlements ?? store,
             appTransaction: store,
@@ -140,7 +140,7 @@ final class AppEnvironment {
         )
         entitlements = entitlementService
         premiumGate = PremiumGate(
-            state: MonetizationFlagStore().isEnabled ? .readOnly : .monetizationOff,
+            state: MonetizationConfigStore().isEnabled ? .readOnly : .monetizationOff,
             analytics: analytics,
             entitlements: entitlementService
         )

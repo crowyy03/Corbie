@@ -260,6 +260,22 @@ import Testing
         #expect(await TaskIntentRunner.isReadOnly(persistence: world.persistence, now: world.now))
     }
 
+    @Test func actionsFromWidgetsAndNotificationsWorkInsideTheFreeWindow() async throws {
+        let world = try await makeWorld()
+        try await IntentAccessTestSupport.endSubscription(of: world.seed)
+        let space = try #require(try await world.seed.controller.repositories.spaces.space(id: world.seed.space.id))
+        let createdAt = try #require(space.createdAt)
+        let (store, suiteName) = MonetizationTestSupport.freshStore()
+        defer { MonetizationTestSupport.remove(suiteName: suiteName) }
+        store.record(true)
+        store.record(freeDays: 3)
+        world.persistence.use(monetization: store)
+        let inside = createdAt.addingTimeInterval(86_400)
+        let after = createdAt.addingTimeInterval(5 * 86_400)
+        #expect(await TaskIntentRunner.isReadOnly(persistence: world.persistence, now: inside) == false)
+        #expect(await TaskIntentRunner.isReadOnly(persistence: world.persistence, now: after))
+    }
+
     @Test func monetizationOffNeverMakesTheSpaceReadOnly() async throws {
         let world = try await makeWorld()
         try await IntentAccessTestSupport.endSubscription(of: world.seed)
@@ -290,8 +306,8 @@ import Testing
 }
 
 enum IntentAccessTestSupport {
-    static let monetizationOff: MonetizationFlagStore = {
-        let store = MonetizationFlagStore(suiteName: "corbie.tests.monetization.disabled")
+    static let monetizationOff: MonetizationConfigStore = {
+        let store = MonetizationConfigStore(suiteName: "corbie.tests.monetization.disabled")
         store.record(false)
         return store
     }()

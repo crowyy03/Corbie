@@ -12,6 +12,7 @@ public actor EntitlementService {
     private let appTransaction: (any AppTransactionProviding)?
     private let device: DeviceEntitlementStore?
     private let notifications: NotificationScheduler?
+    private let calendar: Calendar
     private let now: @Sendable () -> Date
 
     private var lastState: EntitlementState = .readOnly
@@ -25,6 +26,7 @@ public actor EntitlementService {
         appTransaction: (any AppTransactionProviding)? = nil,
         device: DeviceEntitlementStore? = nil,
         notifications: NotificationScheduler? = nil,
+        calendar: Calendar = .current,
         now: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.client = client
@@ -35,6 +37,7 @@ public actor EntitlementService {
         self.appTransaction = appTransaction
         self.device = device
         self.notifications = notifications
+        self.calendar = calendar
         self.now = now
     }
 
@@ -72,8 +75,9 @@ public actor EntitlementService {
             let productionOnly = inputs.withLocal(subscriptions.production.entitlement(for: spaceId))
             await mirror(EntitlementResolver.resolution(productionOnly), inputs: productionOnly, into: space)
         }
-        let effective = EntitlementService.forced(resolved, now: moment)
-        if device?.record(effective.state, spaceId: spaceId, environment: environment, now: moment) == true {
+        let paid = EntitlementService.forced(resolved, now: moment)
+        let effective = EntitlementService.forced(withFreeWindow(resolved, space: space, at: moment), now: moment)
+        if device?.record(paid.state, spaceId: spaceId, environment: environment, now: moment) == true {
             WidgetReloadRequest.post()
         }
         lastState = effective.state
@@ -100,13 +104,17 @@ public actor EntitlementService {
         let proof = await appTransaction?.appTransactionProof()
         let environment = StoreEnvironmentRule.readable(proof)
         let moment = now()
-        let resolved = EntitlementResolver.resolution(
-            EntitlementInputs(
-                environment: environment,
-                server: cachedEntitlement(spaceId: space.id),
-                space: MirroredEntitlement(space: space),
-                now: moment
-            )
+        let resolved = withFreeWindow(
+            EntitlementResolver.resolution(
+                EntitlementInputs(
+                    environment: environment,
+                    server: cachedEntitlement(spaceId: space.id),
+                    space: MirroredEntitlement(space: space),
+                    now: moment
+                )
+            ),
+            space: space,
+            at: moment
         )
         if resolved.state.isReadOnly,
            let snapshot = device?.snapshot(spaceId: space.id, at: moment),
@@ -178,6 +186,15 @@ public actor EntitlementService {
         #else
         return resolved
         #endif
+    }
+
+    private func withFreeWindow(_ resolution: EntitlementResolution, space: SpaceDTO?, at moment: Date) -> EntitlementResolution {
+        guard resolution.state.isReadOnly,
+              let space,
+              let window = FreeWindow(spaceCreatedAt: space.createdAt, days: monetization.freeDays, calendar: calendar),
+              window.isOpen(at: moment)
+        else { return resolution }
+        return EntitlementResolution(state: .freeWindow(window))
     }
 
     private func serverEntitlement(spaceId: UUID, proof: AppTransactionProof?) async -> ServerEntitlement? {

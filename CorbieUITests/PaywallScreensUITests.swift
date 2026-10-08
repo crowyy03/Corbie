@@ -5,15 +5,38 @@ final class PaywallScreensUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testOnboardingEndsOnTheTrialOfferAndTheQuietLinkOpensTheComparison() {
+    func testNoTrialScreenAfterOnboardingWhileTheFreeWindowIsOpen() {
         let app = XCUIApplication.corbie(
-            extraArguments: ["-corbie-entitlement", "read_only"] + XCUIApplication.monetizationOn
+            extraArguments: XCUIApplication.realEntitlement + XCUIApplication.monetizationOn
+        )
+        app.launch()
+        passOnboardingIfShown(app)
+
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 60), "the tab bar never appeared")
+        let freeLine = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS %@", "Premium is free for 3 more days"))
+            .firstMatch
+        XCTAssertTrue(freeLine.waitForExistence(timeout: 30), "Today does not say how long Premium stays free")
+        XCTAssertFalse(
+            app.staticTexts[QACatalog.text("paywall.trial.sub")].waitForExistence(timeout: 8),
+            "the trial screen appeared inside the free window"
+        )
+        XCTAssertFalse(
+            app.buttons[QACatalog.text("paywall.banner.readonly.never")].exists,
+            "a read-only banner showed inside the free window"
+        )
+        saveScreenshot(app, named: "free_window_today")
+    }
+
+    func testThePaywallShowsOnceWhenTheFreeWindowIsOverAndTheQuietLinkOpensTheComparison() {
+        let app = XCUIApplication.corbie(
+            extraArguments: XCUIApplication.realEntitlement + XCUIApplication.freeWindowEnded + XCUIApplication.monetizationOn
         )
         app.launch()
         passOnboardingIfShown(app)
 
         let headline = app.staticTexts[QACatalog.text("paywall.headline")]
-        XCTAssertTrue(headline.waitForExistence(timeout: 60), "the trial offer never appeared after onboarding")
+        XCTAssertTrue(headline.waitForExistence(timeout: 60), "the paywall never appeared after the free window")
         XCTAssertTrue(
             app.staticTexts[QACatalog.text("paywall.trial.sub")].exists,
             "the trial offer does not say the partner pays nothing"
@@ -55,7 +78,7 @@ final class PaywallScreensUITests: XCTestCase {
         XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 60), "the app did not come back")
         XCTAssertFalse(
             app.staticTexts[QACatalog.text("paywall.trial.sub")].waitForExistence(timeout: 8),
-            "the trial offer came back on the next launch"
+            "the paywall came back on the next launch"
         )
     }
 }

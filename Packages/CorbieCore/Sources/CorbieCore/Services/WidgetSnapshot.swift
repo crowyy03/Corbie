@@ -407,8 +407,9 @@ public struct LockInlineSnapshot: Sendable, Codable, Equatable {
 }
 
 public enum WidgetPremiumRule {
-    public static func isPremium(space: SpaceDTO, now: Date, monetizationEnabled: Bool) -> Bool {
+    public static func isPremium(space: SpaceDTO, now: Date, monetizationEnabled: Bool, freeWindow: FreeWindow?) -> Bool {
         guard monetizationEnabled else { return true }
+        if freeWindow?.isOpen(at: now) == true { return true }
         return MirroredEntitlement(space: space).isPremium(at: now)
     }
 
@@ -416,10 +417,11 @@ public enum WidgetPremiumRule {
         space: SpaceDTO,
         now: Date,
         monetizationEnabled: Bool,
+        freeWindow: FreeWindow?,
         device: DeviceEntitlementSnapshot?,
         environment: StoreEnvironment
     ) -> Bool {
-        if isPremium(space: space, now: now, monetizationEnabled: monetizationEnabled) { return true }
+        if isPremium(space: space, now: now, monetizationEnabled: monetizationEnabled, freeWindow: freeWindow) { return true }
         guard let device, device.premiumUntil > now else { return false }
         return device.environment == environment
     }

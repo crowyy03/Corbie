@@ -122,6 +122,8 @@ extension XCUIApplication {
     static let resetStoreArgument = "-corbie-reset-store"
     static let monetizationArgument = "-corbie-monetization"
     static let monetizationOn = [monetizationArgument, "on"]
+    static let realEntitlement = ["-corbie-entitlement", "real"]
+    static let freeWindowEnded = ["-corbie-free-window", "ended"]
 
     static func corbie(
         language: String = QARun.language,

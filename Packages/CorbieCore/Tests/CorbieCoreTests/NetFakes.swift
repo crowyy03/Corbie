@@ -258,20 +258,22 @@ enum NetTestSupport {
 
 struct FixedMonetization: MonetizationSource {
     let isEnabled: Bool
+    var freeDays = 0
 
     func refresh() async -> Bool { isEnabled }
 }
 
 enum MonetizationTestSupport {
-    static let enabled: MonetizationFlagStore = {
-        let store = MonetizationFlagStore(suiteName: "corbie.tests.monetization.enabled")
+    static let enabled: MonetizationConfigStore = {
+        let store = MonetizationConfigStore(suiteName: "corbie.tests.monetization.enabled")
         store.record(true)
+        store.record(freeDays: 0)
         return store
     }()
 
-    static func freshStore() -> (store: MonetizationFlagStore, suiteName: String) {
+    static func freshStore() -> (store: MonetizationConfigStore, suiteName: String) {
         let suiteName = "corbie.tests.monetization." + UUID().uuidString
-        return (MonetizationFlagStore(suiteName: suiteName), suiteName)
+        return (MonetizationConfigStore(suiteName: suiteName), suiteName)
     }
 
     static func remove(suiteName: String) {

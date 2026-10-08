@@ -115,7 +115,7 @@ final class ShareWishViewModel {
         let entitlements = EntitlementService(
             client: client,
             spaces: controller.repositories.spaces,
-            monetization: ServerMonetizationFlag(client: client),
+            monetization: ServerMonetizationConfig(client: client),
             appTransaction: StoreKitAppTransaction()
         )
         let resolution = await entitlements.cachedResolution(space: space)

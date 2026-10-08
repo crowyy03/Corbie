@@ -1,5 +1,5 @@
 import { type Environment, normalizeEnvironment } from "./appstore.ts";
-import { AppStoreServerApi, AppStoreServerApiError } from "./appStoreServerApi.ts";
+import { type AppStoreServerApi, AppStoreServerApiError } from "./appStoreServerApi.ts";
 
 export interface TestNotificationReport {
   environment: Environment;

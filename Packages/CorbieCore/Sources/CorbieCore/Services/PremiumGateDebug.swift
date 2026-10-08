@@ -58,6 +58,29 @@ public enum DebugEntitlementOverride: String, Sendable, Equatable, CaseIterable,
     }
 }
 
+public enum DebugFreeWindowOverride: String, Sendable, Equatable, CaseIterable, Codable {
+    case ended
+
+    public static let storageKey = "corbie.debug.freeWindow"
+
+    public static func stored(suiteName: String = CorbieIdentifiers.appGroup) -> DebugFreeWindowOverride? {
+        guard let raw = defaults(suiteName).string(forKey: storageKey) else { return nil }
+        return DebugFreeWindowOverride(rawValue: raw)
+    }
+
+    public static func store(_ override: DebugFreeWindowOverride?, suiteName: String = CorbieIdentifiers.appGroup) {
+        guard let override else {
+            defaults(suiteName).removeObject(forKey: storageKey)
+            return
+        }
+        defaults(suiteName).set(override.rawValue, forKey: storageKey)
+    }
+
+    private static func defaults(_ suiteName: String) -> UserDefaults {
+        UserDefaults(suiteName: suiteName) ?? .standard
+    }
+}
+
 public enum DebugMonetizationOverride: String, Sendable, Equatable, CaseIterable, Codable {
     case on
     case off

@@ -119,11 +119,11 @@ Response `200`: `{"base": "USD", "date": "2026-09-05", "rates": {"EUR": 0.91, "G
 
 ### GET `/config`
 
-No auth. Rate limited per IP (120/hour). Returns the server-controlled monetization flag, read from the `monetization_enabled` row of `app_config`.
+No auth. Rate limited per IP (120/hour). Returns three rows of `app_config`: `monetization_enabled` (read by 1.0), `monetization_v2_enabled` (read by 1.0.1 and later) and `free_days` (the free window from `Space.createdAt`, read by 1.0.1 and later).
 
-Response `200`: `{"monetizationEnabled": true}`
+Response `200`: `{"monetizationEnabled": false, "monetizationV2Enabled": false, "freeDays": 3}`
 
-A missing row answers `true`: v1 is paid from day one. A database error, or a stored value that is not a JSON boolean, answers `500 internal` and never a flag value.
+A missing flag row answers `true`, a missing `free_days` row answers `3`. A database error, a flag that is not a JSON boolean, or `free_days` that is not a whole number from 0 up answers `500 internal` and never a value.
 
 ### POST `/appstore-notifications`
 
@@ -287,7 +287,7 @@ The response body is read as a stream and abandoned once 3 MB have arrived, so a
 
 **FX.** Cached 12 h per base in `fx_rates`. If Frankfurter fails and a stale row exists, the stale row is served rather than an error; only a cold cache plus a failing upstream returns `502 upstream_failed`.
 
-**Config.** `monetizationEnabled` is `false` only when the row says `false`, and `true` when the row says `true` or does not exist. When the read fails, or the row holds anything other than a JSON `true` or `false`, the endpoint answers `500 internal` instead of falling back to a value. The client contract is to keep the last value it fetched when a request fails, and to treat a value it never fetched as `true`. An error therefore leaves every app where it was. The value is read on every request, with no cache on the server. Migration 0006 seeded the live row with `false`; the founder flips it at launch, no migration does.
+**Config.** Each flag is `false` only when its row says `false`, and `true` when the row says `true` or does not exist; the two flags never borrow each other's value. `freeDays` is the row's whole number, `0` included (no window), and `3` without a row. When the read fails, or any of the three rows holds something else, the endpoint answers `500 internal` instead of falling back to a value. The client contract is to keep the last values it fetched when a request fails, to treat a flag it never fetched as `true` and free days it never fetched as `3`. An error therefore leaves every app where it was. The values are read on every request, with no cache on the server. Migration 0006 seeded `monetization_enabled` with `false`, migration 0011 seeded `monetization_v2_enabled` with `false` and `free_days` with `3`; the founder flips them, no migration does.
 
 **App Store notifications.** The JWS `x5c` chain is verified in full: every certificate must be inside its validity window, each must be signed by the next, issuer and subject DER must match along the chain, and the last certificate must be byte-for-byte the Apple Root CA G3 embedded in `_shared/appleRootCA.ts` (SHA-256 `63343abf…3e9179`). Every certificate above the leaf must also be a certificate authority: basic constraints `cA=TRUE`, the `keyCertSign` key usage bit, and a path length constraint that still covers the certificates below it. The leaf must carry Apple's App Store signing extension `1.2.840.113635.100.6.11.1`, so an ordinary end entity certificate issued by Apple to some other developer cannot sign a notification. `signedTransactionInfo` and `signedRenewalInfo` are verified the same way, not merely decoded.
 

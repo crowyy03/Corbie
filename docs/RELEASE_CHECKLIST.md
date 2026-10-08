@@ -8,6 +8,19 @@ paid from day one on 2026-09-25, with Xcode 26.6 and the iOS 26.5 runtime. Scree
 
 Status values: **done**, **blocked on Apple account**, **blocked on device test**, **not done**.
 
+## Version 1.0.1 (three free days, then the Apple trial)
+
+1.0 is in the store and reads only `app_config.monetization_enabled`, which stays `false`, so 1.0
+is free for everyone. 1.0.1 (build 2) reads only `monetization_v2_enabled` and `free_days`.
+
+| Step | Status | Evidence |
+| --- | --- | --- |
+| Migration 0011 and `config` deployed | done 2026-10-08 | `select key, value from public.app_config` shows `free_days` 3, `monetization_enabled` false, `monetization_v2_enabled` false; `curl -s https://powtuiqqagdoiuqjeebr.supabase.co/functions/v1/config` prints `{"monetizationEnabled":false,"monetizationV2Enabled":false,"freeDays":3}`. |
+| Intro offer "Free, 2 weeks" on monthly and yearly, every country | founder, App Store Connect | Set by the founder on 2026-10-08, after 1.0 shipped without it. The paywall logs each product's offer and `isEligibleForIntroOffer` under the `paywall` category, so a missing offer shows in Console on the first paywall. |
+| Archive 1.0.1 (2), upload through Organizer | founder | The archive is built and its signature checked; the upload is the founder's. |
+| CloudKit schema in Production | founder | Still required before any Release build runs on a phone (see "Gates before a build goes out"). |
+| Turn `monetization_v2_enabled` on | founder, after 1.0.1 is out | `server/DEPLOY.md`, "Turning monetization on". Until then 1.0.1 is fully free as well. Never turn `monetization_enabled` on: 1.0 has no free window. |
+
 ## App Review
 
 | Item | Status | Evidence |
@@ -43,7 +56,7 @@ Status values: **done**, **blocked on Apple account**, **blocked on device test*
 
 | Item | Status | Evidence |
 | --- | --- | --- |
-| The monetization flag counts as on until the server says otherwise | done in code | `MonetizationFlagStore.isEnabled` falls back to on when `/config` was never fetched (`Packages/CorbieCore/Sources/CorbieCore/Services/MonetizationFlag.swift`), and `/config` answers true when `app_config` has no row (`server/supabase/functions/config/index.ts`). A first launch offline is read-only with the trial offer, not free. People who pay are not affected: their access comes from their own StoreKit transaction. No migration touches the live row; it still says false, so the test phones that fetched it stay free until step 12 below. |
+| The monetization flag counts as on until the server says otherwise | done in code | `MonetizationConfigStore.isEnabled` falls back to on when `/config` was never fetched (`Packages/CorbieCore/Sources/CorbieCore/Services/MonetizationConfig.swift`), and `/config` answers true when `app_config` has no row (`server/supabase/functions/config/index.ts`). From 1.0.1 the flag is `monetization_v2_enabled`. A first launch offline in a space older than its free window is read-only, not free. People who pay are not affected: their access comes from their own StoreKit transaction. No migration touches the live row; it still says false, so the test phones that fetched it stay free until step 12 below. |
 | The subscriptions ship with the build | App Store Connect, founder | Both subscriptions are submitted for review together with the version (step 10 below). Apple reviews the first subscriptions of an app only with a new version. |
 | Universal links on `yourcorbie.app` | done | `Configs/Corbie.entitlements` carries `applinks:yourcorbie.app`; the live association file names `735XXP9B5R.app.corbie` for `/join/*`, is served as `application/json`, and Apple's CDN (`app-site-association.cdn-apple.com/a/v1/yourcorbie.app`) already holds the same body. |
 | Support and privacy URLs | done | `https://yourcorbie.app/support`, `/privacy` and `/terms` answer 200. The app opens `/privacy` and `/terms` from settings and the paywall footer (`LegalPage`), and settings has a Contact support entry that mails `support@yourcorbie.app` with the device, system and app version prefilled (`SupportMail`). |

@@ -13,7 +13,7 @@ struct RootView: View {
     @State private var joinRequest: JoinRequest?
     @State private var isUsHubOnScreen = false
     @State private var isLaunchRevealShown = true
-    @State private var isTrialOfferPresented = false
+    @State private var isPaywallFlowPresented = false
 
     private let credentials = AppleCredentialMonitor()
     private let partnerWatcher = PartnerChangeWatcher()
@@ -121,20 +121,20 @@ struct RootView: View {
                 environment.premiumGate.dismissPaywall(screen: .comparison)
             }
         }
-        .fullScreenCover(isPresented: trialOfferOnScreen) {
-            PaywallFlow { isTrialOfferPresented = false }
+        .fullScreenCover(isPresented: paywallFlowOnScreen) {
+            PaywallFlow { isPaywallFlowPresented = false }
         }
         .sheet(item: $joinRequest) { request in
             JoinSheet(code: request.code)
         }
-        .task(id: appState.trialOfferChecks) { await offerTheTrialOnce() }
+        .task(id: appState.freeWindowPaywallChecks) { await offerThePaywallOnceAfterTheFreeWindow() }
         .task { await refreshEntitlementHourly() }
         .task { await partnerWatcher.observe(environment) }
         .task { await departureWatcher.observe(environment) }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
             askForReviewIfEarned()
-            Task { await environment.refreshEntitlement() }
+            Task { await offerThePaywallOnceAfterTheFreeWindow() }
             Task { await partnerWatcher.check(environment) }
             Task { await environment.consolidateQuestionDuplicates() }
             Task {
@@ -145,18 +145,20 @@ struct RootView: View {
         }
     }
 
-    private var trialOfferOnScreen: Binding<Bool> {
+    private var paywallFlowOnScreen: Binding<Bool> {
         Binding(
-            get: { isTrialOfferPresented && isUsHubOnScreen == false },
-            set: { isTrialOfferPresented = $0 }
+            get: { isPaywallFlowPresented && isUsHubOnScreen == false },
+            set: { isPaywallFlowPresented = $0 }
         )
     }
 
-    private func offerTheTrialOnce() async {
+    private func offerThePaywallOnceAfterTheFreeWindow() async {
         await environment.refreshEntitlement()
-        let state = environment.premiumGate.state
-        guard TrialOfferFlag.mayClaim(state), TrialOfferFlag(defaults: environment.defaults).claim() else { return }
-        isTrialOfferPresented = state.isPremium == false
+        guard let spaceId = environment.space?.id,
+              FreeWindowPaywallFlag.mayClaim(environment.premiumGate.state),
+              FreeWindowPaywallFlag(defaults: environment.defaults).claim(spaceId: spaceId)
+        else { return }
+        isPaywallFlowPresented = true
     }
 
     private func refreshEntitlementHourly() async {

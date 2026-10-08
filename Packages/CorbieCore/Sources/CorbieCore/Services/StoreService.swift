@@ -1,8 +1,10 @@
 import Foundation
+import os
 import StoreKit
 
 public actor StoreService: LocalEntitlementProviding, AppTransactionProviding {
     public static let shared = StoreService()
+    private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "paywall")
 
     public nonisolated let productIdentifiers: StoreProductIdentifiers
 
@@ -181,14 +183,13 @@ public actor StoreService: LocalEntitlementProviding, AppTransactionProviding {
     }
 
     private func eligibleFreeTrialDays(for product: Product) async -> Int? {
+        guard let subscription = product.subscription else { return nil }
+        let isEligible = await subscription.isEligibleForIntroOffer
+        StoreService.logIntroductoryOffer(subscription.introductoryOffer, productId: product.id, isEligible: isEligible)
         #if DEBUG
         if DebugEntitlementOverride.stored()?.hidesIntroOffer == true { return nil }
         #endif
-        guard let subscription = product.subscription,
-              let offer = subscription.introductoryOffer,
-              offer.paymentMode == .freeTrial,
-              await subscription.isEligibleForIntroOffer
-        else { return nil }
+        guard let offer = subscription.introductoryOffer, offer.paymentMode == .freeTrial, isEligible else { return nil }
         return SubscriptionOfferMath.freeTrialDays(
             unit: StoreService.unit(of: offer.period),
             value: offer.period.value,
@@ -216,6 +217,18 @@ public actor StoreService: LocalEntitlementProviding, AppTransactionProviding {
             gracePeriodExpiresAt: renewal?.gracePeriodExpirationDate,
             isInIntroOffer: StoreService.isInIntroOffer(transaction),
             signedTransaction: result.jwsRepresentation
+        )
+    }
+
+    private static func logIntroductoryOffer(_ offer: Product.SubscriptionOffer?, productId: String, isEligible: Bool) {
+        guard let offer else {
+            log.notice("paywall: \(productId, privacy: .public) has no introductoryOffer, isEligibleForIntroOffer \(isEligible, privacy: .public)")
+            return
+        }
+        let unit = StoreService.unit(of: offer.period).rawValue
+        let length = "\(offer.periodCount) x \(offer.period.value) \(unit)"
+        log.notice(
+            "paywall: \(productId, privacy: .public) introductoryOffer \(offer.paymentMode.rawValue, privacy: .public) for \(length, privacy: .public), isEligibleForIntroOffer \(isEligible, privacy: .public)"
         )
     }
 

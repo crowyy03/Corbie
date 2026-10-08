@@ -29,24 +29,34 @@ final class DebugMenuViewModel {
         defer { isWorking = false }
         DebugMonetizationOverride.store(.on)
         await environment.refreshEntitlement()
-        environment.premiumGate.presentPaywall(reason: .settings)
+        environment.premiumGate.pendingPaywall = PaywallRequest(reason: .settings)
         lastAction = "paywall opened, monetization forced on"
     }
 
-    func showTrialOfferAgain(_ environment: AppEnvironment, appState: AppState) async {
+    func showPaywallAfterFreeWindowAgain(_ environment: AppEnvironment, appState: AppState) async {
         guard isWorking == false else { return }
         isWorking = true
         defer { isWorking = false }
         DebugMonetizationOverride.store(.on)
-        TrialOfferFlag(defaults: environment.defaults).forget()
+        FreeWindowPaywallFlag(defaults: environment.defaults).forget()
         await environment.refreshEntitlement()
         guard environment.premiumGate.isPremium == false else {
-            lastAction = "trial offer armed again; it shows only when the state is not premium or trial"
+            lastAction = "paywall armed again; it shows once the state is read-only, so end the free window first"
             return
         }
         appState.isUsHubPresented = false
-        appState.trialOfferChecks += 1
-        lastAction = "trial offer shown, monetization forced on"
+        appState.freeWindowPaywallChecks += 1
+        lastAction = "paywall after the free window shown, monetization forced on"
+    }
+
+    func endFreeWindow(_ override: DebugFreeWindowOverride?, _ environment: AppEnvironment, label: String) async {
+        guard isWorking == false else { return }
+        isWorking = true
+        defer { isWorking = false }
+        DebugFreeWindowOverride.store(override)
+        await environment.refreshEntitlement()
+        WidgetReloadRequest.post()
+        lastAction = label
     }
 
     func force(_ override: DebugMonetizationOverride?, _ environment: AppEnvironment, label: String) async {
@@ -117,13 +127,27 @@ struct DebugMenuView: View {
                     await model.force(nil as DebugEntitlementOverride?, environment, label: "override cleared")
                 }
                 row("Open the paywall") { await model.openPaywall(environment) }
-                row("Show the trial offer again") { await model.showTrialOfferAgain(environment, appState: appState) }
+                row("Show the paywall after the free window again") {
+                    await model.showPaywallAfterFreeWindowAgain(environment, appState: appState)
+                }
                 row("Clear the entitlement cache") { await model.clearEntitlementCache(environment) }
                 row("Request a refund") { await model.requestRefund(spaceId: environment.space?.id) }
             } header: {
                 Text(verbatim: "Subscription")
             } footer: {
-                Text(verbatim: "Forcing a state, opening the paywall or the trial offer also forces monetization on: a subscription state means nothing while it is off.")
+                Text(verbatim: "Forcing a state, opening the paywall or the paywall after the free window also forces monetization on: a subscription state means nothing while it is off. A forced state wins over the free window.")
+            }
+            Section {
+                row("End free window now") {
+                    await model.endFreeWindow(.ended, environment, label: "free window ended on this phone")
+                }
+                row("Follow the real free window") {
+                    await model.endFreeWindow(nil, environment, label: "free window follows the space")
+                }
+            } header: {
+                Text(verbatim: "Free window")
+            } footer: {
+                Text(verbatim: "Ending it touches only this phone: the space and the partner keep the real window.")
             }
             Section {
                 row("Follow the server flag") {
@@ -182,14 +206,15 @@ struct DebugMenuView: View {
     }
 
     private var monetizationState: String {
-        let store = MonetizationFlagStore()
+        let store = MonetizationConfigStore()
         let server = store.fetchedValue.map { $0 ? "on" : "off" } ?? "never fetched"
         let forced = DebugMonetizationOverride.stored()?.rawValue ?? "none"
-        return "effective: \(store.isEnabled ? "on" : "off")\nserver: \(server)\nforced: \(forced)"
+        let days = store.fetchedFreeDays.map { "\($0) from the server" } ?? "\(FreeWindow.defaultDays), never fetched"
+        return "effective: \(store.isEnabled ? "on" : "off")\nserver monetization_v2_enabled: \(server)\nforced: \(forced)\nfree days: \(days)"
     }
 
     private var state: String {
-        let monetization = MonetizationFlagStore()
+        let monetization = MonetizationConfigStore()
         let gate = environment.premiumGate
         var lines = [
             "space: \(environment.space?.id.uuidString.lowercased() ?? "none")",
@@ -202,6 +227,7 @@ struct DebugMenuView: View {
         if let endsAt = gate.trialEndsAt {
             lines.append("trial ends: \(endsAt.formatted(date: .abbreviated, time: .shortened))")
         }
+        lines.append(DebugMenuStatus.freeWindowLine(space: environment.space, store: monetization, now: Date()))
         if let override = DebugEntitlementOverride.stored() {
             lines.append(DebugMenuStatus.overrideLine(override, monetizationOn: monetization.isEnabled))
         } else {
@@ -248,12 +274,27 @@ enum DebugRefundRequest {
 }
 
 enum DebugMenuStatus {
-    static func monetizationSource(_ store: MonetizationFlagStore) -> String {
+    static func monetizationSource(_ store: MonetizationConfigStore) -> String {
         if let forced = DebugMonetizationOverride.stored() {
             return "forced \(forced.rawValue) here"
         }
         guard let fetched = store.fetchedValue else { return "server never asked, counts as on" }
         return "server says \(fetched ? "on" : "off")"
+    }
+
+    static func freeWindowLine(space: SpaceDTO?, store: MonetizationConfigStore, now: Date, calendar: Calendar = .current) -> String {
+        guard let space else { return "free window: no space" }
+        let days = store.fetchedFreeDays ?? FreeWindow.defaultDays
+        guard let window = FreeWindow(spaceCreatedAt: space.createdAt, days: days, calendar: calendar) else {
+            return "free window: none (\(days) days, space created \(space.createdAt.map(describe) ?? "never"))"
+        }
+        let ended = DebugFreeWindowOverride.stored() == .ended ? ", ended on this phone by the developer" : ""
+        let verb = window.isOpen(at: now) ? "ends" : "ended"
+        return "free window \(verb) \(describe(window.endsAt))\(ended)"
+    }
+
+    private static func describe(_ date: Date) -> String {
+        date.formatted(date: .abbreviated, time: .shortened)
     }
 
     static func overrideLine(_ override: DebugEntitlementOverride, monetizationOn: Bool) -> String {

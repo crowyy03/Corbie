@@ -76,6 +76,11 @@ struct TodayView: View {
                     }
                 }
             }
+            if let endsAt = environment.premiumGate.freeWindowEndsAt {
+                Text(verbatim: FreeWindowCopy.line(endsAt: endsAt, now: model.feed.day))
+                    .corbieMono()
+                    .foregroundStyle(palette.text2)
+            }
         }
         .padding(.top, CorbieSpacing.xs)
         .accessibilityElement(children: .combine)

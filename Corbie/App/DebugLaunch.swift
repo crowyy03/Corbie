@@ -6,6 +6,8 @@ enum DebugLaunch {
     static let resetStoreArgument = "-corbie-reset-store"
     static let entitlementArgument = "-corbie-entitlement"
     static let monetizationArgument = "-corbie-monetization"
+    static let freeWindowArgument = "-corbie-free-window"
+    static let realEntitlement = "real"
 
     static func applyMonetizationArgument(arguments: [String] = ProcessInfo.processInfo.arguments) {
         guard let flag = arguments.firstIndex(of: monetizationArgument), flag + 1 < arguments.count,
@@ -15,10 +17,20 @@ enum DebugLaunch {
     }
 
     static func applyEntitlementArgument(arguments: [String] = ProcessInfo.processInfo.arguments) {
-        guard let flag = arguments.firstIndex(of: entitlementArgument), flag + 1 < arguments.count,
-              let override = DebugEntitlementOverride(rawValue: arguments[flag + 1])
+        guard let flag = arguments.firstIndex(of: entitlementArgument), flag + 1 < arguments.count else { return }
+        let value = arguments[flag + 1]
+        if value == realEntitlement {
+            DebugEntitlementOverride.store(nil)
+        } else if let override = DebugEntitlementOverride(rawValue: value) {
+            DebugEntitlementOverride.store(override)
+        }
+    }
+
+    static func applyFreeWindowArgument(arguments: [String] = ProcessInfo.processInfo.arguments) {
+        guard let flag = arguments.firstIndex(of: freeWindowArgument), flag + 1 < arguments.count,
+              let override = DebugFreeWindowOverride(rawValue: arguments[flag + 1])
         else { return }
-        DebugEntitlementOverride.store(override)
+        DebugFreeWindowOverride.store(override)
     }
 
     static func resetStoreIfRequested(arguments: [String] = ProcessInfo.processInfo.arguments) {

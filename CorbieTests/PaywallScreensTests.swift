@@ -81,18 +81,35 @@ final class PaywallScreensTests: XCTestCase {
         XCTAssertNil(PaywallCopy.yearAtMonthlyPrice(for: year, monthly: monthly(sorted)))
     }
 
-    func testTheCallToActionPromisesATrialOnlyWhenOneIsOffered() throws {
-        let eligible = try XCTUnwrap(yearly(offers(monthly: "4.99", yearly: "29.99", style: dollars, trialDays: 14)))
-        XCTAssertEqual(PaywallCopy.callToAction(for: eligible), "Try 14 days free")
-
-        let ineligible = try XCTUnwrap(yearly(offers(monthly: "4.99", yearly: "29.99", style: dollars)))
-        XCTAssertEqual(PaywallCopy.callToAction(for: ineligible), "Subscribe")
-        XCTAssertEqual(PaywallCopy.callToAction(for: nil), "Subscribe")
+    func testAnEligibleBuyerIsOfferedTheTrialWithTheStorePriceUnderTheButton() throws {
+        let sorted = offers(monthly: "4.99", yearly: "29.99", style: dollars, trialDays: 14)
+        let year = try XCTUnwrap(yearly(sorted))
+        let month = try XCTUnwrap(monthly(sorted))
+        XCTAssertEqual(PaywallCopy.callToAction(for: year), "Start free trial")
+        XCTAssertEqual(PaywallCopy.trialTerms(for: year), "14 days free, then $29.99/year")
+        XCTAssertEqual(PaywallCopy.callToAction(for: month), "Start free trial")
+        XCTAssertEqual(PaywallCopy.trialTerms(for: month), "14 days free, then $4.99/month")
     }
 
-    func testTheCallToActionCountsTheDaysTheOfferActuallyGives() throws {
+    func testAnIneligibleBuyerSeesSubscribeAndNoWordAboutATrial() throws {
+        let sorted = offers(monthly: "4.99", yearly: "29.99", style: dollars)
+        for offer in sorted {
+            XCTAssertEqual(PaywallCopy.callToAction(for: offer), "Subscribe")
+            XCTAssertNil(PaywallCopy.trialTerms(for: offer))
+            let legal = PaywallCopy.legalText(for: offer).lowercased()
+            XCTAssertFalse(legal.contains("trial"), legal)
+            XCTAssertFalse(legal.contains("free"), legal)
+        }
+        XCTAssertEqual(PaywallCopy.callToAction(for: nil), "Subscribe")
+        XCTAssertNil(PaywallCopy.trialTerms(for: nil))
+    }
+
+    func testTheTermsCountTheDaysTheOfferActuallyGives() throws {
         let week = try XCTUnwrap(yearly(offers(monthly: "4.99", yearly: "29.99", style: dollars, trialDays: 7)))
-        XCTAssertEqual(PaywallCopy.callToAction(for: week), "Try 7 days free")
+        XCTAssertEqual(PaywallCopy.trialTerms(for: week), "7 days free, then $29.99/year")
+        let euro = try XCTUnwrap(yearly(offers(monthly: "5.99", yearly: "39.99", style: euros, trialDays: 14)))
+        let terms = try XCTUnwrap(PaywallCopy.trialTerms(for: euro))
+        XCTAssertTrue(terms.contains(euro.displayPrice), terms)
     }
 
     func testTheComparisonHeaderSaysWhatEnded() {
@@ -125,25 +142,37 @@ final class PaywallScreensTests: XCTestCase {
         }
     }
 
-    func testTheTrialOfferIsClaimedOnceAndNeverAgain() throws {
-        let suite = "corbie.tests.trialoffer." + UUID().uuidString
+    func testThePaywallAfterTheFreeWindowIsClaimedOnceForASpace() throws {
+        let suite = "corbie.tests.freewindowpaywall." + UUID().uuidString
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
         defer { defaults.removePersistentDomain(forName: suite) }
+        let space = UUID()
 
-        let flag = TrialOfferFlag(defaults: defaults)
-        XCTAssertFalse(flag.hasBeenShown)
-        XCTAssertTrue(flag.claim())
-        XCTAssertTrue(flag.hasBeenShown)
-        XCTAssertFalse(flag.claim())
-        XCTAssertFalse(TrialOfferFlag(defaults: defaults).claim())
+        let flag = FreeWindowPaywallFlag(defaults: defaults)
+        XCTAssertFalse(flag.hasBeenShown(spaceId: space))
+        XCTAssertTrue(flag.claim(spaceId: space))
+        XCTAssertTrue(flag.hasBeenShown(spaceId: space))
+        XCTAssertFalse(flag.claim(spaceId: space))
+        XCTAssertFalse(FreeWindowPaywallFlag(defaults: defaults).claim(spaceId: space))
+        XCTAssertTrue(FreeWindowPaywallFlag(defaults: defaults).claim(spaceId: UUID()))
     }
 
-    func testAFreshInstallHasNotClaimedTheTrialOffer() throws {
-        let suite = "corbie.tests.trialoffer." + UUID().uuidString
+    func testTheOneVersionZeroFlagDoesNotSilenceThePaywallAfterTheWindow() throws {
+        let suite = "corbie.tests.freewindowpaywall." + UUID().uuidString
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
         defer { defaults.removePersistentDomain(forName: suite) }
+        defaults.set(true, forKey: "corbie.paywall.trialOfferShown")
 
-        XCTAssertFalse(TrialOfferFlag(defaults: defaults).hasBeenShown)
-        XCTAssertEqual(TrialOfferFlag.storageKey, "corbie.paywall.trialOfferShown")
+        XCTAssertTrue(FreeWindowPaywallFlag(defaults: defaults).claim(spaceId: UUID()))
+    }
+
+    func testNoPaywallOrTrialScreenWhileTheWindowIsOpen() {
+        let window = EntitlementState.freeWindow(FreeWindow(endsAt: Date().addingTimeInterval(86_400)))
+        XCTAssertFalse(FreeWindowPaywallFlag.mayClaim(window))
+        XCTAssertFalse(FreeWindowPaywallFlag.mayClaim(.monetizationOff))
+        XCTAssertFalse(FreeWindowPaywallFlag.mayClaim(.premium(source: .storeKit, expiresAt: nil)))
+        XCTAssertFalse(FreeWindowPaywallFlag.mayClaim(.trial(daysLeft: 14, endsAt: Date().addingTimeInterval(14 * 86_400))))
+        XCTAssertTrue(FreeWindowPaywallFlag.mayClaim(.readOnly))
+        XCTAssertNil(PaywallBannerState.make(window, cause: nil))
     }
 }

@@ -17,6 +17,13 @@ struct PaywallCheckout: View {
                 }
             }
             .disabled(model.canContinue == false)
+            if let terms = PaywallCopy.trialTerms(for: model.selectedOffer) {
+                Text(terms)
+                    .corbieCaption()
+                    .foregroundStyle(palette.text2)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+            }
             if let message = model.message {
                 Text(message)
                     .corbieCaption()

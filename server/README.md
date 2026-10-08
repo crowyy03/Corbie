@@ -19,6 +19,8 @@ supabase/migrations/0006_*      app_config table seeded with monetization_enable
 supabase/migrations/0007_*      drops rate limit rows keyed by a raw address
 supabase/migrations/0008_*      superseded_at and redeemed_by on invites
 supabase/migrations/0009_*      one row per subscription and environment, the best one per space
+supabase/migrations/0010_*      invite origin: CloudKit environment and iCloud account per code
+supabase/migrations/0011_*      monetization_v2_enabled = false and free_days = 3 in app_config
 supabase/functions/_shared      auth, rate limit, responses, parsing, Apple crypto
 supabase/functions/<name>       one Deno.serve entry point per endpoint
 supabase/functions/config       public monetization flag, read from app_config
