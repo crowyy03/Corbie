@@ -51,6 +51,13 @@ struct QuestionCopy {
         }
     }
 
+    static func hiddenPartnerAnswer(partnerAnswered: Bool, partnerName: String) -> String {
+        if partnerAnswered {
+            return String(localized: "question.hidden.answerfirst")
+        }
+        return String.localizedStringWithFormat(String(localized: "question.hidden"), partnerName)
+    }
+
     static func waitingDotLabel(partnerName: String) -> String {
         String.localizedStringWithFormat(String(localized: "question.dot.waiting"), partnerName)
     }
