@@ -10,7 +10,7 @@ enum NotificationBacklog {
         await scheduler.cancelDisabled(in: prefs)
         await rescheduleTasks(environment, spaceId: space.id, prefs: prefs, now: now)
         await rescheduleEvents(environment, spaceId: space.id, prefs: prefs, now: now)
-        await rescheduleCapsules(environment, spaceId: space.id, member: member, prefs: prefs, now: now)
+        await environment.replanCapsuleOpens()
     }
 
     private static func rescheduleTasks(
@@ -38,26 +38,6 @@ enum NotificationBacklog {
         for event in events {
             _ = try? await environment.notifications.scheduleEventReminders(for: event, prefs: prefs, now: now)
             _ = try? await environment.notifications.scheduleEventDigest(for: event, prefs: prefs, now: now)
-        }
-    }
-
-    private static func rescheduleCapsules(
-        _ environment: AppEnvironment,
-        spaceId: UUID,
-        member: MemberDTO,
-        prefs: NotificationPrefs,
-        now: Date
-    ) async {
-        guard prefs.capsuleUpdates else { return }
-        guard let capsules = try? await environment.repositories.capsules.capsules(spaceId: spaceId) else { return }
-        for capsule in capsules where capsule.openedAt == nil {
-            _ = try? await environment.notifications.scheduleCapsuleOpen(
-                for: capsule,
-                viewerMemberId: member.id,
-                partnerName: environment.partnerName,
-                prefs: prefs,
-                now: now
-            )
         }
     }
 }

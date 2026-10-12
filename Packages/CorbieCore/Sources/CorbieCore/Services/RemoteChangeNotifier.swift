@@ -36,6 +36,7 @@ public actor RemoteChangeNotifier {
     private static let log = Logger(subsystem: CorbieIdentifiers.bundleID, category: "remote-change")
 
     public nonisolated let reminders: PartnerProgressReminders
+    public nonisolated let capsuleOpens: CapsuleOpenReminders
 
     private let stack: CoreDataStack
     private let resolver: RemoteChangeResolver
@@ -51,11 +52,13 @@ public actor RemoteChangeNotifier {
         stack: CoreDataStack,
         scheduler: NotificationScheduler,
         reminders: PartnerProgressReminders,
+        capsuleOpens: CapsuleOpenReminders,
         defaults: UserDefaults = .corbieShared
     ) {
         self.stack = stack
         self.scheduler = scheduler
         self.reminders = reminders
+        self.capsuleOpens = capsuleOpens
         self.defaults = defaults
         reviewPrompt = ReviewPromptTracker(defaults: defaults)
         resolver = RemoteChangeResolver(stack: stack)
@@ -93,6 +96,9 @@ public actor RemoteChangeNotifier {
         guard let audience else { return [] }
         let delivered = await deliverAlerts(for: records, audience: audience)
         await reminders.replan(PartnerProgressReminder.triggered(by: records), for: audience)
+        if CapsuleOpenReminders.isTriggered(by: records), let latest = self.audience {
+            await capsuleOpens.replan(for: latest)
+        }
         return delivered
     }
 

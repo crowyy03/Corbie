@@ -156,6 +156,7 @@ final class AppEnvironment {
                 scheduler: scheduler,
                 defaults: defaults
             ),
+            capsuleOpens: CapsuleOpenReminders(capsules: persistence.repositories.capsules, scheduler: scheduler),
             defaults: defaults
         )
         toasts = ToastCenter()
@@ -253,6 +254,7 @@ final class AppEnvironment {
             session = .signedIn(context)
             startBusyPublishing(spaceId: space.id)
             await updateNotificationAudience()
+            await replanCapsuleOpens()
             await resyncNotificationBacklog()
             premiumGate.apply(await entitlements.cachedResolution(space: space))
             return context
@@ -531,6 +533,11 @@ final class AppEnvironment {
 
     func updateNotificationAudience() async {
         await remoteChanges.update(audience: notificationAudience)
+    }
+
+    func replanCapsuleOpens() async {
+        guard let notificationAudience else { return }
+        await remoteChanges.capsuleOpens.replan(for: notificationAudience)
     }
 
     func replanPartnerProgressReminders(_ reminders: Set<PartnerProgressReminder>) async {

@@ -63,10 +63,9 @@ final class CapsuleEditorViewModel {
         defer { isSaving = false }
         let opening = openingDate()
         do {
-            let saved: CapsuleDTO
             switch target {
             case .new:
-                saved = try await environment.repositories.capsules.create(
+                _ = try await environment.repositories.capsules.create(
                     CapsuleDraft(
                         spaceId: space.id,
                         authorMemberId: member.id,
@@ -84,9 +83,10 @@ final class CapsuleEditorViewModel {
                 if opensAt != capsule.opensAt {
                     updated.opensAt = opening
                 }
-                saved = try await environment.repositories.capsules.update(updated, from: capsule)
+                _ = try await environment.repositories.capsules.update(updated, from: capsule)
             }
-            await schedule(saved, environment: environment, member: member)
+            _ = try? await environment.notifications.requestAuthorizationIfNeeded()
+            await environment.replanCapsuleOpens()
             didFinish = true
         } catch {
             environment.report(error)
@@ -99,7 +99,7 @@ final class CapsuleEditorViewModel {
         defer { isSaving = false }
         do {
             try await environment.repositories.capsules.delete(id: capsule.id)
-            await environment.notifications.cancelCapsuleOpen(capsuleId: capsule.id)
+            await environment.replanCapsuleOpens()
             didFinish = true
         } catch {
             environment.report(error)
@@ -115,17 +115,6 @@ final class CapsuleEditorViewModel {
             of: day
         ) ?? day
         return max(opening, earliestOpening)
-    }
-
-    private func schedule(_ capsule: CapsuleDTO, environment: AppEnvironment, member: MemberDTO) async {
-        _ = try? await environment.notifications.requestAuthorizationIfNeeded()
-        _ = try? await environment.notifications.scheduleCapsuleOpen(
-            for: capsule,
-            viewerMemberId: member.id,
-            partnerName: environment.partnerName,
-            prefs: member.notificationPrefs,
-            now: now
-        )
     }
 
     private static func earliestOpening(now: Date, calendar: Calendar) -> Date {
