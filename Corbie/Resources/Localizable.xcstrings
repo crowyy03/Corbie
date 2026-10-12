@@ -24559,6 +24559,40 @@
         }
       }
     },
+    "question.hidden.answerfirst": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antworte, um die Antwort zu sehen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Answer to see theirs"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Responde para ver la suya"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réponds pour voir la sienne"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rispondi per vedere la sua"
+          }
+        }
+      }
+    },
     "question.history.empty.note": {
       "localizations": {
         "de": {

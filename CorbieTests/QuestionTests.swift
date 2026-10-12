@@ -64,6 +64,11 @@ final class QuestionStatusCopyTests: XCTestCase {
         XCTAssertEqual(QuestionCopy.status(.revealRead, partnerName: "Sofia"), "Both answered")
     }
 
+    func testAHiddenAnswerSaysWhatItWaitsFor() {
+        XCTAssertEqual(QuestionCopy.hiddenPartnerAnswer(partnerAnswered: true, partnerName: "Sofia"), "Answer to see theirs")
+        XCTAssertEqual(QuestionCopy.hiddenPartnerAnswer(partnerAnswered: false, partnerName: "Sofia"), "Hidden until Sofia answers")
+    }
+
     func testTheDotSaysWhoseAnswerIsWaiting() {
         XCTAssertEqual(QuestionCopy.waitingDotLabel(partnerName: "Sofia"), "Sofia's answer is waiting")
     }

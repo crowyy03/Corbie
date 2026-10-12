@@ -122,9 +122,9 @@ struct QuestionView: View {
                 stamp: model.isRevealed ? copy.time(of: model.partnerAnswer?.createdAt) : nil,
                 placeholder: model.isRevealed
                     ? nil
-                    : String.localizedStringWithFormat(
-                        String(localized: "question.hidden"),
-                        environment.partnerName
+                    : QuestionCopy.hiddenPartnerAnswer(
+                        partnerAnswered: model.partnerAnswer != nil,
+                        partnerName: environment.partnerName
                     )
             )
             if environment.isPaired, model.isRevealed == false, model.ownAnswer != nil {
