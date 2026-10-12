@@ -8,6 +8,19 @@ paid from day one on 2026-09-25, with Xcode 26.6 and the iOS 26.5 runtime. Scree
 
 Status values: **done**, **blocked on Apple account**, **blocked on device test**, **not done**.
 
+## Version 1.0.2 (letter notifications planned on arrival, the hidden answer line)
+
+1.0.2 (build 3) is 1.0.1 plus two fixes: the recipient's letter notification is planned when the
+letter arrives by CloudKit, on every session load and on return to the app, and the question sheet
+says "Answer to see theirs" once the partner has answered. `docs/DECISIONS.md`, 2026-10-11 and 2026-10-12.
+
+| Step | Status | Evidence |
+| --- | --- | --- |
+| Core Data model unchanged since 1.0.1 | done 2026-10-12 | `CorbieModel.build()` gives the same version hash for all entities and properties (288 hashes) at 6557494 (1.0.1) and at the 1.0.2 commit, and no file under `Model/` or `Persistence/` changed. No CloudKit schema deploy is needed. |
+| Tests | done 2026-10-12 | `swift test` in `Packages/CorbieCore` 882 passed; `CorbieTests` `QuestionStatusCopyTests`, `QuestionDraftTests`, `CapsuleOpenLaunchTests`, `StoreChangeRefreshTests`, `AccountIdentityTests` 37 passed; `lint_style.sh`, `check_strings.sh` ok; `check_release_debug_code.sh` ok (no warning, none of 53 markers). No full UI run. |
+| Archive 1.0.2 (3), upload through Organizer | founder | `Corbie 1.0.2 (3).xcarchive` is in Organizer, `codesign --verify --deep --strict` passes, app and both extensions read 1.0.2 (3), and the entitlements of all three match the uploaded 1.0.1 (2) archive. The upload is the founder's. |
+| Device check of the letter notification | founder | `docs/TEST_PLAN.md`, step 8 of the two-phone run, with phone B kept in the background. |
+
 ## Version 1.0.1 (three free days, then the Apple trial)
 
 1.0 is in the store and reads only `app_config.monetization_enabled`, which stays `false`, so 1.0
