@@ -149,23 +149,23 @@ import Testing
         )
         let engine = scheduler(center)
         let now = DomainClock.date("2026-09-05 12:00", in: calendar)
-        let received = try await engine.scheduleCapsuleOpen(
-            for: capsule,
+        let received = try await engine.rescheduleCapsuleOpens(
+            for: [capsule],
             viewerMemberId: recipient,
             partnerName: "Sofia",
             prefs: .allEnabled,
             now: now
-        )
+        ).first
         #expect(received?.id == NotificationIdentifier.capsuleOpens(capsuleId: capsule.id))
         #expect(DomainClock.text(received?.fireDate ?? Date(), in: calendar) == "2027-02-14 09:00")
         #expect(received?.content.bodyKey == NotificationStrings.capsuleReceivedBody)
-        let sent = try await engine.scheduleCapsuleOpen(
-            for: capsule,
+        let sent = try await engine.rescheduleCapsuleOpens(
+            for: [capsule],
             viewerMemberId: author,
             partnerName: "Sofia",
             prefs: .allEnabled,
             now: now
-        )
+        ).first
         #expect(sent?.content.bodyKey == NotificationStrings.capsuleSentBody)
         #expect(await center.pendingIdentifiers().count == 1)
     }

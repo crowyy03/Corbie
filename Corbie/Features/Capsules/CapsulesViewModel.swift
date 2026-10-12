@@ -46,7 +46,7 @@ final class CapsulesViewModel {
         }
         do {
             capsules = try await environment.repositories.capsules.capsules(spaceId: space.id)
-            await scheduleOpenings(environment)
+            await environment.replanCapsuleOpens()
         } catch {
             environment.report(error)
         }
@@ -92,19 +92,6 @@ final class CapsulesViewModel {
     func replace(_ capsule: CapsuleDTO) {
         guard let index = capsules.firstIndex(where: { $0.id == capsule.id }) else { return }
         capsules[index] = capsule
-    }
-
-    private func scheduleOpenings(_ environment: AppEnvironment, now: Date = Date()) async {
-        guard let member = environment.currentMember else { return }
-        for capsule in capsules where capsule.openedAt == nil {
-            _ = try? await environment.notifications.scheduleCapsuleOpen(
-                for: capsule,
-                viewerMemberId: member.id,
-                partnerName: environment.partnerName,
-                prefs: member.notificationPrefs,
-                now: now
-            )
-        }
     }
 
     private func reloadOnStoreChanges(_ environment: AppEnvironment) {

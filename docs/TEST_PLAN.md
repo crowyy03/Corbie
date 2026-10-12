@@ -221,7 +221,10 @@ Timings below are what to expect on Wi-Fi. Anything slower than double them is a
    phone B's within a minute.
 8. **Capsule.** Phone A: write a capsule to the partner opening tomorrow. Expected on phone B: the
    card reads "a letter from ... is waiting" and cannot be opened. Move both phones to the next day
-   and check the open-day notification arrives on both.
+   and check the open-day notification arrives on both. Repeat with phone B kept in the background
+   and never on Us or Capsules after the letter arrives: the 9:00 notification still comes. Then have
+   phone A move the opening day and, separately, delete a second letter: phone B's notification moves
+   with the day, and the deleted letter's never comes.
 9. **Vote.** Phone A: create a vote with "Reveal when both answered" on. Answer on A. Expected on B:
    the options and "Their answer is hidden" until B answers, then the outcome on both.
 10. **Free time.** Turn "Share my busy times" on for both. Expected: the free time screen lists windows

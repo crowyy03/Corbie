@@ -201,21 +201,48 @@ public actor NotificationScheduler {
     }
 
     @discardableResult
-    public func scheduleCapsuleOpen(
+    public func rescheduleCapsuleOpens(
+        for capsules: [CapsuleDTO],
+        viewerMemberId: UUID?,
+        partnerName: String?,
+        prefs: NotificationPrefs,
+        now: Date
+    ) async throws -> [CorbieNotificationRequest] {
+        let requests = capsules.compactMap { capsule in
+            capsuleOpenRequest(
+                for: capsule,
+                viewerMemberId: viewerMemberId,
+                partnerName: partnerName,
+                prefs: prefs,
+                now: now
+            )
+        }
+        let wanted = Set(requests.map(\.id))
+        let stale = await client.pendingIdentifiers().filter { identifier in
+            identifier.hasPrefix(NotificationKind.capsuleOpens.prefix) && wanted.contains(identifier) == false
+        }
+        await cancel(identifiers: stale)
+        for request in requests {
+            try await client.add(request)
+        }
+        return requests
+    }
+
+    private func capsuleOpenRequest(
         for capsule: CapsuleDTO,
         viewerMemberId: UUID?,
         partnerName: String?,
         prefs: NotificationPrefs,
         now: Date
-    ) async throws -> CorbieNotificationRequest? {
-        await cancelCapsuleOpen(capsuleId: capsule.id)
+    ) -> CorbieNotificationRequest? {
+        let isOpenForViewer = viewerMemberId.map(capsule.openedByMemberIds.contains) ?? (capsule.openedAt != nil)
         guard NotificationKind.capsuleOpens.isEnabled(in: prefs),
-              capsule.openedAt == nil,
+              isOpenForViewer == false,
               let opensAt = capsule.opensAt,
               let fireDate = date(bySettingHour: NotificationScheduler.capsuleOpenHour, on: opensAt),
               fireDate > now else { return nil }
-        let isRecipient = viewerMemberId == nil || viewerMemberId == capsule.recipientMemberId
-        let request = CorbieNotificationRequest(
+        let isRecipient = viewerMemberId == nil || viewerMemberId != capsule.authorMemberId
+        return CorbieNotificationRequest(
             id: NotificationIdentifier.capsuleOpens(capsuleId: capsule.id),
             fireDate: fireDate,
             content: CorbieNotificationContent(
@@ -230,8 +257,6 @@ public actor NotificationScheduler {
                 )
             )
         )
-        try await client.add(request)
-        return request
     }
 
     public func cancelCapsuleOpen(capsuleId: UUID) async {

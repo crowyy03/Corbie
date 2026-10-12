@@ -326,7 +326,13 @@ import Testing
             defaults: defaults,
             now: { now }
         )
-        let notifier = RemoteChangeNotifier(stack: app, scheduler: scheduler, reminders: reminders, defaults: defaults)
+        let notifier = RemoteChangeNotifier(
+            stack: app,
+            scheduler: scheduler,
+            reminders: reminders,
+            capsuleOpens: CapsuleOpenReminders(capsules: repositories.capsules, scheduler: scheduler, now: { now }),
+            defaults: defaults
+        )
         await notifier.update(
             audience: RemoteChangeNotifier.Audience(
                 spaceId: space.id,

@@ -137,6 +137,7 @@ struct RootView: View {
             Task { await offerThePaywallOnceAfterTheFreeWindow() }
             Task { await partnerWatcher.check(environment) }
             Task { await environment.consolidateQuestionDuplicates() }
+            Task { await environment.replanCapsuleOpens() }
             Task {
                 await environment.reconcilePartnerMembership(
                     serverCheckInterval: AppEnvironment.partnerCheckIntervalOnForeground

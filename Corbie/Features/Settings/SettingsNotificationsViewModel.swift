@@ -43,6 +43,9 @@ final class SettingsNotificationsViewModel {
                 await NotificationBacklog.resync(environment)
             } else {
                 await environment.notifications.cancelAll(kinds: toggle.scheduledKinds)
+                if toggle.scheduledKinds.contains(.capsuleOpens) {
+                    await environment.replanCapsuleOpens()
+                }
             }
         } catch {
             prefs = previous
