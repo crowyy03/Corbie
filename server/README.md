@@ -149,3 +149,9 @@ The views live in the `analytics` schema, which is not exposed over the API:
 There is no trial-to-paid view. The trial is an Apple introductory offer, so `trial_started` and `purchase_completed` are the same tap and the paid renewal never reaches the client: the only record of it is a `DID_RENEW` notification landing on `subscriptions`.
 
 Raw events are kept 30 days. `purge_expired_rows()` runs nightly through `pg_cron` when the extension is available.
+
+TODO: the nightly purge is paused in production since 2026-10-13 17:02 UTC, so the bloggers' invite row survives until their manual grant (`DEPLOY.md` section 11). Turn it back on right after the grant, and only then, since its first run drops every invite older than a day:
+
+```sql
+select cron.alter_job(job_id := (select jobid from cron.job where jobname = 'corbie_purge_expired_rows'), active := true);
+```
