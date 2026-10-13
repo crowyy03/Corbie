@@ -447,6 +447,54 @@ The key stays in Vault, encrypted, and never appears in the job text. Check with
 `corbie_purge_expired_rows`, and after the first night with
 `select status_code, content from net._http_response order by created desc limit 1;`.
 
+## 11. Manual premium for one space
+
+For a pair that should have premium without paying (bloggers, partners). The grant is a row in
+`subscriptions`: `Production`, `original_transaction_id` `manual_grant:<space id>`, `product_id`
+`manual_grant`, `active` until 2099-12-31 12:00 UTC (noon, so the date reads 31 December 2099 in
+every time zone from UTC-11 to UTC+11). `/entitlement` answers it like a purchase, so both phones
+read premium on their next refresh (launch, return to the app, or the hourly check), write it into
+the Space record and the widgets follow. Migration `0012` keeps the daily reconciliation from asking
+Apple about a transaction that does not exist; apply it first (`supabase db push`).
+
+The server knows a space only through `invites` and `subscriptions`. It never stores an Apple ID:
+session tokens carry a SHA-256 of the Apple subject and are not saved, and `invites` holds only
+salted digests of the device and the iCloud account. A pair that never bought has no `subscriptions`
+row, so its space is found by the code of the invite the partner joined with, and only while that
+row exists: the nightly purge (03:17 UTC) drops invites more than a day old, and a paired space has
+no Invite button. Ask for the code on the day they pair. Without the code,
+`scripts/manual-premium-recent.sql` lists every code made and redeemed in the last 24 hours with
+its `space_id`, `cloudkit_environment` and what that space has in Production: the pair is the row
+whose `redeemed_at` matches the time they joined, and its code goes into the steps below.
+
+In the SQL Editor, with the code in place of `XXXXXX`:
+
+1. `scripts/manual-premium-lookup.sql`: one row with `space_id`, when the invite was made and
+   redeemed, `partner_joined`, `cloudkit_environment` (`production` for an App Store or TestFlight
+   build) and what the space has in Production now. No row means a wrong or purged code: stop.
+   `partner_joined` false means nobody joined this space with any code: a phone's own code from
+   before it joined its partner points at a space the join deleted. Ask for the code the partner
+   used. A `production_product` other than `manual_grant` means one of them already pays or is in
+   the trial: the grant still wins on the partner's phone, but the payer's phone follows its own
+   purchase, with the trial banner and Apple's charge, until they cancel it in the App Store.
+2. `scripts/manual-premium-grant.sql` with the same code: returns the row it wrote. It writes
+   nothing for an unknown code or for a space nobody joined. Running it again changes nothing.
+   Keep the `space_id`.
+3. `select * from public.space_entitlement('<space id>', 'Production');` must say `active`,
+   `manual_grant`, `2099-12-31 12:00:00+00`.
+
+`scripts/manual-premium-list.sql` lists every grant with its status. `scripts/manual-premium-revoke.sql`
+with the space id in place of the zeros marks that grant `revoked`, and touches no other row. The
+row is kept on purpose: an answer of `revoked` is what makes the app drop premium on its next
+refresh and rewrite the Space record, after which the widgets follow; a deleted row would answer
+`none`, and the app would keep the premium it had mirrored into the Space record until 2099. A grant
+after a revoke makes the same row active again, but it needs a live invite code.
+
+Limits: a build that reads the Sandbox (TestFlight builds, Xcode runs) does not see a Production
+grant; a refunded purchase on the phone still wins over it; Settings shows "Active until" with the
+2099 date; `analytics.entitlement_status` counts the grant as an active Production subscription;
+while `monetization_v2_enabled` is false everyone has premium anyway.
+
 ## What is live after this, and what is not
 
 Working end to end once steps 1 to 7 are done: invite codes, link parsing for wishes, currency rates,

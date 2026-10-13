@@ -21,6 +21,7 @@ supabase/migrations/0008_*      superseded_at and redeemed_by on invites
 supabase/migrations/0009_*      one row per subscription and environment, the best one per space
 supabase/migrations/0010_*      invite origin: CloudKit environment and iCloud account per code
 supabase/migrations/0011_*      monetization_v2_enabled = false and free_days = 3 in app_config
+supabase/migrations/0012_*      the daily App Store check skips manual grants
 supabase/functions/_shared      auth, rate limit, responses, parsing, Apple crypto
 supabase/functions/<name>       one Deno.serve entry point per endpoint
 supabase/functions/config       public monetization flag, read from app_config
@@ -38,6 +39,8 @@ every secret and where its value comes from, pointing the app at it, and the smo
 `scripts/session-token.ts` mints a Corbie session token from `SESSION_SECRET` through the server's own
 code, so `invite`, `entitlement` and `apple-revoke` can be exercised without an Apple identity token.
 `scripts/smoke.sh <base-url> [token]` walks every endpoint and prints a pass table.
+`scripts/manual-premium-*.sql` list the codes redeemed in the last day, look up a space by invite code,
+grant it premium by hand, revoke and list grants; `DEPLOY.md` section 11 says how and when.
 `scripts/request-test-notification.ts Sandbox|Production` asks Apple for a `TEST` notification
 with the In-App Purchase key and prints whether it arrived.
 
